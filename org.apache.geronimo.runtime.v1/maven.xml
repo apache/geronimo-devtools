@@ -9,19 +9,18 @@
 
     <goal name="build">
         <attainGoal name="copyjars"/>
+        <attainGoal name="jar:jar"/>
+        <attainGoal name="jar:install"/>
     </goal>
 
     <goal name="rebuild">
         <attainGoal name="clean"/>
         <attainGoal name="build"/>
-      </goal>
+    </goal>
 
     <goal name="copyjars">        
-        <j:forEach var="artifact" items="${pom.artifacts}">
-            <j:set var="dependency" value="${artifact.dependency}"/>  
-            <j:if test="${dependency.getProperty('lib') == 'true'}">  
-                <ant:copy todir="${maven.build.dest}" file="${artifact.path}"/>
-            </j:if>            
+        <j:forEach var="artifact" items="${pom.artifacts}">  
+          <ant:copy todir="${basedir}/lib" file="${artifact.path}"/>          
         </j:forEach>                 
     </goal>  
      
