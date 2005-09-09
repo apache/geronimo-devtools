@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <pomVersion>3</pomVersion>
+  <groupId>geronimo</groupId>
+  <id>feature-assembly</id>
+  <name>feature-assembly</name>
+  <currentVersion>1.0</currentVersion>
+  <dependencies>
+    <dependency>
+      <groupId>geronimo</groupId>
+      <artifactId>org.apache.geronimo.core</artifactId>
+      <version>1.0</version>
+      <properties>
+        <jar>true</jar>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>geronimo</groupId>
+      <artifactId>org.apache.geronimo.deployment.model</artifactId>
+      <version>1.0</version>
+      <properties>
+        <jar>true</jar>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>geronimo</groupId>
+      <artifactId>org.apache.geronimo.feature</artifactId>
+      <version>1.0</version>
+      <properties>
+        <feature>true</feature>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>geronimo</groupId>
+      <artifactId>org.apache.geronimo.runtime.v1</artifactId>
+      <version>1.0</version>
+      <properties>
+        <jar>false</jar>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>geronimo</groupId>
+      <artifactId>org.apache.geronimo.ui</artifactId>
+      <version>1.0</version>
+      <properties>
+        <jar>true</jar>
+      </properties>
+    </dependency>
+  </dependencies>
+</project>
+
+
