@@ -4,15 +4,17 @@
   <groupId>geronimo</groupId>
   <id>org.apache.geronimo.deployment.model</id>
   <name>org.apache.geronimo.deployment.model</name>
-  <currentVersion>1.0</currentVersion>
+  <currentVersion>1.0.0</currentVersion>
   <build>
     <sourceDirectory>src</sourceDirectory>
-    <resource>
-      <directory>.</directory>
-      <includes>
-        <include>plugin.xml</include>
-      </includes>
-    </resource>
+    <resources>
+      <resource>
+        <directory>.</directory>
+        <includes>
+          <include>plugin.xml</include>
+        </includes>
+      </resource>
+    </resources>
   </build>
   <dependencies>
     <!--  eclipse dependencies -->

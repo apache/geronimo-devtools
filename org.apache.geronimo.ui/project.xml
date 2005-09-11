@@ -4,28 +4,36 @@
   <groupId>geronimo</groupId>
   <id>org.apache.geronimo.ui</id>
   <name>org.apache.geronimo.ui</name>
-  <currentVersion>1.0</currentVersion>
+  <currentVersion>1.0.0</currentVersion>
   <build>
     <sourceDirectory>src</sourceDirectory>
-    <resource>
-      <directory>.</directory>
-      <includes>
-        <include>plugin.xml</include>
-      </includes>
-    </resource>
+    <resources>
+      <resource>
+        <directory>.</directory>
+        <includes>
+          <include>plugin.xml</include>
+        </includes>
+      </resource>
+      <resource>
+        <targetPath>icons/obj16/</targetPath>
+        <directory>icons/obj16</directory>
+        <includes>
+          <include>*.gif</include>
+        </includes>
+      </resource>
+    </resources>
   </build>
   <dependencies>
-
     <!-- geronimo plugin dependencies -->
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>org.apache.geronimo.core</artifactId>
-      <version>1.0</version>
+      <version>1.0.0</version>
     </dependency>
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>org.apache.geronimo.deployment.model</artifactId>
-      <version>1.0</version>
+      <version>1.0.0</version>
     </dependency>
 
     <!--  eclipse dependencies -->

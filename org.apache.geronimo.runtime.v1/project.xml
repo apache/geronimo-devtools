@@ -4,7 +4,7 @@
   <groupId>geronimo</groupId>
   <id>org.apache.geronimo.runtime.v1</id>
   <name>org.apache.geronimo.runtime.v1</name>
-  <currentVersion>1.0</currentVersion>
+  <currentVersion>1.0.0</currentVersion>
   <build>
     <resources>
       <resource>
