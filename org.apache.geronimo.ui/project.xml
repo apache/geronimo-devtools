@@ -42,7 +42,7 @@
     </dependency>
     <dependency>
       <groupId>eclipse</groupId>
-      <artifactId>org.eclipse.swt.win32</artifactId>
+      <artifactId>org.eclipse.swt.fragment</artifactId>
       <version>3.1.0</version>
     </dependency>
     <dependency>

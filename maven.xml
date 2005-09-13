@@ -2,8 +2,8 @@
 <project default="default"
     xmlns:j="jelly:core"
     xmlns:ant="jelly:ant">
-
-    <goal name="default">
+    
+    <goal name="default" prereqs="init">    
         <j:set var="maven.multiproject.excludes" value="etc/project.xml"/>
         <j:set var="goal" value="jar:install"/>
         <attainGoal name="multiproject:goal"/>
@@ -18,9 +18,22 @@
         <attainGoal name="multiproject:goal"/>
     </goal>
 
-    <goal name="rebuild">
+    <goal name="rebuild">       
         <attainGoal name="clean"/>
         <attainGoal name="build"/>
+    </goal>
+    
+    <goal name="init">
+       <j:set var="os" value="${os.name}"/>
+       <j:if test="${os.startsWith('Windows')}">
+          ${systemScope.setProperty('swt.fragmentid','win32.win32.x86')}
+       </j:if>
+       <j:if test="${os.startsWith('Mac')}">
+          ${systemScope.setProperty('swt.fragmentid','carbon.macosx.ppc')} 
+       </j:if>
+       <j:if test="${os.startsWith('Linux')}">
+          ${systemScope.setProperty('swt.fragmentid','gtk.linux.x86')} 
+       </j:if>          
     </goal>
      
 </project>
