@@ -6,6 +6,10 @@
     <goal name="default">
         <attainGoal name="build"/>
     </goal>
+    
+    <goal name="jar:install">
+        <attainGoal name="build"/>
+    </goal>
 
     <goal name="build">
         <attainGoal name="copyjars"/>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <pomVersion>3</pomVersion>
+    <id>etc</id>
+    <name>etc</name>
+    <currentVersion>${devtools_currentversion}</currentVersion>
+    <groupId>geronimo-devtools</groupId>
+    <organization>
+        <name>Apache Software Foundation</name>
+        <url>http://geronimo.apache.org/</url>
+        <logo>http://geronimo.apache.org/images/geronimo-logo.png</logo>
+    </organization>
+ </project>
