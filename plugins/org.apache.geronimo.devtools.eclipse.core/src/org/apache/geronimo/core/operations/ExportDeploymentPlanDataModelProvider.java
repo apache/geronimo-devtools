@@ -15,6 +15,8 @@
  */
 package org.apache.geronimo.core.operations;
 
+import java.util.Set;
+
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelProvider;
 
 /**
@@ -31,14 +33,15 @@ public class ExportDeploymentPlanDataModelProvider extends
     public ExportDeploymentPlanDataModelProvider() {
         super();
     }
-
-    /*
-     * (non-Javadoc)
-     * 
+    
+    /* (non-Javadoc)
      * @see org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider#getPropertyNames()
      */
-    public String[] getPropertyNames() {
-        return new String[]{IExportDeploymentPlanDataModelProperties.COMPONENT_NAME, IExportDeploymentPlanDataModelProperties.PROJECT_NAME};
+    public Set getPropertyNames() {
+        Set propertyNames = super.getPropertyNames();
+        propertyNames.add(IExportDeploymentPlanDataModelProperties.COMPONENT_NAME);
+        propertyNames.add(IExportDeploymentPlanDataModelProperties.PROJECT_NAME);
+        return propertyNames;
     }
 
 }
