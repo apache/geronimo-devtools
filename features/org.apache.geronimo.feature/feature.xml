@@ -46,7 +46,7 @@ Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you ma
    </requires>
 
    <plugin
-         id="org.apache.geronimo.core"
+         id="org.apache.geronimo.devtools.eclipse.core"
          download-size="0"
          install-size="0"
          version="0.0.0"

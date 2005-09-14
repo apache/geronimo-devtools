@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.apache.geronimo.core; singleton:=true
+Bundle-SymbolicName: org.apache.geronimo.devtools.eclipse.core; singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.apache.geronimo.core.internal.GeronimoPlugin
 Bundle-Vendor: %providerName
