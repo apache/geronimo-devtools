@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project default="default"
     xmlns:j="jelly:core"
+    xmlns:u="jelly:util"
     xmlns:ant="jelly:ant">
     
     <goal name="default" prereqs="init">    
-        <j:set var="maven.multiproject.excludes" value="etc/project.xml"/>
         <j:set var="goal" value="jar:install"/>
         <attainGoal name="multiproject:goal"/>
     </goal>
@@ -13,7 +13,7 @@
         <attainGoal name="default"/>
     </goal>
     
-    <goal name="clean">
+    <goal name="clean" prereqs="init">
         <j:set var="goal" value="clean"/>
         <attainGoal name="multiproject:goal"/>
     </goal>
@@ -24,6 +24,9 @@
     </goal>
     
     <goal name="init">
+       <j:set var="maven.multiproject.excludes" value="etc/project.xml"/>
+       <j:set var="maven.multiproject.includes" value="*/project.xml,*/*/project.xml"/>
+    
        <j:set var="os" value="${os.name}"/>
        <j:if test="${os.startsWith('Windows')}">
           ${systemScope.setProperty('swt.fragmentid','win32.win32.x86')}
@@ -35,5 +38,5 @@
           ${systemScope.setProperty('swt.fragmentid','gtk.linux.x86')} 
        </j:if>          
     </goal>
-     
+    
 </project>
