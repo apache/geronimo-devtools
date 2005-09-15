@@ -47,6 +47,21 @@
       <artifactId>geronimo-spec-j2ee-deployment</artifactId>
       <version>${geronimo_spec_version}</version>
     </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>${commons_logging_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib-nodep</artifactId>
+      <version>${cglib_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>geronimo</groupId>
+      <artifactId>geronimo-common</artifactId>
+      <version>${geronimo_runtime_version}</version>
+    </dependency>
   </dependencies>
 </project>
 
