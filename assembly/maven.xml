@@ -43,7 +43,7 @@
     
     <goal name="zipdistribution">
        <ant:echo>Packaging deployable feature</ant:echo>  
-       <ant:zip destfile="${maven.build.dir}/geronimo-server-adapter_${pom.currentVersion}.zip" basedir="${feature.assembly.distributions.dir}"/>           
+       <ant:zip destfile="${maven.build.dir}/geronimo-eclipse-plugin-${pom.currentVersion}.zip" basedir="${feature.assembly.distributions.dir}"/>           
     </goal>
     
     <goal name="deploy">
