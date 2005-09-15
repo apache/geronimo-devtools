@@ -285,7 +285,9 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
         public void run() {
             try {
                 sleep(TIMEOUT);
+                Trace.trace(Trace.INFO, "Wait thread TIMEOUT!");
             } catch (InterruptedException e) {
+                Trace.trace(Trace.INFO, "Wait thread interrupted");
             }
         }
     }
@@ -317,7 +319,9 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
                 Trace.trace(Trace.INFO, "\t" + status.getMessage());
                 _monitor.subTask(status.getMessage());
             }
+            System.out.println("checkpoint " + cmd + " " + status.getCommand());
             if (cmd == null || cmd == status.getCommand()) {
+                System.out.println("checkpoint pass");
                 if (status.isCompleted() || status.isFailed()) {
                     waitThread.interrupt();
                 }
@@ -384,7 +388,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
         } catch (DeploymentManagerCreationException e) {
             e.printStackTrace();
             throw new CoreException(new Status(IStatus.ERROR,
-                    "org.eclipse.jst.geronimo.core", 0, e.getMessage(), e));
+                    GeronimoPlugin.PLUGIN_ID, 0, e.getMessage(), e));
         } finally {
 
         }
@@ -420,7 +424,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
         } else if (po.getDeploymentStatus().isFailed()) {
             IStatus status = new Status(
                     IStatus.ERROR,
-                    "org.eclipse.jst.geronimo.core",
+                    GeronimoPlugin.PLUGIN_ID,
                     0,
                     "Distribution of application failed.  See .log for details.",
                     new Exception(listener.lastMessage));

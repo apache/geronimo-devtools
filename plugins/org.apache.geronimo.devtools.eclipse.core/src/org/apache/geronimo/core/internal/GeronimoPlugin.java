@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.Plugin;
  * The main plugin class.
  */
 public class GeronimoPlugin extends Plugin {
-    protected static final String PLUGIN_ID = "org.apache.geronimo.core";
+    protected static final String PLUGIN_ID = "org.apache.geronimo.devtools.eclipse.core";
 
     private static GeronimoPlugin singleton;
 
