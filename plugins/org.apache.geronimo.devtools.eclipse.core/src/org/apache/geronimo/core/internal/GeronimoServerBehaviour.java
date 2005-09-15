@@ -74,7 +74,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
     private static final int MAX_TRIES = 10;
 
-    private static final long TIMEOUT = 100000;
+    private static final long TIMEOUT = 10000;
 
     private DeploymentFactoryManager dfm = null;
 
