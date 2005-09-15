@@ -11,6 +11,13 @@
         <includes>
           <include>plugin.xml</include>
         </includes>
+      </resource>      
+      <resource>
+        <targetPath>org/apache/geronimo/ui/internal</targetPath>
+        <directory>src/org/apache/geronimo/ui/internal</directory>
+        <includes>
+          <include>Messages.properties</include>
+        </includes>
       </resource>
       <resource>
         <targetPath>icons/obj16/</targetPath>

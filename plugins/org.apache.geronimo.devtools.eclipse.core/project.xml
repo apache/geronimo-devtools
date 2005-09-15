@@ -25,6 +25,13 @@
           <include>plugin.properties</include>
         </includes>
       </resource>
+      <resource>
+        <targetPath>org/apache/geronimo/core/internal</targetPath>
+        <directory>src/org/apache/geronimo/core/internal</directory>
+        <includes>
+          <include>Messages.properties</include>
+        </includes>
+      </resource>
     </resources>
   </build>
   <dependencies>
