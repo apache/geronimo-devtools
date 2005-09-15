@@ -32,6 +32,12 @@
           <include>Messages.properties</include>
         </includes>
       </resource>
+      <resource>
+        <directory>../../../../</directory>
+        <includes>
+          <include>LICENSE.txt</include>
+        </includes>
+      </resource>
     </resources>
   </build>
   <dependencies>
