@@ -51,6 +51,11 @@
 		<publishDir>${serverRootDirectory}/server/deploy</publishDir>
 		<publisherReference>org.eclipse.jst.server.geronimo.internal.GeronimoPublisher</publisherReference>
 	</module>
+    <module>
+		<type>j2ee.ear</type>
+		<publishDir>${serverRootDirectory}/server/deploy</publishDir>
+		<publisherReference>org.eclipse.jst.server.geronimo.internal.GeronimoPublisher</publisherReference>
+	</module>
 
 	<project>
 		<classpathReference>geronimo.project</classpathReference>
