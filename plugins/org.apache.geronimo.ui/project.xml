@@ -25,7 +25,7 @@
     <!-- geronimo plugin dependencies -->
     <dependency>
       <groupId>geronimo-devtools</groupId>
-      <artifactId>org.apache.geronimo.core</artifactId>
+      <artifactId>org.apache.geronimo.devtools.eclipse.core</artifactId>
       <version>${devtools_currentversion}</version>
     </dependency>
     <dependency>
