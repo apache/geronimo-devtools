@@ -1,10 +1,29 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+
+    Copyright 2005 The Apache Software Foundation
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<!-- $Rev: 219424 $ $Date: 2005-07-18 01:19:16 +0200 (Mon, 18 Jul 2005) $ -->
+
 <project default="default"
     xmlns:j="jelly:core"
     xmlns:u="jelly:util"
     xmlns:ant="jelly:ant">
     
-    <goal name="default" prereqs="init">    
+    <goal name="default" prereqs="init">
         <j:set var="goal" value="jar:install"/>
         <attainGoal name="multiproject:goal"/>
     </goal>
@@ -18,7 +37,7 @@
         <attainGoal name="multiproject:goal"/>
     </goal>
 
-    <goal name="rebuild">       
+    <goal name="rebuild"> 
         <attainGoal name="clean"/>
         <attainGoal name="build"/>
     </goal>
@@ -32,10 +51,10 @@
           ${systemScope.setProperty('swt.fragmentid','win32.win32.x86')}
        </j:if>
        <j:if test="${os.startsWith('Mac')}">
-          ${systemScope.setProperty('swt.fragmentid','carbon.macosx.ppc')} 
+          ${systemScope.setProperty('swt.fragmentid','carbon.macosx.ppc')}
        </j:if>
        <j:if test="${os.startsWith('Linux')}">
-          ${systemScope.setProperty('swt.fragmentid','gtk.linux.x86')} 
+          ${systemScope.setProperty('swt.fragmentid','gtk.linux.x86')}
        </j:if>          
     </goal>
     
