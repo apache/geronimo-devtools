@@ -249,6 +249,8 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
     public void publishModule(int kind, int deltaKind, IModule[] module,
             IProgressMonitor monitor) throws CoreException {
+        
+        Trace.trace(Trace.INFO, "calling publishModule()" + module);
 
         _monitor = monitor;
 
@@ -364,8 +366,8 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
     private void invokeCommand(int deltaKind, IModule module)
             throws CoreException {
-
-        GeronimoUtils.getConfigId(module); // triggers web dp creation
+        
+        Trace.trace(Trace.INFO, "calling inovkeComand()" + module);
 
         try {
 
