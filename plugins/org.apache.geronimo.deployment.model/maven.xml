@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project default="default" xmlns:j="jelly:core" xmlns:ant="jelly:ant">
+
+  <goal name="default">
+    <attainGoal name="build"/>
+  </goal>
+  
+  <goal name="build">
+    <attainGoal name="jar:install"/>
+  </goal>
+  
+  <preGoal name="java:compile">
+    <attainGoal name="importschemas"/>
+  </preGoal>
+  
+  <goal name="rebuild">
+    <attainGoal name="clean"/>
+    <attainGoal name="build"/>
+  </goal>
+  
+  <preGoal name="clean:clean">
+    <ant:delete dir="${schema}/lib"/>
+  </preGoal>
+  
+  <goal name="importschemas">
+    <j:forEach var="artifact" items="${pom.artifacts}"> 
+      <j:if test="${!artifact.dependency.groupId.equals('eclipse')}">
+          <ant:unzip src="${artifact.path}" dest="${basedir}/temp">
+            <ant:patternset>
+             <ant:include name="META-INF/schema/*.xsd"/>
+           </ant:patternset>
+         </ant:unzip>  
+      </j:if>      
+    </j:forEach> 
+    
+    <ant:move todir="${basedir}/schema" flatten="true">
+      <ant:fileset dir="${basedir}/temp/">
+        <ant:include name="**/*.xsd"/>
+      </ant:fileset>
+    </ant:move>
+    
+    <ant:delete dir="${basedir}/temp"/>
+    
+    <!-- update include paths in all schemas -->
+    <ant:fileScanner var="schemaScanner">
+      <ant:fileset dir="${basedir}/schema">
+        <ant:include name="*.xsd"/>
+      </ant:fileset>
+    </ant:fileScanner>
+    <j:forEach var="schema" items="${schemaScanner.iterator()}">
+      <replaceregexp file="${schema}" match="schemaLocation=&quot;(.*/)(.*xsd)" replace="schemaLocation=&quot;\2" byline="true"/>
+    </j:forEach>
+  </goal>
+</project>
