@@ -250,7 +250,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
     public void publishModule(int kind, int deltaKind, IModule[] module,
             IProgressMonitor monitor) throws CoreException {
         
-        Trace.trace(Trace.INFO, "calling publishModule()" + module);
+        Trace.trace(Trace.INFO, "calling publishModule()" + module + " " +  module.length);
 
         _monitor = monitor;
 
@@ -321,9 +321,8 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
                 Trace.trace(Trace.INFO, "\t" + status.getMessage());
                 _monitor.subTask(status.getMessage());
             }
-            System.out.println("checkpoint " + cmd + " " + status.getCommand());
+            
             if (cmd == null || cmd == status.getCommand()) {
-                System.out.println("checkpoint pass");
                 if (status.isCompleted() || status.isFailed()) {
                     waitThread.interrupt();
                 }
@@ -367,7 +366,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
     private void invokeCommand(int deltaKind, IModule module)
             throws CoreException {
         
-        Trace.trace(Trace.INFO, "calling inovkeComand()" + module);
+        Trace.trace(Trace.INFO, "calling invokeComand()" + module);
 
         try {
 
