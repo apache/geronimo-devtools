@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="codegen" basedir=".">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    
+    <!-- Global properties -->
+	<property name="main.directory" location="${basedir}"/>
+	<property name="source.directory" value="src"/>
+	
+	<target name="codegen">
+
+	    <!-- A macrodef makes it easier to generate code for multiple models in one script. -->
+		<macrodef name="multipleXSDs2Java">
+			<attribute name="genModelName"/>
+			<element name="settings"/>
+			<sequential>
+				<emf.XSD2Java
+					genModel="${main.directory}/emf/@{genModelName}.genmodel"
+					modelProject="${main.directory}"
+					modelProjectFragmentPath="${source.directory}"
+					modelPluginID="org.apache.geronimo.deployment.model"
+					copyright="">
+					<settings/>
+				</emf.XSD2Java>
+			</sequential>
+		</macrodef>
+
+		<!-- Generating the code for the geronimo-web model -->
+		<multipleXSDs2Java genModelName="geronimo-web">
+			<settings>
+				<model file="${main.directory}/schema/geronimo-web.xsd"/>
+			</settings>
+		</multipleXSDs2Java>
+		
+	</target>
+</project>
