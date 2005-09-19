@@ -28,6 +28,7 @@
           <ant:unzip src="${artifact.path}" dest="${basedir}/temp">
             <ant:patternset>
              <ant:include name="META-INF/schema/*.xsd"/>
+             <ant:include name="**/xml.xsd"/>
            </ant:patternset>
          </ant:unzip>  
       </j:if>      
@@ -49,6 +50,19 @@
     </ant:fileScanner>
     <j:forEach var="schema" items="${schemaScanner.iterator()}">
       <replaceregexp file="${schema}" match="schemaLocation=&quot;(.*/)(.*xsd)" replace="schemaLocation=&quot;\2" byline="true"/>
-    </j:forEach>
+    </j:forEach>     
   </goal>
+  
+  <goal name="codegen">
+    <ant:java fork="true" jar="${eclipse.home}/startup.jar" failonerror="true">
+      <ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/xerces/jars/"/>
+      <ant:arg value="-data"/>
+      <ant:arg value="../temp"/>
+      <ant:arg value="-application"/>
+      <ant:arg value="org.eclipse.ant.core.antRunner"/>
+      <ant:arg value="-buildfile"/>
+      <ant:arg value="${basedir}/build.xml"/>
+   </ant:java> 
+  </goal>
+  
 </project>
