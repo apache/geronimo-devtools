@@ -23,7 +23,11 @@
     <preGoal name="clean:clean">        
         <ant:delete dir="${basedir}/lib"/>    
     </preGoal>
-
+    
+    <postGoal name="eclipse:generate-classpath">
+      <replaceregexp file=".classpath" match='(classpathentry) (kind="var")' replace='\1 exported="true" \2' byline="true"/>
+    </postGoal>
+    
     <goal name="copyjars">        
         <j:forEach var="artifact" items="${pom.artifacts}">  
           <ant:copy todir="${basedir}/lib" file="${artifact.path}"/>          
