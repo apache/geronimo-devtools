@@ -8,8 +8,6 @@
     <property name="target.directory" location="${basedir}/target"/>
 	
 	<target name="codegen">
-	   <echo>${source.directory}</echo>
-
 	    <!-- A macrodef makes it easier to generate code for multiple models in one script. -->
 		<macrodef name="multipleXSDs2Java">
 			<attribute name="genModelName"/>

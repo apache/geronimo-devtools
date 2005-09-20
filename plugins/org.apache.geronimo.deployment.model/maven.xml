@@ -47,6 +47,9 @@
     </ant:fileScanner>
     <j:forEach var="schema" items="${schemaScanner.iterator()}">
       <replaceregexp file="${schema}" match="schemaLocation=&quot;(.*/)(.*xsd)" replace="schemaLocation=&quot;\2" byline="true"/>
+      <j:if test="${schema.getName().equals('geronimo-connector.xsd')}">
+         <replaceregexp file="${schema}" match="(xs:import.*/>)" replace="\1${patch}"/>
+      </j:if>      
     </j:forEach>     
   </goal>
   
