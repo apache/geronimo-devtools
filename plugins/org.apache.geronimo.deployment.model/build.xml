@@ -24,12 +24,35 @@
 			</sequential>
 		</macrodef>
 
-		<!-- Generating the code for the geronimo-web model -->
 		<multipleXSDs2Java genModelName="geronimo-web">
 			<settings>
 				<model file="${main.directory}/schema/geronimo-web.xsd"/>
 			</settings>
 		</multipleXSDs2Java>
 		
+		<multipleXSDs2Java genModelName="geronimo-application">
+			<settings>
+				<model file="${main.directory}/schema/geronimo-application.xsd"/>
+			</settings>
+		</multipleXSDs2Java>
+		
+	    <multipleXSDs2Java genModelName="openejb-jar">
+			<settings>
+				<model file="${main.directory}/schema/openejb-jar.xsd"/>
+			</settings>
+		</multipleXSDs2Java>
+		
+	    <multipleXSDs2Java genModelName="geronimo-connector">
+			<settings>
+				<model file="${main.directory}/schema/geronimo-connector.xsd"/>
+			</settings>
+		</multipleXSDs2Java>
+		
+	    <multipleXSDs2Java genModelName="geronimo-application-client">
+			<settings>
+				<model file="${main.directory}/schema/geronimo-application-client.xsd"/>
+			</settings>
+		</multipleXSDs2Java>
+					
 	</target>
 </project>
