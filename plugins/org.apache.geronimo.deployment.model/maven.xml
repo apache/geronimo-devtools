@@ -19,12 +19,14 @@
   </goal>
   
   <preGoal name="clean:clean">
-    <ant:delete dir="${schema}/lib"/>
-  </preGoal>
+    <ant:delete dir="${basedir}/lib"/>
+    <ant:delete dir="${basedir}/emf"/>
+  </preGoal> 
   
   <goal name="importschemas">
     <j:forEach var="artifact" items="${pom.artifacts}"> 
-      <j:if test="${!artifact.dependency.groupId.equals('eclipse')}">
+    <j:set var="group" value="${artifact.dependency.groupId}"/>
+      <j:if test="${group.equals('geronimo') || group.equals('openejb')}">
           <ant:unzip src="${artifact.path}" dest="${basedir}/temp">
             <ant:patternset>
              <ant:include name="META-INF/schema/*.xsd"/>
@@ -53,7 +55,7 @@
     </j:forEach>     
   </goal>
   
-  <goal name="codegen">
+  <goal name="codegen" prereqs="importschemas">
     <echo>Starting Workbench...</echo>
     <ant:java fork="true" jar="${eclipse.home}/startup.jar" failonerror="true">
       <ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/xerces/jars/"/>
