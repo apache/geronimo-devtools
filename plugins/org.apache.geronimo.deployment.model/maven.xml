@@ -18,16 +18,11 @@
     <attainGoal name="build"/>
   </goal>
   
-  <preGoal name="clean:clean">
-    <ant:delete dir="${basedir}/lib"/>
-    <ant:delete dir="${basedir}/emf"/>
-  </preGoal> 
-  
   <goal name="importschemas">
     <j:forEach var="artifact" items="${pom.artifacts}"> 
     <j:set var="group" value="${artifact.dependency.groupId}"/>
       <j:if test="${group.equals('geronimo') || group.equals('openejb')}">
-          <ant:unzip src="${artifact.path}" dest="${basedir}/temp">
+          <ant:unzip src="${artifact.path}" dest="${maven.build.dir}/temp">
             <ant:patternset>
              <ant:include name="META-INF/schema/*.xsd"/>
              <ant:include name="**/xml.xsd"/>
@@ -36,17 +31,17 @@
       </j:if>      
     </j:forEach> 
     
-    <ant:move todir="${basedir}/schema" flatten="true">
-      <ant:fileset dir="${basedir}/temp/">
+    <ant:move todir="${maven.build.dir}/schema" flatten="true">
+      <ant:fileset dir="${maven.build.dir}/temp/">
         <ant:include name="**/*.xsd"/>
       </ant:fileset>
     </ant:move>
     
-    <ant:delete dir="${basedir}/temp"/>
+    <ant:delete dir="${maven.build.dir}/temp"/>
     
     <!-- update include paths in all schemas -->
     <ant:fileScanner var="schemaScanner">
-      <ant:fileset dir="${basedir}/schema">
+      <ant:fileset dir="${maven.build.dir}/schema">
         <ant:include name="*.xsd"/>
       </ant:fileset>
     </ant:fileScanner>
