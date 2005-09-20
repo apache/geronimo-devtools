@@ -23,6 +23,15 @@
 				</emf.XSD2Java>
 			</sequential>
 		</macrodef>
+		
+		<!-- Workaround for EMF output folder override issue. -->
+		<multipleXSDs2Java genModelName="dummy">
+			<settings>
+				<model file="dummy.xsd"/>
+			</settings>
+		</multipleXSDs2Java>
+		
+		<replace file=".classpath" token="bin" value="target/classes"/>
 
 		<multipleXSDs2Java genModelName="geronimo-web">
 			<settings>
