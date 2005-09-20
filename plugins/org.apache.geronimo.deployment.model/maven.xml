@@ -10,7 +10,7 @@
   </goal>
   
   <preGoal name="java:compile">
-    <attainGoal name="importschemas"/>
+    <attainGoal name="codegen"/>
   </preGoal>
   
   <goal name="rebuild">
