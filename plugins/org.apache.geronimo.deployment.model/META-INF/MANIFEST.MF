@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.common,
  org.eclipse.emf.ecore.xmi
 Eclipse-AutoStart: true
-Export-Package: org.apache.geronimo.xml.ns.deployment,
+Export-Package: org.apache.geronimo.deployment.model,
+ org.apache.geronimo.xml.ns.deployment,
  org.apache.geronimo.xml.ns.deployment.impl,
  org.apache.geronimo.xml.ns.deployment.util,
  org.apache.geronimo.xml.ns.j2ee.application,
@@ -37,4 +38,4 @@ Export-Package: org.apache.geronimo.xml.ns.deployment,
  org.openejb.xml.ns.pkgen,
  org.openejb.xml.ns.pkgen.impl,
  org.openejb.xml.ns.pkgen.util
-Bundle-Activator: org.apache.geronimo.xml.model.GeronimoModelPlugin$Implementation
+Bundle-Activator: org.apache.geronimo.deployment.model.GeronimoDeploymentModelsPlugin
