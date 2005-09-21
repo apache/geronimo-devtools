@@ -1,54 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <classpath>
-  <classpathentry excluding="" kind="src" path="src">
-  </classpathentry>
-  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
-  </classpathentry>
-  <classpathentry kind="var" path="MAVEN_REPO/geronimo-devtools/jars/org.apache.geronimo.devtools.eclipse.core-1.0.0.jar">
-  </classpathentry>
-  <classpathentry kind="var" path="MAVEN_REPO/geronimo-devtools/jars/org.apache.geronimo.deployment.model-1.0.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.osgi_3.1.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.swt.win32.win32.x86_3.1.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.jface_3.1.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.core.runtime_3.1.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.core.resources_3.1.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.emf.common_2.1.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.emf.ecore_2.1.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.ui_3.1.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.ui.browser_3.1.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.ui.editors_3.1.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.ui.forms_3.1.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.ui.ide_3.1.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.ui.workbench_3.1.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.core.commands_3.1.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.ui.workbench.texteditor_3.1.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.wst.server.core_0.7.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.wst.server.ui_0.7.0.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.jst.server.generic.core_0.7.0\genericserver.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.jst.server.generic.ui_0.7.0\genericui.jar">
-  </classpathentry>
-  <classpathentry kind="lib" path="C:\AST_BUILDS\eclipse\plugins\org.eclipse.wst.common.modulecore_0.7.0.jar">
-  </classpathentry>
-  <classpathentry kind="output" path="target/classes">
-  </classpathentry>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>
