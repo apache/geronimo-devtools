@@ -42,6 +42,11 @@
         <attainGoal name="build"/>
     </goal>
     
+    <goal name="eclipse" prereqs="init">
+        <j:set var="goal" value="eclipse"/>
+        <attainGoal name="multiproject:goal"/>
+    </goal>
+    
     <goal name="init">
        <j:set var="maven.multiproject.excludes" value="etc/project.xml"/>
        <j:set var="maven.multiproject.includes" value="*/project.xml,*/*/project.xml"/>
