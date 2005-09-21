@@ -18,6 +18,10 @@
     <attainGoal name="build"/>
   </goal>
   
+  <goal name="eclipse:generate-classpath">
+  <!-- do nothing -->
+  </goal>
+  
   <goal name="importschemas">
     <j:forEach var="artifact" items="${pom.artifacts}"> 
     <j:set var="group" value="${artifact.dependency.groupId}"/>

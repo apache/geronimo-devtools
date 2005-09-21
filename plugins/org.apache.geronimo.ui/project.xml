@@ -33,6 +33,12 @@
         </includes>
       </resource>
     </resources>
+    <resource>
+        <directory>.</directory>
+        <includes>
+          <include>plugin.properties</include>
+        </includes>
+     </resource>
   </build>
   <dependencies>
     <!-- geronimo plugin dependencies -->
