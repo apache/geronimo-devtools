@@ -6,6 +6,7 @@
     <property name="project.directory" location="${basedir}"/>
 	<property name="source.directory" value="src"/>
     <property name="target.directory" location="${basedir}/target"/>
+    <property name="con" value='&lt;classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'/>	
 	
 	<target name="codegen">
 	    <!-- A macrodef makes it easier to generate code for multiple models in one script. -->
@@ -31,7 +32,7 @@
 			</settings>
 		</multipleXSDs2Java>
 		
-		<replace file=".classpath" token='path="bin"/>' value='path="target/classes"/>'/>		
+		<replace file=".classpath" token='path="bin"/>' value='path="target/classes"/>${con}'/>		
 		<delete dir="bin"/>
 		
 		<multipleXSDs2Java genModelName="geronimo-web">
