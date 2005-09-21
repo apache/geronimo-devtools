@@ -32,13 +32,13 @@
           <include>LICENSE.txt</include>
         </includes>
       </resource>
-    </resources>
-    <resource>
+      <resource>
         <directory>.</directory>
         <includes>
           <include>plugin.properties</include>
         </includes>
-     </resource>
+      </resource>
+    </resources>
   </build>
   <dependencies>
     <!-- geronimo plugin dependencies -->

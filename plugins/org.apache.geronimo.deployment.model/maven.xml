@@ -68,6 +68,7 @@
       <ant:arg value="-buildfile"/>
       <ant:arg value="${basedir}/build.xml"/>
    </ant:java> 
+   <ant:delete dir="bin"/>
   </goal>
   
 </project>

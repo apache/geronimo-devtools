@@ -33,7 +33,6 @@
 		</multipleXSDs2Java>
 		
 		<replace file=".classpath" token='path="bin"/>' value='path="target/classes"/>${con}'/>		
-		<delete dir="bin"/>
 		
 		<multipleXSDs2Java genModelName="geronimo-web">
 			<settings>
