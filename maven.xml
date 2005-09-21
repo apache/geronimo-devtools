@@ -45,6 +45,7 @@
     
     <goal name="eclipse" prereqs="init">
         <j:set var="goal" value="eclipse"/>
+        <j:set var="maven.multiproject.includes" value="plugins/org.apache.geronimo.runtime.v1/project.xml, plugins/org.apache.geronimo.deployment.model/project.xml"/>
         <attainGoal name="multiproject:goal"/>
     </goal>
     
