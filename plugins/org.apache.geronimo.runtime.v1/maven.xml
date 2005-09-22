@@ -11,7 +11,8 @@
         <attainGoal name="jar:install"/>
     </goal>
     
-    <preGoal name="java:jar-resources">        
+    <preGoal name="java:jar-resources"> 
+        <attainGoal name="createpluginxml"/>       
         <attainGoal name="copyjars"/>
     </preGoal>
 
@@ -27,6 +28,15 @@
     <postGoal name="eclipse:generate-classpath">
       <replaceregexp file=".classpath" match='(classpathentry) (kind="var")' replace='\1 exported="true" \2' byline="true"/>
     </postGoal>
+    
+    <goal name="createpluginxml">
+      <ant:copy file="plugin.xml.template" tofile="plugin.xml" overwrite="true"/>
+      <replaceregexp file="plugin.xml" match="@geronimo_runtime_version@" replace="${geronimo_runtime_version}" byline="true"/>
+      <replaceregexp file="plugin.xml" match="@geronimo_spec_version@" replace="${geronimo_spec_version}" byline="true"/>
+      <replaceregexp file="plugin.xml" match="@mx4j_version@" replace="${mx4j_version}" byline="true"/>  
+      <replaceregexp file="plugin.xml" match="@commons_logging_version@" replace="${commons_logging_version}" byline="true"/>   
+      <replaceregexp file="plugin.xml" match="@cglib_version@" replace="${cglib_version}" byline="true"/>      
+    </goal>
     
     <goal name="copyjars">        
         <j:forEach var="artifact" items="${pom.artifacts}">  
