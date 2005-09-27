@@ -249,8 +249,9 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
     public void publishModule(int kind, int deltaKind, IModule[] module,
             IProgressMonitor monitor) throws CoreException {
-        
-        Trace.trace(Trace.INFO, "calling publishModule()" + module + " " +  module.length);
+
+        Trace.trace(Trace.INFO, "calling publishModule()" + module + " "
+                + module.length);
 
         _monitor = monitor;
 
@@ -321,7 +322,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
                 Trace.trace(Trace.INFO, "\t" + status.getMessage());
                 _monitor.subTask(status.getMessage());
             }
-            
+
             if (cmd == null || cmd == status.getCommand()) {
                 if (status.isCompleted() || status.isFailed()) {
                     waitThread.interrupt();
@@ -365,21 +366,23 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
     private void invokeCommand(int deltaKind, IModule module)
             throws CoreException {
-        
+
         Trace.trace(Trace.INFO, "calling invokeComand()" + module);
 
         try {
-
             switch (deltaKind) {
             case ADDED: {
+                Trace.trace(Trace.INFO, "calling doDeploy()");
                 doDeploy(module);
                 break;
             }
             case CHANGED: {
-                doReploy(module);
+                Trace.trace(Trace.INFO, "calling doRedeploy()");
+                doRedeploy(module);
                 break;
             }
             case REMOVED: {
+                Trace.trace(Trace.INFO, "calling doUndeploy()");
                 doUndeploy(module);
                 break;
             }
@@ -390,8 +393,6 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
             e.printStackTrace();
             throw new CoreException(new Status(IStatus.ERROR,
                     GeronimoPlugin.PLUGIN_ID, 0, e.getMessage(), e));
-        } finally {
-
         }
     }
 
@@ -433,7 +434,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
         }
     }
 
-    private void doReploy(IModule module) throws CoreException,
+    private void doRedeploy(IModule module) throws CoreException,
             DeploymentManagerCreationException {
 
         IJ2EEModule j2eeModule = (IJ2EEModule) module.loadAdapter(

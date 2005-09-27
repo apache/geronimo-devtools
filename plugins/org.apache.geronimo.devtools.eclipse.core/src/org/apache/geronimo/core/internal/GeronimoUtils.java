@@ -57,21 +57,24 @@ public class GeronimoUtils {
 
     public static String getConfigId(IModule module) {
 
-        String configId = null;
-
         if (isWebModule(module)) {
-            WebAppType deploymentPlan = getWebDeploymentPlan(module);
-
-            if (deploymentPlan != null)
-                configId = deploymentPlan.getConfigId();
-
-            if (configId == null)
-                configId = getId(module);
+            WebAppType plan = getWebDeploymentPlan(module);
+            if(plan.eIsSet(WebPackage.eINSTANCE.getWebAppType_ConfigId())) {
+                return plan.getConfigId();
+            }
         } else if (isEjbJarModule(module)) {
-            configId = getId(module);
-        }
+            OpenejbJarType plan = getOpenEjbDeploymentPlan(module);
+            if(plan.eIsSet(JarPackage.eINSTANCE.getOpenejbJarType_ConfigId())) {
+                return plan.getConfigId();
+            }
+        } else if(isEarModule(module)) {
+            ApplicationType plan = getApplicationDeploymentPlan(module);
+            if(plan.eIsSet(ApplicationPackage.eINSTANCE.getApplicationType_ConfigId())) {
+                return plan.getConfigId();
+            }
+        } 
 
-        return configId;
+        return getId(module);
     }
 
     public static boolean isWebModule(IModule module) {
@@ -82,12 +85,25 @@ public class GeronimoUtils {
         return "j2ee.ejb".equals(module.getModuleType().getId());
     }
 
+    public static boolean isEarModule(IModule module) {
+        return "j2ee.ear".equals(module.getModuleType().getId());
+    }
+
+    public static boolean isRARModule(IModule module) {
+        return "j2ee.rar".equals(module.getModuleType().getId());
+    }
+
     public static ModuleType getJSR88ModuleType(IModule module) {
         if (isWebModule(module)) {
             return ModuleType.WAR;
         } else if (isEjbJarModule(module)) {
             return ModuleType.EJB;
+        } else if (isEarModule(module)) {
+            return ModuleType.EAR;
+        } else if (isRARModule(module)) {
+            return ModuleType.RAR;
         }
+        Trace.trace(Trace.SEVERE, "getJSR88ModuleType = null");
         return null;
     }
 
@@ -232,6 +248,14 @@ public class GeronimoUtils {
 
     public static WebAppType getWebDeploymentPlan(IModule module) {
         return getWebDeploymentPlan(getVirtualComponent(module));
+    }
+    
+    public static ApplicationType getApplicationDeploymentPlan(IModule module) {
+        return getApplicationDeploymentPlan(getVirtualComponent(module));
+    }
+    
+    public static OpenejbJarType getOpenEjbDeploymentPlan(IModule module) {
+        return getOpenEjbDeploymentPlan(getVirtualComponent(module));
     }
 
     private static IVirtualComponent getVirtualComponent(IModule module) {
