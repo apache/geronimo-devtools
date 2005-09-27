@@ -60,6 +60,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.server.core.IJ2EEModule;
 import org.eclipse.jst.server.generic.core.internal.GenericServerBehaviour;
@@ -247,41 +248,26 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#publishModule(int, int, org.eclipse.wst.server.core.IModule[], org.eclipse.core.runtime.IProgressMonitor)
+     */
     public void publishModule(int kind, int deltaKind, IModule[] module,
             IProgressMonitor monitor) throws CoreException {
 
-        Trace.trace(Trace.INFO, "calling publishModule()" + module + " "
-                + module.length);
+        Trace.trace(Trace.INFO, "publishModule()" + module + " "
+                + module.length + " deltaKind=" + deltaKind);
 
         _monitor = monitor;
 
-        // Can only publish when the server is running
-        int state = getServer().getServerState();
-        if (state == IServer.STATE_STOPPED || state == IServer.STATE_STOPPING) {
-            throw new CoreException(Status.CANCEL_STATUS);
-        }
-
-        if (state == IServer.STATE_STARTING) {
-            int timeout = 25;
-            while (getServer().getServerState() == IServer.STATE_STARTING) {
-                if (--timeout == 0)
-                    throw new CoreException(Status.CANCEL_STATUS);
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        if (deltaKind == NO_CHANGE) // Temporary workaround for WTP server tools
-            // bug
-            deltaKind = CHANGED;
-
-        if (!(deltaKind == ADDED || deltaKind == REMOVED || deltaKind == CHANGED))
+        if (deltaKind == NO_CHANGE) {
+            Trace.trace(Trace.INFO,
+                    "deltaKind = NO_CHANGE, returning out of publishModule()");
             return;
-
-        invokeCommand(deltaKind, module[module.length - 1]);
+        } 
+        
+        if(module.length == 1) {
+            invokeCommand(deltaKind, module[0]);
+        }
     }
 
     class WaitForNotificationThread extends Thread {
