@@ -28,15 +28,15 @@
             <j:set var="dependency" value="${artifact.dependency}"/>           
             
             <j:if test="${dependency.getProperty('feature') == 'true'}">  
-                <ant:unjar src="${artifact.path}" dest="${feature.assembly.distributions.dir}/features/${dependency.artifactId}_${dependency.version}"/>
+                <ant:unjar src="${artifact.path}" dest="${feature.assembly.distributions.dir}/features/${dependency.artifactId}_${distributionjarversion}"/>
             </j:if> 
             
             <j:if test="${dependency.getProperty('jar') == 'true'}">  
-                <ant:copy file="${artifact.path}" tofile="${feature.assembly.distributions.dir}/plugins/${dependency.artifactId}_${dependency.version}.jar"/>
+                <ant:copy file="${artifact.path}" tofile="${feature.assembly.distributions.dir}/plugins/${dependency.artifactId}_${distributionjarversion}.jar"/>
             </j:if> 
             
             <j:if test="${dependency.getProperty('jar') == 'false'}">  
-                <ant:unjar src="${artifact.path}" dest="${feature.assembly.distributions.dir}/plugins/${dependency.artifactId}_${dependency.version}"/>
+                <ant:unjar src="${artifact.path}" dest="${feature.assembly.distributions.dir}/plugins/${dependency.artifactId}_${distributionjarversion}"/>
             </j:if>                        
         </j:forEach>                 
     </goal>  
