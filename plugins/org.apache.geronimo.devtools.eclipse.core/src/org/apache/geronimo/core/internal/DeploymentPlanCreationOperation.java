@@ -36,7 +36,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMIResource;
-import org.eclipse.jst.j2ee.datamodel.properties.IJavaComponentCreationDataModelProperties;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IComponentCreationDataModelProperties;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -44,6 +43,8 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.properties.IFlexibleProjectCreationDataModelProperties;
+import org.eclipse.wst.server.core.IRuntime;
+import org.eclipse.wst.server.core.ServerCore;
 import org.openejb.xml.ns.openejb.jar.JarFactory;
 import org.openejb.xml.ns.openejb.jar.OpenejbJarType;
 
@@ -57,7 +58,7 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
     }
 
     public IStatus execute(IProgressMonitor monitor, IAdaptable info)
-            throws ExecutionException {
+            throws ExecutionException {   
 
         if (isGeronimoRuntimeTarget()) {
 
@@ -154,12 +155,9 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
     }
 
     public boolean isGeronimoRuntimeTarget() {
-
-        String runtimeTarget = model.getProperty(
-                IJavaComponentCreationDataModelProperties.RUNTIME_TARGET_ID)
-                .toString();
-
-        return runtimeTarget.startsWith("Apache Geronimo");
+        
+        IRuntime runtime = ServerCore.getProjectProperties(getProject()).getRuntimeTarget();
+        return runtime.getName().startsWith("Apache Geronimo");
 
     }
 
