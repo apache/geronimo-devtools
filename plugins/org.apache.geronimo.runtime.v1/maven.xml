@@ -23,6 +23,8 @@
         
     <preGoal name="clean:clean">        
         <ant:delete dir="${basedir}/lib"/>    
+        <ant:delete file=".classpath"/>
+        <ant:delete file=".project"/>
     </preGoal>
     
     <postGoal name="eclipse:generate-classpath">
@@ -31,6 +33,7 @@
     
     <goal name="createpluginxml">
       <ant:copy file="plugin.xml.template" tofile="plugin.xml" overwrite="true"/>
+      <replaceregexp file="plugin.xml" match="@runtime.v1.plugin.version@" replace="${devtools_currentversion}" byline="true"/>
       <replaceregexp file="plugin.xml" match="@geronimo_runtime_version@" replace="${geronimo_runtime_version}" byline="true"/>
       <replaceregexp file="plugin.xml" match="@geronimo_spec_version@" replace="${geronimo_spec_version}" byline="true"/>
       <replaceregexp file="plugin.xml" match="@mx4j_version@" replace="${mx4j_version}" byline="true"/>  

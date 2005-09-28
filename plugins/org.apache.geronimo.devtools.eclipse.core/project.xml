@@ -71,7 +71,7 @@
     <dependency>
       <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.deployment.model</artifactId>
-      <version>1.0.0</version>
+      <version>${devtools_currentversion}</version>
     </dependency>
     <!--  eclipse dependencies -->
     <dependency>

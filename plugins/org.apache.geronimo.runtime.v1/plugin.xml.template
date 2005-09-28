@@ -3,7 +3,7 @@
 <plugin
    id="org.apache.geronimo.runtime.v1"
    name="Apache Geronimo Runtime V1 Plug-in"
-   version="1.0.0"
+   version="@runtime.v1.plugin.version@"
    provider-name="Apache Software Foundation">
    <runtime>     
       <library name="lib/geronimo-deploy-jsr88-@geronimo_runtime_version@.jar">
