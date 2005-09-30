@@ -1,6 +1,6 @@
 package org.apache.geronimo.ui.pages;
 
-import org.apache.geronimo.ui.editors.DPEditor;
+import org.apache.geronimo.ui.editors.WebEditor;
 import org.apache.geronimo.ui.sections.SecuritySection;
 import org.apache.geronimo.xml.ns.web.WebAppType;
 import org.eclipse.swt.layout.GridLayout;
@@ -47,7 +47,7 @@ public class SecurityPage extends FormPage {
 
     private void fillBody(IManagedForm managedForm) {
 
-        WebAppType plan = (WebAppType) ((DPEditor) getEditor()).getDeploymentPlan();
+        WebAppType plan = (WebAppType) ((WebEditor) getEditor()).getDeploymentPlan();
 
         Composite body = managedForm.getForm().getBody();
 

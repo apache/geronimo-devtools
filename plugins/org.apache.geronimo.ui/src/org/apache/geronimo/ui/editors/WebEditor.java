@@ -24,7 +24,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ui.PartInitException;
 
-public class DPEditor extends AbstractGeronimoDeploymentPlanEditor {
+public class WebEditor extends AbstractGeronimoDeploymentPlanEditor {
 
     /*
      * (non-Javadoc)

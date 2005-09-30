@@ -26,12 +26,12 @@
 
   <extension point="org.eclipse.ui.editors">
       <editor
-            class="org.apache.geronimo.ui.editors.DPEditor"
+            class="org.apache.geronimo.ui.editors.WebEditor"
             default="true"
             filenames="geronimo-web.xml"
             icon="icons/obj16/geronimo.gif"
-            id="org.apache.geronimo.ui.editors.DPEditor"
-            name="%editorName">
+            id="org.apache.geronimo.ui.editors.WebEditor"
+            name="%webEditorName">
       </editor>
   </extension>
   

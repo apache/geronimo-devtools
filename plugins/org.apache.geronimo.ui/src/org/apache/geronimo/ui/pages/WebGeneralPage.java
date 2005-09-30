@@ -15,7 +15,7 @@
  */
 package org.apache.geronimo.ui.pages;
 
-import org.apache.geronimo.ui.editors.DPEditor;
+import org.apache.geronimo.ui.editors.WebEditor;
 import org.apache.geronimo.ui.sections.WebGeneralSection;
 import org.apache.geronimo.xml.ns.web.WebAppType;
 import org.eclipse.swt.layout.GridLayout;
@@ -43,7 +43,7 @@ public class WebGeneralPage extends FormPage {
      */
     protected void createFormContent(IManagedForm managedForm) {
 
-        WebAppType plan = (WebAppType) ((DPEditor) getEditor()).getDeploymentPlan();
+        WebAppType plan = (WebAppType) ((WebEditor) getEditor()).getDeploymentPlan();
 
         ScrolledForm form = managedForm.getForm();
         form.setText(getTitle());

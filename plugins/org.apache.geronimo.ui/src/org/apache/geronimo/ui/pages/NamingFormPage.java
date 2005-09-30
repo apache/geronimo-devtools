@@ -15,7 +15,7 @@
  */
 package org.apache.geronimo.ui.pages;
 
-import org.apache.geronimo.ui.editors.DPEditor;
+import org.apache.geronimo.ui.editors.WebEditor;
 import org.apache.geronimo.ui.sections.EjbLocalRefSection;
 import org.apache.geronimo.ui.sections.EjbRefSection;
 import org.apache.geronimo.ui.sections.ResourceEnvRefSection;
@@ -63,7 +63,7 @@ public class NamingFormPage extends FormPage {
 
     private void fillBody(IManagedForm managedForm) {
 
-        WebAppType plan = (WebAppType) ((DPEditor) getEditor()).getDeploymentPlan();
+        WebAppType plan = (WebAppType) ((WebEditor) getEditor()).getDeploymentPlan();
 
         Composite body = managedForm.getForm().getBody();
 
