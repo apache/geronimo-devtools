@@ -33,6 +33,14 @@
             id="org.apache.geronimo.ui.editors.WebEditor"
             name="%webEditorName">
       </editor>
+      <editor
+            class="org.apache.geronimo.ui.editors.ApplicationPlanEditor"
+            default="true"
+            filenames="geronimo-application.xml"
+            icon="icons/obj16/geronimo.gif"
+            id="org.apache.geronimo.ui.editors.ApplicationPlanEditor"
+            name="%appEditorName">
+      </editor>
   </extension>
   
   <extension point = "org.eclipse.ui.popupMenus">
