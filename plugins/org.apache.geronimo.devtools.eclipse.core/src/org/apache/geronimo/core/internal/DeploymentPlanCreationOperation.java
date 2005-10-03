@@ -20,6 +20,8 @@ import java.util.Collections;
 
 import org.apache.geronimo.xml.ns.j2ee.application.ApplicationFactory;
 import org.apache.geronimo.xml.ns.j2ee.application.ApplicationType;
+import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorFactory;
+import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorType;
 import org.apache.geronimo.xml.ns.web.DocumentRoot;
 import org.apache.geronimo.xml.ns.web.WebAppType;
 import org.apache.geronimo.xml.ns.web.WebFactory;
@@ -77,11 +79,14 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
                     IModuleConstants.JST_EAR_MODULE)) {
                 createGeronimoApplicationDeploymentPlan(GeronimoUtils
                         .getApplicationDeploymentPlanFile(comp));
+            } else if (comp.getComponentTypeId().equals(
+                    IModuleConstants.JST_CONNECTOR_MODULE)) {
+                createConnectorDeploymentPlan(GeronimoUtils
+                        .getConnectorDeploymentPlanFile(comp));
             }
         }
-
+        
         return Status.OK_STATUS;
-
     }
 
     public ApplicationType createGeronimoApplicationDeploymentPlan(IFile dpFile) {
@@ -147,6 +152,28 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
         root.setConfigId(getProject().getName() + "/" + getComponentName());
 
         documentRoot.setOpenejbJar(root);
+        resource.getContents().add(documentRoot);
+
+        doSave(resource);
+
+        return root;
+    }
+    
+    public ConnectorType createConnectorDeploymentPlan(IFile dpFile) {
+        URI uri = URI
+                .createPlatformResourceURI(dpFile.getFullPath().toString());
+
+        ResourceSet resourceSet = new ResourceSetImpl();
+        GeronimoUtils.registerEjbFactoryAndPackage(resourceSet);
+
+        Resource resource = resourceSet.createResource(uri);
+        org.apache.geronimo.xml.ns.j2ee.connector.DocumentRoot documentRoot = ConnectorFactory.eINSTANCE
+                .createDocumentRoot();
+        ConnectorType root = ConnectorFactory.eINSTANCE.createConnectorType();
+
+        root.setConfigId(getProject().getName() + "/" + getComponentName());
+
+        documentRoot.setConnector(root);
         resource.getContents().add(documentRoot);
 
         doSave(resource);
