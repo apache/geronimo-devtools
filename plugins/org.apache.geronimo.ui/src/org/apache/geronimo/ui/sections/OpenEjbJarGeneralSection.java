@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.Section;
 import org.openejb.xml.ns.openejb.jar.JarPackage;
 import org.openejb.xml.ns.openejb.jar.OpenejbJarType;
 
@@ -30,6 +31,11 @@ public class OpenEjbJarGeneralSection extends CommonGeneralSection {
             int style, EObject plan) {
         super(parent, toolkit, style, plan);
         this.plan = (OpenejbJarType) plan;
+        createClient(getSection(), toolkit);
+    }
+    
+    private void createClient(Section section, FormToolkit toolkit) {
+        createConfigAndParentComposite(section, toolkit);
     }
 
     /*

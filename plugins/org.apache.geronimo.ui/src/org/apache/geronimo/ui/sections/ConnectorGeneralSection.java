@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.Section;
 
 public class ConnectorGeneralSection extends CommonGeneralSection {
 
@@ -30,6 +31,11 @@ public class ConnectorGeneralSection extends CommonGeneralSection {
             int style, EObject plan) {
         super(parent, toolkit, style, plan);
         this.plan = (ConnectorType) plan;
+        createClient(getSection(), toolkit);
+    }
+
+    private void createClient(Section section, FormToolkit toolkit) {
+        createConfigAndParentComposite(section, toolkit);
     }
 
     /*
