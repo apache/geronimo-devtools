@@ -64,15 +64,15 @@
 	    <operationExtension
 			id="org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EjbComponentCreationOperation"
 			postOperationClass="org.apache.geronimo.core.internal.DeploymentPlanCreationOperation">
-		</operationExtension>	
-		<operationExtension
-			id="org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EJBClientComponentCreationOperation"
-			postOperationClass="org.apache.geronimo.core.internal.DeploymentPlanCreationOperation">
-		</operationExtension>	
+		</operationExtension>		
 		<operationExtension
 			id="org.eclipse.jst.j2ee.application.internal.operations.EARComponentCreationOperation"
 			postOperationClass="org.apache.geronimo.core.internal.DeploymentPlanCreationOperation">
 		</operationExtension>	
+	    <operationExtension
+			id="org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentCreationOperation"
+			postOperationClass="org.apache.geronimo.core.internal.DeploymentPlanCreationOperation">
+		</operationExtension>
    </extension>
    
 </plugin>
