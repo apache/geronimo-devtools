@@ -23,6 +23,9 @@ import javax.enterprise.deploy.shared.ModuleType;
 import org.apache.geronimo.xml.ns.j2ee.application.ApplicationPackage;
 import org.apache.geronimo.xml.ns.j2ee.application.ApplicationType;
 import org.apache.geronimo.xml.ns.j2ee.application.util.ApplicationResourceFactoryImpl;
+import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorPackage;
+import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorType;
+import org.apache.geronimo.xml.ns.j2ee.connector.util.ConnectorResourceFactoryImpl;
 import org.apache.geronimo.xml.ns.web.DocumentRoot;
 import org.apache.geronimo.xml.ns.web.WebAppType;
 import org.apache.geronimo.xml.ns.web.WebPackage;
@@ -55,24 +58,33 @@ public class GeronimoUtils {
 
     public static final String APP_PLAN_NAME = "geronimo-application.xml";
 
+    public static final String CONNECTOR_PLAN_NAME = "geronimo-connector.xml";
+
     public static String getConfigId(IModule module) {
 
         if (isWebModule(module)) {
             WebAppType plan = getWebDeploymentPlan(module);
-            if(plan.eIsSet(WebPackage.eINSTANCE.getWebAppType_ConfigId())) {
+            if (plan.eIsSet(WebPackage.eINSTANCE.getWebAppType_ConfigId())) {
                 return plan.getConfigId();
             }
         } else if (isEjbJarModule(module)) {
             OpenejbJarType plan = getOpenEjbDeploymentPlan(module);
-            if(plan.eIsSet(JarPackage.eINSTANCE.getOpenejbJarType_ConfigId())) {
+            if (plan.eIsSet(JarPackage.eINSTANCE.getOpenejbJarType_ConfigId())) {
                 return plan.getConfigId();
             }
-        } else if(isEarModule(module)) {
+        } else if (isEarModule(module)) {
             ApplicationType plan = getApplicationDeploymentPlan(module);
-            if(plan.eIsSet(ApplicationPackage.eINSTANCE.getApplicationType_ConfigId())) {
+            if (plan.eIsSet(ApplicationPackage.eINSTANCE
+                    .getApplicationType_ConfigId())) {
                 return plan.getConfigId();
             }
-        } 
+        } else if (isRARModule(module)) {
+            ConnectorType plan = getConnectorDeploymentPlan(module);
+            if (plan.eIsSet(ConnectorPackage.eINSTANCE
+                    .getConnectorType_ConfigId())) {
+                return plan.getConfigId();
+            }
+        }
 
         return getId(module);
     }
@@ -181,6 +193,12 @@ public class GeronimoUtils {
         return getOpenEjbDeploymentPlan(dpPlan);
     }
 
+    public static ConnectorType getConnectorDeploymentPlan(
+            IVirtualComponent comp) {
+        IFile dpPlan = getConnectorDeploymentPlanFile(comp);
+        return getConnectorDeploymentPlan(dpPlan);
+    }
+
     public static ApplicationType getApplicationDeploymentPlan(IFile file) {
         if (file.getName().equals(APP_PLAN_NAME) && file.exists()) {
             ResourceSet resourceSet = new ResourceSetImpl();
@@ -190,7 +208,6 @@ public class GeronimoUtils {
                 return ((org.apache.geronimo.xml.ns.j2ee.application.DocumentRoot) resource
                         .getContents().get(0)).getApplication();
             }
-
         }
         return null;
     }
@@ -204,7 +221,6 @@ public class GeronimoUtils {
                 return ((DocumentRoot) resource.getContents().get(0))
                         .getWebApp();
             }
-
         }
         return null;
     }
@@ -222,12 +238,24 @@ public class GeronimoUtils {
         return null;
     }
 
+    public static ConnectorType getConnectorDeploymentPlan(IFile file) {
+        if (file.getName().equals(CONNECTOR_PLAN_NAME) && file.exists()) {
+            ResourceSet resourceSet = new ResourceSetImpl();
+            registerConnectorFactoryAndPackage(resourceSet);
+            Resource resource = load(file, resourceSet);
+            if (resource != null) {
+                return ((org.apache.geronimo.xml.ns.j2ee.connector.DocumentRoot) resource
+                        .getContents().get(0)).getConnector();
+            }
+        }
+        return null;
+    }
+
     public static IFile getWebDeploymentPlanFile(IVirtualComponent comp) {
         IPath deployPlanPath = comp.getRootFolder().getUnderlyingFolder()
                 .getProjectRelativePath().append("WEB-INF").append(
                         WEB_PLAN_NAME);
         return comp.getProject().getFile(deployPlanPath);
-
     }
 
     public static IFile getOpenEjbDeploymentPlanFile(IVirtualComponent comp) {
@@ -235,7 +263,6 @@ public class GeronimoUtils {
                 .getProjectRelativePath().append("META-INF").append(
                         OPENEJB_PLAN_NAME);
         return comp.getProject().getFile(deployPlanPath);
-
     }
 
     public static IFile getApplicationDeploymentPlanFile(IVirtualComponent comp) {
@@ -243,19 +270,29 @@ public class GeronimoUtils {
                 .getProjectRelativePath().append("META-INF").append(
                         APP_PLAN_NAME);
         return comp.getProject().getFile(deployPlanPath);
+    }
 
+    public static IFile getConnectorDeploymentPlanFile(IVirtualComponent comp) {
+        IPath deployPlanPath = comp.getRootFolder().getUnderlyingFolder()
+                .getProjectRelativePath().append("META-INF").append(
+                        CONNECTOR_PLAN_NAME);
+        return comp.getProject().getFile(deployPlanPath);
     }
 
     public static WebAppType getWebDeploymentPlan(IModule module) {
         return getWebDeploymentPlan(getVirtualComponent(module));
     }
-    
+
     public static ApplicationType getApplicationDeploymentPlan(IModule module) {
         return getApplicationDeploymentPlan(getVirtualComponent(module));
     }
-    
+
     public static OpenejbJarType getOpenEjbDeploymentPlan(IModule module) {
         return getOpenEjbDeploymentPlan(getVirtualComponent(module));
+    }
+
+    public static ConnectorType getConnectorDeploymentPlan(IModule module) {
+        return getConnectorDeploymentPlan(getVirtualComponent(module));
     }
 
     private static IVirtualComponent getVirtualComponent(IModule module) {
@@ -297,10 +334,8 @@ public class GeronimoUtils {
         resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
                 .put(Resource.Factory.Registry.DEFAULT_EXTENSION,
                         new WebResourceFactoryImpl());
-
         resourceSet.getPackageRegistry().put(WebPackage.eNS_URI,
                 WebPackage.eINSTANCE);
-
     }
 
     /**
@@ -315,7 +350,6 @@ public class GeronimoUtils {
                         new JarResourceFactoryImpl());
         resourceSet.getPackageRegistry().put(JarPackage.eNS_URI,
                 JarPackage.eINSTANCE);
-
     }
 
     /**
@@ -328,10 +362,22 @@ public class GeronimoUtils {
         resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
                 .put(Resource.Factory.Registry.DEFAULT_EXTENSION,
                         new ApplicationResourceFactoryImpl());
-
         resourceSet.getPackageRegistry().put(ApplicationPackage.eNS_URI,
                 ApplicationPackage.eINSTANCE);
-
+    }
+    
+    /**
+     * Register the appropriate resource factory to handle all file extentions.
+     * Register the package to ensure it is available during loading.
+     * 
+     * @param resourceSet
+     */
+    public static void registerConnectorFactoryAndPackage(ResourceSet resourceSet) {
+        resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
+                .put(Resource.Factory.Registry.DEFAULT_EXTENSION,
+                        new ConnectorResourceFactoryImpl());
+        resourceSet.getPackageRegistry().put(ConnectorPackage.eNS_URI,
+                ConnectorPackage.eINSTANCE);
     }
 
 }
