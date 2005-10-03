@@ -63,11 +63,11 @@ public class AppGeneralPage extends FormPage {
         form.setText(getTitle());
         form.getBody().setLayout(new GridLayout());
 
-        AppGeneralSection sec = new AppGeneralSection(plan, form.getBody(),
+        AppGeneralSection sec = new AppGeneralSection(form.getBody(),
                 managedForm.getToolkit(), ExpandableComposite.TWISTIE
                         | ExpandableComposite.EXPANDED
                         | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
-                        | ExpandableComposite.FOCUS_TITLE);
+                        | ExpandableComposite.FOCUS_TITLE, plan);
         managedForm.addPart(sec);
 
         form.reflow(true);

@@ -43,18 +43,19 @@ public class WebGeneralPage extends FormPage {
      */
     protected void createFormContent(IManagedForm managedForm) {
 
-        WebAppType plan = (WebAppType) ((WebEditor) getEditor()).getDeploymentPlan();
+        WebAppType plan = (WebAppType) ((WebEditor) getEditor())
+                .getDeploymentPlan();
 
         ScrolledForm form = managedForm.getForm();
         form.setText(getTitle());
         form.getBody().setLayout(new GridLayout());
 
         // create web plan general section
-        WebGeneralSection sec = new WebGeneralSection(plan, form.getBody(),
+        WebGeneralSection sec = new WebGeneralSection(form.getBody(),
                 managedForm.getToolkit(), ExpandableComposite.TWISTIE
                         | ExpandableComposite.EXPANDED
                         | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
-                        | ExpandableComposite.FOCUS_TITLE);
+                        | ExpandableComposite.FOCUS_TITLE, plan);
         managedForm.addPart(sec);
 
         form.reflow(true);

@@ -17,30 +17,26 @@ package org.apache.geronimo.ui.sections;
 
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.xml.ns.web.WebAppType;
+import org.apache.geronimo.xml.ns.web.WebPackage;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.forms.FormColors;
-import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
-public class WebGeneralSection extends SectionPart {
-
-    protected Text configId;
-
-    protected Text parentId;
+public class WebGeneralSection extends CommonGeneralSection {
 
     protected Text contextRoot;
-    
+
     protected Text securityRealm;
 
     protected Button cpClassLoaderWebAppFirst;
@@ -49,64 +45,17 @@ public class WebGeneralSection extends SectionPart {
 
     WebAppType plan;
 
-    public WebGeneralSection(Section section) {
-        super(section);
-    }
-
-    public WebGeneralSection(Composite parent, FormToolkit toolkit, int style) {
-        super(parent, toolkit, style);
-    }
-
-    public WebGeneralSection(WebAppType plan, Composite parent,
-            FormToolkit toolkit, int style) {
-        this(parent, toolkit, style);
-        this.plan = plan;
+    public WebGeneralSection(Composite parent, FormToolkit toolkit, int style,
+            EObject plan) {
+        super(parent, toolkit, style, plan);
+        this.plan = (WebAppType) plan;
         createClient(getSection(), toolkit);
     }
 
     private void createClient(Section section, FormToolkit toolkit) {
 
-        section.setText(Messages.editorSectionGeneralTitle);
-        section.setDescription(Messages.editorSectionGeneralDescription);
-        section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
-
-        Composite composite = toolkit.createComposite(section);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        layout.marginHeight = 5;
-        layout.marginWidth = 10;
-        layout.verticalSpacing = 5;
-        layout.horizontalSpacing = 15;
-        composite.setLayout(layout);
-        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        section.setClient(composite);
-
-        // ------- Label and text field for the config Id -------
-        createLabel(composite, Messages.editorConfigId, toolkit);
-
-        configId = toolkit
-                .createText(composite, plan.getConfigId(), SWT.BORDER);
-        configId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        configId.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent e) {
-                plan.setConfigId(configId.getText());
-                markDirty();
-            }
-        });
-
-        // ------- Label and text field for the parent Id -------
-        createLabel(composite, Messages.editorParentId, toolkit);
-
-        parentId = toolkit
-                .createText(composite, plan.getParentId(), SWT.BORDER);
-        parentId
-                .setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
-        parentId.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent e) {
-                plan.setParentId(parentId.getText());
-                markDirty();
-            }
-        });
+        createConfigAndParentComposite(section, toolkit);
+        Composite composite = (Composite) section.getClient();
 
         // ------- Label and text field for the context root -------
         createLabel(composite, Messages.editorContextRoot, toolkit);
@@ -121,13 +70,12 @@ public class WebGeneralSection extends SectionPart {
                 markDirty();
             }
         });
-        
-        
+
         // ------- Label and text field for the security realm -------
         createLabel(composite, Messages.securityRealmName, toolkit);
 
-        securityRealm = toolkit.createText(composite, plan.getSecurityRealmName(),
-                SWT.BORDER);
+        securityRealm = toolkit.createText(composite, plan
+                .getSecurityRealmName(), SWT.BORDER);
         securityRealm.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
                 false));
         securityRealm.addModifyListener(new ModifyListener() {
@@ -166,7 +114,6 @@ public class WebGeneralSection extends SectionPart {
                 plan.setContextPriorityClassloader(cpClassLoaderWebAppFirst
                         .getSelection());
                 markDirty();
-
             }
 
             public void widgetDefaultSelected(SelectionEvent e) {
@@ -176,28 +123,17 @@ public class WebGeneralSection extends SectionPart {
 
     }
 
-    protected Label createLabel(Composite parent, String text,
-            FormToolkit toolkit) {
-        Label label = toolkit.createLabel(parent, text);
-        label.setForeground(toolkit.getColors().getColor(FormColors.TITLE));
-        label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-        return label;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.forms.IFormPart#commit(boolean)
-     * 
-     * Overriding this method as a workaround as switching tabs on a dirty
-     * editor commits the page and marks the part as not dirty.
+    /* (non-Javadoc)
+     * @see org.apache.geronimo.ui.sections.CommonGeneralSection#getConfigIdEAttribute()
      */
-    public void commit(boolean onSave) {
-        boolean currentDirtyState = isDirty();
-        super.commit(onSave);
-        if (!onSave && currentDirtyState) {
-            markDirty();
-        }
+    protected EAttribute getConfigIdEAttribute() {
+        return WebPackage.eINSTANCE.getWebAppType_ConfigId();
     }
 
+    /* (non-Javadoc)
+     * @see org.apache.geronimo.ui.sections.CommonGeneralSection#getParentIdEAttribute()
+     */
+    protected EAttribute getParentIdEAttribute() {
+        return WebPackage.eINSTANCE.getWebAppType_ParentId();
+    }
 }

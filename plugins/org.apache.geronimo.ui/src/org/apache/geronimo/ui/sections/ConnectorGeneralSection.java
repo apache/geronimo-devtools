@@ -15,27 +15,21 @@
  */
 package org.apache.geronimo.ui.sections;
 
-import org.apache.geronimo.xml.ns.j2ee.application.ApplicationPackage;
-import org.apache.geronimo.xml.ns.j2ee.application.ApplicationType;
+import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorPackage;
+import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorType;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.Section;
 
-public class AppGeneralSection extends CommonGeneralSection {
+public class ConnectorGeneralSection extends CommonGeneralSection {
 
-    ApplicationType plan;
+    ConnectorType plan;
 
-    public AppGeneralSection(Composite parent, FormToolkit toolkit, int style,
-            EObject plan) {
+    public ConnectorGeneralSection(Composite parent, FormToolkit toolkit,
+            int style, EObject plan) {
         super(parent, toolkit, style, plan);
-        this.plan = (ApplicationType) plan;
-        createClient(getSection(), toolkit);
-    }
-
-    private void createClient(Section section, FormToolkit toolkit) {
-        createConfigAndParentComposite(section, toolkit);
+        this.plan = (ConnectorType) plan;
     }
 
     /*
@@ -44,7 +38,7 @@ public class AppGeneralSection extends CommonGeneralSection {
      * @see org.apache.geronimo.ui.sections.CommonGeneralSection#getConfigIdEAttribute()
      */
     protected EAttribute getConfigIdEAttribute() {
-        return ApplicationPackage.eINSTANCE.getApplicationType_ConfigId();
+        return ConnectorPackage.eINSTANCE.getConnectorType_ConfigId();
     }
 
     /*
@@ -53,7 +47,7 @@ public class AppGeneralSection extends CommonGeneralSection {
      * @see org.apache.geronimo.ui.sections.CommonGeneralSection#getParentIdEAttribute()
      */
     protected EAttribute getParentIdEAttribute() {
-        return ApplicationPackage.eINSTANCE.getApplicationType_ParentId();
+        return ConnectorPackage.eINSTANCE.getConnectorType_ParentId();
     }
 
 }
