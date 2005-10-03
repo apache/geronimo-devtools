@@ -15,13 +15,17 @@
  */
 package org.apache.geronimo.ui.pages;
 
+import org.apache.geronimo.ui.editors.OpenEjbPlanEditor;
+import org.apache.geronimo.ui.sections.OpenEjbJarGeneralSection;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
+import org.eclipse.ui.forms.widgets.Section;
+import org.openejb.xml.ns.openejb.jar.OpenejbJarType;
 
-/**
- * 
- *
- */
 public class EjbOverviewPage extends FormPage {
 
     /**
@@ -31,7 +35,6 @@ public class EjbOverviewPage extends FormPage {
      */
     public EjbOverviewPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
-        // TODO Auto-generated constructor stub
     }
 
     /**
@@ -40,7 +43,30 @@ public class EjbOverviewPage extends FormPage {
      */
     public EjbOverviewPage(String id, String title) {
         super(id, title);
-        // TODO Auto-generated constructor stub
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
+     */
+    protected void createFormContent(IManagedForm managedForm) {
+
+        OpenejbJarType plan = (OpenejbJarType) ((OpenEjbPlanEditor) getEditor())
+                .getDeploymentPlan();
+
+        ScrolledForm form = managedForm.getForm();
+        form.setText(getTitle());
+        form.getBody().setLayout(new GridLayout());
+
+        OpenEjbJarGeneralSection sec = new OpenEjbJarGeneralSection(form
+                .getBody(), managedForm.getToolkit(),
+                ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
+                        | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
+                        | ExpandableComposite.FOCUS_TITLE, plan);
+        managedForm.addPart(sec);
+
+        form.reflow(true);
     }
 
 }

@@ -46,11 +46,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class DynamicTableSection extends SectionPart {
+public abstract class DynamicTableSection extends AbstractSectionPart {
 
     private EObject plan;
 
@@ -66,22 +65,6 @@ public abstract class DynamicTableSection extends SectionPart {
 
     public DynamicTableSection(Section section) {
         super(section);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.forms.IFormPart#commit(boolean)
-     * 
-     * Overriding this method as a workaround as switching tabs on a dirty
-     * editor commits the page and marks the part as not dirty.
-     */
-    public void commit(boolean onSave) {
-        boolean currentDirtyState = isDirty();
-        super.commit(onSave);
-        if (!onSave && currentDirtyState) {
-            markDirty();
-        }
     }
 
     public DynamicTableSection(EObject plan, Composite parent,
