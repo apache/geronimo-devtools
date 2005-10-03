@@ -41,6 +41,22 @@
             id="org.apache.geronimo.ui.editors.ApplicationPlanEditor"
             name="%appEditorName">
       </editor>
+      <editor
+            class="org.apache.geronimo.ui.editors.OpenEjbPlanEditor"
+            default="true"
+            filenames="openejb-jar.xml"
+            icon="icons/obj16/geronimo.gif"
+            id="org.apache.geronimo.ui.editors.OpenEjbPlanEditor"
+            name="%openEjbEditorName">
+      </editor>
+            <editor
+            class="org.apache.geronimo.ui.editors.ConnectorPlanEditor"
+            default="true"
+            filenames="geronimo-connector.xml"
+            icon="icons/obj16/geronimo.gif"
+            id="org.apache.geronimo.ui.editors.ConnectorPlanEditorr"
+            name="%connectorEditorName">
+      </editor>
   </extension>
   
   <extension point = "org.eclipse.ui.popupMenus">
