@@ -12,7 +12,7 @@
 
   <extension point="org.eclipse.emf.ecore.generated_package">
     <package 
-       uri = "http://geronimo.apache.org/xml/ns/naming" 
+       uri = "http://geronimo.apache.org/xml/ns/naming-1.0" 
        class = "org.apache.geronimo.xml.ns.naming.NamingPackage"
        genModel = "schema/geronimo-web.genmodel" /> 
   </extension>
@@ -25,7 +25,7 @@
 
   <extension point="org.eclipse.emf.ecore.generated_package">
     <package 
-       uri = "http://geronimo.apache.org/xml/ns/deployment" 
+       uri = "http://geronimo.apache.org/xml/ns/deployment-1.0" 
        class = "org.apache.geronimo.xml.ns.deployment.DeploymentPackage"
        genModel = "schema/geronimo-web.genmodel" /> 
   </extension>
@@ -38,7 +38,7 @@
 
   <extension point="org.eclipse.emf.ecore.generated_package">
     <package 
-       uri = "http://geronimo.apache.org/xml/ns/web" 
+       uri = "http://geronimo.apache.org/xml/ns/j2ee/web-1.0" 
        class = "org.apache.geronimo.xml.ns.web.WebPackage"
        genModel = "schema/geronimo-web.genmodel" /> 
   </extension>
@@ -51,7 +51,7 @@
 
   <extension point="org.eclipse.emf.ecore.generated_package">
     <package 
-       uri = "http://geronimo.apache.org/xml/ns/security" 
+       uri = "http://geronimo.apache.org/xml/ns/security-1.0" 
        class = "org.apache.geronimo.xml.ns.security.SecurityPackage"
        genModel = "schema/geronimo-web.genmodel" /> 
   </extension>
