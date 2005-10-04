@@ -16,7 +16,6 @@
 package org.apache.geronimo.ui.sections;
 
 import org.apache.geronimo.ui.internal.Messages;
-import org.apache.geronimo.ui.wizards.DynamicAddEditWizard;
 import org.apache.geronimo.ui.wizards.SecurityRoleWizard;
 import org.apache.geronimo.xml.ns.security.DescriptionType;
 import org.apache.geronimo.xml.ns.security.RoleType;
@@ -30,6 +29,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -111,7 +111,7 @@ public class SecuritySection extends DynamicTableSection {
     /**
      * @return
      */
-    public DynamicAddEditWizard getWizard() {
+    public Wizard getWizard() {
         return new SecurityRoleWizard(this);
     }
 

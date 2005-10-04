@@ -16,23 +16,44 @@
 package org.apache.geronimo.ui.sections;
 
 import org.apache.geronimo.ui.internal.Messages;
-import org.apache.geronimo.ui.wizards.EjbLocalRefWizard;
-import org.apache.geronimo.xml.ns.naming.NamingFactory;
-import org.apache.geronimo.xml.ns.naming.NamingPackage;
-import org.apache.geronimo.xml.ns.web.WebAppType;
-import org.apache.geronimo.xml.ns.web.WebFactory;
+import org.apache.geronimo.ui.wizards.DependencyWizard;
+import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
+import org.apache.geronimo.xml.ns.j2ee.application.ApplicationFactory;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.Section;
 
-public class EjbLocalRefSection extends DynamicTableSection {
+public class DependencySection extends DynamicTableSection {
 
-    public EjbLocalRefSection(WebAppType plan, Composite parent,
-            FormToolkit toolkit, int style) {
+    /**
+     * Must be a set to a ERef type of XPackage.eINSTANCE.getXType_Dependency();
+     */
+    public EReference dependenciesERef;
+
+    /**
+     * @param section
+     */
+    public DependencySection(Section section) {
+        super(section);
+    }
+
+    /**
+     * @param plan
+     * @param parent
+     * @param toolkit
+     * @param style
+     */
+    public DependencySection(EObject plan, EReference dependenciesERef,
+            Composite parent, FormToolkit toolkit, int style) {
         super(plan, parent, toolkit, style);
+        this.dependenciesERef = dependenciesERef;
     }
 
     /*
@@ -41,7 +62,7 @@ public class EjbLocalRefSection extends DynamicTableSection {
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTitle()
      */
     public String getTitle() {
-        return Messages.editorEjbLocalRefTitle;
+        return Messages.editorSectionDependenciesTitle;
     }
 
     /*
@@ -50,7 +71,7 @@ public class EjbLocalRefSection extends DynamicTableSection {
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getDescription()
      */
     public String getDescription() {
-        return Messages.editorEjbLocalRefDescription;
+        return Messages.editorSectionDependenciesDescription;
     }
 
     /*
@@ -59,7 +80,7 @@ public class EjbLocalRefSection extends DynamicTableSection {
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEFactory()
      */
     public EFactory getEFactory() {
-        return NamingFactory.eINSTANCE;
+        return DeploymentFactory.eINSTANCE;
     }
 
     /*
@@ -68,7 +89,7 @@ public class EjbLocalRefSection extends DynamicTableSection {
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEReference()
      */
     public EReference getEReference() {
-        return WebFactory.eINSTANCE.getWebPackage().getWebAppType_EjbLocalRef();
+        return ApplicationFactory.eINSTANCE.getApplicationPackage().getApplicationType_Dependency();
     }
 
     /*
@@ -77,9 +98,7 @@ public class EjbLocalRefSection extends DynamicTableSection {
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnNames()
      */
     public String[] getTableColumnNames() {
-        return new String[] { Messages.editorEjbRefTargetName,
-                Messages.editorEjbRefEjbLink };
-
+        return new String[] { Messages.name };
     }
 
     /*
@@ -88,9 +107,7 @@ public class EjbLocalRefSection extends DynamicTableSection {
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnEAttributes()
      */
     public EAttribute[] getTableColumnEAttributes() {
-        return new EAttribute[] {
-                NamingPackage.eINSTANCE.getEjbLocalRefType_TargetName(),
-                NamingPackage.eINSTANCE.getEjbLocalRefType_EjbLink() };
+        return new EAttribute[]{};
     }
 
     /*
@@ -99,7 +116,25 @@ public class EjbLocalRefSection extends DynamicTableSection {
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getWizard()
      */
     public Wizard getWizard() {
-        return new EjbLocalRefWizard(this);
+        return new DependencyWizard(this);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.ui.sections.DynamicTableSection#configureSection(org.eclipse.ui.forms.widgets.Section)
+     */
+    protected void configureSection(Section section) {
+        section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.ui.sections.DynamicTableSection#showTableColumNames()
+     */
+    public boolean isHeaderVisible() {
+        return false;
     }
 
 }

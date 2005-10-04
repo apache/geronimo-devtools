@@ -15,19 +15,15 @@
  */
 package org.apache.geronimo.ui.sections;
 
-import org.apache.geronimo.ui.wizards.DynamicAddEditWizard;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
-/**
- * 
- *
- */
 public class BeansSection extends DynamicTableSection {
 
     /**
@@ -101,7 +97,7 @@ public class BeansSection extends DynamicTableSection {
     /* (non-Javadoc)
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getWizard()
      */
-    public DynamicAddEditWizard getWizard() {
+    public Wizard getWizard() {
         // TODO Auto-generated method stub
         return null;
     }

@@ -33,6 +33,7 @@ import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -201,7 +202,7 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 
         add.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
-                DynamicAddEditWizard wizard = getWizard();
+                Wizard wizard = getWizard();
                 if (wizard != null) {
                     WizardDialog dialog = new WizardDialog(Display.getCurrent()
                             .getActiveShell(), wizard);
@@ -225,26 +226,24 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
             public void widgetSelected(SelectionEvent e) {
                 Object o = ((StructuredSelection) getTableViewer()
                         .getSelection()).getFirstElement();
-
                 if (o != null) {
-
-                    DynamicAddEditWizard wizard = getWizard();
+                    Wizard wizard = getWizard();
                     if (wizard != null) {
-                        wizard.setEObject((EObject) o);
-
+                        if (wizard instanceof DynamicAddEditWizard) {
+                            ((DynamicAddEditWizard) wizard)
+                                    .setEObject((EObject) o);
+                        }
                         WizardDialog dialog = new WizardDialog(Display
                                 .getCurrent().getActiveShell(), wizard);
-
                         dialog.open();
-
                         if (dialog.getReturnCode() == Dialog.OK) {
                             markDirty();
                         }
                     }
                 }
-
             }
         });
+        
         add.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
     }
 
@@ -314,6 +313,6 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
     /**
      * @return
      */
-    abstract public DynamicAddEditWizard getWizard();
+    abstract public Wizard getWizard();
 
 }

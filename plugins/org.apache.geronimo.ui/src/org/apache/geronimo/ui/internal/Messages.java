@@ -61,6 +61,12 @@ public class Messages extends NLS {
     public static String name;
 
     public static String description;
+    
+    //
+    
+    public static String editorSectionDependenciesTitle;
+
+    public static String editorSectionDependenciesDescription;
 
     //
 
@@ -147,6 +153,30 @@ public class Messages extends NLS {
     public static String wizardPageTitle_EjbLocalRef;
 
     public static String wizardPageDescription_EjbLocalRef;
+
+    //
+
+    public static String wizardNewTitle_Dependency;
+
+    public static String wizardEditTitle_Dependency;
+
+    public static String wizardPageTitle_Dependency;
+
+    public static String wizardPageDescription_Dependency;
+    
+    public static String dependencyGroupLabel;
+    
+    public static String serverRepos;
+    
+    public static String uri;
+    
+    public static String mavenArtifact;
+    
+    public static String groupId;
+    
+    public static String artifactId;
+    
+    public static String version;
 
     //
 

@@ -16,7 +16,6 @@
 package org.apache.geronimo.ui.sections;
 
 import org.apache.geronimo.ui.internal.Messages;
-import org.apache.geronimo.ui.wizards.DynamicAddEditWizard;
 import org.apache.geronimo.ui.wizards.ResourceEnvRefWizard;
 import org.apache.geronimo.xml.ns.naming.NamingFactory;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
@@ -25,6 +24,7 @@ import org.apache.geronimo.xml.ns.web.WebFactory;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
@@ -99,7 +99,7 @@ public class ResourceEnvRefSection extends DynamicTableSection {
      * 
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getWizard()
      */
-    public DynamicAddEditWizard getWizard() {
+    public Wizard getWizard() {
         return new ResourceEnvRefWizard(this);
     }
 
