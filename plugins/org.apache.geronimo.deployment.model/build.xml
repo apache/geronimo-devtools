@@ -37,30 +37,64 @@
 		<multipleXSDs2Java genModelName="geronimo-web">
 			<settings>
 				<model file="${target.directory}/schema/geronimo-web-1.0.xsd"/>
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/naming-1.0 org.apache.geronimo.xml.ns.naming"/>
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/security-1.0 org.apache.geronimo.xml.ns.security"/>
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/deployment-1.0 org.apache.geronimo.xml.ns.deployment"/>
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/j2ee/web-1.0 org.apache.geronimo.xml.ns.web"/>	
+							
+				<arg line="-packages http://geronimo.apache.org/xml/ns/naming-1.0"/>
+				<arg line="-packages http://geronimo.apache.org/xml/ns/security-1.0"/>
+				<arg line="-packages http://geronimo.apache.org/xml/ns/deployment-1.0"/>
+				<arg line="-packages http://geronimo.apache.org/xml/ns/j2ee/web-1.0"/>
 			</settings>
 		</multipleXSDs2Java>
 		
 		<multipleXSDs2Java genModelName="geronimo-application">
 			<settings>
 				<model file="${target.directory}/schema/geronimo-application-1.0.xsd"/>
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/j2ee/application-1.0 org.apache.geronimo.xml.ns.j2ee.application"/>
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/security-1.0 org.apache.geronimo.xml.ns.security"/>	
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/deployment-1.0 org.apache.geronimo.xml.ns.deployment"/>
+							
+				<arg line="-packages http://geronimo.apache.org/xml/ns/j2ee/application-1.0"/>
 			</settings>
 		</multipleXSDs2Java>
 		
 	    <multipleXSDs2Java genModelName="openejb-jar">
 			<settings>
 				<model file="${target.directory}/schema/openejb-jar-2.0.xsd"/>
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/naming-1.0 org.apache.geronimo.xml.ns.naming"/>
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/security-1.0 org.apache.geronimo.xml.ns.security"/>
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/deployment-1.0 org.apache.geronimo.xml.ns.deployment"/>
+				<arg line="-packageMap http://www.openejb.org/xml/ns/openejb-jar-2.0 org.openejb.xml.ns.openejb.jar"/>
+				<arg line="-packageMap http://www.openejb.org/xml/ns/pkgen-2.0 org.openejb.xml.ns.pkgen"/>	
+				
+				<arg line="-packages http://www.openejb.org/xml/ns/openejb-jar-2.0"/>
+				<arg line="-packages http://www.openejb.org/xml/ns/pkgen-2.0"/>
 			</settings>
 		</multipleXSDs2Java>
 		
 	    <multipleXSDs2Java genModelName="geronimo-connector">
 			<settings>
 				<model file="${target.directory}/schema/geronimo-connector-1.0.xsd"/>
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/j2ee/connector-1.0 org.apache.geronimo.xml.ns.j2ee.connector"/>
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/naming-1.0 org.apache.geronimo.xml.ns.naming"/>	
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/deployment-1.0 org.apache.geronimo.xml.ns.deployment"/>
+							
+				<arg line="-packages http://geronimo.apache.org/xml/ns/j2ee/connector-1.0"/>
 			</settings>
 		</multipleXSDs2Java>
 		
 	    <multipleXSDs2Java genModelName="geronimo-application-client">
 			<settings>
 				<model file="${target.directory}/schema/geronimo-application-client-1.0.xsd"/>
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/j2ee/application-client-1.0 org.apache.geronimo.xml.ns.j2ee.application.client"/>
+			    <arg line="-packageMap http://geronimo.apache.org/xml/ns/naming-1.0 org.apache.geronimo.xml.ns.naming"/>
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/security-1.0 org.apache.geronimo.xml.ns.security"/>
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/j2ee/connector-1.0 org.apache.geronimo.xml.ns.j2ee.connector"/>
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/deployment-1.0 org.apache.geronimo.xml.ns.deployment"/>	
+							
+				<arg line="-packages http://geronimo.apache.org/xml/ns/j2ee/application-client-1.0"/>
 			</settings>
 		</multipleXSDs2Java>
 					
