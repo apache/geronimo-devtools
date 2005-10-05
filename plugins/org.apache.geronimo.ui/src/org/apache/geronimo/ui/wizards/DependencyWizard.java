@@ -142,8 +142,9 @@ public class DependencyWizard extends DynamicAddEditWizard {
             Label label = new Label(group, SWT.LEFT);
             label.setText(Messages.uri);
             GridData labelData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-            labelData.grabExcessHorizontalSpace = true;
+            //labelData.grabExcessHorizontalSpace = true;
             labelData.horizontalIndent = 20;
+            labelData.widthHint = 50;
             label.setLayoutData(labelData);
 
             Text text = new Text(group, SWT.SINGLE | SWT.BORDER);
