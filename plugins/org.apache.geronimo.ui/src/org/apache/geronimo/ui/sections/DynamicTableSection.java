@@ -68,13 +68,23 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
         super(section);
     }
 
+    /**
+     * @param plan
+     * @param parent
+     * @param toolkit
+     * @param style
+     * 
+     * Subclasses should call create() in constructor
+     */
     public DynamicTableSection(EObject plan, Composite parent,
             FormToolkit toolkit, int style) {
         super(parent, toolkit, style);
         this.plan = plan;
-
+    }
+    
+    public void create() {
         if (isValid()) {
-            createClient(getSection(), toolkit);
+            createClient();
         }
     }
 
@@ -84,14 +94,14 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
                 && getTableColumnNames() != null;
     }
 
-    public void createClient(Section section, FormToolkit toolkit) {
+    public void createClient() {
 
-        section.setText(getTitle());
-        section.setDescription(getDescription());
+        getSection().setText(getTitle());
+        getSection().setDescription(getDescription());
 
-        configureSection(section);
+        configureSection(getSection());
 
-        Composite composite = createTableComposite(section, toolkit);
+        Composite composite = createTableComposite(getSection(), toolkit);
         createTable(composite);
         fillTableItems();
 

@@ -33,6 +33,7 @@ public class ResourceRefSection extends DynamicTableSection {
     public ResourceRefSection(WebAppType plan, Composite parent,
             FormToolkit toolkit, int style) {
         super(plan, parent, toolkit, style);
+        create();
     }
 
     /*

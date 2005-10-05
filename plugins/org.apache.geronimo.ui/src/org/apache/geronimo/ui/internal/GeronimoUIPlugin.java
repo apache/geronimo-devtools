@@ -18,7 +18,7 @@ package org.apache.geronimo.ui.internal;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.ui.plugin.*;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * The main plugin class to be used in the desktop.

@@ -16,9 +16,12 @@
 package org.apache.geronimo.ui.pages;
 
 import org.apache.geronimo.ui.editors.WebEditor;
+import org.apache.geronimo.ui.sections.DependencySection;
 import org.apache.geronimo.ui.sections.WebGeneralSection;
 import org.apache.geronimo.xml.ns.web.WebAppType;
+import org.apache.geronimo.xml.ns.web.WebPackage;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
@@ -36,29 +39,34 @@ public class WebGeneralPage extends FormPage {
         super(id, title);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
-     */
     protected void createFormContent(IManagedForm managedForm) {
+        ScrolledForm form = managedForm.getForm();
+        form.setText(getTitle());
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 2;
+        layout.horizontalSpacing = 20;
+        layout.makeColumnsEqualWidth = true;
+        form.getBody().setLayout(layout);
+        fillBody(managedForm);
+        form.reflow(true);
+    }
+
+    private void fillBody(IManagedForm managedForm) {
 
         WebAppType plan = (WebAppType) ((WebEditor) getEditor())
                 .getDeploymentPlan();
 
-        ScrolledForm form = managedForm.getForm();
-        form.setText(getTitle());
-        form.getBody().setLayout(new GridLayout());
+        Composite body = managedForm.getForm().getBody();
 
-        // create web plan general section
-        WebGeneralSection sec = new WebGeneralSection(form.getBody(),
-                managedForm.getToolkit(), ExpandableComposite.TWISTIE
-                        | ExpandableComposite.EXPANDED
-                        | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
-                        | ExpandableComposite.FOCUS_TITLE, plan);
-        managedForm.addPart(sec);
+        int style = ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
+                | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
+                | ExpandableComposite.FOCUS_TITLE;
 
-        form.reflow(true);
+        managedForm.addPart(new WebGeneralSection(body, managedForm
+                .getToolkit(), style, plan));
+
+        managedForm.addPart(new DependencySection(plan, WebPackage.eINSTANCE
+                .getWebAppType_Dependency(), body, managedForm.getToolkit(),
+                style));
     }
-
 }

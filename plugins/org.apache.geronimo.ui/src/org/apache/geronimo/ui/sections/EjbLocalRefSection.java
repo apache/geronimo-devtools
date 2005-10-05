@@ -33,6 +33,7 @@ public class EjbLocalRefSection extends DynamicTableSection {
     public EjbLocalRefSection(WebAppType plan, Composite parent,
             FormToolkit toolkit, int style) {
         super(plan, parent, toolkit, style);
+        create();
     }
 
     /*

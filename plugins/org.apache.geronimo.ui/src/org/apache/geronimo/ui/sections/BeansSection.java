@@ -22,17 +22,8 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.Section;
 
 public class BeansSection extends DynamicTableSection {
-
-    /**
-     * @param section
-     */
-    public BeansSection(Section section) {
-        super(section);
-        // TODO Auto-generated constructor stub
-    }
 
     /**
      * @param plan
@@ -43,7 +34,7 @@ public class BeansSection extends DynamicTableSection {
     public BeansSection(EObject plan, Composite parent, FormToolkit toolkit,
             int style) {
         super(plan, parent, toolkit, style);
-        // TODO Auto-generated constructor stub
+        create();
     }
 
     /* (non-Javadoc)

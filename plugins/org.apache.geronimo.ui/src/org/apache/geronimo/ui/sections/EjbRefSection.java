@@ -47,6 +47,7 @@ public class EjbRefSection extends DynamicTableSection {
     public EjbRefSection(EObject plan, Composite parent, FormToolkit toolkit,
             int style) {
         super(plan, parent, toolkit, style);
+        create();
     }
 
     /*

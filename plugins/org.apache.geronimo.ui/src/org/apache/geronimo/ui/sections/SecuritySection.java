@@ -60,7 +60,7 @@ public class SecuritySection extends DynamicTableSection {
     public SecuritySection(WebAppType plan, Composite parent,
             FormToolkit toolkit, int style) {
         super(plan, parent, toolkit, style);
-
+        create();
     }
 
     /**
@@ -133,15 +133,13 @@ public class SecuritySection extends DynamicTableSection {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#createClient(org.eclipse.ui.forms.widgets.Section,
-     *      org.eclipse.ui.forms.widgets.FormToolkit)
-     */
-    public void createClient(Section section, FormToolkit toolkit) {
 
-        super.createClient(section, toolkit);
+    /* (non-Javadoc)
+     * @see org.apache.geronimo.ui.sections.DynamicTableSection#createClient()
+     */
+    public void createClient() {
+
+        super.createClient();
 
         Composite detail = toolkit.createComposite(table.getParent());
         GridLayout gl = new GridLayout();

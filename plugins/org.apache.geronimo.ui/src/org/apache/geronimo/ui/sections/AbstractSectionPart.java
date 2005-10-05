@@ -21,6 +21,8 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 public abstract class AbstractSectionPart extends SectionPart {
+    
+    protected FormToolkit toolkit;
 
     /**
      * @param section
@@ -36,6 +38,7 @@ public abstract class AbstractSectionPart extends SectionPart {
      */
     public AbstractSectionPart(Composite parent, FormToolkit toolkit, int style) {
         super(parent, toolkit, style);
+        this.toolkit = toolkit;
     }
 
     /*
