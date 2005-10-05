@@ -114,20 +114,22 @@ public class DependencyWizard extends DynamicAddEditWizard {
      * @see org.eclipse.jface.wizard.IWizard#performFinish()
      */
     public boolean performFinish() {
-        
+
         boolean isNew = false;
-        
-        if (eObject == null) {            
+
+        if (eObject == null) {
             eObject = DeploymentFactory.eINSTANCE.createDependencyType();
-            ((EList) section.getPlan().eGet(section.getEReference())).add(eObject);
+            ((EList) section.getPlan().eGet(section.getEReference()))
+                    .add(eObject);
             isNew = true;
         }
-        
+
         DependencyType dt = (DependencyType) eObject;
-        
+
         if (uriButton.getSelection()) {
             dt.setUri(uriText.getText());
-            dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_ArtifactId());
+            dt.eUnset(DeploymentPackage.eINSTANCE
+                    .getDependencyType_ArtifactId());
             dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_GroupId());
             dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_Version());
         } else {
@@ -136,7 +138,7 @@ public class DependencyWizard extends DynamicAddEditWizard {
             dt.setVersion(versionText.getText());
             dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_Uri());
         }
-        
+
         String[] tableText = section.getTableText(eObject);
 
         if (isNew) {
@@ -202,7 +204,6 @@ public class DependencyWizard extends DynamicAddEditWizard {
             group.setLayout(layout);
 
             uriButton = new Button(group, SWT.LEFT | SWT.RADIO);
-            uriButton.setSelection(true);
             uriButton.setText(Messages.serverRepos);
             uriButton.setLayoutData(data);
 
@@ -214,7 +215,6 @@ public class DependencyWizard extends DynamicAddEditWizard {
             uriText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
             mavenButton = new Button(group, SWT.LEFT | SWT.RADIO);
-            mavenButton.setSelection(false);
             mavenButton.setText(Messages.mavenArtifact);
             mavenButton.setLayoutData(data);
 
@@ -240,13 +240,6 @@ public class DependencyWizard extends DynamicAddEditWizard {
             versionText = new Text(group, SWT.SINGLE | SWT.BORDER);
             versionText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-            groupIdLabel.setEnabled(false);
-            groupIdText.setEnabled(false);
-            artifactIdLabel.setEnabled(false);
-            artifactIdText.setEnabled(false);
-            versionLabel.setEnabled(false);
-            versionText.setEnabled(false);
-
             uriButton.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(SelectionEvent e) {
                     if (uriButton.getSelection()) {
@@ -263,11 +256,58 @@ public class DependencyWizard extends DynamicAddEditWizard {
                 }
             });
 
+            if (eObject != null) {
+                if (eObject.eIsSet(DeploymentPackage.eINSTANCE
+                        .getDependencyType_Uri())) {
+                    uriButton.setSelection(true);
+                    uriText.setText(eObject
+                            .eGet(
+                                    DeploymentPackage.eINSTANCE
+                                            .getDependencyType_Uri())
+                            .toString());
+                } else {
+                    mavenButton.setSelection(true);
+                    if (eObject.eIsSet(DeploymentPackage.eINSTANCE
+                            .getDependencyType_ArtifactId())) {
+                        artifactIdText.setText(eObject.eGet(
+                                DeploymentPackage.eINSTANCE
+                                        .getDependencyType_ArtifactId())
+                                .toString());
+                    }
+                    if (eObject.eIsSet(DeploymentPackage.eINSTANCE
+                            .getDependencyType_GroupId())) {
+                        groupIdText.setText(eObject.eGet(
+                                DeploymentPackage.eINSTANCE
+                                        .getDependencyType_GroupId())
+                                .toString());
+                    }
+                    if (eObject.eIsSet(DeploymentPackage.eINSTANCE
+                            .getDependencyType_Version())) {
+                        versionText.setText(eObject.eGet(
+                                DeploymentPackage.eINSTANCE
+                                        .getDependencyType_Version())
+                                .toString());
+                    }
+                }
+            } else {
+                uriButton.setSelection(true);
+                uriLabel.setEnabled(true);
+                uriText.setEnabled(true);
+
+                mavenButton.setSelection(false);
+                groupIdLabel.setEnabled(false);
+                groupIdText.setEnabled(false);
+                artifactIdLabel.setEnabled(false);
+                artifactIdText.setEnabled(false);
+                versionLabel.setEnabled(false);
+                versionText.setEnabled(false);
+            }
+
             setControl(composite);
 
         }
     }
-    
+
     public GridData createLabelGridData() {
         GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
         gd.horizontalIndent = 20;
