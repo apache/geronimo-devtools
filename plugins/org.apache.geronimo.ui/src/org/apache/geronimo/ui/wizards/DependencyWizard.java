@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 public class DependencyWizard extends DynamicAddEditWizard {
@@ -113,9 +114,13 @@ public class DependencyWizard extends DynamicAddEditWizard {
      * @see org.eclipse.jface.wizard.IWizard#performFinish()
      */
     public boolean performFinish() {
-        if (eObject == null) {
+        
+        boolean isNew = false;
+        
+        if (eObject == null) {            
             eObject = DeploymentFactory.eINSTANCE.createDependencyType();
             ((EList) section.getPlan().eGet(section.getEReference())).add(eObject);
+            isNew = true;
         }
         
         DependencyType dt = (DependencyType) eObject;
@@ -130,6 +135,23 @@ public class DependencyWizard extends DynamicAddEditWizard {
             dt.setGroupId(groupIdText.getText());
             dt.setVersion(versionText.getText());
             dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_Uri());
+        }
+        
+        String[] tableText = section.getTableText(eObject);
+
+        if (isNew) {
+            TableItem item = new TableItem(section.getTableViewer().getTable(),
+                    SWT.NONE);
+            item.setImage(section.getImage());
+            item.setData(eObject);
+            item.setText(tableText);
+        } else {
+            int index = section.getTableViewer().getTable().getSelectionIndex();
+            if (index != -1) {
+                TableItem item = section.getTableViewer().getTable().getItem(
+                        index);
+                item.setText(tableText);
+            }
         }
 
         return true;
