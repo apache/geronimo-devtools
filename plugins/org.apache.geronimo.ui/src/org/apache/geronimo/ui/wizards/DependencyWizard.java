@@ -20,6 +20,8 @@ import org.apache.geronimo.ui.sections.DynamicTableSection;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -37,6 +39,26 @@ public class DependencyWizard extends DynamicAddEditWizard {
     public static String wizardPageTitle_Dependency;
 
     public static String wizardPageDescription_Dependency;
+
+    protected Button uriButton;
+
+    protected Button mavenButton;
+
+    protected Label uriLabel;
+
+    protected Label groupIdLabel;
+
+    protected Label artifactIdLabel;
+
+    protected Label versionLabel;
+
+    protected Text uriText;
+
+    protected Text groupIdText;
+
+    protected Text artifactIdText;
+
+    protected Text versionText;
 
     /**
      * @param section
@@ -69,7 +91,7 @@ public class DependencyWizard extends DynamicAddEditWizard {
      * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
      */
     public String getWizardFirstPageTitle() {
-        return Messages.wizardPageDescription_Dependency;
+        return Messages.wizardPageTitle_Dependency;
     }
 
     /*
@@ -78,7 +100,7 @@ public class DependencyWizard extends DynamicAddEditWizard {
      * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
      */
     public String getWizardFirstPageDescription() {
-        return Messages.wizardNewTitle_Dependency;
+        return Messages.wizardPageDescription_Dependency;
     }
 
     /*
@@ -134,52 +156,85 @@ public class DependencyWizard extends DynamicAddEditWizard {
             group.setLayoutData(data);
             group.setLayout(layout);
 
-            Button button = new Button(group, SWT.LEFT | SWT.RADIO);
-            button.setSelection(true);
-            button.setText(Messages.serverRepos);
-            button.setLayoutData(data);
+            uriButton = new Button(group, SWT.LEFT | SWT.RADIO);
+            uriButton.setSelection(true);
+            uriButton.setText(Messages.serverRepos);
+            uriButton.setLayoutData(data);
 
-            Label label = new Label(group, SWT.LEFT);
-            label.setText(Messages.uri);
+            uriLabel = new Label(group, SWT.LEFT);
+            uriLabel.setText(Messages.uri);
             GridData labelData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-            //labelData.grabExcessHorizontalSpace = true;
             labelData.horizontalIndent = 20;
             labelData.widthHint = 50;
-            label.setLayoutData(labelData);
+            uriLabel.setLayoutData(labelData);
 
-            Text text = new Text(group, SWT.SINGLE | SWT.BORDER);
-            text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+            uriText = new Text(group, SWT.SINGLE | SWT.BORDER);
+            uriText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-            Button button2 = new Button(group, SWT.LEFT | SWT.RADIO);
-            button2.setSelection(false);
-            button2.setText(Messages.mavenArtifact);
-            button2.setLayoutData(data);
+            mavenButton = new Button(group, SWT.LEFT | SWT.RADIO);
+            mavenButton.setSelection(false);
+            mavenButton.setText(Messages.mavenArtifact);
+            mavenButton.setLayoutData(data);
 
-            Label groupIdLabel = new Label(group, SWT.LEFT);
+            groupIdLabel = new Label(group, SWT.LEFT);
             groupIdLabel.setText(Messages.groupId);
-            groupIdLabel.setLayoutData(labelData);
+            groupIdLabel.setLayoutData(labelData);           
 
-            Text groupIdText = new Text(group, SWT.SINGLE | SWT.BORDER);
+            groupIdText = new Text(group, SWT.SINGLE | SWT.BORDER);
             groupIdText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-            Label artifactIdLabel = new Label(group, SWT.LEFT);
+            artifactIdLabel = new Label(group, SWT.LEFT);
             artifactIdLabel.setText(Messages.artifactId);
             artifactIdLabel.setLayoutData(labelData);
 
-            Text artifactIdText = new Text(group, SWT.SINGLE | SWT.BORDER);
+            artifactIdText = new Text(group, SWT.SINGLE | SWT.BORDER);
             artifactIdText
                     .setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-            Label versionLabel = new Label(group, SWT.LEFT);
+            versionLabel = new Label(group, SWT.LEFT);
             versionLabel.setText(Messages.version);
             versionLabel.setLayoutData(labelData);
 
-            Text versionText = new Text(group, SWT.SINGLE | SWT.BORDER);
+            versionText = new Text(group, SWT.SINGLE | SWT.BORDER);
             versionText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+            
+            groupIdLabel.setEnabled(false);
+            groupIdText.setEnabled(false);
+            artifactIdLabel.setEnabled(false);
+            artifactIdText.setEnabled(false);
+            versionLabel.setEnabled(false);
+            versionText.setEnabled(false);          
+
+            uriButton.addSelectionListener(new SelectionAdapter() {
+                public void widgetSelected(SelectionEvent e) {
+                    if (uriButton.getSelection()) {
+                        toggle();
+                    } 
+                }
+            });
+
+            mavenButton.addSelectionListener(new SelectionAdapter() {
+                public void widgetSelected(SelectionEvent e) {
+                    if (mavenButton.getSelection()) {
+                        toggle();
+                    }
+                }
+            });
 
             setControl(composite);
 
         }
+    }
+
+    public void toggle() {
+        uriLabel.setEnabled(!uriLabel.isEnabled());
+        groupIdLabel.setEnabled(!groupIdLabel.isEnabled());
+        artifactIdLabel.setEnabled(!artifactIdLabel.isEnabled());
+        versionLabel.setEnabled(!versionLabel.isEnabled());
+        uriText.setEnabled(!uriText.isEnabled());
+        groupIdText.setEnabled(!groupIdText.isEnabled());
+        artifactIdText.setEnabled(!artifactIdText.isEnabled());
+        versionText.setEnabled(!versionText.isEnabled());
     }
 
 }
