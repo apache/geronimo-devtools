@@ -17,6 +17,10 @@ package org.apache.geronimo.ui.wizards;
 
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.sections.DynamicTableSection;
+import org.apache.geronimo.xml.ns.deployment.DependencyType;
+import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
+import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -109,6 +113,25 @@ public class DependencyWizard extends DynamicAddEditWizard {
      * @see org.eclipse.jface.wizard.IWizard#performFinish()
      */
     public boolean performFinish() {
+        if (eObject == null) {
+            eObject = DeploymentFactory.eINSTANCE.createDependencyType();
+            ((EList) section.getPlan().eGet(section.getEReference())).add(eObject);
+        }
+        
+        DependencyType dt = (DependencyType) eObject;
+        
+        if (uriButton.getSelection()) {
+            dt.setUri(uriText.getText());
+            dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_ArtifactId());
+            dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_GroupId());
+            dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_Version());
+        } else {
+            dt.setArtifactId(artifactIdText.getText());
+            dt.setGroupId(groupIdText.getText());
+            dt.setVersion(versionText.getText());
+            dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_Uri());
+        }
+
         return true;
     }
 
@@ -178,7 +201,7 @@ public class DependencyWizard extends DynamicAddEditWizard {
 
             groupIdLabel = new Label(group, SWT.LEFT);
             groupIdLabel.setText(Messages.groupId);
-            groupIdLabel.setLayoutData(labelData);           
+            groupIdLabel.setLayoutData(labelData);
 
             groupIdText = new Text(group, SWT.SINGLE | SWT.BORDER);
             groupIdText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -197,19 +220,19 @@ public class DependencyWizard extends DynamicAddEditWizard {
 
             versionText = new Text(group, SWT.SINGLE | SWT.BORDER);
             versionText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            
+
             groupIdLabel.setEnabled(false);
             groupIdText.setEnabled(false);
             artifactIdLabel.setEnabled(false);
             artifactIdText.setEnabled(false);
             versionLabel.setEnabled(false);
-            versionText.setEnabled(false);          
+            versionText.setEnabled(false);
 
             uriButton.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(SelectionEvent e) {
                     if (uriButton.getSelection()) {
                         toggle();
-                    } 
+                    }
                 }
             });
 
