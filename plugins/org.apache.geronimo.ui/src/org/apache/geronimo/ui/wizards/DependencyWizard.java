@@ -208,10 +208,7 @@ public class DependencyWizard extends DynamicAddEditWizard {
 
             uriLabel = new Label(group, SWT.LEFT);
             uriLabel.setText(Messages.uri);
-            GridData labelData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-            labelData.horizontalIndent = 20;
-            labelData.widthHint = 50;
-            uriLabel.setLayoutData(labelData);
+            uriLabel.setLayoutData(createLabelGridData());
 
             uriText = new Text(group, SWT.SINGLE | SWT.BORDER);
             uriText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -223,14 +220,14 @@ public class DependencyWizard extends DynamicAddEditWizard {
 
             groupIdLabel = new Label(group, SWT.LEFT);
             groupIdLabel.setText(Messages.groupId);
-            groupIdLabel.setLayoutData(labelData);
+            groupIdLabel.setLayoutData(createLabelGridData());
 
             groupIdText = new Text(group, SWT.SINGLE | SWT.BORDER);
             groupIdText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
             artifactIdLabel = new Label(group, SWT.LEFT);
             artifactIdLabel.setText(Messages.artifactId);
-            artifactIdLabel.setLayoutData(labelData);
+            artifactIdLabel.setLayoutData(createLabelGridData());
 
             artifactIdText = new Text(group, SWT.SINGLE | SWT.BORDER);
             artifactIdText
@@ -238,7 +235,7 @@ public class DependencyWizard extends DynamicAddEditWizard {
 
             versionLabel = new Label(group, SWT.LEFT);
             versionLabel.setText(Messages.version);
-            versionLabel.setLayoutData(labelData);
+            versionLabel.setLayoutData(createLabelGridData());
 
             versionText = new Text(group, SWT.SINGLE | SWT.BORDER);
             versionText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -269,6 +266,12 @@ public class DependencyWizard extends DynamicAddEditWizard {
             setControl(composite);
 
         }
+    }
+    
+    public GridData createLabelGridData() {
+        GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+        gd.horizontalIndent = 20;
+        return gd;
     }
 
     public void toggle() {
