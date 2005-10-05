@@ -20,7 +20,6 @@ import org.apache.geronimo.ui.wizards.DependencyWizard;
 import org.apache.geronimo.xml.ns.deployment.DependencyType;
 import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
 import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
-import org.apache.geronimo.xml.ns.j2ee.application.ApplicationPackage;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EFactory;
@@ -87,7 +86,7 @@ public class DependencySection extends DynamicTableSection {
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEReference()
      */
     public EReference getEReference() {
-        return ApplicationPackage.eINSTANCE.getApplicationType_Dependency();
+        return dependenciesERef;
     }
 
     /*
