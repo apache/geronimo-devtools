@@ -31,6 +31,8 @@ public class ConnectorPlanEditor extends AbstractGeronimoDeploymentPlanEditor {
     public void doAddPages() throws PartInitException {
         addPage(new ConnectorOverviewPage(this, "connectoroverview",
                 Messages.editorTabGeneral));
+        
+        addSourcePage();
     }
 
     /* (non-Javadoc)

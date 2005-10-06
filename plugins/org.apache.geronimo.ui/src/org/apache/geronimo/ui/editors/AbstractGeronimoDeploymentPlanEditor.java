@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.internal.Trace;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -27,6 +28,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.IFormPage;
@@ -73,18 +75,20 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
             }
         }
     }
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.eclipse.ui.forms.editor.FormEditor#addPages()
      */
     protected void addPages() {
         try {
             doAddPages();
-        } catch (PartInitException e1) {          
+        } catch (PartInitException e1) {
             e1.printStackTrace();
-        }   
+        }
     }
-    
+
     abstract public void doAddPages() throws PartInitException;
 
     /*
@@ -94,6 +98,12 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
      */
     public final void doSaveAs() {
         // do nothing
+    }
+
+    protected void addSourcePage() throws PartInitException {
+        TextEditor source = new TextEditor();
+        int index = addPage(source, getEditorInput());
+        setPageText(index, Messages.editorTabSource);
     }
 
     /*
@@ -129,8 +139,11 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
         return deploymentPlan;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IEditorPart#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.ui.IEditorPart#init(org.eclipse.ui.IEditorSite,
+     *      org.eclipse.ui.IEditorInput)
      */
     public void init(IEditorSite site, IEditorInput input)
             throws PartInitException {

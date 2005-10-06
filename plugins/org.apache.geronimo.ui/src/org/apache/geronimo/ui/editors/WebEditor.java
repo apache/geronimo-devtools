@@ -37,6 +37,8 @@ public class WebEditor extends AbstractGeronimoDeploymentPlanEditor {
         addPage(new NamingFormPage(this, "namingpage", Messages.editorTabNaming));
         addPage(new SecurityPage(this, "securitypage",
                 Messages.editorTabSecurity));
+
+        addSourcePage();
     }
 
     public EObject loadDeploymentPlan(IFile file) {

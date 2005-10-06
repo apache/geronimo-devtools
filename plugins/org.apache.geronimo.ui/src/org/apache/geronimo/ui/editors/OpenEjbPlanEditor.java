@@ -37,6 +37,8 @@ public class OpenEjbPlanEditor extends AbstractGeronimoDeploymentPlanEditor {
     public void doAddPages() throws PartInitException {
         addPage(new EjbOverviewPage(this, "ejboverview",
                 Messages.editorTabGeneral));
+        
+        addSourcePage();
     }
 
     /*

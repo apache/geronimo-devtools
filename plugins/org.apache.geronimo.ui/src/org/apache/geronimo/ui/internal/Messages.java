@@ -27,6 +27,8 @@ public class Messages extends NLS {
     public static String editorTabNaming;
 
     public static String editorTabSecurity;
+    
+    public static String editorTabSource;
 
     public static String editorTabDependencies;
 
@@ -67,7 +69,7 @@ public class Messages extends NLS {
     public static String editorSectionDependenciesTitle;
 
     public static String editorSectionDependenciesDescription;
-
+    
     //
 
     public static String editorResourceRefDescription;

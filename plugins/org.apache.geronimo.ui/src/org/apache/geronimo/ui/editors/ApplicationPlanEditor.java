@@ -34,6 +34,8 @@ public class ApplicationPlanEditor extends AbstractGeronimoDeploymentPlanEditor 
     public void doAddPages() throws PartInitException {
         addPage(new AppGeneralPage(this, "appgeneralpage",
                 Messages.editorTabGeneral));
+        
+        addSourcePage();
     }
 
     /* (non-Javadoc)
