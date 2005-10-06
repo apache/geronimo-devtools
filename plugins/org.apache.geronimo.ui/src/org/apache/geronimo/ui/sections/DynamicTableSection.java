@@ -54,15 +54,11 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 
     private EObject plan;
 
+    private Image image;
+
     protected Table table;
 
     protected TableViewer tableViewer;
-
-    private ImageDescriptor defaultDescriptor = GeronimoUIPlugin
-            .imageDescriptorFromPlugin("org.apache.geronimo.ui",
-                    "icons/obj16/geronimo.gif");
-
-    private Image defaultImage = defaultDescriptor.createImage();
 
     public DynamicTableSection(Section section) {
         super(section);
@@ -81,7 +77,7 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
         super(parent, toolkit, style);
         this.plan = plan;
     }
-    
+
     public void create() {
         if (isValid()) {
             createClient();
@@ -253,7 +249,7 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
                 }
             }
         });
-        
+
         add.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
     }
 
@@ -275,7 +271,15 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
     }
 
     public Image getImage() {
-        return defaultImage;
+        if (image == null) {
+            image = getImageDescriptor().createImage();
+        }
+        return image;
+    }
+
+    public ImageDescriptor getImageDescriptor() {
+        return GeronimoUIPlugin.imageDescriptorFromPlugin(
+                "org.apache.geronimo.ui", "icons/obj16/geronimo.gif");
     }
 
     public TableViewer getTableViewer() {

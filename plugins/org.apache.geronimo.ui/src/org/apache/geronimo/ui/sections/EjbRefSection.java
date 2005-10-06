@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.ui.sections;
 
+import org.apache.geronimo.ui.internal.GeronimoUIPlugin;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.EjbRefWizard;
 import org.apache.geronimo.xml.ns.naming.NamingFactory;
@@ -24,6 +25,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -114,6 +116,16 @@ public class EjbRefSection extends DynamicTableSection {
      */
     public Wizard getWizard() {
         return new EjbRefWizard(this);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getImageDescriptor()
+     */
+    public ImageDescriptor getImageDescriptor() {
+        return GeronimoUIPlugin.imageDescriptorFromPlugin(
+                "org.eclipse.jst.j2ee", "icons/full/obj16/ejbRef_obj.gif");
     }
 
 }
