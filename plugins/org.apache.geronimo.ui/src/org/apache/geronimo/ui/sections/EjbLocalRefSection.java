@@ -110,7 +110,7 @@ public class EjbLocalRefSection extends DynamicTableSection {
      */
     public ImageDescriptor getImageDescriptor() {
         return GeronimoUIPlugin.imageDescriptorFromPlugin(
-                "org.eclipse.jst.j2ee", "icons/full/obj16/ejb_local-ref_obj.gif");
+                "org.eclipse.jst.j2ee", "icons/full/obj16/ejb_local_ref_obj.gif");
     }
 
 }

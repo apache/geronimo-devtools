@@ -59,6 +59,9 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
     protected Table table;
 
     protected TableViewer tableViewer;
+    
+    private ImageDescriptor defaultImgDesc = GeronimoUIPlugin.imageDescriptorFromPlugin(
+            "org.apache.geronimo.ui", "icons/obj16/geronimo.gif");
 
     public DynamicTableSection(Section section) {
         super(section);
@@ -272,14 +275,16 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 
     public Image getImage() {
         if (image == null) {
-            image = getImageDescriptor().createImage();
+            ImageDescriptor descriptor = getImageDescriptor();
+            if (descriptor == null)
+                descriptor = defaultImgDesc;
+            image = descriptor.createImage();
         }
         return image;
     }
 
     public ImageDescriptor getImageDescriptor() {
-        return GeronimoUIPlugin.imageDescriptorFromPlugin(
-                "org.apache.geronimo.ui", "icons/obj16/geronimo.gif");
+        return defaultImgDesc;
     }
 
     public TableViewer getTableViewer() {
