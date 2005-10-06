@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.ui.sections;
 
+import org.apache.geronimo.ui.internal.GeronimoUIPlugin;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.DependencyWizard;
 import org.apache.geronimo.xml.ns.deployment.DependencyType;
@@ -25,6 +26,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -165,6 +167,14 @@ public class DependencySection extends DynamicTableSection {
             return new String[] { dt.getGroupId() + "/" + dt.getArtifactId()
                     + "-" + dt.getVersion() + ".jar" };
         }
+    }
+    
+    /* (non-Javadoc)
+     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getImageDescriptor()
+     */
+    public ImageDescriptor getImageDescriptor() {
+        return GeronimoUIPlugin.imageDescriptorFromPlugin(
+                "org.eclipse.jdt.ui", "icons/full/obj16/jar_obj.gif");
     }
 
 }
