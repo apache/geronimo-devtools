@@ -53,7 +53,10 @@
       <replaceregexp file="${schema}" match="schemaLocation=&quot;(.*/)(.*xsd)" replace="schemaLocation=&quot;\2" byline="true"/>
       <j:if test="${schema.getName().equals('geronimo-connector-1.0.xsd')}">
          <replaceregexp file="${schema}" match="(xs:import.*/>)" replace="\1${patch}"/>
-      </j:if>      
+      </j:if>     
+      <j:if test="${schema.getName().equals('geronimo-security-1.0.xsd')}">
+         <replaceregexp file="${schema}" match='(version="1.0">)' replace="\1${patch2}"/>
+      </j:if>   
     </j:forEach>     
   </goal>
   
