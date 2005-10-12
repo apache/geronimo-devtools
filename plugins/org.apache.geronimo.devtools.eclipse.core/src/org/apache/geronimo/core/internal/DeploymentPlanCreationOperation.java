@@ -60,7 +60,7 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
     }
 
     public IStatus execute(IProgressMonitor monitor, IAdaptable info)
-            throws ExecutionException {   
+            throws ExecutionException {
 
         if (isGeronimoRuntimeTarget()) {
 
@@ -85,7 +85,7 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
                         .getConnectorDeploymentPlanFile(comp));
             }
         }
-        
+
         return Status.OK_STATUS;
     }
 
@@ -101,8 +101,9 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
                 .createDocumentRoot();
         ApplicationType root = ApplicationFactory.eINSTANCE
                 .createApplicationType();
-               
-        documentRoot.getXMLNSPrefixMap().put("", "http://geronimo.apache.org/xml/ns/j2ee/application-1.0");
+
+        documentRoot.getXMLNSPrefixMap()
+                .put("", GeronimoSchemaNS.GERONIMO_APP_NS);
 
         root.setApplicationName(getComponentName());
         root.setConfigId(getProject().getName() + "/" + getComponentName());
@@ -125,9 +126,10 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
 
         Resource resource = resourceSet.createResource(uri);
         DocumentRoot documentRoot = WebFactory.eINSTANCE.createDocumentRoot();
-                      
-        documentRoot.getXMLNSPrefixMap().put("", "http://geronimo.apache.org/xml/ns/j2ee/web-1.0");
-        
+
+        documentRoot.getXMLNSPrefixMap()
+                .put("", GeronimoSchemaNS.GERONIMO_WEB_NS);
+
         WebAppType root = WebFactory.eINSTANCE.createWebAppType();
 
         root.setConfigId(getProject().getName() + "/" + getComponentName());
@@ -153,8 +155,9 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
         org.openejb.xml.ns.openejb.jar.DocumentRoot documentRoot = JarFactory.eINSTANCE
                 .createDocumentRoot();
         OpenejbJarType root = JarFactory.eINSTANCE.createOpenejbJarType();
-                    
-        documentRoot.getXMLNSPrefixMap().put("", "http://www.openejb.org/xml/ns/openejb-jar-2.0");
+
+        documentRoot.getXMLNSPrefixMap().put("",
+                GeronimoSchemaNS.GERONIMO_OPENEJB_NS);
 
         root.setConfigId(getProject().getName() + "/" + getComponentName());
 
@@ -165,7 +168,7 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
 
         return root;
     }
-    
+
     public ConnectorType createConnectorDeploymentPlan(IFile dpFile) {
         URI uri = URI
                 .createPlatformResourceURI(dpFile.getFullPath().toString());
@@ -177,9 +180,10 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
         org.apache.geronimo.xml.ns.j2ee.connector.DocumentRoot documentRoot = ConnectorFactory.eINSTANCE
                 .createDocumentRoot();
         ConnectorType root = ConnectorFactory.eINSTANCE.createConnectorType();
-                        
-        documentRoot.getXMLNSPrefixMap().put("", "http://geronimo.apache.org/xml/ns/j2ee/connector-1.0");
-        
+
+        documentRoot.getXMLNSPrefixMap().put("",
+                GeronimoSchemaNS.GERONIMO_CONNECTOR_NS);
+
         root.setConfigId(getProject().getName() + "/" + getComponentName());
 
         documentRoot.setConnector(root);
@@ -191,8 +195,9 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
     }
 
     public boolean isGeronimoRuntimeTarget() {
-        
-        IRuntime runtime = ServerCore.getProjectProperties(getProject()).getRuntimeTarget();
+
+        IRuntime runtime = ServerCore.getProjectProperties(getProject())
+                .getRuntimeTarget();
         return runtime.getName().startsWith("Apache Geronimo");
 
     }
