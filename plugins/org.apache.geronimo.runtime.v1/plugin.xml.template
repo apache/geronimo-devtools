@@ -30,5 +30,11 @@
       <library name="lib/geronimo-common-@geronimo_runtime_version@.jar">
          <export name="*"/>
       </library>   
+      <library name="lib/geronimo-j2ee-schema-@geronimo_runtime_version@.jar">
+         <export name="*"/>
+      </library>  
+      <library name="lib/xbean-2.0.0.jar">
+         <export name="*"/>
+      </library>  
    </runtime>
 </plugin>
