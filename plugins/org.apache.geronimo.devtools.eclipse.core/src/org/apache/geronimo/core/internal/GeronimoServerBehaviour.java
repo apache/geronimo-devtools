@@ -23,7 +23,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
@@ -541,11 +540,6 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
                 }
             }
         }
-    }
-
-    protected List getPublishClasspath() {
-        String cpRef = getServerDefinition().getStop().getClasspathReference();
-        return serverClasspath(cpRef);
     }
 
     public Map getServerInstanceProperties() {

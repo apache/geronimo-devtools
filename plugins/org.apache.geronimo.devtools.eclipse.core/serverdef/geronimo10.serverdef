@@ -69,14 +69,6 @@
 		<classpathReference>geronimo.server</classpathReference>
 	</start>
 
-	<stop>
-		<mainClass>org.apache.geronimo.deployment.cli.DeployTool</mainClass>
-		<workingDirectory>${serverRootDirectory}/bin</workingDirectory>
-		<programArguments>--user ${adminID} --password ${adminPassword}</programArguments>
-		<vmParameters></vmParameters>
-		<classpathReference>geronimo.deploy</classpathReference>
-	</stop>
-
 	<classpath id="geronimo.server">
 		<archive path="${serverRootDirectory}/bin/server.jar" />
 	</classpath>
