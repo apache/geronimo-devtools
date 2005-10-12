@@ -13,8 +13,8 @@
 
     <goal name="build">
         <attainGoal name="copyjars"/>
-        <attainGoal name="zipdistribution"/>
-        <attainGoal name="deploy"/>
+        <attainGoal name="zipdisto"/>
+        <attainGoal name="sitedistro"/>
     </goal>
 
     <goal name="rebuild">
@@ -22,8 +22,8 @@
         <attainGoal name="build"/>
     </goal>
 
-    <goal name="copyjars">      
-        <ant:echo>Creating deployable feature</ant:echo>  
+    <goal name="zipdistro">   
+        <ant:echo>Packaging feature for zip distribution</ant:echo>    
         <j:forEach var="artifact" items="${pom.artifacts}">        
             <j:set var="dependency" value="${artifact.dependency}"/>           
             
@@ -38,16 +38,25 @@
             <j:if test="${dependency.getProperty('jar') == 'false'}">  
                 <ant:unjar src="${artifact.path}" dest="${feature.assembly.distributions.dir}/plugins/${dependency.artifactId}_${distributionjarversion}"/>
             </j:if>                        
-        </j:forEach>                 
+        </j:forEach>       
+        
+         <ant:zip destfile="${maven.build.dir}/geronimo-eclipse-plugin-${pom.currentVersion}.zip" basedir="${feature.assembly.distributions.dir}"/>           
     </goal>  
     
-    <goal name="zipdistribution">
-       <ant:echo>Packaging deployable feature</ant:echo>  
-       <ant:zip destfile="${maven.build.dir}/geronimo-eclipse-plugin-${pom.currentVersion}.zip" basedir="${feature.assembly.distributions.dir}"/>           
-    </goal>
-    
-    <goal name="deploy">
-       <ant:echo>Deploying binary zip distribution</ant:echo>  
+    <goal name="sitedistro">
+       <ant:echo>Packaging feature for update site</ant:echo>  
+        <j:forEach var="artifact" items="${pom.artifacts}">        
+            <j:set var="dependency" value="${artifact.dependency}"/>           
+            
+            <j:if test="${dependency.getProperty('feature') == 'true'}">  
+                <ant:copy file="${artifact.path}" tofile="${feature.site.distributions.dir}/features/${dependency.artifactId}_${distributionjarversion}.jar"/>
+            </j:if> 
+            
+            <j:if test="${dependency.getProperty('jar') == 'true' || dependency.getProperty('jar') == 'false'}">  
+                <ant:copy file="${artifact.path}" tofile="${feature.site.distributions.dir}/plugins/${dependency.artifactId}_${distributionjarversion}.jar"/>
+            </j:if>                      
+        </j:forEach>  
+        <ant:zip destfile="${maven.build.dir}/geronimo-sitedistro-${pom.currentVersion}.zip" basedir="${feature.site.distributions.dir}"/>                    
     </goal>
      
 </project>
