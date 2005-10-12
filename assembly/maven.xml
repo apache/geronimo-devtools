@@ -12,7 +12,6 @@
     </goal>
 
     <goal name="build">
-        <attainGoal name="copyjars"/>
         <attainGoal name="zipdisto"/>
         <attainGoal name="sitedistro"/>
     </goal>
