@@ -18,21 +18,22 @@ package org.apache.geronimo.ui.actions;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.geronimo.ui.internal.Messages;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.internal.browser.BrowserViewer;
-import org.eclipse.ui.internal.browser.WebBrowserEditor;
-import org.eclipse.ui.internal.browser.WebBrowserEditorInput;
+import org.eclipse.ui.IActionDelegate;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.browser.IWebBrowser;
+import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
+import org.eclipse.ui.internal.browser.WorkbenchBrowserSupport;
 import org.eclipse.wst.server.core.IServer;
 
 /**
  * 
  * 
  */
-public class LaunchGeronimoConsoleAction implements IObjectActionDelegate {
+public class LaunchGeronimoConsoleAction implements IActionDelegate {
 
     public static final String serverID = "org.eclipse.jst.server.geronimo.10";
 
@@ -41,18 +42,10 @@ public class LaunchGeronimoConsoleAction implements IObjectActionDelegate {
      */
     public LaunchGeronimoConsoleAction() {
         super();
-        // TODO Auto-generated constructor stub
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IObjectActionDelegate#setActivePart(org.eclipse.jface.action.IAction,
-     *      org.eclipse.ui.IWorkbenchPart)
-     */
-    public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-        // TODO Auto-generated method stub
-
+    
+    public URL getConsoleUrl() throws MalformedURLException {
+        return new URL("http://localhost:8080/console/login.jsp");
     }
 
     /*
@@ -63,11 +56,12 @@ public class LaunchGeronimoConsoleAction implements IObjectActionDelegate {
     public void run(IAction action) {
 
         try {
-            URL url = new URL("http://localhost:8080/console/login.jsp");
-            WebBrowserEditorInput input = new WebBrowserEditorInput(url,
-                    BrowserViewer.LOCATION_BAR);
-            WebBrowserEditor.open(input);
+            int style = IWorkbenchBrowserSupport.AS_EDITOR | IWorkbenchBrowserSupport.LOCATION_BAR | IWorkbenchBrowserSupport.STATUS;
+            IWebBrowser browser = WorkbenchBrowserSupport.getInstance().createBrowser(style, "console", Messages.console, Messages.consoleTooltip);
+            browser.openURL(getConsoleUrl());
         } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (PartInitException e) {
             e.printStackTrace();
         }
 
@@ -80,12 +74,12 @@ public class LaunchGeronimoConsoleAction implements IObjectActionDelegate {
      *      org.eclipse.jface.viewers.ISelection)
      */
     public void selectionChanged(IAction action, ISelection selection) {
-        
+
         IServer server = (IServer) ((StructuredSelection) selection)
                 .getFirstElement();
-        
-        
-        boolean enable = server != null && serverID.equals(server.getServerType().getId())
+
+        boolean enable = server != null
+                && serverID.equals(server.getServerType().getId())
                 && server.getServerState() == IServer.STATE_STARTED;
 
         action.setEnabled(enable);

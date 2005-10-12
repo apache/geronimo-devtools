@@ -197,6 +197,10 @@ public class Messages extends NLS {
     public static String username;
 
     public static String password;
+    
+    public static String console;
+    
+    public static String consoleTooltip;
 
     static {
         NLS.initializeMessages(GeronimoUIPlugin.PLUGIN_ID
