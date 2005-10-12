@@ -101,6 +101,8 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
                 .createDocumentRoot();
         ApplicationType root = ApplicationFactory.eINSTANCE
                 .createApplicationType();
+               
+        documentRoot.getXMLNSPrefixMap().put("", "http://geronimo.apache.org/xml/ns/j2ee/application-1.0");
 
         root.setApplicationName(getComponentName());
         root.setConfigId(getProject().getName() + "/" + getComponentName());
@@ -123,6 +125,9 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
 
         Resource resource = resourceSet.createResource(uri);
         DocumentRoot documentRoot = WebFactory.eINSTANCE.createDocumentRoot();
+                      
+        documentRoot.getXMLNSPrefixMap().put("", "http://geronimo.apache.org/xml/ns/j2ee/web-1.0");
+        
         WebAppType root = WebFactory.eINSTANCE.createWebAppType();
 
         root.setConfigId(getProject().getName() + "/" + getComponentName());
@@ -148,6 +153,8 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
         org.openejb.xml.ns.openejb.jar.DocumentRoot documentRoot = JarFactory.eINSTANCE
                 .createDocumentRoot();
         OpenejbJarType root = JarFactory.eINSTANCE.createOpenejbJarType();
+                    
+        documentRoot.getXMLNSPrefixMap().put("", "http://www.openejb.org/xml/ns/openejb-jar-2.0");
 
         root.setConfigId(getProject().getName() + "/" + getComponentName());
 
@@ -170,7 +177,9 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
         org.apache.geronimo.xml.ns.j2ee.connector.DocumentRoot documentRoot = ConnectorFactory.eINSTANCE
                 .createDocumentRoot();
         ConnectorType root = ConnectorFactory.eINSTANCE.createConnectorType();
-
+                        
+        documentRoot.getXMLNSPrefixMap().put("", "http://geronimo.apache.org/xml/ns/j2ee/connector-1.0");
+        
         root.setConfigId(getProject().getName() + "/" + getComponentName());
 
         documentRoot.setConnector(root);
