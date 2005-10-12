@@ -12,7 +12,7 @@
     </goal>
 
     <goal name="build">
-        <attainGoal name="zipdisto"/>
+        <attainGoal name="zipdistro"/>
         <attainGoal name="sitedistro"/>
     </goal>
 
