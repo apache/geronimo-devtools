@@ -36,8 +36,7 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  * 
  * 
  */
-public class ExportDeploymentPlanOperation extends AbstractDataModelOperation
-        implements IExportDeploymentPlanDataModelProperties {
+public class ExportDeploymentPlanOperation extends AbstractDataModelOperation {
 
     /**
      * 
@@ -62,12 +61,11 @@ public class ExportDeploymentPlanOperation extends AbstractDataModelOperation
     public IStatus execute(IProgressMonitor monitor, IAdaptable info)
             throws ExecutionException {
 
-        IProject project = ProjectUtilities
-                .getProject(model
-                        .getStringProperty(IExportDeploymentPlanDataModelProperties.PROJECT_NAME));
+        IProject project = ProjectUtilities.getProject(model
+                .getStringProperty(GeronimoDataModelProperties.PROJECT_NAME));
 
         IVirtualComponent component = ComponentCore.createComponent(project,
-                IExportDeploymentPlanDataModelProperties.COMPONENT_NAME);
+                GeronimoDataModelProperties.COMPONENT_NAME);
 
         if (component.getComponentTypeId().equals(EARArtifactEdit.TYPE_ID)) {
             IVirtualReference[] refs = component.getReferences();
@@ -89,20 +87,20 @@ public class ExportDeploymentPlanOperation extends AbstractDataModelOperation
     }
 
     private EObject getDeploymentPlanForComponent(IVirtualComponent comp) {
-        
+
         if (comp.getComponentTypeId().equals(EARArtifactEdit.TYPE_ID)) {
             return GeronimoUtils.getApplicationDeploymentPlan(comp);
         }
-        
+
         if (comp.getComponentTypeId().equals(WebArtifactEdit.TYPE_ID)) {
             return GeronimoUtils.getWebDeploymentPlan(comp);
         }
-        
+
         if (comp.getComponentTypeId().equals(EJBArtifactEdit.TYPE_ID)) {
             return GeronimoUtils.getOpenEjbDeploymentPlan(comp);
         }
         return null;
-    } 
+    }
 
     /*
      * (non-Javadoc)

@@ -29,8 +29,6 @@ import org.apache.geronimo.xml.ns.web.WebAppType;
 import org.apache.geronimo.xml.ns.web.WebFactory;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -41,18 +39,13 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.wst.common.componentcore.ComponentCore;
-import org.eclipse.wst.common.componentcore.datamodel.properties.IComponentCreationDataModelProperties;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
-import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
-import org.eclipse.wst.common.frameworks.datamodel.properties.IFlexibleProjectCreationDataModelProperties;
-import org.eclipse.wst.server.core.IRuntime;
-import org.eclipse.wst.server.core.ServerCore;
 import org.openejb.xml.ns.openejb.jar.JarFactory;
 import org.openejb.xml.ns.openejb.jar.OpenejbJarType;
 
-public class DeploymentPlanCreationOperation extends AbstractDataModelOperation {
+public class DeploymentPlanCreationOperation extends AbstractGeronimoJ2EEComponentOperation {
 
     public DeploymentPlanCreationOperation() {
     }
@@ -194,41 +187,6 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
         doSave(resource);
 
         return root;
-    }
-
-    public boolean isGeronimoRuntimeTarget() {
-
-        IRuntime runtime = ServerCore.getProjectProperties(getProject())
-                .getRuntimeTarget();
-        return runtime.getName().startsWith("Apache Geronimo");
-
-    }
-
-    public IStatus redo(IProgressMonitor monitor, IAdaptable info)
-            throws ExecutionException {
-        return null;
-    }
-
-    public IStatus undo(IProgressMonitor monitor, IAdaptable info)
-            throws ExecutionException {
-        return null;
-    }
-
-    public String getComponentName() {
-        return model.getProperty(
-                IComponentCreationDataModelProperties.COMPONENT_NAME)
-                .toString();
-    }
-
-    public IProject getProject() {
-        String projectName = model.getProperty(
-                IFlexibleProjectCreationDataModelProperties.PROJECT_NAME)
-                .toString();
-        if (projectName != null) {
-            return ResourcesPlugin.getWorkspace().getRoot().getProject(
-                    projectName);
-        }
-        return null;
     }
 
     private void doSave(Resource resource) {

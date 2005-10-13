@@ -26,25 +26,17 @@ import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.common.componentcore.ComponentCore;
-import org.eclipse.wst.common.componentcore.datamodel.properties.IComponentCreationDataModelProperties;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
-import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
-import org.eclipse.wst.common.frameworks.datamodel.properties.IFlexibleProjectCreationDataModelProperties;
-import org.eclipse.wst.server.core.IRuntime;
-import org.eclipse.wst.server.core.ServerCore;
 
-public class ImportDeploymentPlanOperation extends AbstractDataModelOperation
-        implements IExportDeploymentPlanDataModelProperties {
+public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponentOperation {
 
     /**
      * 
@@ -149,53 +141,6 @@ public class ImportDeploymentPlanOperation extends AbstractDataModelOperation
         } catch (CoreException e) {
             e.printStackTrace();
         }
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.commands.operations.AbstractOperation#redo(org.eclipse.core.runtime.IProgressMonitor,
-     *      org.eclipse.core.runtime.IAdaptable)
-     */
-    public IStatus redo(IProgressMonitor monitor, IAdaptable info)
-            throws ExecutionException {
-        return null;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.commands.operations.AbstractOperation#undo(org.eclipse.core.runtime.IProgressMonitor,
-     *      org.eclipse.core.runtime.IAdaptable)
-     */
-    public IStatus undo(IProgressMonitor monitor, IAdaptable info)
-            throws ExecutionException {
-        return null;
-    }
-
-    public boolean isGeronimoRuntimeTarget() {
-
-        IRuntime runtime = ServerCore.getProjectProperties(getProject())
-                .getRuntimeTarget();
-        return runtime.getName().startsWith("Apache Geronimo");
-
-    }
-
-    public String getComponentName() {
-        return model.getProperty(
-                IComponentCreationDataModelProperties.COMPONENT_NAME)
-                .toString();
-    }
-
-    public IProject getProject() {
-        String projectName = model.getProperty(
-                IFlexibleProjectCreationDataModelProperties.PROJECT_NAME)
-                .toString();
-        if (projectName != null) {
-            return ResourcesPlugin.getWorkspace().getRoot().getProject(
-                    projectName);
-        }
-        return null;
     }
 
 }

@@ -1,7 +1,7 @@
 package org.apache.geronimo.core.operations;
 
 
-public interface IExportDeploymentPlanDataModelProperties {
+public interface GeronimoDataModelProperties {
 
     public static final String PROJECT_NAME = "IExportDeploymentPlanDataModelProperties.PROJECT_NAME";
 
