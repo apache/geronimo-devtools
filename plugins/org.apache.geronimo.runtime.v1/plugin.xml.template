@@ -45,6 +45,9 @@
       <library name="lib/geronimo-web-builder-@geronimo_runtime_version@.jar">
          <export name="*"/>
       </library>
+      <library name="lib/geronimo-naming-builder-@geronimo_runtime_version@.jar">
+         <export name="*"/>
+      </library>
       <library name="lib/stax-api-1.0.jar">
          <export name="*"/>
       </library> 
