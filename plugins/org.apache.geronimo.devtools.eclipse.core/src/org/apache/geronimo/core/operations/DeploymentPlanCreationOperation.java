@@ -39,7 +39,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.XMIResource;
+import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IComponentCreationDataModelProperties;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -232,9 +232,9 @@ public class DeploymentPlanCreationOperation extends AbstractDataModelOperation 
     }
 
     private void doSave(Resource resource) {
-        if (resource instanceof XMIResource) {
-            ((XMIResource) resource).setEncoding("UTF-8");
-        }
+        if (resource instanceof XMLResource) {
+            ((XMLResource) resource).setEncoding("UTF-8");
+        }       
 
         try {
             resource.save(Collections.EMPTY_MAP);
