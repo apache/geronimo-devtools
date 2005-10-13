@@ -59,20 +59,25 @@
    <extension id="GeronimoOpExtensions" name="GeronimoOpExtensions" point="org.eclipse.wst.common.frameworks.OperationExtension">									
 		<operationExtension
 			id="org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentCreationOperation"
-			postOperationClass="org.apache.geronimo.core.internal.DeploymentPlanCreationOperation">			
+			postOperationClass="org.apache.geronimo.core.operations.DeploymentPlanCreationOperation">			
 	    </operationExtension>	   
 	    <operationExtension
 			id="org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EjbComponentCreationOperation"
-			postOperationClass="org.apache.geronimo.core.internal.DeploymentPlanCreationOperation">
+			postOperationClass="org.apache.geronimo.core.operations.DeploymentPlanCreationOperation">
 		</operationExtension>		
 		<operationExtension
 			id="org.eclipse.jst.j2ee.application.internal.operations.EARComponentCreationOperation"
-			postOperationClass="org.apache.geronimo.core.internal.DeploymentPlanCreationOperation">
+			postOperationClass="org.apache.geronimo.core.operations.DeploymentPlanCreationOperation">
 		</operationExtension>	
 	    <operationExtension
 			id="org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentCreationOperation"
-			postOperationClass="org.apache.geronimo.core.internal.DeploymentPlanCreationOperation">
+			postOperationClass="org.apache.geronimo.core.operations.DeploymentPlanCreationOperation">
 		</operationExtension>
+		
+		<operationExtension
+			id="org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentImportOperation"
+			postOperationClass="org.apache.geronimo.core.operations.ImportDeploymentPlanOperation">
+		</operationExtension>		
    </extension>
    
 </plugin>

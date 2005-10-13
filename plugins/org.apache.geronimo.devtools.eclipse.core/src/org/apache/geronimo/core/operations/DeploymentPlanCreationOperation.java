@@ -13,11 +13,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.apache.geronimo.core.internal;
+package org.apache.geronimo.core.operations;
 
 import java.io.IOException;
 import java.util.Collections;
 
+import org.apache.geronimo.core.internal.GeronimoSchemaNS;
+import org.apache.geronimo.core.internal.GeronimoUtils;
 import org.apache.geronimo.xml.ns.j2ee.application.ApplicationFactory;
 import org.apache.geronimo.xml.ns.j2ee.application.ApplicationType;
 import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorFactory;
