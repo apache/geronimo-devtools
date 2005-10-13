@@ -36,5 +36,17 @@
       <library name="lib/xbean-2.0.0.jar">
          <export name="*"/>
       </library>  
+      <library name="lib/geronimo-service-builder-@geronimo_runtime_version@.jar">
+         <export name="*"/>
+      </library> 
+      <library name="lib/geronimo-connector-builder-@geronimo_runtime_version@.jar">
+         <export name="*"/>
+      </library> 
+      <library name="lib/geronimo-web-builder-@geronimo_runtime_version@.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/stax-api-1.0.jar">
+         <export name="*"/>
+      </library> 
    </runtime>
 </plugin>
