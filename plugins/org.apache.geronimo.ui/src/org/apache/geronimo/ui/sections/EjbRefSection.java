@@ -20,7 +20,6 @@ import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.EjbRefWizard;
 import org.apache.geronimo.xml.ns.naming.NamingFactory;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
-import org.apache.geronimo.xml.ns.web.WebFactory;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
@@ -32,6 +31,8 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class EjbRefSection extends DynamicTableSection {
+    
+    EReference ejbRefERef;
 
     /**
      * @param section
@@ -47,8 +48,9 @@ public class EjbRefSection extends DynamicTableSection {
      * @param style
      */
     public EjbRefSection(EObject plan, Composite parent, FormToolkit toolkit,
-            int style) {
+            int style, EReference ejbRefERef) {
         super(plan, parent, toolkit, style);
+        this.ejbRefERef = ejbRefERef;
         create();
     }
 
@@ -85,7 +87,7 @@ public class EjbRefSection extends DynamicTableSection {
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEReference()
      */
     public EReference getEReference() {
-        return WebFactory.eINSTANCE.getWebPackage().getWebAppType_EjbRef();
+        return ejbRefERef;
     }
 
     /*

@@ -20,10 +20,12 @@ import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.pages.NamingFormPage;
 import org.apache.geronimo.ui.pages.SecurityPage;
 import org.apache.geronimo.ui.pages.WebGeneralPage;
+import org.apache.geronimo.xml.ns.web.WebFactory;
 import org.apache.geronimo.xml.ns.web.impl.WebPackageImpl;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.forms.editor.FormPage;
 
 public class WebEditor extends AbstractGeronimoDeploymentPlanEditor {
 
@@ -35,16 +37,29 @@ public class WebEditor extends AbstractGeronimoDeploymentPlanEditor {
     public void doAddPages() throws PartInitException {
         addPage(new WebGeneralPage(this, "generalpage",
                 Messages.editorTabGeneral));
-        addPage(new NamingFormPage(this, "namingpage", Messages.editorTabNaming));
+        addPage(getNamingFormPage());
         addPage(new SecurityPage(this, "securitypage",
-                Messages.editorTabSecurity,  WebPackageImpl.eINSTANCE
-                .getWebAppType_Security()));
-
+                Messages.editorTabSecurity, WebPackageImpl.eINSTANCE
+                        .getWebAppType_Security()));
         addSourcePage();
     }
 
     public EObject loadDeploymentPlan(IFile file) {
         return GeronimoUtils.getWebDeploymentPlan(file);
+    }
+
+    private FormPage getNamingFormPage() {
+        NamingFormPage formPage = new NamingFormPage(this, "namingpage",
+                Messages.editorTabNaming);
+        formPage.ejbLocalRef = WebFactory.eINSTANCE.getWebPackage()
+                .getWebAppType_EjbLocalRef();
+        formPage.ejbRef = WebFactory.eINSTANCE.getWebPackage()
+                .getWebAppType_EjbRef();
+        formPage.resEnvRef = WebFactory.eINSTANCE.getWebPackage()
+                .getWebAppType_ResourceEnvRef();
+        formPage.resRef = WebFactory.eINSTANCE.getWebPackage()
+                .getWebAppType_ResourceRef();
+        return formPage;
     }
 
 }

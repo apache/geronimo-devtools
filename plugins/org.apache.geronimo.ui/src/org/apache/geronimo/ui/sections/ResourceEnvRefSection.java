@@ -20,10 +20,9 @@ import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.ResourceEnvRefWizard;
 import org.apache.geronimo.xml.ns.naming.NamingFactory;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
-import org.apache.geronimo.xml.ns.web.WebAppType;
-import org.apache.geronimo.xml.ns.web.WebFactory;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
@@ -31,10 +30,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class ResourceEnvRefSection extends DynamicTableSection {
+    
+    EReference resourceEnvRefERef;
 
-    public ResourceEnvRefSection(WebAppType plan, Composite parent,
-            FormToolkit toolkit, int style) {
+    public ResourceEnvRefSection(EObject plan, Composite parent,
+            FormToolkit toolkit, int style,  EReference resourceEnvRefERef) {
         super(plan, parent, toolkit, style);
+        this.resourceEnvRefERef = resourceEnvRefERef;
         create();
     }
 
@@ -71,8 +73,7 @@ public class ResourceEnvRefSection extends DynamicTableSection {
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEReference()
      */
     public EReference getEReference() {
-        return WebFactory.eINSTANCE.getWebPackage()
-                .getWebAppType_ResourceEnvRef();
+        return resourceEnvRefERef;
     }
 
     /*

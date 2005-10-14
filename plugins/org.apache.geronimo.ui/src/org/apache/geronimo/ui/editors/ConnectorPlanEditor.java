@@ -18,7 +18,6 @@ package org.apache.geronimo.ui.editors;
 import org.apache.geronimo.core.internal.GeronimoUtils;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.pages.ConnectorOverviewPage;
-import org.apache.geronimo.ui.pages.NamingFormPage;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ui.PartInitException;
@@ -32,13 +31,12 @@ public class ConnectorPlanEditor extends AbstractGeronimoDeploymentPlanEditor {
     public void doAddPages() throws PartInitException {
         addPage(new ConnectorOverviewPage(this, "connectoroverview",
                 Messages.editorTabGeneral));
-        
-        addPage(new NamingFormPage(this, "namingpage", Messages.editorTabNaming));
-        
         addSourcePage();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.geronimo.ui.editors.AbstractGeronimoDeploymentPlanEditor#loadDeploymentPlan(org.eclipse.core.resources.IFile)
      */
     public EObject loadDeploymentPlan(IFile file) {

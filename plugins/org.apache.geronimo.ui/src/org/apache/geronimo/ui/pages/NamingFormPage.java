@@ -15,12 +15,13 @@
  */
 package org.apache.geronimo.ui.pages;
 
-import org.apache.geronimo.ui.editors.WebEditor;
+import org.apache.geronimo.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.ui.sections.EjbLocalRefSection;
 import org.apache.geronimo.ui.sections.EjbRefSection;
 import org.apache.geronimo.ui.sections.ResourceEnvRefSection;
 import org.apache.geronimo.ui.sections.ResourceRefSection;
-import org.apache.geronimo.xml.ns.web.WebAppType;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IManagedForm;
@@ -31,6 +32,14 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class NamingFormPage extends FormPage {
+
+    public EReference resRef;
+
+    public EReference resEnvRef;
+
+    public EReference ejbRef;
+
+    public EReference ejbLocalRef;
 
     public NamingFormPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
@@ -63,7 +72,8 @@ public class NamingFormPage extends FormPage {
 
     private void fillBody(IManagedForm managedForm) {
 
-        WebAppType plan = (WebAppType) ((WebEditor) getEditor()).getDeploymentPlan();
+        EObject plan = ((AbstractGeronimoDeploymentPlanEditor) getEditor())
+                .getDeploymentPlan();
 
         Composite body = managedForm.getForm().getBody();
 
@@ -72,16 +82,16 @@ public class NamingFormPage extends FormPage {
                 | ExpandableComposite.FOCUS_TITLE;
 
         managedForm.addPart(new ResourceRefSection(plan, body, managedForm
-                .getToolkit(), style));
+                .getToolkit(), style, resRef));
 
         managedForm.addPart(new ResourceEnvRefSection(plan, body, managedForm
-                .getToolkit(), style));
+                .getToolkit(), style, resEnvRef));
 
         managedForm.addPart(new EjbRefSection(plan, body, managedForm
-                .getToolkit(), style));
+                .getToolkit(), style, ejbRef));
 
         managedForm.addPart(new EjbLocalRefSection(plan, body, managedForm
-                .getToolkit(), style));
+                .getToolkit(), style, ejbLocalRef));
     }
 
 }
