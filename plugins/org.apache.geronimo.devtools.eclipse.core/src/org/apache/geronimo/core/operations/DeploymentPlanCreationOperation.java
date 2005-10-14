@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -45,7 +46,8 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.openejb.xml.ns.openejb.jar.JarFactory;
 import org.openejb.xml.ns.openejb.jar.OpenejbJarType;
 
-public class DeploymentPlanCreationOperation extends AbstractGeronimoJ2EEComponentOperation {
+public class DeploymentPlanCreationOperation extends
+        AbstractGeronimoJ2EEComponentOperation {
 
     public DeploymentPlanCreationOperation() {
     }
@@ -97,8 +99,8 @@ public class DeploymentPlanCreationOperation extends AbstractGeronimoJ2EECompone
         ApplicationType root = ApplicationFactory.eINSTANCE
                 .createApplicationType();
 
-        documentRoot.getXMLNSPrefixMap()
-                .put("", GeronimoSchemaNS.GERONIMO_APP_NS);
+        documentRoot.getXMLNSPrefixMap().put("",
+                GeronimoSchemaNS.GERONIMO_APP_NS);
 
         root.setApplicationName(getComponentName());
         root.setConfigId(getProject().getName() + "/" + getComponentName());
@@ -122,8 +124,9 @@ public class DeploymentPlanCreationOperation extends AbstractGeronimoJ2EECompone
         Resource resource = resourceSet.createResource(uri);
         DocumentRoot documentRoot = WebFactory.eINSTANCE.createDocumentRoot();
 
-        documentRoot.getXMLNSPrefixMap()
-                .put("", GeronimoSchemaNS.GERONIMO_WEB_NS);
+        EMap map = documentRoot.getXMLNSPrefixMap();
+        map.put("", GeronimoSchemaNS.GERONIMO_WEB_NS);
+        map.put("sec", GeronimoSchemaNS.GERONIMO_SECURITY_NS);
 
         WebAppType root = WebFactory.eINSTANCE.createWebAppType();
 
@@ -192,7 +195,7 @@ public class DeploymentPlanCreationOperation extends AbstractGeronimoJ2EECompone
     private void doSave(Resource resource) {
         if (resource instanceof XMLResource) {
             ((XMLResource) resource).setEncoding("UTF-8");
-        }       
+        }
 
         try {
             resource.save(Collections.EMPTY_MAP);

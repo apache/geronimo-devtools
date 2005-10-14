@@ -24,5 +24,9 @@ public interface GeronimoSchemaNS {
     public static final String GERONIMO_OPENEJB_NS = "http://www.openejb.org/xml/ns/openejb-jar-2.0";
 
     public static final String GERONIMO_CONNECTOR_NS = "http://geronimo.apache.org/xml/ns/j2ee/connector-1.0";
+    
+    public static final String GERONIMO_NAMING_NS = "http://geronimo.apache.org/xml/ns/naming-1.0";
+    
+    public static final String GERONIMO_SECURITY_NS = "http://geronimo.apache.org/xml/ns/security-1.0";
 
 }
