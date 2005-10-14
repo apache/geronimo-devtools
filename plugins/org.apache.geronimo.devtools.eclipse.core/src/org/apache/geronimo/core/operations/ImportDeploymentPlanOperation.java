@@ -21,6 +21,8 @@ import java.net.MalformedURLException;
 import org.apache.geronimo.core.internal.GeronimoUtils;
 import org.apache.geronimo.deployment.xmlbeans.XmlBeansUtil;
 import org.apache.geronimo.schema.SchemaConversionUtils;
+import org.apache.geronimo.xbeans.geronimo.GerConnectorType;
+import org.apache.geronimo.xbeans.geronimo.j2ee.GerApplicationType;
 import org.apache.geronimo.xbeans.geronimo.web.GerWebAppType;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
@@ -35,8 +37,10 @@ import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.openejb.xbeans.ejbjar.OpenejbOpenejbJarType;
 
-public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponentOperation {
+public class ImportDeploymentPlanOperation extends
+        AbstractGeronimoJ2EEComponentOperation {
 
     /**
      * 
@@ -60,7 +64,6 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
      */
     public IStatus execute(IProgressMonitor monitor, IAdaptable info)
             throws ExecutionException {
-
         if (!isGeronimoRuntimeTarget())
             return Status.OK_STATUS;
 
@@ -93,9 +96,7 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
     }
 
     public void importWebDeploymentPlan(IFile dpFile) throws XmlException {
-
         XmlObject plan = getXmlObject(dpFile);
-
         if (plan != null) {
             SchemaConversionUtils.fixGeronimoSchema(plan, "web-app",
                     GerWebAppType.type);
@@ -104,18 +105,33 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
     }
 
     public void importEarDeploymentPlan(IFile dpFile) throws XmlException {
+        XmlObject plan = getXmlObject(dpFile);
+        if (plan != null) {
+            SchemaConversionUtils.fixGeronimoSchema(plan, "application",
+                    GerApplicationType.type);
+            save(plan, dpFile);
+        }
     }
 
     public void importEjbDeploymentPlan(IFile dpFile) throws XmlException {
-
+        XmlObject plan = getXmlObject(dpFile);
+        if (plan != null) {
+            SchemaConversionUtils.fixGeronimoSchema(plan, "openejb-jar",
+                    OpenejbOpenejbJarType.type);
+            save(plan, dpFile);
+        }
     }
 
     public void importConnectorDeploymentPlan(IFile dpFile) throws XmlException {
-
+        XmlObject plan = getXmlObject(dpFile);
+        if (plan != null) {
+            SchemaConversionUtils.fixGeronimoSchema(plan, "connector",
+                    GerConnectorType.type);
+            save(plan, dpFile);
+        }
     }
 
     private XmlObject getXmlObject(IFile dpFile) {
-
         if (dpFile.exists()) {
             try {
                 return XmlBeansUtil
@@ -128,7 +144,6 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
                 e.printStackTrace();
             }
         }
-
         return null;
     }
 

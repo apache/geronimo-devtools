@@ -54,7 +54,8 @@
       <replaceregexp file="plugin.xml" match="@geronimo_spec_version@" replace="${geronimo_spec_version}" byline="true"/>
       <replaceregexp file="plugin.xml" match="@mx4j_version@" replace="${mx4j_version}" byline="true"/>  
       <replaceregexp file="plugin.xml" match="@commons_logging_version@" replace="${commons_logging_version}" byline="true"/>   
-      <replaceregexp file="plugin.xml" match="@cglib_version@" replace="${cglib_version}" byline="true"/>      
+      <replaceregexp file="plugin.xml" match="@cglib_version@" replace="${cglib_version}" byline="true"/>     
+      <replaceregexp file="plugin.xml" match="@openejb_version@" replace="${openejb_version}" byline="true"/>     
     </goal>
     
     <goal name="copyjars">        

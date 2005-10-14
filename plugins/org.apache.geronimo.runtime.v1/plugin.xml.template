@@ -48,6 +48,15 @@
       <library name="lib/geronimo-naming-builder-@geronimo_runtime_version@.jar">
          <export name="*"/>
       </library>
+      <library name="lib/geronimo-security-builder-@geronimo_runtime_version@.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/geronimo-j2ee-builder-@geronimo_runtime_version@.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/openejb-builder-@openejb_version@.jar">
+         <export name="*"/>
+      </library>
       <library name="lib/stax-api-1.0.jar">
          <export name="*"/>
       </library> 

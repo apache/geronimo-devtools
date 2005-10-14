@@ -109,9 +109,24 @@
       <artifactId>geronimo-web-builder</artifactId>
       <version>${geronimo_runtime_version}</version>
     </dependency>
-      <dependency>
+    <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-naming-builder</artifactId>
+      <version>${geronimo_runtime_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>geronimo</groupId>
+      <artifactId>geronimo-j2ee-builder</artifactId>
+      <version>${geronimo_runtime_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>openejb</groupId>
+      <artifactId>openejb-builder</artifactId>
+      <version>${openejb_version}</version>
+    </dependency>
+     <dependency>
+    <groupId>geronimo</groupId>
+      <artifactId>geronimo-security-builder</artifactId>
       <version>${geronimo_runtime_version}</version>
     </dependency>
     <dependency>
