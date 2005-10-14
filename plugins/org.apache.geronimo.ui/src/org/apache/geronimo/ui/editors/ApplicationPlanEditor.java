@@ -18,6 +18,8 @@ package org.apache.geronimo.ui.editors;
 import org.apache.geronimo.core.internal.GeronimoUtils;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.pages.AppGeneralPage;
+import org.apache.geronimo.ui.pages.SecurityPage;
+import org.apache.geronimo.xml.ns.j2ee.application.ApplicationPackage;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ui.PartInitException;
@@ -34,7 +36,9 @@ public class ApplicationPlanEditor extends AbstractGeronimoDeploymentPlanEditor 
     public void doAddPages() throws PartInitException {
         addPage(new AppGeneralPage(this, "appgeneralpage",
                 Messages.editorTabGeneral));
-        
+        addPage(new SecurityPage(this, "securitypage",
+                Messages.editorTabSecurity,  ApplicationPackage.eINSTANCE
+                .getApplicationType_Security()));             
         addSourcePage();
     }
 

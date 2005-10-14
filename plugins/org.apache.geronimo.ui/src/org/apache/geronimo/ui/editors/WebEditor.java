@@ -20,6 +20,7 @@ import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.pages.NamingFormPage;
 import org.apache.geronimo.ui.pages.SecurityPage;
 import org.apache.geronimo.ui.pages.WebGeneralPage;
+import org.apache.geronimo.xml.ns.web.impl.WebPackageImpl;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ui.PartInitException;
@@ -36,7 +37,8 @@ public class WebEditor extends AbstractGeronimoDeploymentPlanEditor {
                 Messages.editorTabGeneral));
         addPage(new NamingFormPage(this, "namingpage", Messages.editorTabNaming));
         addPage(new SecurityPage(this, "securitypage",
-                Messages.editorTabSecurity));
+                Messages.editorTabSecurity,  WebPackageImpl.eINSTANCE
+                .getWebAppType_Security()));
 
         addSourcePage();
     }

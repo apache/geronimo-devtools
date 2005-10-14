@@ -1,8 +1,9 @@
 package org.apache.geronimo.ui.pages;
 
-import org.apache.geronimo.ui.editors.WebEditor;
+import org.apache.geronimo.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.ui.sections.SecuritySection;
-import org.apache.geronimo.xml.ns.web.WebAppType;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IManagedForm;
@@ -14,16 +15,18 @@ import org.eclipse.ui.forms.widgets.Section;
 
 public class SecurityPage extends FormPage {
 
-    public SecurityPage(FormEditor editor, String id, String title) {
+    public EReference securityERef;
+
+    public SecurityPage(FormEditor editor, String id, String title,
+            EReference securityERef) {
         super(editor, id, title);
-        // TODO Auto-generated constructor stub
+        this.securityERef = securityERef;
     }
 
     public SecurityPage(String id, String title) {
         super(id, title);
-        // TODO Auto-generated constructor stub
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -47,7 +50,8 @@ public class SecurityPage extends FormPage {
 
     private void fillBody(IManagedForm managedForm) {
 
-        WebAppType plan = (WebAppType) ((WebEditor) getEditor()).getDeploymentPlan();
+        EObject plan = ((AbstractGeronimoDeploymentPlanEditor) getEditor())
+                .getDeploymentPlan();
 
         Composite body = managedForm.getForm().getBody();
 
@@ -56,7 +60,7 @@ public class SecurityPage extends FormPage {
                 | ExpandableComposite.FOCUS_TITLE;
 
         managedForm.addPart(new SecuritySection(plan, body, managedForm
-                .getToolkit(), style));
+                .getToolkit(), style, securityERef));
     }
 
 }

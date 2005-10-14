@@ -23,8 +23,6 @@ import org.apache.geronimo.xml.ns.security.RoleType;
 import org.apache.geronimo.xml.ns.security.SecurityFactory;
 import org.apache.geronimo.xml.ns.security.SecurityPackage;
 import org.apache.geronimo.xml.ns.security.SecurityType;
-import org.apache.geronimo.xml.ns.web.WebAppType;
-import org.apache.geronimo.xml.ns.web.impl.WebPackageImpl;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EFactory;
@@ -50,8 +48,7 @@ import org.eclipse.ui.forms.widgets.Section;
  */
 public class SecuritySection extends DynamicTableSection {
 
-    public static EReference securityERef = WebPackageImpl.eINSTANCE
-            .getWebAppType_Security();
+    public EReference securityERef;
 
     /**
      * @param plan
@@ -59,9 +56,10 @@ public class SecuritySection extends DynamicTableSection {
      * @param toolkit
      * @param style
      */
-    public SecuritySection(WebAppType plan, Composite parent,
-            FormToolkit toolkit, int style) {
+    public SecuritySection(EObject plan, Composite parent,
+            FormToolkit toolkit, int style, EReference securityERef) {
         super(plan, parent, toolkit, style);
+        this.securityERef = securityERef;
         create();
     }
 

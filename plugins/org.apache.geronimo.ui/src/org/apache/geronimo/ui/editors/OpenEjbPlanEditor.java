@@ -18,9 +18,12 @@ package org.apache.geronimo.ui.editors;
 import org.apache.geronimo.core.internal.GeronimoUtils;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.pages.EjbOverviewPage;
+import org.apache.geronimo.ui.pages.NamingFormPage;
+import org.apache.geronimo.ui.pages.SecurityPage;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ui.PartInitException;
+import org.openejb.xml.ns.openejb.jar.JarPackage;
 /**
  * 
  * 
@@ -36,8 +39,11 @@ public class OpenEjbPlanEditor extends AbstractGeronimoDeploymentPlanEditor {
 
     public void doAddPages() throws PartInitException {
         addPage(new EjbOverviewPage(this, "ejboverview",
-                Messages.editorTabGeneral));
-        
+                Messages.editorTabGeneral));        
+        addPage(new NamingFormPage(this, "namingpage", Messages.editorTabNaming));
+        addPage(new SecurityPage(this, "securitypage",
+                Messages.editorTabSecurity,  JarPackage.eINSTANCE
+                .getOpenejbJarType_Security()));        
         addSourcePage();
     }
 

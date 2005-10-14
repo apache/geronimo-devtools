@@ -63,10 +63,10 @@ public class SecurityRoleWizard extends DynamicAddEditWizard {
             EObject plan = section.getPlan();
 
             SecurityType securityType = (SecurityType) plan
-                    .eGet(SecuritySection.securityERef);
+                    .eGet(((SecuritySection) section).securityERef);
             if (securityType == null) {
                 securityType = SecurityFactory.eINSTANCE.createSecurityType();
-                plan.eSet(SecuritySection.securityERef, securityType);
+                plan.eSet(((SecuritySection) section).securityERef, securityType);
             }
 
             RoleMappingsType roleMappingsType = securityType.getRoleMappings();
