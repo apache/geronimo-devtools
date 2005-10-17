@@ -36,11 +36,8 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 
     protected Text parentId;
     
-    private EObject plan;
-    
     public CommonGeneralSection(Composite parent, FormToolkit toolkit, int style, EObject plan) {
-        super(parent, toolkit, style);
-        this.plan = plan;
+        super(parent, toolkit, style, plan);
     }
 
     protected void createConfigAndParentComposite(Section section,

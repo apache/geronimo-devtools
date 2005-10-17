@@ -52,8 +52,6 @@ import org.eclipse.ui.forms.widgets.Section;
 
 public abstract class DynamicTableSection extends AbstractSectionPart {
 
-    private EObject plan;
-
     private Image image;
 
     protected Table table;
@@ -77,8 +75,7 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
      */
     public DynamicTableSection(EObject plan, Composite parent,
             FormToolkit toolkit, int style) {
-        super(parent, toolkit, style);
-        this.plan = plan;
+        super(parent, toolkit, style, plan);
     }
 
     public void create() {

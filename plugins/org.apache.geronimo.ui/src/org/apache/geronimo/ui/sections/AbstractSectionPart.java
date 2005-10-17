@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.ui.sections;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -23,6 +24,8 @@ import org.eclipse.ui.forms.widgets.Section;
 public abstract class AbstractSectionPart extends SectionPart {
     
     protected FormToolkit toolkit;
+    
+    EObject plan;
 
     /**
      * @param section
@@ -36,9 +39,10 @@ public abstract class AbstractSectionPart extends SectionPart {
      * @param toolkit
      * @param style
      */
-    public AbstractSectionPart(Composite parent, FormToolkit toolkit, int style) {
+    public AbstractSectionPart(Composite parent, FormToolkit toolkit, int style, EObject plan) {
         super(parent, toolkit, style);
         this.toolkit = toolkit;
+        this.plan = plan;
     }
 
     /*
