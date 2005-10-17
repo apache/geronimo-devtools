@@ -1,6 +1,7 @@
 package org.apache.geronimo.ui.pages;
 
 import org.apache.geronimo.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.apache.geronimo.ui.sections.SecurityRootSection;
 import org.apache.geronimo.ui.sections.SecuritySection;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -58,6 +59,9 @@ public class SecurityPage extends FormPage {
         int style = ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
                 | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
                 | ExpandableComposite.FOCUS_TITLE;
+
+        managedForm.addPart(new SecurityRootSection(body, managedForm
+                .getToolkit(), style, plan, securityERef));
 
         managedForm.addPart(new SecuritySection(plan, body, managedForm
                 .getToolkit(), style, securityERef));

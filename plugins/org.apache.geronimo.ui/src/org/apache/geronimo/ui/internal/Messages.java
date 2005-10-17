@@ -201,6 +201,14 @@ public class Messages extends NLS {
     public static String console;
     
     public static String consoleTooltip;
+    
+    //
+    
+    public static String doasCurrentCaller;
+   
+    public static String useContextHandler;
+    
+    public static String defaultRole;
 
     static {
         NLS.initializeMessages(GeronimoUIPlugin.PLUGIN_ID

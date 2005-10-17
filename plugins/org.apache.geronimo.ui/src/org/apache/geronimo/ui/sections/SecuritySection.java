@@ -19,6 +19,7 @@ import org.apache.geronimo.ui.internal.GeronimoUIPlugin;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.SecurityRoleWizard;
 import org.apache.geronimo.xml.ns.security.DescriptionType;
+import org.apache.geronimo.xml.ns.security.RoleMappingsType;
 import org.apache.geronimo.xml.ns.security.RoleType;
 import org.apache.geronimo.xml.ns.security.SecurityFactory;
 import org.apache.geronimo.xml.ns.security.SecurityPackage;
@@ -56,8 +57,8 @@ public class SecuritySection extends DynamicTableSection {
      * @param toolkit
      * @param style
      */
-    public SecuritySection(EObject plan, Composite parent,
-            FormToolkit toolkit, int style, EReference securityERef) {
+    public SecuritySection(EObject plan, Composite parent, FormToolkit toolkit,
+            int style, EReference securityERef) {
         super(plan, parent, toolkit, style);
         this.securityERef = securityERef;
         create();
@@ -133,8 +134,9 @@ public class SecuritySection extends DynamicTableSection {
         return false;
     }
 
-
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#createClient()
      */
     public void createClient() {
@@ -187,20 +189,25 @@ public class SecuritySection extends DynamicTableSection {
         SecurityType secType = (SecurityType) getPlan().eGet(securityERef);
 
         if (secType != null) {
+            RoleMappingsType roleMappings = secType.getRoleMappings();
+            if (roleMappings != null) {
 
-            EList list = (EList) (secType.getRoleMappings().getRole());
+                EList list = roleMappings.getRole();
 
-            for (int j = 0; j < list.size(); j++) {
-                TableItem item = new TableItem(table, SWT.NONE);
-                String[] tableTextData = getTableText((EObject) list.get(j));
-                item.setImage(getImage());
-                item.setText(tableTextData);
-                item.setData((EObject) list.get(j));
+                for (int j = 0; j < list.size(); j++) {
+                    TableItem item = new TableItem(table, SWT.NONE);
+                    String[] tableTextData = getTableText((EObject) list.get(j));
+                    item.setImage(getImage());
+                    item.setText(tableTextData);
+                    item.setData((EObject) list.get(j));
+                }
             }
         }
     }
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getImageDescriptor()
      */
     public ImageDescriptor getImageDescriptor() {

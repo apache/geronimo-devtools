@@ -40,8 +40,9 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
         super(parent, toolkit, style, plan);
     }
 
-    protected void createConfigAndParentComposite(Section section,
-            FormToolkit toolkit) {
+    protected void createClient() {
+        
+        Section section = getSection();
 
         section.setText(Messages.editorSectionGeneralTitle);
         section.setDescription(Messages.editorSectionGeneralDescription);

@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.Section;
 
 public class WebGeneralSection extends CommonGeneralSection {
 
@@ -49,13 +48,14 @@ public class WebGeneralSection extends CommonGeneralSection {
             EObject plan) {
         super(parent, toolkit, style, plan);
         this.plan = (WebAppType) plan;
-        createClient(getSection(), toolkit);
-    }
+        createClient();
+    }   
 
-    private void createClient(Section section, FormToolkit toolkit) {
-
-        createConfigAndParentComposite(section, toolkit);
-        Composite composite = (Composite) section.getClient();
+    protected void createClient() {
+        
+        super.createClient();
+        
+        Composite composite = (Composite) getSection().getClient();
 
         // ------- Label and text field for the context root -------
         createLabel(composite, Messages.editorContextRoot, toolkit);
