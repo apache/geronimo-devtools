@@ -63,7 +63,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
         createLabel(composite, Messages.editorConfigId, toolkit);
 
         configId = toolkit.createText(composite, getConfigID(), SWT.BORDER);
-        configId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        configId.setLayoutData(createTextFieldGridData());
         configId.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
                 setConfigID(configId.getText());
@@ -76,7 +76,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 
         parentId = toolkit.createText(composite, getParentID(), SWT.BORDER);
         parentId
-                .setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+                .setLayoutData(createTextFieldGridData());
         parentId.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
                 setParentID(parentId.getText());
@@ -91,6 +91,12 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
         label.setForeground(toolkit.getColors().getColor(FormColors.TITLE));
         label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
         return label;
+    }
+    
+    protected GridData createTextFieldGridData() {
+        GridData data = new GridData(SWT.FILL, SWT.CENTER, true, false);
+        data.widthHint = 150;
+        return data;
     }
 
     protected String getConfigID() {
