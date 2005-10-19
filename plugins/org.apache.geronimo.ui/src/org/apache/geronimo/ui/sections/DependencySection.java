@@ -97,7 +97,7 @@ public class DependencySection extends DynamicTableSection {
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnNames()
      */
     public String[] getTableColumnNames() {
-        return new String[] { Messages.name };
+        return new String[] {};
     }
 
     /*

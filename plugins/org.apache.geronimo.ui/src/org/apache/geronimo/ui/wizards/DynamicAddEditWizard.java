@@ -161,7 +161,10 @@ public abstract class DynamicAddEditWizard extends Wizard {
 
             for (int i = 0; i < section.getTableColumnNames().length; i++) {
                 Label label = new Label(composite, SWT.LEFT);
-                label.setText(section.getTableColumnNames()[i] + ":");
+                String columnName = section.getTableColumnNames()[i];
+                if(!columnName.endsWith(":"))
+                    columnName = columnName.concat(":");
+                label.setText(columnName);
                 data = new GridData();
                 data.horizontalAlignment = GridData.FILL;
                 label.setLayoutData(data);

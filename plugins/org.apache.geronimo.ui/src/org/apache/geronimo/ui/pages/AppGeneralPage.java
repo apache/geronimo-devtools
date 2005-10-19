@@ -18,6 +18,7 @@ package org.apache.geronimo.ui.pages;
 import org.apache.geronimo.ui.editors.ApplicationPlanEditor;
 import org.apache.geronimo.ui.sections.AppGeneralSection;
 import org.apache.geronimo.ui.sections.DependencySection;
+import org.apache.geronimo.ui.sections.ImportSection;
 import org.apache.geronimo.xml.ns.j2ee.application.ApplicationPackage;
 import org.apache.geronimo.xml.ns.j2ee.application.ApplicationType;
 import org.eclipse.swt.layout.GridLayout;
@@ -54,20 +55,15 @@ public class AppGeneralPage extends FormPage {
      * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
      */
     protected void createFormContent(IManagedForm managedForm) {
-
         ScrolledForm form = managedForm.getForm();
         form.setText(getTitle());
         GridLayout layout = new GridLayout();
         layout.numColumns = 2;
         layout.horizontalSpacing = 20;
         layout.makeColumnsEqualWidth = true;
-
         form.getBody().setLayout(layout);
-
         fillBody(managedForm);
-
         form.reflow(true);
-
     }
 
     private void fillBody(IManagedForm managedForm) {
@@ -86,6 +82,10 @@ public class AppGeneralPage extends FormPage {
 
         managedForm.addPart(new DependencySection(plan,
                 ApplicationPackage.eINSTANCE.getApplicationType_Dependency(),
+                body, managedForm.getToolkit(), style));
+        
+        managedForm.addPart(new ImportSection(plan,
+                ApplicationPackage.eINSTANCE.getApplicationType_Import(),
                 body, managedForm.getToolkit(), style));
     }
 

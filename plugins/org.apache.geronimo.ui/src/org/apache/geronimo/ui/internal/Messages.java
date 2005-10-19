@@ -71,6 +71,12 @@ public class Messages extends NLS {
     public static String editorSectionDependenciesDescription;
     
     //
+    
+    public static String editorSectionImportTitle;
+
+    public static String editorSectionImportDescription;
+    
+    //
 
     public static String editorResourceRefDescription;
 
@@ -180,6 +186,16 @@ public class Messages extends NLS {
     
     public static String version;
 
+    //
+    
+    public static String wizardNewTitle_Import;
+
+    public static String wizardEditTitle_Import;
+
+    public static String wizardPageTitle_Import;
+
+    public static String wizardPageDescription_Import;        
+    
     //
 
     public static String wizardNewTitle_SecurityRole;

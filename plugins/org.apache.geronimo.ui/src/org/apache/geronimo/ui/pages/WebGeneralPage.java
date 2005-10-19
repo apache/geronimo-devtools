@@ -17,6 +17,7 @@ package org.apache.geronimo.ui.pages;
 
 import org.apache.geronimo.ui.editors.WebEditor;
 import org.apache.geronimo.ui.sections.DependencySection;
+import org.apache.geronimo.ui.sections.ImportSection;
 import org.apache.geronimo.ui.sections.WebGeneralSection;
 import org.apache.geronimo.xml.ns.web.WebAppType;
 import org.apache.geronimo.xml.ns.web.WebPackage;
@@ -68,5 +69,9 @@ public class WebGeneralPage extends FormPage {
         managedForm.addPart(new DependencySection(plan, WebPackage.eINSTANCE
                 .getWebAppType_Dependency(), body, managedForm.getToolkit(),
                 style));
+        
+        managedForm.addPart(new ImportSection(plan,
+                WebPackage.eINSTANCE.getWebAppType_Import(), body,
+                managedForm.getToolkit(), style));
     }
 }
