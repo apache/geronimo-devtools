@@ -15,23 +15,15 @@
  */
 package org.apache.geronimo.ui.pages;
 
-import org.apache.geronimo.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.ui.sections.EjbLocalRefSection;
 import org.apache.geronimo.ui.sections.EjbRefSection;
 import org.apache.geronimo.ui.sections.ResourceEnvRefSection;
 import org.apache.geronimo.ui.sections.ResourceRefSection;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.forms.widgets.Section;
 
-public class NamingFormPage extends FormPage {
+public class NamingFormPage extends AbstractGeronimoFormPage {
 
     public EReference resRef;
 
@@ -49,49 +41,19 @@ public class NamingFormPage extends FormPage {
         super(id, title);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
+
+    /* (non-Javadoc)
+     * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
-    protected void createFormContent(IManagedForm managedForm) {
+    protected void fillBody(IManagedForm managedForm) {
+        
+        managedForm.addPart(new ResourceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), resRef));
 
-        ScrolledForm form = managedForm.getForm();
-        form.setText(getTitle());
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        layout.horizontalSpacing = 20;
+        managedForm.addPart(new ResourceEnvRefSection(getDeploymentPlan(), body, toolkit, getStyle(), resEnvRef));
 
-        form.getBody().setLayout(layout);
+        managedForm.addPart(new EjbRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbRef));
 
-        fillBody(managedForm);
-
-        form.reflow(true);
-
-    }
-
-    private void fillBody(IManagedForm managedForm) {
-
-        EObject plan = ((AbstractGeronimoDeploymentPlanEditor) getEditor())
-                .getDeploymentPlan();
-
-        Composite body = managedForm.getForm().getBody();
-
-        int style = ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
-                | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
-                | ExpandableComposite.FOCUS_TITLE;
-
-        managedForm.addPart(new ResourceRefSection(plan, body, managedForm
-                .getToolkit(), style, resRef));
-
-        managedForm.addPart(new ResourceEnvRefSection(plan, body, managedForm
-                .getToolkit(), style, resEnvRef));
-
-        managedForm.addPart(new EjbRefSection(plan, body, managedForm
-                .getToolkit(), style, ejbRef));
-
-        managedForm.addPart(new EjbLocalRefSection(plan, body, managedForm
-                .getToolkit(), style, ejbLocalRef));
+        managedForm.addPart(new EjbLocalRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbLocalRef));
     }
 
 }

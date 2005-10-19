@@ -15,22 +15,14 @@
  */
 package org.apache.geronimo.ui.pages;
 
-import org.apache.geronimo.ui.editors.OpenEjbPlanEditor;
 import org.apache.geronimo.ui.sections.DependencySection;
 import org.apache.geronimo.ui.sections.ImportSection;
 import org.apache.geronimo.ui.sections.OpenEjbJarGeneralSection;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.forms.widgets.Section;
 import org.openejb.xml.ns.openejb.jar.JarPackage;
-import org.openejb.xml.ns.openejb.jar.OpenejbJarType;
 
-public class EjbOverviewPage extends FormPage {
+public class EjbOverviewPage extends AbstractGeronimoFormPage {
 
     /**
      * @param editor
@@ -49,42 +41,23 @@ public class EjbOverviewPage extends FormPage {
         super(id, title);
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
-    protected void createFormContent(IManagedForm managedForm) {
-        ScrolledForm form = managedForm.getForm();
-        form.setText(getTitle());
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        layout.horizontalSpacing = 20;
-        layout.makeColumnsEqualWidth = true;
-        form.getBody().setLayout(layout);
-        fillBody(managedForm);
-        form.reflow(true);
-    }
-
     protected void fillBody(IManagedForm managedForm) {
 
-        OpenejbJarType plan = (OpenejbJarType) ((OpenEjbPlanEditor) getEditor())
-                .getDeploymentPlan();
+        managedForm.addPart(new OpenEjbJarGeneralSection(body, toolkit,
+                getStyle(), getDeploymentPlan()));
 
-        Composite body = managedForm.getForm().getBody();
-
-        int style = ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
-                | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
-                | ExpandableComposite.FOCUS_TITLE;
-
-        managedForm.addPart(new OpenEjbJarGeneralSection(body,
-                managedForm.getToolkit(), style, plan));
-        
-        managedForm.addPart(new DependencySection(plan,
+        managedForm.addPart(new DependencySection(getDeploymentPlan(),
                 JarPackage.eINSTANCE.getOpenejbJarType_Dependency(), body,
-                managedForm.getToolkit(), style));
+                toolkit, getStyle()));
 
-        managedForm.addPart(new ImportSection(plan, JarPackage.eINSTANCE
-                .getOpenejbJarType_Import(), body, managedForm.getToolkit(),
-                style));
+        managedForm.addPart(new ImportSection(getDeploymentPlan(),
+                JarPackage.eINSTANCE.getOpenejbJarType_Import(), body, toolkit,
+                getStyle()));
 
     }
 

@@ -1,20 +1,13 @@
 package org.apache.geronimo.ui.pages;
 
-import org.apache.geronimo.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.ui.sections.SecurityRootSection;
 import org.apache.geronimo.ui.sections.SecuritySection;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.forms.widgets.Section;
 
-public class SecurityPage extends FormPage {
+public class SecurityPage extends AbstractGeronimoFormPage {
 
     public EReference securityERef;
 
@@ -28,43 +21,23 @@ public class SecurityPage extends FormPage {
         super(id, title);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
+    /* (non-Javadoc)
+     * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
-    protected void createFormContent(IManagedForm managedForm) {
+    protected void fillBody(IManagedForm managedForm) {
 
-        ScrolledForm form = managedForm.getForm();
-        form.setText(getTitle());
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 1;
-        layout.horizontalSpacing = 20;
+        managedForm.addPart(new SecurityRootSection(body, toolkit, getStyle(), getDeploymentPlan(), securityERef));
 
-        form.getBody().setLayout(layout);
-
-        fillBody(managedForm);
-
-        form.reflow(true);
-
+        managedForm.addPart(new SecuritySection(getDeploymentPlan(), body, toolkit, getStyle(), securityERef));
     }
-
-    private void fillBody(IManagedForm managedForm) {
-
-        EObject plan = ((AbstractGeronimoDeploymentPlanEditor) getEditor())
-                .getDeploymentPlan();
-
-        Composite body = managedForm.getForm().getBody();
-
-        int style = ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
-                | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
-                | ExpandableComposite.FOCUS_TITLE;
-
-        managedForm.addPart(new SecurityRootSection(body, managedForm
-                .getToolkit(), style, plan, securityERef));
-
-        managedForm.addPart(new SecuritySection(plan, body, managedForm
-                .getToolkit(), style, securityERef));
+    
+    /* (non-Javadoc)
+     * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getLayout()
+     */
+    protected GridLayout getLayout() {
+        GridLayout layout = super.getLayout();
+        layout.numColumns = 1;
+        return layout;
     }
 
 }

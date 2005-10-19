@@ -15,22 +15,14 @@
  */
 package org.apache.geronimo.ui.pages;
 
-import org.apache.geronimo.ui.editors.ConnectorPlanEditor;
 import org.apache.geronimo.ui.sections.ConnectorGeneralSection;
 import org.apache.geronimo.ui.sections.DependencySection;
 import org.apache.geronimo.ui.sections.ImportSection;
 import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorPackage;
-import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorType;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.forms.widgets.Section;
 
-public class ConnectorOverviewPage extends FormPage {
+public class ConnectorOverviewPage extends AbstractGeronimoFormPage {
 
     /**
      * @param editor
@@ -49,44 +41,20 @@ public class ConnectorOverviewPage extends FormPage {
         super(id, title);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
+    /* (non-Javadoc)
+     * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
-    protected void createFormContent(IManagedForm managedForm) {
-        ScrolledForm form = managedForm.getForm();
-        form.setText(getTitle());
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        layout.horizontalSpacing = 20;
-        layout.makeColumnsEqualWidth = true;
-        form.getBody().setLayout(layout);
-        fillBody(managedForm);
-        form.reflow(true);
-    }
-
     protected void fillBody(IManagedForm managedForm) {
 
-        ConnectorType plan = (ConnectorType) ((ConnectorPlanEditor) getEditor())
-                .getDeploymentPlan();
+        managedForm.addPart(new ConnectorGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
 
-        Composite body = managedForm.getForm().getBody();
-
-        int style = ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
-                | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
-                | ExpandableComposite.FOCUS_TITLE;
-
-        managedForm.addPart(new ConnectorGeneralSection(body, managedForm
-                .getToolkit(), style, plan));
-
-        managedForm.addPart(new DependencySection(plan,
+        managedForm.addPart(new DependencySection(getDeploymentPlan(),
                 ConnectorPackage.eINSTANCE.getConnectorType_Dependency(), body,
-                managedForm.getToolkit(), style));
+                toolkit, getStyle()));
 
-        managedForm.addPart(new ImportSection(plan, ConnectorPackage.eINSTANCE
-                .getConnectorType_Import(), body, managedForm.getToolkit(),
-                style));
+        managedForm.addPart(new ImportSection(getDeploymentPlan(), ConnectorPackage.eINSTANCE
+                .getConnectorType_Import(), body, toolkit,
+                getStyle()));
     }
 
 }
