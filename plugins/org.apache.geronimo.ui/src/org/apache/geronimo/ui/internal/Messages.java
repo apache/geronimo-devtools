@@ -28,9 +28,9 @@ public class Messages extends NLS {
 
     public static String editorTabSecurity;
     
+    public static String editorTabDeployment;
+    
     public static String editorTabSource;
-
-    public static String editorTabDependencies;
 
     public static String errorCouldNotOpenFile;
 
@@ -75,6 +75,16 @@ public class Messages extends NLS {
     public static String editorSectionImportTitle;
 
     public static String editorSectionImportDescription;
+    
+    //
+    
+    public static String editorSectionGBeanTitle;
+
+    public static String editorSectionGBeanDescription;
+    
+    public static String className;
+    
+    public static String GbeanName;
     
     //
 
@@ -194,7 +204,17 @@ public class Messages extends NLS {
 
     public static String wizardPageTitle_Import;
 
-    public static String wizardPageDescription_Import;        
+    public static String wizardPageDescription_Import;    
+    
+    //
+    
+    public static String wizardNewTitle_GBean;
+
+    public static String wizardEditTitle_GBean;
+
+    public static String wizardPageTitle_GBean;
+
+    public static String wizardPageDescription_GBean;    
     
     //
 

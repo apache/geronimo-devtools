@@ -45,14 +45,10 @@ public class NamingFormPage extends AbstractGeronimoFormPage {
     /* (non-Javadoc)
      * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
-    protected void fillBody(IManagedForm managedForm) {
-        
+    protected void fillBody(IManagedForm managedForm) {        
         managedForm.addPart(new ResourceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), resRef));
-
         managedForm.addPart(new ResourceEnvRefSection(getDeploymentPlan(), body, toolkit, getStyle(), resEnvRef));
-
         managedForm.addPart(new EjbRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbRef));
-
         managedForm.addPart(new EjbLocalRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbLocalRef));
     }
 

@@ -17,10 +17,12 @@ package org.apache.geronimo.ui.editors;
 
 import org.apache.geronimo.core.internal.GeronimoUtils;
 import org.apache.geronimo.ui.internal.Messages;
+import org.apache.geronimo.ui.pages.DeploymentPage;
 import org.apache.geronimo.ui.pages.NamingFormPage;
 import org.apache.geronimo.ui.pages.SecurityPage;
 import org.apache.geronimo.ui.pages.WebGeneralPage;
 import org.apache.geronimo.xml.ns.web.WebFactory;
+import org.apache.geronimo.xml.ns.web.WebPackage;
 import org.apache.geronimo.xml.ns.web.impl.WebPackageImpl;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
@@ -37,10 +39,11 @@ public class WebEditor extends AbstractGeronimoDeploymentPlanEditor {
     public void doAddPages() throws PartInitException {
         addPage(new WebGeneralPage(this, "generalpage",
                 Messages.editorTabGeneral));
-        addPage(getNamingFormPage());
+        addPage(getNamingPage());
         addPage(new SecurityPage(this, "securitypage",
                 Messages.editorTabSecurity, WebPackageImpl.eINSTANCE
                         .getWebAppType_Security()));
+        addPage(getDeploymentPage());
         addSourcePage();
     }
 
@@ -48,17 +51,24 @@ public class WebEditor extends AbstractGeronimoDeploymentPlanEditor {
         return GeronimoUtils.getWebDeploymentPlan(file);
     }
 
-    private FormPage getNamingFormPage() {
+    private FormPage getNamingPage() {
         NamingFormPage formPage = new NamingFormPage(this, "namingpage",
                 Messages.editorTabNaming);
-        formPage.ejbLocalRef = WebFactory.eINSTANCE.getWebPackage()
-                .getWebAppType_EjbLocalRef();
-        formPage.ejbRef = WebFactory.eINSTANCE.getWebPackage()
-                .getWebAppType_EjbRef();
-        formPage.resEnvRef = WebFactory.eINSTANCE.getWebPackage()
-                .getWebAppType_ResourceEnvRef();
-        formPage.resRef = WebFactory.eINSTANCE.getWebPackage()
-                .getWebAppType_ResourceRef();
+        WebPackage pkg = WebFactory.eINSTANCE.getWebPackage();
+        formPage.ejbLocalRef = pkg.getWebAppType_EjbLocalRef();
+        formPage.ejbRef = pkg.getWebAppType_EjbRef();
+        formPage.resEnvRef = pkg.getWebAppType_ResourceEnvRef();
+        formPage.resRef = pkg.getWebAppType_ResourceRef();
+        return formPage;
+    }
+
+    private FormPage getDeploymentPage() {
+        DeploymentPage formPage = new DeploymentPage(this, "deploymentpage",
+                Messages.editorTabDeployment);
+        WebPackage pkg = WebFactory.eINSTANCE.getWebPackage();
+        formPage.dependencies = pkg.getWebAppType_Dependency();
+        formPage.imports = pkg.getWebAppType_Import();
+        formPage.gbeans = pkg.getWebAppType_Gbean();
         return formPage;
     }
 

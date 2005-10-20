@@ -18,9 +18,13 @@ package org.apache.geronimo.ui.editors;
 import org.apache.geronimo.core.internal.GeronimoUtils;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.pages.ConnectorOverviewPage;
+import org.apache.geronimo.ui.pages.DeploymentPage;
+import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorFactory;
+import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorPackage;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.forms.editor.FormPage;
 
 public class ConnectorPlanEditor extends AbstractGeronimoDeploymentPlanEditor {
 
@@ -31,6 +35,7 @@ public class ConnectorPlanEditor extends AbstractGeronimoDeploymentPlanEditor {
     public void doAddPages() throws PartInitException {
         addPage(new ConnectorOverviewPage(this, "connectoroverview",
                 Messages.editorTabGeneral));
+        addPage(getDeploymentPage());        
         addSourcePage();
     }
 
@@ -41,6 +46,16 @@ public class ConnectorPlanEditor extends AbstractGeronimoDeploymentPlanEditor {
      */
     public EObject loadDeploymentPlan(IFile file) {
         return GeronimoUtils.getConnectorDeploymentPlan(file);
+    }
+
+    private FormPage getDeploymentPage() {
+        DeploymentPage formPage = new DeploymentPage(this, "deploymentpage",
+                Messages.editorTabDeployment);
+        ConnectorPackage pkg = ConnectorFactory.eINSTANCE.getConnectorPackage();
+        formPage.dependencies = pkg.getConnectorType_Dependency();
+        formPage.imports = pkg.getConnectorType_Import();
+        formPage.gbeans = pkg.getConnectorType_Gbean();
+        return formPage;
     }
 
 }

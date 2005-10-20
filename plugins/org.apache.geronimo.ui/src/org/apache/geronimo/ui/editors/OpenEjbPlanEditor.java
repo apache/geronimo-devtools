@@ -17,12 +17,16 @@ package org.apache.geronimo.ui.editors;
 
 import org.apache.geronimo.core.internal.GeronimoUtils;
 import org.apache.geronimo.ui.internal.Messages;
+import org.apache.geronimo.ui.pages.DeploymentPage;
 import org.apache.geronimo.ui.pages.EjbOverviewPage;
 import org.apache.geronimo.ui.pages.SecurityPage;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.forms.editor.FormPage;
+import org.openejb.xml.ns.openejb.jar.JarFactory;
 import org.openejb.xml.ns.openejb.jar.JarPackage;
+
 /**
  * 
  * 
@@ -38,11 +42,12 @@ public class OpenEjbPlanEditor extends AbstractGeronimoDeploymentPlanEditor {
 
     public void doAddPages() throws PartInitException {
         addPage(new EjbOverviewPage(this, "ejboverview",
-                Messages.editorTabGeneral));        
-        //TODO Add naming page but broken down for each bean type
+                Messages.editorTabGeneral));
+        // TODO Add naming page but broken down for each bean type
         addPage(new SecurityPage(this, "securitypage",
-                Messages.editorTabSecurity,  JarPackage.eINSTANCE
-                .getOpenejbJarType_Security()));        
+                Messages.editorTabSecurity, JarPackage.eINSTANCE
+                        .getOpenejbJarType_Security()));
+        addPage(getDeploymentPage());
         addSourcePage();
     }
 
@@ -53,6 +58,16 @@ public class OpenEjbPlanEditor extends AbstractGeronimoDeploymentPlanEditor {
      */
     public EObject loadDeploymentPlan(IFile file) {
         return GeronimoUtils.getOpenEjbDeploymentPlan(file);
-    }    
+    }
+
+    private FormPage getDeploymentPage() {
+        DeploymentPage formPage = new DeploymentPage(this, "deploymentpage",
+                Messages.editorTabDeployment);
+        JarPackage pkg = JarFactory.eINSTANCE.getJarPackage();
+        formPage.dependencies = pkg.getOpenejbJarType_Dependency();
+        formPage.imports = pkg.getOpenejbJarType_Import();
+        formPage.gbeans = pkg.getOpenejbJarType_Gbean();
+        return formPage;
+    }
 
 }

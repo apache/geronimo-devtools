@@ -15,10 +15,7 @@
  */
 package org.apache.geronimo.ui.pages;
 
-import org.apache.geronimo.ui.sections.DependencySection;
-import org.apache.geronimo.ui.sections.ImportSection;
 import org.apache.geronimo.ui.sections.WebGeneralSection;
-import org.apache.geronimo.xml.ns.web.WebPackage;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
@@ -36,15 +33,6 @@ public class WebGeneralPage extends AbstractGeronimoFormPage {
      * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
     protected void fillBody(IManagedForm managedForm) {
-
         managedForm.addPart(new WebGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
-
-        managedForm.addPart(new DependencySection(getDeploymentPlan(), WebPackage.eINSTANCE
-                .getWebAppType_Dependency(), body, toolkit,
-                getStyle()));
-        
-        managedForm.addPart(new ImportSection(getDeploymentPlan(),
-                WebPackage.eINSTANCE.getWebAppType_Import(), body,
-              toolkit, getStyle()));
     }
 }

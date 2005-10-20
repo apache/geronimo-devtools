@@ -15,18 +15,27 @@
  */
 package org.apache.geronimo.ui.pages;
 
-import org.apache.geronimo.ui.sections.ConnectorGeneralSection;
+import org.apache.geronimo.ui.sections.DependencySection;
+import org.apache.geronimo.ui.sections.GBeanSection;
+import org.apache.geronimo.ui.sections.ImportSection;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
-public class ConnectorOverviewPage extends AbstractGeronimoFormPage {
+public class DeploymentPage extends AbstractGeronimoFormPage {
+
+    public EReference dependencies;
+
+    public EReference imports;
+
+    public EReference gbeans;
 
     /**
      * @param editor
      * @param id
      * @param title
      */
-    public ConnectorOverviewPage(FormEditor editor, String id, String title) {
+    public DeploymentPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
     }
 
@@ -34,15 +43,22 @@ public class ConnectorOverviewPage extends AbstractGeronimoFormPage {
      * @param id
      * @param title
      */
-    public ConnectorOverviewPage(String id, String title) {
+    public DeploymentPage(String id, String title) {
         super(id, title);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
     protected void fillBody(IManagedForm managedForm) {
-        managedForm.addPart(new ConnectorGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
+        managedForm.addPart(new DependencySection(getDeploymentPlan(),
+                dependencies, body, toolkit, getStyle()));
+        managedForm.addPart(new ImportSection(getDeploymentPlan(), imports,
+                body, toolkit, getStyle()));
+        managedForm.addPart(new GBeanSection(getDeploymentPlan(), gbeans, body,
+                toolkit, getStyle()));
     }
 
 }

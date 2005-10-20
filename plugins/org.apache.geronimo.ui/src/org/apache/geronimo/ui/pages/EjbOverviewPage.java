@@ -15,12 +15,9 @@
  */
 package org.apache.geronimo.ui.pages;
 
-import org.apache.geronimo.ui.sections.DependencySection;
-import org.apache.geronimo.ui.sections.ImportSection;
 import org.apache.geronimo.ui.sections.OpenEjbJarGeneralSection;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
-import org.openejb.xml.ns.openejb.jar.JarPackage;
 
 public class EjbOverviewPage extends AbstractGeronimoFormPage {
 
@@ -47,18 +44,8 @@ public class EjbOverviewPage extends AbstractGeronimoFormPage {
      * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
     protected void fillBody(IManagedForm managedForm) {
-
         managedForm.addPart(new OpenEjbJarGeneralSection(body, toolkit,
                 getStyle(), getDeploymentPlan()));
-
-        managedForm.addPart(new DependencySection(getDeploymentPlan(),
-                JarPackage.eINSTANCE.getOpenejbJarType_Dependency(), body,
-                toolkit, getStyle()));
-
-        managedForm.addPart(new ImportSection(getDeploymentPlan(),
-                JarPackage.eINSTANCE.getOpenejbJarType_Import(), body, toolkit,
-                getStyle()));
-
     }
 
 }

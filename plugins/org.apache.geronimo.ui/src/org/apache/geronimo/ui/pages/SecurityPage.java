@@ -25,9 +25,7 @@ public class SecurityPage extends AbstractGeronimoFormPage {
      * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
     protected void fillBody(IManagedForm managedForm) {
-
         managedForm.addPart(new SecurityRootSection(body, toolkit, getStyle(), getDeploymentPlan(), securityERef));
-
         managedForm.addPart(new SecuritySection(getDeploymentPlan(), body, toolkit, getStyle(), securityERef));
     }
     
