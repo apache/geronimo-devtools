@@ -99,8 +99,10 @@ public class DeploymentPlanCreationOperation extends
         ApplicationType root = ApplicationFactory.eINSTANCE
                 .createApplicationType();
 
-        documentRoot.getXMLNSPrefixMap().put("",
-                GeronimoSchemaNS.GERONIMO_APP_NS);
+        EMap map = documentRoot.getXMLNSPrefixMap();
+        map.put("", GeronimoSchemaNS.GERONIMO_APP_NS);
+        map.put("sec", GeronimoSchemaNS.GERONIMO_SECURITY_NS);
+        map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS);
 
         root.setApplicationName(getComponentName());
         root.setConfigId(getProject().getName() + "/" + getComponentName());
@@ -127,6 +129,8 @@ public class DeploymentPlanCreationOperation extends
         EMap map = documentRoot.getXMLNSPrefixMap();
         map.put("", GeronimoSchemaNS.GERONIMO_WEB_NS);
         map.put("sec", GeronimoSchemaNS.GERONIMO_SECURITY_NS);
+        map.put("nam", GeronimoSchemaNS.GERONIMO_NAMING_NS);
+        map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS);
 
         WebAppType root = WebFactory.eINSTANCE.createWebAppType();
 
@@ -154,8 +158,12 @@ public class DeploymentPlanCreationOperation extends
                 .createDocumentRoot();
         OpenejbJarType root = JarFactory.eINSTANCE.createOpenejbJarType();
 
-        documentRoot.getXMLNSPrefixMap().put("",
-                GeronimoSchemaNS.GERONIMO_OPENEJB_NS);
+        EMap map = documentRoot.getXMLNSPrefixMap();
+        map.put("", GeronimoSchemaNS.GERONIMO_OPENEJB_NS);
+        map.put("sec", GeronimoSchemaNS.GERONIMO_SECURITY_NS);
+        map.put("nam", GeronimoSchemaNS.GERONIMO_NAMING_NS);
+        map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS);
+        map.put("pkgen", GeronimoSchemaNS.GERONIMO_PKGEN_NS);
 
         root.setConfigId(getProject().getName() + "/" + getComponentName());
 
@@ -179,8 +187,10 @@ public class DeploymentPlanCreationOperation extends
                 .createDocumentRoot();
         ConnectorType root = ConnectorFactory.eINSTANCE.createConnectorType();
 
-        documentRoot.getXMLNSPrefixMap().put("",
-                GeronimoSchemaNS.GERONIMO_CONNECTOR_NS);
+        EMap map = documentRoot.getXMLNSPrefixMap();
+        map.put("", GeronimoSchemaNS.GERONIMO_CONNECTOR_NS);
+        map.put("nam", GeronimoSchemaNS.GERONIMO_NAMING_NS);
+        map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS);
 
         root.setConfigId(getProject().getName() + "/" + getComponentName());
 
