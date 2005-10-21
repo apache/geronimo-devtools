@@ -8,7 +8,7 @@
 	label="%serverRootDirectory"
 	type="directory"
 	context="runtime"
-	default="C:/Geronimo-1.0" />
+	default="" />
 <property id="serverAddress"
 	label="%serverAddress"
 	type="string"
@@ -33,7 +33,7 @@
 	label="%classPath"
 	type="directory"
 	context="runtime"
-	default="C:/Geronimo-1.0" />
+	default="" />
 
 	<port>
 		<no>${port}</no>
