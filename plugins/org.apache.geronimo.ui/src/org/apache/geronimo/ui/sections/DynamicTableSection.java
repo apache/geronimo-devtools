@@ -57,9 +57,10 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
     protected Table table;
 
     protected TableViewer tableViewer;
-    
-    private ImageDescriptor defaultImgDesc = GeronimoUIPlugin.imageDescriptorFromPlugin(
-            "org.apache.geronimo.ui", "icons/obj16/geronimo.gif");
+
+    private ImageDescriptor defaultImgDesc = GeronimoUIPlugin
+            .imageDescriptorFromPlugin("org.apache.geronimo.ui",
+                    "icons/obj16/geronimo.gif");
 
     public DynamicTableSection(Section section) {
         super(section);
@@ -94,10 +95,10 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 
         getSection().setText(getTitle());
         getSection().setDescription(getDescription());
+        getSection().setLayoutData(getSectionLayoutData());
 
-        configureSection(getSection());
-
-        Composite composite = createTableComposite(getSection(), toolkit);
+        Composite composite = createTableComposite(getSection());
+        getSection().setClient(composite);
         createTable(composite);
         fillTableItems();
 
@@ -107,30 +108,36 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
             tableViewer.setColumnProperties(getTableColumnNames());
         }
 
-        Composite buttonComp = createButtonComposite(toolkit, composite);
+        Composite buttonComp = createButtonComposite(composite);
         createAddButton(toolkit, buttonComp);
         createRemoveButton(toolkit, buttonComp);
         createEditButton(toolkit, buttonComp);
 
     }
 
-    protected Composite createTableComposite(Section section,
-            FormToolkit toolkit) {
-        Composite composite = toolkit.createComposite(section);
+    protected Composite createTableComposite(Composite parent) {
+        Composite composite = toolkit.createComposite(parent);
+        composite.setLayout(getSectionCompositeLayout());
+        composite.setLayoutData(getTableCompositeLayoutData());
+        return composite;
+    }
+
+    protected GridData getSectionLayoutData() {
+        return new GridData(SWT.FILL, SWT.FILL, false, false);
+    }
+
+    protected GridData getTableCompositeLayoutData() {
+        return new GridData(SWT.FILL, SWT.FILL, false, false);
+    }
+
+    protected GridLayout getSectionCompositeLayout() {
         GridLayout layout = new GridLayout();
-        layout.numColumns = 3;
+        layout.numColumns = 2;
         layout.marginHeight = 5;
         layout.marginWidth = 10;
         layout.verticalSpacing = 5;
         layout.horizontalSpacing = 15;
-        composite.setLayout(layout);
-        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
-        section.setClient(composite);
-        return composite;
-    }
-
-    protected void configureSection(Section section) {
-        section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+        return layout;
     }
 
     protected void fillTableItems() {
@@ -168,11 +175,9 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 
     }
 
-    protected Composite createButtonComposite(FormToolkit toolkit,
-            Composite parent) {
-        GridLayout layout;
+    protected Composite createButtonComposite(Composite parent) {  
         Composite buttonComp = new Composite(parent, SWT.NONE);
-        layout = new GridLayout();
+        GridLayout layout = new GridLayout();
         layout.horizontalSpacing = 2;
         layout.verticalSpacing = 2;
         layout.marginWidth = 0;
