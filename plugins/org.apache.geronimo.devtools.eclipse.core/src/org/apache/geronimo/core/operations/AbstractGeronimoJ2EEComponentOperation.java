@@ -18,13 +18,17 @@ package org.apache.geronimo.core.operations;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jst.j2ee.project.facet.IFacetProjectCreationDataModelProperties;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IComponentCreationDataModelProperties;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFlexibleProjectCreationDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.project.facet.core.IFacetedProject;
+import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.ServerCore;
 
@@ -68,11 +72,13 @@ public abstract class AbstractGeronimoJ2EEComponentOperation extends
     }
 
     public boolean isGeronimoRuntimeTarget() {
-
-        IRuntime runtime = ServerCore.getProjectProperties(getProject())
-                .getRuntimeTarget();
-        return runtime.getName().startsWith("Apache Geronimo");
-
+    	try {
+			IFacetedProject p = ProjectFacetsManager.create(getProject());
+			return p.getRuntime().getName().startsWith("Apache Geronimo");
+		} catch (CoreException e) {			
+			e.printStackTrace();
+		}		
+		return false;
     }
 
     public String getComponentName() {
