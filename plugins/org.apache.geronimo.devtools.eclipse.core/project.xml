@@ -252,9 +252,12 @@
     </dependency>
     <dependency>
       <groupId>eclipse</groupId>
-      <artifactId>
-        org.eclipse.wst.common.frameworks.commoncore
-      </artifactId>
+      <artifactId>org.eclipse.wst.common.frameworks.commoncore</artifactId>
+      <version>0.7.0</version>
+    </dependency>
+    <dependency>
+      <groupId>eclipse</groupId>
+      <artifactId>org.eclipse.jst.common.frameworks</artifactId>
       <version>0.7.0</version>
     </dependency>
   </dependencies>
