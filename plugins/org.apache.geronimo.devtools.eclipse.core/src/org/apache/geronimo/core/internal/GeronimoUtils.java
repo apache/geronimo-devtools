@@ -31,19 +31,17 @@ import org.apache.geronimo.xml.ns.web.WebAppType;
 import org.apache.geronimo.xml.ns.web.WebPackage;
 import org.apache.geronimo.xml.ns.web.util.WebResourceFactoryImpl;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.jst.j2ee.internal.deployables.J2EEFlexProjDeployable;
-import org.eclipse.jst.server.core.IJ2EEModule;
 import org.eclipse.jst.server.core.IWebModule;
 import org.eclipse.wst.common.componentcore.ArtifactEdit;
 import org.eclipse.wst.common.componentcore.ComponentCore;
-import org.eclipse.wst.common.componentcore.resources.IFlexibleProject;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IModule;
 import org.openejb.xml.ns.openejb.jar.JarPackage;
@@ -136,16 +134,13 @@ public class GeronimoUtils {
         // use the module ID
         String moduleId = module.getId();
 
-        IJ2EEModule j2eeModule = (IJ2EEModule) module.loadAdapter(
-                IJ2EEModule.class, null);
-        if (j2eeModule != null && j2eeModule instanceof J2EEFlexProjDeployable) {
-            J2EEFlexProjDeployable j2eeFlex = (J2EEFlexProjDeployable) j2eeModule;
+        J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) module.loadAdapter(
+        		J2EEFlexProjDeployable.class, null);
+        if (j2eeModule != null) {                 
             // j2eeFlex
             ArtifactEdit edit = null;
-
             try {
-                edit = ArtifactEdit.getArtifactEditForRead(j2eeFlex
-                        .getComponentHandle());
+                edit = ArtifactEdit.getArtifactEditForRead(j2eeModule.getProject());
                 XMIResource res = (XMIResource) edit.getContentModelRoot()
                         .eResource();
                 moduleId = res.getID(edit.getContentModelRoot());
@@ -160,7 +155,7 @@ public class GeronimoUtils {
 
         // ...but if there is no defined module ID, pick the best alternative
 
-        IPath moduleLocation = j2eeModule.getLocation();
+        IPath moduleLocation = new Path(j2eeModule.getURI(module));
         if (moduleLocation != null) {
             moduleId = moduleLocation.removeFileExtension().lastSegment();
         }
@@ -295,14 +290,8 @@ public class GeronimoUtils {
         return getConnectorDeploymentPlan(getVirtualComponent(module));
     }
 
-    private static IVirtualComponent getVirtualComponent(IModule module) {
-        IProject project = module.getProject();
-
-        IFlexibleProject flexProject = ComponentCore
-                .createFlexibleProject(project);
-        IVirtualComponent component = flexProject
-                .getComponent(module.getName());
-        return component;
+    private static IVirtualComponent getVirtualComponent(IModule module) {        
+        return ComponentCore.createComponent(module.getProject());
     }
 
     private static Resource load(IFile dpFile, ResourceSet resourceSet) {

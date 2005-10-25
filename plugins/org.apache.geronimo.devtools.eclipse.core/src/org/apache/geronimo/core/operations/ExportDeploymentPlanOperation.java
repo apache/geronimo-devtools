@@ -23,9 +23,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jst.j2ee.componentcore.util.EARArtifactEdit;
-import org.eclipse.jst.j2ee.ejb.componentcore.util.EJBArtifactEdit;
-import org.eclipse.jst.j2ee.web.componentcore.util.WebArtifactEdit;
+import org.eclipse.jst.j2ee.internal.plugin.IJ2EEModuleConstants;
+import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualReference;
@@ -64,10 +63,9 @@ public class ExportDeploymentPlanOperation extends AbstractDataModelOperation {
         IProject project = ProjectUtilities.getProject(model
                 .getStringProperty(GeronimoDataModelProperties.PROJECT_NAME));
 
-        IVirtualComponent component = ComponentCore.createComponent(project,
-                GeronimoDataModelProperties.COMPONENT_NAME);
-
-        if (component.getComponentTypeId().equals(EARArtifactEdit.TYPE_ID)) {
+        IVirtualComponent component = ComponentCore.createComponent(project);
+        String type = J2EEProjectUtilities.getJ2EEProjectType(project);
+        if (IJ2EEModuleConstants.JST_EAR_MODULE.equals(type)) {
             IVirtualReference[] refs = component.getReferences();
             for (int i = 0; i < refs.length; i++) {
                 IVirtualComponent refComp = refs[i].getReferencedComponent();
@@ -87,16 +85,17 @@ public class ExportDeploymentPlanOperation extends AbstractDataModelOperation {
     }
 
     private EObject getDeploymentPlanForComponent(IVirtualComponent comp) {
-
-        if (comp.getComponentTypeId().equals(EARArtifactEdit.TYPE_ID)) {
+    	
+    	String type = J2EEProjectUtilities.getJ2EEProjectType(comp.getProject());    	
+        if (IJ2EEModuleConstants.JST_EAR_MODULE.equals(type)) {
             return GeronimoUtils.getApplicationDeploymentPlan(comp);
         }
 
-        if (comp.getComponentTypeId().equals(WebArtifactEdit.TYPE_ID)) {
+        if (IJ2EEModuleConstants.JST_WEB_MODULE.equals(type)) {
             return GeronimoUtils.getWebDeploymentPlan(comp);
         }
 
-        if (comp.getComponentTypeId().equals(EJBArtifactEdit.TYPE_ID)) {
+        if (IJ2EEModuleConstants.JST_EJB_MODULE.equals(type)) {
             return GeronimoUtils.getOpenEjbDeploymentPlan(comp);
         }
         return null;

@@ -59,8 +59,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jst.server.core.IJ2EEModule;
+import org.eclipse.jst.j2ee.internal.deployables.J2EEFlexProjDeployable;
 import org.eclipse.jst.server.generic.core.internal.GenericServerBehaviour;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
@@ -383,11 +384,11 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
     private void doDeploy(IModule module) throws CoreException,
             DeploymentManagerCreationException {
 
-        IJ2EEModule j2eeModule = (IJ2EEModule) module.loadAdapter(
-                IJ2EEModule.class, null);
+    	J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) module.loadAdapter(
+    			J2EEFlexProjDeployable.class, null);
 
-        Target[] targets = getDeploymentManager().getTargets();
-        File jarFile = createJarFile(j2eeModule.getLocation());
+        Target[] targets = getDeploymentManager().getTargets();      
+        File jarFile = createJarFile(new Path(j2eeModule.getURI(module)));
 
         GeronimoDeploymentProgressListener listener = createAndStartListener();
 
@@ -421,12 +422,12 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
     private void doRedeploy(IModule module) throws CoreException,
             DeploymentManagerCreationException {
 
-        IJ2EEModule j2eeModule = (IJ2EEModule) module.loadAdapter(
-                IJ2EEModule.class, null);
+    	J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) module.loadAdapter(
+    			J2EEFlexProjDeployable.class, null);
 
         TargetModuleID id = getTargetModuleID(module);
         if (id != null) {
-            File jarFile = createJarFile(j2eeModule.getLocation());
+            File jarFile = createJarFile(new Path(j2eeModule.getURI(module)));
             GeronimoDeploymentProgressListener listener = createAndStartListener();
             ProgressObject po = getDeploymentManager().redeploy(
                     new TargetModuleID[] { id }, jarFile, null);

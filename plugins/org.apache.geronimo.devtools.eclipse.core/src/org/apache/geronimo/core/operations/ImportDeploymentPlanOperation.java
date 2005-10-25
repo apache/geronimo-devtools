@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
@@ -67,23 +68,23 @@ public class ImportDeploymentPlanOperation extends
         if (!isGeronimoRuntimeTarget())
             return Status.OK_STATUS;
 
-        IVirtualComponent comp = ComponentCore.createComponent(getProject(),
-                getComponentName());
+        IVirtualComponent comp = ComponentCore.createComponent(getProject());
+        String type = J2EEProjectUtilities.getJ2EEProjectType(getProject());
 
         try {
-            if (comp.getComponentTypeId().equals(
+            if (type.equals(
                     IModuleConstants.JST_WEB_MODULE)) {
                 importWebDeploymentPlan(GeronimoUtils
                         .getWebDeploymentPlanFile(comp));
-            } else if (comp.getComponentTypeId().equals(
+            } else if (type.equals(
                     IModuleConstants.JST_EJB_MODULE)) {
                 importEjbDeploymentPlan(GeronimoUtils
                         .getOpenEjbDeploymentPlanFile(comp));
-            } else if (comp.getComponentTypeId().equals(
+            } else if (type.equals(
                     IModuleConstants.JST_EAR_MODULE)) {
                 importEarDeploymentPlan(GeronimoUtils
                         .getApplicationDeploymentPlanFile(comp));
-            } else if (comp.getComponentTypeId().equals(
+            } else if (type.equals(
                     IModuleConstants.JST_CONNECTOR_MODULE)) {
                 importConnectorDeploymentPlan(GeronimoUtils
                         .getConnectorDeploymentPlanFile(comp));

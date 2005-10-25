@@ -39,6 +39,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
@@ -47,171 +48,169 @@ import org.openejb.xml.ns.openejb.jar.JarFactory;
 import org.openejb.xml.ns.openejb.jar.OpenejbJarType;
 
 public class DeploymentPlanCreationOperation extends
-        AbstractGeronimoJ2EEComponentOperation {
+		AbstractGeronimoJ2EEComponentOperation {
 
-    public DeploymentPlanCreationOperation() {
-    }
+	public DeploymentPlanCreationOperation() {
+	}
 
-    public DeploymentPlanCreationOperation(IDataModel model) {
-        super(model);
-    }
+	public DeploymentPlanCreationOperation(IDataModel model) {
+		super(model);
+	}
 
-    public IStatus execute(IProgressMonitor monitor, IAdaptable info)
-            throws ExecutionException {
+	public IStatus execute(IProgressMonitor monitor, IAdaptable info)
+			throws ExecutionException {
 
-        if (isGeronimoRuntimeTarget()) {
+		if (isGeronimoRuntimeTarget()) {
 
-            IVirtualComponent comp = ComponentCore.createComponent(
-                    getProject(), getComponentName());
+			IVirtualComponent comp = ComponentCore
+					.createComponent(getProject());
 
-            if (comp.getComponentTypeId().equals(
-                    IModuleConstants.JST_WEB_MODULE)) {
-                createGeronimoWebDeploymentPlan(GeronimoUtils
-                        .getWebDeploymentPlanFile(comp));
-            } else if (comp.getComponentTypeId().equals(
-                    IModuleConstants.JST_EJB_MODULE)) {
-                createOpenEjbDeploymentPlan(GeronimoUtils
-                        .getOpenEjbDeploymentPlanFile(comp));
-            } else if (comp.getComponentTypeId().equals(
-                    IModuleConstants.JST_EAR_MODULE)) {
-                createGeronimoApplicationDeploymentPlan(GeronimoUtils
-                        .getApplicationDeploymentPlanFile(comp));
-            } else if (comp.getComponentTypeId().equals(
-                    IModuleConstants.JST_CONNECTOR_MODULE)) {
-                createConnectorDeploymentPlan(GeronimoUtils
-                        .getConnectorDeploymentPlanFile(comp));
-            }
-        }
+			String type = J2EEProjectUtilities.getJ2EEProjectType(getProject());
 
-        return Status.OK_STATUS;
-    }
+			if (IModuleConstants.JST_WEB_MODULE.equals(type)) {
+				createGeronimoWebDeploymentPlan(GeronimoUtils
+						.getWebDeploymentPlanFile(comp));
+			} else if (IModuleConstants.JST_EJB_MODULE.equals(type)) {
+				createOpenEjbDeploymentPlan(GeronimoUtils
+						.getOpenEjbDeploymentPlanFile(comp));
+			} else if (IModuleConstants.JST_EAR_MODULE.equals(type)) {
+				createGeronimoApplicationDeploymentPlan(GeronimoUtils
+						.getApplicationDeploymentPlanFile(comp));
+			} else if (IModuleConstants.JST_CONNECTOR_MODULE.equals(type)) {
+				createConnectorDeploymentPlan(GeronimoUtils
+						.getConnectorDeploymentPlanFile(comp));
+			}
+		}
 
-    public ApplicationType createGeronimoApplicationDeploymentPlan(IFile dpFile) {
-        URI uri = URI
-                .createPlatformResourceURI(dpFile.getFullPath().toString());
+		return Status.OK_STATUS;
+	}
 
-        ResourceSet resourceSet = new ResourceSetImpl();
-        GeronimoUtils.registerAppFactoryAndPackage(resourceSet);
+	public ApplicationType createGeronimoApplicationDeploymentPlan(IFile dpFile) {
+		URI uri = URI
+				.createPlatformResourceURI(dpFile.getFullPath().toString());
 
-        Resource resource = resourceSet.createResource(uri);
-        org.apache.geronimo.xml.ns.j2ee.application.DocumentRoot documentRoot = ApplicationFactory.eINSTANCE
-                .createDocumentRoot();
-        ApplicationType root = ApplicationFactory.eINSTANCE
-                .createApplicationType();
+		ResourceSet resourceSet = new ResourceSetImpl();
+		GeronimoUtils.registerAppFactoryAndPackage(resourceSet);
 
-        EMap map = documentRoot.getXMLNSPrefixMap();
-        map.put("", GeronimoSchemaNS.GERONIMO_APP_NS);
-        map.put("sec", GeronimoSchemaNS.GERONIMO_SECURITY_NS);
-        map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS);
+		Resource resource = resourceSet.createResource(uri);
+		org.apache.geronimo.xml.ns.j2ee.application.DocumentRoot documentRoot = ApplicationFactory.eINSTANCE
+				.createDocumentRoot();
+		ApplicationType root = ApplicationFactory.eINSTANCE
+				.createApplicationType();
 
-        root.setApplicationName(getComponentName());
-        root.setConfigId(getProject().getName() + "/" + getComponentName());
+		EMap map = documentRoot.getXMLNSPrefixMap();
+		map.put("", GeronimoSchemaNS.GERONIMO_APP_NS);
+		map.put("sec", GeronimoSchemaNS.GERONIMO_SECURITY_NS);
+		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS);
 
-        documentRoot.setApplication(root);
-        resource.getContents().add(documentRoot);
+		root.setApplicationName(getComponentName());
+		root.setConfigId(getProject().getName() + "/" + getComponentName());
 
-        doSave(resource);
+		documentRoot.setApplication(root);
+		resource.getContents().add(documentRoot);
 
-        return root;
-    }
+		doSave(resource);
 
-    public WebAppType createGeronimoWebDeploymentPlan(IFile dpFile) {
+		return root;
+	}
 
-        URI uri = URI
-                .createPlatformResourceURI(dpFile.getFullPath().toString());
+	public WebAppType createGeronimoWebDeploymentPlan(IFile dpFile) {
 
-        ResourceSet resourceSet = new ResourceSetImpl();
-        GeronimoUtils.registerWebFactoryAndPackage(resourceSet);
+		URI uri = URI
+				.createPlatformResourceURI(dpFile.getFullPath().toString());
 
-        Resource resource = resourceSet.createResource(uri);
-        DocumentRoot documentRoot = WebFactory.eINSTANCE.createDocumentRoot();
+		ResourceSet resourceSet = new ResourceSetImpl();
+		GeronimoUtils.registerWebFactoryAndPackage(resourceSet);
 
-        EMap map = documentRoot.getXMLNSPrefixMap();
-        map.put("", GeronimoSchemaNS.GERONIMO_WEB_NS);
-        map.put("sec", GeronimoSchemaNS.GERONIMO_SECURITY_NS);
-        map.put("nam", GeronimoSchemaNS.GERONIMO_NAMING_NS);
-        map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS);
+		Resource resource = resourceSet.createResource(uri);
+		DocumentRoot documentRoot = WebFactory.eINSTANCE.createDocumentRoot();
 
-        WebAppType root = WebFactory.eINSTANCE.createWebAppType();
+		EMap map = documentRoot.getXMLNSPrefixMap();
+		map.put("", GeronimoSchemaNS.GERONIMO_WEB_NS);
+		map.put("sec", GeronimoSchemaNS.GERONIMO_SECURITY_NS);
+		map.put("nam", GeronimoSchemaNS.GERONIMO_NAMING_NS);
+		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS);
 
-        root.setConfigId(getProject().getName() + "/" + getComponentName());
-        root.setContextRoot("/" + getComponentName());
-        root.setContextPriorityClassloader(false);
+		WebAppType root = WebFactory.eINSTANCE.createWebAppType();
 
-        documentRoot.setWebApp(root);
-        resource.getContents().add(documentRoot);
+		root.setConfigId(getProject().getName() + "/" + getComponentName());
+		root.setContextRoot("/" + getComponentName());
+		root.setContextPriorityClassloader(false);
 
-        doSave(resource);
+		documentRoot.setWebApp(root);
+		resource.getContents().add(documentRoot);
 
-        return root;
-    }
+		doSave(resource);
 
-    public OpenejbJarType createOpenEjbDeploymentPlan(IFile dpFile) {
-        URI uri = URI
-                .createPlatformResourceURI(dpFile.getFullPath().toString());
+		return root;
+	}
 
-        ResourceSet resourceSet = new ResourceSetImpl();
-        GeronimoUtils.registerEjbFactoryAndPackage(resourceSet);
+	public OpenejbJarType createOpenEjbDeploymentPlan(IFile dpFile) {
+		URI uri = URI
+				.createPlatformResourceURI(dpFile.getFullPath().toString());
 
-        Resource resource = resourceSet.createResource(uri);
-        org.openejb.xml.ns.openejb.jar.DocumentRoot documentRoot = JarFactory.eINSTANCE
-                .createDocumentRoot();
-        OpenejbJarType root = JarFactory.eINSTANCE.createOpenejbJarType();
+		ResourceSet resourceSet = new ResourceSetImpl();
+		GeronimoUtils.registerEjbFactoryAndPackage(resourceSet);
 
-        EMap map = documentRoot.getXMLNSPrefixMap();
-        map.put("", GeronimoSchemaNS.GERONIMO_OPENEJB_NS);
-        map.put("sec", GeronimoSchemaNS.GERONIMO_SECURITY_NS);
-        map.put("nam", GeronimoSchemaNS.GERONIMO_NAMING_NS);
-        map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS);
-        map.put("pkgen", GeronimoSchemaNS.GERONIMO_PKGEN_NS);
+		Resource resource = resourceSet.createResource(uri);
+		org.openejb.xml.ns.openejb.jar.DocumentRoot documentRoot = JarFactory.eINSTANCE
+				.createDocumentRoot();
+		OpenejbJarType root = JarFactory.eINSTANCE.createOpenejbJarType();
 
-        root.setConfigId(getProject().getName() + "/" + getComponentName());
+		EMap map = documentRoot.getXMLNSPrefixMap();
+		map.put("", GeronimoSchemaNS.GERONIMO_OPENEJB_NS);
+		map.put("sec", GeronimoSchemaNS.GERONIMO_SECURITY_NS);
+		map.put("nam", GeronimoSchemaNS.GERONIMO_NAMING_NS);
+		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS);
+		map.put("pkgen", GeronimoSchemaNS.GERONIMO_PKGEN_NS);
 
-        documentRoot.setOpenejbJar(root);
-        resource.getContents().add(documentRoot);
+		root.setConfigId(getProject().getName() + "/" + getComponentName());
 
-        doSave(resource);
+		documentRoot.setOpenejbJar(root);
+		resource.getContents().add(documentRoot);
 
-        return root;
-    }
+		doSave(resource);
 
-    public ConnectorType createConnectorDeploymentPlan(IFile dpFile) {
-        URI uri = URI
-                .createPlatformResourceURI(dpFile.getFullPath().toString());
+		return root;
+	}
 
-        ResourceSet resourceSet = new ResourceSetImpl();
-        GeronimoUtils.registerEjbFactoryAndPackage(resourceSet);
+	public ConnectorType createConnectorDeploymentPlan(IFile dpFile) {
+		URI uri = URI
+				.createPlatformResourceURI(dpFile.getFullPath().toString());
 
-        Resource resource = resourceSet.createResource(uri);
-        org.apache.geronimo.xml.ns.j2ee.connector.DocumentRoot documentRoot = ConnectorFactory.eINSTANCE
-                .createDocumentRoot();
-        ConnectorType root = ConnectorFactory.eINSTANCE.createConnectorType();
+		ResourceSet resourceSet = new ResourceSetImpl();
+		GeronimoUtils.registerEjbFactoryAndPackage(resourceSet);
 
-        EMap map = documentRoot.getXMLNSPrefixMap();
-        map.put("", GeronimoSchemaNS.GERONIMO_CONNECTOR_NS);
-        map.put("nam", GeronimoSchemaNS.GERONIMO_NAMING_NS);
-        map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS);
+		Resource resource = resourceSet.createResource(uri);
+		org.apache.geronimo.xml.ns.j2ee.connector.DocumentRoot documentRoot = ConnectorFactory.eINSTANCE
+				.createDocumentRoot();
+		ConnectorType root = ConnectorFactory.eINSTANCE.createConnectorType();
 
-        root.setConfigId(getProject().getName() + "/" + getComponentName());
+		EMap map = documentRoot.getXMLNSPrefixMap();
+		map.put("", GeronimoSchemaNS.GERONIMO_CONNECTOR_NS);
+		map.put("nam", GeronimoSchemaNS.GERONIMO_NAMING_NS);
+		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS);
 
-        documentRoot.setConnector(root);
-        resource.getContents().add(documentRoot);
+		root.setConfigId(getProject().getName() + "/" + getComponentName());
 
-        doSave(resource);
+		documentRoot.setConnector(root);
+		resource.getContents().add(documentRoot);
 
-        return root;
-    }
+		doSave(resource);
 
-    private void doSave(Resource resource) {
-        if (resource instanceof XMLResource) {
-            ((XMLResource) resource).setEncoding("UTF-8");
-        }
+		return root;
+	}
 
-        try {
-            resource.save(Collections.EMPTY_MAP);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	private void doSave(Resource resource) {
+		if (resource instanceof XMLResource) {
+			((XMLResource) resource).setEncoding("UTF-8");
+		}
+
+		try {
+			resource.save(Collections.EMPTY_MAP);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
