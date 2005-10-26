@@ -263,7 +263,7 @@
     <dependency>
       <groupId>eclipse</groupId>
       <artifactId>org.eclipse.wst.common.project.facet.core</artifactId>
-      <version>0.7.0</version>
+      <version>1.0.0</version>
     </dependency>
   </dependencies>
 </project>
