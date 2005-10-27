@@ -66,18 +66,18 @@ public class GeronimoServer extends GenericServer {
     }
 
     public String getAdminID() {
-       return (String) getServerInstancePropertiesImpl().get(PROPERTY_ADMIN_ID);      
+       return (String) getServerInstanceProperties().get(PROPERTY_ADMIN_ID);      
     }
 
     public String getAdminPassword() {
-        return (String) getServerInstancePropertiesImpl().get(PROPERTY_ADMIN_PW);      
+        return (String) getServerInstanceProperties().get(PROPERTY_ADMIN_PW);      
     }
 
     public void setAdminID(String value) {
-        getServerInstancePropertiesImpl().put(PROPERTY_ADMIN_ID, value);    
+        getServerInstanceProperties().put(PROPERTY_ADMIN_ID, value);    
     }
 
     public void setAdminPassword(String value) {
-        getServerInstancePropertiesImpl().put(PROPERTY_ADMIN_PW, value);    
+        getServerInstanceProperties().put(PROPERTY_ADMIN_PW, value);    
     }
 }
