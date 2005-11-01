@@ -199,10 +199,15 @@
       <groupId>eclipse</groupId>
       <artifactId>org.eclipse.jst.j2ee.web</artifactId>
       <version>0.7.0</version>
-    </dependency>
+    </dependency>    
     <dependency>
       <groupId>eclipse</groupId>
       <artifactId>org.eclipse.jst.j2ee.ejb</artifactId>
+      <version>0.7.0</version>
+    </dependency>
+    <dependency>
+      <groupId>eclipse</groupId>
+      <artifactId>org.eclipse.jst.j2ee.jca</artifactId>
       <version>0.7.0</version>
     </dependency>
     <dependency>
