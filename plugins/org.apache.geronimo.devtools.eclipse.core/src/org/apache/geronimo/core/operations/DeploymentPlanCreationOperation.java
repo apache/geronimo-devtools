@@ -60,7 +60,7 @@ public class DeploymentPlanCreationOperation extends
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
 
-		if (isGeronimoRuntimeTarget()) {
+		if (/*isGeronimoRuntimeTarget()*/ true /*TODO need bugzilla fix*/) {
 
 			IVirtualComponent comp = ComponentCore
 					.createComponent(getProject());

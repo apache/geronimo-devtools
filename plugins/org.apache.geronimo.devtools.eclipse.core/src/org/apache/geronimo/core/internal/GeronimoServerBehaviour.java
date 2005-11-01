@@ -54,14 +54,26 @@ import org.apache.geronimo.kernel.InternalKernelException;
 import org.apache.geronimo.kernel.Kernel;
 import org.apache.geronimo.kernel.config.Configuration;
 import org.apache.geronimo.kernel.jmx.KernelDelegate;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.j2ee.application.internal.operations.EARComponentExportDataModelProvider;
+import org.eclipse.jst.j2ee.application.internal.operations.J2EEComponentExportDataModelProvider;
 import org.eclipse.jst.j2ee.internal.deployables.J2EEFlexProjDeployable;
+import org.eclipse.jst.j2ee.internal.ejb.project.operations.EJBComponentExportDataModelProvider;
+import org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentExportDataModelProvider;
+import org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentExportDataModelProvider;
 import org.eclipse.jst.server.generic.core.internal.GenericServerBehaviour;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 
@@ -82,8 +94,9 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	private IProgressMonitor _monitor = null;
 
 	private Kernel kernel = null;
+	
 
-	public GeronimoServerBehaviour() {
+	public GeronimoServerBehaviour() {		
 		super();
 	}
 
@@ -401,9 +414,9 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 			waitForCompletion(po, listener, CommandType.START, module
 					.getProject());
 			if (po.getDeploymentStatus().isCompleted()) {
-				//TODO
+				// TODO
 			} else if (po.getDeploymentStatus().isFailed()) {
-				//TODO
+				// TODO
 			}
 		} else if (po.getDeploymentStatus().isFailed()) {
 			IStatus status = new Status(
@@ -428,9 +441,9 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 			waitForCompletion(po, listener, CommandType.REDEPLOY, module
 					.getProject());
 			if (po.getDeploymentStatus().isCompleted()) {
-				//TODO
+				// TODO
 			} else if (po.getDeploymentStatus().isFailed()) {
-				//TODO
+				// TODO
 			}
 		}
 	}
@@ -445,9 +458,9 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 			waitForCompletion(po, listener, CommandType.UNDEPLOY, module
 					.getProject());
 			if (po.getDeploymentStatus().isCompleted()) {
-				//TODO
+				// TODO
 			} else if (po.getDeploymentStatus().isFailed()) {
-				//TODO
+				// TODO
 			}
 		}
 	}
@@ -480,8 +493,54 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		}
 		return null;
 	}
-
+	
 	private File createJarFile(IModule module) {
+		IDataModel model = getExportDataModel(module);
+		
+		IVirtualComponent comp = ComponentCore.createComponent(module
+				.getProject());		
+		
+		IPath path = GeronimoPlugin.getInstance().getStateLocation();
+		
+		model.setProperty(J2EEComponentExportDataModelProvider.PROJECT_NAME,
+				module.getProject());
+		model.setProperty(
+				J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION,
+				path.append(module.getName()) + ".zip");
+		model.setProperty(J2EEComponentExportDataModelProvider.COMPONENT, comp);
+		model.setBooleanProperty(J2EEComponentExportDataModelProvider.OVERWRITE_EXISTING, true);
+		
+		if (model != null) {
+			try {
+				model.getDefaultOperation().execute(_monitor, null);
+				return new File(model.getStringProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION));
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return null;
+	}
+
+	private IDataModel getExportDataModel(IModule module) {
+		String type = module.getModuleType().getId();
+		if (IModuleConstants.JST_WEB_MODULE.equals(type)) {
+			return DataModelFactory
+					.createDataModel(new WebComponentExportDataModelProvider());
+		} else if (IModuleConstants.JST_EJB_MODULE.equals(type)) {
+			return DataModelFactory
+					.createDataModel(new EJBComponentExportDataModelProvider());
+		} else if (IModuleConstants.JST_EAR_MODULE.equals(type)) {
+			return DataModelFactory
+					.createDataModel(new EARComponentExportDataModelProvider());
+		} else if (IModuleConstants.JST_CONNECTOR_MODULE.equals(type)) {
+			return DataModelFactory
+					.createDataModel(new ConnectorComponentExportDataModelProvider());
+		}
+		return null;
+	}
+
+	/*private File createJarFile2(IModule module) {
 		J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) module
 				.loadAdapter(J2EEFlexProjDeployable.class, null);
 
@@ -513,9 +572,10 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 			Trace.trace(Trace.SEVERE, "Error creating zip file", e);
 			return null;
 		}
-	}
+	}*/
 
-	private void addToJar(String namePrefix, File dir, JarOutputStream jos)
+
+	/*private void addToJar(String namePrefix, File dir, JarOutputStream jos)
 			throws IOException {
 		File[] contents = dir.listFiles();
 		for (int i = 0; i < contents.length; i++) {
@@ -537,7 +597,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 				}
 			}
 		}
-	}
+	}*/
 
 	public Map getServerInstanceProperties() {
 		return getRuntimeDelegate().getServerInstanceProperties();

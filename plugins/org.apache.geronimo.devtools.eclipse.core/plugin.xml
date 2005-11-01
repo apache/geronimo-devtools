@@ -61,24 +61,24 @@
    
    <extension id="GeronimoOpExtensions" name="GeronimoOpExtensions" point="org.eclipse.wst.common.frameworks.OperationExtension">									
 		<operationExtension
-			id="org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentCreationOperation"
+			id="org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentCreationFacetOperation"
 			postOperationClass="org.apache.geronimo.core.operations.DeploymentPlanCreationOperation">			
 	    </operationExtension>	   
 	    <operationExtension
-			id="org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EjbComponentCreationOperation"
+			id="org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EjbComponentCreationFacetOperation"
 			postOperationClass="org.apache.geronimo.core.operations.DeploymentPlanCreationOperation">
 		</operationExtension>		
 		<operationExtension
-			id="org.eclipse.jst.j2ee.application.internal.operations.EARComponentCreationOperation"
+			id="org.eclipse.jst.j2ee.application.internal.operations.EARComponentCreationFacetOperation"
 			postOperationClass="org.apache.geronimo.core.operations.DeploymentPlanCreationOperation">
 		</operationExtension>	
 	    <operationExtension
-			id="org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentCreationOperation"
+			id="org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentCreationFacetOperation"
 			postOperationClass="org.apache.geronimo.core.operations.DeploymentPlanCreationOperation">
 		</operationExtension>
 		
 		<operationExtension
-			id="org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentImportOperation"
+			id="org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentImportFacetOperation"
 			postOperationClass="org.apache.geronimo.core.operations.ImportDeploymentPlanOperation">
 		</operationExtension>		
    </extension>
