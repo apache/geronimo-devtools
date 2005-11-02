@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.ui.wizards;
 
+import org.apache.geronimo.ui.internal.GeronimoUIPlugin;
 import org.apache.geronimo.ui.sections.DynamicTableSection;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -34,6 +35,9 @@ public abstract class DynamicAddEditWizard extends Wizard {
     DynamicTableSection section;
 
     EObject eObject;
+    
+    ImageDescriptor descriptor = GeronimoUIPlugin.imageDescriptorFromPlugin(
+            "org.apache.geronimo.ui", "icons/bigG.gif");
 
     /**
      * 
@@ -41,7 +45,7 @@ public abstract class DynamicAddEditWizard extends Wizard {
     public DynamicAddEditWizard(DynamicTableSection section) {
         super();
         this.section = section;
-        setWindowTitle(getAddWizardWindowTitle());
+        setWindowTitle(getAddWizardWindowTitle());      
     }
 
     /**
@@ -116,6 +120,7 @@ public abstract class DynamicAddEditWizard extends Wizard {
      */
     public void addPages() {
         WizardPage page = new DynamicWizardPage("Page0");
+        page.setImageDescriptor(descriptor);
         addPage(page);
     }
 
