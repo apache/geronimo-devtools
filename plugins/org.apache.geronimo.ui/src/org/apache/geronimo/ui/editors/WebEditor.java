@@ -59,7 +59,8 @@ public class WebEditor extends AbstractGeronimoDeploymentPlanEditor {
         formPage.ejbRef = pkg.getWebAppType_EjbRef();
         formPage.resEnvRef = pkg.getWebAppType_ResourceEnvRef();
         formPage.resRef = pkg.getWebAppType_ResourceRef();
-        formPage.gbeanRef = pkg.getWebAppType_GbeanRef();;
+        formPage.gbeanRef = pkg.getWebAppType_GbeanRef();
+        formPage.serviceRef = pkg.getWebAppType_ServiceRef();
         return formPage;
     }
 

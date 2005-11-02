@@ -114,6 +114,14 @@ public class Messages extends NLS {
 
 	//
 
+	public static String editorServiceRefDescription;
+
+	public static String editorServiceRefTitle;
+	
+	public static String editorServiceRefName;
+	
+	//
+
 	public static String editorResourceEnvRefDescription;
 
 	public static String editorResourceEnvRefTitle;
@@ -166,6 +174,16 @@ public class Messages extends NLS {
 
 	public static String wizardPageDescription_GBeanRef;
 
+	//
+	
+	public static String wizardNewTitle_ServiceRef;
+
+	public static String wizardEditTitle_ServiceRef;
+
+	public static String wizardPageTitle_ServiceRef;
+
+	public static String wizardPageDescription_ServiceRef;
+	
 	//
 
 	public static String wizardNewTitle_ResEnvRef;
