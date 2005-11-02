@@ -17,6 +17,7 @@ package org.apache.geronimo.ui.pages;
 
 import org.apache.geronimo.ui.sections.EjbLocalRefSection;
 import org.apache.geronimo.ui.sections.EjbRefSection;
+import org.apache.geronimo.ui.sections.GBeanRefSection;
 import org.apache.geronimo.ui.sections.ResourceEnvRefSection;
 import org.apache.geronimo.ui.sections.ResourceRefSection;
 import org.eclipse.emf.ecore.EReference;
@@ -32,6 +33,8 @@ public class NamingFormPage extends AbstractGeronimoFormPage {
     public EReference ejbRef;
 
     public EReference ejbLocalRef;
+    
+    public EReference gbeanRef;
 
     public NamingFormPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
@@ -50,6 +53,7 @@ public class NamingFormPage extends AbstractGeronimoFormPage {
         managedForm.addPart(new ResourceEnvRefSection(getDeploymentPlan(), body, toolkit, getStyle(), resEnvRef));
         managedForm.addPart(new EjbRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbRef));
         managedForm.addPart(new EjbLocalRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbLocalRef));
+        managedForm.addPart(new GBeanRefSection(getDeploymentPlan(), body, toolkit, getStyle(), gbeanRef));
     }
 
 }
