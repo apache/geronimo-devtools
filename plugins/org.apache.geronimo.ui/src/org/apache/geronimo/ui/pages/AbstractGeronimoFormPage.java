@@ -16,7 +16,9 @@
 package org.apache.geronimo.ui.pages;
 
 import org.apache.geronimo.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.apache.geronimo.ui.sections.BannerPart;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IManagedForm;
@@ -63,7 +65,8 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
         body = managedForm.getForm().getBody();
         toolkit = managedForm.getToolkit();
         ScrolledForm form = managedForm.getForm();
-        form.setText(getTitle());
+        //form.setText(getTitle());
+        managedForm.addPart(new BannerPart(form.getBody(), toolkit, SWT.NONE));
         form.getBody().setLayout(getLayout());
         fillBody(managedForm);
         form.reflow(true);
