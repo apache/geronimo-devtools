@@ -39,6 +39,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.jst.j2ee.application.internal.operations.J2EEComponentCreationDataModelProvider;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -59,8 +60,17 @@ public class DeploymentPlanCreationOperation extends
 
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
+		
+		String runtimeID = model.getStringProperty(J2EEComponentCreationDataModelProvider.RUNTIME_TARGET_ID);
+		
+		boolean isGeronimoRuntime = false;
+		if(runtimeID != null && runtimeID.startsWith("Apache Geronimo")) {
+			isGeronimoRuntime = true;
+		}
+			
+	    //isGeronimoRuntime = isGeronimoRuntimeTarget();	
 
-		if (/*isGeronimoRuntimeTarget()*/ true /*TODO need bugzilla fix*/) {
+		if (isGeronimoRuntime) {
 
 			IVirtualComponent comp = ComponentCore
 					.createComponent(getProject());
