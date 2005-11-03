@@ -255,6 +255,7 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 						dialog.open();
 						if (dialog.getReturnCode() == Dialog.OK) {
 							markDirty();
+							//TODO notify listeners
 						}
 					}
 				}
@@ -335,11 +336,11 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 	/**
 	 * @return
 	 */
-	abstract public EAttribute[] getTableColumnEAttributes();
+	abstract public EAttribute[] getTableColumnEAttributes();;
 
 	/**
 	 * @return
 	 */
-	abstract public Wizard getWizard();
+	abstract public Wizard getWizard();	
 
 }

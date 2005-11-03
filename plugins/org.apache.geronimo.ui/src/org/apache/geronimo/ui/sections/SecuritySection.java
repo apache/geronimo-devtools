@@ -101,16 +101,14 @@ public class SecuritySection extends DynamicTableSection {
      * @return
      */
     public String[] getTableColumnNames() {
-        return new String[] { Messages.name, Messages.description };
+        return new String[] {Messages.name};
     }
 
     /**
      * @return
      */
     public EAttribute[] getTableColumnEAttributes() {
-        return new EAttribute[] {
-                SecurityPackage.eINSTANCE.getRoleType_RoleName(),
-                SecurityPackage.eINSTANCE.getDescriptionType_Lang() };
+        return new EAttribute[] {SecurityPackage.eINSTANCE.getRoleType_RoleName()};
     }
 
     /**
@@ -234,7 +232,7 @@ public class SecuritySection extends DynamicTableSection {
 
             if (!roleType.getDescription().isEmpty()) {
                 roleDescriptionText.setText(((DescriptionType) roleType
-                        .getDescription().get(0)).getLang());
+                        .getDescription().get(0)).getValue());
             } else {
             	roleDescriptionText.setText("");
             }

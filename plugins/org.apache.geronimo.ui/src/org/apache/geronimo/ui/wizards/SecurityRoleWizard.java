@@ -24,10 +24,13 @@ import org.apache.geronimo.xml.ns.security.RoleType;
 import org.apache.geronimo.xml.ns.security.SecurityFactory;
 import org.apache.geronimo.xml.ns.security.SecurityPackage;
 import org.apache.geronimo.xml.ns.security.SecurityType;
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 
 public class SecurityRoleWizard extends DynamicAddEditWizard {
 
@@ -50,9 +53,58 @@ public class SecurityRoleWizard extends DynamicAddEditWizard {
     public String getWizardFirstPageDescription() {
         return Messages.wizardPageDescription_SecurityRole;
     }
+    
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.wizard.IWizard#addPages()
+     */
+    public void addPages() {
+    	SecurityRoleWizardPage page = new SecurityRoleWizardPage("Page0");
+        page.setImageDescriptor(descriptor);
+        addPage(page);
+    }
+    
+    public class SecurityRoleWizardPage extends DynamicWizardPage {
+    	
+    	 Text descriptionText;
+    	 
+    	 public SecurityRoleWizardPage(String pageName) {
+             super(pageName);
+         }    	
+    	 
+    	 /* (non-Javadoc)
+    	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard.DynamicWizardPage#doCustom()
+    	 */
+    	public void doCustom(Composite parent) {    		 
+    		 Label label = new Label(parent, SWT.LEFT);
+             String columnName = Messages.description;
+             if(!columnName.endsWith(":"))
+                 columnName = columnName.concat(":");
+             label.setText(columnName);
+             GridData data = new GridData();
+             data.horizontalAlignment = GridData.FILL;
+             label.setLayoutData(data);
+
+             descriptionText = new Text(parent, SWT.SINGLE | SWT.BORDER);
+             data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+                     | GridData.VERTICAL_ALIGN_FILL);
+             data.grabExcessHorizontalSpace = true;
+             data.widthHint = 100;
+             descriptionText.setLayoutData(data);
+
+             if (eObject != null && eObject instanceof RoleType) {
+            	 RoleType roleType = (RoleType) eObject;
+            	 if(!roleType.getDescription().isEmpty()) {
+            		 DescriptionType desc = (DescriptionType) roleType.getDescription().get(0);
+            		 if(desc.eIsSet(SecurityPackage.eINSTANCE.getDescriptionType_Value())){
+            			 descriptionText.setText(desc.getValue());
+            		 }
+            	 }
+             }    		 
+    	}
+    }
 
     public boolean performFinish() {
-        DynamicWizardPage page = (DynamicWizardPage) getPages()[0];
+    	SecurityRoleWizardPage page = (SecurityRoleWizardPage) getPages()[0];
 
         boolean isNew = false;
 
@@ -80,27 +132,20 @@ public class SecurityRoleWizard extends DynamicAddEditWizard {
             isNew = true;
         }
 
-        for (int i = 0; i < section.getTableColumnEAttributes().length; i++) {
-            String value = page.textEntries[i].getText();
-            EAttribute attribute = section.getTableColumnEAttributes()[i];
-            if (attribute.getEContainingClass().equals(eObject.eClass())) {
-                eObject.eSet(attribute, value);
-            } else {
-                if (attribute.getFeatureID() == SecurityPackage.DESCRIPTION_TYPE__LANG) {
-                    DescriptionType type = null;
-                    RoleType roleType = ((RoleType) eObject);
-                    if (roleType.getDescription().isEmpty()) {
-                        type = SecurityFactory.eINSTANCE
-                                .createDescriptionType();
-                        roleType.getDescription().add(type);
-                    } else {
-                        type = (DescriptionType) roleType.getDescription().get(
-                                0);
-                    }
-                    type.setLang(value);
-                }
-            }
+        processEAttributes(page);
+      
+        DescriptionType type = null;
+        RoleType roleType = ((RoleType) eObject);
+        if (roleType.getDescription().isEmpty()) {
+            type = SecurityFactory.eINSTANCE
+                    .createDescriptionType();
+            roleType.getDescription().add(type);
+        } else {
+            type = (DescriptionType) roleType.getDescription().get(
+                    0);
         }
+        type.setValue(page.descriptionText.getText());
+       
 
         String[] tableText = section.getTableText(eObject);
 

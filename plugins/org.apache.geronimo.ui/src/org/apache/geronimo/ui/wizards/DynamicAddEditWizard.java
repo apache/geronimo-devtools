@@ -18,6 +18,7 @@ package org.apache.geronimo.ui.wizards;
 import org.apache.geronimo.ui.internal.GeronimoUIPlugin;
 import org.apache.geronimo.ui.sections.DynamicTableSection;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
@@ -87,11 +88,8 @@ public abstract class DynamicAddEditWizard extends Wizard {
             ((EList) plan.eGet(section.getEReference())).add(eObject);
             isNew = true;
         }
-
-        for (int i = 0; i < section.getTableColumnEAttributes().length; i++) {
-            String value = page.textEntries[i].getText();
-            eObject.eSet(section.getTableColumnEAttributes()[i], value);
-        }
+        
+        processEAttributes(page);
 
         String[] tableText = section.getTableText(eObject);
 
@@ -112,6 +110,18 @@ public abstract class DynamicAddEditWizard extends Wizard {
 
         return true;
     }
+
+	public void processEAttributes(DynamicWizardPage page) {
+		for (int i = 0; i < section.getTableColumnEAttributes().length; i++) {
+            String value = page.textEntries[i].getText();
+            EAttribute attribute = section.getTableColumnEAttributes()[i];
+            if (attribute.getEContainingClass().equals(eObject.eClass())) {
+                eObject.eSet(attribute, value);
+            } else {
+            	//TODO
+            }
+        }
+	}
 
     /*
      * (non-Javadoc)
@@ -154,23 +164,14 @@ public abstract class DynamicAddEditWizard extends Wizard {
         }
 
         public void createControl(Composite parent) {
-            Composite composite = new Composite(parent, SWT.NULL);
-            GridLayout layout = new GridLayout();
-            layout.numColumns = 2;
-            composite.setLayout(layout);
-            GridData data = new GridData();
-            data.verticalAlignment = GridData.FILL;
-            data.horizontalAlignment = GridData.FILL;
-            data.widthHint = 300;
-            composite.setLayoutData(data);
-
+			Composite composite = createComposite(parent);
             for (int i = 0; i < section.getTableColumnNames().length; i++) {
                 Label label = new Label(composite, SWT.LEFT);
                 String columnName = section.getTableColumnNames()[i];
                 if(!columnName.endsWith(":"))
                     columnName = columnName.concat(":");
                 label.setText(columnName);
-                data = new GridData();
+                GridData data = new GridData();
                 data.horizontalAlignment = GridData.FILL;
                 label.setLayoutData(data);
 
@@ -190,11 +191,27 @@ public abstract class DynamicAddEditWizard extends Wizard {
                 }
                 textEntries[i] = text;
             }
-
-            setControl(composite);
-                        
+            
+            doCustom(composite);
+            setControl(composite);                                    
             textEntries[0].setFocus();
+        }
 
+		public Composite createComposite(Composite parent) {
+			Composite composite = new Composite(parent, SWT.NULL);
+            GridLayout layout = new GridLayout();
+            layout.numColumns = 2;
+            composite.setLayout(layout);
+            GridData data = new GridData();
+            data.verticalAlignment = GridData.FILL;
+            data.horizontalAlignment = GridData.FILL;
+            data.widthHint = 300;
+            composite.setLayoutData(data);
+			return composite;
+		}
+        
+        public void doCustom(Composite parent) {
+        	
         }
 
     }
