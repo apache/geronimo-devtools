@@ -20,7 +20,7 @@
          typeIds="org.eclipse.jst.server.runtime.geronimo.10"/>
      <image
          id="org.eclipse.jst.server.geronimo.image.server"
-         icon="icons/obj16/geronimo.gif"
+         icon="icons/obj16/geronimo2.gif"
          typeIds="org.eclipse.jst.server.geronimo.10"/>
   </extension>
 

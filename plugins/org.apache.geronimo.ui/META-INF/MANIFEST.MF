@@ -1,6 +1,6 @@
 nifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginNameh
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.apache.geronimo.ui; singleton:=true
 Bundle-Version: 0.5.0
 Bundle-Activator: org.apache.geronimo.ui.internal.GeronimoUIPlugin
