@@ -88,19 +88,19 @@ public class GeronimoUtils {
     }
 
     public static boolean isWebModule(IModule module) {
-        return "j2ee.web".equals(module.getModuleType().getId());
+        return "jst.web".equals(module.getModuleType().getId());
     }
 
     public static boolean isEjbJarModule(IModule module) {
-        return "j2ee.ejb".equals(module.getModuleType().getId());
+        return "jst.ejb".equals(module.getModuleType().getId());
     }
 
     public static boolean isEarModule(IModule module) {
-        return "j2ee.ear".equals(module.getModuleType().getId());
+        return "jst.ear".equals(module.getModuleType().getId());
     }
 
     public static boolean isRARModule(IModule module) {
-        return "j2ee.rar".equals(module.getModuleType().getId());
+        return "jst.connnector".equals(module.getModuleType().getId());
     }
 
     public static ModuleType getJSR88ModuleType(IModule module) {
