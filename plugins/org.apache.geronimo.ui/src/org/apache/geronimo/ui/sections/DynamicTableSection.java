@@ -52,288 +52,294 @@ import org.eclipse.ui.forms.widgets.Section;
 
 public abstract class DynamicTableSection extends AbstractSectionPart {
 
-    private Image image;
+	private Image image;
 
-    protected Table table;
+	protected Table table;
 
-    protected TableViewer tableViewer;
+	protected TableViewer tableViewer;
 
-    private ImageDescriptor defaultImgDesc = GeronimoUIPlugin
-            .imageDescriptorFromPlugin("org.apache.geronimo.ui",
-                    "icons/obj16/geronimo.gif");
+	private ImageDescriptor defaultImgDesc = GeronimoUIPlugin
+			.imageDescriptorFromPlugin("org.apache.geronimo.ui",
+					"icons/obj16/geronimo.gif");
 
-    public DynamicTableSection(Section section) {
-        super(section);
-    }
+	Button addButton;
 
-    /**
-     * @param plan
-     * @param parent
-     * @param toolkit
-     * @param style
-     * 
-     * Subclasses should call create() in constructor
-     */
-    public DynamicTableSection(EObject plan, Composite parent,
-            FormToolkit toolkit, int style) {
-        super(parent, toolkit, style, plan);
-    }
+	Button editButton;
 
-    public void create() {
-        if (isValid()) {
-            createClient();
-        }
-    }
+	Button removeButton;
 
-    private boolean isValid() {
-        return getEFactory() != null && getEReference() != null
-                && getTableColumnEAttributes() != null
-                && getTableColumnNames() != null;
-    }
+	public DynamicTableSection(Section section) {
+		super(section);
+	}
 
-    public void createClient() {
+	/**
+	 * @param plan
+	 * @param parent
+	 * @param toolkit
+	 * @param style
+	 * 
+	 * Subclasses should call create() in constructor
+	 */
+	public DynamicTableSection(EObject plan, Composite parent,
+			FormToolkit toolkit, int style) {
+		super(parent, toolkit, style, plan);
+	}
 
-        getSection().setText(getTitle());
-        getSection().setDescription(getDescription());
-        getSection().setLayoutData(getSectionLayoutData());
+	public void create() {
+		if (isValid()) {
+			createClient();
+		}
+	}
 
-        Composite composite = createTableComposite(getSection());
-        getSection().setClient(composite);
-        createTable(composite);
-        fillTableItems();
+	private boolean isValid() {
+		return getEFactory() != null && getEReference() != null
+				&& getTableColumnEAttributes() != null
+				&& getTableColumnNames() != null;
+	}
 
-        tableViewer = new TableViewer(table);
+	public void createClient() {
 
-        if (getTableColumnNames().length > 0) {
-            tableViewer.setColumnProperties(getTableColumnNames());
-        }
+		getSection().setText(getTitle());
+		getSection().setDescription(getDescription());
+		getSection().setLayoutData(getSectionLayoutData());
 
-        Composite buttonComp = createButtonComposite(composite);
-        createAddButton(toolkit, buttonComp);
-        createRemoveButton(toolkit, buttonComp);
-        createEditButton(toolkit, buttonComp);
+		Composite composite = createTableComposite(getSection());
+		getSection().setClient(composite);
+		createTable(composite);
+		fillTableItems();
 
-    }
+		tableViewer = new TableViewer(table);
 
-    protected Composite createTableComposite(Composite parent) {
-        Composite composite = toolkit.createComposite(parent);
-        composite.setLayout(getSectionCompositeLayout());
-        composite.setLayoutData(getTableCompositeLayoutData());
-        return composite;
-    }
+		if (getTableColumnNames().length > 0) {
+			tableViewer.setColumnProperties(getTableColumnNames());
+		}
 
-    protected GridData getSectionLayoutData() {
-        return new GridData(SWT.FILL, SWT.FILL, false, false);
-    }
+		Composite buttonComp = createButtonComposite(composite);
+		createAddButton(toolkit, buttonComp);
+		createRemoveButton(toolkit, buttonComp);
+		createEditButton(toolkit, buttonComp);
 
-    protected GridData getTableCompositeLayoutData() {
-        return new GridData(SWT.FILL, SWT.FILL, false, false);
-    }
+	}
 
-    protected GridLayout getSectionCompositeLayout() {
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        layout.marginHeight = 5;
-        layout.marginWidth = 10;
-        layout.verticalSpacing = 5;
-        layout.horizontalSpacing = 15;
-        return layout;
-    }
+	protected Composite createTableComposite(Composite parent) {
+		Composite composite = toolkit.createComposite(parent);
+		composite.setLayout(getSectionCompositeLayout());
+		composite.setLayoutData(getTableCompositeLayoutData());
+		return composite;
+	}
 
-    protected void fillTableItems() {
-        EList list = (EList) plan.eGet(getEReference());
+	protected GridData getSectionLayoutData() {
+		return new GridData(SWT.FILL, SWT.FILL, false, false);
+	}
 
-        for (int j = 0; j < list.size(); j++) {
-            TableItem item = new TableItem(table, SWT.NONE);
-            String[] tableTextData = getTableText((EObject) list.get(j));
-            item.setImage(getImage());
-            item.setText(tableTextData);
-            item.setData((EObject) list.get(j));
-        }
-    }
+	protected GridData getTableCompositeLayoutData() {
+		return new GridData(SWT.FILL, SWT.FILL, false, false);
+	}
 
-    protected void createTable(Composite composite) {
-        table = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION
-                | SWT.V_SCROLL | SWT.SINGLE);
-        if (isHeaderVisible()) {
-            table.setHeaderVisible(true);
-        }
+	protected GridLayout getSectionCompositeLayout() {
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 2;
+		layout.marginHeight = 5;
+		layout.marginWidth = 10;
+		layout.verticalSpacing = 5;
+		layout.horizontalSpacing = 15;
+		return layout;
+	}
 
-        GridData data = new GridData(SWT.FILL, SWT.FILL, false, false);
-        data.heightHint = 60;
-        data.widthHint = 400;
-        table.setLayoutData(data);
+	protected void fillTableItems() {
+		EList list = (EList) plan.eGet(getEReference());
 
-        TableLayout tableLayout = new TableLayout();
-        table.setLayout(tableLayout);
+		for (int j = 0; j < list.size(); j++) {
+			TableItem item = new TableItem(table, SWT.NONE);
+			String[] tableTextData = getTableText((EObject) list.get(j));
+			item.setImage(getImage());
+			item.setText(tableTextData);
+			item.setData((EObject) list.get(j));
+		}
+	}
 
-        for (int i = 0; i < getTableColumnNames().length; i++) {
-            tableLayout.addColumnData(new ColumnWeightData(35));
-            TableColumn tableColumn = new TableColumn(table, SWT.NONE);
-            tableColumn.setText(getTableColumnNames()[i]);
-        }
+	protected void createTable(Composite composite) {
+		table = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION
+				| SWT.V_SCROLL | SWT.SINGLE);
+		if (isHeaderVisible()) {
+			table.setHeaderVisible(true);
+		}
 
-    }
+		GridData data = new GridData(SWT.FILL, SWT.FILL, false, false);
+		data.heightHint = 60;
+		data.widthHint = 400;
+		table.setLayoutData(data);
 
-    protected Composite createButtonComposite(Composite parent) {  
-        Composite buttonComp = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout();
-        layout.horizontalSpacing = 2;
-        layout.verticalSpacing = 2;
-        layout.marginWidth = 0;
-        layout.marginHeight = 0;
-        layout.numColumns = 1;
-        buttonComp.setLayout(layout);
-        buttonComp.setBackground(toolkit.getColors().getBackground());
-        buttonComp
-                .setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
-        return buttonComp;
-    }
+		TableLayout tableLayout = new TableLayout();
+		table.setLayout(tableLayout);
 
-    protected void createRemoveButton(FormToolkit toolkit, Composite buttonComp) {
-        Button del = toolkit
-                .createButton(buttonComp, Messages.remove, SWT.NONE);
-        del.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent e) {
-                int[] selectedIndices = table.getSelectionIndices();
-                for (int i = 0; i < selectedIndices.length; i++) {
-                    TableItem tableItem = table.getItem(selectedIndices[i]);
-                    EObject type = (EObject) (tableItem.getData());
-                    table.remove(selectedIndices[i]);
-                    EcoreUtil.remove(type);
-                    markDirty();
-                }
-            }
-        });
-        del.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-    }
+		for (int i = 0; i < getTableColumnNames().length; i++) {
+			tableLayout.addColumnData(new ColumnWeightData(35));
+			TableColumn tableColumn = new TableColumn(table, SWT.NONE);
+			tableColumn.setText(getTableColumnNames()[i]);
+		}
 
-    protected void createAddButton(FormToolkit toolkit, Composite buttonComp) {
-        Button add = toolkit.createButton(buttonComp, Messages.add, SWT.NONE);
+	}
 
-        add.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent e) {
-                Wizard wizard = getWizard();
-                if (wizard != null) {
-                    WizardDialog dialog = new WizardDialog(Display.getCurrent()
-                            .getActiveShell(), wizard);
+	protected Composite createButtonComposite(Composite parent) {
+		Composite buttonComp = new Composite(parent, SWT.NONE);
+		GridLayout layout = new GridLayout();
+		layout.horizontalSpacing = 2;
+		layout.verticalSpacing = 2;
+		layout.marginWidth = 0;
+		layout.marginHeight = 0;
+		layout.numColumns = 1;
+		buttonComp.setLayout(layout);
+		buttonComp.setBackground(toolkit.getColors().getBackground());
+		buttonComp
+				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		return buttonComp;
+	}
 
-                    dialog.open();
+	protected void createRemoveButton(FormToolkit toolkit, Composite buttonComp) {
+		removeButton = toolkit
+				.createButton(buttonComp, Messages.remove, SWT.NONE);
+		removeButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				int[] selectedIndices = table.getSelectionIndices();
+				for (int i = 0; i < selectedIndices.length; i++) {
+					TableItem tableItem = table.getItem(selectedIndices[i]);
+					EObject type = (EObject) (tableItem.getData());
+					table.remove(selectedIndices[i]);
+					EcoreUtil.remove(type);
+					markDirty();
+				}
+			}
+		});
+		removeButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+	}
 
-                    if (dialog.getReturnCode() == Dialog.OK) {
-                        markDirty();
-                    }
-                }
-            }
-        });
+	protected void createAddButton(FormToolkit toolkit, Composite buttonComp) {
+		addButton = toolkit.createButton(buttonComp, Messages.add, SWT.NONE);
 
-        add.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-    }
+		addButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				Wizard wizard = getWizard();
+				if (wizard != null) {
+					WizardDialog dialog = new WizardDialog(Display.getCurrent()
+							.getActiveShell(), wizard);
 
-    protected void createEditButton(FormToolkit toolkit, Composite buttonComp) {
-        Button add = toolkit.createButton(buttonComp, Messages.edit, SWT.NONE);
+					dialog.open();
 
-        add.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent e) {
-                Object o = ((StructuredSelection) getTableViewer()
-                        .getSelection()).getFirstElement();
-                if (o != null) {
-                    Wizard wizard = getWizard();
-                    if (wizard != null) {
-                        if (wizard instanceof DynamicAddEditWizard) {
-                            ((DynamicAddEditWizard) wizard)
-                                    .setEObject((EObject) o);
-                        }
-                        WizardDialog dialog = new WizardDialog(Display
-                                .getCurrent().getActiveShell(), wizard);
-                        dialog.open();
-                        if (dialog.getReturnCode() == Dialog.OK) {
-                            markDirty();
-                        }
-                    }
-                }
-            }
-        });
+					if (dialog.getReturnCode() == Dialog.OK) {
+						markDirty();
+					}
+				}
+			}
+		});
 
-        add.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-    }
+		addButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+	}
 
-    public String[] getTableText(EObject eObject) {
-        List tableText = new ArrayList();
-        for (int i = 0; i < getTableColumnEAttributes().length; i++) {
-            if (getTableColumnEAttributes()[i].getEContainingClass().equals(
-                    eObject.eClass())) {
-                String value = (String) eObject
-                        .eGet(getTableColumnEAttributes()[i]);
-                if (value != null) {
-                    tableText.add(value);
-                } else {
-                    tableText.add("");
-                }
-            }
-        }
-        return (String[]) tableText.toArray(new String[tableText.size()]);
-    }
+	protected void createEditButton(FormToolkit toolkit, Composite buttonComp) {
+		editButton = toolkit.createButton(buttonComp, Messages.edit, SWT.NONE);
 
-    public Image getImage() {
-        if (image == null) {
-            ImageDescriptor descriptor = getImageDescriptor();
-            if (descriptor == null)
-                descriptor = defaultImgDesc;
-            image = descriptor.createImage();
-        }
-        return image;
-    }
+		editButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				Object o = ((StructuredSelection) getTableViewer()
+						.getSelection()).getFirstElement();
+				if (o != null) {
+					Wizard wizard = getWizard();
+					if (wizard != null) {
+						if (wizard instanceof DynamicAddEditWizard) {
+							((DynamicAddEditWizard) wizard)
+									.setEObject((EObject) o);
+						}
+						WizardDialog dialog = new WizardDialog(Display
+								.getCurrent().getActiveShell(), wizard);
+						dialog.open();
+						if (dialog.getReturnCode() == Dialog.OK) {
+							markDirty();
+						}
+					}
+				}
+			}
+		});
 
-    public ImageDescriptor getImageDescriptor() {
-        return defaultImgDesc;
-    }
+		editButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+	}
 
-    public TableViewer getTableViewer() {
-        return tableViewer;
-    }
+	public String[] getTableText(EObject eObject) {
+		List tableText = new ArrayList();
+		for (int i = 0; i < getTableColumnEAttributes().length; i++) {
+			if (getTableColumnEAttributes()[i].getEContainingClass().equals(
+					eObject.eClass())) {
+				String value = (String) eObject
+						.eGet(getTableColumnEAttributes()[i]);
+				if (value != null) {
+					tableText.add(value);
+				} else {
+					tableText.add("");
+				}
+			}
+		}
+		return (String[]) tableText.toArray(new String[tableText.size()]);
+	}
 
-    public EObject getPlan() {
-        return plan;
-    }
+	public Image getImage() {
+		if (image == null) {
+			ImageDescriptor descriptor = getImageDescriptor();
+			if (descriptor == null)
+				descriptor = defaultImgDesc;
+			image = descriptor.createImage();
+		}
+		return image;
+	}
 
-    public boolean isHeaderVisible() {
-        return true;
-    }
+	public ImageDescriptor getImageDescriptor() {
+		return defaultImgDesc;
+	}
 
-    /**
-     * @return
-     */
-    abstract public String getTitle();
+	public TableViewer getTableViewer() {
+		return tableViewer;
+	}
 
-    /**
-     * @return
-     */
-    abstract public String getDescription();
+	public EObject getPlan() {
+		return plan;
+	}
 
-    /**
-     * @return
-     */
-    abstract public EFactory getEFactory();
+	public boolean isHeaderVisible() {
+		return true;
+	}
 
-    /**
-     * @return
-     */
-    abstract public EReference getEReference();
+	/**
+	 * @return
+	 */
+	abstract public String getTitle();
 
-    /**
-     * @return
-     */
-    abstract public String[] getTableColumnNames();
+	/**
+	 * @return
+	 */
+	abstract public String getDescription();
 
-    /**
-     * @return
-     */
-    abstract public EAttribute[] getTableColumnEAttributes();
+	/**
+	 * @return
+	 */
+	abstract public EFactory getEFactory();
 
-    /**
-     * @return
-     */
-    abstract public Wizard getWizard();
+	/**
+	 * @return
+	 */
+	abstract public EReference getEReference();
+
+	/**
+	 * @return
+	 */
+	abstract public String[] getTableColumnNames();
+
+	/**
+	 * @return
+	 */
+	abstract public EAttribute[] getTableColumnEAttributes();
+
+	/**
+	 * @return
+	 */
+	abstract public Wizard getWizard();
 
 }

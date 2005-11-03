@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -50,6 +51,9 @@ import org.eclipse.ui.forms.widgets.Section;
 public class SecuritySection extends DynamicTableSection {
 
     public EReference securityERef;
+    
+    Text roleNameText;
+    Text roleDescriptionText;
 
     /**
      * @param plan
@@ -156,7 +160,7 @@ public class SecuritySection extends DynamicTableSection {
                 false));
         roleNameLabel.setEnabled(true);
 
-        Text roleNameText = toolkit.createText(detail, "", SWT.BORDER);
+        roleNameText = toolkit.createText(detail, "", SWT.BORDER);
         roleNameText
                 .setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         roleNameText.setEnabled(true);
@@ -167,15 +171,21 @@ public class SecuritySection extends DynamicTableSection {
                 false, false));
         roleDescriptionLabel.setEnabled(true);
 
-        Text roleDescriptionText = toolkit.createText(detail, "", SWT.MULTI
+        roleDescriptionText = toolkit.createText(detail, "", SWT.MULTI
                 | SWT.BORDER);
         GridData data = new GridData(SWT.FILL, SWT.FILL, true, false);
         data.heightHint = 50;
         roleDescriptionText.setLayoutData(data);
         roleDescriptionText.setEnabled(true);
 
-        table.addSelectionListener(new TableSelectionListener(roleNameText,
-                roleDescriptionText));
+        table.addSelectionListener(new TableSelectionListener());
+        
+        removeButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                roleNameText.setText("");
+                roleDescriptionText.setText("");
+            }
+        });
 
     }
 
@@ -217,25 +227,16 @@ public class SecuritySection extends DynamicTableSection {
 
     class TableSelectionListener implements SelectionListener {
 
-        Text roleName;
-
-        Text description;
-
-        public TableSelectionListener(Text roleName, Text description) {
-            this.roleName = roleName;
-            this.description = description;
-        }
-
         public void widgetSelected(SelectionEvent e) {
             TableItem item = (TableItem) e.item;
             RoleType roleType = (RoleType) item.getData();
-            roleName.setText(roleType.getRoleName());
+            roleNameText.setText(roleType.getRoleName());
 
             if (!roleType.getDescription().isEmpty()) {
-                description.setText(((DescriptionType) roleType
+                roleDescriptionText.setText(((DescriptionType) roleType
                         .getDescription().get(0)).getLang());
             } else {
-                description.setText("");
+            	roleDescriptionText.setText("");
             }
         }
 
