@@ -173,12 +173,12 @@
     <dependency>
       <groupId>eclipse</groupId>
       <artifactId>org.eclipse.wst.server.core</artifactId>
-      <version>0.7.0</version>
+      <version>${wtp.version}</version>
     </dependency>
     <dependency>
       <groupId>eclipse</groupId>
       <artifactId>org.eclipse.jst.server.core</artifactId>
-      <version>0.7.0</version>
+      <version>${wtp.version}</version>
     </dependency>
     <dependency>
       <groupId>eclipse</groupId>
@@ -198,17 +198,17 @@
     <dependency>
       <groupId>eclipse</groupId>
       <artifactId>org.eclipse.jst.j2ee.web</artifactId>
-      <version>0.7.0</version>
+      <version>${wtp.version}</version>
     </dependency>    
     <dependency>
       <groupId>eclipse</groupId>
       <artifactId>org.eclipse.jst.j2ee.ejb</artifactId>
-      <version>0.7.0</version>
+      <version>${wtp.version}</version>
     </dependency>
     <dependency>
       <groupId>eclipse</groupId>
       <artifactId>org.eclipse.jst.j2ee.jca</artifactId>
-      <version>0.7.0</version>
+      <version>${wtp.version}</version>
     </dependency>
     <dependency>
       <groupId>eclipse</groupId>
@@ -218,7 +218,7 @@
     <dependency>
       <groupId>eclipse</groupId>
       <artifactId>org.eclipse.wst.common.modulecore</artifactId>
-      <version>0.7.0</version>
+      <version>${wtp.version}</version>
     </dependency>
     <dependency>
       <groupId>eclipse</groupId>
@@ -228,42 +228,22 @@
     <dependency>
       <groupId>eclipse</groupId>
       <artifactId>org.eclipse.jst.j2ee</artifactId>
-      <version>0.7.0</version>
+      <version>${wtp.version}</version>
     </dependency>
     <dependency>
       <groupId>eclipse</groupId>
-      <artifactId>org.eclipse.jst.j2ee.core.commonArchive</artifactId>
-      <version>0.7.0</version>
+      <artifactId>org.eclipse.jst.j2ee.core</artifactId>
+      <version>${wtp.version}</version>
     </dependency>
     <dependency>
       <groupId>eclipse</groupId>
-      <artifactId>org.eclipse.jst.j2ee.core.j2eeCorePlugin</artifactId>
-      <version>0.7.0</version>
-    </dependency>
-    <dependency>
-      <groupId>eclipse</groupId>
-      <artifactId>org.eclipse.jst.j2ee.core.j2ee-validation</artifactId>
-      <version>0.7.0</version>
-    </dependency>
-    <dependency>
-      <groupId>eclipse</groupId>
-      <artifactId>org.eclipse.jst.j2ee.core.mofj2ee</artifactId>
-      <version>0.7.0</version>
-    </dependency>
-    <dependency>
-      <groupId>eclipse</groupId>
-      <artifactId>org.eclipse.wst.common.frameworks.common</artifactId>
-      <version>0.7.0</version>
-    </dependency>
-    <dependency>
-      <groupId>eclipse</groupId>
-      <artifactId>org.eclipse.wst.common.frameworks.commoncore</artifactId>
-      <version>0.7.0</version>
+      <artifactId>org.eclipse.wst.common.frameworks</artifactId>
+      <version>${wtp.version}</version>
     </dependency>
     <dependency>
       <groupId>eclipse</groupId>
       <artifactId>org.eclipse.jst.common.frameworks</artifactId>
-      <version>0.7.0</version>
+      <version>${wtp.version}</version>
     </dependency>
     <dependency>
       <groupId>eclipse</groupId>
