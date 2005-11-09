@@ -16,18 +16,13 @@
 package org.apache.geronimo.core.internal;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.jar.Attributes;
-import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.jar.JarOutputStream;
 
 import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.shared.factories.DeploymentFactoryManager;
@@ -42,17 +37,17 @@ import javax.enterprise.deploy.spi.status.ProgressEvent;
 import javax.enterprise.deploy.spi.status.ProgressListener;
 import javax.enterprise.deploy.spi.status.ProgressObject;
 import javax.management.MBeanServerConnection;
-import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
 import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
+import org.apache.geronimo.gbean.GBeanQuery;
 import org.apache.geronimo.kernel.GBeanNotFoundException;
-import org.apache.geronimo.kernel.InternalKernelException;
 import org.apache.geronimo.kernel.Kernel;
-import org.apache.geronimo.kernel.config.Configuration;
+import org.apache.geronimo.kernel.NoSuchAttributeException;
+import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.jmx.KernelDelegate;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
@@ -60,11 +55,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.j2ee.application.internal.operations.EARComponentExportDataModelProvider;
 import org.eclipse.jst.j2ee.application.internal.operations.J2EEComponentExportDataModelProvider;
-import org.eclipse.jst.j2ee.internal.deployables.J2EEFlexProjDeployable;
 import org.eclipse.jst.j2ee.internal.ejb.project.operations.EJBComponentExportDataModelProvider;
 import org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentExportDataModelProvider;
 import org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentExportDataModelProvider;
@@ -83,7 +76,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 	private final static String J2EE_DEPLOYER_ID = "org/apache/geronimo/RuntimeDeployer";
 
-	private static final int MAX_TRIES = 10;
+	private static final int MAX_TRIES = 15;
 
 	private static final long TIMEOUT = 10000;
 
@@ -94,9 +87,8 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	private IProgressMonitor _monitor = null;
 
 	private Kernel kernel = null;
-	
 
-	public GeronimoServerBehaviour() {		
+	public GeronimoServerBehaviour() {
 		super();
 	}
 
@@ -223,39 +215,55 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 		boolean started = false;
 
-		try {
-			ObjectName configName = Configuration
-					.getConfigurationObjectName(new URI(J2EE_DEPLOYER_ID));
+		GBeanQuery query = new GBeanQuery(null,
+				PersistentConfigurationList.class.getName());
 
-			for (int tries = MAX_TRIES; tries > 0 && !started; tries--) {
-				try {
-					if (getKernel() != null) {
-						if (kernel.getGBeanState(configName) == 1) {
-							started = true;
-							setServerState(IServer.STATE_STARTED);
-							Trace.trace(Trace.INFO,
-									"RuntimeDeployer has started.");
-						} else {
-							Trace.trace(Trace.INFO,
-									"RuntimeDeployer has not yet started.");
-						}
-					}
-				} catch (InternalKernelException e) {
-				} catch (GBeanNotFoundException e) {
-				}
-				Thread.sleep(2000);
+		for (int tries = MAX_TRIES; tries > 0 && !started; tries--) {
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e1) {
 			}
-		} catch (MalformedObjectNameException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+			Set configLists = getKernel().listGBeans(query);
+			if (!configLists.isEmpty()) {
+				ObjectName on = (ObjectName) configLists.toArray()[0];
+				try {
+					Boolean b = (Boolean) getKernel().getAttribute(on,
+							"kernelFullyStarted");
+					if (b.booleanValue()) {
+						Trace.trace(Trace.INFO, "kernelFullyStarted = true");
+						setServerState(IServer.STATE_STARTED);
+						started = true;
+					} else {
+						Trace.trace(Trace.INFO, "kernelFullyStarted = false");
+					}
+				} catch (GBeanNotFoundException e) {
+				} catch (NoSuchAttributeException e) {
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				Trace.trace(Trace.INFO, "configList is Empty");
+			}
 		}
 
-		if (!started) {
-			Trace.trace(Trace.SEVERE, "Runtime deployer failed to start.");
-		}
+		/*
+		 * try { ObjectName configName = Configuration
+		 * .getConfigurationObjectName(new URI(J2EE_DEPLOYER_ID));
+		 * 
+		 * for (int tries = MAX_TRIES; tries > 0 && !started; tries--) { try {
+		 * if (getKernel() != null) { if (kernel.getGBeanState(configName) == 1) {
+		 * started = true; setServerState(IServer.STATE_STARTED);
+		 * Trace.trace(Trace.INFO, "RuntimeDeployer has started."); } else {
+		 * Trace.trace(Trace.INFO, "RuntimeDeployer has not yet started."); } } }
+		 * catch (InternalKernelException e) { } catch (GBeanNotFoundException
+		 * e) { } Thread.sleep(2000); } } catch (MalformedObjectNameException e) {
+		 * e.printStackTrace(); } catch (URISyntaxException e) {
+		 * e.printStackTrace(); } catch (InterruptedException e) {
+		 * e.printStackTrace(); }
+		 * 
+		 * if (!started) { Trace.trace(Trace.SEVERE, "Runtime deployer failed to
+		 * start."); }
+		 */
 
 	}
 
@@ -493,32 +501,36 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		}
 		return null;
 	}
-	
+
 	private File createJarFile(IModule module) {
 		IDataModel model = getExportDataModel(module);
-		
+
 		IVirtualComponent comp = ComponentCore.createComponent(module
-				.getProject());		
-		
+				.getProject());
+
 		IPath path = GeronimoPlugin.getInstance().getStateLocation();
-		
+
 		model.setProperty(J2EEComponentExportDataModelProvider.PROJECT_NAME,
 				module.getProject());
 		model.setProperty(
-				J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION,
-				path.append(module.getName()) + ".zip");
+				J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION, path
+						.append(module.getName())
+						+ ".zip");
 		model.setProperty(J2EEComponentExportDataModelProvider.COMPONENT, comp);
-		model.setBooleanProperty(J2EEComponentExportDataModelProvider.OVERWRITE_EXISTING, true);
-		
+		model.setBooleanProperty(
+				J2EEComponentExportDataModelProvider.OVERWRITE_EXISTING, true);
+
 		if (model != null) {
 			try {
 				model.getDefaultOperation().execute(_monitor, null);
-				return new File(model.getStringProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION));
+				return new File(
+						model
+								.getStringProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION));
 			} catch (ExecutionException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -540,64 +552,46 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		return null;
 	}
 
-	/*private File createJarFile2(IModule module) {
-		J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) module
-				.loadAdapter(J2EEFlexProjDeployable.class, null);
+	/*
+	 * private File createJarFile2(IModule module) { J2EEFlexProjDeployable
+	 * j2eeModule = (J2EEFlexProjDeployable) module
+	 * .loadAdapter(J2EEFlexProjDeployable.class, null);
+	 * 
+	 * Path path = new Path(j2eeModule.getURI(module));
+	 * 
+	 * try { File rootDir = new File(path.toOSString()); String zipFilePrefix =
+	 * rootDir.getName(); if (zipFilePrefix.length() < 3) zipFilePrefix +=
+	 * "123"; File zipFile = File.createTempFile(zipFilePrefix, null);
+	 * 
+	 * if (zipFile.exists()) zipFile.delete();
+	 * 
+	 * FileOutputStream fos = new FileOutputStream(zipFile); JarOutputStream jos =
+	 * new JarOutputStream(fos);
+	 * 
+	 * addToJar("", rootDir, jos);
+	 * 
+	 * jos.close(); fos.close();
+	 * 
+	 * zipFile.deleteOnExit();
+	 * 
+	 * return zipFile;
+	 *  } catch (IOException e) { Trace.trace(Trace.SEVERE, "Error creating zip
+	 * file", e); return null; } }
+	 */
 
-		Path path = new Path(j2eeModule.getURI(module));
-
-		try {
-			File rootDir = new File(path.toOSString());
-			String zipFilePrefix = rootDir.getName();
-			if (zipFilePrefix.length() < 3)
-				zipFilePrefix += "123";
-			File zipFile = File.createTempFile(zipFilePrefix, null);
-
-			if (zipFile.exists())
-				zipFile.delete();
-
-			FileOutputStream fos = new FileOutputStream(zipFile);
-			JarOutputStream jos = new JarOutputStream(fos);
-
-			addToJar("", rootDir, jos);
-
-			jos.close();
-			fos.close();
-
-			zipFile.deleteOnExit();
-
-			return zipFile;
-
-		} catch (IOException e) {
-			Trace.trace(Trace.SEVERE, "Error creating zip file", e);
-			return null;
-		}
-	}*/
-
-
-	/*private void addToJar(String namePrefix, File dir, JarOutputStream jos)
-			throws IOException {
-		File[] contents = dir.listFiles();
-		for (int i = 0; i < contents.length; i++) {
-			File f = contents[i];
-			if (f.isDirectory()) {
-				// Recurse into the directory
-				addToJar(namePrefix + f.getName() + "/", f, jos);
-			} else {
-				JarEntry entry = new JarEntry(namePrefix + f.getName());
-				jos.putNextEntry(entry);
-
-				byte[] buffer = new byte[10000];
-				FileInputStream fis = new FileInputStream(f);
-				int bytesRead = 0;
-				while (bytesRead != -1) {
-					bytesRead = fis.read(buffer);
-					if (bytesRead > 0)
-						jos.write(buffer, 0, bytesRead);
-				}
-			}
-		}
-	}*/
+	/*
+	 * private void addToJar(String namePrefix, File dir, JarOutputStream jos)
+	 * throws IOException { File[] contents = dir.listFiles(); for (int i = 0; i <
+	 * contents.length; i++) { File f = contents[i]; if (f.isDirectory()) { //
+	 * Recurse into the directory addToJar(namePrefix + f.getName() + "/", f,
+	 * jos); } else { JarEntry entry = new JarEntry(namePrefix + f.getName());
+	 * jos.putNextEntry(entry);
+	 * 
+	 * byte[] buffer = new byte[10000]; FileInputStream fis = new
+	 * FileInputStream(f); int bytesRead = 0; while (bytesRead != -1) {
+	 * bytesRead = fis.read(buffer); if (bytesRead > 0) jos.write(buffer, 0,
+	 * bytesRead); } } } }
+	 */
 
 	public Map getServerInstanceProperties() {
 		return getRuntimeDelegate().getServerInstanceProperties();
