@@ -79,19 +79,22 @@
 
 		<j:set var="os" value="${os.name}" />
 		<j:if test="${os.startsWith('Linux')}">
-			<j:set var="platform" value="linux-gtk.tar.gz" />
+			<j:set var="platform" value="linux-gtk" />
+			<j:set var="extension" value="${platform}.tar.gz" />
 		</j:if>
 		<j:if test="${os.startsWith('Mac')}">
-			<j:set var="platform" value="macosx-carbon.tar.gz" />
+			<j:set var="platform" value="macosx-carbon" />
+			<j:set var="extension" value="${platform}.tar.gz" />
 		</j:if>
 		<j:if test="${os.startsWith('Windows')}">
-			<j:set var="platform" value="win32.zip" />
+			<j:set var="platform" value="win32" />
+			<j:set var="extension" value="${platform}.zip" />
 		</j:if>
 		
 		<j:set var="wtp.build.path" value="eclipse/webtools/downloads/drops"/>
 		<j:set var="wtp.build.folder" value="I-I20051105-200511051946"/>
 		
-		<j:set var="eclipse.build.filename" value="eclipse-SDK-3.1.1-${platform}"/>
+		<j:set var="eclipse.build.filename" value="eclipse-SDK-3.1.1-${extension}"/>
 		<j:set var="emf.build.filename" value="emf-sdo-xsd-SDK-2.1.1.zip"/>
 		<j:set var="gef.build.filename" value="GEF-SDK-3.1.1.zip"/>
 		<j:set var="jem.build.filename" value="JEM-SDK-1.1.0.1.zip"/>
