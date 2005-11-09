@@ -25,7 +25,9 @@
 		<attainGoal name="multiproject:goal" />
 	</goal>
 
+	<!-- downloads wtp before calling default goal -->
 	<goal name="build">
+		<attainGoal name="getwtp"/>
 		<attainGoal name="default" />
 	</goal>
 
@@ -33,6 +35,11 @@
 		<j:set var="goal" value="clean" />
 		<attainGoal name="multiproject:goal" />
 		<ant:delete dir="./plugins/temp" />
+	</goal>
+	
+	<goal name="clean-all" prereqs="init">
+		<attainGoal name="clean-repo"/>
+		<attainGoal name="clean"/>
 	</goal>
 
 	<goal name="rebuild">
@@ -62,7 +69,8 @@
        </j:if>
 	</goal>
 	
-	<goal name="cleanrepo">
+	<goal name="clean-repo">
+		<ant:delete dir="${maven.repo.local}/geronimo-devtools"/>
 		<ant:delete dir="${maven.repo.local}/eclipse"/>
     </goal>
 
