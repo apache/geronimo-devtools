@@ -56,11 +56,19 @@
         <ant:include name="**/*.xsd"/>
       </ant:fileset>
     </ant:move>
-    
+  	
+  	<!-- hack for maven 1.1-beta 2 and 1154 -->
+  	<ant:copy todir="${maven.build.dir}/schema">
+ 		<ant:fileset dir=".">
+  	    		<ant:include name="geronimo-connector-1.0.xsd"/>
+ 			<ant:include name="geronimo-security-1.1.xsd"/>
+  	  	</ant:fileset>
+  	</ant:copy>
+  	
     <ant:delete dir="${maven.build.dir}/temp"/>
     
     <!-- update include paths in all schemas -->
-    <ant:fileScanner var="schemaScanner">
+    <!-- <ant:fileScanner var="schemaScanner">
       <ant:fileset dir="${maven.build.dir}/schema">
         <ant:include name="*.xsd"/>
       </ant:fileset>
@@ -73,7 +81,7 @@
       <j:if test="${schema.getName().equals('geronimo-security-1.1.xsd')}">
          <replaceregexp file="${schema}" match='(version="1.0">)' replace="\1${patch2}"/>
       </j:if>   
-    </j:forEach>     
+    </j:forEach> -->    
   </goal>
   
   <goal name="codegen" prereqs="importschemas">
