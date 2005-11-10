@@ -37,9 +37,9 @@
 		<ant:delete dir="./plugins/temp" />
 	</goal>
 	
-	<goal name="clean-all" prereqs="init">
-		<attainGoal name="clean-repo"/>
+	<goal name="clean-all">>
 		<attainGoal name="clean"/>
+		<attainGoal name="clean-repo"/>
 	</goal>
 
 	<goal name="rebuild">
