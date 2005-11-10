@@ -86,7 +86,7 @@
   
   <goal name="codegen" prereqs="importschemas">
     <echo>Starting Workbench...</echo>
-    <ant:java fork="true" jar="${eclipse.home}/startup.jar" failonerror="true">
+    <ant:java fork="true" jar="${eclipse.startup.jar}/startup.jar" failonerror="true">
       <ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/xerces/jars/"/>
       <ant:arg value="-data"/>
       <ant:arg value="../temp"/>
