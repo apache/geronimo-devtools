@@ -78,7 +78,19 @@
 		</operationExtension>
 		
 		<operationExtension
-			id="org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentImportFacetOperation"
+			id="org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentImportOperation"
+			postOperationClass="org.apache.geronimo.core.operations.ImportDeploymentPlanOperation">
+		</operationExtension>	
+		<operationExtension
+			id="org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EJBComponentImportOperation"
+			postOperationClass="org.apache.geronimo.core.operations.ImportDeploymentPlanOperation">
+		</operationExtension>	
+		<operationExtension
+			id="org.eclipse.jst.j2ee.internal.archive.operations.EARComponentImportOperation"
+			postOperationClass="org.apache.geronimo.core.operations.ImportDeploymentPlanOperation">
+		</operationExtension>	
+		<operationExtension
+			id="org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentImportOperation"
 			postOperationClass="org.apache.geronimo.core.operations.ImportDeploymentPlanOperation">
 		</operationExtension>		
    </extension>
