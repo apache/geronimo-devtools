@@ -91,20 +91,19 @@
 			<j:set var="extension" value="${platform}.zip" />
 		</j:if>
 		
-		<j:set var="wtp.build.path" value="eclipse/webtools/downloads/drops"/>
-		<j:set var="wtp.build.folder" value="I-I20051105-200511051946"/>
+		<j:set var="wtp.build.folder" value="I-I200511111814-200511111814"/>
 		
 		<j:set var="eclipse.build.filename" value="eclipse-SDK-3.1.1-${extension}"/>
 		<j:set var="emf.build.filename" value="emf-sdo-xsd-SDK-2.1.1.zip"/>
 		<j:set var="gef.build.filename" value="GEF-SDK-3.1.1.zip"/>
 		<j:set var="jem.build.filename" value="JEM-SDK-1.1.0.1.zip"/>
-		<j:set var="wtp.build.filename" value="wtp-sdk-I20051105.zip"/>
+		<j:set var="wtp.build.filename" value="wtp-I200511111814.zip"/>
 
 		<j:set var="eclipse.download" value="http://download.eclipse.org/eclipse/downloads/drops/R-3.1.1-200509290840/${eclipse.build.filename}"/>
 		<j:set var="emf.download" value="http://download.eclipse.org/tools/emf/downloads/drops/2.1.1/R200509281310/${emf.build.filename}"/>
 		<j:set var="gef.download" value="http://download.eclipse.org/tools/gef/downloads/drops/R-3.1.1-200509301327/${gef.build.filename}"/>
 		<j:set var="jem.download" value="http://download.eclipse.org/tools/ve/downloads/drops/R-1.1.0.1-200509071822/${jem.build.filename}"/>
-		<j:set var="wtp.download" value="http://mirrors.ibiblio.org/pub/mirrors/${wtp.build.path}/${wtp.build.folder}/${wtp.build.filename}"/>
+		<j:set var="wtp.download" value="http://download.eclipse.org/webtools/downloads/drops/${wtp.build.folder}/${wtp.build.filename}"/>
 			
 		<j:set var="wtp.dist" value="${maven.repo.local}/eclipse/wtp/distributions/${wtp.build.filename}"/>
 		<j:set var="eclipse.dist" value="${maven.repo.local}/eclipse/eclipse/distributions/${eclipse.build.filename}"/>
