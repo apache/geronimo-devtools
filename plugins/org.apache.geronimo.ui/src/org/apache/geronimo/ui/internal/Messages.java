@@ -271,6 +271,14 @@ public class Messages extends NLS {
 	public static String editorSectionSecurityTitle;
 
 	public static String editorSectionSecurityDescription;
+	
+	public static String editorSectionPortsTitle;
+
+	public static String editorSectionPortsDescription;
+	
+	public static String httpPort;
+	
+	public static String rmiPort;
 
 	public static String username;
 
