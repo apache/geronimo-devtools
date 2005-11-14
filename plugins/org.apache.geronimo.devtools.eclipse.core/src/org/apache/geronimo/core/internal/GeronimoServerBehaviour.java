@@ -79,6 +79,11 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		// kill the process
 		super.stop(true);
 	}
+	
+	private String getJMXServiceURL() {
+		String host = getServer().getHost();
+		return "service:jmx:rmi://" + host + "/jndi/rmi://" + host + ":" + getRMINamingPort() + "/JMXConnector";
+	}
 
 	private Kernel getKernel() {
 
@@ -90,8 +95,9 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 			map.put("jmx.remote.credentials", new String[] { getUserName(),
 					getPassword() });
 			try {
-				JMXServiceURL address = new JMXServiceURL(
-						"service:jmx:rmi://localhost/jndi/rmi:/JMXConnector");
+				String url = getJMXServiceURL();
+				Trace.trace(Trace.INFO, url);
+				JMXServiceURL address = new JMXServiceURL(url);
 				do {
 					try {
 
@@ -281,6 +287,10 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 	public String getPassword() {
 		return GeronimoConnectionFactory.getInstance().getPassword(getServer());
+	}
+	
+	public String getRMINamingPort() {
+		return GeronimoConnectionFactory.getInstance().getRMINamingPort(getServer());
 	}
 
 }

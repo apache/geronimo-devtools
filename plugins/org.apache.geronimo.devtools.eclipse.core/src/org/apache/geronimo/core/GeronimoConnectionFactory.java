@@ -11,12 +11,13 @@ import javax.enterprise.deploy.spi.exceptions.DeploymentManagerCreationException
 import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 
 import org.apache.geronimo.core.internal.GeronimoServer;
+import org.apache.geronimo.core.internal.Trace;
 import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
 import org.eclipse.wst.server.core.IServer;
 
 public class GeronimoConnectionFactory {
 
-	private final static String DEFAULT_URI = "deployer:geronimo:jmx:rmi://localhost/jndi/rmi:/JMXConnector";
+	//private final static String DEFAULT_URI = "deployer:geronimo:jmx:rmi://localhost/jndi/rmi:/JMXConnector";
 
 	private HashMap connections = new HashMap();
 
@@ -46,7 +47,9 @@ public class GeronimoConnectionFactory {
 				factory = new DeploymentFactoryImpl();
 			}
 			mgr.registerDeploymentFactory(factory);
-			dm = mgr.getDeploymentManager(DEFAULT_URI, getUserName(server),
+			String deployerURL = getDeployerURL(server);
+			Trace.trace(Trace.INFO, "DeployerURL: " + deployerURL);
+			dm = mgr.getDeploymentManager(deployerURL, getUserName(server),
 					getPassword(server));
 			connections.put(server.getId(), dm);
 		}
@@ -56,6 +59,10 @@ public class GeronimoConnectionFactory {
 
 	public void destroy(IServer server) {
 		connections.remove(server.getId());
+	}
+	
+	private String getDeployerURL(IServer server) {
+		return "deployer:geronimo:jmx:rmi://" + server.getHost()  + "/jndi/rmi://" + server.getHost() + ":" + getRMINamingPort(server) + "/JMXConnector";
 	}
 
 	private DeploymentFactory discoverDeploymentFactory(IServer server) {
@@ -94,6 +101,12 @@ public class GeronimoConnectionFactory {
 		GeronimoServer gserver = (GeronimoServer) server
 				.getAdapter(GeronimoServer.class);
 		return gserver.getAdminPassword();
+	}
+	
+	public String getRMINamingPort(IServer server) {
+		GeronimoServer gserver = (GeronimoServer) server
+				.getAdapter(GeronimoServer.class);
+		return gserver.getRMINamingPort();
 	}
 
 }
