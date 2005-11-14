@@ -15,74 +15,42 @@
  */
 package org.apache.geronimo.core.internal;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
 
-import javax.enterprise.deploy.shared.CommandType;
-import javax.enterprise.deploy.shared.factories.DeploymentFactoryManager;
-import javax.enterprise.deploy.spi.DeploymentManager;
-import javax.enterprise.deploy.spi.Target;
-import javax.enterprise.deploy.spi.TargetModuleID;
 import javax.enterprise.deploy.spi.exceptions.DeploymentManagerCreationException;
-import javax.enterprise.deploy.spi.exceptions.TargetException;
-import javax.enterprise.deploy.spi.factories.DeploymentFactory;
-import javax.enterprise.deploy.spi.status.DeploymentStatus;
-import javax.enterprise.deploy.spi.status.ProgressEvent;
-import javax.enterprise.deploy.spi.status.ProgressListener;
-import javax.enterprise.deploy.spi.status.ProgressObject;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
-import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
+import org.apache.geronimo.core.CommandLauncher;
+import org.apache.geronimo.core.GeronimoConnectionFactory;
+import org.apache.geronimo.core.commands.DistributeCommand;
+import org.apache.geronimo.core.commands.RedeployCommand;
+import org.apache.geronimo.core.commands.StartCommand;
+import org.apache.geronimo.core.commands.StopCommand;
+import org.apache.geronimo.core.commands.UndeployCommand;
 import org.apache.geronimo.gbean.GBeanQuery;
 import org.apache.geronimo.kernel.GBeanNotFoundException;
 import org.apache.geronimo.kernel.Kernel;
 import org.apache.geronimo.kernel.NoSuchAttributeException;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.jmx.KernelDelegate;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jst.j2ee.application.internal.operations.EARComponentExportDataModelProvider;
-import org.eclipse.jst.j2ee.application.internal.operations.J2EEComponentExportDataModelProvider;
-import org.eclipse.jst.j2ee.internal.ejb.project.operations.EJBComponentExportDataModelProvider;
-import org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentExportDataModelProvider;
-import org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentExportDataModelProvider;
 import org.eclipse.jst.server.generic.core.internal.GenericServerBehaviour;
-import org.eclipse.wst.common.componentcore.ComponentCore;
-import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
-import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
-import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 
 public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
-	private final static String DEFAULT_URI = "deployer:geronimo:jmx:rmi://localhost/jndi/rmi:/JMXConnector";
-
-	private final static String J2EE_DEPLOYER_ID = "org/apache/geronimo/RuntimeDeployer";
-
 	private static final int MAX_TRIES = 15;
-
-	private static final long TIMEOUT = 10000;
-
-	private DeploymentFactoryManager dfm = null;
-
-	private DeploymentManager dm = null;
 
 	private IProgressMonitor _monitor = null;
 
@@ -90,60 +58,6 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 	public GeronimoServerBehaviour() {
 		super();
-	}
-
-	private void discoverDeploymentFactory() {
-
-		try {
-			JarFile deployerJar = new JarFile(getServer().getRuntime()
-					.getLocation().append("/deployer.jar").toFile());
-			java.util.jar.Manifest manifestFile = deployerJar.getManifest();
-			Attributes attributes = manifestFile.getMainAttributes();
-			String key = "J2EE-DeploymentFactory-Implementation-Class";
-			String className = attributes.getValue(key);
-			dfm = DeploymentFactoryManager.getInstance();
-			Class deploymentFactory = Class.forName(className);
-			DeploymentFactory deploymentFactoryInstance = (DeploymentFactory) deploymentFactory
-					.newInstance();
-			dfm.registerDeploymentFactory(deploymentFactoryInstance);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public DeploymentManager getDeploymentManager()
-			throws DeploymentManagerCreationException {
-
-		if (dm == null) {
-			discoverDeploymentFactory();
-			if (dfm != null) {
-				dm = dfm.getDeploymentManager(DEFAULT_URI, getUserName(),
-						getPassword());
-			} else {
-				DeploymentFactory df = new DeploymentFactoryImpl();
-				dm = df.getDeploymentManager(DEFAULT_URI, getUserName(),
-						getPassword());
-			}
-		}
-		return dm;
-	}
-
-	private String getUserName() {
-		GeronimoServer server = (GeronimoServer) getServer().getAdapter(
-				GeronimoServer.class);
-		return server.getAdminID();
-	}
-
-	private String getPassword() {
-		GeronimoServer server = (GeronimoServer) getServer().getAdapter(
-				GeronimoServer.class);
-		return server.getAdminPassword();
 	}
 
 	/*
@@ -159,7 +73,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 			kernel.shutdown();
 		}
 
-		dm = null;
+		GeronimoConnectionFactory.getInstance().destroy(getServer());
 		kernel = null;
 
 		// kill the process
@@ -245,26 +159,6 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 				Trace.trace(Trace.INFO, "configList is Empty");
 			}
 		}
-
-		/*
-		 * try { ObjectName configName = Configuration
-		 * .getConfigurationObjectName(new URI(J2EE_DEPLOYER_ID));
-		 * 
-		 * for (int tries = MAX_TRIES; tries > 0 && !started; tries--) { try {
-		 * if (getKernel() != null) { if (kernel.getGBeanState(configName) == 1) {
-		 * started = true; setServerState(IServer.STATE_STARTED);
-		 * Trace.trace(Trace.INFO, "RuntimeDeployer has started."); } else {
-		 * Trace.trace(Trace.INFO, "RuntimeDeployer has not yet started."); } } }
-		 * catch (InternalKernelException e) { } catch (GBeanNotFoundException
-		 * e) { } Thread.sleep(2000); } } catch (MalformedObjectNameException e) {
-		 * e.printStackTrace(); } catch (URISyntaxException e) {
-		 * e.printStackTrace(); } catch (InterruptedException e) {
-		 * e.printStackTrace(); }
-		 * 
-		 * if (!started) { Trace.trace(Trace.SEVERE, "Runtime deployer failed to
-		 * start."); }
-		 */
-
 	}
 
 	/*
@@ -290,86 +184,6 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 		if (module.length == 1) {
 			invokeCommand(deltaKind, module[0]);
-		}
-	}
-
-	class WaitForNotificationThread extends Thread {
-		public void run() {
-			try {
-				sleep(TIMEOUT);
-				Trace.trace(Trace.INFO, "Wait thread TIMEOUT!");
-			} catch (InterruptedException e) {
-				Trace.trace(Trace.INFO, "Wait thread interrupted");
-			}
-		}
-	}
-
-	class GeronimoDeploymentProgressListener implements ProgressListener {
-
-		private Thread waitThread;
-
-		private CommandType cmd = null;
-
-		private IProject project = null;
-
-		public String lastMessage = null;
-
-		public GeronimoDeploymentProgressListener() {
-			waitThread = new WaitForNotificationThread();
-		}
-
-		public void handleProgressEvent(ProgressEvent event) {
-			String message = DeploymentStatusMessageTranslator
-					.getTranslatedMessage(event, project);
-			if (!message.equals(lastMessage)) {
-				_monitor.setTaskName(message);
-				Trace.trace(Trace.INFO, message);
-			}
-			lastMessage = message;
-			DeploymentStatus status = event.getDeploymentStatus();
-			if (status.getMessage() != null) {
-				Trace.trace(Trace.INFO, "\t" + status.getMessage());
-				_monitor.subTask(status.getMessage());
-			}
-
-			if (cmd == null || cmd == status.getCommand()) {
-				if (status.isCompleted() || status.isFailed()) {
-					waitThread.interrupt();
-				}
-			}
-		}
-
-		public void start() {
-			waitThread.start();
-		}
-
-		public void setType(CommandType cmd) {
-			this.cmd = cmd;
-		}
-
-		public Thread getWaitThread() {
-			return waitThread;
-		}
-
-		public void setProject(IProject project) {
-			this.project = project;
-		}
-	}
-
-	private void waitForCompletion(ProgressObject po,
-			GeronimoDeploymentProgressListener listener, CommandType cmd,
-			IProject project) {
-
-		listener.setType(cmd);
-		listener.setProject(project);
-
-		po.addProgressListener(listener);
-
-		try {
-			listener.getWaitThread().join();
-		} catch (InterruptedException e) {
-		} finally {
-			po.removeProgressListener(listener);
 		}
 	}
 
@@ -405,196 +219,68 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		}
 	}
 
-	private void doDeploy(IModule module) throws CoreException,
-			DeploymentManagerCreationException {
-
-		Target[] targets = getDeploymentManager().getTargets();
-		GeronimoDeploymentProgressListener listener = createAndStartListener();
-		File jarFile = createJarFile(module);
-		ProgressObject po = getDeploymentManager().distribute(targets, jarFile,
-				null);
-		waitForCompletion(po, listener, CommandType.DISTRIBUTE, module
-				.getProject());
-
-		if (po.getDeploymentStatus().isCompleted()) {
-			listener = createAndStartListener();
-			po = getDeploymentManager().start(po.getResultTargetModuleIDs());
-			waitForCompletion(po, listener, CommandType.START, module
-					.getProject());
-			if (po.getDeploymentStatus().isCompleted()) {
-				// TODO
-			} else if (po.getDeploymentStatus().isFailed()) {
-				// TODO
-			}
-		} else if (po.getDeploymentStatus().isFailed()) {
-			IStatus status = new Status(
-					IStatus.ERROR,
-					GeronimoPlugin.PLUGIN_ID,
-					0,
-					"Distribution of application failed.  See .log for details.",
-					new Exception(listener.lastMessage));
-			throw new CoreException(status);
+	private void doDeploy(IModule module) throws CoreException {
+		CommandLauncher launcher = new CommandLauncher(new DistributeCommand(),
+				module, getServer());
+		IStatus status = launcher.executeCommand(_monitor);
+		
+		if(!status.isOK()) {
+			doFail(status, Messages.DISTRIBUTE_FAIL);
+		}
+		
+		StartCommand startCmd = new StartCommand();
+		startCmd.setTargetModuleIDs(launcher.getResultTargetModuleIDs());
+		launcher = new CommandLauncher(startCmd, module, getServer());
+		status = launcher.executeCommand(_monitor);
+		if(!status.isOK()) {
+			doFail(status, Messages.START_FAIL);
 		}
 	}
 
-	private void doRedeploy(IModule module) throws CoreException,
-			DeploymentManagerCreationException {
-
-		TargetModuleID id = getTargetModuleID(module);
-		if (id != null) {
-			File jarFile = createJarFile(module);
-			GeronimoDeploymentProgressListener listener = createAndStartListener();
-			ProgressObject po = getDeploymentManager().redeploy(
-					new TargetModuleID[] { id }, jarFile, null);
-			waitForCompletion(po, listener, CommandType.REDEPLOY, module
-					.getProject());
-			if (po.getDeploymentStatus().isCompleted()) {
-				// TODO
-			} else if (po.getDeploymentStatus().isFailed()) {
-				// TODO
-			}
+	private void doRedeploy(IModule module) throws CoreException {
+		CommandLauncher launcher = new CommandLauncher(new RedeployCommand(),
+				module, getServer());
+		IStatus status = launcher.executeCommand(_monitor);
+		if (!status.isOK()) {
+			doFail(status, Messages.REDEPLOY_FAIL);
 		}
 	}
 
 	private void doUndeploy(IModule module) throws CoreException,
 			DeploymentManagerCreationException {
-		TargetModuleID id = getTargetModuleID(module);
-		if (id != null) {
-			GeronimoDeploymentProgressListener listener = createAndStartListener();
-			ProgressObject po = getDeploymentManager().undeploy(
-					new TargetModuleID[] { id });
-			waitForCompletion(po, listener, CommandType.UNDEPLOY, module
-					.getProject());
-			if (po.getDeploymentStatus().isCompleted()) {
-				// TODO
-			} else if (po.getDeploymentStatus().isFailed()) {
-				// TODO
-			}
+		CommandLauncher launcher = new CommandLauncher(new StopCommand(),
+				module, getServer());
+		IStatus status = launcher.executeCommand(_monitor);
+
+		if (!status.isOK()) {
+			doFail(status, Messages.STOP_FAIL);
+		}
+
+		launcher = new CommandLauncher(new UndeployCommand(), module,
+				getServer());
+		status = launcher.executeCommand(_monitor);
+		
+		if (!status.isOK()) {
+			doFail(status, Messages.UNDEPLOY_FAIL);
 		}
 	}
 
-	private GeronimoDeploymentProgressListener createAndStartListener() {
-		GeronimoDeploymentProgressListener listener = new GeronimoDeploymentProgressListener();
-		listener.start();
-		return listener;
+	private void doFail(IStatus status, String message) throws CoreException {
+		throw new CoreException(new Status(IStatus.ERROR,
+				GeronimoPlugin.PLUGIN_ID, 0, message, new Exception(status
+						.getMessage())));
 	}
-
-	// TODO find a better way to get TargetModuleID for IModule
-	private TargetModuleID getTargetModuleID(IModule module)
-			throws DeploymentManagerCreationException {
-		try {
-			TargetModuleID ids[] = getDeploymentManager().getAvailableModules(
-					GeronimoUtils.getJSR88ModuleType(module),
-					getDeploymentManager().getTargets());
-			if (ids != null) {
-				for (int i = 0; i < ids.length; i++) {
-					if (ids[i].getModuleID().equals(
-							GeronimoUtils.getConfigId(module))) {
-						return ids[i];
-					}
-				}
-			}
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (TargetException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	private File createJarFile(IModule module) {
-		IDataModel model = getExportDataModel(module);
-
-		IVirtualComponent comp = ComponentCore.createComponent(module
-				.getProject());
-
-		IPath path = GeronimoPlugin.getInstance().getStateLocation();
-
-		model.setProperty(J2EEComponentExportDataModelProvider.PROJECT_NAME,
-				module.getProject());
-		model.setProperty(
-				J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION, path
-						.append(module.getName())
-						+ ".zip");
-		model.setProperty(J2EEComponentExportDataModelProvider.COMPONENT, comp);
-		model.setBooleanProperty(
-				J2EEComponentExportDataModelProvider.OVERWRITE_EXISTING, true);
-
-		if (model != null) {
-			try {
-				model.getDefaultOperation().execute(_monitor, null);
-				return new File(
-						model
-								.getStringProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION));
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return null;
-	}
-
-	private IDataModel getExportDataModel(IModule module) {
-		String type = module.getModuleType().getId();
-		if (IModuleConstants.JST_WEB_MODULE.equals(type)) {
-			return DataModelFactory
-					.createDataModel(new WebComponentExportDataModelProvider());
-		} else if (IModuleConstants.JST_EJB_MODULE.equals(type)) {
-			return DataModelFactory
-					.createDataModel(new EJBComponentExportDataModelProvider());
-		} else if (IModuleConstants.JST_EAR_MODULE.equals(type)) {
-			return DataModelFactory
-					.createDataModel(new EARComponentExportDataModelProvider());
-		} else if (IModuleConstants.JST_CONNECTOR_MODULE.equals(type)) {
-			return DataModelFactory
-					.createDataModel(new ConnectorComponentExportDataModelProvider());
-		}
-		return null;
-	}
-
-	/*
-	 * private File createJarFile2(IModule module) { J2EEFlexProjDeployable
-	 * j2eeModule = (J2EEFlexProjDeployable) module
-	 * .loadAdapter(J2EEFlexProjDeployable.class, null);
-	 * 
-	 * Path path = new Path(j2eeModule.getURI(module));
-	 * 
-	 * try { File rootDir = new File(path.toOSString()); String zipFilePrefix =
-	 * rootDir.getName(); if (zipFilePrefix.length() < 3) zipFilePrefix +=
-	 * "123"; File zipFile = File.createTempFile(zipFilePrefix, null);
-	 * 
-	 * if (zipFile.exists()) zipFile.delete();
-	 * 
-	 * FileOutputStream fos = new FileOutputStream(zipFile); JarOutputStream jos =
-	 * new JarOutputStream(fos);
-	 * 
-	 * addToJar("", rootDir, jos);
-	 * 
-	 * jos.close(); fos.close();
-	 * 
-	 * zipFile.deleteOnExit();
-	 * 
-	 * return zipFile;
-	 *  } catch (IOException e) { Trace.trace(Trace.SEVERE, "Error creating zip
-	 * file", e); return null; } }
-	 */
-
-	/*
-	 * private void addToJar(String namePrefix, File dir, JarOutputStream jos)
-	 * throws IOException { File[] contents = dir.listFiles(); for (int i = 0; i <
-	 * contents.length; i++) { File f = contents[i]; if (f.isDirectory()) { //
-	 * Recurse into the directory addToJar(namePrefix + f.getName() + "/", f,
-	 * jos); } else { JarEntry entry = new JarEntry(namePrefix + f.getName());
-	 * jos.putNextEntry(entry);
-	 * 
-	 * byte[] buffer = new byte[10000]; FileInputStream fis = new
-	 * FileInputStream(f); int bytesRead = 0; while (bytesRead != -1) {
-	 * bytesRead = fis.read(buffer); if (bytesRead > 0) jos.write(buffer, 0,
-	 * bytesRead); } } } }
-	 */
 
 	public Map getServerInstanceProperties() {
 		return getRuntimeDelegate().getServerInstanceProperties();
+	}
+
+	public String getUserName() {
+		return GeronimoConnectionFactory.getInstance().getUserName(getServer());
+	}
+
+	public String getPassword() {
+		return GeronimoConnectionFactory.getInstance().getPassword(getServer());
 	}
 
 }

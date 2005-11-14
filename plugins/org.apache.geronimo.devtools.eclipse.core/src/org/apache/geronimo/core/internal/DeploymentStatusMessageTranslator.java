@@ -57,6 +57,10 @@ public class DeploymentStatusMessageTranslator {
 		if (type == CommandType.UNDEPLOY) {
 			return "Undeploying";
 		}
+		
+		if (type == CommandType.STOP) {
+			return "Stopping";
+		}
 
 		return "";
 	}

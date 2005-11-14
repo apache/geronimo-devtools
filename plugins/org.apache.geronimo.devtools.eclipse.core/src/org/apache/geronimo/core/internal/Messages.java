@@ -20,7 +20,16 @@ import org.eclipse.osgi.util.NLS;
  * Translated messages.
  */
 public class Messages extends NLS {
+	
 	static {
 		NLS.initializeMessages(GeronimoPlugin.PLUGIN_ID + ".internal.Messages", Messages.class);
 	}
+	
+	public static String DISTRIBUTE_FAIL;
+	public static String START_FAIL;
+	public static String STOP_FAIL;
+	public static String UNDEPLOY_FAIL;
+	public static String REDEPLOY_FAIL;
+	public static String DM_CONNECTION_FAIL;
+	
 }

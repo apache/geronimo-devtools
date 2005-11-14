@@ -62,23 +62,23 @@ public class GeronimoUtils {
 
         if (isWebModule(module)) {
             WebAppType plan = getWebDeploymentPlan(module);
-            if (plan.eIsSet(WebPackage.eINSTANCE.getWebAppType_ConfigId())) {
+            if (plan != null && plan.eIsSet(WebPackage.eINSTANCE.getWebAppType_ConfigId())) {
                 return plan.getConfigId();
             }
         } else if (isEjbJarModule(module)) {
             OpenejbJarType plan = getOpenEjbDeploymentPlan(module);
-            if (plan.eIsSet(JarPackage.eINSTANCE.getOpenejbJarType_ConfigId())) {
+            if (plan != null && plan.eIsSet(JarPackage.eINSTANCE.getOpenejbJarType_ConfigId())) {
                 return plan.getConfigId();
             }
         } else if (isEarModule(module)) {
             ApplicationType plan = getApplicationDeploymentPlan(module);
-            if (plan.eIsSet(ApplicationPackage.eINSTANCE
+            if (plan != null && plan.eIsSet(ApplicationPackage.eINSTANCE
                     .getApplicationType_ConfigId())) {
                 return plan.getConfigId();
             }
         } else if (isRARModule(module)) {
             ConnectorType plan = getConnectorDeploymentPlan(module);
-            if (plan.eIsSet(ConnectorPackage.eINSTANCE
+            if (plan != null && plan.eIsSet(ConnectorPackage.eINSTANCE
                     .getConnectorType_ConfigId())) {
                 return plan.getConfigId();
             }
