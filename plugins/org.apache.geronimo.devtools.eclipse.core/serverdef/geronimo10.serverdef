@@ -19,6 +19,11 @@
 	type="string"
 	context="server"
 	default="8080" />
+<property id="rmiport"
+	label="%rmiport"
+	type="string"
+	context="server"
+	default="1099" />
 <property id="adminID"
 	label="%adminId"
 	type="string"
