@@ -28,34 +28,36 @@ import org.eclipse.ui.forms.editor.FormPage;
 
 public class ConnectorPlanEditor extends AbstractGeronimoDeploymentPlanEditor {
 
-    public ConnectorPlanEditor() {
-        super();
-    }
+	public ConnectorPlanEditor() {
+		super();
+	}
 
-    public void doAddPages() throws PartInitException {
-        addPage(new ConnectorOverviewPage(this, "connectoroverview",
-                Messages.editorTabGeneral));
-        addPage(getDeploymentPage());        
-        addSourcePage();
-    }
+	public void doAddPages() throws PartInitException {
+		if (getDeploymentPlan() != null) {
+			addPage(new ConnectorOverviewPage(this, "connectoroverview",
+					Messages.editorTabGeneral));
+			addPage(getDeploymentPage());
+		}
+		addSourcePage();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.editors.AbstractGeronimoDeploymentPlanEditor#loadDeploymentPlan(org.eclipse.core.resources.IFile)
-     */
-    public EObject loadDeploymentPlan(IFile file) {
-        return GeronimoUtils.getConnectorDeploymentPlan(file);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.editors.AbstractGeronimoDeploymentPlanEditor#loadDeploymentPlan(org.eclipse.core.resources.IFile)
+	 */
+	public EObject loadDeploymentPlan(IFile file) {
+		return GeronimoUtils.getConnectorDeploymentPlan(file);
+	}
 
-    private FormPage getDeploymentPage() {
-        DeploymentPage formPage = new DeploymentPage(this, "deploymentpage",
-                Messages.editorTabDeployment);
-        ConnectorPackage pkg = ConnectorFactory.eINSTANCE.getConnectorPackage();
-        formPage.dependencies = pkg.getConnectorType_Dependency();
-        formPage.imports = pkg.getConnectorType_Import();
-        formPage.gbeans = pkg.getConnectorType_Gbean();
-        return formPage;
-    }
+	private FormPage getDeploymentPage() {
+		DeploymentPage formPage = new DeploymentPage(this, "deploymentpage",
+				Messages.editorTabDeployment);
+		ConnectorPackage pkg = ConnectorFactory.eINSTANCE.getConnectorPackage();
+		formPage.dependencies = pkg.getConnectorType_Dependency();
+		formPage.imports = pkg.getConnectorType_Import();
+		formPage.gbeans = pkg.getConnectorType_Gbean();
+		return formPage;
+	}
 
 }

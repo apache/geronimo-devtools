@@ -29,43 +29,45 @@ import org.eclipse.ui.forms.editor.FormPage;
 
 public class ApplicationPlanEditor extends AbstractGeronimoDeploymentPlanEditor {
 
-    public ApplicationPlanEditor() {
-        super();
-    }
+	public ApplicationPlanEditor() {
+		super();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.editors.AbstractGeronimoDeploymentPlanEditor#doAddPages()
-     */
-    public void doAddPages() throws PartInitException {
-        addPage(new AppGeneralPage(this, "appgeneralpage",
-                Messages.editorTabGeneral));
-        addPage(new SecurityPage(this, "securitypage",
-                Messages.editorTabSecurity, ApplicationPackage.eINSTANCE
-                        .getApplicationType_Security()));
-        addPage(getDeploymentPage());
-        addSourcePage();
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.editors.AbstractGeronimoDeploymentPlanEditor#doAddPages()
+	 */
+	public void doAddPages() throws PartInitException {
+		if (getDeploymentPlan() != null) {
+			addPage(new AppGeneralPage(this, "appgeneralpage",
+					Messages.editorTabGeneral));
+			addPage(new SecurityPage(this, "securitypage",
+					Messages.editorTabSecurity, ApplicationPackage.eINSTANCE
+							.getApplicationType_Security()));
+			addPage(getDeploymentPage());
+		}
+		addSourcePage();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.editors.AbstractGeronimoDeploymentPlanEditor#loadDeploymentPlan(org.eclipse.core.resources.IFile)
-     */
-    public EObject loadDeploymentPlan(IFile file) {
-        return GeronimoUtils.getApplicationDeploymentPlan(file);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.editors.AbstractGeronimoDeploymentPlanEditor#loadDeploymentPlan(org.eclipse.core.resources.IFile)
+	 */
+	public EObject loadDeploymentPlan(IFile file) {
+		return GeronimoUtils.getApplicationDeploymentPlan(file);
+	}
 
-    private FormPage getDeploymentPage() {
-        DeploymentPage formPage = new DeploymentPage(this, "deploymentpage",
-                Messages.editorTabDeployment);
-        ApplicationPackage pkg = ApplicationFactory.eINSTANCE
-                .getApplicationPackage();
-        formPage.dependencies = pkg.getApplicationType_Dependency();
-        formPage.imports = pkg.getApplicationType_Import();
-        formPage.gbeans = pkg.getApplicationType_Gbean();
-        return formPage;
-    }
+	private FormPage getDeploymentPage() {
+		DeploymentPage formPage = new DeploymentPage(this, "deploymentpage",
+				Messages.editorTabDeployment);
+		ApplicationPackage pkg = ApplicationFactory.eINSTANCE
+				.getApplicationPackage();
+		formPage.dependencies = pkg.getApplicationType_Dependency();
+		formPage.imports = pkg.getApplicationType_Import();
+		formPage.gbeans = pkg.getApplicationType_Gbean();
+		return formPage;
+	}
 
 }

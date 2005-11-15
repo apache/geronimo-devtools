@@ -24,6 +24,8 @@ import org.apache.geronimo.ui.internal.Trace;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
@@ -39,121 +41,127 @@ import org.eclipse.ui.forms.editor.IFormPage;
  */
 public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 
-    private EObject deploymentPlan;
+	private EObject deploymentPlan;
 
-    /**
-     * 
-     */
-    public AbstractGeronimoDeploymentPlanEditor() {
-        super();
-    }
+	/**
+	 * 
+	 */
+	public AbstractGeronimoDeploymentPlanEditor() {
+		super();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
-     */
-    public void doSave(IProgressMonitor monitor) {
-        InputStream is = null;
-        try {
-            IEditorInput input = getEditorInput();
-            if (input instanceof IFileEditorInput) {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void doSave(IProgressMonitor monitor) {
+		InputStream is = null;
+		try {
+			IEditorInput input = getEditorInput();
+			if (input instanceof IFileEditorInput) {
+				if (deploymentPlan != null) {
+					deploymentPlan.eResource().save(Collections.EMPTY_MAP);
+					commitFormPages(true);
+					editorDirtyStateChanged();
+				} else {
+					getActiveEditor().doSave(monitor);
+				}
+			}
+		} catch (Exception e) {
+			Trace.trace(Trace.SEVERE, "Error saving", e);
+		} finally {
+			try {
+				if (is != null)
+					is.close();
+			} catch (Exception e) {
+				// do nothing
+			}
+		}
+	}
 
-                deploymentPlan.eResource().save(Collections.EMPTY_MAP);
-                commitFormPages(true);
-                editorDirtyStateChanged();
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.forms.editor.FormEditor#addPages()
+	 */
+	protected void addPages() {
+		try {
+			doAddPages();
+		} catch (PartInitException e1) {
+			e1.printStackTrace();
+		}
+	}
 
-            }
-        } catch (Exception e) {
-            Trace.trace(Trace.SEVERE, "Error saving", e);
-        } finally {
-            try {
-                if (is != null)
-                    is.close();
-            } catch (Exception e) {
-                // do nothing
-            }
-        }
-    }
+	abstract public void doAddPages() throws PartInitException;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.forms.editor.FormEditor#addPages()
-     */
-    protected void addPages() {
-        try {
-            doAddPages();
-        } catch (PartInitException e1) {
-            e1.printStackTrace();
-        }
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.part.EditorPart#doSaveAs()
+	 */
+	public final void doSaveAs() {
+		// do nothing
+	}
 
-    abstract public void doAddPages() throws PartInitException;
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.part.EditorPart#doSaveAs()
-     */
-    public final void doSaveAs() {
-        // do nothing
-    }
-
-    protected void addSourcePage() throws PartInitException {
-        TextEditor source = new TextEditor();
+	protected void addSourcePage() throws PartInitException {
+		TextEditor source = new TextEditor();
         int index = addPage(source, getEditorInput());
         setPageText(index, Messages.editorTabSource);
-    }
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.part.EditorPart#isSaveAsAllowed()
-     */
-    public boolean isSaveAsAllowed() {
-        return false;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.part.EditorPart#isSaveAsAllowed()
+	 */
+	public boolean isSaveAsAllowed() {
+		return false;
+	}
 
-    public void commitFormPages(boolean onSave) {
-        IFormPage[] pages = getPages();
-        for (int i = 0; i < pages.length; i++) {
-            IFormPage page = pages[i];
-            IManagedForm mform = page.getManagedForm();
-            if (mform != null && mform.isDirty())
-                mform.commit(true);
-        }
-    }
+	public void commitFormPages(boolean onSave) {
+		IFormPage[] pages = getPages();
+		for (int i = 0; i < pages.length; i++) {
+			IFormPage page = pages[i];
+			IManagedForm mform = page.getManagedForm();
+			if (mform != null && mform.isDirty())
+				mform.commit(true);
+		}
+	}
 
-    public IFormPage[] getPages() {
-        ArrayList formPages = new ArrayList();
-        for (int i = 0; i < pages.size(); i++) {
-            Object page = pages.get(i);
-            if (page instanceof IFormPage)
-                formPages.add(page);
-        }
-        return (IFormPage[]) formPages.toArray(new IFormPage[formPages.size()]);
-    }
+	public IFormPage[] getPages() {
+		ArrayList formPages = new ArrayList();
+		for (int i = 0; i < pages.size(); i++) {
+			Object page = pages.get(i);
+			if (page instanceof IFormPage)
+				formPages.add(page);
+		}
+		return (IFormPage[]) formPages.toArray(new IFormPage[formPages.size()]);
+	}
 
-    public EObject getDeploymentPlan() {
-        return deploymentPlan;
-    }
+	public EObject getDeploymentPlan() {
+		return deploymentPlan;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IEditorPart#init(org.eclipse.ui.IEditorSite,
-     *      org.eclipse.ui.IEditorInput)
-     */
-    public void init(IEditorSite site, IEditorInput input)
-            throws PartInitException {
-        super.init(site, input);
-        if (input instanceof IFileEditorInput) {
-            IFileEditorInput fei = (IFileEditorInput) input;
-            deploymentPlan = loadDeploymentPlan(fei.getFile());
-        }
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.IEditorPart#init(org.eclipse.ui.IEditorSite,
+	 *      org.eclipse.ui.IEditorInput)
+	 */
+	public void init(IEditorSite site, IEditorInput input)
+			throws PartInitException {
+		super.init(site, input);
+		if (input instanceof IFileEditorInput) {
+			IFileEditorInput fei = (IFileEditorInput) input;
+			deploymentPlan = loadDeploymentPlan(fei.getFile());
+			if (deploymentPlan == null) {
+				MessageDialog.openInformation(Display.getDefault()
+						.getActiveShell(), "Error Opening Editor", "Could not open the deployment plan editor.  Opening the default text editor.");
+			}
+		}
+	}
 
-    abstract public EObject loadDeploymentPlan(IFile file);
+	abstract public EObject loadDeploymentPlan(IFile file);
 
 }

@@ -29,7 +29,9 @@ public class GeronimoServer extends GenericServer {
 
     public static final String PROPERTY_ADMIN_PW = "adminPassword";
     
-    public static final String PROPERY_RMI_PORT = "rmiport";
+    public static final String PROPERTY_RMI_PORT = "rmiport";
+    
+    public static final String PROPERY_HTTP_PORT = "port";
 
     /*
      * (non-Javadoc)
@@ -76,7 +78,11 @@ public class GeronimoServer extends GenericServer {
     }
     
     public String getRMINamingPort() {
-        return (String) getServerInstanceProperties().get(PROPERY_RMI_PORT);    
+        return (String) getServerInstanceProperties().get(PROPERTY_RMI_PORT);    
+    }
+    
+    public String getHTTPPort() {
+        return (String) getServerInstanceProperties().get(PROPERY_HTTP_PORT);    
     }
 
     public void setAdminID(String value) {
@@ -88,7 +94,11 @@ public class GeronimoServer extends GenericServer {
     }
 
     public void setRMINamingPort(String value) {
-        getServerInstanceProperties().put(PROPERY_RMI_PORT, value);    
+        getServerInstanceProperties().put(PROPERTY_RMI_PORT, value);    
+    }
+    
+    public void setHTTPPort(String value) {
+        getServerInstanceProperties().put(PROPERY_HTTP_PORT, value);    
     }
     
     

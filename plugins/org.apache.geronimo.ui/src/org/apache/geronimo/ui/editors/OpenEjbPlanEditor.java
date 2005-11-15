@@ -33,41 +33,43 @@ import org.openejb.xml.ns.openejb.jar.JarPackage;
  */
 public class OpenEjbPlanEditor extends AbstractGeronimoDeploymentPlanEditor {
 
-    /**
-     * 
-     */
-    public OpenEjbPlanEditor() {
-        super();
-    }
+	/**
+	 * 
+	 */
+	public OpenEjbPlanEditor() {
+		super();
+	}
 
-    public void doAddPages() throws PartInitException {
-        addPage(new EjbOverviewPage(this, "ejboverview",
-                Messages.editorTabGeneral));
-        // TODO Add naming page but broken down for each bean type
-        addPage(new SecurityPage(this, "securitypage",
-                Messages.editorTabSecurity, JarPackage.eINSTANCE
-                        .getOpenejbJarType_Security()));
-        addPage(getDeploymentPage());
-        addSourcePage();
-    }
+	public void doAddPages() throws PartInitException {
+		if (getDeploymentPlan() != null) {
+			addPage(new EjbOverviewPage(this, "ejboverview",
+					Messages.editorTabGeneral));
+			// TODO Add naming page but broken down for each bean type
+			addPage(new SecurityPage(this, "securitypage",
+					Messages.editorTabSecurity, JarPackage.eINSTANCE
+							.getOpenejbJarType_Security()));
+			addPage(getDeploymentPage());
+		}
+		addSourcePage();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.editors.AbstractGeronimoDeploymentPlanEditor#loadDeploymentPlan(org.eclipse.core.resources.IFile)
-     */
-    public EObject loadDeploymentPlan(IFile file) {
-        return GeronimoUtils.getOpenEjbDeploymentPlan(file);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.editors.AbstractGeronimoDeploymentPlanEditor#loadDeploymentPlan(org.eclipse.core.resources.IFile)
+	 */
+	public EObject loadDeploymentPlan(IFile file) {
+		return GeronimoUtils.getOpenEjbDeploymentPlan(file);
+	}
 
-    private FormPage getDeploymentPage() {
-        DeploymentPage formPage = new DeploymentPage(this, "deploymentpage",
-                Messages.editorTabDeployment);
-        JarPackage pkg = JarFactory.eINSTANCE.getJarPackage();
-        formPage.dependencies = pkg.getOpenejbJarType_Dependency();
-        formPage.imports = pkg.getOpenejbJarType_Import();
-        formPage.gbeans = pkg.getOpenejbJarType_Gbean();
-        return formPage;
-    }
+	private FormPage getDeploymentPage() {
+		DeploymentPage formPage = new DeploymentPage(this, "deploymentpage",
+				Messages.editorTabDeployment);
+		JarPackage pkg = JarFactory.eINSTANCE.getJarPackage();
+		formPage.dependencies = pkg.getOpenejbJarType_Dependency();
+		formPage.imports = pkg.getOpenejbJarType_Import();
+		formPage.gbeans = pkg.getOpenejbJarType_Gbean();
+		return formPage;
+	}
 
 }
