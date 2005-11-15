@@ -16,8 +16,8 @@
 package org.apache.geronimo.ui.sections;
 
 import org.apache.geronimo.core.internal.GeronimoServer;
-import org.apache.geronimo.ui.commands.SetPasswordCommand;
-import org.apache.geronimo.ui.commands.SetUsernameCommand;
+import org.apache.geronimo.ui.commands.SetHTTPPortCommand;
+import org.apache.geronimo.ui.commands.SetRMIPortCommand;
 import org.apache.geronimo.ui.internal.Messages;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swt.SWT;
@@ -77,25 +77,25 @@ public class ServerPortsEditorSection extends ServerEditorSection {
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		section.setClient(composite);
 
-		// ------- Label and text field for the username -------
+		// ------- Label and text field for the http port -------
 		createLabel(composite, Messages.httpPort, toolkit);
 
 		httpPort = toolkit.createText(composite, getHTTPPort(), SWT.BORDER);
 		httpPort.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		httpPort.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				//execute(new SetUsernameCommand(server, username.getText()));
+				execute(new SetHTTPPortCommand(server, httpPort.getText()));
 			}
 		});
 
-		// ------- Label and text field for the password -------
+		// ------- Label and text field for the rmi port -------
 		createLabel(composite, Messages.rmiPort, toolkit);
 
 		rmiPort = toolkit.createText(composite, getRMIPort(), SWT.BORDER);
 		rmiPort.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 		rmiPort.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				//xecute(new SetPasswordCommand(server, password.getText()));
+				execute(new SetRMIPortCommand(server, rmiPort.getText()));
 			}
 		});
 	}
@@ -124,11 +124,17 @@ public class ServerPortsEditorSection extends ServerEditorSection {
 	}
 
 	private String getHTTPPort() {
-		return null;
+		if (gs != null) {
+			return gs.getHTTPPort();
+		}
+		return "";
 	}
 
 	private String getRMIPort() {
-		return null;
+		if (gs != null) {
+			return gs.getRMINamingPort();
+		}
+		return "";
 	}
 
 }
