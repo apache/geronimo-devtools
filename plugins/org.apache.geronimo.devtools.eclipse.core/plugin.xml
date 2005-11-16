@@ -95,4 +95,39 @@
 		</operationExtension>		
    </extension>
    
+    <extension
+         point="org.eclipse.wst.common.project.facet.core.facets">
+         
+        <project-facet id="org.apache.geronimo.facet">
+            <label>%geronimo-facet-label</label>
+            <description>%geronimo-facet-description</description>
+            <icon>icons/geronimo16x16.gif</icon>
+        </project-facet>
+
+        <project-facet-version facet="org.apache.geronimo.facet" version="1.0">
+            <action type="install">
+                <delegate class="org.apache.geronimo.core.GeronimoFacetInstallDelegate"/>
+            </action>
+           	<constraint>
+                <or>
+                    <requires facet="jst.ear" version="1.2"/>
+                    <requires facet="jst.ear" version="1.3"/>
+                    <requires facet="jst.ear" version="1.4"/>
+                    <requires facet="jst.appclient" version="1.2"/>
+                    <requires facet="jst.appclient" version="1.3"/>
+                    <requires facet="jst.appclient" version="1.4"/>
+                    <requires facet="jst.connector" version="1.0"/>
+                    <requires facet="jst.connector" version="1.5"/>
+                    <requires facet="jst.ejb" version="1.1"/>
+                    <requires facet="jst.ejb" version="2.0"/>
+                    <requires facet="jst.ejb" version="2.1"/>
+                    <requires facet="jst.web" version="2.2"/>
+                    <requires facet="jst.web" version="2.3"/>
+                    <requires facet="jst.web" version="2.4"/>
+                </or>
+            </constraint>
+        </project-facet-version>
+   </extension>
+   
+   
 </plugin>
