@@ -60,7 +60,7 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 		try {
 			IEditorInput input = getEditorInput();
 			if (input instanceof IFileEditorInput) {
-				if (deploymentPlan != null) {
+				if (deploymentPlan != null && getActiveEditor() == null) {
 					deploymentPlan.eResource().save(Collections.EMPTY_MAP);
 					commitFormPages(true);
 					editorDirtyStateChanged();
