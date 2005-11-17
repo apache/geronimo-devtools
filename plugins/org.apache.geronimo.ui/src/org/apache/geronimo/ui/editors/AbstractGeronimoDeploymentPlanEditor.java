@@ -66,6 +66,14 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 					editorDirtyStateChanged();
 				} else {
 					getActiveEditor().doSave(monitor);
+					if (deploymentPlan != null) {
+						if (deploymentPlan.eResource() != null) {
+							deploymentPlan.eResource().unload();
+						}
+						//TODO not sure if this is the best way to refresh model
+						IFileEditorInput fei = (IFileEditorInput) input;
+						deploymentPlan = loadDeploymentPlan(fei.getFile());
+					}
 				}
 			}
 		} catch (Exception e) {
