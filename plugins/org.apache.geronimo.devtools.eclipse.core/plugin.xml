@@ -129,5 +129,10 @@
         </project-facet-version>
    </extension>
    
+   <extension point="org.eclipse.wst.common.project.facet.ui.images">
+    <image facet="org.apache.geronimo.facet"
+      path="icons/geronimo16x16.gif"/>
+   </extension>
+   
    
 </plugin>
