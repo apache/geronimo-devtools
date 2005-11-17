@@ -18,81 +18,79 @@ package org.apache.geronimo.core.operations;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jst.j2ee.application.internal.operations.J2EEComponentCreationDataModelProvider;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IComponentCreationDataModelProperties;
-import org.eclipse.wst.common.componentcore.datamodel.properties.IFlexibleProjectCreationDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
-import org.eclipse.wst.common.project.facet.core.IFacetedProject;
-import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 public abstract class AbstractGeronimoJ2EEComponentOperation extends
-        AbstractDataModelOperation {
+		AbstractDataModelOperation {
 
-    /**
-     * 
-     */
-    public AbstractGeronimoJ2EEComponentOperation() {
-        super();
-    }
+	/**
+	 * 
+	 */
+	public AbstractGeronimoJ2EEComponentOperation() {
+		super();
+	}
 
-    /**
-     * @param model
-     */
-    public AbstractGeronimoJ2EEComponentOperation(IDataModel model) {
-        super(model);
-    }
+	/**
+	 * @param model
+	 */
+	public AbstractGeronimoJ2EEComponentOperation(IDataModel model) {
+		super(model);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.commands.operations.AbstractOperation#redo(org.eclipse.core.runtime.IProgressMonitor,
-     *      org.eclipse.core.runtime.IAdaptable)
-     */
-    public IStatus redo(IProgressMonitor monitor, IAdaptable info)
-            throws ExecutionException {
-        return null;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.core.commands.operations.AbstractOperation#redo(org.eclipse.core.runtime.IProgressMonitor,
+	 *      org.eclipse.core.runtime.IAdaptable)
+	 */
+	public IStatus redo(IProgressMonitor monitor, IAdaptable info)
+			throws ExecutionException {
+		return null;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.core.commands.operations.AbstractOperation#undo(org.eclipse.core.runtime.IProgressMonitor,
-     *      org.eclipse.core.runtime.IAdaptable)
-     */
-    public IStatus undo(IProgressMonitor monitor, IAdaptable info)
-            throws ExecutionException {
-        return null;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.core.commands.operations.AbstractOperation#undo(org.eclipse.core.runtime.IProgressMonitor,
+	 *      org.eclipse.core.runtime.IAdaptable)
+	 */
+	public IStatus undo(IProgressMonitor monitor, IAdaptable info)
+			throws ExecutionException {
+		return null;
+	}
 
-    public boolean isGeronimoRuntimeTarget() {
-    	try {
-			IFacetedProject p = ProjectFacetsManager.create(getProject());
-			return p.getRuntime().getName().startsWith("Apache Geronimo");
-		} catch (CoreException e) {			
-			e.printStackTrace();
-		}		
-		return false;
-    }
+	public boolean isGeronimoRuntimeTarget() {
+		String runtimeID = model
+				.getStringProperty(J2EEComponentCreationDataModelProvider.RUNTIME_TARGET_ID);
+		return runtimeID != null && runtimeID.startsWith("Apache Geronimo");
+		/*
+		 * try { IFacetedProject p = ProjectFacetsManager.create(getProject());
+		 * return p.getRuntime().getName().startsWith("Apache Geronimo"); }
+		 * catch (CoreException e) { e.printStackTrace(); } return false;
+		 */
+	}
 
-    public String getComponentName() {
-        return model.getProperty(
-                IComponentCreationDataModelProperties.COMPONENT_NAME)
-                .toString();
-    }
+	public String getComponentName() {
+		return model.getProperty(
+				IComponentCreationDataModelProperties.COMPONENT_NAME)
+				.toString();
+	}
 
-    public IProject getProject() {
-        String projectName = model.getProperty(
-                IFlexibleProjectCreationDataModelProperties.PROJECT_NAME)
-                .toString();
-        if (projectName != null) {
-            return ResourcesPlugin.getWorkspace().getRoot().getProject(
-                    projectName);
-        }
-        return null;
-    }
+	public IProject getProject() {
+		String projectName = model.getProperty(
+				IComponentCreationDataModelProperties.PROJECT_NAME)
+				.toString();
+		if (projectName != null) {
+			return ResourcesPlugin.getWorkspace().getRoot().getProject(
+					projectName);
+		}
+		return null;
+	}
 
 }

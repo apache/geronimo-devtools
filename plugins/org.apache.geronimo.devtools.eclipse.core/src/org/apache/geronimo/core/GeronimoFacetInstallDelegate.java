@@ -15,23 +15,21 @@
  */
 package org.apache.geronimo.core;
 
-import org.apache.geronimo.core.internal.GeronimoUtils;
 import org.apache.geronimo.core.operations.DeploymentPlanCreationOperation;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
+import org.eclipse.jst.j2ee.internal.archive.operations.JavaComponentCreationDataModelProvider;
 import org.eclipse.wst.common.componentcore.ComponentCore;
-import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
+import org.eclipse.wst.common.componentcore.datamodel.properties.IComponentCreationDataModelProperties;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IDelegate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 public class GeronimoFacetInstallDelegate implements IDelegate {
 
-	/**
-	 * 
-	 */
 	public GeronimoFacetInstallDelegate() {
 		super();
 	}
@@ -46,25 +44,13 @@ public class GeronimoFacetInstallDelegate implements IDelegate {
 	public void execute(IProject project, IProjectFacetVersion fv,
 			Object config, IProgressMonitor monitor) throws CoreException {
 		
-		DeploymentPlanCreationOperation op = new DeploymentPlanCreationOperation();
-		
 		IVirtualComponent comp = ComponentCore.createComponent(project);
-
-		String type = J2EEProjectUtilities.getJ2EEProjectType(project);
-
-		if (IModuleConstants.JST_WEB_MODULE.equals(type)) {
-			op.createGeronimoWebDeploymentPlan(GeronimoUtils
-					.getWebDeploymentPlanFile(comp));
-		} else if (IModuleConstants.JST_EJB_MODULE.equals(type)) {
-			op.createOpenEjbDeploymentPlan(GeronimoUtils
-					.getOpenEjbDeploymentPlanFile(comp));
-		} else if (IModuleConstants.JST_EAR_MODULE.equals(type)) {
-			op.createGeronimoApplicationDeploymentPlan(GeronimoUtils
-					.getApplicationDeploymentPlanFile(comp));
-		} else if (IModuleConstants.JST_CONNECTOR_MODULE.equals(type)) {
-			op.createConnectorDeploymentPlan(GeronimoUtils
-					.getConnectorDeploymentPlanFile(comp));
-		}
+		
+		IDataModel model = DataModelFactory.createDataModel(new JavaComponentCreationDataModelProvider());
+		model.setStringProperty(IComponentCreationDataModelProperties.COMPONENT_NAME, comp.getName());
+		model.setStringProperty(IComponentCreationDataModelProperties.PROJECT_NAME, project.getName());
+		DeploymentPlanCreationOperation op = new DeploymentPlanCreationOperation(model);
+		op.execute();
 	}
 
 }
