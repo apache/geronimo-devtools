@@ -91,13 +91,13 @@
 			<j:set var="extension" value="${platform}.zip" />
 		</j:if>
 		
-		<j:set var="wtp.build.folder" value="I-I200511162235-200511162235"/>
+		<j:set var="wtp.build.folder" value="S-1.0M9-200511222306"/>
 		
 		<j:set var="eclipse.build.filename" value="eclipse-SDK-3.1.1-${extension}"/>
 		<j:set var="emf.build.filename" value="emf-sdo-xsd-SDK-2.1.1.zip"/>
 		<j:set var="gef.build.filename" value="GEF-SDK-3.1.1.zip"/>
 		<j:set var="jem.build.filename" value="JEM-SDK-1.1.0.1.zip"/>
-		<j:set var="wtp.build.filename" value="wtp-sdk-I200511162235.zip"/>
+		<j:set var="wtp.build.filename" value="wtp-sdk-1.0M9.zip"/>
 
 		<j:set var="eclipse.download" value="http://download.eclipse.org/eclipse/downloads/drops/R-3.1.1-200509290840/${eclipse.build.filename}"/>
 		<j:set var="emf.download" value="http://download.eclipse.org/tools/emf/downloads/drops/2.1.1/R200509281310/${emf.build.filename}"/>
