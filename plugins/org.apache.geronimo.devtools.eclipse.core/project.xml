@@ -213,7 +213,7 @@
     <dependency>
       <groupId>eclipse</groupId>
       <artifactId>org.eclipse.jst.server.generic.core</artifactId>
-      <version>3.1.0</version>
+      <version>${wtp.version}</version>
     </dependency>
     <dependency>
       <groupId>eclipse</groupId>
