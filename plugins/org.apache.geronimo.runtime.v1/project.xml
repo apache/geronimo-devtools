@@ -33,6 +33,10 @@
         <includes>
           <include>*.jar</include>
         </includes>
+        <excludes>
+          <exclude>oro*.jar</exclude>
+          <exclude>ant*.jar</exclude>
+        </excludes>
       </resource>
       <resource>
         <directory>../../../../</directory>
