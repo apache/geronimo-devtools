@@ -49,6 +49,12 @@
     
     <goal name="createpluginxml">
       <ant:copy file="plugin.xml.template" tofile="plugin.xml" overwrite="true"/>
+      
+      <ant:taskdef name="replaceregexp"
+      		classname="org.apache.tools.ant.taskdefs.optional.ReplaceRegExp"
+      		classpathref="maven.dependency.classpath"/>
+      <ant:property name="ant.regexp.regexpimpl" value="org.apache.tools.ant.util.regexp.JakartaOroRegexp"/>
+    	
       <replaceregexp file="plugin.xml" match="@runtime.v1.plugin.version@" replace="${distributionjarversion}" byline="true"/>
       <replaceregexp file="plugin.xml" match="@geronimo_runtime_version@" replace="${geronimo_runtime_version}" byline="true"/>
       <replaceregexp file="plugin.xml" match="@geronimo_spec_version@" replace="${geronimo_spec_version}" byline="true"/>

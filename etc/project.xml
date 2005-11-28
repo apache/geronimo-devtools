@@ -26,4 +26,30 @@
         <url>http://geronimo.apache.org/</url>
         <logo>http://geronimo.apache.org/images/geronimo-logo.png</logo>
     </organization>
+    <dependencies>
+        <dependency>
+            <groupId>oro</groupId>
+            <artifactId>oro</artifactId>
+            <version>2.0.8</version>
+            <properties>
+                <classloader>root</classloader>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>ant</groupId>
+            <artifactId>ant-apache-oro</artifactId>
+            <version>1.6.4</version>
+             <properties>
+                <classloader>root</classloader>
+            </properties>
+        </dependency>
+        <dependency>
+            <groupId>ant</groupId>
+            <artifactId>ant-optional</artifactId>
+            <version>1.5.3-1</version>
+             <properties>
+                <classloader>root</classloader>
+            </properties>
+        </dependency>
+    </dependencies>   
  </project>

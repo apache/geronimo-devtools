@@ -58,30 +58,36 @@
     </ant:move>
   	
   	<!-- hack for maven 1.1-beta 2 and 1154 -->
-  	<ant:copy todir="${maven.build.dir}/schema" overwrite="true">
+  	<!--<ant:copy todir="${maven.build.dir}/schema" overwrite="true">
  		<ant:fileset dir="${basedir}">
   	        <ant:include name="geronimo-connector-1.0.xsd"/>
  			<ant:include name="geronimo-security-1.1.xsd"/>
   	  	</ant:fileset>
-  	</ant:copy>
+  	</ant:copy> -->
   	
     <ant:delete dir="${maven.build.dir}/temp"/>
     
-    <!-- update include paths in all schemas -->
-    <!-- <ant:fileScanner var="schemaScanner">
+  	<!-- update include paths in all schemas -->
+    <ant:fileScanner var="schemaScanner">
       <ant:fileset dir="${maven.build.dir}/schema">
         <ant:include name="*.xsd"/>
       </ant:fileset>
     </ant:fileScanner>
+  	
+  	<ant:taskdef name="replaceregexp"
+  		classname="org.apache.tools.ant.taskdefs.optional.ReplaceRegExp"
+  		classpathref="maven.dependency.classpath"/>
+  	<ant:property name="ant.regexp.regexpimpl" value="org.apache.tools.ant.util.regexp.JakartaOroRegexp"/> 
+  
     <j:forEach var="schema" items="${schemaScanner.iterator()}">
-      <replaceregexp file="${schema}" match="schemaLocation=&quot;(.*/)(.*xsd)" replace="schemaLocation=&quot;\2" byline="true"/>
+      <ant:replaceregexp file="${schema}" match="schemaLocation=&quot;(.*/)(.*xsd)" replace="schemaLocation=&quot;\2" byline="true"/>
       <j:if test="${schema.getName().equals('geronimo-connector-1.0.xsd')}">
-         <replaceregexp file="${schema}" match="(xs:import.*/>)" replace="\1${patch}"/>
+         <ant:replaceregexp file="${schema}" match="(xs:import.*/>)" replace="\1${patch}"/>
       </j:if>     
       <j:if test="${schema.getName().equals('geronimo-security-1.1.xsd')}">
-         <replaceregexp file="${schema}" match='(version="1.0">)' replace="\1${patch2}"/>
+         <ant:replaceregexp file="${schema}" match='(version="1.0">)' replace="\1${patch2}"/>
       </j:if>   
-    </j:forEach> -->    
+    </j:forEach>    
   </goal>
   
   <goal name="codegen" prereqs="importschemas">
