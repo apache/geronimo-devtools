@@ -44,7 +44,11 @@
     </preGoal>
     
     <postGoal name="eclipse:generate-classpath">
+      <!-- export each jar entry -->
       <replaceregexp file=".classpath" match='(classpathentry) (kind="var")' replace='\1 exported="true" \2' byline="true"/>
+      <!-- depend on local project copy of jar instead of MAVEN_REPO -->
+      <replaceregexp file=".classpath" match="MAVEN_REPO.*/" replace="lib/" byline="true"/>
+      <replaceregexp file=".classpath" match='kind="var"' replace='kind="lib"' byline="true"/>
     </postGoal>
     
     <goal name="createpluginxml">
