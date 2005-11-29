@@ -21,8 +21,11 @@ import java.net.MalformedURLException;
 import org.apache.geronimo.core.internal.GeronimoUtils;
 import org.apache.geronimo.deployment.xmlbeans.XmlBeansUtil;
 import org.apache.geronimo.schema.SchemaConversionUtils;
+import org.apache.geronimo.xbeans.geronimo.GerConnectorDocument;
 import org.apache.geronimo.xbeans.geronimo.GerConnectorType;
+import org.apache.geronimo.xbeans.geronimo.j2ee.GerApplicationDocument;
 import org.apache.geronimo.xbeans.geronimo.j2ee.GerApplicationType;
+import org.apache.geronimo.xbeans.geronimo.web.GerWebAppDocument;
 import org.apache.geronimo.xbeans.geronimo.web.GerWebAppType;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
@@ -38,6 +41,7 @@ import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.openejb.xbeans.ejbjar.OpenejbOpenejbJarDocument;
 import org.openejb.xbeans.ejbjar.OpenejbOpenejbJarType;
 
 public class ImportDeploymentPlanOperation extends
@@ -99,7 +103,7 @@ public class ImportDeploymentPlanOperation extends
     public void importWebDeploymentPlan(IFile dpFile) throws XmlException {
         XmlObject plan = getXmlObject(dpFile);
         if (plan != null) {
-            SchemaConversionUtils.fixGeronimoSchema(plan, "web-app",
+            SchemaConversionUtils.fixGeronimoSchema(plan, GerWebAppDocument.type.getDocumentElementName(),
                     GerWebAppType.type);
             save(plan, dpFile);
         }
@@ -108,7 +112,7 @@ public class ImportDeploymentPlanOperation extends
     public void importEarDeploymentPlan(IFile dpFile) throws XmlException {
         XmlObject plan = getXmlObject(dpFile);
         if (plan != null) {
-            SchemaConversionUtils.fixGeronimoSchema(plan, "application",
+            SchemaConversionUtils.fixGeronimoSchema(plan, GerApplicationDocument.type.getDocumentElementName(),
                     GerApplicationType.type);
             save(plan, dpFile);
         }
@@ -117,7 +121,7 @@ public class ImportDeploymentPlanOperation extends
     public void importEjbDeploymentPlan(IFile dpFile) throws XmlException {
         XmlObject plan = getXmlObject(dpFile);
         if (plan != null) {
-            SchemaConversionUtils.fixGeronimoSchema(plan, "openejb-jar",
+            SchemaConversionUtils.fixGeronimoSchema(plan, OpenejbOpenejbJarDocument.type.getDocumentElementName(),
                     OpenejbOpenejbJarType.type);
             save(plan, dpFile);
         }
@@ -126,7 +130,7 @@ public class ImportDeploymentPlanOperation extends
     public void importConnectorDeploymentPlan(IFile dpFile) throws XmlException {
         XmlObject plan = getXmlObject(dpFile);
         if (plan != null) {
-            SchemaConversionUtils.fixGeronimoSchema(plan, "connector",
+            SchemaConversionUtils.fixGeronimoSchema(plan, GerConnectorDocument.type.getDocumentElementName(),
                     GerConnectorType.type);
             save(plan, dpFile);
         }
