@@ -135,7 +135,6 @@
         class="org.eclipse.jst.server.generic.core.internal.GenericServerRuntimeTargetHandler"/>
    </extension>
    
-   
    <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
     <runtime-component-type
        id="org.apache.geronimo.runtime"/>
@@ -156,6 +155,9 @@
     <supported>
       <runtime-component
          id="org.apache.geronimo.runtime"
+         version="1.0"/>
+      <facet
+         id="org.apache.geronimo.facet"
          version="1.0"/>
       <facet
          id="jst.web"
