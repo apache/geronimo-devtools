@@ -132,7 +132,7 @@
      <runtimeClasspathProvider
         id="org.apache.geronimo.generic.runtime.10"
         runtimeTypeIds="org.apache.geronimo.generic.runtime.10"
-        class="org.eclipse.jst.server.generic.core.internal.GenericServerRuntimeTargetHandler"/>
+        class="org.apache.geronimo.core.internal.GeronimoServerRuntimeTargetHandler"/>
    </extension>
    
    <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
