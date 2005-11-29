@@ -101,7 +101,6 @@
         <project-facet id="org.apache.geronimo.facet">
             <label>%geronimo-facet-label</label>
             <description>%geronimo-facet-description</description>
-            <icon>icons/geronimo16x16.gif</icon>
         </project-facet>
 
         <project-facet-version facet="org.apache.geronimo.facet" version="1.0">
