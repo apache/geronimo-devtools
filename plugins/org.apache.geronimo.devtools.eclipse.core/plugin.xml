@@ -129,6 +129,14 @@
         </project-facet-version>
    </extension>
    
+   <extension point="org.eclipse.jst.server.core.runtimeClasspathProviders">
+     <runtimeClasspathProvider
+        id="org.apache.geronimo.generic.runtime.10"
+        runtimeTypeIds="org.apache.geronimo.generic.runtime.10"
+        class="org.eclipse.jst.server.generic.core.internal.GenericServerRuntimeTargetHandler"/>
+   </extension>
+   
+   
    <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
     <runtime-component-type
        id="org.apache.geronimo.runtime"/>
