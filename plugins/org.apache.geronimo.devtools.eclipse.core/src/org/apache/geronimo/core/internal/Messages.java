@@ -22,7 +22,7 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	
 	static {
-		NLS.initializeMessages(GeronimoPlugin.PLUGIN_ID + ".internal.Messages", Messages.class);
+		NLS.initializeMessages("org.apache.geronimo.core.internal.Messages", Messages.class);
 	}
 	
 	public static String DISTRIBUTE_FAIL;
