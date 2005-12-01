@@ -77,7 +77,9 @@
                 <checksum file="${distribution.dir.updatesite}/plugins/${dependency.artifactId}_${distributionjarversion}.jar" algorithm="SHA" fileext=".sha"/>
             </j:if>                      
         </j:forEach>  
-        <ant:zip destfile="${distribution.dir}/geronimo-sitedistro-${pom.currentVersion}.zip" basedir="${distribution.dir}"/>                    
+        <ant:zip destfile="${distribution.dir}/geronimo-update-${pom.currentVersion}.zip" basedir="${distribution.dir}"/>
+        <checksum file="${distribution.dir}/geronimo-update-${pom.currentVersion}.zip" algorithm="MD5" fileext=".md5"/>
+        <checksum file="${distribution.dir}/geronimo-update-${pom.currentVersion}.zip" algorithm="SHA" fileext=".sha"/>    
     </goal>
      
 </project>
