@@ -58,6 +58,22 @@
     </ant:move>
   	  	
     <ant:delete dir="${maven.build.dir}/temp"/>
+  	
+  	<!-- update include paths in all schemas -->
+    <ant:fileScanner var="schemaScanner">
+      <ant:fileset dir="${maven.build.dir}/schema">
+        <ant:include name="*.xsd"/>
+      </ant:fileset>
+    </ant:fileScanner>
+  	
+  	<ant:taskdef name="replaceregexp"
+  		classname="org.apache.tools.ant.taskdefs.optional.ReplaceRegExp"
+  		classpathref="maven.dependency.classpath"/>
+  	<ant:property name="ant.regexp.regexpimpl" value="org.apache.tools.ant.util.regexp.JakartaOroRegexp"/> 
+  
+    <j:forEach var="schema" items="${schemaScanner.iterator()}">
+      <ant:replaceregexp file="${schema}" match='schemaLocation="http://www.w3.org/2001/xml.xsd"' replace='schemaLocation="http://www.w3.org/2001/03/xml.xsd"' byline="true"/> 
+    </j:forEach>    
     
   </goal>
   
