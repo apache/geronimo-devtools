@@ -46,6 +46,14 @@
     </dependency>
     <dependency>
       <groupId>geronimo-devtools</groupId>
+      <artifactId>org.apache.geronimo.source.feature</artifactId>
+      <version>${devtools_currentversion}</version>
+      <properties>
+        <feature>true</feature>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.runtime.v1</artifactId>
       <version>${devtools_currentversion}</version>
       <properties>
@@ -58,6 +66,14 @@
       <version>${devtools_currentversion}</version>
       <properties>
         <jar>true</jar>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>geronimo-devtools</groupId>
+      <artifactId>org.apache.geronimo.feature.source</artifactId>
+      <version>${devtools_currentversion}</version>
+      <properties>
+        <jar>false</jar>
       </properties>
     </dependency>
   </dependencies>
