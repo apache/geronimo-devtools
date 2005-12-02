@@ -18,6 +18,8 @@ package org.apache.geronimo.ui.actions;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.geronimo.core.internal.GeronimoSchemaNS;
+import org.apache.geronimo.core.internal.GeronimoServer;
 import org.apache.geronimo.ui.internal.Messages;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -35,17 +37,19 @@ import org.eclipse.wst.server.core.IServer;
  */
 public class LaunchGeronimoConsoleAction implements IActionDelegate {
 
-    public static final String serverID = "org.eclipse.jst.server.geronimo.10";
+    public static final String serverID = "org.apache.geronimo.generic.server.10";
+    
+    private IServer server;
 
-    /**
-     * 
-     */
     public LaunchGeronimoConsoleAction() {
         super();
     }
     
     public URL getConsoleUrl() throws MalformedURLException {
-        return new URL("http://localhost:8080/console/login.jsp");
+    	if(server != null ) {
+    		return new URL("http://" + server.getHost() + ":" + ((GeronimoServer) server).getHTTPPort() + "/console/");
+    	}
+        return null;
     }
 
     /*
@@ -58,7 +62,9 @@ public class LaunchGeronimoConsoleAction implements IActionDelegate {
         try {
             int style = IWorkbenchBrowserSupport.AS_EDITOR | IWorkbenchBrowserSupport.LOCATION_BAR | IWorkbenchBrowserSupport.STATUS;
             IWebBrowser browser = WorkbenchBrowserSupport.getInstance().createBrowser(style, "console", Messages.console, Messages.consoleTooltip);
-            browser.openURL(getConsoleUrl());
+            URL url = getConsoleUrl();
+            if(url != null) 
+            	browser.openURL(url);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (PartInitException e) {
@@ -75,7 +81,7 @@ public class LaunchGeronimoConsoleAction implements IActionDelegate {
      */
     public void selectionChanged(IAction action, ISelection selection) {
 
-        IServer server = (IServer) ((StructuredSelection) selection)
+        server = (IServer) ((StructuredSelection) selection)
                 .getFirstElement();
 
         boolean enable = server != null
