@@ -84,7 +84,7 @@
          id="org.apache.server.geronimo.security"
          order="10"
          insertionId="org.eclipse.wst.server.editor.overview.left"
-         typeIds="org.eclipse.jst.server.geronimo.10"
+         typeIds="org.apache.geronimo.generic.server.10"
          class="org.apache.geronimo.ui.sections.ServerSecurityEditorSection">
       </section>
    </extension>
@@ -94,7 +94,7 @@
          id="org.apache.server.geronimo.port"
          order="10"
          insertionId="org.eclipse.wst.server.editor.overview.right"
-         typeIds="org.eclipse.jst.server.geronimo.10"
+         typeIds="org.apache.geronimo.generic.server.10"
          class="org.apache.geronimo.ui.sections.ServerPortsEditorSection">
       </section>
    </extension>
