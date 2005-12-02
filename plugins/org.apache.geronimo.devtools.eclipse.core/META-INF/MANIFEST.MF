@@ -30,6 +30,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jem.util,
  org.eclipse.wst.server.core,
  org.eclipse.jst.common.frameworks,
- org.eclipse.wst.common.project.facet.core
+ org.eclipse.wst.common.project.facet.core,
+ org.eclipse.wst.web
 Eclipse-AutoStart: true
 Export-Package: org.apache.geronimo.core.internal;x-friends:="org.apache.geronimo.ui"

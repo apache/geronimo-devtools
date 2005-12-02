@@ -197,6 +197,11 @@
     </dependency>
     <dependency>
       <groupId>eclipse</groupId>
+      <artifactId>org.eclipse.wst.web</artifactId>
+      <version>${wtp.version}</version>
+    </dependency>    
+    <dependency>
+      <groupId>eclipse</groupId>
       <artifactId>org.eclipse.jst.j2ee.web</artifactId>
       <version>${wtp.version}</version>
     </dependency>    
