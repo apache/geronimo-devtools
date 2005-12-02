@@ -40,7 +40,7 @@ import org.eclipse.wst.server.ui.editor.ServerEditorSection;
  * 
  * 
  */
-public class ServerSecurityEditorSection extends ServerEditorSection {
+public class ServerEditorSecuritySection extends ServerEditorSection {
 
     Text username;
 
@@ -51,7 +51,7 @@ public class ServerSecurityEditorSection extends ServerEditorSection {
     /**
      * 
      */
-    public ServerSecurityEditorSection() {
+    public ServerEditorSecuritySection() {
         super();
     }
 

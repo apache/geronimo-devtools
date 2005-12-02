@@ -40,7 +40,7 @@ import org.eclipse.wst.server.ui.editor.ServerEditorSection;
  * @author sppatel
  * 
  */
-public class ServerPortsEditorSection extends ServerEditorSection {
+public class ServerEditorPortsSection extends ServerEditorSection {
 
 	Text httpPort;
 
@@ -48,7 +48,7 @@ public class ServerPortsEditorSection extends ServerEditorSection {
 
 	GeronimoServer gs;
 
-	public ServerPortsEditorSection() {
+	public ServerEditorPortsSection() {
 		super();
 	}
 
