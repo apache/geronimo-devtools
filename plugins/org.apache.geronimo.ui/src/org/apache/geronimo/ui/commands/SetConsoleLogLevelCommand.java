@@ -23,10 +23,6 @@ import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.internal.Server;
 import org.eclipse.wst.server.ui.internal.command.ServerCommand;
 
-/**
- * @author sppatel
- * 
- */
 public class SetConsoleLogLevelCommand extends ServerCommand {
 
 	public static final String NONE = "--long";
