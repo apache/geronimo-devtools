@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.ui.sections;
 
+import org.apache.geronimo.ui.commands.SetConsoleLogLevelCommand;
 import org.apache.geronimo.ui.internal.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -69,14 +70,31 @@ public class ServerEditorLogLevelSection extends ServerEditorSection {
 		info.addSelectionListener(new SelectionListener() {
 
 			public void widgetSelected(SelectionEvent e) {
-				//TODO
+				if(info.getSelection()) {
+					SetConsoleLogLevelCommand cmd = new SetConsoleLogLevelCommand(server, SetConsoleLogLevelCommand.INFO);
+					cmd.execute();
+				} 
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
-				//TODO
 			}
 
 		});
+		
+		debug.addSelectionListener(new SelectionListener() {
+
+			public void widgetSelected(SelectionEvent e) {
+				if(debug.getSelection()) {
+					SetConsoleLogLevelCommand cmd = new SetConsoleLogLevelCommand(server, SetConsoleLogLevelCommand.DEBUG);
+					cmd.execute();
+				} 
+			}
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+
+		});
+		
 	}
 
 }

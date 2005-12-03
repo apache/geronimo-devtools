@@ -20,10 +20,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.ui.internal.command.ServerCommand;
 
-/**
- * @author sppatel
- * 
- */
 public class SetHTTPPortCommand extends ServerCommand {
 
 	protected String name;

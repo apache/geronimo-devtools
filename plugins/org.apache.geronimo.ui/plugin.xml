@@ -99,14 +99,14 @@
       </section>
    </extension>
    
-   <!-- <extension point="org.eclipse.wst.server.ui.editorPageSections">   
+   <extension point="org.eclipse.wst.server.ui.editorPageSections">   
       <section
          id="org.apache.server.geronimo.loglevel"
-         order="10"
-         insertionId="org.eclipse.wst.server.editor.overview.left"
+         order="20"
+         insertionId="org.eclipse.wst.server.editor.overview.right"
          typeIds="org.apache.geronimo.generic.server.10"
          class="org.apache.geronimo.ui.sections.ServerEditorLogLevelSection">
       </section>
-   </extension> -->
+   </extension>
 
 </plugin>
