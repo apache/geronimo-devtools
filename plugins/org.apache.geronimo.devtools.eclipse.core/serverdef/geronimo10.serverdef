@@ -34,11 +34,6 @@
 	type="string"
 	context="server"
 	default="manager" />
-<property id="classPath"
-	label="%classPath"
-	type="directory"
-	context="runtime"
-	default="" />
 
 	<port>
 		<no>${port}</no>
@@ -88,8 +83,8 @@
 	</classpath>
 
 	<classpath id="geronimo.project">
-		<archive path="${classPath}/repository/geronimo-spec/jars" />
-		<archive path="${classPath}/lib" />
+		<archive path="${serverRootDirectory}/repository/geronimo-spec/jars" />
+		<archive path="${serverRootDirectory}/lib" />
 	</classpath>
 	
 	<jndiConnection>
