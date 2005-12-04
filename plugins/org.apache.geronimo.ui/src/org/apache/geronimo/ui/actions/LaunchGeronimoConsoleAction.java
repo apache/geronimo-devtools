@@ -47,7 +47,8 @@ public class LaunchGeronimoConsoleAction implements IActionDelegate {
     
     public URL getConsoleUrl() throws MalformedURLException {
     	if(server != null ) {
-    		return new URL("http://" + server.getHost() + ":" + ((GeronimoServer) server).getHTTPPort() + "/console/");
+    		GeronimoServer gs = (GeronimoServer) server.getAdapter(GeronimoServer.class);
+    		return new URL("http://" + server.getHost() + ":" + gs.getHTTPPort() + "/console/");
     	}
         return null;
     }
@@ -60,7 +61,7 @@ public class LaunchGeronimoConsoleAction implements IActionDelegate {
     public void run(IAction action) {
 
         try {
-            int style = IWorkbenchBrowserSupport.AS_EDITOR | IWorkbenchBrowserSupport.LOCATION_BAR | IWorkbenchBrowserSupport.STATUS;
+            int style = IWorkbenchBrowserSupport.AS_EDITOR | IWorkbenchBrowserSupport.STATUS;
             IWebBrowser browser = WorkbenchBrowserSupport.getInstance().createBrowser(style, "console", Messages.console, Messages.consoleTooltip);
             URL url = getConsoleUrl();
             if(url != null) 
