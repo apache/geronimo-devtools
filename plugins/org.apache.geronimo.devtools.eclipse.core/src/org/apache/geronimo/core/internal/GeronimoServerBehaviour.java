@@ -299,8 +299,10 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	}
 	
 	public void setupLaunchConfiguration(ILaunchConfigurationWorkingCopy workingCopy, IProgressMonitor monitor) throws CoreException {
-        String existingVMArgs = workingCopy.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS,(String)null);
-        if(existingVMArgs !=null) {
+		String defaultArgs = getServerDefinition().getResolver().resolveProperties(getServerDefinition().getStop().getProgramArgumentsAsString());
+		String existingVMArgs = workingCopy.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS,defaultArgs);
+        super.setupLaunchConfiguration(workingCopy, monitor);
+		if(existingVMArgs !=null) {
             workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS,existingVMArgs);
         }
 	}
