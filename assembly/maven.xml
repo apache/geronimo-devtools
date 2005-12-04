@@ -75,7 +75,12 @@
                 <ant:copy file="${artifact.path}" tofile="${distribution.dir.updatesite}/plugins/${dependency.artifactId}_${distributionjarversion}.jar"/>
                 <checksum file="${distribution.dir.updatesite}/plugins/${dependency.artifactId}_${distributionjarversion}.jar" algorithm="MD5" fileext=".md5"/>
                 <checksum file="${distribution.dir.updatesite}/plugins/${dependency.artifactId}_${distributionjarversion}.jar" algorithm="SHA" fileext=".sha"/>
-            </j:if>                      
+            </j:if>                  
+            
+            <ant:exec dir="${basedir}" executable="svn" output="${distribution.dir.updatesite}/site.xml">
+                <ant:arg line="cat http://svn.apache.org/repos/asf/geronimo/site/docs/devtools/site.xml"/>
+            </ant:exec>
+                
         </j:forEach>  
         <ant:zip destfile="${distribution.dir}/geronimo-update-${pom.currentVersion}.zip" basedir="${distribution.dir.updatesite}"/>
         <checksum file="${distribution.dir}/geronimo-update-${pom.currentVersion}.zip" algorithm="MD5" fileext=".md5"/>
