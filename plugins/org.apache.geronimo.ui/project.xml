@@ -170,5 +170,15 @@
       <artifactId>org.eclipse.wst.common.modulecore</artifactId>
       <version>0.7.0</version>
     </dependency>
+    <dependency>
+      <groupId>eclipse</groupId>
+      <artifactId>org.eclipse.debug.core</artifactId>
+      <version>${eclipse.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>eclipse</groupId>
+      <artifactId>org.eclipse.jdt.launching</artifactId>
+      <version>${eclipse.version}</version>
+    </dependency>
   </dependencies>
 </project>
