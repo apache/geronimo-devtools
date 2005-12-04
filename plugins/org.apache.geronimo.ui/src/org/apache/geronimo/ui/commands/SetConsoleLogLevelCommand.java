@@ -53,9 +53,7 @@ public class SetConsoleLogLevelCommand extends ServerCommand {
 	 */
 	public void execute() {
 		try {
-			oldValue = getLaunchConfiguration().getAttribute(
-					IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,
-					NONE);
+			oldValue = getCurrentValue();
 			if (oldValue != value) {
 				getLaunchConfiguration()
 						.setAttribute(
@@ -66,6 +64,12 @@ public class SetConsoleLogLevelCommand extends ServerCommand {
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public String getCurrentValue() throws CoreException {
+		return getLaunchConfiguration().getAttribute(
+				IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,
+				NONE);
 	}
 
 	/*
@@ -87,7 +91,7 @@ public class SetConsoleLogLevelCommand extends ServerCommand {
 			throws CoreException {
 		if (wc == null) {
 			Server s = (Server) server.getAdapter(Server.class);
-			ILaunchConfiguration launchConfig = s.getLaunchConfiguration(false,
+			ILaunchConfiguration launchConfig = s.getLaunchConfiguration(true,
 					null);
 			wc = launchConfig.getWorkingCopy();
 		}

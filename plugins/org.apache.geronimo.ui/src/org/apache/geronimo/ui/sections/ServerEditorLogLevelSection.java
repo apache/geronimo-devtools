@@ -17,6 +17,7 @@ package org.apache.geronimo.ui.sections;
 
 import org.apache.geronimo.ui.commands.SetConsoleLogLevelCommand;
 import org.apache.geronimo.ui.internal.Messages;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -66,6 +67,19 @@ public class ServerEditorLogLevelSection extends ServerEditorSection {
 
 		info = toolkit.createButton(composite, Messages.info, SWT.RADIO);
 		debug = toolkit.createButton(composite, Messages.debug, SWT.RADIO);
+		
+		SetConsoleLogLevelCommand cmd = new SetConsoleLogLevelCommand(server, null);
+		try {
+			String value = cmd.getCurrentValue();
+			if(value.indexOf("-vv") != -1) {
+				debug.setSelection(true);
+			} else {
+				info.setSelection(true);
+			}
+		} catch (CoreException e1) {
+			e1.printStackTrace();
+		}
+	
 
 		info.addSelectionListener(new SelectionListener() {
 

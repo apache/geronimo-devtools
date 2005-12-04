@@ -44,7 +44,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jst.server.generic.core.internal.GenericServerBehaviour;
+import org.eclipse.jst.server.generic.core.internal.GenericServerRuntime;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 
@@ -292,5 +297,13 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	public String getRMINamingPort() {
 		return GeronimoConnectionFactory.getInstance().getRMINamingPort(getServer());
 	}
+	
+	public void setupLaunchConfiguration(ILaunchConfigurationWorkingCopy workingCopy, IProgressMonitor monitor) throws CoreException {
+        String existingVMArgs = workingCopy.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS,(String)null);
+        if(existingVMArgs !=null) {
+            workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS,existingVMArgs);
+        }
+	}
+		
 
 }
