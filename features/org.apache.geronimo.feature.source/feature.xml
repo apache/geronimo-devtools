@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature primary="false"      label="org.apache.geronimo.feature"   id="org.apache.geronimo.source.feature"  version="1.0.0">
-	<description >
-		%description
-	</description>
-	<license url="http://www.apache.org/licenses/LICENSE-2.0.html">
-		%license
-	</license>
-	<plugin    fragment="false"  download-size="0" install-size="0" id="org.apache.geronimo.feature.source" version="1.0.0"/>
+<feature
+      id="org.apache.geronimo.source.feature"
+      label="org.apache.geronimo.feature"
+      version="0.5.0">
+
+   <description>
+      %description
+   </description>
+
+   <license url="http://www.apache.org/licenses/LICENSE-2.0.html">
+      %license
+   </license>
+
+   <url>
+      <update label="Apache Geronimo Eclipse Update Site" url="http://geronimo.apache.org/devtools/"/>
+   </url>
+
+   <plugin
+         id="org.apache.geronimo.feature.source"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"/>
+
 </feature>
