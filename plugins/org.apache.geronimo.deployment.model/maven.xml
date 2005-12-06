@@ -90,5 +90,192 @@
    </ant:java> 
    <ant:delete dir="bin"/>
   </goal>
+	
+	<goal name="genmodels" prereqs="importschemas">
+	    <echo>Generating geronimo-web.genmodel</echo>
+	    <ant:java fork="true" jar="${eclipse.home}/startup.jar" failonerror="true">
+	      <ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/xerces/jars/"/>
+	      <ant:arg value="-data"/>
+	      <ant:arg value="../temp"/>
+	      <ant:arg value="-application"/>
+	      <ant:arg value="org.eclipse.xsd.ecore.importer.XSD2GenModel"/>
+	      <ant:arg value="${maven.build.dir}/schema/geronimo-web-1.0.xsd"/>
+	      <ant:arg value="${maven.build.dir}/geronimo-web.genmodel"/>
+	      <ant:arg value="-modelProject"/>
+	      <ant:arg value="${basedir}"/>
+	      <ant:arg value="src"/>
+	      <ant:arg value="-packages"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/naming-1.0"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/security-1.1"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/deployment-1.0"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/j2ee/web-1.0"/>
+	      <ant:arg value="-packageMap"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/naming-1.0"/>
+	      <ant:arg value="org.apache.geronimo.xml.ns.naming"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/security-1.1"/>
+	      <ant:arg value="org.apache.geronimo.xml.ns.security"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/deployment-1.0"/>
+	      <ant:arg value="org.apache.geronimo.xml.ns.deployment"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/j2ee/web-1.0"/>
+	      <ant:arg value="org.apache.geronimo.xml.ns.web"/>
+	    </ant:java> 
+		
+		<echo>Generating geronimo-application.genmodel</echo>
+	    <ant:java fork="true" jar="${eclipse.home}/startup.jar" failonerror="true">
+	      <ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/xerces/jars/"/>
+	      <ant:arg value="-data"/>
+	      <ant:arg value="../temp"/>
+	      <ant:arg value="-application"/>
+	      <ant:arg value="org.eclipse.xsd.ecore.importer.XSD2GenModel"/>
+	      <ant:arg value="${maven.build.dir}/schema/geronimo-application-1.0.xsd"/>
+	      <ant:arg value="${maven.build.dir}/geronimo-application.genmodel"/>
+	      <ant:arg value="-modelProject"/>
+	      <ant:arg value="${basedir}"/>
+	      <ant:arg value="src"/>
+	      <ant:arg value="-packages"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/j2ee/application-1.0"/>
+	      <ant:arg value="-packageMap"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/security-1.1"/>
+	      <ant:arg value="org.apache.geronimo.xml.ns.security"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/deployment-1.0"/>
+	      <ant:arg value="org.apache.geronimo.xml.ns.deployment"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/j2ee/application-1.0"/>
+	      <ant:arg value="org.apache.geronimo.xml.ns.j2ee.application"/>
+		 </ant:java> 
+		
+		<echo>Generating openejb-jar.genmodel</echo>
+	    <ant:java fork="true" jar="${eclipse.home}/startup.jar" failonerror="true">
+	      <ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/xerces/jars/"/>
+	      <ant:arg value="-data"/>
+	      <ant:arg value="../temp"/>
+	      <ant:arg value="-application"/>
+	      <ant:arg value="org.eclipse.xsd.ecore.importer.XSD2GenModel"/>
+	      <ant:arg value="${maven.build.dir}/schema/openejb-jar-2.0.xsd"/>
+	      <ant:arg value="${maven.build.dir}/openejb-jar.genmodel"/>
+	      <ant:arg value="-modelProject"/>
+	      <ant:arg value="${basedir}"/>
+	      <ant:arg value="src"/>
+	      <ant:arg value="-packages"/>
+	      <ant:arg value="http://www.openejb.org/xml/ns/openejb-jar-2.0"/>
+	      <ant:arg value="http://www.openejb.org/xml/ns/pkgen-2.0"/>
+	      <ant:arg value="-packageMap"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/naming-1.0"/>
+	      <ant:arg value="org.apache.geronimo.xml.ns.naming"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/security-1.1"/>
+	      <ant:arg value="org.apache.geronimo.xml.ns.security"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/deployment-1.0"/>
+	      <ant:arg value="org.apache.geronimo.xml.ns.deployment"/>
+	      <ant:arg value="http://www.openejb.org/xml/ns/openejb-jar-2.0"/>
+	      <ant:arg value="org.openejb.xml.ns.openejb.jar"/>
+	      <ant:arg value="http://www.openejb.org/xml/ns/pkgen-2.0"/>
+	      <ant:arg value="org.openejb.xml.ns.pkgen"/>	
+		</ant:java> 
+		
+		<echo>Generating geronimo-connector.genmodel</echo>
+	    <ant:java fork="true" jar="${eclipse.home}/startup.jar" failonerror="true">
+	      <ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/xerces/jars/"/>
+	      <ant:arg value="-data"/>
+	      <ant:arg value="../temp"/>
+	      <ant:arg value="-application"/>
+	      <ant:arg value="org.eclipse.xsd.ecore.importer.XSD2GenModel"/>
+	      <ant:arg value="${maven.build.dir}/schema/geronimo-connector-1.0.xsd"/>
+	      <ant:arg value="${maven.build.dir}/geronimo-connector.genmodel"/>
+	      <ant:arg value="-modelProject"/>
+	      <ant:arg value="${basedir}"/>
+	      <ant:arg value="src"/>
+	      <ant:arg value="-packages"/>
+	      <ant:arg value="http://www.openejb.org/xml/ns/openejb-jar-2.0"/>
+	      <ant:arg value="http://www.openejb.org/xml/ns/pkgen-2.0"/>
+	      <ant:arg value="-packageMap"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/naming-1.0"/>
+	      <ant:arg value="org.apache.geronimo.xml.ns.naming"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/deployment-1.0"/>
+	      <ant:arg value="org.apache.geronimo.xml.ns.deployment"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/j2ee/connector-1.0"/>
+	      <ant:arg value="org.apache.geronimo.xml.ns.j2ee.connector"/>	
+		</ant:java> 
+		
+		<echo>Generating geronimo-application-client.genmodel</echo>
+	    <ant:java fork="true" jar="${eclipse.home}/startup.jar" failonerror="true">
+	      <ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/xerces/jars/"/>
+	      <ant:arg value="-data"/>
+	      <ant:arg value="../temp"/>
+	      <ant:arg value="-application"/>
+	      <ant:arg value="org.eclipse.xsd.ecore.importer.XSD2GenModel"/>
+	      <ant:arg value="${maven.build.dir}/schema/geronimo-application-client-1.0.xsd"/>
+	      <ant:arg value="${maven.build.dir}/geronimo-appclient.genmodel"/>
+	      <ant:arg value="-modelProject"/>
+	      <ant:arg value="${basedir}"/>
+	      <ant:arg value="src"/>
+	      <ant:arg value="-packages"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/j2ee/application-client-1.0"/>
+	      <ant:arg value="-packageMap"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/naming-1.0"/>
+	      <ant:arg value="org.apache.geronimo.xml.ns.naming"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/deployment-1.0"/>
+	      <ant:arg value="org.apache.geronimo.xml.ns.deployment"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/j2ee/connector-1.0"/>
+	      <ant:arg value="org.apache.geronimo.xml.ns.j2ee.connector"/>	
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/security-1.1"/>
+	      <ant:arg value="org.apache.geronimo.xml.ns.security"/>
+	      <ant:arg value="http://geronimo.apache.org/xml/ns/j2ee/application-client-1.0"/>
+	   	  <ant:arg value="org.apache.geronimo.xml.ns.j2ee.application.client"/>
+		</ant:java> 
+		
+	</goal>
+	
+	<goal name="codegen2" prereqs="genmodels">
+	    <echo>Generating geronimo-web model and edit code</echo>
+	    <ant:java fork="true" jar="${eclipse.home}/startup.jar" failonerror="true">
+	      <ant:arg value="-data"/>
+	      <ant:arg value="../temp"/>
+	      <ant:arg value="-application"/>
+	      <ant:arg value="org.eclipse.emf.codegen.ecore.Generator"/>
+	      <ant:arg value="-model"/>
+	      <ant:arg value="-edit"/>
+	      <ant:arg value="${maven.build.dir}/geronimo-web.genmodel"/>
+	    </ant:java> 
+		<echo>Generating geronimo-application model and edit code</echo>
+		<ant:java fork="true" jar="${eclipse.home}/startup.jar" failonerror="true">
+	      <ant:arg value="-data"/>
+	      <ant:arg value="../temp"/>
+	      <ant:arg value="-application"/>
+	      <ant:arg value="org.eclipse.emf.codegen.ecore.Generator"/>
+	      <ant:arg value="-model"/>
+	      <ant:arg value="-edit"/>
+	      <ant:arg value="${maven.build.dir}/geronimo-application.genmodel"/>
+	    </ant:java> 
+		<echo>Generating openejb-jar model and edit code</echo>
+	    <ant:java fork="true" jar="${eclipse.home}/startup.jar" failonerror="true">
+	      <ant:arg value="-data"/>
+	      <ant:arg value="../temp"/>
+	      <ant:arg value="-application"/>
+	      <ant:arg value="org.eclipse.emf.codegen.ecore.Generator"/>
+	      <ant:arg value="-model"/>
+	      <ant:arg value="-edit"/>
+	      <ant:arg value="${maven.build.dir}/openejb-jar.genmodel"/>
+	    </ant:java> 
+		<echo>Generating geronimo-connector model and edit code</echo>
+	    <ant:java fork="true" jar="${eclipse.home}/startup.jar" failonerror="true">
+	      <ant:arg value="-data"/>
+	      <ant:arg value="../temp"/>
+	      <ant:arg value="-application"/>
+	      <ant:arg value="org.eclipse.emf.codegen.ecore.Generator"/>
+	      <ant:arg value="-model"/>
+	      <ant:arg value="-edit"/>
+	      <ant:arg value="${maven.build.dir}/geronimo-connector.genmodel"/>
+	    </ant:java> 
+		<echo>Generating geronimo-application-client model and edit code</echo>
+	    <ant:java fork="true" jar="${eclipse.home}/startup.jar" failonerror="true">
+	      <ant:arg value="-data"/>
+	      <ant:arg value="../temp"/>
+	      <ant:arg value="-application"/>
+	      <ant:arg value="org.eclipse.emf.codegen.ecore.Generator"/>
+	      <ant:arg value="-model"/>
+	      <ant:arg value="-edit"/>
+	      <ant:arg value="${maven.build.dir}/geronimo-appclient.genmodel"/>
+	    </ant:java> 
+	   <ant:delete dir="bin"/>
+	</goal>
   
 </project>
