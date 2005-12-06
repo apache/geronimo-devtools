@@ -62,7 +62,8 @@ public class GeronimoConnectionFactory {
 	}
 	
 	private String getDeployerURL(IServer server) {
-		return "deployer:geronimo:jmx:rmi://" + server.getHost()  + "/jndi/rmi://" + server.getHost() + ":" + getRMINamingPort(server) + "/JMXConnector";
+		//return "deployer:geronimo:jmx:rmi://" + server.getHost()  + "/jndi/rmi://" + server.getHost() + ":" + getRMINamingPort(server) + "/JMXConnector";
+		return "deployer:geronimo:jmx://" + server.getHost() + ":" + getRMINamingPort(server);
 	}
 
 	private DeploymentFactory discoverDeploymentFactory(IServer server) {
