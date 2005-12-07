@@ -40,7 +40,7 @@
 				<arg line="-packageMap http://geronimo.apache.org/xml/ns/naming-1.0 org.apache.geronimo.xml.ns.naming"/>
 				<arg line="-packageMap http://geronimo.apache.org/xml/ns/security-1.1 org.apache.geronimo.xml.ns.security"/>
 				<arg line="-packageMap http://geronimo.apache.org/xml/ns/deployment-1.0 org.apache.geronimo.xml.ns.deployment"/>
-				<arg line="-packageMap http://geronimo.apache.org/xml/ns/j2ee/web-1.0 org.apache.geronimo.xml.ns.web"/>	
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/j2ee/web-1.0 org.apache.geronimo.xml.ns.j2ee.web"/>	
 							
 				<arg line="-packages http://geronimo.apache.org/xml/ns/naming-1.0"/>
 				<arg line="-packages http://geronimo.apache.org/xml/ns/security-1.1"/>

@@ -16,8 +16,8 @@
 package org.apache.geronimo.ui.sections;
 
 import org.apache.geronimo.ui.internal.Messages;
-import org.apache.geronimo.xml.ns.web.WebAppType;
-import org.apache.geronimo.xml.ns.web.WebPackage;
+import org.apache.geronimo.xml.ns.j2ee.web.WebAppType;
+import org.apache.geronimo.xml.ns.j2ee.web.WebPackage;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;

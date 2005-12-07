@@ -26,10 +26,10 @@ import org.apache.geronimo.xml.ns.j2ee.application.util.ApplicationResourceFacto
 import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorPackage;
 import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorType;
 import org.apache.geronimo.xml.ns.j2ee.connector.util.ConnectorResourceFactoryImpl;
-import org.apache.geronimo.xml.ns.web.DocumentRoot;
-import org.apache.geronimo.xml.ns.web.WebAppType;
-import org.apache.geronimo.xml.ns.web.WebPackage;
-import org.apache.geronimo.xml.ns.web.util.WebResourceFactoryImpl;
+import org.apache.geronimo.xml.ns.j2ee.web.DocumentRoot;
+import org.apache.geronimo.xml.ns.j2ee.web.WebAppType;
+import org.apache.geronimo.xml.ns.j2ee.web.WebPackage;
+import org.apache.geronimo.xml.ns.j2ee.web.util.WebResourceFactoryImpl;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;

@@ -92,8 +92,10 @@
       <ant:arg value="org.eclipse.ant.core.antRunner"/>
       <ant:arg value="-buildfile"/>
       <ant:arg value="${basedir}/build.xml"/>
-   </ant:java> 
-   <ant:delete dir="bin"/>
+   </ant:java>
+   <ant:copy file=".classpath" todir="../plugins/org.apache.geronimo.deployment.model/" overwrite="true"/>
+   <ant:copy file=".classpath" todir="../plugins/org.apache.geronimo.deployment.model.edit/" overwrite="true"/> 
+   <ant:delete dir="../plugins/org.apache.geronimo.deployment.model/bin"/>
   </goal>
 	
 	<goal name="genmodels" prereqs="importschemas">

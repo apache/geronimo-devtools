@@ -24,9 +24,8 @@ import org.apache.geronimo.xml.ns.j2ee.application.ApplicationFactory;
 import org.apache.geronimo.xml.ns.j2ee.application.ApplicationType;
 import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorFactory;
 import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorType;
-import org.apache.geronimo.xml.ns.web.DocumentRoot;
-import org.apache.geronimo.xml.ns.web.WebAppType;
-import org.apache.geronimo.xml.ns.web.WebFactory;
+import org.apache.geronimo.xml.ns.j2ee.web.WebAppType;
+import org.apache.geronimo.xml.ns.j2ee.web.WebFactory;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;
@@ -125,7 +124,7 @@ public class DeploymentPlanCreationOperation extends
 		GeronimoUtils.registerWebFactoryAndPackage(resourceSet);
 
 		Resource resource = resourceSet.createResource(uri);
-		DocumentRoot documentRoot = WebFactory.eINSTANCE.createDocumentRoot();
+		org.apache.geronimo.xml.ns.j2ee.web.DocumentRoot documentRoot = WebFactory.eINSTANCE.createDocumentRoot();
 
 		EMap map = documentRoot.getXMLNSPrefixMap();
 		map.put("", GeronimoSchemaNS.GERONIMO_WEB_NS);
