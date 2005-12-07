@@ -30,4 +30,8 @@
     <attainGoal name="build"/>
   </goal>
   
+  <goal name="eclipse:generate-classpath">
+    <ant:copy file="${basedir}/../../geronimo-emf/.classpath" todir="${basedir}"/>
+  </goal>
+  
 </project>
