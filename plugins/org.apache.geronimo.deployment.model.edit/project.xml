@@ -47,6 +47,11 @@
       <groupId>geronimo-devtools</groupId>
       <artifactId>geronimo-emf</artifactId>
       <version>${devtools_currentversion}</version>      
+    </dependency>    
+    <dependency>
+      <groupId>geronimo-devtools</groupId>
+      <artifactId>org.apache.geronimo.deployment.model</artifactId>
+      <version>${devtools_currentversion}</version>      
     </dependency>      
     <!--  eclipse dependencies -->
     <dependency>
@@ -77,6 +82,11 @@
     <dependency>
       <groupId>eclipse</groupId>
       <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+      <version>2.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>eclipse</groupId>
+      <artifactId>org.eclipse.emf.edit</artifactId>
       <version>2.1.0</version>
     </dependency>
   </dependencies>
