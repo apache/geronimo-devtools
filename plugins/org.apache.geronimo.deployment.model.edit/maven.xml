@@ -31,7 +31,7 @@
   </goal>
   
   <goal name="eclipse:generate-classpath">
-    <ant:copy file="${basedir}/../../geronimo-emf/.classpath" todir="${basedir}"/>
+    <ant:copy file="${basedir}/../../geronimo-emf/.classpath" todir="${basedir}" overwrite="true"/>
   </goal>
   
 </project>
