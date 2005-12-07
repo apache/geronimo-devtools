@@ -68,7 +68,11 @@
       <artifactId>org.apache.geronimo.deployment.model</artifactId>
       <version>${devtools_currentversion}</version>
     </dependency>
-
+    <dependency>
+      <groupId>geronimo-devtools</groupId>
+      <artifactId>org.apache.geronimo.deployment.model.edit</artifactId>
+      <version>${devtools_currentversion}</version>
+    </dependency>
     <!--  eclipse dependencies -->
     <dependency>
       <groupId>eclipse</groupId>

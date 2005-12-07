@@ -17,8 +17,8 @@
 -->
 <project>
   <extend>../../etc/project.xml</extend>
-  <id>org.apache.geronimo.deployment.model</id>
-  <name>org.apache.geronimo.deployment.model</name>
+  <id>org.apache.geronimo.deployment.model.edit</id>
+  <name>org.apache.geronimo.deployment.model.edit</name>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
@@ -43,11 +43,6 @@
     </resources>
   </build>
   <dependencies>
-    <dependency>
-      <groupId>geronimo-devtools</groupId>
-      <artifactId>geronimo-emf</artifactId>
-      <version>${devtools_currentversion}</version>      
-    </dependency>    
     <dependency>
       <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.deployment.model</artifactId>
