@@ -34,7 +34,6 @@
 	<goal name="clean" prereqs="init">
 		<j:set var="goal" value="clean" />
 		<attainGoal name="multiproject:goal" />
-		<ant:delete dir="./plugins/temp" />
 	</goal>
 	
 	<goal name="clean-all">>
