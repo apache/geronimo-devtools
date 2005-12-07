@@ -78,6 +78,11 @@
   </goal>
   
   <goal name="codegen" prereqs="importschemas">
+    <ant:copy todir="${maven.build.dir}/emf" overwrite="true">
+        <ant:fileset dir="${base.dir}">
+            <include name="*.genmodel"/>
+        </ant:fileset>
+    </ant:copy>
     <echo>Starting Workbench...</echo>
     <ant:java fork="true" jar="${eclipse.home}/startup.jar" failonerror="true">
       <ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/xerces/jars/"/>
