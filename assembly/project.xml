@@ -38,6 +38,14 @@
     </dependency>
     <dependency>
       <groupId>geronimo-devtools</groupId>
+      <artifactId>org.apache.geronimo.deployment.model.edit</artifactId>
+      <version>${devtools_currentversion}</version>
+      <properties>
+        <jar>true</jar>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.feature</artifactId>
       <version>${devtools_currentversion}</version>
       <properties>
