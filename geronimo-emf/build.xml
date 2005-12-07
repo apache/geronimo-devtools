@@ -32,7 +32,7 @@
 			</settings>
 		</multipleXSDs2Java>
 		
-		<replace file="${project.directory}/org.apache.geronimo.deployment.model/.classpath" token='path="bin"/>' value='path="target/classes"/>${con}'/>		
+		<!-- <replace file="${project.directory}/org.apache.geronimo.deployment.model/.classpath" token='path="bin"/>' value='path="target/classes"/>${con}'/>	-->
 		
 		<multipleXSDs2Java genModelName="geronimo-web">
 			<settings>
@@ -40,7 +40,7 @@
 				<arg line="-packageMap http://geronimo.apache.org/xml/ns/naming-1.0 org.apache.geronimo.xml.ns.naming"/>
 				<arg line="-packageMap http://geronimo.apache.org/xml/ns/security-1.1 org.apache.geronimo.xml.ns.security"/>
 				<arg line="-packageMap http://geronimo.apache.org/xml/ns/deployment-1.0 org.apache.geronimo.xml.ns.deployment"/>
-				<arg line="-packageMap http://geronimo.apache.org/xml/ns/j2ee/web-1.0 org.apache.geronimo.xml.ns.j2ee.web"/>	
+				<arg line="-packageMap http://geronimo.apache.org/xml/ns/j2ee/web-1.0 org.apache.geronimo.xml.ns.web"/>	
 							
 				<arg line="-packages http://geronimo.apache.org/xml/ns/naming-1.0"/>
 				<arg line="-packages http://geronimo.apache.org/xml/ns/security-1.1"/>
@@ -77,7 +77,7 @@
 				<arg line="-packages http://www.openejb.org/xml/ns/openejb-jar-2.0"/>
 				<arg line="-packages http://www.openejb.org/xml/ns/pkgen-2.0"/>
 				
-				<arg line="-editProject ${project.directory} src"/>
+				<arg line="-editProject ${project.directory}/org.apache.geronimo.deployment.model.edit src"/>
 			</settings>
 		</multipleXSDs2Java>
 		
@@ -105,7 +105,7 @@
 							
 				<arg line="-packages http://geronimo.apache.org/xml/ns/j2ee/application-client-1.0"/>
 				
-				<arg line="-editProject ${project.directory} src"/>
+				<arg line="-editProject ${project.directory}/org.apache.geronimo.deployment.model.edit src"/>
 			</settings>
 		</multipleXSDs2Java>
 					
