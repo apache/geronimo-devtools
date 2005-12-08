@@ -83,6 +83,10 @@
             <include name="*.genmodel"/>
         </ant:fileset>
     </ant:copy>
+    <ant:mkdir dir="../plugins/org.apache.geronimo.deployment.model/target/templates"/>
+    <ant:copy todir="../plugins/org.apache.geronimo.deployment.model/target/templates">
+        <ant:fileset dir="templates"/>
+    </ant:copy>
     <echo>Starting Workbench...</echo>
     <ant:java fork="true" jar="${eclipse.home}/startup.jar" failonerror="true">
       <ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/xerces/jars/"/>

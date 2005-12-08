@@ -3,9 +3,9 @@
     xmlns:xmi="http://www.omg.org/XMI" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText=""
     modelDirectory="/Users/sppatel/geronimo/devtools/modules/eclipse-plugin/plugins/org.apache.geronimo.deployment.model/./src/."
     editDirectory="/Users/sppatel/geronimo/devtools/modules/eclipse-plugin/plugins/org.apache.geronimo.deployment.model.edit/./src/."
-    modelPluginID="org.apache.geronimo.deployment.model" modelName="Geronimo-web"
-    modelPluginClass="org.apache.geronimo.deployment.model.GeronimoEMFModelPlugin"
+    modelPluginID="org.apache.geronimo.deployment.model" templateDirectory="/org.apache.geronimo.deployment.model/target/templates" dynamicTemplates="true"
+    modelName="Geronimo-web" modelPluginClass="org.apache.geronimo.deployment.model.GeronimoEMFModelPlugin"
     editPluginClass="org.apache.geronimo.deployment.model.edit.GeronimoEMFEditPlugin"
-    importerID="org.eclipse.xsd.ecore.importer">
+    updateClasspath="false" importerID="org.eclipse.xsd.ecore.importer">
   <foreignModel>../schema/geronimo-web-1.0.xsd</foreignModel>
 </genmodel:GenModel>
