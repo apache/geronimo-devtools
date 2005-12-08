@@ -1,0 +1,9 @@
+This readme explains the source tree layout.
+
+assembly - The project that creates the distributions.  The following distributions are created:
+            (1) geronimo-eclipse-plugin-{version}.zip. 
+                This zip is the feature zip distribution that can be extracted directly into ECLIPSE_HOME
+            (2) geronimo-update-{version}.zip 
+                This zip is can be extract to the local filesystem and used as the local update site to install the feature
+            (3) updates/
+                This directory is the directory contains the contents for the remote update site.
