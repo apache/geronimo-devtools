@@ -15,16 +15,28 @@
  */
 package org.apache.geronimo.ui.sections;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.geronimo.ui.internal.GeronimoUIPlugin;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.ResourceRefWizard;
+import org.apache.geronimo.xml.ns.j2ee.web.provider.WebItemProviderAdapterFactory;
 import org.apache.geronimo.xml.ns.naming.NamingFactory;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
+import org.apache.geronimo.xml.ns.naming.provider.NamingItemProviderAdapterFactory;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -32,13 +44,59 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 public class ResourceRefSection extends DynamicTableSection {
     
     EReference resourceRefERef;
+    
+    AdapterFactory factory;
 
     public ResourceRefSection(EObject plan, Composite parent,
-            FormToolkit toolkit, int style, EReference resourceRefERef) {
+            FormToolkit toolkit, int style, EReference resourceRefERef, AdapterFactory factory) {
         super(plan, parent, toolkit, style);
         this.resourceRefERef = resourceRefERef;
-        create();
+        this.factory = factory;
+        //create();
+        super.createClient();
     }
+    
+    public void createClient() {
+
+		getSection().setText(getTitle());
+		getSection().setDescription(getDescription());
+		getSection().setLayoutData(getSectionLayoutData());
+		Composite composite = createTableComposite(getSection());
+		getSection().setClient(composite);
+		createTable(composite);
+		
+		List factories = new ArrayList();
+		factories.add(new WebItemProviderAdapterFactory());
+		factories.add(new NamingItemProviderAdapterFactory());
+
+		ComposedAdapterFactory a = new ComposedAdapterFactory(factories);
+
+		tableViewer = new TableViewer(table);
+		tableViewer.setContentProvider(new AdapterFactoryContentProvider(
+				a));
+		tableViewer.setLabelProvider(new AdapterFactoryLabelProvider(a));
+		tableViewer.setInput(plan);
+
+		tableViewer.addFilter(new ViewerFilter() {
+			public boolean select(Viewer viewer, Object parentElement,
+					Object element) {
+				return NamingPackage.eINSTANCE.getResourceRefType().isInstance(
+						element);
+			}
+		});
+
+		if (getTableColumnNames().length > 0) {
+			tableViewer.setColumnProperties(getTableColumnNames());
+		}
+
+		Composite buttonComp = createButtonComposite(composite);
+		createAddButton(toolkit, buttonComp);
+		createRemoveButton(toolkit, buttonComp);
+		createEditButton(toolkit, buttonComp);
+    
+	}
+
+
 
     /*
      * (non-Javadoc)
