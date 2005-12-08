@@ -87,6 +87,8 @@
     <ant:copy todir="../plugins/org.apache.geronimo.deployment.model/target/templates">
         <ant:fileset dir="templates"/>
     </ant:copy>
+    <ant:copy file=".classpath" todir="../plugins/org.apache.geronimo.deployment.model/" overwrite="true"/>
+    <ant:copy file=".classpath" todir="../plugins/org.apache.geronimo.deployment.model.edit/" overwrite="true"/> 
     <echo>Starting Workbench...</echo>
     <ant:java fork="true" jar="${eclipse.home}/startup.jar" failonerror="true">
       <ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/xerces/jars/"/>
@@ -97,9 +99,6 @@
       <ant:arg value="-buildfile"/>
       <ant:arg value="${basedir}/build.xml"/>
    </ant:java>
-   <ant:copy file=".classpath" todir="../plugins/org.apache.geronimo.deployment.model/" overwrite="true"/>
-   <ant:copy file=".classpath" todir="../plugins/org.apache.geronimo.deployment.model.edit/" overwrite="true"/> 
-   <ant:delete dir="../plugins/org.apache.geronimo.deployment.model/bin"/>
   </goal>
 	
 	<goal name="genmodels" prereqs="importschemas">
