@@ -18,7 +18,6 @@ package org.apache.geronimo.ui.actions;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.geronimo.core.internal.GeronimoSchemaNS;
 import org.apache.geronimo.core.internal.GeronimoServer;
 import org.apache.geronimo.ui.internal.Messages;
 import org.eclipse.jface.action.IAction;
