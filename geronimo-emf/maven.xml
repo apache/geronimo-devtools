@@ -78,17 +78,37 @@
   </goal>
   
   <goal name="codegen" prereqs="importschemas">
+    
     <ant:copy todir="${maven.build.dir}/emf" overwrite="true">
-        <ant:fileset dir="${base.dir}">
+        <ant:fileset dir="${basedir}">
             <include name="*.genmodel"/>
         </ant:fileset>
     </ant:copy>
+    
+    <ant:fileScanner var="genModelScanner">
+      <ant:fileset dir="${maven.build.dir}/emf">
+        <ant:include name="*.genmodel"/>
+      </ant:fileset>
+    </ant:fileScanner>
+  	
+  	<ant:taskdef name="replaceregexp"
+  		classname="org.apache.tools.ant.taskdefs.optional.ReplaceRegExp"
+  		classpathref="maven.dependency.classpath"/>
+  	<ant:property name="ant.regexp.regexpimpl" value="org.apache.tools.ant.util.regexp.JakartaOroRegexp"/> 
+  
+    <j:forEach var="genmodel" items="${genModelScanner.iterator()}">
+      <ant:replaceregexp file="${genmodel}" match="PLUGINS_LOC" replace="${basedir}/.." byline="true"/> 
+    </j:forEach>    
+    
     <ant:mkdir dir="../plugins/org.apache.geronimo.deployment.model/target/templates"/>
+    
     <ant:copy todir="../plugins/org.apache.geronimo.deployment.model/target/templates">
         <ant:fileset dir="templates"/>
     </ant:copy>
+    
     <ant:copy file=".classpath" todir="../plugins/org.apache.geronimo.deployment.model/" overwrite="true"/>
     <ant:copy file=".classpath" todir="../plugins/org.apache.geronimo.deployment.model.edit/" overwrite="true"/> 
+    
     <echo>Starting Workbench...</echo>
     <ant:java fork="true" jar="${eclipse.home}/startup.jar" failonerror="true">
       <ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/xerces/jars/"/>
