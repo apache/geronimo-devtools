@@ -2,7 +2,7 @@
 <feature
       id="org.apache.geronimo.installableruntime.feature"
       label="org.apache.geronimo.installableruntime.feature"
-      version="1.0.0"
+      version="0.5.0"
       provider-name="Apache.org">
 
    <description url="http://geronimo.apache.org/">
