@@ -18,19 +18,13 @@
 <project default="default" xmlns:j="jelly:core" xmlns:ant="jelly:ant">
 
   <goal name="default">
-    <attainGoal name="build"/>
-  </goal>
-  
-  <goal name="build">
-    <attainGoal name="getzip"/>
     <attainGoal name="jar:install"/>
   </goal>
   
-  <goal name="rebuild">
-    <attainGoal name="clean"/>
-    <attainGoal name="build"/>
-  </goal>
-  
+   <preGoal name="java:jar-resources"> 
+        <attainGoal name="getzip"/>       
+   </preGoal>  
+    
   <goal name="getzip">
     <ant:property name="geronimo.zip" value="geronimo-jetty-j2ee-${geronimo.version}.zip"/>
     <ant:available file="${maven.repo.local}/geronimo/distributions/${geronimo.zip}" property="zip.present"/>
