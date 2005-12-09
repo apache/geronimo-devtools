@@ -17,8 +17,8 @@
 -->
 <project>
   <extend>../../etc/project.xml</extend>
-  <id>org.apache.geronimo.j2ee.server</id>
-  <name>org.apache.geronimo.j2ee.server</name>
+  <id>org.apache.geronimo.j2ee.server.v1</id>
+  <name>org.apache.geronimo.j2ee.server.v1</name>
   <build>
     <resources>      
       <resource>
