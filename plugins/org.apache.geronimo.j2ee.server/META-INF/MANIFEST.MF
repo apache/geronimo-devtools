@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Geronimo Server Plug-in
+Bundle-SymbolicName: org.apache.geronimo.j2ee.server
+Bundle-Version: 1.0.0
+Bundle-Vendor: Apache.org
+Bundle-Localization: plugin
