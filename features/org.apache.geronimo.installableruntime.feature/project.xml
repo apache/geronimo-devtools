@@ -17,8 +17,8 @@
 -->
 <project>
   <extend>../../etc/project.xml</extend>
-  <id>org.apache.geronimo.installableruntimefeature</id>
-  <name>org.apache.geronimo.installablefeature</name>
+  <id>org.apache.geronimo.installableruntime.feature</id>
+  <name>org.apache.geronimo.installableruntime.feature</name>
   <build>
     <resources>
       <resource>

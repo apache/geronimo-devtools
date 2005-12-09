@@ -6,20 +6,21 @@
       provider-name="Apache.org">
 
    <description url="http://geronimo.apache.org/">
-		This features provides the Apache Geronimo J2EE Server.
+      This features provides the Apache Geronimo J2EE Server.
    </description>
 
    <copyright url="http://www.apache.org/licenses/LICENSE-2.0.html">
-		Copyright 2004 The Apache Software Foundation.
+      Copyright 2004 The Apache Software Foundation.
    </copyright>
 
    <license url="http://www.apache.org/licenses/LICENSE-2.0.html">
-		Apache License, Version 2.0
+      Apache License, Version 2.0
    </license>
 
-   <data
-         id="geronimo-1.0-M5.zip"
-         download-size="59000"
-         install-size="113000"/>
+   <plugin
+         id="org.apache.geronimo.j2ee.server"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
 </feature>
