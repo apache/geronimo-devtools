@@ -18,7 +18,7 @@
    </license>
 
    <plugin
-         id="org.apache.geronimo.j2ee.server"
+         id="org.apache.geronimo.j2ee.server.v1"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
