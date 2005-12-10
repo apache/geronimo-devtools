@@ -87,7 +87,11 @@
             </ant:exec>
                 
         </j:forEach>  
-        <ant:zip destfile="${distribution.dir}/geronimo-update-${pom.currentVersion}.zip" basedir="${distribution.dir.updatesite}"/>
+        <!-- <attainGoal name="sitedistrozip"/> -->
+    </goal>
+    
+    <goal name="sitedistrozip">
+        <ant:zip destfile="${distribution.dir}/geronimo-update-${pom.currentVersion}.zip" basedir="${maven.build.dir}"/>
         <checksum file="${distribution.dir}/geronimo-update-${pom.currentVersion}.zip" algorithm="MD5" fileext=".md5"/>
         <checksum file="${distribution.dir}/geronimo-update-${pom.currentVersion}.zip" algorithm="SHA" fileext=".sha"/>    
     </goal>
