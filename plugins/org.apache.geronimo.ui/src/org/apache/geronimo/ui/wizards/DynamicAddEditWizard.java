@@ -91,7 +91,7 @@ public abstract class DynamicAddEditWizard extends Wizard {
         
         processEAttributes(page);
 
-        String[] tableText = section.getTableText(eObject);
+        /*String[] tableText = section.getTableText(eObject);
 
         if (isNew) {
             TableItem item = new TableItem(section.getTableViewer().getTable(),
@@ -106,7 +106,7 @@ public abstract class DynamicAddEditWizard extends Wizard {
                         index);
                 item.setText(tableText);
             }
-        }
+        }*/
 
         return true;
     }

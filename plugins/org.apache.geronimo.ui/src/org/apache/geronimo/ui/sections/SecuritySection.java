@@ -15,6 +15,9 @@
  */
 package org.apache.geronimo.ui.sections;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.geronimo.ui.internal.GeronimoUIPlugin;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.SecurityRoleWizard;
@@ -26,6 +29,7 @@ import org.apache.geronimo.xml.ns.security.SecurityPackage;
 import org.apache.geronimo.xml.ns.security.SecurityType;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -126,6 +130,14 @@ public class SecuritySection extends DynamicTableSection {
     protected void configureSection(Section section) {
         section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
     }
+    
+    public List getFactories() {
+    	return Collections.EMPTY_LIST;
+    }
+
+	public EClass getTableEntryObjectType() {
+		return SecurityPackage.eINSTANCE.getRoleType();
+	}
 
     /*
      * (non-Javadoc)

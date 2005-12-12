@@ -15,11 +15,15 @@
  */
 package org.apache.geronimo.ui.sections;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.GBeanWizard;
 import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
 import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -110,5 +114,13 @@ public class GBeanSection extends DynamicTableSection {
     public Wizard getWizard() {
         return new GBeanWizard(this);
     }
+    
+    public List getFactories() {
+    	return Collections.EMPTY_LIST;
+    }
+
+	public EClass getTableEntryObjectType() {
+		return DeploymentPackage.eINSTANCE.getGbeanType();
+	}
 
 }

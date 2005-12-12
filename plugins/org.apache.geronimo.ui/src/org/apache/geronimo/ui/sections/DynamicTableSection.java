@@ -20,19 +20,26 @@ import java.util.List;
 
 import org.apache.geronimo.ui.internal.GeronimoUIPlugin;
 import org.apache.geronimo.ui.internal.Messages;
+import org.apache.geronimo.ui.internal.Trace;
 import org.apache.geronimo.ui.wizards.DynamicAddEditWizard;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
@@ -85,18 +92,80 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 		super(parent, toolkit, style, plan);
 	}
 
+	/**
+	 * @deprecated
+	 *
+	 */
 	public void create() {
 		if (isValid()) {
 			createClient();
 		}
 	}
+	
+	public void createNew() {
+		if(isValidNew()) {
+			createClientNew();
+		} else {
+			Trace.trace(Trace.SEVERE, "Could not create client, DynamicTableSection.isValid() == false");
+		}
+		
+	}
+	
+	private boolean isValidNew() {
+		return getTableEntryObjectType() != null && getTableColumnNames() != null;
+	}
 
+	/**
+	 * @deprecated
+	 */
 	private boolean isValid() {
 		return getEFactory() != null && getEReference() != null
 				&& getTableColumnEAttributes() != null
 				&& getTableColumnNames() != null;
 	}
 
+	public void createClientNew() {
+		
+		getSection().setText(getTitle());
+		getSection().setDescription(getDescription());
+		getSection().setLayoutData(getSectionLayoutData());
+		Composite composite = createTableComposite(getSection());
+		getSection().setClient(composite);
+		createTable(composite);
+
+		ComposedAdapterFactory caf = new ComposedAdapterFactory(getFactories());
+
+		tableViewer = new TableViewer(table);
+		tableViewer.setContentProvider(new AdapterFactoryContentProvider(caf));
+		tableViewer.setLabelProvider(new AdapterFactoryLabelProvider(caf));
+		tableViewer.setInput(plan);
+
+		tableViewer.addFilter(new ViewerFilter() {
+			public boolean select(Viewer viewer, Object parentElement,
+					Object element) {
+				return getTableEntryObjectType().isInstance(element);
+			}
+		});
+
+		if (getTableColumnNames().length > 0) {
+			tableViewer.setColumnProperties(getTableColumnNames());
+		}
+
+		Composite buttonComp = createButtonComposite(composite);
+		createAddButton(toolkit, buttonComp);
+		createRemoveButton(toolkit, buttonComp);
+		createEditButton(toolkit, buttonComp);
+		
+	}
+
+	abstract public List getFactories();
+
+	abstract public EClass getTableEntryObjectType();
+
+	/**
+	 * @deprecated
+	 * 
+	 */
 	public void createClient() {
 
 		getSection().setText(getTitle());
@@ -146,6 +215,9 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 		return layout;
 	}
 
+	/**
+	 * @deprecated
+	 */
 	protected void fillTableItems() {
 		EList list = (EList) plan.eGet(getEReference());
 
@@ -197,8 +269,8 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 	}
 
 	protected void createRemoveButton(FormToolkit toolkit, Composite buttonComp) {
-		removeButton = toolkit
-				.createButton(buttonComp, Messages.remove, SWT.NONE);
+		removeButton = toolkit.createButton(buttonComp, Messages.remove,
+				SWT.NONE);
 		removeButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				int[] selectedIndices = table.getSelectionIndices();
@@ -211,7 +283,8 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 				}
 			}
 		});
-		removeButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		removeButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+				false));
 	}
 
 	protected void createAddButton(FormToolkit toolkit, Composite buttonComp) {
@@ -233,7 +306,8 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 			}
 		});
 
-		addButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		addButton
+				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 	}
 
 	protected void createEditButton(FormToolkit toolkit, Composite buttonComp) {
@@ -255,16 +329,22 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 						dialog.open();
 						if (dialog.getReturnCode() == Dialog.OK) {
 							markDirty();
-							//TODO notify listeners
+							// TODO notify listeners
 						}
 					}
 				}
 			}
 		});
 
-		editButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		editButton
+				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 	}
 
+	/**
+	 * @deprecated
+	 * @param eObject
+	 * @return
+	 */
 	public String[] getTableText(EObject eObject) {
 		List tableText = new ArrayList();
 		for (int i = 0; i < getTableColumnEAttributes().length; i++) {
@@ -282,6 +362,10 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 		return (String[]) tableText.toArray(new String[tableText.size()]);
 	}
 
+	/**
+	 * @deprecated
+	 * @return
+	 */
 	public Image getImage() {
 		if (image == null) {
 			ImageDescriptor descriptor = getImageDescriptor();
@@ -292,6 +376,10 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 		return image;
 	}
 
+	/**
+	 * @deprecated
+	 * @return
+	 */
 	public ImageDescriptor getImageDescriptor() {
 		return defaultImgDesc;
 	}
@@ -319,11 +407,13 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 	abstract public String getDescription();
 
 	/**
+	 * @deprecated
 	 * @return
 	 */
 	abstract public EFactory getEFactory();
 
 	/**
+	 * @deprecated
 	 * @return
 	 */
 	abstract public EReference getEReference();
@@ -334,6 +424,7 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 	abstract public String[] getTableColumnNames();
 
 	/**
+	 * @deprecated
 	 * @return
 	 */
 	abstract public EAttribute[] getTableColumnEAttributes();;
@@ -341,6 +432,6 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 	/**
 	 * @return
 	 */
-	abstract public Wizard getWizard();	
+	abstract public Wizard getWizard();
 
 }

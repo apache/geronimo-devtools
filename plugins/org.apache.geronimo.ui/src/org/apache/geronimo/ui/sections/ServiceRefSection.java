@@ -15,11 +15,15 @@
  */
 package org.apache.geronimo.ui.sections;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.ServiceRefWizard;
 import org.apache.geronimo.xml.ns.naming.NamingFactory;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -86,6 +90,14 @@ public class ServiceRefSection extends DynamicTableSection {
 	 */
 	public Wizard getWizard() {
 		return new ServiceRefWizard(this);
+	}
+	
+    public List getFactories() {
+    	return Collections.EMPTY_LIST;
+    }
+
+	public EClass getTableEntryObjectType() {
+		return NamingPackage.eINSTANCE.getServiceRefType();
 	}
 
 }

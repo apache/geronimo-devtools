@@ -16,6 +16,7 @@
 package org.apache.geronimo.ui.sections;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.geronimo.ui.internal.GeronimoUIPlugin;
@@ -27,6 +28,7 @@ import org.apache.geronimo.xml.ns.naming.NamingPackage;
 import org.apache.geronimo.xml.ns.naming.provider.NamingItemProviderAdapterFactory;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -46,17 +48,18 @@ public class ResourceRefSection extends DynamicTableSection {
     EReference resourceRefERef;
     
     AdapterFactory factory;
+    
 
     public ResourceRefSection(EObject plan, Composite parent,
             FormToolkit toolkit, int style, EReference resourceRefERef, AdapterFactory factory) {
         super(plan, parent, toolkit, style);
         this.resourceRefERef = resourceRefERef;
         this.factory = factory;
-        //create();
-        super.createClient();
+        createNew();
+        //super.createClient();
     }
     
-    public void createClient() {
+    /*public void createClient() {
 
 		getSection().setText(getTitle());
 		getSection().setDescription(getDescription());
@@ -84,7 +87,7 @@ public class ResourceRefSection extends DynamicTableSection {
 						element);
 			}
 		});
-
+		
 		if (getTableColumnNames().length > 0) {
 			tableViewer.setColumnProperties(getTableColumnNames());
 		}
@@ -94,9 +97,7 @@ public class ResourceRefSection extends DynamicTableSection {
 		createRemoveButton(toolkit, buttonComp);
 		createEditButton(toolkit, buttonComp);
     
-	}
-
-
+	}*/
 
     /*
      * (non-Javadoc)
@@ -177,5 +178,16 @@ public class ResourceRefSection extends DynamicTableSection {
         return GeronimoUIPlugin.imageDescriptorFromPlugin(
                 "org.eclipse.jst.j2ee", "icons/full/obj16/resourceRef_obj.gif");
     }
+    
+    public List getFactories() {
+    	List factories = new ArrayList();
+		factories.add(new WebItemProviderAdapterFactory());
+		factories.add(new NamingItemProviderAdapterFactory());
+		return factories;
+    }
+
+	public EClass getTableEntryObjectType() {
+		return NamingPackage.eINSTANCE.getResourceRefType();
+	}
 
 }
