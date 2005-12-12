@@ -25,7 +25,7 @@ Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you ma
 
    <includes
          id="org.apache.geronimo.source.feature"
-         version="0.0.0"
+         version="0.5.0"
          optional="true"/>
 
    <requires>
