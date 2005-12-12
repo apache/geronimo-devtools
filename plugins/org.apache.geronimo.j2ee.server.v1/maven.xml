@@ -29,7 +29,8 @@
     <ant:property name="geronimo.zip" value="geronimo-jetty-j2ee-${geronimo.version}.zip"/>
     <ant:available file="${maven.repo.local}/geronimo/distributions/${geronimo.zip}" property="zip.present"/>
     <j:if test="${zip.present != 'true'}">
-         <ant:get src="http://cvs.apache.org/repository/geronimo/distributions/${geronimo.zip}" dest="${maven.repo.local}/geronimo/distributions/"/>
+         <ant:mkdir dir="${maven.repo.local}/geronimo/distributions/"/>
+         <ant:get src="http://cvs.apache.org/repository/geronimo/distributions/${geronimo.zip}" dest="${maven.repo.local}/geronimo/distributions/${geronimo.zip}"/>
     </j:if>
     <ant:mkdir dir="${maven.build.dest}/zips"/>
     <copy file="${maven.repo.local}/geronimo/distributions/${geronimo.zip}" todir="${maven.build.dest}/zips"/>
