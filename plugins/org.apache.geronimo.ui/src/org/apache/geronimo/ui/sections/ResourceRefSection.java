@@ -57,47 +57,7 @@ public class ResourceRefSection extends DynamicTableSection {
         this.factory = factory;
         createNew();
         //super.createClient();
-    }
-    
-    /*public void createClient() {
-
-		getSection().setText(getTitle());
-		getSection().setDescription(getDescription());
-		getSection().setLayoutData(getSectionLayoutData());
-		Composite composite = createTableComposite(getSection());
-		getSection().setClient(composite);
-		createTable(composite);
-		
-		List factories = new ArrayList();
-		factories.add(new WebItemProviderAdapterFactory());
-		factories.add(new NamingItemProviderAdapterFactory());
-
-		ComposedAdapterFactory a = new ComposedAdapterFactory(factories);
-
-		tableViewer = new TableViewer(table);
-		tableViewer.setContentProvider(new AdapterFactoryContentProvider(
-				a));
-		tableViewer.setLabelProvider(new AdapterFactoryLabelProvider(a));
-		tableViewer.setInput(plan);
-
-		tableViewer.addFilter(new ViewerFilter() {
-			public boolean select(Viewer viewer, Object parentElement,
-					Object element) {
-				return NamingPackage.eINSTANCE.getResourceRefType().isInstance(
-						element);
-			}
-		});
-		
-		if (getTableColumnNames().length > 0) {
-			tableViewer.setColumnProperties(getTableColumnNames());
-		}
-
-		Composite buttonComp = createButtonComposite(composite);
-		createAddButton(toolkit, buttonComp);
-		createRemoveButton(toolkit, buttonComp);
-		createEditButton(toolkit, buttonComp);
-    
-	}*/
+    }  
 
     /*
      * (non-Javadoc)
