@@ -45,6 +45,17 @@
      </serverType>     
 </extension>
 
+  <extension point="org.eclipse.wst.server.core.installableRuntimes">
+    <installableRuntime
+       id="org.apache.geronimo.generic.runtime.10"
+       featureVersion="0.5.0"
+       featureId="org.apache.geronimo.installableruntime.feature"
+       featureSite="http://www.apache.org/dist/geronimo/eclipse/updates/"
+       bundleId="org.apache.geronimo.j2ee.server.v1"
+       path="zips/geronimo-jetty-j2ee-1.0-SNAPSHOT.zip">
+    </installableRuntime>
+  </extension>
+
 <!-- Server type definitions -->
    <extension point="org.eclipse.jst.server.generic.core.serverdefinition">
 		<serverdefinition id="org.apache.geronimo.generic.runtime.10" 
