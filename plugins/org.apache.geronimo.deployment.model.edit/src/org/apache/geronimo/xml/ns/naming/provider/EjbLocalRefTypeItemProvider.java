@@ -19,16 +19,11 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.geronimo.deployment.model.edit.GeronimoEMFEditPlugin;
-
-import org.apache.geronimo.xml.ns.naming.NamingFactory;
+import org.apache.geronimo.xml.ns.naming.EjbLocalRefType;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
-import org.apache.geronimo.xml.ns.naming.ResourceRefType;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.ResourceLocator;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -42,12 +37,12 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
  * This is the item provider adapter for a
- * {@link org.apache.geronimo.xml.ns.naming.ResourceRefType} object. <!--
+ * {@link org.apache.geronimo.xml.ns.naming.EjbLocalRefType} object. <!--
  * begin-user-doc --> <!-- end-user-doc -->
  * 
  * @generated NOT
  */
-public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
+public class EjbLocalRefTypeItemProvider extends ItemProviderAdapter implements
 		IEditingDomainItemProvider, IStructuredItemContentProvider,
 		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource,
 		ITableItemLabelProvider {
@@ -64,7 +59,7 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 	 * 
 	 * @generated
 	 */
-	public ResourceRefTypeItemProvider(AdapterFactory adapterFactory) {
+	public EjbLocalRefTypeItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -85,9 +80,8 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 			addModulePropertyDescriptor(object);
 			addTypePropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
-			addResourceLinkPropertyDescriptor(object);
+			addEjbLinkPropertyDescriptor(object);
 			addTargetNamePropertyDescriptor(object);
-			addUrlPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -102,11 +96,11 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(
 				((ComposeableAdapterFactory) adapterFactory)
 						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_refName_feature"), getString(
+				getString("_UI_EjbLocalRefType_refName_feature"), getString(
 						"_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_refName_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_RefName(), true,
+						"_UI_EjbLocalRefType_refName_feature",
+						"_UI_EjbLocalRefType_type"), NamingPackage.eINSTANCE
+						.getEjbLocalRefType_RefName(), true,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -120,11 +114,11 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(
 				((ComposeableAdapterFactory) adapterFactory)
 						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_domain_feature"), getString(
+				getString("_UI_EjbLocalRefType_domain_feature"), getString(
 						"_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_domain_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_Domain(), true,
+						"_UI_EjbLocalRefType_domain_feature",
+						"_UI_EjbLocalRefType_type"), NamingPackage.eINSTANCE
+						.getEjbLocalRefType_Domain(), true,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -138,11 +132,11 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(
 				((ComposeableAdapterFactory) adapterFactory)
 						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_server_feature"), getString(
+				getString("_UI_EjbLocalRefType_server_feature"), getString(
 						"_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_server_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_Server(), true,
+						"_UI_EjbLocalRefType_server_feature",
+						"_UI_EjbLocalRefType_type"), NamingPackage.eINSTANCE
+						.getEjbLocalRefType_Server(), true,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -156,11 +150,11 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(
 				((ComposeableAdapterFactory) adapterFactory)
 						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_application_feature"),
+				getString("_UI_EjbLocalRefType_application_feature"),
 				getString("_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_application_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_Application(), true,
+						"_UI_EjbLocalRefType_application_feature",
+						"_UI_EjbLocalRefType_type"), NamingPackage.eINSTANCE
+						.getEjbLocalRefType_Application(), true,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -174,11 +168,11 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(
 				((ComposeableAdapterFactory) adapterFactory)
 						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_module_feature"), getString(
+				getString("_UI_EjbLocalRefType_module_feature"), getString(
 						"_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_module_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_Module(), true,
+						"_UI_EjbLocalRefType_module_feature",
+						"_UI_EjbLocalRefType_type"), NamingPackage.eINSTANCE
+						.getEjbLocalRefType_Module(), true,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -192,11 +186,11 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(
 				((ComposeableAdapterFactory) adapterFactory)
 						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_type_feature"), getString(
+				getString("_UI_EjbLocalRefType_type_feature"), getString(
 						"_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_type_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_Type(), true,
+						"_UI_EjbLocalRefType_type_feature",
+						"_UI_EjbLocalRefType_type"), NamingPackage.eINSTANCE
+						.getEjbLocalRefType_Type(), true,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -210,29 +204,29 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(
 				((ComposeableAdapterFactory) adapterFactory)
 						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_name_feature"), getString(
+				getString("_UI_EjbLocalRefType_name_feature"), getString(
 						"_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_name_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_Name(), true,
+						"_UI_EjbLocalRefType_name_feature",
+						"_UI_EjbLocalRefType_type"), NamingPackage.eINSTANCE
+						.getEjbLocalRefType_Name(), true,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
-	 * This adds a property descriptor for the Resource Link feature. <!--
+	 * This adds a property descriptor for the Ejb Link feature. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	protected void addResourceLinkPropertyDescriptor(Object object) {
+	protected void addEjbLinkPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(
 				((ComposeableAdapterFactory) adapterFactory)
 						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_resourceLink_feature"),
-				getString("_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_resourceLink_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_ResourceLink(), true,
+				getString("_UI_EjbLocalRefType_ejbLink_feature"), getString(
+						"_UI_PropertyDescriptor_description",
+						"_UI_EjbLocalRefType_ejbLink_feature",
+						"_UI_EjbLocalRefType_type"), NamingPackage.eINSTANCE
+						.getEjbLocalRefType_EjbLink(), true,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -246,40 +240,22 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(
 				((ComposeableAdapterFactory) adapterFactory)
 						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_targetName_feature"), getString(
+				getString("_UI_EjbLocalRefType_targetName_feature"), getString(
 						"_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_targetName_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_TargetName(), true,
+						"_UI_EjbLocalRefType_targetName_feature",
+						"_UI_EjbLocalRefType_type"), NamingPackage.eINSTANCE
+						.getEjbLocalRefType_TargetName(), true,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
-	 * This adds a property descriptor for the Url feature. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	protected void addUrlPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory)
-						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_url_feature"), getString(
-						"_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_url_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_Url(), true,
-				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-	}
-
-	/**
-	 * This returns ResourceRefType.gif. <!-- begin-user-doc --> <!--
+	 * This returns EjbLocalRefType.gif. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 */
 	public Object getImage(Object object) {
-		return getResourceLocator().getImage("full/obj16/ResourceRefType");
+		return getResourceLocator().getImage("full/obj16/EjbLocalRefType");
 	}
 
 	/**
@@ -289,9 +265,9 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 	 * @generated
 	 */
 	public String getText(Object object) {
-		String label = ((ResourceRefType) object).getName();
-		return label == null || label.length() == 0 ? getString("_UI_ResourceRefType_type")
-				: getString("_UI_ResourceRefType_type") + " " + label;
+		String label = ((EjbLocalRefType) object).getName();
+		return label == null || label.length() == 0 ? getString("_UI_EjbLocalRefType_type")
+				: getString("_UI_EjbLocalRefType_type") + " " + label;
 	}
 
 	/**
@@ -305,17 +281,16 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(ResourceRefType.class)) {
-		case NamingPackage.RESOURCE_REF_TYPE__REF_NAME:
-		case NamingPackage.RESOURCE_REF_TYPE__DOMAIN:
-		case NamingPackage.RESOURCE_REF_TYPE__SERVER:
-		case NamingPackage.RESOURCE_REF_TYPE__APPLICATION:
-		case NamingPackage.RESOURCE_REF_TYPE__MODULE:
-		case NamingPackage.RESOURCE_REF_TYPE__TYPE:
-		case NamingPackage.RESOURCE_REF_TYPE__NAME:
-		case NamingPackage.RESOURCE_REF_TYPE__RESOURCE_LINK:
-		case NamingPackage.RESOURCE_REF_TYPE__TARGET_NAME:
-		case NamingPackage.RESOURCE_REF_TYPE__URL:
+		switch (notification.getFeatureID(EjbLocalRefType.class)) {
+		case NamingPackage.EJB_LOCAL_REF_TYPE__REF_NAME:
+		case NamingPackage.EJB_LOCAL_REF_TYPE__DOMAIN:
+		case NamingPackage.EJB_LOCAL_REF_TYPE__SERVER:
+		case NamingPackage.EJB_LOCAL_REF_TYPE__APPLICATION:
+		case NamingPackage.EJB_LOCAL_REF_TYPE__MODULE:
+		case NamingPackage.EJB_LOCAL_REF_TYPE__TYPE:
+		case NamingPackage.EJB_LOCAL_REF_TYPE__NAME:
+		case NamingPackage.EJB_LOCAL_REF_TYPE__EJB_LINK:
+		case NamingPackage.EJB_LOCAL_REF_TYPE__TARGET_NAME:
 			fireNotifyChanged(new ViewerNotification(notification, notification
 					.getNotifier(), false, true));
 			return;
@@ -346,26 +321,8 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		return GeronimoEMFEditPlugin.INSTANCE;
 	}
 
-	/**
-	 * This does the same thing as ITableLabelProvider.getColumnText.
-	 */
 	public String getColumnText(Object object, int columnIndex) {
-		ResourceRefType o = (ResourceRefType) object;
-		switch(columnIndex) {
-		case 0:
-			return o.getRefName();
-		case 1:
-			if(o.eIsSet(NamingPackage.eINSTANCE.getResourceRefType_ResourceLink())) {
-				return o.getResourceLink();
-			}
-			break;
-		case 2:
-			if(o.eIsSet(NamingPackage.eINSTANCE.getResourceRefType_TargetName())) {
-				return o.getTargetName();
-			}
-			break;
-		}
-		return "";
+		return null;
 	}
 
 	/**
@@ -373,7 +330,7 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 	 */
 	public Object getColumnImage(Object object, int columnIndex) {
 		if (columnIndex == 0) {
-			return getResourceLocator().getImage("full/obj16/ResourceRefType");
+			return getResourceLocator().getImage("full/obj16/EjbLocalRefType");
 		}
 		return null;
 	}

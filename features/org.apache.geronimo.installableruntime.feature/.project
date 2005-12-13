@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <projectDescription>
-  <name>org.apache.geronimo.installableruntimefeature</name>
+  <name>org.apache.geronimo.installableruntime.feature</name>
   <comment>
   </comment>
   <projects>
