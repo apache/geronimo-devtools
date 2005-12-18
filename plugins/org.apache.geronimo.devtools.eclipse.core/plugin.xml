@@ -195,5 +195,14 @@
       version="1.0"/>
   </extension>
   
-   
+  <extension
+        id="org.apache.geronimo.defaultFacets"
+        name="Geronimo Default Facets"
+        point="org.eclipse.wst.common.project.facet.core.defaultFacets">
+	<default-facets>
+		<runtime-component id="org.apache.geronimo.runtime" version="1.0"/>
+		<facet id="org.apache.geronimo.facet" version="1.0" />
+	</default-facets>
+  </extension>
+  
 </plugin>
