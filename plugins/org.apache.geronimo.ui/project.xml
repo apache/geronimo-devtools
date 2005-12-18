@@ -36,10 +36,10 @@
         </includes>
       </resource>
       <resource>
-        <targetPath>icons/obj16/</targetPath>
-        <directory>icons/obj16</directory>
+        <targetPath>icons</targetPath>
+        <directory>icons</directory>
         <includes>
-          <include>*.gif</include>
+          <include>**/*.gif</include>
         </includes>
       </resource>
       <resource>
