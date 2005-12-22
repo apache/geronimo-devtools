@@ -95,9 +95,16 @@
   		classname="org.apache.tools.ant.taskdefs.optional.ReplaceRegExp"
   		classpathref="maven.dependency.classpath"/>
   	<ant:property name="ant.regexp.regexpimpl" value="org.apache.tools.ant.util.regexp.JakartaOroRegexp"/> 
+  	
+    <pathconvert property="x" targetos="unix">
+        <path path="${basedir}"/>
+        <chainedmapper>
+          <replacestring from="\" to="/"/>
+        </chainedmapper>
+    </pathconvert>
   
     <j:forEach var="genmodel" items="${genModelScanner.iterator()}">
-      <ant:replaceregexp file="${genmodel}" match="PLUGINS_LOC" replace="${basedir}/.." byline="true"/> 
+      <ant:replaceregexp file="${genmodel}" match="PLUGINS_LOC" replace="${x}/.." byline="true"/> 
     </j:forEach>    
     
     <ant:mkdir dir="../plugins/org.apache.geronimo.deployment.model/target/templates"/>
