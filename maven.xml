@@ -71,7 +71,7 @@
 	<goal name="clean-repo">
 		<ant:delete dir="${maven.repo.local}/geronimo-devtools"/>
 		<ant:delete dir="${maven.repo.local}/eclipse"/>
-    </goal>/Users/sppatel/geronimo/devtools/modules/eclipse-plugin/maven.xml
+    </goal>
 
 	<goal name="getwtp">
 		<j:set var="target.dir" value="./target" />
