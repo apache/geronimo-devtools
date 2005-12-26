@@ -18,25 +18,26 @@ package org.apache.geronimo.core.commands;
 import java.io.File;
 
 import javax.enterprise.deploy.shared.CommandType;
+import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.Target;
 import javax.enterprise.deploy.spi.status.ProgressObject;
 
 import org.eclipse.wst.server.core.IModule;
 
-public class DistributeCommand extends AbstractDeploymentCommand {
+class DistributeCommand extends AbstractDeploymentCommand {
 
-	public DistributeCommand() {
-		super();
+	public DistributeCommand(IModule module, DeploymentManager dm) {
+		super(dm, module);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.wst.server.core.IModule)
+	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute()
 	 */
-	public ProgressObject execute(IModule module) {
+	public ProgressObject execute() {
 		Target[] targets = getDeploymentManager().getTargets();
-		File jarFile = createJarFile(module);
+		File jarFile = createJarFile(getModule());
 		return getDeploymentManager().distribute(targets, jarFile, null);
 	}
 

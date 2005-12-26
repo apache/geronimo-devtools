@@ -13,6 +13,8 @@ import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 import org.apache.geronimo.core.internal.GeronimoServer;
 import org.apache.geronimo.core.internal.Trace;
 import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.wst.server.core.IServer;
 
 public class GeronimoConnectionFactory {
@@ -69,8 +71,10 @@ public class GeronimoConnectionFactory {
 	private DeploymentFactory discoverDeploymentFactory(IServer server) {
 
 		try {
-			JarFile deployerJar = new JarFile(server.getRuntime().getLocation()
-					.append("/deployer.jar").toFile());
+			
+			IPath path = server.getRuntime().getLocation().removeLastSegments(1).append("/lib/geronimo-deploy-jsr88-1.0.jar");
+
+			JarFile deployerJar = new JarFile(path.toFile());
 			java.util.jar.Manifest manifestFile = deployerJar.getManifest();
 			Attributes attributes = manifestFile.getMainAttributes();
 			String key = "J2EE-DeploymentFactory-Implementation-Class";

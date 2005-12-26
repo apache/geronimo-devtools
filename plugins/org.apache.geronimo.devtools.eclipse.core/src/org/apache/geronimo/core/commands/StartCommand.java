@@ -16,39 +16,37 @@
 package org.apache.geronimo.core.commands;
 
 import javax.enterprise.deploy.shared.CommandType;
+import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
 import javax.enterprise.deploy.spi.status.ProgressObject;
 
 import org.eclipse.wst.server.core.IModule;
 
-public class StartCommand extends AbstractDeploymentCommand {
-	
-	TargetModuleID[] targetModuleIDs;
+class StartCommand extends AbstractDeploymentCommand {
 
-	public StartCommand() {
-		super();
+	TargetModuleID[] ids;
+
+	public StartCommand(TargetModuleID[] ids, IModule module, DeploymentManager dm) {
+		super(dm, module);
+		this.ids = ids;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.wst.server.core.IModule)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute()
 	 */
-	public ProgressObject execute(IModule module) {
-		return getDeploymentManager().start(getTargetModuleIDs());
+	public ProgressObject execute() {
+		return getDeploymentManager().start(ids);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#getCommandType()
 	 */
 	public CommandType getCommandType() {
 		return CommandType.START;
-	}
-
-	public TargetModuleID[] getTargetModuleIDs() {
-		return targetModuleIDs;
-	}
-
-	public void setTargetModuleIDs(TargetModuleID[] targetModuleIDs) {
-		this.targetModuleIDs = targetModuleIDs;
 	}
 
 }

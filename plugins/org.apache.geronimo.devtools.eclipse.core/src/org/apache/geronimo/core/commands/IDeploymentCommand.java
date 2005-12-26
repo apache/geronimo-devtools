@@ -22,8 +22,10 @@ import org.eclipse.wst.server.core.IModule;
 
 public interface IDeploymentCommand {
 	
-	public ProgressObject execute(IModule module);
+	public ProgressObject execute();
 	
 	public CommandType getCommandType();
+	
+	public IModule getModule();
 
 }

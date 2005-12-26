@@ -27,13 +27,9 @@ import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
-import org.apache.geronimo.core.CommandLauncher;
 import org.apache.geronimo.core.GeronimoConnectionFactory;
-import org.apache.geronimo.core.commands.DistributeCommand;
-import org.apache.geronimo.core.commands.RedeployCommand;
-import org.apache.geronimo.core.commands.StartCommand;
-import org.apache.geronimo.core.commands.StopCommand;
-import org.apache.geronimo.core.commands.UndeployCommand;
+import org.apache.geronimo.core.commands.DeploymentCommandFactory;
+import org.apache.geronimo.core.operations.SynchronizedDeploymentOp;
 import org.apache.geronimo.gbean.GBeanQuery;
 import org.apache.geronimo.kernel.GBeanNotFoundException;
 import org.apache.geronimo.kernel.Kernel;
@@ -81,10 +77,11 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		// kill the process
 		super.stop(true);
 	}
-	
+
 	private String getJMXServiceURL() {
 		String host = getServer().getHost();
-		return "service:jmx:rmi://" + host + "/jndi/rmi://" + host + ":" + getRMINamingPort() + "/JMXConnector";
+		return "service:jmx:rmi://" + host + "/jndi/rmi://" + host + ":"
+				+ getRMINamingPort() + "/JMXConnector";
 	}
 
 	private Kernel getKernel() {
@@ -228,27 +225,30 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	}
 
 	private void doDeploy(IModule module) throws CoreException {
-		CommandLauncher launcher = new CommandLauncher(new DistributeCommand(),
-				module, getServer());
-		IStatus status = launcher.executeCommand(_monitor);
-		
-		if(!status.isOK()) {
+		SynchronizedDeploymentOp op = DeploymentCommandFactory
+				.createDistributeCommand(module, getServer());
+		IStatus status = op.run(_monitor);
+
+		if (!status.isOK()) {
 			doFail(status, Messages.DISTRIBUTE_FAIL);
 		}
-		
-		StartCommand startCmd = new StartCommand();
-		startCmd.setTargetModuleIDs(launcher.getResultTargetModuleIDs());
-		launcher = new CommandLauncher(startCmd, module, getServer());
-		status = launcher.executeCommand(_monitor);
-		if(!status.isOK()) {
+
+		op = DeploymentCommandFactory.createStartCommand(op
+				.getResultTargetModuleIDs(), module, getServer());
+
+		status = op.run(_monitor);
+
+		if (!status.isOK()) {
 			doFail(status, Messages.START_FAIL);
 		}
 	}
 
 	private void doRedeploy(IModule module) throws CoreException {
-		CommandLauncher launcher = new CommandLauncher(new RedeployCommand(),
-				module, getServer());
-		IStatus status = launcher.executeCommand(_monitor);
+		SynchronizedDeploymentOp op = DeploymentCommandFactory
+				.createRedeployCommand(module, getServer());
+
+		IStatus status = op.run(_monitor);
+
 		if (!status.isOK()) {
 			doFail(status, Messages.REDEPLOY_FAIL);
 		}
@@ -256,18 +256,20 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 	private void doUndeploy(IModule module) throws CoreException,
 			DeploymentManagerCreationException {
-		CommandLauncher launcher = new CommandLauncher(new StopCommand(),
-				module, getServer());
-		IStatus status = launcher.executeCommand(_monitor);
+		SynchronizedDeploymentOp op = DeploymentCommandFactory
+				.createStopCommand(module, getServer());
+
+		IStatus status = op.run(_monitor);
 
 		if (!status.isOK()) {
 			doFail(status, Messages.STOP_FAIL);
 		}
 
-		launcher = new CommandLauncher(new UndeployCommand(), module,
-				getServer());
-		status = launcher.executeCommand(_monitor);
-		
+		op = DeploymentCommandFactory
+				.createUndeployCommand(module, getServer());
+
+		status = op.run(_monitor);
+
 		if (!status.isOK()) {
 			doFail(status, Messages.UNDEPLOY_FAIL);
 		}
@@ -290,19 +292,28 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	public String getPassword() {
 		return GeronimoConnectionFactory.getInstance().getPassword(getServer());
 	}
-	
+
 	public String getRMINamingPort() {
-		return GeronimoConnectionFactory.getInstance().getRMINamingPort(getServer());
+		return GeronimoConnectionFactory.getInstance().getRMINamingPort(
+				getServer());
 	}
-	
-	public void setupLaunchConfiguration(ILaunchConfigurationWorkingCopy workingCopy, IProgressMonitor monitor) throws CoreException {
-		String defaultArgs = getServerDefinition().getResolver().resolveProperties(getServerDefinition().getStart().getProgramArgumentsAsString());
-		String existingPrgArgs = workingCopy.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,defaultArgs);
-        super.setupLaunchConfiguration(workingCopy, monitor);
-		if(existingPrgArgs !=null) {
-            workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,existingPrgArgs);
-        }
+
+	public void setupLaunchConfiguration(
+			ILaunchConfigurationWorkingCopy workingCopy,
+			IProgressMonitor monitor) throws CoreException {
+		String defaultArgs = getServerDefinition().getResolver()
+				.resolveProperties(
+						getServerDefinition().getStart()
+								.getProgramArgumentsAsString());
+		String existingPrgArgs = workingCopy.getAttribute(
+				IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,
+				defaultArgs);
+		super.setupLaunchConfiguration(workingCopy, monitor);
+		if (existingPrgArgs != null) {
+			workingCopy.setAttribute(
+					IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,
+					existingPrgArgs);
+		}
 	}
-		
 
 }

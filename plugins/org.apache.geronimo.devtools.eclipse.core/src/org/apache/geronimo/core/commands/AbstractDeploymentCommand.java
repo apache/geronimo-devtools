@@ -37,20 +37,24 @@ import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.server.core.IModule;
 
-public abstract class AbstractDeploymentCommand implements IDeploymentCommand {
+abstract class AbstractDeploymentCommand implements IDeploymentCommand {
 
-	DeploymentManager deploymentManager;
+	private DeploymentManager dm;
+	
+	private IModule module;
 
-	public AbstractDeploymentCommand() {
+	public AbstractDeploymentCommand(DeploymentManager dm, IModule module) {
 		super();
+		this.dm = dm;
+		this.module = module;
 	}
 
 	public DeploymentManager getDeploymentManager() {
-		return deploymentManager;
+		return dm;
 	}
-
-	public void setDeploymentManager(DeploymentManager deploymentManager) {
-		this.deploymentManager = deploymentManager;
+	
+	public IModule getModule() {
+		return module;
 	}
 
 	public File createJarFile(IModule module) {

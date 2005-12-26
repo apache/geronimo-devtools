@@ -16,24 +16,25 @@
 package org.apache.geronimo.core.commands;
 
 import javax.enterprise.deploy.shared.CommandType;
+import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
 import javax.enterprise.deploy.spi.status.ProgressObject;
 
 import org.eclipse.wst.server.core.IModule;
 
-public class UndeployCommand extends AbstractDeploymentCommand {
+class UndeployCommand extends AbstractDeploymentCommand {
 
-	public UndeployCommand() {
-		super();
+	public UndeployCommand(IModule module, DeploymentManager dm) {
+		super(dm, module);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.wst.server.core.IModule)
+	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute()
 	 */
-	public ProgressObject execute(IModule module) {
-		TargetModuleID id = getTargetModuleID(module);
+	public ProgressObject execute() {
+		TargetModuleID id = getTargetModuleID(getModule());
 		if (id != null) {
 			return getDeploymentManager().undeploy(new TargetModuleID[] { id });
 		}
