@@ -20,8 +20,10 @@ import java.io.File;
 import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.Target;
-import javax.enterprise.deploy.spi.status.ProgressObject;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IModule;
 
 class DistributeCommand extends AbstractDeploymentCommand {
@@ -35,10 +37,11 @@ class DistributeCommand extends AbstractDeploymentCommand {
 	 * 
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute()
 	 */
-	public ProgressObject execute() {
+	public IStatus execute(IProgressMonitor monitor) {
 		Target[] targets = getDeploymentManager().getTargets();
 		File jarFile = createJarFile(getModule());
-		return getDeploymentManager().distribute(targets, jarFile, null);
+		return new DeploymentCmdStatus(Status.OK_STATUS,
+				getDeploymentManager().distribute(targets, jarFile, null));
 	}
 
 	/*

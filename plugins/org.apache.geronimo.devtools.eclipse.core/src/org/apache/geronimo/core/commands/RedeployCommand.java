@@ -20,8 +20,10 @@ import java.io.File;
 import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
-import javax.enterprise.deploy.spi.status.ProgressObject;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IModule;
 
 class RedeployCommand extends AbstractDeploymentCommand {
@@ -35,12 +37,13 @@ class RedeployCommand extends AbstractDeploymentCommand {
 	 * 
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute()
 	 */
-	public ProgressObject execute() {
+	public IStatus execute(IProgressMonitor monitor) {
 		TargetModuleID id = getTargetModuleID(getModule());
 		if (id != null) {
 			File jarFile = createJarFile(getModule());
-			return getDeploymentManager().redeploy(new TargetModuleID[] { id },
-					jarFile, null);
+			return new DeploymentCmdStatus(Status.OK_STATUS,
+					getDeploymentManager().redeploy(
+							new TargetModuleID[] { id }, jarFile, null));
 		}
 		return null;
 	}

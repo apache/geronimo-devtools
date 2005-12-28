@@ -18,15 +18,18 @@ package org.apache.geronimo.core.commands;
 import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
-import javax.enterprise.deploy.spi.status.ProgressObject;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IModule;
 
 class StartCommand extends AbstractDeploymentCommand {
 
 	TargetModuleID[] ids;
 
-	public StartCommand(TargetModuleID[] ids, IModule module, DeploymentManager dm) {
+	public StartCommand(TargetModuleID[] ids, IModule module,
+			DeploymentManager dm) {
 		super(dm, module);
 		this.ids = ids;
 	}
@@ -36,8 +39,9 @@ class StartCommand extends AbstractDeploymentCommand {
 	 * 
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute()
 	 */
-	public ProgressObject execute() {
-		return getDeploymentManager().start(ids);
+	public IStatus execute(IProgressMonitor monitor) {
+		return new DeploymentCmdStatus(Status.OK_STATUS,
+				getDeploymentManager().start(ids));
 	}
 
 	/*

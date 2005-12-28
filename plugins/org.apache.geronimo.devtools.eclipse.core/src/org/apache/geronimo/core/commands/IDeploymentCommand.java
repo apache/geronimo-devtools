@@ -16,16 +16,17 @@
 package org.apache.geronimo.core.commands;
 
 import javax.enterprise.deploy.shared.CommandType;
-import javax.enterprise.deploy.spi.status.ProgressObject;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.wst.server.core.IModule;
 
 public interface IDeploymentCommand {
-	
-	public ProgressObject execute();
-	
+
+	public IStatus execute(IProgressMonitor monitor);
+
 	public CommandType getCommandType();
-	
+
 	public IModule getModule();
 
 }

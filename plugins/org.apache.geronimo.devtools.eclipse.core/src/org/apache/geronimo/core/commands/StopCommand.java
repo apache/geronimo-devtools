@@ -18,8 +18,10 @@ package org.apache.geronimo.core.commands;
 import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
-import javax.enterprise.deploy.spi.status.ProgressObject;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IModule;
 
 class StopCommand extends AbstractDeploymentCommand {
@@ -28,16 +30,18 @@ class StopCommand extends AbstractDeploymentCommand {
 		super(dm, module);
 	}
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute()
 	 */
-	public ProgressObject execute() {
+	public IStatus execute(IProgressMonitor monitor) {
 		TargetModuleID id = getTargetModuleID(getModule());
 		if (id != null) {
-			return getDeploymentManager().stop(new TargetModuleID[] { id });
+			return new DeploymentCmdStatus(Status.OK_STATUS,
+					getDeploymentManager().stop(new TargetModuleID[] { id }));
 		}
-		return null;
+		return new DeploymentCmdStatus(Status.CANCEL_STATUS, null);
 	}
 
 	/*

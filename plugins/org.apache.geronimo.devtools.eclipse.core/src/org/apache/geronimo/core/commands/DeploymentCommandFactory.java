@@ -22,7 +22,6 @@ import javax.enterprise.deploy.spi.exceptions.DeploymentManagerCreationException
 import org.apache.geronimo.core.GeronimoConnectionFactory;
 import org.apache.geronimo.core.internal.GeronimoPlugin;
 import org.apache.geronimo.core.internal.Messages;
-import org.apache.geronimo.core.operations.SynchronizedDeploymentOp;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -31,9 +30,9 @@ import org.eclipse.wst.server.core.IServer;
 
 /**
  * 
- * This class provides static factory methods that return "synchronized" wrapper instances of
- * JSR-88 deployment commands.
- *
+ * This class provides static factory methods that return "synchronized" wrapper
+ * instances of JSR-88 deployment commands.
+ * 
  */
 public class DeploymentCommandFactory {
 
@@ -48,7 +47,7 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static SynchronizedDeploymentOp createDistributeCommand(
+	public static IDeploymentCommand createDistributeCommand(
 			IModule module, IServer server) throws CoreException {
 		return new SynchronizedDeploymentOp(new DistributeCommand(module,
 				INSTANCE.getDeploymentManager(server)));
@@ -61,7 +60,7 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static SynchronizedDeploymentOp createStartCommand(
+	public static IDeploymentCommand createStartCommand(
 			TargetModuleID[] ids, IModule module, IServer server)
 			throws CoreException {
 		return new SynchronizedDeploymentOp(new StartCommand(ids, module,
@@ -74,7 +73,7 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static SynchronizedDeploymentOp createStopCommand(IModule module,
+	public static IDeploymentCommand createStopCommand(IModule module,
 			IServer server) throws CoreException {
 		return new SynchronizedDeploymentOp(new StopCommand(module, INSTANCE
 				.getDeploymentManager(server)));
@@ -86,7 +85,7 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static SynchronizedDeploymentOp createRedeployCommand(
+	public static IDeploymentCommand createRedeployCommand(
 			IModule module, IServer server) throws CoreException {
 		return new SynchronizedDeploymentOp(new RedeployCommand(module,
 				INSTANCE.getDeploymentManager(server)));
@@ -98,7 +97,7 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static SynchronizedDeploymentOp createUndeployCommand(
+	public static IDeploymentCommand createUndeployCommand(
 			IModule module, IServer server) throws CoreException {
 		return new SynchronizedDeploymentOp(new UndeployCommand(module,
 				INSTANCE.getDeploymentManager(server)));

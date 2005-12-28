@@ -40,7 +40,7 @@ import org.eclipse.wst.server.core.IModule;
 abstract class AbstractDeploymentCommand implements IDeploymentCommand {
 
 	private DeploymentManager dm;
-	
+
 	private IModule module;
 
 	public AbstractDeploymentCommand(DeploymentManager dm, IModule module) {
@@ -52,7 +52,7 @@ abstract class AbstractDeploymentCommand implements IDeploymentCommand {
 	public DeploymentManager getDeploymentManager() {
 		return dm;
 	}
-	
+
 	public IModule getModule() {
 		return module;
 	}

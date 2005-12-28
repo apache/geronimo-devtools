@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.enterprise.deploy.spi.TargetModuleID;
 import javax.enterprise.deploy.spi.exceptions.DeploymentManagerCreationException;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
@@ -28,8 +29,9 @@ import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
 import org.apache.geronimo.core.GeronimoConnectionFactory;
+import org.apache.geronimo.core.commands.DeploymentCmdStatus;
 import org.apache.geronimo.core.commands.DeploymentCommandFactory;
-import org.apache.geronimo.core.operations.SynchronizedDeploymentOp;
+import org.apache.geronimo.core.commands.IDeploymentCommand;
 import org.apache.geronimo.gbean.GBeanQuery;
 import org.apache.geronimo.kernel.GBeanNotFoundException;
 import org.apache.geronimo.kernel.Kernel;
@@ -225,29 +227,32 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	}
 
 	private void doDeploy(IModule module) throws CoreException {
-		SynchronizedDeploymentOp op = DeploymentCommandFactory
+		IDeploymentCommand op = DeploymentCommandFactory
 				.createDistributeCommand(module, getServer());
-		IStatus status = op.run(_monitor);
+		IStatus status = op.execute(_monitor);
 
 		if (!status.isOK()) {
 			doFail(status, Messages.DISTRIBUTE_FAIL);
 		}
 
-		op = DeploymentCommandFactory.createStartCommand(op
-				.getResultTargetModuleIDs(), module, getServer());
+		if (status instanceof DeploymentCmdStatus) {
+			TargetModuleID[] ids = ((DeploymentCmdStatus) status).getResultTargetModuleIDs();
+ 
+			op = DeploymentCommandFactory.createStartCommand(ids, module, getServer());
 
-		status = op.run(_monitor);
+			status = op.execute(_monitor);
 
-		if (!status.isOK()) {
-			doFail(status, Messages.START_FAIL);
+			if (!status.isOK()) {
+				doFail(status, Messages.START_FAIL);
+			}
 		}
 	}
 
 	private void doRedeploy(IModule module) throws CoreException {
-		SynchronizedDeploymentOp op = DeploymentCommandFactory
-				.createRedeployCommand(module, getServer());
+		IDeploymentCommand op = DeploymentCommandFactory.createRedeployCommand(
+				module, getServer());
 
-		IStatus status = op.run(_monitor);
+		IStatus status = op.execute(_monitor);
 
 		if (!status.isOK()) {
 			doFail(status, Messages.REDEPLOY_FAIL);
@@ -256,10 +261,10 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 	private void doUndeploy(IModule module) throws CoreException,
 			DeploymentManagerCreationException {
-		SynchronizedDeploymentOp op = DeploymentCommandFactory
-				.createStopCommand(module, getServer());
+		IDeploymentCommand op = DeploymentCommandFactory.createStopCommand(
+				module, getServer());
 
-		IStatus status = op.run(_monitor);
+		IStatus status = op.execute(_monitor);
 
 		if (!status.isOK()) {
 			doFail(status, Messages.STOP_FAIL);
@@ -268,7 +273,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		op = DeploymentCommandFactory
 				.createUndeployCommand(module, getServer());
 
-		status = op.run(_monitor);
+		status = op.execute(_monitor);
 
 		if (!status.isOK()) {
 			doFail(status, Messages.UNDEPLOY_FAIL);
