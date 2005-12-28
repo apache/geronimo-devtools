@@ -35,13 +35,13 @@ class DistributeCommand extends AbstractDeploymentCommand {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute()
+	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public IStatus execute(IProgressMonitor monitor) {
 		Target[] targets = getDeploymentManager().getTargets();
 		File jarFile = createJarFile(getModule());
-		return new DeploymentCmdStatus(Status.OK_STATUS,
-				getDeploymentManager().distribute(targets, jarFile, null));
+		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager()
+				.distribute(targets, jarFile, null));
 	}
 
 	/*

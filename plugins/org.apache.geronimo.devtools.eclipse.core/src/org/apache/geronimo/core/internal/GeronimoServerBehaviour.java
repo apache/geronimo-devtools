@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.enterprise.deploy.spi.TargetModuleID;
-import javax.enterprise.deploy.spi.exceptions.DeploymentManagerCreationException;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
@@ -177,56 +176,48 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	 */
 	public void publishModule(int kind, int deltaKind, IModule[] module,
 			IProgressMonitor monitor) throws CoreException {
-
-		Trace.trace(Trace.INFO, "publishModule()" + module + " "
-				+ module.length + " deltaKind=" + deltaKind);
-
+		
+		Trace.trace(Trace.INFO, ">> publishModule(), deltaKind = " + kind + ", size = " + module.length);
 		_monitor = monitor;
 
-		if (deltaKind == NO_CHANGE) {
-			Trace.trace(Trace.INFO,
-					"deltaKind = NO_CHANGE, returning out of publishModule()");
-			return;
-		}
-
-		if (module.length == 1) {
+		if (deltaKind != NO_CHANGE && module.length == 1) {
 			invokeCommand(deltaKind, module[0]);
 		}
+		
+		Trace.trace(Trace.INFO, "<< publishModule()");
+
 	}
 
 	private void invokeCommand(int deltaKind, IModule module)
 			throws CoreException {
 
-		Trace.trace(Trace.INFO, "calling invokeComand()" + module);
+		Trace.trace(Trace.INFO, ">> invokeCommand() " + module.toString());
 
-		try {
-			switch (deltaKind) {
-			case ADDED: {
-				Trace.trace(Trace.INFO, "calling doDeploy()");
-				doDeploy(module);
-				break;
-			}
-			case CHANGED: {
-				Trace.trace(Trace.INFO, "calling doRedeploy()");
-				doRedeploy(module);
-				break;
-			}
-			case REMOVED: {
-				Trace.trace(Trace.INFO, "calling doUndeploy()");
-				doUndeploy(module);
-				break;
-			}
-			default:
-				throw new IllegalArgumentException();
-			}
-		} catch (DeploymentManagerCreationException e) {
-			e.printStackTrace();
-			throw new CoreException(new Status(IStatus.ERROR,
-					GeronimoPlugin.PLUGIN_ID, 0, e.getMessage(), e));
+		switch (deltaKind) {
+		case ADDED: {
+			doDeploy(module);
+			break;
 		}
+		case CHANGED: {
+			doRedeploy(module);
+			break;
+		}
+		case REMOVED: {
+			doUndeploy(module);
+			break;
+		}
+		default:
+			throw new IllegalArgumentException();
+		}
+
+		Trace.trace(Trace.INFO, "<< invokeCommand() " + module.toString());
+
 	}
 
 	private void doDeploy(IModule module) throws CoreException {
+
+		Trace.trace(Trace.INFO, ">> doDeploy() " + module.toString());
+
 		IDeploymentCommand op = DeploymentCommandFactory
 				.createDistributeCommand(module, getServer());
 		IStatus status = op.execute(_monitor);
@@ -236,9 +227,11 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		}
 
 		if (status instanceof DeploymentCmdStatus) {
-			TargetModuleID[] ids = ((DeploymentCmdStatus) status).getResultTargetModuleIDs();
- 
-			op = DeploymentCommandFactory.createStartCommand(ids, module, getServer());
+			TargetModuleID[] ids = ((DeploymentCmdStatus) status)
+					.getResultTargetModuleIDs();
+
+			op = DeploymentCommandFactory.createStartCommand(ids, module,
+					getServer());
 
 			status = op.execute(_monitor);
 
@@ -246,9 +239,15 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 				doFail(status, Messages.START_FAIL);
 			}
 		}
+
+		Trace.trace(Trace.INFO, "<< doDeploy() " + module.toString());
+
 	}
 
 	private void doRedeploy(IModule module) throws CoreException {
+
+		Trace.trace(Trace.INFO, ">> doRedeploy() " + module.toString());
+
 		IDeploymentCommand op = DeploymentCommandFactory.createRedeployCommand(
 				module, getServer());
 
@@ -257,10 +256,14 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		if (!status.isOK()) {
 			doFail(status, Messages.REDEPLOY_FAIL);
 		}
+
+		Trace.trace(Trace.INFO, "<< doRedeploy() " + module.toString());
 	}
 
-	private void doUndeploy(IModule module) throws CoreException,
-			DeploymentManagerCreationException {
+	private void doUndeploy(IModule module) throws CoreException {
+
+		Trace.trace(Trace.INFO, ">> doUndeploy() " + module.toString());
+
 		IDeploymentCommand op = DeploymentCommandFactory.createStopCommand(
 				module, getServer());
 
@@ -278,6 +281,9 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		if (!status.isOK()) {
 			doFail(status, Messages.UNDEPLOY_FAIL);
 		}
+
+		Trace.trace(Trace.INFO, "<< doUndeploy()" + module.toString());
+
 	}
 
 	private void doFail(IStatus status, String message) throws CoreException {

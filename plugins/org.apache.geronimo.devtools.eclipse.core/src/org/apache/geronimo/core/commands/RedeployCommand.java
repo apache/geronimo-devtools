@@ -32,10 +32,8 @@ class RedeployCommand extends AbstractDeploymentCommand {
 		super(dm, module);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute()
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public IStatus execute(IProgressMonitor monitor) {
 		TargetModuleID id = getTargetModuleID(getModule());

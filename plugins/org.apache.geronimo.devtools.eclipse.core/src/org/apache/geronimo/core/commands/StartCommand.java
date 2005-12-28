@@ -37,11 +37,11 @@ class StartCommand extends AbstractDeploymentCommand {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute()
+	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public IStatus execute(IProgressMonitor monitor) {
-		return new DeploymentCmdStatus(Status.OK_STATUS,
-				getDeploymentManager().start(ids));
+		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager()
+				.start(ids));
 	}
 
 	/*
