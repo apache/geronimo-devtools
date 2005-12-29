@@ -16,6 +16,7 @@
 package org.apache.geronimo.core.internal;
 
 import java.net.MalformedURLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -85,9 +86,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 				+ getRMINamingPort() + "/JMXConnector";
 	}
 
-	private Kernel getKernel() {
-
-		int tries = MAX_TRIES;
+	private Kernel getKernel(int attempts) {
 
 		if (kernel == null) {
 
@@ -98,9 +97,9 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 				String url = getJMXServiceURL();
 				Trace.trace(Trace.INFO, url);
 				JMXServiceURL address = new JMXServiceURL(url);
+				Thread.sleep(3000);
 				do {
 					try {
-
 						JMXConnector jmxConnector = JMXConnectorFactory
 								.connect(address, map);
 						MBeanServerConnection mbServerConnection = jmxConnector
@@ -109,18 +108,10 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 						Trace.trace(Trace.INFO, "Connected to kernel.");
 						break;
 					} catch (Exception e) {
-						Thread.sleep(3000);
-						tries--;
-						if (tries != 0) {
-							Trace
-									.trace(Trace.WARNING,
-											"Couldn't connect to kernel.  Trying again...");
-						} else {
-							Trace.trace(Trace.SEVERE,
-									"Connection to Geronimo kernel failed.", e);
-						}
+						Trace.trace(Trace.WARNING, "Kernel connection failed. "
+								+ --attempts + " attempts left.");
 					}
-				} while (tries > 0);
+				} while (attempts > 0);
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (InterruptedException e) {
@@ -131,40 +122,62 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		return kernel;
 	}
 
+	private Kernel getKernel() {
+		return getKernel(1);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jst.server.generic.core.internal.GenericServerBehaviour#setServerStarted()
+	 */
 	protected void setServerStarted() {
-
-		boolean started = false;
-
-		GBeanQuery query = new GBeanQuery(null,
-				PersistentConfigurationList.class.getName());
-
-		for (int tries = MAX_TRIES; tries > 0 && !started; tries--) {
+		for (int tries = MAX_TRIES; tries > 0; tries--) {
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e1) {
+				// ignore
 			}
-			Set configLists = getKernel().listGBeans(query);
-			if (!configLists.isEmpty()) {
-				ObjectName on = (ObjectName) configLists.toArray()[0];
-				try {
-					Boolean b = (Boolean) getKernel().getAttribute(on,
-							"kernelFullyStarted");
-					if (b.booleanValue()) {
-						Trace.trace(Trace.INFO, "kernelFullyStarted = true");
-						setServerState(IServer.STATE_STARTED);
-						started = true;
-					} else {
-						Trace.trace(Trace.INFO, "kernelFullyStarted = false");
-					}
-				} catch (GBeanNotFoundException e) {
-				} catch (NoSuchAttributeException e) {
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else {
-				Trace.trace(Trace.INFO, "configList is Empty");
+			boolean isFullyStarted = isKernelFullyStarted();
+			Trace.trace(Trace.INFO, "kernelFullyStarted = " + isFullyStarted
+					+ ", " + (tries - 1) + " attempts left.");
+			if (isFullyStarted) {
+				setServerState(IServer.STATE_STARTED);
+				break;
 			}
 		}
+	}
+
+	private boolean isKernelAlive() {
+		return kernel != null && kernel.isRunning();
+	}
+
+	private boolean isKernelFullyStarted() {
+		Set configLists = getKernel(MAX_TRIES).listGBeans(
+				new GBeanQuery(null, PersistentConfigurationList.class
+						.getName()));
+		if (!configLists.isEmpty()) {
+			ObjectName on = (ObjectName) configLists.toArray()[0];
+			try {
+				Boolean b = (Boolean) getKernel().getAttribute(on,
+						"kernelFullyStarted");
+				return b.booleanValue();
+			} catch (GBeanNotFoundException e) {
+				// ignore
+			} catch (NoSuchAttributeException e) {
+				// ignore
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			Trace.trace(Trace.INFO, "configLists is empty");
+		}
+		return false;
+	}
+
+	private boolean isRuntimeDeployerRunning() {
+		// TODO Implement Me
+		return true;
 	}
 
 	/*
@@ -176,22 +189,20 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	 */
 	public void publishModule(int kind, int deltaKind, IModule[] module,
 			IProgressMonitor monitor) throws CoreException {
-		
-		Trace.trace(Trace.INFO, ">> publishModule(), deltaKind = " + kind + ", size = " + module.length);
+		Trace.trace(Trace.INFO, ">> publishModule(), deltaKind = " + kind);
+		Trace.trace(Trace.INFO, Arrays.asList(module).toString());
 		_monitor = monitor;
 
 		if (deltaKind != NO_CHANGE && module.length == 1) {
 			invokeCommand(deltaKind, module[0]);
 		}
-		
-		Trace.trace(Trace.INFO, "<< publishModule()");
 
+		Trace.trace(Trace.INFO, "<< publishModule()");
 	}
 
 	private void invokeCommand(int deltaKind, IModule module)
 			throws CoreException {
-
-		Trace.trace(Trace.INFO, ">> invokeCommand() " + module.toString());
+		Trace.trace(Trace.INFO, ">> invokeCommand()");
 
 		switch (deltaKind) {
 		case ADDED: {
@@ -210,17 +221,15 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 			throw new IllegalArgumentException();
 		}
 
-		Trace.trace(Trace.INFO, "<< invokeCommand() " + module.toString());
-
+		Trace.trace(Trace.INFO, "<< invokeCommand()");
 	}
 
 	private void doDeploy(IModule module) throws CoreException {
-
 		Trace.trace(Trace.INFO, ">> doDeploy() " + module.toString());
 
-		IDeploymentCommand op = DeploymentCommandFactory
+		IDeploymentCommand cmd = DeploymentCommandFactory
 				.createDistributeCommand(module, getServer());
-		IStatus status = op.execute(_monitor);
+		IStatus status = cmd.execute(_monitor);
 
 		if (!status.isOK()) {
 			doFail(status, Messages.DISTRIBUTE_FAIL);
@@ -229,11 +238,9 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		if (status instanceof DeploymentCmdStatus) {
 			TargetModuleID[] ids = ((DeploymentCmdStatus) status)
 					.getResultTargetModuleIDs();
-
-			op = DeploymentCommandFactory.createStartCommand(ids, module,
+			cmd = DeploymentCommandFactory.createStartCommand(ids, module,
 					getServer());
-
-			status = op.execute(_monitor);
+			status = cmd.execute(_monitor);
 
 			if (!status.isOK()) {
 				doFail(status, Messages.START_FAIL);
@@ -241,17 +248,14 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		}
 
 		Trace.trace(Trace.INFO, "<< doDeploy() " + module.toString());
-
 	}
 
 	private void doRedeploy(IModule module) throws CoreException {
-
 		Trace.trace(Trace.INFO, ">> doRedeploy() " + module.toString());
 
-		IDeploymentCommand op = DeploymentCommandFactory.createRedeployCommand(
-				module, getServer());
-
-		IStatus status = op.execute(_monitor);
+		IDeploymentCommand cmd = DeploymentCommandFactory
+				.createRedeployCommand(module, getServer());
+		IStatus status = cmd.execute(_monitor);
 
 		if (!status.isOK()) {
 			doFail(status, Messages.REDEPLOY_FAIL);
@@ -261,29 +265,25 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	}
 
 	private void doUndeploy(IModule module) throws CoreException {
-
 		Trace.trace(Trace.INFO, ">> doUndeploy() " + module.toString());
 
-		IDeploymentCommand op = DeploymentCommandFactory.createStopCommand(
+		IDeploymentCommand cmd = DeploymentCommandFactory.createStopCommand(
 				module, getServer());
-
-		IStatus status = op.execute(_monitor);
+		IStatus status = cmd.execute(_monitor);
 
 		if (!status.isOK()) {
 			doFail(status, Messages.STOP_FAIL);
 		}
 
-		op = DeploymentCommandFactory
-				.createUndeployCommand(module, getServer());
-
-		status = op.execute(_monitor);
+		cmd = DeploymentCommandFactory.createUndeployCommand(module,
+				getServer());
+		status = cmd.execute(_monitor);
 
 		if (!status.isOK()) {
 			doFail(status, Messages.UNDEPLOY_FAIL);
 		}
 
 		Trace.trace(Trace.INFO, "<< doUndeploy()" + module.toString());
-
 	}
 
 	private void doFail(IStatus status, String message) throws CoreException {
@@ -309,6 +309,12 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 				getServer());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#setupLaunchConfiguration(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy,
+	 *      org.eclipse.core.runtime.IProgressMonitor)
+	 */
 	public void setupLaunchConfiguration(
 			ILaunchConfigurationWorkingCopy workingCopy,
 			IProgressMonitor monitor) throws CoreException {

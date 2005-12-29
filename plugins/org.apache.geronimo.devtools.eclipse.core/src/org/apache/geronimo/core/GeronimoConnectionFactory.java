@@ -13,6 +13,7 @@ import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 import org.apache.geronimo.core.internal.GeronimoServer;
 import org.apache.geronimo.core.internal.Trace;
 import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
+import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.wst.server.core.IServer;
@@ -53,6 +54,9 @@ public class GeronimoConnectionFactory {
 			Trace.trace(Trace.INFO, "DeployerURL: " + deployerURL);
 			dm = mgr.getDeploymentManager(deployerURL, getUserName(server),
 					getPassword(server));
+			if(dm instanceof JMXDeploymentManager) {
+				((JMXDeploymentManager) dm).setLogConfiguration(true, true);
+			}
 			connections.put(server.getId(), dm);
 		}
 

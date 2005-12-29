@@ -21,7 +21,7 @@ import javax.enterprise.deploy.spi.status.ProgressEvent;
 import javax.enterprise.deploy.spi.status.ProgressListener;
 import javax.enterprise.deploy.spi.status.ProgressObject;
 
-import org.apache.geronimo.core.internal.DeploymentStatusMessageTranslator;
+import org.apache.geronimo.core.internal.DeploymentStatusMessage;
 import org.apache.geronimo.core.internal.GeronimoPlugin;
 import org.apache.geronimo.core.internal.Trace;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -30,6 +30,11 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IModule;
 
+/**
+ * This class is a wrapper IDeploymentCommand that when executed blocks the
+ * callee's thread until completed, either when its waiting thread times out, or
+ * a failed or completed notification is recieved from the DeploymentManager.
+ */
 public class SynchronizedDeploymentOp implements ProgressListener,
 		IDeploymentCommand {
 
@@ -48,7 +53,9 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 		this.command = command;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public IStatus execute(IProgressMonitor monitor) {
@@ -63,11 +70,11 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 		waitThread.start();
 
 		IStatus ds = command.execute(_monitor);
-		
+
 		ProgressObject po = null;
 
 		if (ds instanceof DeploymentCmdStatus) {
-			
+
 			po = ((DeploymentCmdStatus) ds).getProgressObject();
 
 			po.addProgressListener(this);
@@ -96,39 +103,44 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see javax.enterprise.deploy.spi.status.ProgressListener#handleProgressEvent(javax.enterprise.deploy.spi.status.ProgressEvent)
 	 */
 	public void handleProgressEvent(ProgressEvent event) {
 		DeploymentStatus deploymentStatus = event.getDeploymentStatus();
 		if (deploymentStatus != null) {
-			String msg = DeploymentStatusMessageTranslator
-					.getTranslatedMessage(event, command.getModule()
-							.getProject());
-			Trace.trace(Trace.INFO, msg);
-			_monitor.subTask(msg);
+			DeploymentStatusMessage dsm = new DeploymentStatusMessage(
+					deploymentStatus);
+			Trace.trace(Trace.INFO, dsm.toString());
+			_monitor.subTask(dsm.toString());
 			if (command.getCommandType() == deploymentStatus.getCommand()) {
 				if (deploymentStatus.isCompleted()) {
 					status = new Status(IStatus.OK, GeronimoPlugin.PLUGIN_ID,
-							0, msg, null);
+							0, dsm.getMessage(), null);
 					waitThread.interrupt();
 				} else if (deploymentStatus.isFailed()) {
 					status = new Status(IStatus.ERROR,
-							GeronimoPlugin.PLUGIN_ID, 0, msg, null);
+							GeronimoPlugin.PLUGIN_ID, 0, dsm.getMessage(), null);
 					waitThread.interrupt();
 				}
 			}
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#getCommandType()
 	 */
 	public CommandType getCommandType() {
 		return command.getCommandType();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#getModule()
 	 */
 	public IModule getModule() {
