@@ -15,7 +15,10 @@
  */
 package org.apache.geronimo.core.internal;
 
-public interface GeronimoSchemaNS {
+public class GeronimoSchemaNS {
+	
+	private GeronimoSchemaNS() {
+	}
 
     public static final String GERONIMO_APP_NS = "http://geronimo.apache.org/xml/ns/j2ee/application-1.0";
 

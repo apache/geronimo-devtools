@@ -21,6 +21,7 @@ import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.Target;
 
+import org.apache.geronimo.core.DeploymentUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -39,7 +40,7 @@ class DistributeCommand extends AbstractDeploymentCommand {
 	 */
 	public IStatus execute(IProgressMonitor monitor) {
 		Target[] targets = getDeploymentManager().getTargets();
-		File jarFile = createJarFile(getModule());
+		File jarFile = DeploymentUtils.createJarFile(getModule());
 		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager()
 				.distribute(targets, jarFile, null));
 	}

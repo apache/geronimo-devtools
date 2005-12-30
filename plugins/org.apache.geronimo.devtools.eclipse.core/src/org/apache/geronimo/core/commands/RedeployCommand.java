@@ -21,6 +21,7 @@ import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
+import org.apache.geronimo.core.DeploymentUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -38,7 +39,7 @@ class RedeployCommand extends AbstractDeploymentCommand {
 	public IStatus execute(IProgressMonitor monitor) {
 		TargetModuleID id = getTargetModuleID(getModule());
 		if (id != null) {
-			File jarFile = createJarFile(getModule());
+			File jarFile = DeploymentUtils.createJarFile(getModule());
 			return new DeploymentCmdStatus(Status.OK_STATUS,
 					getDeploymentManager().redeploy(
 							new TargetModuleID[] { id }, jarFile, null));

@@ -62,7 +62,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 	public GeronimoServerBehaviour() {
 		super();
-		timer = new Timer();
+		timer = new Timer(true);
 		//timer.schedule(new UpdateServerStateTask(), 0, 60000);
 	}
 
