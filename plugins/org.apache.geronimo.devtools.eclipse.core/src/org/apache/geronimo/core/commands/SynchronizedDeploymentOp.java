@@ -32,7 +32,7 @@ import org.eclipse.wst.server.core.IModule;
 
 /**
  * This class is a wrapper IDeploymentCommand that when executed blocks the
- * callee's thread until completed, either when its waiting thread times out, or
+ * callee's thread until completed, either when the waiting thread times out, or
  * a failed or completed notification is recieved from the DeploymentManager.
  */
 public class SynchronizedDeploymentOp implements ProgressListener,
@@ -42,11 +42,11 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 
 	private IDeploymentCommand command;
 
-	private Thread waitThread;
-
 	private IStatus status = null;
 
 	private IProgressMonitor _monitor = null;
+
+	private boolean timedOut = true;
 
 	public SynchronizedDeploymentOp(IDeploymentCommand command) {
 		super();
@@ -59,48 +59,48 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public IStatus execute(IProgressMonitor monitor) {
-
+		
 		_monitor = monitor;
 
 		if (_monitor == null) {
 			_monitor = new NullProgressMonitor();
 		}
 
-		waitThread = new WaitForNotificationThread();
-		waitThread.start();
+		ProgressObject po = run();
+
+		return new DeploymentCmdStatus(status, po);
+	}
+	
+	private synchronized ProgressObject run() {
+		Trace.trace(Trace.INFO, "--> run()");
 
 		IStatus ds = command.execute(_monitor);
 
 		ProgressObject po = null;
-
+		
 		if (ds instanceof DeploymentCmdStatus) {
-
 			po = ((DeploymentCmdStatus) ds).getProgressObject();
-
 			po.addProgressListener(this);
-
+			
 			try {
-				waitThread.join();
+				wait(TIMEOUT);
 			} catch (InterruptedException e) {
-			} finally {
-				po.removeProgressListener(this);
 			}
-
+			
+			po.removeProgressListener(this);
+			if (timedOut) {
+				Trace.trace(Trace.SEVERE, "Command Timed Out!");
+			}
 		}
-
-		return new DeploymentCmdStatus(status, po);
-
+		
+		Trace.trace(Trace.INFO, "<-- run()");
+		return po;
 	}
 
-	class WaitForNotificationThread extends Thread {
-		public void run() {
-			try {
-				sleep(TIMEOUT);
-				Trace.trace(Trace.INFO, "Wait thread TIMEOUT!");
-			} catch (InterruptedException e) {
-				Trace.trace(Trace.INFO, "Wait thread interrupted");
-			}
-		}
+	private synchronized void sendNotification() {
+		timedOut = false;
+		Trace.trace(Trace.INFO, "notifyAll()");
+		notifyAll();
 	}
 
 	/*
@@ -119,11 +119,11 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 				if (deploymentStatus.isCompleted()) {
 					status = new Status(IStatus.OK, GeronimoPlugin.PLUGIN_ID,
 							0, dsm.getMessage(), null);
-					waitThread.interrupt();
+					sendNotification();
 				} else if (deploymentStatus.isFailed()) {
 					status = new Status(IStatus.ERROR,
 							GeronimoPlugin.PLUGIN_ID, 0, dsm.getMessage(), null);
-					waitThread.interrupt();
+					sendNotification();
 				}
 			}
 		}

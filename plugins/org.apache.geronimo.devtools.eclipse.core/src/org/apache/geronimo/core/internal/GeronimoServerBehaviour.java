@@ -20,6 +20,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.enterprise.deploy.spi.TargetModuleID;
 import javax.management.MBeanServerConnection;
@@ -56,8 +58,12 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 	private Kernel kernel = null;
 
+	private Timer timer;
+
 	public GeronimoServerBehaviour() {
 		super();
+		timer = new Timer();
+		//timer.schedule(new UpdateServerStateTask(), 0, 60000);
 	}
 
 	/*
@@ -175,11 +181,6 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		return false;
 	}
 
-	private boolean isRuntimeDeployerRunning() {
-		// TODO Implement Me
-		return true;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -202,8 +203,6 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 	private void invokeCommand(int deltaKind, IModule module)
 			throws CoreException {
-		Trace.trace(Trace.INFO, ">> invokeCommand()");
-
 		switch (deltaKind) {
 		case ADDED: {
 			doDeploy(module);
@@ -220,8 +219,6 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		default:
 			throw new IllegalArgumentException();
 		}
-
-		Trace.trace(Trace.INFO, "<< invokeCommand()");
 	}
 
 	private void doDeploy(IModule module) throws CoreException {
@@ -330,6 +327,31 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 			workingCopy.setAttribute(
 					IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,
 					existingPrgArgs);
+		}
+	}
+
+	private class UpdateServerStateTask extends TimerTask {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Runnable#run()
+		 */
+		public void run() {
+			int currentState = getServer().getServerState();
+			if (currentState == IServer.STATE_STARTED) {
+				if(!isKernelAlive()) {
+					setServerState(IServer.STATE_STOPPED);
+				}
+			} else if (currentState == IServer.STATE_STOPPED) {
+				if (isKernelAlive()) {
+					if (isKernelFullyStarted()) {
+						setServerState(IServer.STATE_STARTED);
+					} else {
+						setServerState(IServer.STATE_STARTING);
+					}
+				}
+			}
 		}
 	}
 
