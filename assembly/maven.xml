@@ -42,16 +42,18 @@
     </goal>
 
     <goal name="zipdistro" prereqs="init">   
-        <ant:echo>Packaging feature for zip distribution</ant:echo>    
+        <ant:delete dir="${distribution.dir.temp}"/>
+        <ant:echo>Packaging feature for zip distribution</ant:echo>
         <j:forEach var="artifact" items="${pom.artifacts}">        
             <j:set var="dependency" value="${artifact.dependency}"/>           
             <j:if test="${dependency.getProperty('zipdistro') == 'true'}">
-                <j:if test="${dependency.getProperty('feature') == 'true'}">  
+                <echo>Processing ${dependency.artifactId}</echo>  
+                <j:if test="${dependency.getProperty('feature') == 'true'}">
                     <ant:unjar src="${artifact.path}" dest="${distribution.dir.temp}/features/${dependency.artifactId}_${distributionjarversion}"/>
                 </j:if> 
             
-                <j:if test="${dependency.getProperty('jar') == 'true'}">  
-                    <ant:copy file="${artifact.path}" tofile="${distribution.dir.temp}/plugins/${dependency.artifactId}_${distributionjarversion}.jar"/>
+                <j:if test="${dependency.getProperty('jar') == 'true'}"> 
+                    <ant:copy file="${artifact.path}" tofile="${distribution.dir.temp}/plugins/${dependency.artifactId}_${distributionjarversion}.jar" overwrite="true"/>
                 </j:if> 
             
                 <j:if test="${dependency.getProperty('jar') == 'false'}">  
@@ -66,26 +68,28 @@
     
     <goal name="sitedistro" prereqs="init">
        <ant:echo>Packaging feature for update site</ant:echo>  
+        <ant:delete dir="${distribution.dir}/updates"/>
         <j:forEach var="artifact" items="${pom.artifacts}">        
             <j:set var="dependency" value="${artifact.dependency}"/>           
             
-            <j:if test="${dependency.getProperty('feature') == 'true'}">  
-                <ant:copy file="${artifact.path}" tofile="${distribution.dir.updatesite}/features/${dependency.artifactId}_${distributionjarversion}.jar"/>
-                <checksum file="${distribution.dir.updatesite}/features/${dependency.artifactId}_${distributionjarversion}.jar" algorithm="MD5" fileext=".md5"/>
+            <j:if test="${dependency.getProperty('feature') == 'true'}">
+                <echo>Processing ${dependency.artifactId}</echo>  
+                <ant:copy file="${artifact.path}" tofile="${distribution.dir.updatesite}/features/${dependency.artifactId}_${distributionjarversion}.jar" overwrite="true"/>
+                <checksum file="${distribution.dir.updatesite}/features/${dependency.artifactId}_${distributionjarversion}.jar" algorithm="MD5" fileext=".md5" />
                 <checksum file="${distribution.dir.updatesite}/features/${dependency.artifactId}_${distributionjarversion}.jar" algorithm="SHA" fileext=".sha"/>
             </j:if> 
             
-            <j:if test="${dependency.getProperty('jar') == 'true' || dependency.getProperty('jar') == 'false'}">  
-                <ant:copy file="${artifact.path}" tofile="${distribution.dir.updatesite}/plugins/${dependency.artifactId}_${distributionjarversion}.jar"/>
+            <j:if test="${dependency.getProperty('jar') == 'true' || dependency.getProperty('jar') == 'false'}"> 
+                <echo>Processing ${dependency.artifactId}</echo>  
+                <ant:copy file="${artifact.path}" tofile="${distribution.dir.updatesite}/plugins/${dependency.artifactId}_${distributionjarversion}.jar" overwrite="true"/>
                 <checksum file="${distribution.dir.updatesite}/plugins/${dependency.artifactId}_${distributionjarversion}.jar" algorithm="MD5" fileext=".md5"/>
                 <checksum file="${distribution.dir.updatesite}/plugins/${dependency.artifactId}_${distributionjarversion}.jar" algorithm="SHA" fileext=".sha"/>
-            </j:if>                  
-            
-            <ant:exec dir="${basedir}" executable="svn" output="${distribution.dir.updatesite}/site.xml">
-                <ant:arg line="cat http://svn.apache.org/repos/asf/geronimo/site/docs/devtools/site.xml"/>
-            </ant:exec>
-                
-        </j:forEach>  
+            </j:if>                
+        </j:forEach>
+        <echo>Getting site.xml</echo>  
+        <ant:exec dir="${basedir}" executable="svn" output="${distribution.dir.updatesite}/site.xml">
+            <ant:arg line="cat https://svn.apache.org/repos/asf/geronimo/site/docs/devtools/site.xml"/>
+        </ant:exec>  
         <!-- <attainGoal name="sitedistrozip"/> -->
     </goal>
     
