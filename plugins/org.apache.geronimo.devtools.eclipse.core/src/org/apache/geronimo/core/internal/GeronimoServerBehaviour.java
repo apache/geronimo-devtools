@@ -187,6 +187,8 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		if (deltaKind != NO_CHANGE && module.length == 1) {
 			invokeCommand(deltaKind, module[0]);
 		}
+		
+		setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
 
 		Trace.trace(Trace.INFO, "<< publishModule()");
 	}
