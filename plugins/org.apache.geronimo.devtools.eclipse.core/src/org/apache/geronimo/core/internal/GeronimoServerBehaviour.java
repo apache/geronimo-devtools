@@ -323,6 +323,12 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	/**
 	 * This timer task runs at scheduled intervals to sync the server state if
 	 * the users controls the server instance outside of the eclipse workbench.
+	 * 
+	 * WTP manages the server process, and if the process is dead, the state is updated.
+	 * So the only scenario that needs to be considered is if the server is restarted.
+	 * 
+	 * FIXME When the server is stop the GeronimoServerBehavior instance is destroyed so
+	 * the task never runs to handle this scenario.
 	 */
 	private class UpdateServerStateTask extends TimerTask {
 
