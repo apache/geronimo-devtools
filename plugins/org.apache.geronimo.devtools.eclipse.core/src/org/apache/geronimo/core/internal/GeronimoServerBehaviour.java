@@ -54,16 +54,17 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 	private static final int MAX_TRIES = 15;
 
+	private static final int TIMER_TASK_INTERVAL = 30;
+
 	private IProgressMonitor _monitor = null;
 
 	private Kernel kernel = null;
 
-	private Timer timer;
-
 	public GeronimoServerBehaviour() {
 		super();
-		timer = new Timer(true);
-		//timer.schedule(new UpdateServerStateTask(), 0, 60000);
+		/*Timer timer = new Timer(true);
+		timer.schedule(new UpdateServerStateTask(), 0,
+				TIMER_TASK_INTERVAL * 1000);*/
 	}
 
 	/*
@@ -71,7 +72,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	 * 
 	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#stop(boolean)
 	 */
-	public void stop(boolean force) {
+	public synchronized void stop(boolean force) {
 
 		if (getKernel() != null) {
 			// lets shutdown the kernel so shutdown messages are displayed in
@@ -92,10 +93,9 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 				+ getRMINamingPort() + "/JMXConnector";
 	}
 
-	private Kernel getKernel(int attempts) {
+	private Kernel getKernel() {
 
 		if (kernel == null) {
-
 			Map map = new HashMap();
 			map.put("jmx.remote.credentials", new String[] { getUserName(),
 					getPassword() });
@@ -103,24 +103,17 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 				String url = getJMXServiceURL();
 				Trace.trace(Trace.INFO, url);
 				JMXServiceURL address = new JMXServiceURL(url);
-				Thread.sleep(3000);
-				do {
-					try {
-						JMXConnector jmxConnector = JMXConnectorFactory
-								.connect(address, map);
-						MBeanServerConnection mbServerConnection = jmxConnector
-								.getMBeanServerConnection();
-						kernel = new KernelDelegate(mbServerConnection);
-						Trace.trace(Trace.INFO, "Connected to kernel.");
-						break;
-					} catch (Exception e) {
-						Trace.trace(Trace.WARNING, "Kernel connection failed. "
-								+ --attempts + " attempts left.");
-					}
-				} while (attempts > 0);
+				try {
+					JMXConnector jmxConnector = JMXConnectorFactory.connect(
+							address, map);
+					MBeanServerConnection mbServerConnection = jmxConnector
+							.getMBeanServerConnection();
+					kernel = new KernelDelegate(mbServerConnection);
+					Trace.trace(Trace.INFO, "Connected to kernel.");
+				} catch (Exception e) {
+					Trace.trace(Trace.WARNING, "Kernel connection failed.");
+				}
 			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
@@ -128,16 +121,12 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		return kernel;
 	}
 
-	private Kernel getKernel() {
-		return getKernel(1);
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.eclipse.jst.server.generic.core.internal.GenericServerBehaviour#setServerStarted()
 	 */
-	protected void setServerStarted() {
+	protected synchronized void setServerStarted() {
 		for (int tries = MAX_TRIES; tries > 0; tries--) {
 			try {
 				Thread.sleep(5000);
@@ -155,28 +144,29 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	}
 
 	private boolean isKernelAlive() {
-		return kernel != null && kernel.isRunning();
+		return getKernel() != null && kernel.isRunning();
 	}
 
 	private boolean isKernelFullyStarted() {
-		Set configLists = getKernel(MAX_TRIES).listGBeans(
-				new GBeanQuery(null, PersistentConfigurationList.class
-						.getName()));
-		if (!configLists.isEmpty()) {
-			ObjectName on = (ObjectName) configLists.toArray()[0];
-			try {
-				Boolean b = (Boolean) getKernel().getAttribute(on,
-						"kernelFullyStarted");
-				return b.booleanValue();
-			} catch (GBeanNotFoundException e) {
-				// ignore
-			} catch (NoSuchAttributeException e) {
-				// ignore
-			} catch (Exception e) {
-				e.printStackTrace();
+		if (isKernelAlive()) {
+			Set configLists = kernel.listGBeans(new GBeanQuery(null,
+					PersistentConfigurationList.class.getName()));
+			if (!configLists.isEmpty()) {
+				ObjectName on = (ObjectName) configLists.toArray()[0];
+				try {
+					Boolean b = (Boolean) kernel.getAttribute(on,
+							"kernelFullyStarted");
+					return b.booleanValue();
+				} catch (GBeanNotFoundException e) {
+					// ignore
+				} catch (NoSuchAttributeException e) {
+					// ignore
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				Trace.trace(Trace.INFO, "configLists is empty");
 			}
-		} else {
-			Trace.trace(Trace.INFO, "configLists is empty");
 		}
 		return false;
 	}
@@ -330,6 +320,10 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		}
 	}
 
+	/**
+	 * This timer task runs at scheduled intervals to sync the server state if
+	 * the users controls the server instance outside of the eclipse workbench.
+	 */
 	private class UpdateServerStateTask extends TimerTask {
 
 		/*
@@ -338,19 +332,17 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		 * @see java.lang.Runnable#run()
 		 */
 		public void run() {
-			int currentState = getServer().getServerState();
-			if (currentState == IServer.STATE_STARTED) {
-				if(!isKernelAlive()) {
-					setServerState(IServer.STATE_STOPPED);
-				}
-			} else if (currentState == IServer.STATE_STOPPED) {
-				if (isKernelAlive()) {
+			synchronized (GeronimoServerBehaviour.this) {
+				Trace.trace(Trace.INFO, "--> UpdateServerStateTask.run()");
+				int currentState = getServer().getServerState();
+				if (currentState == IServer.STATE_STOPPED && isKernelAlive()) {
 					if (isKernelFullyStarted()) {
 						setServerState(IServer.STATE_STARTED);
 					} else {
 						setServerState(IServer.STATE_STARTING);
 					}
 				}
+				Trace.trace(Trace.INFO, "<-- UpdateServerStateTask.run()");
 			}
 		}
 	}
