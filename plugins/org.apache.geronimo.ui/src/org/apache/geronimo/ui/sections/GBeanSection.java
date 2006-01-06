@@ -45,7 +45,7 @@ public class GBeanSection extends DynamicTableSection {
             FormToolkit toolkit, int style) {
         super(plan, parent, toolkit, style);
         this.gBeanERef = gBeanERef;
-        create();
+        createNew();
     }
 
     /*

@@ -69,7 +69,7 @@ public class SecuritySection extends DynamicTableSection {
             int style, EReference securityERef) {
         super(plan, parent, toolkit, style);
         this.securityERef = securityERef;
-        create();
+        createNew();
     }
 
     /**

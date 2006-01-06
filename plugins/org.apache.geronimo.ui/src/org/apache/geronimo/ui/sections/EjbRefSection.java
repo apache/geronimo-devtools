@@ -15,14 +15,17 @@
  */
 package org.apache.geronimo.ui.sections;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.geronimo.ui.internal.GeronimoUIPlugin;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.EjbRefWizard;
+import org.apache.geronimo.xml.ns.j2ee.web.provider.WebItemProviderAdapterFactory;
 import org.apache.geronimo.xml.ns.naming.NamingFactory;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
+import org.apache.geronimo.xml.ns.naming.provider.NamingItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EFactory;
@@ -39,13 +42,6 @@ public class EjbRefSection extends DynamicTableSection {
     EReference ejbRefERef;
 
     /**
-     * @param section
-     */
-    public EjbRefSection(Section section) {
-        super(section);
-    }
-
-    /**
      * @param plan
      * @param parent
      * @param toolkit
@@ -55,7 +51,7 @@ public class EjbRefSection extends DynamicTableSection {
             int style, EReference ejbRefERef) {
         super(plan, parent, toolkit, style);
         this.ejbRefERef = ejbRefERef;
-        create();
+        createNew();
     }
 
     /*
@@ -135,7 +131,10 @@ public class EjbRefSection extends DynamicTableSection {
     }
     
     public List getFactories() {
-    	return Collections.EMPTY_LIST;
+    	List factories = new ArrayList();
+		factories.add(new WebItemProviderAdapterFactory());
+		factories.add(new NamingItemProviderAdapterFactory());
+		return factories;
     }
 
 	public EClass getTableEntryObjectType() {

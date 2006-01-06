@@ -56,7 +56,7 @@ public class DependencySection extends DynamicTableSection {
             Composite parent, FormToolkit toolkit, int style) {
         super(plan, parent, toolkit, style);
         this.dependenciesERef = dependenciesERef;
-        create();
+        createNew();
     }
 
     /*

@@ -92,27 +92,19 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 		super(parent, toolkit, style, plan);
 	}
 
-	/**
-	 * @deprecated
-	 *
-	 */
-	public void create() {
-		if (isValid()) {
-			createClient();
-		}
-	}
-	
 	public void createNew() {
-		if(isValidNew()) {
+		if (isValidNew()) {
 			createClientNew();
 		} else {
-			Trace.trace(Trace.SEVERE, "Could not create client, DynamicTableSection.isValid() == false");
+			Trace.trace(Trace.SEVERE, "Could not create client, "
+					+ getClass().getName() + ".isValid() == false");
 		}
-		
+
 	}
-	
+
 	private boolean isValidNew() {
-		return getTableEntryObjectType() != null && getTableColumnNames() != null;
+		return getTableEntryObjectType() != null
+				&& getTableColumnNames() != null && !getFactories().isEmpty();
 	}
 
 	/**
@@ -125,7 +117,7 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 	}
 
 	public void createClientNew() {
-		
+
 		getSection().setText(getTitle());
 		getSection().setDescription(getDescription());
 		getSection().setLayoutData(getSectionLayoutData());
@@ -155,7 +147,7 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 		createAddButton(toolkit, buttonComp);
 		createRemoveButton(toolkit, buttonComp);
 		createEditButton(toolkit, buttonComp);
-		
+
 	}
 
 	abstract public List getFactories();

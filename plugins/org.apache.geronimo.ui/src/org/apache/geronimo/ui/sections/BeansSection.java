@@ -39,7 +39,7 @@ public class BeansSection extends DynamicTableSection {
     public BeansSection(EObject plan, Composite parent, FormToolkit toolkit,
             int style) {
         super(plan, parent, toolkit, style);
-        create();
+        createNew();
     }
 
     /* (non-Javadoc)
