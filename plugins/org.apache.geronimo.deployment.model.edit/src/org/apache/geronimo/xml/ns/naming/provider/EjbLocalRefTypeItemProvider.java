@@ -322,7 +322,21 @@ public class EjbLocalRefTypeItemProvider extends ItemProviderAdapter implements
 	}
 
 	public String getColumnText(Object object, int columnIndex) {
-		return null;
+		EjbLocalRefType o = (EjbLocalRefType) object;
+		switch (columnIndex) {
+		case 0:
+			if (o.eIsSet(NamingPackage.eINSTANCE
+					.getEjbLocalRefType_TargetName())) {
+				return o.getTargetName();
+			}
+			break;
+		case 1:
+			if (o.eIsSet(NamingPackage.eINSTANCE.getEjbLocalRefType_EjbLink())) {
+				return o.getEjbLink();
+			}
+			break;
+		}
+		return "";
 	}
 
 	/**
