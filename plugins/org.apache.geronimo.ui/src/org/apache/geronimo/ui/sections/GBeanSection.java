@@ -16,18 +16,14 @@
 package org.apache.geronimo.ui.sections;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.GBeanWizard;
-import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
 import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
 import org.apache.geronimo.xml.ns.deployment.provider.DeploymentItemProviderAdapterFactory;
 import org.apache.geronimo.xml.ns.j2ee.web.provider.WebItemProviderAdapterFactory;
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.jface.wizard.Wizard;

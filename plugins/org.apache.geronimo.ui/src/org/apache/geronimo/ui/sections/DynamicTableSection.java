@@ -15,17 +15,12 @@
  */
 package org.apache.geronimo.ui.sections;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.geronimo.ui.internal.GeronimoUIPlugin;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.internal.Trace;
 import org.apache.geronimo.ui.wizards.DynamicAddEditWizard;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -33,7 +28,6 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
@@ -45,7 +39,6 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -59,15 +52,9 @@ import org.eclipse.ui.forms.widgets.Section;
 
 public abstract class DynamicTableSection extends AbstractSectionPart {
 
-	private Image image;
-
-	protected Table table;
+	private Table table;
 
 	protected TableViewer tableViewer;
-
-	private ImageDescriptor defaultImgDesc = GeronimoUIPlugin
-			.imageDescriptorFromPlugin("org.apache.geronimo.ui",
-					"icons/obj16/geronimo.gif");
 
 	Button addButton;
 
@@ -114,19 +101,19 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 		getSection().setLayoutData(getSectionLayoutData());
 		Composite composite = createTableComposite(getSection());
 		getSection().setClient(composite);
-		createTable(composite);
+		table = createTable(composite);
 
 		ComposedAdapterFactory caf = new ComposedAdapterFactory(getFactories());
 
-		tableViewer = new TableViewer(table);
+		tableViewer = new TableViewer(getTable());
 		tableViewer.setContentProvider(new AdapterFactoryContentProvider(caf));
 		tableViewer.setLabelProvider(new AdapterFactoryLabelProvider(caf));
-		tableViewer.setInput(plan);
+		tableViewer.setInput(getInput());
 
 		tableViewer.addFilter(new ViewerFilter() {
 			public boolean select(Viewer viewer, Object parentElement,
 					Object element) {
-				return getTableEntryObjectType().isInstance(element);
+				return DynamicTableSection.this.filter(viewer, parentElement, element);
 			}
 		});
 
@@ -139,6 +126,14 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 		createRemoveButton(toolkit, buttonComp);
 		createEditButton(toolkit, buttonComp);
 
+	}
+
+	protected Object getInput() {
+		return getPlan();
+	}
+	
+	protected boolean filter(Viewer viewer, Object parentElement, Object element) {
+		return getTableEntryObjectType().isInstance(element);
 	}
 
 	abstract public List getFactories();
@@ -170,8 +165,8 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 		return layout;
 	}
 
-	protected void createTable(Composite composite) {
-		table = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION
+	protected Table createTable(Composite composite) {
+		Table table = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION
 				| SWT.V_SCROLL | SWT.SINGLE);
 		if (isHeaderVisible()) {
 			table.setHeaderVisible(true);
@@ -190,7 +185,8 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 			TableColumn tableColumn = new TableColumn(table, SWT.NONE);
 			tableColumn.setText(getTableColumnNames()[i]);
 		}
-
+		
+		return table;
 	}
 
 	protected Composite createButtonComposite(Composite parent) {
@@ -280,7 +276,7 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 	}
 
-	public TableViewer getTableViewer() {
+	private TableViewer getTableViewer() {
 		return tableViewer;
 	}
 
@@ -317,5 +313,9 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 	 * @return
 	 */
 	abstract public Wizard getWizard();
+
+	protected Table getTable() {
+		return table;
+	}
 
 }
