@@ -24,35 +24,35 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class ConnectorGeneralSection extends CommonGeneralSection {
 
-    ConnectorType plan;
+	ConnectorType plan;
 
-    public ConnectorGeneralSection(Composite parent, FormToolkit toolkit,
-            int style, EObject plan) {
-        super(parent, toolkit, style, plan);
-        this.plan = (ConnectorType) plan;
-        createClient();
-    }
-    
-    protected void createClient() {
-        super.createClient();
-    }
+	public ConnectorGeneralSection(Composite parent, FormToolkit toolkit,
+			int style, EObject plan) {
+		super(parent, toolkit, style, plan);
+		this.plan = (ConnectorType) plan;
+		createClient();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.CommonGeneralSection#getConfigIdEAttribute()
-     */
-    protected EAttribute getConfigIdEAttribute() {
-        return ConnectorPackage.eINSTANCE.getConnectorType_ConfigId();
-    }
+	protected void createClient() {
+		super.createClient();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.CommonGeneralSection#getParentIdEAttribute()
-     */
-    protected EAttribute getParentIdEAttribute() {
-        return ConnectorPackage.eINSTANCE.getConnectorType_ParentId();
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.CommonGeneralSection#getConfigIdEAttribute()
+	 */
+	protected EAttribute getConfigIdEAttribute() {
+		return ConnectorPackage.eINSTANCE.getConnectorType_ConfigId();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.CommonGeneralSection#getParentIdEAttribute()
+	 */
+	protected EAttribute getParentIdEAttribute() {
+		return ConnectorPackage.eINSTANCE.getConnectorType_ParentId();
+	}
 
 }

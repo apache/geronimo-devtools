@@ -30,76 +30,86 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-public class GBeanSection extends DynamicTableSection {
+public class GBeanSection extends AbstractTableSection {
 
-    private EReference gBeanERef;
+	private EReference gBeanERef;
 
-    /**
-     * @param plan
-     * @param parent
-     * @param toolkit
-     * @param style
-     */
-    public GBeanSection(EObject plan, EReference gBeanERef, Composite parent,
-            FormToolkit toolkit, int style) {
-        super(plan, parent, toolkit, style);
-        this.gBeanERef = gBeanERef;
-        create();
-    }
+	/**
+	 * @param plan
+	 * @param parent
+	 * @param toolkit
+	 * @param style
+	 */
+	public GBeanSection(EObject plan, EReference gBeanERef, Composite parent,
+			FormToolkit toolkit, int style) {
+		super(plan, parent, toolkit, style);
+		this.gBeanERef = gBeanERef;
+		create();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTitle()
-     */
-    public String getTitle() {
-        return Messages.editorSectionGBeanTitle;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
+	 */
+	public String getTitle() {
+		return Messages.editorSectionGBeanTitle;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getDescription()
-     */
-    public String getDescription() {
-        return Messages.editorSectionGBeanDescription;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
+	 */
+	public String getDescription() {
+		return Messages.editorSectionGBeanDescription;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEReference()
-     */
-    public EReference getEReference() {
-        return gBeanERef;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
+	 */
+	public EReference getEReference() {
+		return gBeanERef;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnNames()
-     */
-    public String[] getTableColumnNames() {
-        return new String[] { Messages.name, Messages.GbeanName,
-                Messages.className };
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
+	 */
+	public String[] getTableColumnNames() {
+		return new String[] { Messages.name, Messages.GbeanName,
+				Messages.className };
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getWizard()
-     */
-    public Wizard getWizard() {
-        return new GBeanWizard(this);
-    }
-    
-    public List getFactories() {
-    	List factories = new ArrayList();
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getWizard()
+	 */
+	public Wizard getWizard() {
+		return new GBeanWizard(this);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getFactories()
+	 */
+	public List getFactories() {
+		List factories = new ArrayList();
 		factories.add(new WebItemProviderAdapterFactory());
 		factories.add(new DeploymentItemProviderAdapterFactory());
 		return factories;
-    }
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
+	 */
 	public EClass getTableEntryObjectType() {
 		return DeploymentPackage.eINSTANCE.getGbeanType();
 	}

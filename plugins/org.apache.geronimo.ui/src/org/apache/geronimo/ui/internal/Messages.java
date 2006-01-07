@@ -117,9 +117,9 @@ public class Messages extends NLS {
 	public static String editorServiceRefDescription;
 
 	public static String editorServiceRefTitle;
-	
+
 	public static String editorServiceRefName;
-	
+
 	//
 
 	public static String editorResourceEnvRefDescription;
@@ -163,9 +163,9 @@ public class Messages extends NLS {
 	public static String wizardPageTitle_ResRef;
 
 	public static String wizardPageDescription_ResRef;
-	
+
 	//
-	
+
 	public static String wizardNewTitle_GBeanRef;
 
 	public static String wizardEditTitle_GBeanRef;
@@ -175,7 +175,7 @@ public class Messages extends NLS {
 	public static String wizardPageDescription_GBeanRef;
 
 	//
-	
+
 	public static String wizardNewTitle_ServiceRef;
 
 	public static String wizardEditTitle_ServiceRef;
@@ -183,7 +183,7 @@ public class Messages extends NLS {
 	public static String wizardPageTitle_ServiceRef;
 
 	public static String wizardPageDescription_ServiceRef;
-	
+
 	//
 
 	public static String wizardNewTitle_ResEnvRef;
@@ -271,21 +271,21 @@ public class Messages extends NLS {
 	public static String editorSectionSecurityTitle;
 
 	public static String editorSectionSecurityDescription;
-	
+
 	public static String editorSectionPortsTitle;
 
 	public static String editorSectionPortsDescription;
-	
+
 	public static String editorSectionLogLevelTitle;
 
 	public static String editorSectionLogLevelDescription;
-	
+
 	public static String info;
-	
+
 	public static String debug;
-	
+
 	public static String httpPort;
-	
+
 	public static String rmiPort;
 
 	public static String username;

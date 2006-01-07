@@ -28,38 +28,37 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 public class BannerPart extends SectionPart {
-	
+
 	FormToolkit toolkit;
-	
+
 	ImageDescriptor defaultImgDesc = GeronimoUIPlugin
-	.imageDescriptorFromPlugin("org.apache.geronimo.ui",
-			"icons/Geronimo_Welcome4.gif");
+			.imageDescriptorFromPlugin("org.apache.geronimo.ui",
+					"icons/Geronimo_Welcome4.gif");
 
 	public BannerPart(Composite parent, FormToolkit toolkit, int style) {
 		super(parent, toolkit, style);
 		this.toolkit = toolkit;
 		create();
 	}
-	
+
 	private void create() {
 		Section section = getSection();
 		GridData gd = new GridData();
 		gd.horizontalSpan = 2;
-        section.setLayoutData(gd);
-        section.setText("");
+		section.setLayoutData(gd);
+		section.setText("");
 
-        Composite composite = toolkit.createComposite(section);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 1;
-        layout.marginHeight = 1;
-        layout.marginWidth = 1;
-        layout.verticalSpacing = 5;
-        layout.horizontalSpacing = 10;
-        composite.setLayout(layout);
-        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        section.setClient(composite);             
-		
-	
+		Composite composite = toolkit.createComposite(section);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 1;
+		layout.marginHeight = 1;
+		layout.marginWidth = 1;
+		layout.verticalSpacing = 5;
+		layout.horizontalSpacing = 10;
+		composite.setLayout(layout);
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		section.setClient(composite);
+
 		Label label = toolkit.createLabel(composite, "");
 		label.setForeground(toolkit.getColors().getColor(FormColors.TITLE));
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));

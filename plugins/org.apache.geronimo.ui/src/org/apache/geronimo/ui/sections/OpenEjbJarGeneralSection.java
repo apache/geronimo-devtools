@@ -24,35 +24,35 @@ import org.openejb.xml.ns.openejb.jar.OpenejbJarType;
 
 public class OpenEjbJarGeneralSection extends CommonGeneralSection {
 
-    OpenejbJarType plan;
+	OpenejbJarType plan;
 
-    public OpenEjbJarGeneralSection(Composite parent, FormToolkit toolkit,
-            int style, EObject plan) {
-        super(parent, toolkit, style, plan);
-        this.plan = (OpenejbJarType) plan;
-        createClient();
-    }
-    
-    protected void createClient() {
-        super.createClient();
-    }
+	public OpenEjbJarGeneralSection(Composite parent, FormToolkit toolkit,
+			int style, EObject plan) {
+		super(parent, toolkit, style, plan);
+		this.plan = (OpenejbJarType) plan;
+		createClient();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.CommonGeneralSection#getConfigIdEAttribute()
-     */
-    protected EAttribute getConfigIdEAttribute() {
-        return JarPackage.eINSTANCE.getOpenejbJarType_ConfigId();
-    }
+	protected void createClient() {
+		super.createClient();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.CommonGeneralSection#getParentIdEAttribute()
-     */
-    protected EAttribute getParentIdEAttribute() {
-        return JarPackage.eINSTANCE.getOpenejbJarType_ParentId();
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.CommonGeneralSection#getConfigIdEAttribute()
+	 */
+	protected EAttribute getConfigIdEAttribute() {
+		return JarPackage.eINSTANCE.getOpenejbJarType_ConfigId();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.CommonGeneralSection#getParentIdEAttribute()
+	 */
+	protected EAttribute getParentIdEAttribute() {
+		return JarPackage.eINSTANCE.getOpenejbJarType_ParentId();
+	}
 
 }

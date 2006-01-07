@@ -32,98 +32,98 @@ import org.eclipse.ui.forms.widgets.Section;
 
 public abstract class CommonGeneralSection extends AbstractSectionPart {
 
-    protected Text configId;
+	protected Text configId;
 
-    protected Text parentId;
-    
-    public CommonGeneralSection(Composite parent, FormToolkit toolkit, int style, EObject plan) {
-        super(parent, toolkit, style, plan);
-    }
+	protected Text parentId;
 
-    protected void createClient() {
-        
-        Section section = getSection();
+	public CommonGeneralSection(Composite parent, FormToolkit toolkit,
+			int style, EObject plan) {
+		super(parent, toolkit, style, plan);
+	}
 
-        section.setText(Messages.editorSectionGeneralTitle);
-        section.setDescription(Messages.editorSectionGeneralDescription);
-        section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+	protected void createClient() {
 
-        Composite composite = toolkit.createComposite(section);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        layout.marginHeight = 5;
-        layout.marginWidth = 10;
-        layout.verticalSpacing = 5;
-        layout.horizontalSpacing = 15;
-        composite.setLayout(layout);
-        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        section.setClient(composite);
+		Section section = getSection();
 
-        // ------- Label and text field for the config Id -------
-        createLabel(composite, Messages.editorConfigId, toolkit);
+		section.setText(Messages.editorSectionGeneralTitle);
+		section.setDescription(Messages.editorSectionGeneralDescription);
+		section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
-        configId = toolkit.createText(composite, getConfigID(), SWT.BORDER);
-        configId.setLayoutData(createTextFieldGridData());
-        configId.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent e) {
-                setConfigID(configId.getText());
-                markDirty();
-            }
-        });
+		Composite composite = toolkit.createComposite(section);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 2;
+		layout.marginHeight = 5;
+		layout.marginWidth = 10;
+		layout.verticalSpacing = 5;
+		layout.horizontalSpacing = 15;
+		composite.setLayout(layout);
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		section.setClient(composite);
 
-        // ------- Label and text field for the parent Id -------
-        createLabel(composite, Messages.editorParentId, toolkit);
+		// ------- Label and text field for the config Id -------
+		createLabel(composite, Messages.editorConfigId, toolkit);
 
-        parentId = toolkit.createText(composite, getParentID(), SWT.BORDER);
-        parentId
-                .setLayoutData(createTextFieldGridData());
-        parentId.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent e) {
-                setParentID(parentId.getText());
-                markDirty();
-            }
-        });
-    }
+		configId = toolkit.createText(composite, getConfigID(), SWT.BORDER);
+		configId.setLayoutData(createTextFieldGridData());
+		configId.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				setConfigID(configId.getText());
+				markDirty();
+			}
+		});
 
-    protected Label createLabel(Composite parent, String text,
-            FormToolkit toolkit) {
-        Label label = toolkit.createLabel(parent, text);
-        label.setForeground(toolkit.getColors().getColor(FormColors.TITLE));
-        label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-        return label;
-    }
-    
-    protected GridData createTextFieldGridData() {
-        GridData data = new GridData(SWT.FILL, SWT.CENTER, true, false);
-        data.widthHint = 150;
-        return data;
-    }
+		// ------- Label and text field for the parent Id -------
+		createLabel(composite, Messages.editorParentId, toolkit);
 
-    protected String getConfigID() {
-        return getID(getConfigIdEAttribute());
-    }
+		parentId = toolkit.createText(composite, getParentID(), SWT.BORDER);
+		parentId.setLayoutData(createTextFieldGridData());
+		parentId.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				setParentID(parentId.getText());
+				markDirty();
+			}
+		});
+	}
 
-    protected String getParentID() {
-        return getID(getParentIdEAttribute());
-    }
+	protected Label createLabel(Composite parent, String text,
+			FormToolkit toolkit) {
+		Label label = toolkit.createLabel(parent, text);
+		label.setForeground(toolkit.getColors().getColor(FormColors.TITLE));
+		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+		return label;
+	}
 
-    protected void setConfigID(String id) {
-        plan.eSet(getConfigIdEAttribute(), id);
-    }
+	protected GridData createTextFieldGridData() {
+		GridData data = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		data.widthHint = 150;
+		return data;
+	}
 
-    protected void setParentID(String id) {
-        plan.eSet(getParentIdEAttribute(), id);
-    }
-    
-    private String getID(EAttribute configIdAttribute) {
-        if (configIdAttribute != null && plan.eIsSet(configIdAttribute)) {
-            return plan.eGet(configIdAttribute).toString();
-        }
-        return "";
-    }
+	protected String getConfigID() {
+		return getID(getConfigIdEAttribute());
+	}
 
-    protected abstract EAttribute getConfigIdEAttribute();
+	protected String getParentID() {
+		return getID(getParentIdEAttribute());
+	}
 
-    protected abstract EAttribute getParentIdEAttribute();
-    
+	protected void setConfigID(String id) {
+		getPlan().eSet(getConfigIdEAttribute(), id);
+	}
+
+	protected void setParentID(String id) {
+		getPlan().eSet(getParentIdEAttribute(), id);
+	}
+
+	private String getID(EAttribute configIdAttribute) {
+		if (configIdAttribute != null && getPlan().eIsSet(configIdAttribute)) {
+			return getPlan().eGet(configIdAttribute).toString();
+		}
+		return "";
+	}
+
+	protected abstract EAttribute getConfigIdEAttribute();
+
+	protected abstract EAttribute getParentIdEAttribute();
+
 }

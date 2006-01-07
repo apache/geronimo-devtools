@@ -24,42 +24,42 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * The main plugin class to be used in the desktop.
  */
 public class GeronimoUIPlugin extends AbstractUIPlugin {
-    protected static final String PLUGIN_ID = "org.apache.geronimo.ui";
+	protected static final String PLUGIN_ID = "org.apache.geronimo.ui";
 
-    private static final String ICONS_DIRECTORY = "icons/";
+	private static final String ICONS_DIRECTORY = "icons/";
 
-    private static String iconLocation;
+	private static String iconLocation;
 
-    private static GeronimoUIPlugin singleton;
+	private static GeronimoUIPlugin singleton;
 
-    /**
-     * The constructor.
-     */
-    public GeronimoUIPlugin() {
-        super();
-        singleton = this;
-    }
+	/**
+	 * The constructor.
+	 */
+	public GeronimoUIPlugin() {
+		super();
+		singleton = this;
+	}
 
-    /**
-     * Returns the singleton instance of this plugin.
-     * 
-     * @return org.apache.geronimo.ui.internal.GeronimoUIPlugin
-     */
-    public static GeronimoUIPlugin getInstance() {
-        return singleton;
-    }
+	/**
+	 * Returns the singleton instance of this plugin.
+	 * 
+	 * @return org.apache.geronimo.ui.internal.GeronimoUIPlugin
+	 */
+	public static GeronimoUIPlugin getInstance() {
+		return singleton;
+	}
 
-    public static String getIconLocation() {
-        if (iconLocation == null) {
-            try {
-                iconLocation = Platform.resolve(
-                        GeronimoUIPlugin.getInstance().getBundle()
-                                .getEntry("/")).getPath()
-                        + ICONS_DIRECTORY;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return iconLocation;
-    }
+	public static String getIconLocation() {
+		if (iconLocation == null) {
+			try {
+				iconLocation = Platform.resolve(
+						GeronimoUIPlugin.getInstance().getBundle()
+								.getEntry("/")).getPath()
+						+ ICONS_DIRECTORY;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return iconLocation;
+	}
 }

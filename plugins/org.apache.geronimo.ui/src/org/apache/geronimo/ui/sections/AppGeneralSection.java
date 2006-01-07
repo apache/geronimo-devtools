@@ -24,35 +24,40 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class AppGeneralSection extends CommonGeneralSection {
 
-    ApplicationType plan;
+	ApplicationType plan;
 
-    public AppGeneralSection(Composite parent, FormToolkit toolkit, int style,
-            EObject plan) {
-        super(parent, toolkit, style, plan);
-        this.plan = (ApplicationType) plan;
-        createClient();
-    }
-    
-    protected void createClient() {
-        super.createClient();
-    }
+	public AppGeneralSection(Composite parent, FormToolkit toolkit, int style,
+			EObject plan) {
+		super(parent, toolkit, style, plan);
+		this.plan = (ApplicationType) plan;
+		createClient();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.CommonGeneralSection#getConfigIdEAttribute()
-     */
-    protected EAttribute getConfigIdEAttribute() {
-        return ApplicationPackage.eINSTANCE.getApplicationType_ConfigId();
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.CommonGeneralSection#createClient()
+	 */
+	protected void createClient() {
+		super.createClient();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.CommonGeneralSection#getParentIdEAttribute()
-     */
-    protected EAttribute getParentIdEAttribute() {
-        return ApplicationPackage.eINSTANCE.getApplicationType_ParentId();
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.CommonGeneralSection#getConfigIdEAttribute()
+	 */
+	protected EAttribute getConfigIdEAttribute() {
+		return ApplicationPackage.eINSTANCE.getApplicationType_ConfigId();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.CommonGeneralSection#getParentIdEAttribute()
+	 */
+	protected EAttribute getParentIdEAttribute() {
+		return ApplicationPackage.eINSTANCE.getApplicationType_ParentId();
+	}
 
 }

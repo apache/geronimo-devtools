@@ -29,38 +29,46 @@ import org.eclipse.ui.forms.editor.FormEditor;
 
 public class NamingFormPage extends AbstractGeronimoFormPage {
 
-    public EReference resRef;
+	public EReference resRef;
 
-    public EReference resEnvRef;
+	public EReference resEnvRef;
 
-    public EReference ejbRef;
+	public EReference ejbRef;
 
-    public EReference ejbLocalRef;
-    
-    public EReference gbeanRef;
-    
-    public EReference serviceRef;
+	public EReference ejbLocalRef;
 
-    public NamingFormPage(FormEditor editor, String id, String title) {
-        super(editor, id, title);
-    }
+	public EReference gbeanRef;
 
-    public NamingFormPage(String id, String title) {
-        super(id, title);
-    }
+	public EReference serviceRef;
 
+	public NamingFormPage(FormEditor editor, String id, String title) {
+		super(editor, id, title);
+	}
 
-    /* (non-Javadoc)
-     * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
-     */
-    protected void fillBody(IManagedForm managedForm) {        
-    	ComposedAdapterFactory factory = ((AbstractGeronimoDeploymentPlanEditor) getEditor()).getFactory();
-        managedForm.addPart(new ResourceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), resRef, factory));
-        managedForm.addPart(new ResourceEnvRefSection(getDeploymentPlan(), body, toolkit, getStyle(), resEnvRef));
-        managedForm.addPart(new EjbRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbRef));
-        managedForm.addPart(new EjbLocalRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbLocalRef));
-        managedForm.addPart(new GBeanRefSection(getDeploymentPlan(), body, toolkit, getStyle(), gbeanRef));
-        managedForm.addPart(new ServiceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), serviceRef));
-    }
+	public NamingFormPage(String id, String title) {
+		super(id, title);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
+	 */
+	protected void fillBody(IManagedForm managedForm) {
+		ComposedAdapterFactory factory = ((AbstractGeronimoDeploymentPlanEditor) getEditor())
+				.getFactory();
+		managedForm.addPart(new ResourceRefSection(getDeploymentPlan(), body,
+				toolkit, getStyle(), resRef, factory));
+		managedForm.addPart(new ResourceEnvRefSection(getDeploymentPlan(),
+				body, toolkit, getStyle(), resEnvRef));
+		managedForm.addPart(new EjbRefSection(getDeploymentPlan(), body,
+				toolkit, getStyle(), ejbRef));
+		managedForm.addPart(new EjbLocalRefSection(getDeploymentPlan(), body,
+				toolkit, getStyle(), ejbLocalRef));
+		managedForm.addPart(new GBeanRefSection(getDeploymentPlan(), body,
+				toolkit, getStyle(), gbeanRef));
+		managedForm.addPart(new ServiceRefSection(getDeploymentPlan(), body,
+				toolkit, getStyle(), serviceRef));
+	}
 
 }

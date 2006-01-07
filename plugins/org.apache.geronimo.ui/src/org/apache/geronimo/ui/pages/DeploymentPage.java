@@ -24,41 +24,41 @@ import org.eclipse.ui.forms.editor.FormEditor;
 
 public class DeploymentPage extends AbstractGeronimoFormPage {
 
-    public EReference dependencies;
+	public EReference dependencies;
 
-    public EReference imports;
+	public EReference imports;
 
-    public EReference gbeans;
+	public EReference gbeans;
 
-    /**
-     * @param editor
-     * @param id
-     * @param title
-     */
-    public DeploymentPage(FormEditor editor, String id, String title) {
-        super(editor, id, title);
-    }
+	/**
+	 * @param editor
+	 * @param id
+	 * @param title
+	 */
+	public DeploymentPage(FormEditor editor, String id, String title) {
+		super(editor, id, title);
+	}
 
-    /**
-     * @param id
-     * @param title
-     */
-    public DeploymentPage(String id, String title) {
-        super(id, title);
-    }
+	/**
+	 * @param id
+	 * @param title
+	 */
+	public DeploymentPage(String id, String title) {
+		super(id, title);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
-     */
-    protected void fillBody(IManagedForm managedForm) {
-        managedForm.addPart(new DependencySection(getDeploymentPlan(),
-                dependencies, body, toolkit, getStyle()));
-        managedForm.addPart(new ImportSection(getDeploymentPlan(), imports,
-                body, toolkit, getStyle()));
-        managedForm.addPart(new GBeanSection(getDeploymentPlan(), gbeans, body,
-                toolkit, getStyle()));
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
+	 */
+	protected void fillBody(IManagedForm managedForm) {
+		managedForm.addPart(new DependencySection(getDeploymentPlan(),
+				dependencies, body, toolkit, getStyle()));
+		managedForm.addPart(new ImportSection(getDeploymentPlan(), imports,
+				body, toolkit, getStyle()));
+		managedForm.addPart(new GBeanSection(getDeploymentPlan(), gbeans, body,
+				toolkit, getStyle()));
+	}
 
 }

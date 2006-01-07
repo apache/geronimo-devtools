@@ -53,7 +53,7 @@ import org.openejb.xml.ns.pkgen.provider.PkgenItemProviderAdapterFactory;
 public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 
 	private EObject deploymentPlan;
-	
+
 	private ComposedAdapterFactory factory;
 
 	/**
@@ -94,7 +94,8 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 						if (deploymentPlan.eResource() != null) {
 							deploymentPlan.eResource().unload();
 						}
-						//TODO not sure if this is the best way to refresh model
+						// TODO not sure if this is the best way to refresh
+						// model
 						IFileEditorInput fei = (IFileEditorInput) input;
 						deploymentPlan = loadDeploymentPlan(fei.getFile());
 					}
@@ -138,8 +139,8 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 
 	protected void addSourcePage() throws PartInitException {
 		TextEditor source = new TextEditor();
-        int index = addPage(source, getEditorInput());
-        setPageText(index, Messages.editorTabSource);
+		int index = addPage(source, getEditorInput());
+		setPageText(index, Messages.editorTabSource);
 	}
 
 	/*
@@ -188,8 +189,10 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 			IFileEditorInput fei = (IFileEditorInput) input;
 			deploymentPlan = loadDeploymentPlan(fei.getFile());
 			if (deploymentPlan == null) {
-				MessageDialog.openInformation(Display.getDefault()
-						.getActiveShell(), "Error Opening Editor", "Could not open the deployment plan editor.  Opening the default text editor.");
+				MessageDialog
+						.openInformation(Display.getDefault().getActiveShell(),
+								"Error Opening Editor",
+								"Could not open the deployment plan editor.  Opening the default text editor.");
 			}
 		}
 	}

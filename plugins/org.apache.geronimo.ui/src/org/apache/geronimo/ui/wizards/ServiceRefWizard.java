@@ -16,52 +16,60 @@
 package org.apache.geronimo.ui.wizards;
 
 import org.apache.geronimo.ui.internal.Messages;
-import org.apache.geronimo.ui.sections.DynamicTableSection;
+import org.apache.geronimo.ui.sections.AbstractTableSection;
 import org.apache.geronimo.xml.ns.naming.NamingFactory;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EFactory;
 
-public class ServiceRefWizard extends DynamicAddEditWizard {
+public class ServiceRefWizard extends AbstractTableWizard {
 
 	/**
 	 * @param section
 	 */
-	public ServiceRefWizard(DynamicTableSection section) {
+	public ServiceRefWizard(AbstractTableSection section) {
 		super(section);
 	}
 
 	public EFactory getEFactory() {
 		return NamingFactory.eINSTANCE;
 	}
-	
+
 	public EAttribute[] getTableColumnEAttributes() {
-		  return new EAttribute[] {
-	                NamingPackage.eINSTANCE.getServiceRefType_ServiceRefName()};
+		return new EAttribute[] { NamingPackage.eINSTANCE
+				.getServiceRefType_ServiceRefName() };
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getAddWizardWindowTitle()
 	 */
 	public String getAddWizardWindowTitle() {
 		return Messages.wizardNewTitle_ServiceRef;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEditWizardWindowTitle()
 	 */
 	public String getEditWizardWindowTitle() {
 		return Messages.wizardEditTitle_ServiceRef;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
 	 */
 	public String getWizardFirstPageTitle() {
 		return Messages.wizardPageTitle_ServiceRef;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
 	 */
 	public String getWizardFirstPageDescription() {

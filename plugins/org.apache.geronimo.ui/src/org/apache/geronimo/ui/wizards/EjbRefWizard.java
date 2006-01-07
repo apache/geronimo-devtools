@@ -16,62 +16,62 @@
 package org.apache.geronimo.ui.wizards;
 
 import org.apache.geronimo.ui.internal.Messages;
-import org.apache.geronimo.ui.sections.DynamicTableSection;
+import org.apache.geronimo.ui.sections.AbstractTableSection;
 import org.apache.geronimo.xml.ns.naming.NamingFactory;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EFactory;
 
-public class EjbRefWizard extends DynamicAddEditWizard {
+public class EjbRefWizard extends AbstractTableWizard {
 
-    public EjbRefWizard(DynamicTableSection section) {
-        super(section);
-    }
-    
-    public EFactory getEFactory() {
-        return NamingFactory.eINSTANCE;
-    }
-    
-    public EAttribute[] getTableColumnEAttributes() {
-        return new EAttribute[] {
-                NamingPackage.eINSTANCE.getEjbRefType_TargetName(),
-                NamingPackage.eINSTANCE.getEjbRefType_EjbLink() };
-    }
+	public EjbRefWizard(AbstractTableSection section) {
+		super(section);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getAddWizardWindowTitle()
-     */
-    public String getAddWizardWindowTitle() {
-        return Messages.wizardNewTitle_EjbRef;
-    }
+	public EFactory getEFactory() {
+		return NamingFactory.eINSTANCE;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEditWizardWindowTitle()
-     */
-    public String getEditWizardWindowTitle() {
-        return Messages.wizardEditTitle_EjbRef;
-    }
+	public EAttribute[] getTableColumnEAttributes() {
+		return new EAttribute[] {
+				NamingPackage.eINSTANCE.getEjbRefType_TargetName(),
+				NamingPackage.eINSTANCE.getEjbRefType_EjbLink() };
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
-     */
-    public String getWizardFirstPageTitle() {
-        return Messages.wizardPageTitle_EjbRef;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getAddWizardWindowTitle()
+	 */
+	public String getAddWizardWindowTitle() {
+		return Messages.wizardNewTitle_EjbRef;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
-     */
-    public String getWizardFirstPageDescription() {
-        return Messages.wizardPageDescription_EjbRef;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEditWizardWindowTitle()
+	 */
+	public String getEditWizardWindowTitle() {
+		return Messages.wizardEditTitle_EjbRef;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
+	 */
+	public String getWizardFirstPageTitle() {
+		return Messages.wizardPageTitle_EjbRef;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
+	 */
+	public String getWizardFirstPageDescription() {
+		return Messages.wizardPageDescription_EjbRef;
+	}
 
 }

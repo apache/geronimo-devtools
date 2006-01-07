@@ -38,123 +38,124 @@ import org.eclipse.ui.forms.widgets.Section;
 
 public class SecurityRootSection extends AbstractSectionPart {
 
-    EReference secERef;
+	EReference secERef;
 
-    Text defaultRole;
+	Text defaultRole;
 
-    Button doas;
+	Button doas;
 
-    Button useCtxHdl;
+	Button useCtxHdl;
 
-    /**
-     * @param section
-     */
-    public SecurityRootSection(Section section) {
-        super(section);
-    }
+	/**
+	 * @param section
+	 */
+	public SecurityRootSection(Section section) {
+		super(section);
+	}
 
-    /**
-     * @param parent
-     * @param toolkit
-     * @param style
-     */
-    public SecurityRootSection(Composite parent, FormToolkit toolkit,
-            int style, EObject plan, EReference secERef) {
-        super(parent, toolkit, style, plan);
-        this.secERef = secERef;
-        createClient();
-    }
+	/**
+	 * @param parent
+	 * @param toolkit
+	 * @param style
+	 */
+	public SecurityRootSection(Composite parent, FormToolkit toolkit,
+			int style, EObject plan, EReference secERef) {
+		super(parent, toolkit, style, plan);
+		this.secERef = secERef;
+		createClient();
+	}
 
-    protected void createClient() {
-        Section section = getSection();
+	protected void createClient() {
+		Section section = getSection();
 
-        section.setText(Messages.editorSectionGeneralTitle);
-        section.setDescription(Messages.editorSectionGeneralDescription);
-        section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		section.setText(Messages.editorSectionGeneralTitle);
+		section.setDescription(Messages.editorSectionGeneralDescription);
+		section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
-        Composite composite = toolkit.createComposite(section);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        layout.marginHeight = 5;
-        layout.marginWidth = 10;
-        layout.verticalSpacing = 5;
-        layout.horizontalSpacing = 15;
-        composite.setLayout(layout);
-        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
-        section.setClient(composite);
+		Composite composite = toolkit.createComposite(section);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 2;
+		layout.marginHeight = 5;
+		layout.marginWidth = 10;
+		layout.verticalSpacing = 5;
+		layout.horizontalSpacing = 15;
+		composite.setLayout(layout);
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		section.setClient(composite);
 
-        createLabel(composite, Messages.defaultRole, toolkit);
-        defaultRole = toolkit.createText(composite, getDefaultRole(),
-                SWT.BORDER);
-        GridData gd = new GridData();
-        gd.widthHint = 150;
-        defaultRole.setLayoutData(gd);
-        defaultRole.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent e) {
-                getSecurityType().setDefaultRole(defaultRole.getText());
-                markDirty();
-            }
-        });
+		createLabel(composite, Messages.defaultRole, toolkit);
+		defaultRole = toolkit.createText(composite, getDefaultRole(),
+				SWT.BORDER);
+		GridData gd = new GridData();
+		gd.widthHint = 150;
+		defaultRole.setLayoutData(gd);
+		defaultRole.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				getSecurityType().setDefaultRole(defaultRole.getText());
+				markDirty();
+			}
+		});
 
-        doas = toolkit.createButton(composite, Messages.doasCurrentCaller,
-                SWT.CHECK);
-        doas.setLayoutData(createGridData());
-        doas.addSelectionListener(new SelectionListener() {
-            public void widgetDefaultSelected(SelectionEvent e) {
-            }
+		doas = toolkit.createButton(composite, Messages.doasCurrentCaller,
+				SWT.CHECK);
+		doas.setLayoutData(createGridData());
+		doas.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
 
-            public void widgetSelected(SelectionEvent e) {
-                getSecurityType().setDoasCurrentCaller(doas.getSelection());
-                markDirty();
-            }
-        });
+			public void widgetSelected(SelectionEvent e) {
+				getSecurityType().setDoasCurrentCaller(doas.getSelection());
+				markDirty();
+			}
+		});
 
-        useCtxHdl = toolkit.createButton(composite, Messages.useContextHandler,
-                SWT.CHECK);
-        useCtxHdl.setLayoutData(createGridData());
-        useCtxHdl.addSelectionListener(new SelectionListener() {
-            public void widgetDefaultSelected(SelectionEvent e) {
-            }
+		useCtxHdl = toolkit.createButton(composite, Messages.useContextHandler,
+				SWT.CHECK);
+		useCtxHdl.setLayoutData(createGridData());
+		useCtxHdl.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
 
-            public void widgetSelected(SelectionEvent e) {
-                getSecurityType().setUseContextHandler(useCtxHdl.getSelection());
-                markDirty();
-            }
-        });
+			public void widgetSelected(SelectionEvent e) {
+				getSecurityType()
+						.setUseContextHandler(useCtxHdl.getSelection());
+				markDirty();
+			}
+		});
 
-    }
+	}
 
-    protected GridData createGridData() {
-        GridData gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
-        gd.horizontalSpan = 2;
-        return gd;
-    }
+	protected GridData createGridData() {
+		GridData gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		gd.horizontalSpan = 2;
+		return gd;
+	}
 
-    protected Label createLabel(Composite parent, String text,
-            FormToolkit toolkit) {
-        Label label = toolkit.createLabel(parent, text);
-        label.setForeground(toolkit.getColors().getColor(FormColors.TITLE));
-        label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-        return label;
-    }
+	protected Label createLabel(Composite parent, String text,
+			FormToolkit toolkit) {
+		Label label = toolkit.createLabel(parent, text);
+		label.setForeground(toolkit.getColors().getColor(FormColors.TITLE));
+		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+		return label;
+	}
 
-    private String getDefaultRole() {
-        SecurityType secType = (SecurityType) plan.eGet(secERef);
-        if (secType != null
-                && secType.eIsSet(SecurityPackage.eINSTANCE
-                        .getSecurityType_DefaultRole())) {
-            return secType.getDefaultRole();
-        }
-        return "";
-    }
+	private String getDefaultRole() {
+		SecurityType secType = (SecurityType) getPlan().eGet(secERef);
+		if (secType != null
+				&& secType.eIsSet(SecurityPackage.eINSTANCE
+						.getSecurityType_DefaultRole())) {
+			return secType.getDefaultRole();
+		}
+		return "";
+	}
 
-    private SecurityType getSecurityType() {
-        SecurityType secType = (SecurityType) plan.eGet(secERef);
-        if (secType == null) {
-            secType = SecurityFactory.eINSTANCE.createSecurityType();
-            plan.eSet(secERef, secType);
-        }
-        return secType;
-    }
+	private SecurityType getSecurityType() {
+		SecurityType secType = (SecurityType) getPlan().eGet(secERef);
+		if (secType == null) {
+			secType = SecurityFactory.eINSTANCE.createSecurityType();
+			getPlan().eSet(secERef, secType);
+		}
+		return secType;
+	}
 
 }

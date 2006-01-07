@@ -32,86 +32,91 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-public class EjbRefSection extends DynamicTableSection {
-    
-    EReference ejbRefERef;
+public class EjbRefSection extends AbstractTableSection {
 
-    /**
-     * @param plan
-     * @param parent
-     * @param toolkit
-     * @param style
-     */
-    public EjbRefSection(EObject plan, Composite parent, FormToolkit toolkit,
-            int style, EReference ejbRefERef) {
-        super(plan, parent, toolkit, style);
-        this.ejbRefERef = ejbRefERef;
-        create();
-    }
+	EReference ejbRefERef;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTitle()
-     */
-    public String getTitle() {
-        return Messages.editorEjbRefTitle;
-    }
+	/**
+	 * @param plan
+	 * @param parent
+	 * @param toolkit
+	 * @param style
+	 */
+	public EjbRefSection(EObject plan, Composite parent, FormToolkit toolkit,
+			int style, EReference ejbRefERef) {
+		super(plan, parent, toolkit, style);
+		this.ejbRefERef = ejbRefERef;
+		create();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getDescription()
-     */
-    public String getDescription() {
-        return Messages.editorEjbRefDescription;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
+	 */
+	public String getTitle() {
+		return Messages.editorEjbRefTitle;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEReference()
-     */
-    public EReference getEReference() {
-        return ejbRefERef;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
+	 */
+	public String getDescription() {
+		return Messages.editorEjbRefDescription;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnNames()
-     */
-    public String[] getTableColumnNames() {
-        return new String[] { Messages.editorEjbRefTargetName,
-                Messages.editorEjbRefEjbLink };
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
+	 */
+	public EReference getEReference() {
+		return ejbRefERef;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getWizard()
-     */
-    public Wizard getWizard() {
-        return new EjbRefWizard(this);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
+	 */
+	public String[] getTableColumnNames() {
+		return new String[] { Messages.editorEjbRefTargetName,
+				Messages.editorEjbRefEjbLink };
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getImageDescriptor()
-     */
-    public ImageDescriptor getImageDescriptor() {
-        return GeronimoUIPlugin.imageDescriptorFromPlugin(
-                "org.eclipse.jst.j2ee", "icons/full/obj16/ejbRef_obj.gif");
-    }
-    
-    public List getFactories() {
-    	List factories = new ArrayList();
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getWizard()
+	 */
+	public Wizard getWizard() {
+		return new EjbRefWizard(this);
+	}
+
+	public ImageDescriptor getImageDescriptor() {
+		return GeronimoUIPlugin.imageDescriptorFromPlugin(
+				"org.eclipse.jst.j2ee", "icons/full/obj16/ejbRef_obj.gif");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getFactories()
+	 */
+	public List getFactories() {
+		List factories = new ArrayList();
 		factories.add(new WebItemProviderAdapterFactory());
 		factories.add(new NamingItemProviderAdapterFactory());
 		return factories;
-    }
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
+	 */
 	public EClass getTableEntryObjectType() {
 		return NamingPackage.eINSTANCE.getEjbRefType();
 	}

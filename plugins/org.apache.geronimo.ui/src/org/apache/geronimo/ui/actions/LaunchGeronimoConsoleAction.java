@@ -36,60 +36,64 @@ import org.eclipse.wst.server.core.IServer;
  */
 public class LaunchGeronimoConsoleAction implements IActionDelegate {
 
-    public static final String serverID = "org.apache.geronimo.generic.server.10";
-    
-    private IServer server;
+	public static final String serverID = "org.apache.geronimo.generic.server.10";
 
-    public LaunchGeronimoConsoleAction() {
-        super();
-    }
-    
-    public URL getConsoleUrl() throws MalformedURLException {
-    	if(server != null ) {
-    		GeronimoServer gs = (GeronimoServer) server.getAdapter(GeronimoServer.class);
-    		return new URL("http://" + server.getHost() + ":" + gs.getHTTPPort() + "/console/");
-    	}
-        return null;
-    }
+	private IServer server;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-     */
-    public void run(IAction action) {
+	public LaunchGeronimoConsoleAction() {
+		super();
+	}
 
-        try {
-            int style = IWorkbenchBrowserSupport.AS_EDITOR | IWorkbenchBrowserSupport.STATUS;
-            IWebBrowser browser = WorkbenchBrowserSupport.getInstance().createBrowser(style, "console", Messages.console, Messages.consoleTooltip);
-            URL url = getConsoleUrl();
-            if(url != null) 
-            	browser.openURL(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (PartInitException e) {
-            e.printStackTrace();
-        }
+	public URL getConsoleUrl() throws MalformedURLException {
+		if (server != null) {
+			GeronimoServer gs = (GeronimoServer) server
+					.getAdapter(GeronimoServer.class);
+			return new URL("http://" + server.getHost() + ":"
+					+ gs.getHTTPPort() + "/console/");
+		}
+		return null;
+	}
 
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+	 */
+	public void run(IAction action) {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
-     *      org.eclipse.jface.viewers.ISelection)
-     */
-    public void selectionChanged(IAction action, ISelection selection) {
+		try {
+			int style = IWorkbenchBrowserSupport.AS_EDITOR
+					| IWorkbenchBrowserSupport.STATUS;
+			IWebBrowser browser = WorkbenchBrowserSupport.getInstance()
+					.createBrowser(style, "console", Messages.console,
+							Messages.consoleTooltip);
+			URL url = getConsoleUrl();
+			if (url != null)
+				browser.openURL(url);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
 
-        server = (IServer) ((StructuredSelection) selection)
-                .getFirstElement();
+	}
 
-        boolean enable = server != null
-                && serverID.equals(server.getServerType().getId())
-                && server.getServerState() == IServer.STATE_STARTED;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
+	 *      org.eclipse.jface.viewers.ISelection)
+	 */
+	public void selectionChanged(IAction action, ISelection selection) {
 
-        action.setEnabled(enable);
+		server = (IServer) ((StructuredSelection) selection).getFirstElement();
 
-    }
+		boolean enable = server != null
+				&& serverID.equals(server.getServerType().getId())
+				&& server.getServerState() == IServer.STATE_STARTED;
+
+		action.setEnabled(enable);
+
+	}
 
 }

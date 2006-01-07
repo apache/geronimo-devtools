@@ -16,7 +16,7 @@
 package org.apache.geronimo.ui.wizards;
 
 import org.apache.geronimo.ui.internal.GeronimoUIPlugin;
-import org.apache.geronimo.ui.sections.DynamicTableSection;
+import org.apache.geronimo.ui.sections.AbstractTableSection;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
@@ -30,9 +30,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public abstract class DynamicAddEditWizard extends Wizard implements TableWizard {
+public abstract class AbstractTableWizard extends Wizard implements TableWizard {
 
-	DynamicTableSection section;
+	AbstractTableSection section;
 
 	EObject eObject;
 
@@ -42,7 +42,7 @@ public abstract class DynamicAddEditWizard extends Wizard implements TableWizard
 	/**
 	 * 
 	 */
-	public DynamicAddEditWizard(DynamicTableSection section) {
+	public AbstractTableWizard(AbstractTableSection section) {
 		super();
 		this.section = section;
 		setWindowTitle(getAddWizardWindowTitle());
@@ -95,7 +95,7 @@ public abstract class DynamicAddEditWizard extends Wizard implements TableWizard
 	/**
 	 * @param section
 	 */
-	public void setSection(DynamicTableSection section) {
+	public void setSection(AbstractTableSection section) {
 		this.section = section;
 	}
 

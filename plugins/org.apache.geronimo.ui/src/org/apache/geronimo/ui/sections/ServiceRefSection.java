@@ -30,59 +30,79 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-public class ServiceRefSection extends DynamicTableSection {
-	
+public class ServiceRefSection extends AbstractTableSection {
+
 	EReference serviceRefERef;
 
 	public ServiceRefSection(EObject plan, Composite parent,
-			FormToolkit toolkit, int style,  EReference serviceRefERef) {
+			FormToolkit toolkit, int style, EReference serviceRefERef) {
 		super(plan, parent, toolkit, style);
 		this.serviceRefERef = serviceRefERef;
 		create();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTitle()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
 	 */
 	public String getTitle() {
 		return Messages.editorServiceRefTitle;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getDescription()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
 	 */
 	public String getDescription() {
 		return Messages.editorServiceRefDescription;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEReference()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
 	 */
 	public EReference getEReference() {
 		return serviceRefERef;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnNames()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
 	 */
 	public String[] getTableColumnNames() {
-		 return new String[] { Messages.editorServiceRefName};
+		return new String[] { Messages.editorServiceRefName };
 	}
 
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getWizard()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getWizard()
 	 */
 	public Wizard getWizard() {
 		return new ServiceRefWizard(this);
 	}
-	
-    public List getFactories() {
-    	List factories = new ArrayList();
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getFactories()
+	 */
+	public List getFactories() {
+		List factories = new ArrayList();
 		factories.add(new WebItemProviderAdapterFactory());
 		factories.add(new NamingItemProviderAdapterFactory());
 		return factories;
-    }
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
+	 */
 	public EClass getTableEntryObjectType() {
 		return NamingPackage.eINSTANCE.getServiceRefType();
 	}

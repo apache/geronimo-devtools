@@ -67,11 +67,12 @@ public class ServerEditorLogLevelSection extends ServerEditorSection {
 
 		info = toolkit.createButton(composite, Messages.info, SWT.RADIO);
 		debug = toolkit.createButton(composite, Messages.debug, SWT.RADIO);
-		
-		SetConsoleLogLevelCommand cmd = new SetConsoleLogLevelCommand(server, null);
+
+		SetConsoleLogLevelCommand cmd = new SetConsoleLogLevelCommand(server,
+				null);
 		try {
 			String value = cmd.getCurrentValue();
-			if(value.indexOf("-vv") != -1) {
+			if (value.indexOf("-vv") != -1) {
 				debug.setSelection(true);
 			} else {
 				info.setSelection(true);
@@ -79,36 +80,37 @@ public class ServerEditorLogLevelSection extends ServerEditorSection {
 		} catch (CoreException e1) {
 			e1.printStackTrace();
 		}
-	
 
 		info.addSelectionListener(new SelectionListener() {
 
 			public void widgetSelected(SelectionEvent e) {
-				if(info.getSelection()) {
-					SetConsoleLogLevelCommand cmd = new SetConsoleLogLevelCommand(server, SetConsoleLogLevelCommand.INFO);
+				if (info.getSelection()) {
+					SetConsoleLogLevelCommand cmd = new SetConsoleLogLevelCommand(
+							server, SetConsoleLogLevelCommand.INFO);
 					cmd.execute();
-				} 
+				}
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 
 		});
-		
+
 		debug.addSelectionListener(new SelectionListener() {
 
 			public void widgetSelected(SelectionEvent e) {
-				if(debug.getSelection()) {
-					SetConsoleLogLevelCommand cmd = new SetConsoleLogLevelCommand(server, SetConsoleLogLevelCommand.DEBUG);
+				if (debug.getSelection()) {
+					SetConsoleLogLevelCommand cmd = new SetConsoleLogLevelCommand(
+							server, SetConsoleLogLevelCommand.DEBUG);
 					cmd.execute();
-				} 
+				}
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 
 		});
-		
+
 	}
 
 }

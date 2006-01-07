@@ -26,64 +26,84 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.openejb.xml.ns.openejb.jar.JarPackage;
 
-public class BeansSection extends DynamicTableSection {
+public class BeansSection extends AbstractTableSection {
 
-    /**
-     * @param plan
-     * @param parent
-     * @param toolkit
-     * @param style
-     */
-    public BeansSection(EObject plan, Composite parent, FormToolkit toolkit,
-            int style) {
-        super(plan, parent, toolkit, style);
-        create();
-    }
+	/**
+	 * @param plan
+	 * @param parent
+	 * @param toolkit
+	 * @param style
+	 */
+	public BeansSection(EObject plan, Composite parent, FormToolkit toolkit,
+			int style) {
+		super(plan, parent, toolkit, style);
+		create();
+	}
 
-    /* (non-Javadoc)
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTitle()
-     */
-    public String getTitle() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
+	 */
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    /* (non-Javadoc)
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getDescription()
-     */
-    public String getDescription() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
+	 */
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    /* (non-Javadoc)
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEReference()
-     */
-    public EReference getEReference() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
+	 */
+	public EReference getEReference() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    /* (non-Javadoc)
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnNames()
-     */
-    public String[] getTableColumnNames() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
+	 */
+	public String[] getTableColumnNames() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    /* (non-Javadoc)
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getWizard()
-     */
-    public Wizard getWizard() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    
-    public List getFactories() {
-    	return Collections.EMPTY_LIST;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getWizard()
+	 */
+	public Wizard getWizard() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getFactories()
+	 */
+	public List getFactories() {
+		return Collections.EMPTY_LIST;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
+	 */
 	public EClass getTableEntryObjectType() {
 		return JarPackage.eINSTANCE.getEnterpriseBeansType();
 	}

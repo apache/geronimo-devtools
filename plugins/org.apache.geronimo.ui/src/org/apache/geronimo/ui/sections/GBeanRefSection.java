@@ -30,7 +30,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-public class GBeanRefSection extends DynamicTableSection {
+public class GBeanRefSection extends AbstractTableSection {
 
 	EReference gbeanERef;
 
@@ -44,7 +44,7 @@ public class GBeanRefSection extends DynamicTableSection {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTitle()
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
 	 */
 	public String getTitle() {
 		return Messages.editorGBeanRefTitle;
@@ -53,7 +53,7 @@ public class GBeanRefSection extends DynamicTableSection {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getDescription()
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
 	 */
 	public String getDescription() {
 		return Messages.editorGBeanRefDescription;
@@ -62,7 +62,7 @@ public class GBeanRefSection extends DynamicTableSection {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEReference()
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
 	 */
 	public EReference getEReference() {
 		return gbeanERef;
@@ -71,7 +71,7 @@ public class GBeanRefSection extends DynamicTableSection {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnNames()
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
 	 */
 	public String[] getTableColumnNames() {
 		return new String[] { Messages.editorGBeanRefName,
@@ -81,12 +81,17 @@ public class GBeanRefSection extends DynamicTableSection {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getWizard()
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getWizard()
 	 */
 	public Wizard getWizard() {
 		return new GBeanRefWizard(this);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getFactories()
+	 */
 	public List getFactories() {
 		List factories = new ArrayList();
 		factories.add(new WebItemProviderAdapterFactory());
@@ -94,6 +99,11 @@ public class GBeanRefSection extends DynamicTableSection {
 		return factories;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
+	 */
 	public EClass getTableEntryObjectType() {
 		return NamingPackage.eINSTANCE.getGbeanRefType();
 	}

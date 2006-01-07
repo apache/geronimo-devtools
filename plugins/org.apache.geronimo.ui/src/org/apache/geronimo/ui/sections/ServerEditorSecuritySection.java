@@ -42,109 +42,109 @@ import org.eclipse.wst.server.ui.editor.ServerEditorSection;
  */
 public class ServerEditorSecuritySection extends ServerEditorSection {
 
-    Text username;
+	Text username;
 
-    Text password;
+	Text password;
 
-    GeronimoServer gs;
+	GeronimoServer gs;
 
-    /**
-     * 
-     */
-    public ServerEditorSecuritySection() {
-        super();
-    }
+	/**
+	 * 
+	 */
+	public ServerEditorSecuritySection() {
+		super();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.wst.server.ui.editor.ServerEditorSection#createSection(org.eclipse.swt.widgets.Composite)
-     */
-    public void createSection(Composite parent) {
-        super.createSection(parent);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.wst.server.ui.editor.ServerEditorSection#createSection(org.eclipse.swt.widgets.Composite)
+	 */
+	public void createSection(Composite parent) {
+		super.createSection(parent);
 
-        FormToolkit toolkit = getFormToolkit(parent.getDisplay());
+		FormToolkit toolkit = getFormToolkit(parent.getDisplay());
 
-        Section section = toolkit.createSection(parent,
-                ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
-                        | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
-                        | ExpandableComposite.FOCUS_TITLE);
+		Section section = toolkit.createSection(parent,
+				ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
+						| ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
+						| ExpandableComposite.FOCUS_TITLE);
 
-        section.setText(Messages.editorSectionSecurityTitle);
-        section.setDescription(Messages.editorSectionSecurityDescription);
-        section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		section.setText(Messages.editorSectionSecurityTitle);
+		section.setDescription(Messages.editorSectionSecurityDescription);
+		section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
-        Composite composite = toolkit.createComposite(section);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        layout.marginHeight = 5;
-        layout.marginWidth = 10;
-        layout.verticalSpacing = 5;
-        layout.horizontalSpacing = 15;
-        composite.setLayout(layout);
-        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        section.setClient(composite);
+		Composite composite = toolkit.createComposite(section);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 2;
+		layout.marginHeight = 5;
+		layout.marginWidth = 10;
+		layout.verticalSpacing = 5;
+		layout.horizontalSpacing = 15;
+		composite.setLayout(layout);
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		section.setClient(composite);
 
-        // ------- Label and text field for the username -------
-        createLabel(composite, Messages.username, toolkit);
+		// ------- Label and text field for the username -------
+		createLabel(composite, Messages.username, toolkit);
 
-        username = toolkit.createText(composite, getUserName(), SWT.BORDER);
-        username.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        username.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent e) {
-                execute(new SetUsernameCommand(server, username.getText()));
-            }
-        });
+		username = toolkit.createText(composite, getUserName(), SWT.BORDER);
+		username.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		username.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				execute(new SetUsernameCommand(server, username.getText()));
+			}
+		});
 
-        // ------- Label and text field for the password -------
-        createLabel(composite, Messages.password, toolkit);
+		// ------- Label and text field for the password -------
+		createLabel(composite, Messages.password, toolkit);
 
-        password = toolkit.createText(composite, getPassword(), SWT.BORDER);
-        password
-                .setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
-        password.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent e) {
-                execute(new SetPasswordCommand(server, password.getText()));
-            }
-        });
+		password = toolkit.createText(composite, getPassword(), SWT.BORDER);
+		password
+				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+		password.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				execute(new SetPasswordCommand(server, password.getText()));
+			}
+		});
 
-    }
+	}
 
-    protected Label createLabel(Composite parent, String text,
-            FormToolkit toolkit) {
-        Label label = toolkit.createLabel(parent, text);
-        label.setForeground(toolkit.getColors().getColor(FormColors.TITLE));
-        label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-        return label;
-    }
+	protected Label createLabel(Composite parent, String text,
+			FormToolkit toolkit) {
+		Label label = toolkit.createLabel(parent, text);
+		label.setForeground(toolkit.getColors().getColor(FormColors.TITLE));
+		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+		return label;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.wst.server.ui.editor.ServerEditorSection#init(org.eclipse.ui.IEditorSite,
-     *      org.eclipse.ui.IEditorInput)
-     */
-    public void init(IEditorSite site, IEditorInput input) {
-        super.init(site, input);
-        gs = (GeronimoServer) server.getAdapter(GeronimoServer.class);
-        if (gs == null) {
-            gs = (GeronimoServer) server.loadAdapter(GeronimoServer.class,
-                    new NullProgressMonitor());
-        }
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.wst.server.ui.editor.ServerEditorSection#init(org.eclipse.ui.IEditorSite,
+	 *      org.eclipse.ui.IEditorInput)
+	 */
+	public void init(IEditorSite site, IEditorInput input) {
+		super.init(site, input);
+		gs = (GeronimoServer) server.getAdapter(GeronimoServer.class);
+		if (gs == null) {
+			gs = (GeronimoServer) server.loadAdapter(GeronimoServer.class,
+					new NullProgressMonitor());
+		}
+	}
 
-    private String getUserName() {
-        if (gs != null) {
-            return gs.getAdminID();
-        }
-        return "";
-    }
+	private String getUserName() {
+		if (gs != null) {
+			return gs.getAdminID();
+		}
+		return "";
+	}
 
-    private String getPassword() {
-        if (gs != null) {
-            return gs.getAdminPassword();
-        }
-        return "";
-    }
+	private String getPassword() {
+		if (gs != null) {
+			return gs.getAdminPassword();
+		}
+		return "";
+	}
 
 }

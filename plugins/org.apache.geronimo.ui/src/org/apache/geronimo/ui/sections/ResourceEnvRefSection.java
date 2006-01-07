@@ -32,78 +32,85 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-public class ResourceEnvRefSection extends DynamicTableSection {
-    
-    EReference resourceEnvRefERef;
+public class ResourceEnvRefSection extends AbstractTableSection {
 
-    public ResourceEnvRefSection(EObject plan, Composite parent,
-            FormToolkit toolkit, int style,  EReference resourceEnvRefERef) {
-        super(plan, parent, toolkit, style);
-        this.resourceEnvRefERef = resourceEnvRefERef;
-        create();
-    }
+	EReference resourceEnvRefERef;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTitle()
-     */
-    public String getTitle() {
-        return Messages.editorResourceEnvRefTitle;
-    }
+	public ResourceEnvRefSection(EObject plan, Composite parent,
+			FormToolkit toolkit, int style, EReference resourceEnvRefERef) {
+		super(plan, parent, toolkit, style);
+		this.resourceEnvRefERef = resourceEnvRefERef;
+		create();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getDescription()
-     */
-    public String getDescription() {
-        return Messages.editorResourceEnvRefDescription;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
+	 */
+	public String getTitle() {
+		return Messages.editorResourceEnvRefTitle;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEReference()
-     */
-    public EReference getEReference() {
-        return resourceEnvRefERef;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
+	 */
+	public String getDescription() {
+		return Messages.editorResourceEnvRefDescription;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnNames()
-     */
-    public String[] getTableColumnNames() {
-        return new String[] { Messages.editorResEnvRefNameTitle,
-                Messages.editorResEnvRefMsgDestTitle };
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
+	 */
+	public EReference getEReference() {
+		return resourceEnvRefERef;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getWizard()
-     */
-    public Wizard getWizard() {
-        return new ResourceEnvRefWizard(this);
-    }
-    
-    /* (non-Javadoc)
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getImageDescriptor()
-     */
-    public ImageDescriptor getImageDescriptor() {
-        return GeronimoUIPlugin.imageDescriptorFromPlugin(
-                "org.eclipse.jst.j2ee", "icons/full/obj16/res_env_ref_obj.gif");
-    }
-    
-    public List getFactories() {
-    	List factories = new ArrayList();
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
+	 */
+	public String[] getTableColumnNames() {
+		return new String[] { Messages.editorResEnvRefNameTitle,
+				Messages.editorResEnvRefMsgDestTitle };
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getWizard()
+	 */
+	public Wizard getWizard() {
+		return new ResourceEnvRefWizard(this);
+	}
+
+	public ImageDescriptor getImageDescriptor() {
+		return GeronimoUIPlugin.imageDescriptorFromPlugin(
+				"org.eclipse.jst.j2ee", "icons/full/obj16/res_env_ref_obj.gif");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getFactories()
+	 */
+	public List getFactories() {
+		List factories = new ArrayList();
 		factories.add(new WebItemProviderAdapterFactory());
 		factories.add(new NamingItemProviderAdapterFactory());
 		return factories;
-    }
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
+	 */
 	public EClass getTableEntryObjectType() {
 		return NamingPackage.eINSTANCE.getResourceEnvRefType();
 	}

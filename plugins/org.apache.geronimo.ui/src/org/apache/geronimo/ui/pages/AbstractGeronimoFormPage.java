@@ -31,65 +31,65 @@ import org.eclipse.ui.forms.widgets.Section;
 
 public abstract class AbstractGeronimoFormPage extends FormPage {
 
-    EObject deploymentPlan;
+	EObject deploymentPlan;
 
-    FormToolkit toolkit;
+	FormToolkit toolkit;
 
-    Composite body;
+	Composite body;
 
-    /**
-     * @param editor
-     * @param id
-     * @param title
-     */
-    public AbstractGeronimoFormPage(FormEditor editor, String id, String title) {
-        super(editor, id, title);
-    }
+	/**
+	 * @param editor
+	 * @param id
+	 * @param title
+	 */
+	public AbstractGeronimoFormPage(FormEditor editor, String id, String title) {
+		super(editor, id, title);
+	}
 
-    /**
-     * @param id
-     * @param title
-     */
-    public AbstractGeronimoFormPage(String id, String title) {
-        super(id, title);
-    }
+	/**
+	 * @param id
+	 * @param title
+	 */
+	public AbstractGeronimoFormPage(String id, String title) {
+		super(id, title);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
-     */
-    protected void createFormContent(IManagedForm managedForm) {
-        deploymentPlan = ((AbstractGeronimoDeploymentPlanEditor) getEditor())
-                .getDeploymentPlan();
-        body = managedForm.getForm().getBody();
-        toolkit = managedForm.getToolkit();
-        ScrolledForm form = managedForm.getForm();
-        //form.setText(getTitle());
-        managedForm.addPart(new BannerPart(form.getBody(), toolkit, SWT.NONE));
-        form.getBody().setLayout(getLayout());
-        fillBody(managedForm);
-        form.reflow(true);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
+	 */
+	protected void createFormContent(IManagedForm managedForm) {
+		deploymentPlan = ((AbstractGeronimoDeploymentPlanEditor) getEditor())
+				.getDeploymentPlan();
+		body = managedForm.getForm().getBody();
+		toolkit = managedForm.getToolkit();
+		ScrolledForm form = managedForm.getForm();
+		// form.setText(getTitle());
+		managedForm.addPart(new BannerPart(form.getBody(), toolkit, SWT.NONE));
+		form.getBody().setLayout(getLayout());
+		fillBody(managedForm);
+		form.reflow(true);
+	}
 
-    protected GridLayout getLayout() {
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        layout.horizontalSpacing = 20;
-        layout.makeColumnsEqualWidth = true;
-        return layout;
-    }
+	protected GridLayout getLayout() {
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 2;
+		layout.horizontalSpacing = 20;
+		layout.makeColumnsEqualWidth = true;
+		return layout;
+	}
 
-    protected int getStyle() {
-        return ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
-                | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
-                | ExpandableComposite.FOCUS_TITLE;
-    }
+	protected int getStyle() {
+		return ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
+				| ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
+				| ExpandableComposite.FOCUS_TITLE;
+	}
 
-    abstract protected void fillBody(IManagedForm managedForm);
+	abstract protected void fillBody(IManagedForm managedForm);
 
-    public EObject getDeploymentPlan() {
-        return deploymentPlan;
-    }
+	public EObject getDeploymentPlan() {
+		return deploymentPlan;
+	}
 
 }

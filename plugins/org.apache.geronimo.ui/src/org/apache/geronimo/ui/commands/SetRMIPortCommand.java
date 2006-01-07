@@ -63,8 +63,8 @@ public class SetRMIPortCommand extends ServerCommand {
 	 */
 	public void undo() {
 		if (gs != null) {
-            gs.setRMINamingPort(oldName);
-        }
+			gs.setRMINamingPort(oldName);
+		}
 	}
 
 }

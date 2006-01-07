@@ -68,8 +68,7 @@ public class SetConsoleLogLevelCommand extends ServerCommand {
 
 	public String getCurrentValue() throws CoreException {
 		return getLaunchConfiguration().getAttribute(
-				IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,
-				NONE);
+				IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, NONE);
 	}
 
 	/*

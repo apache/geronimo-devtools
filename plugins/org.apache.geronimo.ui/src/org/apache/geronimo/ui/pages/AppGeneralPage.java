@@ -21,31 +21,31 @@ import org.eclipse.ui.forms.editor.FormEditor;
 
 public class AppGeneralPage extends AbstractGeronimoFormPage {
 
-    /**
-     * @param editor
-     * @param id
-     * @param title
-     */
-    public AppGeneralPage(FormEditor editor, String id, String title) {
-        super(editor, id, title);
-    }
+	/**
+	 * @param editor
+	 * @param id
+	 * @param title
+	 */
+	public AppGeneralPage(FormEditor editor, String id, String title) {
+		super(editor, id, title);
+	}
 
-    /**
-     * @param id
-     * @param title
-     */
-    public AppGeneralPage(String id, String title) {
-        super(id, title);
-    }
+	/**
+	 * @param id
+	 * @param title
+	 */
+	public AppGeneralPage(String id, String title) {
+		super(id, title);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
-     */
-    protected void fillBody(IManagedForm managedForm) {
-        managedForm.addPart(new AppGeneralSection(body, toolkit, getStyle(),
-                getDeploymentPlan()));
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
+	 */
+	protected void fillBody(IManagedForm managedForm) {
+		managedForm.addPart(new AppGeneralSection(body, toolkit, getStyle(),
+				getDeploymentPlan()));
+	}
 
 }

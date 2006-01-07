@@ -26,46 +26,46 @@ import org.eclipse.wst.server.ui.internal.command.ServerCommand;
  */
 public class SetUsernameCommand extends ServerCommand {
 
-    protected String name;
+	protected String name;
 
-    protected String oldName;
+	protected String oldName;
 
-    GeronimoServer gs;
+	GeronimoServer gs;
 
-    /**
-     * @param server
-     * @param name
-     */
-    public SetUsernameCommand(IServerWorkingCopy server, String name) {
-        super(server, name);
-        this.name = name;
-    }
+	/**
+	 * @param server
+	 * @param name
+	 */
+	public SetUsernameCommand(IServerWorkingCopy server, String name) {
+		super(server, name);
+		this.name = name;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.wst.server.ui.internal.command.ServerCommand#execute()
-     */
-    public void execute() {
-        gs = (GeronimoServer) server.getAdapter(GeronimoServer.class);
-        if (gs == null) {
-            gs = (GeronimoServer) server.loadAdapter(GeronimoServer.class,
-                    new NullProgressMonitor());
-        }
-        oldName = gs.getAdminID();
-        gs.setAdminID(name);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.wst.server.ui.internal.command.ServerCommand#execute()
+	 */
+	public void execute() {
+		gs = (GeronimoServer) server.getAdapter(GeronimoServer.class);
+		if (gs == null) {
+			gs = (GeronimoServer) server.loadAdapter(GeronimoServer.class,
+					new NullProgressMonitor());
+		}
+		oldName = gs.getAdminID();
+		gs.setAdminID(name);
 
-    }
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.wst.server.ui.internal.command.ServerCommand#undo()
-     */
-    public void undo() {
-        if (gs != null) {
-            gs.setAdminID(oldName);
-        }
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.wst.server.ui.internal.command.ServerCommand#undo()
+	 */
+	public void undo() {
+		if (gs != null) {
+			gs.setAdminID(oldName);
+		}
+	}
 
 }

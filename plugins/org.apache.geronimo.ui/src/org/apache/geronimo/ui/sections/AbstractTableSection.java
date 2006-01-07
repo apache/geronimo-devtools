@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.internal.Trace;
-import org.apache.geronimo.ui.wizards.DynamicAddEditWizard;
+import org.apache.geronimo.ui.wizards.AbstractTableWizard;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -50,11 +50,11 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class DynamicTableSection extends AbstractSectionPart {
+public abstract class AbstractTableSection extends AbstractSectionPart {
 
 	private Table table;
 
-	protected TableViewer tableViewer;
+	private TableViewer tableViewer;
 
 	Button addButton;
 
@@ -62,7 +62,7 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 
 	Button removeButton;
 
-	public DynamicTableSection(Section section) {
+	public AbstractTableSection(Section section) {
 		super(section);
 	}
 
@@ -74,7 +74,7 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 	 * 
 	 * Subclasses should call create() in constructor
 	 */
-	public DynamicTableSection(EObject plan, Composite parent,
+	public AbstractTableSection(EObject plan, Composite parent,
 			FormToolkit toolkit, int style) {
 		super(parent, toolkit, style, plan);
 	}
@@ -113,7 +113,8 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 		tableViewer.addFilter(new ViewerFilter() {
 			public boolean select(Viewer viewer, Object parentElement,
 					Object element) {
-				return DynamicTableSection.this.filter(viewer, parentElement, element);
+				return AbstractTableSection.this.filter(viewer, parentElement,
+						element);
 			}
 		});
 
@@ -131,14 +132,10 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 	protected Object getInput() {
 		return getPlan();
 	}
-	
+
 	protected boolean filter(Viewer viewer, Object parentElement, Object element) {
 		return getTableEntryObjectType().isInstance(element);
 	}
-
-	abstract public List getFactories();
-
-	abstract public EClass getTableEntryObjectType();
 
 	protected Composite createTableComposite(Composite parent) {
 		Composite composite = toolkit.createComposite(parent);
@@ -185,7 +182,7 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 			TableColumn tableColumn = new TableColumn(table, SWT.NONE);
 			tableColumn.setText(getTableColumnNames()[i]);
 		}
-		
+
 		return table;
 	}
 
@@ -256,8 +253,8 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 				if (o != null) {
 					Wizard wizard = getWizard();
 					if (wizard != null) {
-						if (wizard instanceof DynamicAddEditWizard) {
-							((DynamicAddEditWizard) wizard)
+						if (wizard instanceof AbstractTableWizard) {
+							((AbstractTableWizard) wizard)
 									.setEObject((EObject) o);
 						}
 						WizardDialog dialog = new WizardDialog(Display
@@ -280,42 +277,26 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 		return tableViewer;
 	}
 
-	public EObject getPlan() {
-		return plan;
-	}
-
-	public boolean isHeaderVisible() {
+	protected boolean isHeaderVisible() {
 		return true;
 	}
-
-	/**
-	 * @return
-	 */
-	abstract public String getTitle();
-
-	/**
-	 * @return
-	 */
-	abstract public String getDescription();
-
-	/**
-	 * @deprecated
-	 * @return
-	 */
-	abstract public EReference getEReference();
-
-	/**
-	 * @return
-	 */
-	abstract public String[] getTableColumnNames();
-
-	/**
-	 * @return
-	 */
-	abstract public Wizard getWizard();
 
 	protected Table getTable() {
 		return table;
 	}
+
+	abstract public String getTitle();
+
+	abstract public String getDescription();
+
+	abstract public String[] getTableColumnNames();
+
+	abstract public Wizard getWizard();
+
+	abstract public EReference getEReference();
+
+	abstract public List getFactories();
+
+	abstract public EClass getTableEntryObjectType();
 
 }

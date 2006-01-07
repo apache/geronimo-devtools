@@ -33,87 +33,90 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-public class ResourceRefSection extends DynamicTableSection {
-    
-    EReference resourceRefERef;
-    
-    AdapterFactory factory;
-    
+public class ResourceRefSection extends AbstractTableSection {
 
-    public ResourceRefSection(EObject plan, Composite parent,
-            FormToolkit toolkit, int style, EReference resourceRefERef, AdapterFactory factory) {
-        super(plan, parent, toolkit, style);
-        this.resourceRefERef = resourceRefERef;
-        this.factory = factory;
-        create();
-    }  
+	EReference resourceRefERef;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTitle()
-     */
-    public String getTitle() {
-        return Messages.editorResourceRefTitle;
-    }
+	AdapterFactory factory;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getDescription()
-     */
-    public String getDescription() {
-        return Messages.editorResourceRefDescription;
-    }
+	public ResourceRefSection(EObject plan, Composite parent,
+			FormToolkit toolkit, int style, EReference resourceRefERef,
+			AdapterFactory factory) {
+		super(plan, parent, toolkit, style);
+		this.resourceRefERef = resourceRefERef;
+		this.factory = factory;
+		create();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEReference()
-     */
-    public EReference getEReference() {
-        return resourceRefERef;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
+	 */
+	public String getTitle() {
+		return Messages.editorResourceRefTitle;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnNames()
-     */
-    public String[] getTableColumnNames() {
-        return new String[] { Messages.editorResRefNameTitle,
-                Messages.editorResRefLinkTitle,
-                Messages.editorResRefTargetNameTitle };
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
+	 */
+	public String getDescription() {
+		return Messages.editorResourceRefDescription;
+	}
 
-    public Class getWizardClass() {
-        return ResourceRefWizard.class;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
+	 */
+	public EReference getEReference() {
+		return resourceRefERef;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getWizard()
-     */
-    public Wizard getWizard() {
-        return new ResourceRefWizard(this);
-    }
-    
-    /* (non-Javadoc)
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getImageDescriptor()
-     */
-    public ImageDescriptor getImageDescriptor() {
-        return GeronimoUIPlugin.imageDescriptorFromPlugin(
-                "org.eclipse.jst.j2ee", "icons/full/obj16/resourceRef_obj.gif");
-    }
-    
-    public List getFactories() {
-    	List factories = new ArrayList();
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
+	 */
+	public String[] getTableColumnNames() {
+		return new String[] { Messages.editorResRefNameTitle,
+				Messages.editorResRefLinkTitle,
+				Messages.editorResRefTargetNameTitle };
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getWizard()
+	 */
+	public Wizard getWizard() {
+		return new ResourceRefWizard(this);
+	}
+
+	public ImageDescriptor getImageDescriptor() {
+		return GeronimoUIPlugin.imageDescriptorFromPlugin(
+				"org.eclipse.jst.j2ee", "icons/full/obj16/resourceRef_obj.gif");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getFactories()
+	 */
+	public List getFactories() {
+		List factories = new ArrayList();
 		factories.add(new WebItemProviderAdapterFactory());
 		factories.add(new NamingItemProviderAdapterFactory());
 		return factories;
-    }
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
+	 */
 	public EClass getTableEntryObjectType() {
 		return NamingPackage.eINSTANCE.getResourceRefType();
 	}

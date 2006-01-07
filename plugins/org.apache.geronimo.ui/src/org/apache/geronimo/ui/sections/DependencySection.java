@@ -29,110 +29,105 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.Section;
 
-public class DependencySection extends DynamicTableSection {
+public class DependencySection extends AbstractTableSection {
 
-    /**
-     * Must be a set to a ERef type of XPackage.eINSTANCE.getXType_Dependency();
-     */
-    private EReference dependenciesERef;
+	/**
+	 * Must be a set to a ERef type of XPackage.eINSTANCE.getXType_Dependency();
+	 */
+	private EReference dependenciesERef;
 
-    /**
-     * @param plan
-     * @param parent
-     * @param toolkit
-     * @param style
-     */
-    public DependencySection(EObject plan, EReference dependenciesERef,
-            Composite parent, FormToolkit toolkit, int style) {
-        super(plan, parent, toolkit, style);
-        this.dependenciesERef = dependenciesERef;
-        create();
-    }
+	/**
+	 * @param plan
+	 * @param parent
+	 * @param toolkit
+	 * @param style
+	 */
+	public DependencySection(EObject plan, EReference dependenciesERef,
+			Composite parent, FormToolkit toolkit, int style) {
+		super(plan, parent, toolkit, style);
+		this.dependenciesERef = dependenciesERef;
+		create();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTitle()
-     */
-    public String getTitle() {
-        return Messages.editorSectionDependenciesTitle;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
+	 */
+	public String getTitle() {
+		return Messages.editorSectionDependenciesTitle;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getDescription()
-     */
-    public String getDescription() {
-        return Messages.editorSectionDependenciesDescription;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
+	 */
+	public String getDescription() {
+		return Messages.editorSectionDependenciesDescription;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEReference()
-     */
-    public EReference getEReference() {
-        return dependenciesERef;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
+	 */
+	public EReference getEReference() {
+		return dependenciesERef;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnNames()
-     */
-    public String[] getTableColumnNames() {
-        return new String[] {};
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
+	 */
+	public String[] getTableColumnNames() {
+		return new String[] {};
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getWizard()
-     */
-    public Wizard getWizard() {
-        return new DependencyWizard(this);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getWizard()
+	 */
+	public Wizard getWizard() {
+		return new DependencyWizard(this);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#configureSection(org.eclipse.ui.forms.widgets.Section)
-     */
-    protected void configureSection(Section section) {
-        section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#isHeaderVisible()
+	 */
+	public boolean isHeaderVisible() {
+		return false;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#showTableColumNames()
-     */
-    public boolean isHeaderVisible() {
-        return false;
-    }
-    
-    /* (non-Javadoc)
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getImageDescriptor()
-     */
-    public ImageDescriptor getImageDescriptor() {
-        return GeronimoUIPlugin.imageDescriptorFromPlugin(
-                "org.eclipse.jdt.ui", "icons/full/obj16/jar_obj.gif");
-    }
-    
-    public List getFactories() {
-    	List factories = new ArrayList();
+	public ImageDescriptor getImageDescriptor() {
+		return GeronimoUIPlugin.imageDescriptorFromPlugin("org.eclipse.jdt.ui",
+				"icons/full/obj16/jar_obj.gif");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getFactories()
+	 */
+	public List getFactories() {
+		List factories = new ArrayList();
 		factories.add(new WebItemProviderAdapterFactory());
 		factories.add(new DeploymentItemProviderAdapterFactory());
 		return factories;
-    }
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
+	 */
 	public EClass getTableEntryObjectType() {
 		return DeploymentPackage.eINSTANCE.getDependencyType();
 	}

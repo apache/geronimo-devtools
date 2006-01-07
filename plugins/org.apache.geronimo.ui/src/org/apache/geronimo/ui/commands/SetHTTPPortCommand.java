@@ -59,8 +59,8 @@ public class SetHTTPPortCommand extends ServerCommand {
 	 */
 	public void undo() {
 		if (gs != null) {
-            gs.setHTTPPort(oldName);
-        }
+			gs.setHTTPPort(oldName);
+		}
 	}
 
 }

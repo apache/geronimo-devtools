@@ -19,17 +19,17 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EFactory;
 
 public interface TableWizard {
-	
-	 public EFactory getEFactory();
 
-	 public EAttribute[] getTableColumnEAttributes();
+	public EFactory getEFactory();
 
-	 public String getAddWizardWindowTitle();
+	public EAttribute[] getTableColumnEAttributes();
 
-	 public String getEditWizardWindowTitle();
-	 
-	 public String getWizardFirstPageTitle();
+	public String getAddWizardWindowTitle();
 
-	 public String getWizardFirstPageDescription();
-	 
+	public String getEditWizardWindowTitle();
+
+	public String getWizardFirstPageTitle();
+
+	public String getWizardFirstPageDescription();
+
 }

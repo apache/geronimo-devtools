@@ -16,43 +16,51 @@
 package org.apache.geronimo.ui.wizards;
 
 import org.apache.geronimo.ui.internal.Messages;
-import org.apache.geronimo.ui.sections.DynamicTableSection;
+import org.apache.geronimo.ui.sections.AbstractTableSection;
 
 public class ImportWizard extends DependencyWizard {
 
 	/**
 	 * @param section
 	 */
-	public ImportWizard(DynamicTableSection section) {
+	public ImportWizard(AbstractTableSection section) {
 		super(section);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getAddWizardWindowTitle()
 	 */
 	public String getAddWizardWindowTitle() {
-		 return Messages.wizardNewTitle_Import;
+		return Messages.wizardNewTitle_Import;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEditWizardWindowTitle()
 	 */
 	public String getEditWizardWindowTitle() {
-		 return Messages.wizardEditTitle_Import;
+		return Messages.wizardEditTitle_Import;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
 	 */
 	public String getWizardFirstPageTitle() {
-		 return Messages.wizardPageTitle_Import;
+		return Messages.wizardPageTitle_Import;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
 	 */
 	public String getWizardFirstPageDescription() {
-		 return Messages.wizardPageDescription_Import;
+		return Messages.wizardPageDescription_Import;
 	}
 
 }

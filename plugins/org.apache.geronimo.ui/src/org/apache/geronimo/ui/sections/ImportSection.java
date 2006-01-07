@@ -29,26 +29,32 @@ public class ImportSection extends DependencySection {
 			Composite parent, FormToolkit toolkit, int style) {
 		super(plan, dependenciesERef, parent, toolkit, style);
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTitle()
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
 	 */
 	public String getTitle() {
 		return Messages.editorSectionImportTitle;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getDescription()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
 	 */
 	public String getDescription() {
 		return Messages.editorSectionImportDescription;
 	}
 
-    /* (non-Javadoc)
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getWizard()
-     */
-    public Wizard getWizard() {
-        return new ImportWizard(this);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getWizard()
+	 */
+	public Wizard getWizard() {
+		return new ImportWizard(this);
+	}
 
 }

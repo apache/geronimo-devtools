@@ -24,7 +24,6 @@ import org.apache.geronimo.ui.wizards.SecurityRoleWizard;
 import org.apache.geronimo.xml.ns.j2ee.web.provider.WebItemProviderAdapterFactory;
 import org.apache.geronimo.xml.ns.security.DescriptionType;
 import org.apache.geronimo.xml.ns.security.RoleType;
-import org.apache.geronimo.xml.ns.security.SecurityFactory;
 import org.apache.geronimo.xml.ns.security.SecurityPackage;
 import org.apache.geronimo.xml.ns.security.SecurityType;
 import org.apache.geronimo.xml.ns.security.provider.SecurityItemProviderAdapterFactory;
@@ -44,9 +43,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.Section;
 
-public class SecuritySection extends DynamicTableSection {
+public class SecuritySection extends AbstractTableSection {
 
 	public EReference securityERef;
 
@@ -67,22 +65,28 @@ public class SecuritySection extends DynamicTableSection {
 		create();
 	}
 
-	/**
-	 * @return
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
 	 */
 	public String getTitle() {
 		return Messages.editorSectionSecurityRolesTitle;
 	}
 
-	/**
-	 * @return
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
 	 */
 	public String getDescription() {
 		return Messages.editorSectionSecurityRolesDescription;
 	}
 
-	/**
-	 * @return
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
 	 */
 	public EReference getEReference() {
 		return SecurityPackage.eINSTANCE.getRoleMappingsType_Role();
@@ -91,7 +95,7 @@ public class SecuritySection extends DynamicTableSection {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnNames()
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
 	 */
 	public String[] getTableColumnNames() {
 		return new String[] { Messages.name };
@@ -100,7 +104,7 @@ public class SecuritySection extends DynamicTableSection {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getWizard()
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getWizard()
 	 */
 	public Wizard getWizard() {
 		return new SecurityRoleWizard(this);
@@ -109,16 +113,7 @@ public class SecuritySection extends DynamicTableSection {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#configureSection(org.eclipse.ui.forms.widgets.Section)
-	 */
-	protected void configureSection(Section section) {
-		section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getFactories()
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getFactories()
 	 */
 	public List getFactories() {
 		List factories = new ArrayList();
@@ -130,7 +125,7 @@ public class SecuritySection extends DynamicTableSection {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableEntryObjectType()
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
 	 */
 	public EClass getTableEntryObjectType() {
 		return SecurityPackage.eINSTANCE.getRoleType();
@@ -139,7 +134,7 @@ public class SecuritySection extends DynamicTableSection {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#showTableColumNames()
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#isHeaderVisible()
 	 */
 	public boolean isHeaderVisible() {
 		return false;
@@ -148,7 +143,7 @@ public class SecuritySection extends DynamicTableSection {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#createClient()
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#createClient()
 	 */
 	public void createClient() {
 
@@ -199,7 +194,7 @@ public class SecuritySection extends DynamicTableSection {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getInput()
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getInput()
 	 */
 	protected Object getInput() {
 		SecurityType secType = (SecurityType) getPlan().eGet(securityERef);
@@ -209,11 +204,6 @@ public class SecuritySection extends DynamicTableSection {
 		return super.getInput();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getImageDescriptor()
-	 */
 	public ImageDescriptor getImageDescriptor() {
 		return GeronimoUIPlugin.imageDescriptorFromPlugin(
 				"org.eclipse.jst.j2ee", "icons/full/obj16/security_role.gif");
