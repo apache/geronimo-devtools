@@ -18,9 +18,7 @@ package org.apache.geronimo.ui.wizards;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.sections.DynamicTableSection;
 import org.apache.geronimo.xml.ns.deployment.DependencyType;
-import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
 import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -32,297 +30,267 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 public class DependencyWizard extends DynamicAddEditWizard {
 
-    public static String wizardNewTitle_Dependency;
+	public static String wizardNewTitle_Dependency;
 
-    public static String wizardEditTitle_Dependency;
+	public static String wizardEditTitle_Dependency;
 
-    public static String wizardPageTitle_Dependency;
+	public static String wizardPageTitle_Dependency;
 
-    public static String wizardPageDescription_Dependency;
+	public static String wizardPageDescription_Dependency;
 
-    protected Button uriButton;
+	protected Button uriButton;
 
-    protected Button mavenButton;
+	protected Button mavenButton;
 
-    protected Label uriLabel;
+	protected Label uriLabel;
 
-    protected Label groupIdLabel;
+	protected Label groupIdLabel;
 
-    protected Label artifactIdLabel;
+	protected Label artifactIdLabel;
 
-    protected Label versionLabel;
+	protected Label versionLabel;
 
-    protected Text uriText;
+	protected Text uriText;
 
-    protected Text groupIdText;
+	protected Text groupIdText;
 
-    protected Text artifactIdText;
+	protected Text artifactIdText;
 
-    protected Text versionText;
+	protected Text versionText;
 
-    /**
-     * @param section
-     */
-    public DependencyWizard(DynamicTableSection section) {
-        super(section);
-    }
+	/**
+	 * @param section
+	 */
+	public DependencyWizard(DynamicTableSection section) {
+		super(section);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getAddWizardWindowTitle()
-     */
-    public String getAddWizardWindowTitle() {
-        return Messages.wizardNewTitle_Dependency;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getAddWizardWindowTitle()
+	 */
+	public String getAddWizardWindowTitle() {
+		return Messages.wizardNewTitle_Dependency;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEditWizardWindowTitle()
-     */
-    public String getEditWizardWindowTitle() {
-        return Messages.wizardEditTitle_Dependency;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEditWizardWindowTitle()
+	 */
+	public String getEditWizardWindowTitle() {
+		return Messages.wizardEditTitle_Dependency;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
-     */
-    public String getWizardFirstPageTitle() {
-        return Messages.wizardPageTitle_Dependency;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
+	 */
+	public String getWizardFirstPageTitle() {
+		return Messages.wizardPageTitle_Dependency;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
-     */
-    public String getWizardFirstPageDescription() {
-        return Messages.wizardPageDescription_Dependency;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
+	 */
+	public String getWizardFirstPageDescription() {
+		return Messages.wizardPageDescription_Dependency;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.IWizard#performFinish()
-     */
-    public boolean performFinish() {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#processEAttributes(org.apache.geronimo.ui.wizards.DynamicAddEditWizard.DynamicWizardPage)
+	 */
+	public void processEAttributes(DynamicWizardPage page) {
+		DependencyType dt = (DependencyType) eObject;
 
-        boolean isNew = false;
+		if (uriButton.getSelection()) {
+			dt.setUri(uriText.getText());
+			dt.eUnset(DeploymentPackage.eINSTANCE
+					.getDependencyType_ArtifactId());
+			dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_GroupId());
+			dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_Version());
+		} else {
+			dt.setArtifactId(artifactIdText.getText());
+			dt.setGroupId(groupIdText.getText());
+			dt.setVersion(versionText.getText());
+			dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_Uri());
+		}
+	}
 
-        if (eObject == null) {
-            eObject = DeploymentFactory.eINSTANCE.createDependencyType();
-            ((EList) section.getPlan().eGet(section.getEReference()))
-                    .add(eObject);
-            isNew = true;
-        }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.wizard.IWizard#addPages()
+	 */
+	public void addPages() {
+		WizardPage page = new DependencyWizardPage("Page0");
+		addPage(page);
+	}
 
-        DependencyType dt = (DependencyType) eObject;
+	public class DependencyWizardPage extends WizardPage {
 
-        if (uriButton.getSelection()) {
-            dt.setUri(uriText.getText());
-            dt.eUnset(DeploymentPackage.eINSTANCE
-                    .getDependencyType_ArtifactId());
-            dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_GroupId());
-            dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_Version());
-        } else {
-            dt.setArtifactId(artifactIdText.getText());
-            dt.setGroupId(groupIdText.getText());
-            dt.setVersion(versionText.getText());
-            dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_Uri());
-        }
+		Text[] textEntries = new Text[section.getTableColumnEAttributes().length];
 
-        /*String[] tableText = section.getTableText(eObject);
+		public DependencyWizardPage(String pageName) {
+			super(pageName);
+			setTitle(getWizardFirstPageTitle());
+			setDescription(getWizardFirstPageDescription());
+		}
 
-        if (isNew) {
-            TableItem item = new TableItem(section.getTableViewer().getTable(),
-                    SWT.NONE);
-            item.setImage(section.getImage());
-            item.setData(eObject);
-            item.setText(tableText);
-        } else {
-            int index = section.getTableViewer().getTable().getSelectionIndex();
-            if (index != -1) {
-                TableItem item = section.getTableViewer().getTable().getItem(
-                        index);
-                item.setText(tableText);
-            }
-        }*/
+		public DependencyWizardPage(String pageName, String title,
+				ImageDescriptor titleImage) {
+			super(pageName, title, titleImage);
+		}
 
-        return true;
-    }
+		public void createControl(Composite parent) {
+			Composite composite = new Composite(parent, SWT.NULL);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.IWizard#addPages()
-     */
-    public void addPages() {
-        WizardPage page = new DependencyWizardPage("Page0");
-        addPage(page);
-    }
+			GridLayout layout = new GridLayout();
+			layout.numColumns = 2;
+			layout.horizontalSpacing = 15;
+			composite.setLayout(layout);
+			composite
+					.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 
-    public class DependencyWizardPage extends WizardPage {
+			GridData data = new GridData();
+			data = new GridData(GridData.FILL_HORIZONTAL);
+			data.horizontalSpan = 2;
 
-        Text[] textEntries = new Text[section.getTableColumnEAttributes().length];
+			Group group = new Group(composite, SWT.NONE);
+			group.setText(Messages.dependencyGroupLabel);
+			group.setLayoutData(data);
+			group.setLayout(layout);
 
-        public DependencyWizardPage(String pageName) {
-            super(pageName);
-            setTitle(getWizardFirstPageTitle());
-            setDescription(getWizardFirstPageDescription());
-        }
+			uriButton = new Button(group, SWT.LEFT | SWT.RADIO);
+			uriButton.setText(Messages.serverRepos);
+			uriButton.setLayoutData(data);
 
-        public DependencyWizardPage(String pageName, String title,
-                ImageDescriptor titleImage) {
-            super(pageName, title, titleImage);
-        }
+			uriLabel = new Label(group, SWT.LEFT);
+			uriLabel.setText(Messages.uri);
+			uriLabel.setLayoutData(createLabelGridData());
 
-        public void createControl(Composite parent) {
-            Composite composite = new Composite(parent, SWT.NULL);
+			uriText = new Text(group, SWT.SINGLE | SWT.BORDER);
+			uriText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-            GridLayout layout = new GridLayout();
-            layout.numColumns = 2;
-            layout.horizontalSpacing = 15;
-            composite.setLayout(layout);
-            composite
-                    .setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
+			mavenButton = new Button(group, SWT.LEFT | SWT.RADIO);
+			mavenButton.setText(Messages.mavenArtifact);
+			mavenButton.setLayoutData(data);
 
-            GridData data = new GridData();
-            data = new GridData(GridData.FILL_HORIZONTAL);
-            data.horizontalSpan = 2;
+			groupIdLabel = new Label(group, SWT.LEFT);
+			groupIdLabel.setText(Messages.groupId);
+			groupIdLabel.setLayoutData(createLabelGridData());
 
-            Group group = new Group(composite, SWT.NONE);
-            group.setText(Messages.dependencyGroupLabel);
-            group.setLayoutData(data);
-            group.setLayout(layout);
+			groupIdText = new Text(group, SWT.SINGLE | SWT.BORDER);
+			groupIdText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-            uriButton = new Button(group, SWT.LEFT | SWT.RADIO);
-            uriButton.setText(Messages.serverRepos);
-            uriButton.setLayoutData(data);
+			artifactIdLabel = new Label(group, SWT.LEFT);
+			artifactIdLabel.setText(Messages.artifactId);
+			artifactIdLabel.setLayoutData(createLabelGridData());
 
-            uriLabel = new Label(group, SWT.LEFT);
-            uriLabel.setText(Messages.uri);
-            uriLabel.setLayoutData(createLabelGridData());
+			artifactIdText = new Text(group, SWT.SINGLE | SWT.BORDER);
+			artifactIdText
+					.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-            uriText = new Text(group, SWT.SINGLE | SWT.BORDER);
-            uriText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			versionLabel = new Label(group, SWT.LEFT);
+			versionLabel.setText(Messages.version);
+			versionLabel.setLayoutData(createLabelGridData());
 
-            mavenButton = new Button(group, SWT.LEFT | SWT.RADIO);
-            mavenButton.setText(Messages.mavenArtifact);
-            mavenButton.setLayoutData(data);
+			versionText = new Text(group, SWT.SINGLE | SWT.BORDER);
+			versionText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-            groupIdLabel = new Label(group, SWT.LEFT);
-            groupIdLabel.setText(Messages.groupId);
-            groupIdLabel.setLayoutData(createLabelGridData());
+			uriButton.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					if (uriButton.getSelection()) {
+						toggle();
+					}
+				}
+			});
 
-            groupIdText = new Text(group, SWT.SINGLE | SWT.BORDER);
-            groupIdText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			mavenButton.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					if (mavenButton.getSelection()) {
+						toggle();
+					}
+				}
+			});
 
-            artifactIdLabel = new Label(group, SWT.LEFT);
-            artifactIdLabel.setText(Messages.artifactId);
-            artifactIdLabel.setLayoutData(createLabelGridData());
+			if (eObject != null) {
+				if (eObject.eIsSet(DeploymentPackage.eINSTANCE
+						.getDependencyType_Uri())) {
+					uriButton.setSelection(true);
+					uriText.setText(eObject
+							.eGet(
+									DeploymentPackage.eINSTANCE
+											.getDependencyType_Uri())
+							.toString());
+				} else {
+					mavenButton.setSelection(true);
+					if (eObject.eIsSet(DeploymentPackage.eINSTANCE
+							.getDependencyType_ArtifactId())) {
+						artifactIdText.setText(eObject.eGet(
+								DeploymentPackage.eINSTANCE
+										.getDependencyType_ArtifactId())
+								.toString());
+					}
+					if (eObject.eIsSet(DeploymentPackage.eINSTANCE
+							.getDependencyType_GroupId())) {
+						groupIdText.setText(eObject.eGet(
+								DeploymentPackage.eINSTANCE
+										.getDependencyType_GroupId())
+								.toString());
+					}
+					if (eObject.eIsSet(DeploymentPackage.eINSTANCE
+							.getDependencyType_Version())) {
+						versionText.setText(eObject.eGet(
+								DeploymentPackage.eINSTANCE
+										.getDependencyType_Version())
+								.toString());
+					}
+				}
+			} else {
+				uriButton.setSelection(true);
+				uriLabel.setEnabled(true);
+				uriText.setEnabled(true);
 
-            artifactIdText = new Text(group, SWT.SINGLE | SWT.BORDER);
-            artifactIdText
-                    .setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+				mavenButton.setSelection(false);
+				groupIdLabel.setEnabled(false);
+				groupIdText.setEnabled(false);
+				artifactIdLabel.setEnabled(false);
+				artifactIdText.setEnabled(false);
+				versionLabel.setEnabled(false);
+				versionText.setEnabled(false);
+			}
 
-            versionLabel = new Label(group, SWT.LEFT);
-            versionLabel.setText(Messages.version);
-            versionLabel.setLayoutData(createLabelGridData());
+			setControl(composite);
 
-            versionText = new Text(group, SWT.SINGLE | SWT.BORDER);
-            versionText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		}
+	}
 
-            uriButton.addSelectionListener(new SelectionAdapter() {
-                public void widgetSelected(SelectionEvent e) {
-                    if (uriButton.getSelection()) {
-                        toggle();
-                    }
-                }
-            });
+	public GridData createLabelGridData() {
+		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		gd.horizontalIndent = 20;
+		return gd;
+	}
 
-            mavenButton.addSelectionListener(new SelectionAdapter() {
-                public void widgetSelected(SelectionEvent e) {
-                    if (mavenButton.getSelection()) {
-                        toggle();
-                    }
-                }
-            });
-
-            if (eObject != null) {
-                if (eObject.eIsSet(DeploymentPackage.eINSTANCE
-                        .getDependencyType_Uri())) {
-                    uriButton.setSelection(true);
-                    uriText.setText(eObject
-                            .eGet(
-                                    DeploymentPackage.eINSTANCE
-                                            .getDependencyType_Uri())
-                            .toString());
-                } else {
-                    mavenButton.setSelection(true);
-                    if (eObject.eIsSet(DeploymentPackage.eINSTANCE
-                            .getDependencyType_ArtifactId())) {
-                        artifactIdText.setText(eObject.eGet(
-                                DeploymentPackage.eINSTANCE
-                                        .getDependencyType_ArtifactId())
-                                .toString());
-                    }
-                    if (eObject.eIsSet(DeploymentPackage.eINSTANCE
-                            .getDependencyType_GroupId())) {
-                        groupIdText.setText(eObject.eGet(
-                                DeploymentPackage.eINSTANCE
-                                        .getDependencyType_GroupId())
-                                .toString());
-                    }
-                    if (eObject.eIsSet(DeploymentPackage.eINSTANCE
-                            .getDependencyType_Version())) {
-                        versionText.setText(eObject.eGet(
-                                DeploymentPackage.eINSTANCE
-                                        .getDependencyType_Version())
-                                .toString());
-                    }
-                }
-            } else {
-                uriButton.setSelection(true);
-                uriLabel.setEnabled(true);
-                uriText.setEnabled(true);
-
-                mavenButton.setSelection(false);
-                groupIdLabel.setEnabled(false);
-                groupIdText.setEnabled(false);
-                artifactIdLabel.setEnabled(false);
-                artifactIdText.setEnabled(false);
-                versionLabel.setEnabled(false);
-                versionText.setEnabled(false);
-            }
-
-            setControl(composite);
-
-        }
-    }
-
-    public GridData createLabelGridData() {
-        GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-        gd.horizontalIndent = 20;
-        return gd;
-    }
-
-    public void toggle() {
-        uriLabel.setEnabled(!uriLabel.isEnabled());
-        groupIdLabel.setEnabled(!groupIdLabel.isEnabled());
-        artifactIdLabel.setEnabled(!artifactIdLabel.isEnabled());
-        versionLabel.setEnabled(!versionLabel.isEnabled());
-        uriText.setEnabled(!uriText.isEnabled());
-        groupIdText.setEnabled(!groupIdText.isEnabled());
-        artifactIdText.setEnabled(!artifactIdText.isEnabled());
-        versionText.setEnabled(!versionText.isEnabled());
-    }
+	public void toggle() {
+		uriLabel.setEnabled(!uriLabel.isEnabled());
+		groupIdLabel.setEnabled(!groupIdLabel.isEnabled());
+		artifactIdLabel.setEnabled(!artifactIdLabel.isEnabled());
+		versionLabel.setEnabled(!versionLabel.isEnabled());
+		uriText.setEnabled(!uriText.isEnabled());
+		groupIdText.setEnabled(!groupIdText.isEnabled());
+		artifactIdText.setEnabled(!artifactIdText.isEnabled());
+		versionText.setEnabled(!versionText.isEnabled());
+	}
 
 }
