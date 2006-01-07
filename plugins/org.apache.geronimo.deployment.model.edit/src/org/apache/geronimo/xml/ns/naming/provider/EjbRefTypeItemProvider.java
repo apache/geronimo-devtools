@@ -431,6 +431,12 @@ public class EjbRefTypeItemProvider extends ItemProviderAdapter implements
 		return GeronimoEMFEditPlugin.INSTANCE;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.emf.edit.provider.ITableItemLabelProvider#getColumnText(java.lang.Object,
+	 *      int)
+	 */
 	public String getColumnText(Object object, int columnIndex) {
 		EjbRefType o = (EjbRefType) object;
 		switch (columnIndex) {
@@ -448,12 +454,12 @@ public class EjbRefTypeItemProvider extends ItemProviderAdapter implements
 		return "";
 	}
 
-	/**
-	 * This does the same thing as ITableLabelProvider.getColumnImage.
+	/* (non-Javadoc)
+	 * @see org.eclipse.emf.edit.provider.ITableItemLabelProvider#getColumnImage(java.lang.Object, int)
 	 */
 	public Object getColumnImage(Object object, int columnIndex) {
 		if (columnIndex == 0) {
-			return getResourceLocator().getImage("full/obj16/EjbRefType");
+			return getImage(object);
 		}
 		return null;
 	}

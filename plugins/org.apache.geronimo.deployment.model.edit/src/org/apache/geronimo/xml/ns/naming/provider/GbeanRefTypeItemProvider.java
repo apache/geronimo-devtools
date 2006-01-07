@@ -19,11 +19,12 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.geronimo.deployment.model.edit.GeronimoEMFEditPlugin;
+import org.apache.geronimo.xml.ns.naming.GbeanRefType;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
-import org.apache.geronimo.xml.ns.naming.ResourceRefType;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.emf.ecore.util.FeatureMapUtil;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -37,12 +38,12 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
  * This is the item provider adapter for a
- * {@link org.apache.geronimo.xml.ns.naming.ResourceRefType} object. <!--
+ * {@link org.apache.geronimo.xml.ns.naming.GbeanRefType} object. <!--
  * begin-user-doc --> <!-- end-user-doc -->
  * 
  * @generated NOT
  */
-public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
+public class GbeanRefTypeItemProvider extends ItemProviderAdapter implements
 		IEditingDomainItemProvider, IStructuredItemContentProvider,
 		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource,
 		ITableItemLabelProvider {
@@ -59,7 +60,7 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 	 * 
 	 * @generated
 	 */
-	public ResourceRefTypeItemProvider(AdapterFactory adapterFactory) {
+	public GbeanRefTypeItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -74,15 +75,15 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 			super.getPropertyDescriptors(object);
 
 			addRefNamePropertyDescriptor(object);
+			addRefTypePropertyDescriptor(object);
+			addProxyTypePropertyDescriptor(object);
 			addDomainPropertyDescriptor(object);
 			addServerPropertyDescriptor(object);
 			addApplicationPropertyDescriptor(object);
 			addModulePropertyDescriptor(object);
 			addTypePropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
-			addResourceLinkPropertyDescriptor(object);
 			addTargetNamePropertyDescriptor(object);
-			addUrlPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -97,11 +98,47 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(
 				((ComposeableAdapterFactory) adapterFactory)
 						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_refName_feature"), getString(
+				getString("_UI_GbeanRefType_refName_feature"), getString(
 						"_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_refName_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_RefName(), true,
+						"_UI_GbeanRefType_refName_feature",
+						"_UI_GbeanRefType_type"), NamingPackage.eINSTANCE
+						.getGbeanRefType_RefName(), true,
+				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Ref Type feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addRefTypePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory)
+						.getRootAdapterFactory(), getResourceLocator(),
+				getString("_UI_GbeanRefType_refType_feature"), getString(
+						"_UI_PropertyDescriptor_description",
+						"_UI_GbeanRefType_refType_feature",
+						"_UI_GbeanRefType_type"), NamingPackage.eINSTANCE
+						.getGbeanRefType_RefType(), true,
+				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Proxy Type feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addProxyTypePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory)
+						.getRootAdapterFactory(), getResourceLocator(),
+				getString("_UI_GbeanRefType_proxyType_feature"), getString(
+						"_UI_PropertyDescriptor_description",
+						"_UI_GbeanRefType_proxyType_feature",
+						"_UI_GbeanRefType_type"), NamingPackage.eINSTANCE
+						.getGbeanRefType_ProxyType(), true,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -115,11 +152,11 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(
 				((ComposeableAdapterFactory) adapterFactory)
 						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_domain_feature"), getString(
+				getString("_UI_GbeanRefType_domain_feature"), getString(
 						"_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_domain_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_Domain(), true,
+						"_UI_GbeanRefType_domain_feature",
+						"_UI_GbeanRefType_type"), NamingPackage.eINSTANCE
+						.getGbeanRefType_Domain(), true,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -133,11 +170,11 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(
 				((ComposeableAdapterFactory) adapterFactory)
 						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_server_feature"), getString(
+				getString("_UI_GbeanRefType_server_feature"), getString(
 						"_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_server_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_Server(), true,
+						"_UI_GbeanRefType_server_feature",
+						"_UI_GbeanRefType_type"), NamingPackage.eINSTANCE
+						.getGbeanRefType_Server(), true,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -151,11 +188,11 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(
 				((ComposeableAdapterFactory) adapterFactory)
 						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_application_feature"),
-				getString("_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_application_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_Application(), true,
+				getString("_UI_GbeanRefType_application_feature"), getString(
+						"_UI_PropertyDescriptor_description",
+						"_UI_GbeanRefType_application_feature",
+						"_UI_GbeanRefType_type"), NamingPackage.eINSTANCE
+						.getGbeanRefType_Application(), true,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -169,11 +206,11 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(
 				((ComposeableAdapterFactory) adapterFactory)
 						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_module_feature"), getString(
+				getString("_UI_GbeanRefType_module_feature"), getString(
 						"_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_module_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_Module(), true,
+						"_UI_GbeanRefType_module_feature",
+						"_UI_GbeanRefType_type"), NamingPackage.eINSTANCE
+						.getGbeanRefType_Module(), true,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -187,11 +224,11 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(
 				((ComposeableAdapterFactory) adapterFactory)
 						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_type_feature"), getString(
+				getString("_UI_GbeanRefType_type_feature"), getString(
 						"_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_type_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_Type(), true,
+						"_UI_GbeanRefType_type_feature",
+						"_UI_GbeanRefType_type"), NamingPackage.eINSTANCE
+						.getGbeanRefType_Type(), true,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -205,29 +242,11 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(
 				((ComposeableAdapterFactory) adapterFactory)
 						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_name_feature"), getString(
+				getString("_UI_GbeanRefType_name_feature"), getString(
 						"_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_name_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_Name(), true,
-				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Resource Link feature. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	protected void addResourceLinkPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory)
-						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_resourceLink_feature"),
-				getString("_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_resourceLink_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_ResourceLink(), true,
+						"_UI_GbeanRefType_name_feature",
+						"_UI_GbeanRefType_type"), NamingPackage.eINSTANCE
+						.getGbeanRefType_Name(), true,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -241,40 +260,41 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(
 				((ComposeableAdapterFactory) adapterFactory)
 						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_targetName_feature"), getString(
+				getString("_UI_GbeanRefType_targetName_feature"), getString(
 						"_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_targetName_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_TargetName(), true,
+						"_UI_GbeanRefType_targetName_feature",
+						"_UI_GbeanRefType_type"), NamingPackage.eINSTANCE
+						.getGbeanRefType_TargetName(), true,
 				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
-	 * This adds a property descriptor for the Url feature. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * This specifies how to implement {@link #getChildren} and is used to
+	 * deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand},
+	 * {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in
+	 * {@link #createCommand}. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	protected void addUrlPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory)
-						.getRootAdapterFactory(), getResourceLocator(),
-				getString("_UI_ResourceRefType_url_feature"), getString(
-						"_UI_PropertyDescriptor_description",
-						"_UI_ResourceRefType_url_feature",
-						"_UI_ResourceRefType_type"), NamingPackage.eINSTANCE
-						.getResourceRefType_Url(), true,
-				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	public Collection getChildrenFeatures(Object object) {
+		if (childrenFeatures == null) {
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(NamingPackage.eINSTANCE
+					.getGbeanRefType_Group());
+		}
+		return childrenFeatures;
 	}
 
 	/**
-	 * This returns ResourceRefType.gif. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * This returns GbeanRefType.gif. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
 	 * 
 	 * @generated
 	 */
 	public Object getImage(Object object) {
-		return getResourceLocator().getImage("full/obj16/ResourceRefType");
+		return getResourceLocator().getImage("full/obj16/GbeanRefType");
 	}
 
 	/**
@@ -284,9 +304,9 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 	 * @generated
 	 */
 	public String getText(Object object) {
-		String label = ((ResourceRefType) object).getName();
-		return label == null || label.length() == 0 ? getString("_UI_ResourceRefType_type")
-				: getString("_UI_ResourceRefType_type") + " " + label;
+		String label = ((GbeanRefType) object).getRefName();
+		return label == null || label.length() == 0 ? getString("_UI_GbeanRefType_type")
+				: getString("_UI_GbeanRefType_type") + " " + label;
 	}
 
 	/**
@@ -300,19 +320,23 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(ResourceRefType.class)) {
-		case NamingPackage.RESOURCE_REF_TYPE__REF_NAME:
-		case NamingPackage.RESOURCE_REF_TYPE__DOMAIN:
-		case NamingPackage.RESOURCE_REF_TYPE__SERVER:
-		case NamingPackage.RESOURCE_REF_TYPE__APPLICATION:
-		case NamingPackage.RESOURCE_REF_TYPE__MODULE:
-		case NamingPackage.RESOURCE_REF_TYPE__TYPE:
-		case NamingPackage.RESOURCE_REF_TYPE__NAME:
-		case NamingPackage.RESOURCE_REF_TYPE__RESOURCE_LINK:
-		case NamingPackage.RESOURCE_REF_TYPE__TARGET_NAME:
-		case NamingPackage.RESOURCE_REF_TYPE__URL:
+		switch (notification.getFeatureID(GbeanRefType.class)) {
+		case NamingPackage.GBEAN_REF_TYPE__REF_NAME:
+		case NamingPackage.GBEAN_REF_TYPE__REF_TYPE:
+		case NamingPackage.GBEAN_REF_TYPE__PROXY_TYPE:
+		case NamingPackage.GBEAN_REF_TYPE__DOMAIN:
+		case NamingPackage.GBEAN_REF_TYPE__SERVER:
+		case NamingPackage.GBEAN_REF_TYPE__APPLICATION:
+		case NamingPackage.GBEAN_REF_TYPE__MODULE:
+		case NamingPackage.GBEAN_REF_TYPE__TYPE:
+		case NamingPackage.GBEAN_REF_TYPE__NAME:
+		case NamingPackage.GBEAN_REF_TYPE__TARGET_NAME:
 			fireNotifyChanged(new ViewerNotification(notification, notification
 					.getNotifier(), false, true));
+			return;
+		case NamingPackage.GBEAN_REF_TYPE__GROUP:
+			fireNotifyChanged(new ViewerNotification(notification, notification
+					.getNotifier(), true, false));
 			return;
 		}
 		super.notifyChanged(notification);
@@ -329,6 +353,34 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 	protected void collectNewChildDescriptors(Collection newChildDescriptors,
 			Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
+
+		newChildDescriptors.add(createChildParameter(NamingPackage.eINSTANCE
+				.getGbeanRefType_Group(), FeatureMapUtil.createEntry(
+				NamingPackage.eINSTANCE.getGbeanRefType_Domain(), "")));
+
+		newChildDescriptors.add(createChildParameter(NamingPackage.eINSTANCE
+				.getGbeanRefType_Group(), FeatureMapUtil.createEntry(
+				NamingPackage.eINSTANCE.getGbeanRefType_Server(), "")));
+
+		newChildDescriptors.add(createChildParameter(NamingPackage.eINSTANCE
+				.getGbeanRefType_Group(), FeatureMapUtil.createEntry(
+				NamingPackage.eINSTANCE.getGbeanRefType_Application(), "")));
+
+		newChildDescriptors.add(createChildParameter(NamingPackage.eINSTANCE
+				.getGbeanRefType_Group(), FeatureMapUtil.createEntry(
+				NamingPackage.eINSTANCE.getGbeanRefType_Module(), "")));
+
+		newChildDescriptors.add(createChildParameter(NamingPackage.eINSTANCE
+				.getGbeanRefType_Group(), FeatureMapUtil.createEntry(
+				NamingPackage.eINSTANCE.getGbeanRefType_Type(), "")));
+
+		newChildDescriptors.add(createChildParameter(NamingPackage.eINSTANCE
+				.getGbeanRefType_Group(), FeatureMapUtil.createEntry(
+				NamingPackage.eINSTANCE.getGbeanRefType_Name(), "")));
+
+		newChildDescriptors.add(createChildParameter(NamingPackage.eINSTANCE
+				.getGbeanRefType_Group(), FeatureMapUtil.createEntry(
+				NamingPackage.eINSTANCE.getGbeanRefType_TargetName(), "")));
 	}
 
 	/**
@@ -341,30 +393,39 @@ public class ResourceRefTypeItemProvider extends ItemProviderAdapter implements
 		return GeronimoEMFEditPlugin.INSTANCE;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.emf.edit.provider.ITableItemLabelProvider#getColumnText(java.lang.Object, int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.emf.edit.provider.ITableItemLabelProvider#getColumnText(java.lang.Object,
+	 *      int)
 	 */
 	public String getColumnText(Object object, int columnIndex) {
-		ResourceRefType o = (ResourceRefType) object;
-		switch(columnIndex) {
+		GbeanRefType o = (GbeanRefType) object;
+		switch (columnIndex) {
 		case 0:
-			return o.getRefName();
+			if (o.eIsSet(NamingPackage.eINSTANCE.getGbeanRefType_RefName())) {
+				return o.getRefName();
+			}
+			break;
 		case 1:
-			if(o.eIsSet(NamingPackage.eINSTANCE.getResourceRefType_ResourceLink())) {
-				return o.getResourceLink();
+			if (o.eIsSet(NamingPackage.eINSTANCE.getGbeanRefType_RefType())) {
+				return o.getRefType();
 			}
 			break;
 		case 2:
-			if(o.eIsSet(NamingPackage.eINSTANCE.getResourceRefType_TargetName())) {
-				return o.getTargetName();
+			if (o.eIsSet(NamingPackage.eINSTANCE.getGbeanRefType_ProxyType())) {
+				return o.getProxyType();
 			}
 			break;
 		}
 		return "";
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.emf.edit.provider.ITableItemLabelProvider#getColumnImage(java.lang.Object, int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.emf.edit.provider.ITableItemLabelProvider#getColumnImage(java.lang.Object,
+	 *      int)
 	 */
 	public Object getColumnImage(Object object, int columnIndex) {
 		if (columnIndex == 0) {
