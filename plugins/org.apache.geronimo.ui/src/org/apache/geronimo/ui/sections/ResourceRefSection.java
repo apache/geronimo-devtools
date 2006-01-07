@@ -56,7 +56,6 @@ public class ResourceRefSection extends DynamicTableSection {
         this.resourceRefERef = resourceRefERef;
         this.factory = factory;
         createNew();
-        //super.createClient();
     }  
 
     /*
@@ -75,15 +74,6 @@ public class ResourceRefSection extends DynamicTableSection {
      */
     public String getDescription() {
         return Messages.editorResourceRefDescription;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEFactory()
-     */
-    public EFactory getEFactory() {
-        return NamingFactory.eINSTANCE;
     }
 
     /*
@@ -108,18 +98,6 @@ public class ResourceRefSection extends DynamicTableSection {
 
     public Class getWizardClass() {
         return ResourceRefWizard.class;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnEAttributes()
-     */
-    public EAttribute[] getTableColumnEAttributes() {
-        return new EAttribute[] {
-                NamingPackage.eINSTANCE.getResourceRefType_RefName(),
-                NamingPackage.eINSTANCE.getResourceRefType_ResourceLink(),
-                NamingPackage.eINSTANCE.getResourceRefType_TargetName() };
     }
 
     /*

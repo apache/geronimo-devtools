@@ -17,12 +17,25 @@ package org.apache.geronimo.ui.wizards;
 
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.sections.DynamicTableSection;
+import org.apache.geronimo.xml.ns.naming.NamingFactory;
+import org.apache.geronimo.xml.ns.naming.NamingPackage;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EFactory;
 
 public class EjbRefWizard extends DynamicAddEditWizard {
 
     public EjbRefWizard(DynamicTableSection section) {
         super(section);
-        // TODO Auto-generated constructor stub
+    }
+    
+    public EFactory getEFactory() {
+        return NamingFactory.eINSTANCE;
+    }
+    
+    public EAttribute[] getTableColumnEAttributes() {
+        return new EAttribute[] {
+                NamingPackage.eINSTANCE.getEjbRefType_TargetName(),
+                NamingPackage.eINSTANCE.getEjbRefType_EjbLink() };
     }
 
     /*

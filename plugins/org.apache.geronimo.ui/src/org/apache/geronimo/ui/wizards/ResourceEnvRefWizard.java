@@ -17,6 +17,10 @@ package org.apache.geronimo.ui.wizards;
 
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.sections.DynamicTableSection;
+import org.apache.geronimo.xml.ns.naming.NamingFactory;
+import org.apache.geronimo.xml.ns.naming.NamingPackage;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EFactory;
 
 public class ResourceEnvRefWizard extends DynamicAddEditWizard {
 
@@ -25,6 +29,17 @@ public class ResourceEnvRefWizard extends DynamicAddEditWizard {
      */
     public ResourceEnvRefWizard(DynamicTableSection section) {
         super(section);
+    }
+    
+    public EFactory getEFactory() {
+        return NamingFactory.eINSTANCE;
+    }
+    
+    public EAttribute[] getTableColumnEAttributes() {
+        return new EAttribute[] {
+                NamingPackage.eINSTANCE.getResourceEnvRefType_RefName(),
+                NamingPackage.eINSTANCE
+                        .getResourceEnvRefType_MessageDestinationLink() };
     }
 
     /*

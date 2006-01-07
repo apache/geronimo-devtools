@@ -59,14 +59,6 @@ public class BeansSection extends DynamicTableSection {
     }
 
     /* (non-Javadoc)
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEFactory()
-     */
-    public EFactory getEFactory() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEReference()
      */
     public EReference getEReference() {
@@ -78,14 +70,6 @@ public class BeansSection extends DynamicTableSection {
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnNames()
      */
     public String[] getTableColumnNames() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnEAttributes()
-     */
-    public EAttribute[] getTableColumnEAttributes() {
         // TODO Auto-generated method stub
         return null;
     }

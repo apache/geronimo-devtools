@@ -30,169 +30,148 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-public abstract class DynamicAddEditWizard extends Wizard {
+public abstract class DynamicAddEditWizard extends Wizard implements TableWizard {
 
-    DynamicTableSection section;
+	DynamicTableSection section;
 
-    EObject eObject;
-    
-    ImageDescriptor descriptor = GeronimoUIPlugin.imageDescriptorFromPlugin(
-            "org.apache.geronimo.ui", "icons/bigG.gif");
+	EObject eObject;
 
-    /**
-     * 
-     */
-    public DynamicAddEditWizard(DynamicTableSection section) {
-        super();
-        this.section = section;
-        setWindowTitle(getAddWizardWindowTitle());      
-    }
+	ImageDescriptor descriptor = GeronimoUIPlugin.imageDescriptorFromPlugin(
+			"org.apache.geronimo.ui", "icons/bigG.gif");
 
-    /**
-     * @return
-     */
-    abstract public String getAddWizardWindowTitle();
-
-    /**
-     * @return
-     */
-    abstract public String getEditWizardWindowTitle();
-
-    /**
-     * @return
-     */
-    abstract public String getWizardFirstPageTitle();
-
-    /**
-     * @return
-     */
-    abstract public String getWizardFirstPageDescription();
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
-     */
-    public boolean performFinish() {
-        DynamicWizardPage page = (DynamicWizardPage) getPages()[0];
-
-        if (eObject == null) {
-            eObject = section.getEFactory().create(
-                    section.getTableColumnEAttributes()[0]
-                            .getEContainingClass());
-            EObject plan = section.getPlan();           
-            
-            ((EList) plan.eGet(section.getEReference())).add(eObject);
-        }
-        
-        processEAttributes(page);
-
-        return true;
-    }
-
-	public void processEAttributes(DynamicWizardPage page) {
-		for (int i = 0; i < section.getTableColumnEAttributes().length; i++) {
-            String value = page.textEntries[i].getText();
-            EAttribute attribute = section.getTableColumnEAttributes()[i];
-            if (attribute.getEContainingClass().equals(eObject.eClass())) {
-                eObject.eSet(attribute, value);
-            } else {
-            	//TODO
-            }
-        }
+	/**
+	 * 
+	 */
+	public DynamicAddEditWizard(DynamicTableSection section) {
+		super();
+		this.section = section;
+		setWindowTitle(getAddWizardWindowTitle());
 	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.IWizard#addPages()
-     */
-    public void addPages() {
-        WizardPage page = new DynamicWizardPage("Page0");
-        page.setImageDescriptor(descriptor);
-        addPage(page);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
+	 */
+	public boolean performFinish() {
+		DynamicWizardPage page = (DynamicWizardPage) getPages()[0];
 
-    /**
-     * @param section
-     */
-    public void setSection(DynamicTableSection section) {
-        this.section = section;
-    }
+		if (eObject == null) {
+			eObject = getEFactory().create(
+					getTableColumnEAttributes()[0].getEContainingClass());
+			EObject plan = section.getPlan();
 
-    /**
-     * @param object
-     */
-    public void setEObject(EObject object) {
-        eObject = object;
-    }
+			((EList) plan.eGet(section.getEReference())).add(eObject);
+		}
 
-    public class DynamicWizardPage extends WizardPage {
+		processEAttributes(page);
 
-        Text[] textEntries = new Text[section.getTableColumnEAttributes().length];
+		return true;
+	}
 
-        public DynamicWizardPage(String pageName) {
-            super(pageName);
-            setTitle(getWizardFirstPageTitle());
-            setDescription(getWizardFirstPageDescription());
-        }
+	public void processEAttributes(DynamicWizardPage page) {
+		for (int i = 0; i < getTableColumnEAttributes().length; i++) {
+			String value = page.textEntries[i].getText();
+			EAttribute attribute = getTableColumnEAttributes()[i];
+			if (attribute.getEContainingClass().equals(eObject.eClass())) {
+				eObject.eSet(attribute, value);
+			} else {
+				// TODO
+			}
+		}
+	}
 
-        public DynamicWizardPage(String pageName, String title,
-                ImageDescriptor titleImage) {
-            super(pageName, title, titleImage);
-        }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.wizard.IWizard#addPages()
+	 */
+	public void addPages() {
+		WizardPage page = new DynamicWizardPage("Page0");
+		page.setImageDescriptor(descriptor);
+		addPage(page);
+	}
 
-        public void createControl(Composite parent) {
+	/**
+	 * @param section
+	 */
+	public void setSection(DynamicTableSection section) {
+		this.section = section;
+	}
+
+	/**
+	 * @param object
+	 */
+	public void setEObject(EObject object) {
+		eObject = object;
+	}
+
+	public class DynamicWizardPage extends WizardPage {
+
+		Text[] textEntries = new Text[getTableColumnEAttributes().length];
+
+		public DynamicWizardPage(String pageName) {
+			super(pageName);
+			setTitle(getWizardFirstPageTitle());
+			setDescription(getWizardFirstPageDescription());
+		}
+
+		public DynamicWizardPage(String pageName, String title,
+				ImageDescriptor titleImage) {
+			super(pageName, title, titleImage);
+		}
+
+		public void createControl(Composite parent) {
 			Composite composite = createComposite(parent);
-            for (int i = 0; i < section.getTableColumnNames().length; i++) {
-                Label label = new Label(composite, SWT.LEFT);
-                String columnName = section.getTableColumnNames()[i];
-                if(!columnName.endsWith(":"))
-                    columnName = columnName.concat(":");
-                label.setText(columnName);
-                GridData data = new GridData();
-                data.horizontalAlignment = GridData.FILL;
-                label.setLayoutData(data);
+			for (int i = 0; i < section.getTableColumnNames().length; i++) {
+				Label label = new Label(composite, SWT.LEFT);
+				String columnName = section.getTableColumnNames()[i];
+				if (!columnName.endsWith(":"))
+					columnName = columnName.concat(":");
+				label.setText(columnName);
+				GridData data = new GridData();
+				data.horizontalAlignment = GridData.FILL;
+				label.setLayoutData(data);
 
-                Text text = new Text(composite, SWT.SINGLE | SWT.BORDER);
-                data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
-                        | GridData.VERTICAL_ALIGN_FILL);
-                data.grabExcessHorizontalSpace = true;
-                data.widthHint = 100;
-                text.setLayoutData(data);
+				Text text = new Text(composite, SWT.SINGLE | SWT.BORDER);
+				data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+						| GridData.VERTICAL_ALIGN_FILL);
+				data.grabExcessHorizontalSpace = true;
+				data.widthHint = 100;
+				text.setLayoutData(data);
 
-                if (eObject != null) {
-                    String value = (String) eObject.eGet(section
-                            .getTableColumnEAttributes()[i]);
-                    if (value != null) {
-                        text.setText(value);
-                    }
-                }
-                textEntries[i] = text;
-            }
-            
-            doCustom(composite);
-            setControl(composite);                                    
-            textEntries[0].setFocus();
-        }
+				if (eObject != null) {
+					String value = (String) eObject
+							.eGet(getTableColumnEAttributes()[i]);
+					if (value != null) {
+						text.setText(value);
+					}
+				}
+				textEntries[i] = text;
+			}
+
+			doCustom(composite);
+			setControl(composite);
+			textEntries[0].setFocus();
+		}
 
 		public Composite createComposite(Composite parent) {
 			Composite composite = new Composite(parent, SWT.NULL);
-            GridLayout layout = new GridLayout();
-            layout.numColumns = 2;
-            composite.setLayout(layout);
-            GridData data = new GridData();
-            data.verticalAlignment = GridData.FILL;
-            data.horizontalAlignment = GridData.FILL;
-            data.widthHint = 300;
-            composite.setLayoutData(data);
+			GridLayout layout = new GridLayout();
+			layout.numColumns = 2;
+			composite.setLayout(layout);
+			GridData data = new GridData();
+			data.verticalAlignment = GridData.FILL;
+			data.horizontalAlignment = GridData.FILL;
+			data.widthHint = 300;
+			composite.setLayoutData(data);
 			return composite;
 		}
-        
-        public void doCustom(Composite parent) {
-        	
-        }
 
-    }
+		public void doCustom(Composite parent) {
+
+		}
+
+	}
 
 }

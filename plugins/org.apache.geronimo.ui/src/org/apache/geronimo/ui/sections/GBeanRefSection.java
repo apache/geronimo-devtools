@@ -66,15 +66,6 @@ public class GBeanRefSection extends DynamicTableSection {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEFactory()
-	 */
-	public EFactory getEFactory() {
-		return NamingFactory.eINSTANCE;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEReference()
 	 */
 	public EReference getEReference() {
@@ -89,18 +80,6 @@ public class GBeanRefSection extends DynamicTableSection {
 	public String[] getTableColumnNames() {
 		return new String[] { Messages.editorGBeanRefName,
 				Messages.editorGBeanRefType, Messages.editorGBeanRefProxyType };
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnEAttributes()
-	 */
-	public EAttribute[] getTableColumnEAttributes() {
-		return new EAttribute[] {
-				NamingPackage.eINSTANCE.getGbeanRefType_RefName(),
-				NamingPackage.eINSTANCE.getGbeanRefType_RefType(),
-				NamingPackage.eINSTANCE.getGbeanRefType_ProxyType() };
 	}
 
 	/*

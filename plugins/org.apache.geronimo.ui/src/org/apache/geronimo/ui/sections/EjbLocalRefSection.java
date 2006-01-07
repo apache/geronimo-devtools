@@ -68,15 +68,6 @@ public class EjbLocalRefSection extends DynamicTableSection {
     /*
      * (non-Javadoc)
      * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEFactory()
-     */
-    public EFactory getEFactory() {
-        return NamingFactory.eINSTANCE;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEReference()
      */
     public EReference getEReference() {
@@ -92,17 +83,6 @@ public class EjbLocalRefSection extends DynamicTableSection {
         return new String[] { Messages.editorEjbRefTargetName,
                 Messages.editorEjbRefEjbLink };
 
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnEAttributes()
-     */
-    public EAttribute[] getTableColumnEAttributes() {
-        return new EAttribute[] {
-                NamingPackage.eINSTANCE.getEjbLocalRefType_TargetName(),
-                NamingPackage.eINSTANCE.getEjbLocalRefType_EjbLink() };
     }
 
     /*

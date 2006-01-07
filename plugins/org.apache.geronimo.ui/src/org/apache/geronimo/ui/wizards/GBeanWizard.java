@@ -17,6 +17,10 @@ package org.apache.geronimo.ui.wizards;
 
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.sections.DynamicTableSection;
+import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
+import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EFactory;
 
 public class GBeanWizard extends DynamicAddEditWizard {
 
@@ -25,6 +29,17 @@ public class GBeanWizard extends DynamicAddEditWizard {
      */
     public GBeanWizard(DynamicTableSection section) {
         super(section);
+    }
+    
+    public EFactory getEFactory() {
+        return DeploymentFactory.eINSTANCE;
+    }
+    
+    public EAttribute[] getTableColumnEAttributes() {
+        return new EAttribute[] {
+                DeploymentPackage.eINSTANCE.getGbeanType_Name(),
+                DeploymentPackage.eINSTANCE.getGbeanType_GbeanName(),
+                DeploymentPackage.eINSTANCE.getGbeanType_Class() };
     }
 
     /* (non-Javadoc)

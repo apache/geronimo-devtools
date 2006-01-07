@@ -18,7 +18,10 @@ package org.apache.geronimo.ui.wizards;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.sections.DynamicTableSection;
 import org.apache.geronimo.xml.ns.deployment.DependencyType;
+import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
 import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -68,6 +71,20 @@ public class DependencyWizard extends DynamicAddEditWizard {
 	public DependencyWizard(DynamicTableSection section) {
 		super(section);
 	}
+	
+    /* (non-Javadoc)
+     * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEFactory()
+     */
+    public EFactory getEFactory() {
+        return DeploymentFactory.eINSTANCE;
+    }
+    
+    /* (non-Javadoc)
+     * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getTableColumnEAttributes()
+     */
+    public EAttribute[] getTableColumnEAttributes() {
+        return new EAttribute[] {};
+    }
 
 	/*
 	 * (non-Javadoc)
@@ -139,7 +156,7 @@ public class DependencyWizard extends DynamicAddEditWizard {
 
 	public class DependencyWizardPage extends WizardPage {
 
-		Text[] textEntries = new Text[section.getTableColumnEAttributes().length];
+		Text[] textEntries = new Text[getTableColumnEAttributes().length];
 
 		public DependencyWizardPage(String pageName) {
 			super(pageName);

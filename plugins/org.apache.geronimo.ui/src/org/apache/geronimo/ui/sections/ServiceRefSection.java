@@ -60,13 +60,6 @@ public class ServiceRefSection extends DynamicTableSection {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEFactory()
-	 */
-	public EFactory getEFactory() {
-		return NamingFactory.eINSTANCE;
-	}
-
-	/* (non-Javadoc)
 	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEReference()
 	 */
 	public EReference getEReference() {
@@ -78,14 +71,6 @@ public class ServiceRefSection extends DynamicTableSection {
 	 */
 	public String[] getTableColumnNames() {
 		 return new String[] { Messages.editorServiceRefName};
-	}
-
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnEAttributes()
-	 */
-	public EAttribute[] getTableColumnEAttributes() {
-		  return new EAttribute[] {
-	                NamingPackage.eINSTANCE.getServiceRefType_ServiceRefName()};
 	}
 
 	/* (non-Javadoc)

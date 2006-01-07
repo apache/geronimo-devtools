@@ -24,6 +24,8 @@ import org.apache.geronimo.xml.ns.security.RoleType;
 import org.apache.geronimo.xml.ns.security.SecurityFactory;
 import org.apache.geronimo.xml.ns.security.SecurityPackage;
 import org.apache.geronimo.xml.ns.security.SecurityType;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -36,6 +38,14 @@ public class SecurityRoleWizard extends DynamicAddEditWizard {
 
     public SecurityRoleWizard(DynamicTableSection section) {
         super(section);
+    }
+    
+    public EFactory getEFactory() {
+        return SecurityFactory.eINSTANCE;
+    }
+    
+    public EAttribute[] getTableColumnEAttributes() {
+        return new EAttribute[] {SecurityPackage.eINSTANCE.getRoleType_RoleName()};
     }
 
     public String getAddWizardWindowTitle() {
@@ -106,11 +116,9 @@ public class SecurityRoleWizard extends DynamicAddEditWizard {
     public boolean performFinish() {
     	SecurityRoleWizardPage page = (SecurityRoleWizardPage) getPages()[0];
 
-        boolean isNew = false;
-
         if (eObject == null) {
-            eObject = section.getEFactory().create(
-                    section.getTableColumnEAttributes()[0]
+            eObject = getEFactory().create(
+                    getTableColumnEAttributes()[0]
                             .getEContainingClass());
             EObject plan = section.getPlan();
 
@@ -129,7 +137,6 @@ public class SecurityRoleWizard extends DynamicAddEditWizard {
             }
 
             roleMappingsType.getRole().add(eObject);
-            isNew = true;
         }
 
         processEAttributes(page);
@@ -147,7 +154,7 @@ public class SecurityRoleWizard extends DynamicAddEditWizard {
         type.setValue(page.descriptionText.getText());
        
 
-        String[] tableText = section.getTableText(eObject);
+        /*String[] tableText = section.getTableText(eObject);
 
         if (isNew) {
             TableItem item = new TableItem(section.getTableViewer().getTable(),
@@ -163,7 +170,7 @@ public class SecurityRoleWizard extends DynamicAddEditWizard {
                         index);
                 item.setText(tableText);
             }
-        }
+        }*/
 
         return true;
     }

@@ -17,12 +17,15 @@ package org.apache.geronimo.ui.wizards;
 
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.sections.DynamicTableSection;
+import org.apache.geronimo.xml.ns.naming.NamingFactory;
+import org.apache.geronimo.xml.ns.naming.NamingPackage;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EFactory;
 
 public class EjbLocalRefWizard extends DynamicAddEditWizard {
 
     public EjbLocalRefWizard(DynamicTableSection section) {
         super(section);
-        // TODO Auto-generated constructor stub
     }
 
     /* (non-Javadoc)
@@ -30,6 +33,16 @@ public class EjbLocalRefWizard extends DynamicAddEditWizard {
      */
     public String getAddWizardWindowTitle() {
         return Messages.wizardNewTitle_EjbLocalRef;
+    }
+    
+    public EFactory getEFactory() {
+        return NamingFactory.eINSTANCE;
+    }
+    
+    public EAttribute[] getTableColumnEAttributes() {
+        return new EAttribute[] {
+                NamingPackage.eINSTANCE.getEjbLocalRefType_TargetName(),
+                NamingPackage.eINSTANCE.getEjbLocalRefType_EjbLink() };
     }
 
     /* (non-Javadoc)

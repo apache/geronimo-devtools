@@ -201,7 +201,7 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 	/**
 	 * @deprecated
 	 */
-	protected void fillTableItems() {
+	protected final void fillTableItems() {
 		EList list = (EList) plan.eGet(getEReference());
 
 		for (int j = 0; j < list.size(); j++) {
@@ -328,8 +328,8 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 	 * @param eObject
 	 * @return
 	 */
-	public String[] getTableText(EObject eObject) {
-		List tableText = new ArrayList();
+	public final String[] getTableText(EObject eObject) {
+		/*List tableText = new ArrayList();
 		for (int i = 0; i < getTableColumnEAttributes().length; i++) {
 			if (getTableColumnEAttributes()[i].getEContainingClass().equals(
 					eObject.eClass())) {
@@ -342,7 +342,8 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 				}
 			}
 		}
-		return (String[]) tableText.toArray(new String[tableText.size()]);
+		return (String[]) tableText.toArray(new String[tableText.size()]);*/
+		return null;
 	}
 
 	/**
@@ -393,24 +394,12 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 	 * @deprecated
 	 * @return
 	 */
-	abstract public EFactory getEFactory();
-
-	/**
-	 * @deprecated
-	 * @return
-	 */
 	abstract public EReference getEReference();
 
 	/**
 	 * @return
 	 */
 	abstract public String[] getTableColumnNames();
-
-	/**
-	 * @deprecated
-	 * @return
-	 */
-	abstract public EAttribute[] getTableColumnEAttributes();;
 
 	/**
 	 * @return
