@@ -92,9 +92,9 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 		super(parent, toolkit, style, plan);
 	}
 
-	public void createNew() {
-		if (isValidNew()) {
-			createClientNew();
+	public void create() {
+		if (isValid()) {
+			createClient();
 		} else {
 			Trace.trace(Trace.SEVERE, "Could not create client, "
 					+ getClass().getName() + ".isValid() == false");
@@ -102,12 +102,12 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 
 	}
 
-	private boolean isValidNew() {
+	private boolean isValid() {
 		return getTableEntryObjectType() != null
 				&& getTableColumnNames() != null && !getFactories().isEmpty();
 	}
 
-	public void createClientNew() {
+	public void createClient() {
 
 		getSection().setText(getTitle());
 		getSection().setDescription(getDescription());
@@ -145,34 +145,6 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 
 	abstract public EClass getTableEntryObjectType();
 
-	/**
-	 * @deprecated
-	 * 
-	 */
-	public void createClient() {
-
-		getSection().setText(getTitle());
-		getSection().setDescription(getDescription());
-		getSection().setLayoutData(getSectionLayoutData());
-
-		Composite composite = createTableComposite(getSection());
-		getSection().setClient(composite);
-		createTable(composite);
-		fillTableItems();
-
-		tableViewer = new TableViewer(table);
-
-		if (getTableColumnNames().length > 0) {
-			tableViewer.setColumnProperties(getTableColumnNames());
-		}
-
-		Composite buttonComp = createButtonComposite(composite);
-		createAddButton(toolkit, buttonComp);
-		createRemoveButton(toolkit, buttonComp);
-		createEditButton(toolkit, buttonComp);
-
-	}
-
 	protected Composite createTableComposite(Composite parent) {
 		Composite composite = toolkit.createComposite(parent);
 		composite.setLayout(getSectionCompositeLayout());
@@ -196,21 +168,6 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 		layout.verticalSpacing = 5;
 		layout.horizontalSpacing = 15;
 		return layout;
-	}
-
-	/**
-	 * @deprecated
-	 */
-	protected final void fillTableItems() {
-		EList list = (EList) plan.eGet(getEReference());
-
-		for (int j = 0; j < list.size(); j++) {
-			TableItem item = new TableItem(table, SWT.NONE);
-			String[] tableTextData = getTableText((EObject) list.get(j));
-			item.setImage(getImage());
-			item.setText(tableTextData);
-			item.setData((EObject) list.get(j));
-		}
 	}
 
 	protected void createTable(Composite composite) {
@@ -321,51 +278,6 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 
 		editButton
 				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-	}
-
-	/**
-	 * @deprecated
-	 * @param eObject
-	 * @return
-	 */
-	public final String[] getTableText(EObject eObject) {
-		/*List tableText = new ArrayList();
-		for (int i = 0; i < getTableColumnEAttributes().length; i++) {
-			if (getTableColumnEAttributes()[i].getEContainingClass().equals(
-					eObject.eClass())) {
-				String value = (String) eObject
-						.eGet(getTableColumnEAttributes()[i]);
-				if (value != null) {
-					tableText.add(value);
-				} else {
-					tableText.add("");
-				}
-			}
-		}
-		return (String[]) tableText.toArray(new String[tableText.size()]);*/
-		return null;
-	}
-
-	/**
-	 * @deprecated
-	 * @return
-	 */
-	public Image getImage() {
-		if (image == null) {
-			ImageDescriptor descriptor = getImageDescriptor();
-			if (descriptor == null)
-				descriptor = defaultImgDesc;
-			image = descriptor.createImage();
-		}
-		return image;
-	}
-
-	/**
-	 * @deprecated
-	 * @return
-	 */
-	public ImageDescriptor getImageDescriptor() {
-		return defaultImgDesc;
 	}
 
 	public TableViewer getTableViewer() {

@@ -18,9 +18,7 @@ package org.apache.geronimo.ui.sections;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.jface.wizard.Wizard;
@@ -39,7 +37,7 @@ public class BeansSection extends DynamicTableSection {
     public BeansSection(EObject plan, Composite parent, FormToolkit toolkit,
             int style) {
         super(plan, parent, toolkit, style);
-        createNew();
+        create();
     }
 
     /* (non-Javadoc)

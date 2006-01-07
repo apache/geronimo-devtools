@@ -42,7 +42,7 @@ public class GBeanRefSection extends DynamicTableSection {
 			int style, EReference gbeanERef) {
 		super(plan, parent, toolkit, style);
 		this.gbeanERef = gbeanERef;
-		createNew();
+		create();
 	}
 
 	/*

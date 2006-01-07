@@ -44,7 +44,7 @@ public class ResourceEnvRefSection extends DynamicTableSection {
             FormToolkit toolkit, int style,  EReference resourceEnvRefERef) {
         super(plan, parent, toolkit, style);
         this.resourceEnvRefERef = resourceEnvRefERef;
-        createNew();
+        create();
     }
 
     /*

@@ -42,7 +42,7 @@ public class ServiceRefSection extends DynamicTableSection {
 			FormToolkit toolkit, int style,  EReference serviceRefERef) {
 		super(plan, parent, toolkit, style);
 		this.serviceRefERef = serviceRefERef;
-		createNew();
+		create();
 	}
 
 	/* (non-Javadoc)

@@ -44,7 +44,7 @@ public class EjbLocalRefSection extends DynamicTableSection {
             FormToolkit toolkit, int style,  EReference ejbLocalRefERef) {
         super(plan, parent, toolkit, style);
         this.ejbLocalRefERef = ejbLocalRefERef;
-        createNew();
+        create();
     }
 
     /*

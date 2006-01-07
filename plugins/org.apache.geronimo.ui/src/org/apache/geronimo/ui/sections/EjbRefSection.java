@@ -51,7 +51,7 @@ public class EjbRefSection extends DynamicTableSection {
             int style, EReference ejbRefERef) {
         super(plan, parent, toolkit, style);
         this.ejbRefERef = ejbRefERef;
-        createNew();
+        create();
     }
 
     /*

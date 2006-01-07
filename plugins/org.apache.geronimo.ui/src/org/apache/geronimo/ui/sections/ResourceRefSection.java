@@ -55,7 +55,7 @@ public class ResourceRefSection extends DynamicTableSection {
         super(plan, parent, toolkit, style);
         this.resourceRefERef = resourceRefERef;
         this.factory = factory;
-        createNew();
+        create();
     }  
 
     /*

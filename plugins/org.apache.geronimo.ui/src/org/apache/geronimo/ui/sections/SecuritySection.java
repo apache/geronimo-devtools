@@ -62,7 +62,7 @@ public class SecuritySection extends DynamicTableSection {
             int style, EReference securityERef) {
         super(plan, parent, toolkit, style);
         this.securityERef = securityERef;
-        createNew();
+        create();
     }
 
     /**
@@ -135,9 +135,9 @@ public class SecuritySection extends DynamicTableSection {
      * 
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#createClient()
      */
-    public void createClientNew() {
+    public void createClient() {
 
-        super.createClientNew();
+        super.createClient();
 
         Composite detail = toolkit.createComposite(table.getParent());
         GridLayout gl = new GridLayout();
