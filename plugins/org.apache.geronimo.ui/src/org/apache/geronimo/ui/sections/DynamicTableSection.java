@@ -107,15 +107,6 @@ public abstract class DynamicTableSection extends AbstractSectionPart {
 				&& getTableColumnNames() != null && !getFactories().isEmpty();
 	}
 
-	/**
-	 * @deprecated
-	 */
-	private boolean isValid() {
-		return getEFactory() != null && getEReference() != null
-				&& getTableColumnEAttributes() != null
-				&& getTableColumnNames() != null;
-	}
-
 	public void createClientNew() {
 
 		getSection().setText(getTitle());

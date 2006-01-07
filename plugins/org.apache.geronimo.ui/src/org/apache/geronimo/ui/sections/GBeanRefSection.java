@@ -35,81 +35,92 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class GBeanRefSection extends DynamicTableSection {
-	
-    EReference gbeanERef;
-	
-	public GBeanRefSection(EObject plan, Composite parent,
-            FormToolkit toolkit, int style, EReference gbeanERef) {
-        super(plan, parent, toolkit, style);
-        this.gbeanERef = gbeanERef;
-        createNew();
-    }
 
-	/* (non-Javadoc)
+	EReference gbeanERef;
+
+	public GBeanRefSection(EObject plan, Composite parent, FormToolkit toolkit,
+			int style, EReference gbeanERef) {
+		super(plan, parent, toolkit, style);
+		this.gbeanERef = gbeanERef;
+		createNew();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTitle()
 	 */
 	public String getTitle() {
 		return Messages.editorGBeanRefTitle;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getDescription()
 	 */
 	public String getDescription() {
 		return Messages.editorGBeanRefDescription;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEFactory()
 	 */
 	public EFactory getEFactory() {
-		 return NamingFactory.eINSTANCE;
+		return NamingFactory.eINSTANCE;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getEReference()
 	 */
 	public EReference getEReference() {
 		return gbeanERef;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnNames()
 	 */
 	public String[] getTableColumnNames() {
 		return new String[] { Messages.editorGBeanRefName,
-				Messages.editorGBeanRefType, Messages.editorGBeanRefTargetName,
-				Messages.editorGBeanRefProxyType };
+				Messages.editorGBeanRefType, Messages.editorGBeanRefProxyType };
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableColumnEAttributes()
 	 */
 	public EAttribute[] getTableColumnEAttributes() {
 		return new EAttribute[] {
-                NamingPackage.eINSTANCE.getGbeanRefType_RefName(),
-                NamingPackage.eINSTANCE.getGbeanRefType_RefType(),
-                NamingPackage.eINSTANCE.getGbeanRefType_TargetName(),
-                NamingPackage.eINSTANCE.getGbeanRefType_ProxyType()};
+				NamingPackage.eINSTANCE.getGbeanRefType_RefName(),
+				NamingPackage.eINSTANCE.getGbeanRefType_RefType(),
+				NamingPackage.eINSTANCE.getGbeanRefType_ProxyType() };
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getWizard()
 	 */
 	public Wizard getWizard() {
 		return new GBeanRefWizard(this);
 	}
-	
+
 	public List getFactories() {
 		List factories = new ArrayList();
 		factories.add(new WebItemProviderAdapterFactory());
 		factories.add(new NamingItemProviderAdapterFactory());
 		return factories;
-    }
+	}
 
 	public EClass getTableEntryObjectType() {
 		return NamingPackage.eINSTANCE.getGbeanRefType();
 	}
-	
 
 }

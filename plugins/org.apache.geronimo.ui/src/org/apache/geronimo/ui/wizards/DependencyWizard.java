@@ -139,7 +139,7 @@ public class DependencyWizard extends DynamicAddEditWizard {
             dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_Uri());
         }
 
-        String[] tableText = section.getTableText(eObject);
+        /*String[] tableText = section.getTableText(eObject);
 
         if (isNew) {
             TableItem item = new TableItem(section.getTableViewer().getTable(),
@@ -154,7 +154,7 @@ public class DependencyWizard extends DynamicAddEditWizard {
                         index);
                 item.setText(tableText);
             }
-        }
+        }*/
 
         return true;
     }

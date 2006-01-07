@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.ui.sections;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,6 +25,9 @@ import org.apache.geronimo.ui.wizards.DependencyWizard;
 import org.apache.geronimo.xml.ns.deployment.DependencyType;
 import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
 import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
+import org.apache.geronimo.xml.ns.deployment.provider.DeploymentItemProviderAdapterFactory;
+import org.apache.geronimo.xml.ns.j2ee.web.provider.WebItemProviderAdapterFactory;
+import org.apache.geronimo.xml.ns.naming.provider.NamingItemProviderAdapterFactory;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -145,7 +149,7 @@ public class DependencySection extends DynamicTableSection {
      * 
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#fillTableItems()
      */
-    protected void fillTableItems() {
+    /*protected void fillTableItems() {
         EList list = (EList) getPlan().eGet(getEReference());
 
         for (int j = 0; j < list.size(); j++) {
@@ -156,13 +160,13 @@ public class DependencySection extends DynamicTableSection {
             item.setData((EObject) list.get(j));
         }
 
-    }
+    }*/
 
 
     /* (non-Javadoc)
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getTableText(org.eclipse.emf.ecore.EObject)
      */
-    public String[] getTableText(EObject eObject) {
+    /*public String[] getTableText(EObject eObject) {
         DependencyType dt = (DependencyType) eObject;
         if (dt.eIsSet(DeploymentPackage.eINSTANCE.getDependencyType_Uri())) {
             return new String[] { dt.getUri() };
@@ -170,18 +174,21 @@ public class DependencySection extends DynamicTableSection {
             return new String[] { dt.getGroupId() + "/" + dt.getArtifactId()
                     + "-" + dt.getVersion() + ".jar" };
         }
-    }
+    }*/
     
     /* (non-Javadoc)
      * @see org.apache.geronimo.ui.sections.DynamicTableSection#getImageDescriptor()
      */
-    public ImageDescriptor getImageDescriptor() {
+    /*public ImageDescriptor getImageDescriptor() {
         return GeronimoUIPlugin.imageDescriptorFromPlugin(
                 "org.eclipse.jdt.ui", "icons/full/obj16/jar_obj.gif");
-    }
+    }*/
     
     public List getFactories() {
-    	return Collections.EMPTY_LIST;
+    	List factories = new ArrayList();
+		factories.add(new WebItemProviderAdapterFactory());
+		factories.add(new DeploymentItemProviderAdapterFactory());
+		return factories;
     }
 
 	public EClass getTableEntryObjectType() {
