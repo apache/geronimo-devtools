@@ -70,16 +70,6 @@ public class BeansSection extends AbstractTableSection {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
-	 */
-	public String[] getTableColumnNames() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getWizard()
 	 */
 	public Wizard getWizard() {

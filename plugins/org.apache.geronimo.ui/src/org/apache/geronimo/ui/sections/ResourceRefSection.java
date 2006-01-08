@@ -19,7 +19,6 @@ import org.apache.geronimo.ui.internal.GeronimoUIPlugin;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.ResourceRefWizard;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
-import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -31,8 +30,12 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 public class ResourceRefSection extends AbstractTableSection {
 
 	EReference resourceRefERef;
-
-	AdapterFactory factory;
+	
+	static {
+		COLUMN_NAMES = new String[] { Messages.editorResRefNameTitle,
+				Messages.editorResRefLinkTitle,
+				Messages.editorResRefTargetNameTitle };
+	}
 
 	public ResourceRefSection(EObject plan, Composite parent,
 			FormToolkit toolkit, int style, EReference resourceRefERef) {
@@ -66,17 +69,6 @@ public class ResourceRefSection extends AbstractTableSection {
 	 */
 	public EReference getEReference() {
 		return resourceRefERef;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
-	 */
-	public String[] getTableColumnNames() {
-		return new String[] { Messages.editorResRefNameTitle,
-				Messages.editorResRefLinkTitle,
-				Messages.editorResRefTargetNameTitle };
 	}
 
 	/*

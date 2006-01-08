@@ -46,6 +46,10 @@ public class SecuritySection extends AbstractTableSection {
 	Text roleNameText;
 
 	Text roleDescriptionText;
+	
+	static {
+		COLUMN_NAMES = new String[] { Messages.name };
+	}
 
 	/**
 	 * @param plan
@@ -85,15 +89,6 @@ public class SecuritySection extends AbstractTableSection {
 	 */
 	public EReference getEReference() {
 		return SecurityPackage.eINSTANCE.getRoleMappingsType_Role();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
-	 */
-	public String[] getTableColumnNames() {
-		return new String[] { Messages.name };
 	}
 
 	/*

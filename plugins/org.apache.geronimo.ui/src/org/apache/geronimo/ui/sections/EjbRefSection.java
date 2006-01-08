@@ -30,6 +30,11 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 public class EjbRefSection extends AbstractTableSection {
 
 	EReference ejbRefERef;
+	
+	static {
+		COLUMN_NAMES = new String[] { Messages.editorEjbRefTargetName,
+				Messages.editorEjbRefEjbLink };
+	}
 
 	/**
 	 * @param plan
@@ -69,16 +74,6 @@ public class EjbRefSection extends AbstractTableSection {
 	 */
 	public EReference getEReference() {
 		return ejbRefERef;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
-	 */
-	public String[] getTableColumnNames() {
-		return new String[] { Messages.editorEjbRefTargetName,
-				Messages.editorEjbRefEjbLink };
 	}
 
 	/*

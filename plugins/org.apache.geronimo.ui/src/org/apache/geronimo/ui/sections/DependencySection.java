@@ -77,15 +77,6 @@ public class DependencySection extends AbstractTableSection {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
-	 */
-	public String[] getTableColumnNames() {
-		return new String[] {};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getWizard()
 	 */
 	public Wizard getWizard() {

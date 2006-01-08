@@ -60,6 +60,8 @@ import org.openejb.xml.ns.openejb.jar.provider.JarItemProviderAdapterFactory;
 import org.openejb.xml.ns.pkgen.provider.PkgenItemProviderAdapterFactory;
 
 public abstract class AbstractTableSection extends AbstractSectionPart {
+	
+	protected static String[] COLUMN_NAMES = new String[]{};
 
 	private Table table;
 
@@ -296,12 +298,14 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 	protected Table getTable() {
 		return table;
 	}
+	
+	public String[] getTableColumnNames() {
+		return COLUMN_NAMES;
+	}
 
 	abstract public String getTitle();
 
 	abstract public String getDescription();
-
-	abstract public String[] getTableColumnNames();
 
 	abstract public Wizard getWizard();
 

@@ -30,6 +30,11 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 public class ResourceEnvRefSection extends AbstractTableSection {
 
 	EReference resourceEnvRefERef;
+	
+	static {
+		COLUMN_NAMES = new String[] { Messages.editorResEnvRefNameTitle,
+				Messages.editorResEnvRefMsgDestTitle };
+	}
 
 	public ResourceEnvRefSection(EObject plan, Composite parent,
 			FormToolkit toolkit, int style, EReference resourceEnvRefERef) {
@@ -63,16 +68,6 @@ public class ResourceEnvRefSection extends AbstractTableSection {
 	 */
 	public EReference getEReference() {
 		return resourceEnvRefERef;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
-	 */
-	public String[] getTableColumnNames() {
-		return new String[] { Messages.editorResEnvRefNameTitle,
-				Messages.editorResEnvRefMsgDestTitle };
 	}
 
 	/*

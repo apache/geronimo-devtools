@@ -28,6 +28,10 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 public class ServiceRefSection extends AbstractTableSection {
 
 	EReference serviceRefERef;
+	
+	static {
+		COLUMN_NAMES = new String[] { Messages.editorServiceRefName };
+	}
 
 	public ServiceRefSection(EObject plan, Composite parent,
 			FormToolkit toolkit, int style, EReference serviceRefERef) {
@@ -61,15 +65,6 @@ public class ServiceRefSection extends AbstractTableSection {
 	 */
 	public EReference getEReference() {
 		return serviceRefERef;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
-	 */
-	public String[] getTableColumnNames() {
-		return new String[] { Messages.editorServiceRefName };
 	}
 
 	/*
