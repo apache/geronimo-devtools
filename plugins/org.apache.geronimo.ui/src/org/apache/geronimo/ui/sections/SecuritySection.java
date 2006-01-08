@@ -15,18 +15,13 @@
  */
 package org.apache.geronimo.ui.sections;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.geronimo.ui.internal.GeronimoUIPlugin;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.SecurityRoleWizard;
-import org.apache.geronimo.xml.ns.j2ee.web.provider.WebItemProviderAdapterFactory;
 import org.apache.geronimo.xml.ns.security.DescriptionType;
 import org.apache.geronimo.xml.ns.security.RoleType;
 import org.apache.geronimo.xml.ns.security.SecurityPackage;
 import org.apache.geronimo.xml.ns.security.SecurityType;
-import org.apache.geronimo.xml.ns.security.provider.SecurityItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -62,7 +57,7 @@ public class SecuritySection extends AbstractTableSection {
 			int style, EReference securityERef) {
 		super(plan, parent, toolkit, style);
 		this.securityERef = securityERef;
-		create();
+		createClient();
 	}
 
 	/*
@@ -108,18 +103,6 @@ public class SecuritySection extends AbstractTableSection {
 	 */
 	public Wizard getWizard() {
 		return new SecurityRoleWizard(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getFactories()
-	 */
-	public List getFactories() {
-		List factories = new ArrayList();
-		factories.add(new WebItemProviderAdapterFactory());
-		factories.add(new SecurityItemProviderAdapterFactory());
-		return factories;
 	}
 
 	/*

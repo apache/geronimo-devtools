@@ -15,11 +15,18 @@
  */
 package org.apache.geronimo.ui.sections;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.geronimo.ui.internal.Messages;
-import org.apache.geronimo.ui.internal.Trace;
 import org.apache.geronimo.ui.wizards.AbstractTableWizard;
+import org.apache.geronimo.xml.ns.deployment.provider.DeploymentItemProviderAdapterFactory;
+import org.apache.geronimo.xml.ns.j2ee.application.client.provider.ClientItemProviderAdapterFactory;
+import org.apache.geronimo.xml.ns.j2ee.application.provider.ApplicationItemProviderAdapterFactory;
+import org.apache.geronimo.xml.ns.j2ee.connector.provider.ConnectorItemProviderAdapterFactory;
+import org.apache.geronimo.xml.ns.j2ee.web.provider.WebItemProviderAdapterFactory;
+import org.apache.geronimo.xml.ns.naming.provider.NamingItemProviderAdapterFactory;
+import org.apache.geronimo.xml.ns.security.provider.SecurityItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -49,6 +56,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
+import org.openejb.xml.ns.openejb.jar.provider.JarItemProviderAdapterFactory;
+import org.openejb.xml.ns.pkgen.provider.PkgenItemProviderAdapterFactory;
 
 public abstract class AbstractTableSection extends AbstractSectionPart {
 
@@ -56,11 +65,27 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 
 	private TableViewer tableViewer;
 
+	private static ComposedAdapterFactory factory;
+
 	Button addButton;
 
 	Button editButton;
 
 	Button removeButton;
+
+	static {
+		List factories = new ArrayList();
+		factories.add(new DeploymentItemProviderAdapterFactory());
+		factories.add(new ClientItemProviderAdapterFactory());
+		factories.add(new ApplicationItemProviderAdapterFactory());
+		factories.add(new ConnectorItemProviderAdapterFactory());
+		factories.add(new WebItemProviderAdapterFactory());
+		factories.add(new NamingItemProviderAdapterFactory());
+		factories.add(new SecurityItemProviderAdapterFactory());
+		factories.add(new JarItemProviderAdapterFactory());
+		factories.add(new PkgenItemProviderAdapterFactory());
+		factory = new ComposedAdapterFactory(factories);
+	}
 
 	public AbstractTableSection(Section section) {
 		super(section);
@@ -72,29 +97,17 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 	 * @param toolkit
 	 * @param style
 	 * 
-	 * Subclasses should call create() in constructor
+	 * Subclasses should call createClient() in constructor
 	 */
 	public AbstractTableSection(EObject plan, Composite parent,
 			FormToolkit toolkit, int style) {
 		super(parent, toolkit, style, plan);
 	}
 
-	public void create() {
-		if (isValid()) {
-			createClient();
-		} else {
-			Trace.trace(Trace.SEVERE, "Could not create client, "
-					+ getClass().getName() + ".isValid() == false");
-		}
-
-	}
-
-	private boolean isValid() {
-		return getTableEntryObjectType() != null
-				&& getTableColumnNames() != null && !getFactories().isEmpty();
-	}
-
 	public void createClient() {
+
+		assert getTableEntryObjectType() != null
+				&& getTableColumnNames() != null;
 
 		getSection().setText(getTitle());
 		getSection().setDescription(getDescription());
@@ -103,11 +116,10 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 		getSection().setClient(composite);
 		table = createTable(composite);
 
-		ComposedAdapterFactory caf = new ComposedAdapterFactory(getFactories());
-
 		tableViewer = new TableViewer(getTable());
-		tableViewer.setContentProvider(new AdapterFactoryContentProvider(caf));
-		tableViewer.setLabelProvider(new AdapterFactoryLabelProvider(caf));
+		tableViewer.setContentProvider(new AdapterFactoryContentProvider(
+				factory));
+		tableViewer.setLabelProvider(new AdapterFactoryLabelProvider(factory));
 		tableViewer.setInput(getInput());
 
 		tableViewer.addFilter(new ViewerFilter() {
@@ -294,8 +306,6 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 	abstract public Wizard getWizard();
 
 	abstract public EReference getEReference();
-
-	abstract public List getFactories();
 
 	abstract public EClass getTableEntryObjectType();
 

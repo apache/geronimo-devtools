@@ -18,21 +18,12 @@ package org.apache.geronimo.ui.editors;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.internal.Trace;
-import org.apache.geronimo.xml.ns.deployment.provider.DeploymentItemProviderAdapterFactory;
-import org.apache.geronimo.xml.ns.j2ee.application.client.provider.ClientItemProviderAdapterFactory;
-import org.apache.geronimo.xml.ns.j2ee.application.provider.ApplicationItemProviderAdapterFactory;
-import org.apache.geronimo.xml.ns.j2ee.connector.provider.ConnectorItemProviderAdapterFactory;
-import org.apache.geronimo.xml.ns.j2ee.web.provider.WebItemProviderAdapterFactory;
-import org.apache.geronimo.xml.ns.naming.provider.NamingItemProviderAdapterFactory;
-import org.apache.geronimo.xml.ns.security.provider.SecurityItemProviderAdapterFactory;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
@@ -43,35 +34,13 @@ import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.IFormPage;
-import org.openejb.xml.ns.openejb.jar.provider.JarItemProviderAdapterFactory;
-import org.openejb.xml.ns.pkgen.provider.PkgenItemProviderAdapterFactory;
 
-/**
- * 
- * 
- */
 public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 
 	private EObject deploymentPlan;
 
-	private ComposedAdapterFactory factory;
-
-	/**
-	 * 
-	 */
 	public AbstractGeronimoDeploymentPlanEditor() {
 		super();
-		List factories = new ArrayList();
-		factories.add(new WebItemProviderAdapterFactory());
-		factories.add(new NamingItemProviderAdapterFactory());
-		factories.add(new DeploymentItemProviderAdapterFactory());
-		factories.add(new ApplicationItemProviderAdapterFactory());
-		factories.add(new ClientItemProviderAdapterFactory());
-		factories.add(new ConnectorItemProviderAdapterFactory());
-		factories.add(new SecurityItemProviderAdapterFactory());
-		factories.add(new JarItemProviderAdapterFactory());
-		factories.add(new PkgenItemProviderAdapterFactory());
-		factory = new ComposedAdapterFactory(factories);
 	}
 
 	/*
@@ -198,9 +167,5 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 	}
 
 	abstract public EObject loadDeploymentPlan(IFile file);
-
-	public ComposedAdapterFactory getFactory() {
-		return factory;
-	}
 
 }

@@ -15,7 +15,6 @@
  */
 package org.apache.geronimo.ui.pages;
 
-import org.apache.geronimo.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.ui.sections.EjbLocalRefSection;
 import org.apache.geronimo.ui.sections.EjbRefSection;
 import org.apache.geronimo.ui.sections.GBeanRefSection;
@@ -23,7 +22,6 @@ import org.apache.geronimo.ui.sections.ResourceEnvRefSection;
 import org.apache.geronimo.ui.sections.ResourceRefSection;
 import org.apache.geronimo.ui.sections.ServiceRefSection;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
@@ -55,10 +53,8 @@ public class NamingFormPage extends AbstractGeronimoFormPage {
 	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
 	 */
 	protected void fillBody(IManagedForm managedForm) {
-		ComposedAdapterFactory factory = ((AbstractGeronimoDeploymentPlanEditor) getEditor())
-				.getFactory();
 		managedForm.addPart(new ResourceRefSection(getDeploymentPlan(), body,
-				toolkit, getStyle(), resRef, factory));
+				toolkit, getStyle(), resRef));
 		managedForm.addPart(new ResourceEnvRefSection(getDeploymentPlan(),
 				body, toolkit, getStyle(), resEnvRef));
 		managedForm.addPart(new EjbRefSection(getDeploymentPlan(), body,

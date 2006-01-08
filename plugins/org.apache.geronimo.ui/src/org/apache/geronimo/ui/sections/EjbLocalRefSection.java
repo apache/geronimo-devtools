@@ -15,15 +15,10 @@
  */
 package org.apache.geronimo.ui.sections;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.geronimo.ui.internal.GeronimoUIPlugin;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.EjbLocalRefWizard;
-import org.apache.geronimo.xml.ns.j2ee.web.provider.WebItemProviderAdapterFactory;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
-import org.apache.geronimo.xml.ns.naming.provider.NamingItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -40,7 +35,7 @@ public class EjbLocalRefSection extends AbstractTableSection {
 			FormToolkit toolkit, int style, EReference ejbLocalRefERef) {
 		super(plan, parent, toolkit, style);
 		this.ejbLocalRefERef = ejbLocalRefERef;
-		create();
+		createClient();
 	}
 
 	/*
@@ -93,18 +88,6 @@ public class EjbLocalRefSection extends AbstractTableSection {
 		return GeronimoUIPlugin.imageDescriptorFromPlugin(
 				"org.eclipse.jst.j2ee",
 				"icons/full/obj16/ejb_local_ref_obj.gif");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getFactories()
-	 */
-	public List getFactories() {
-		List factories = new ArrayList();
-		factories.add(new WebItemProviderAdapterFactory());
-		factories.add(new NamingItemProviderAdapterFactory());
-		return factories;
 	}
 
 	/*

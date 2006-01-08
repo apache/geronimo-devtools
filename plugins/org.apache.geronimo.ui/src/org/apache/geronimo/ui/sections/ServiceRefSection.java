@@ -15,14 +15,9 @@
  */
 package org.apache.geronimo.ui.sections;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.ServiceRefWizard;
-import org.apache.geronimo.xml.ns.j2ee.web.provider.WebItemProviderAdapterFactory;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
-import org.apache.geronimo.xml.ns.naming.provider.NamingItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -38,7 +33,7 @@ public class ServiceRefSection extends AbstractTableSection {
 			FormToolkit toolkit, int style, EReference serviceRefERef) {
 		super(plan, parent, toolkit, style);
 		this.serviceRefERef = serviceRefERef;
-		create();
+		createClient();
 	}
 
 	/*
@@ -84,18 +79,6 @@ public class ServiceRefSection extends AbstractTableSection {
 	 */
 	public Wizard getWizard() {
 		return new ServiceRefWizard(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getFactories()
-	 */
-	public List getFactories() {
-		List factories = new ArrayList();
-		factories.add(new WebItemProviderAdapterFactory());
-		factories.add(new NamingItemProviderAdapterFactory());
-		return factories;
 	}
 
 	/*

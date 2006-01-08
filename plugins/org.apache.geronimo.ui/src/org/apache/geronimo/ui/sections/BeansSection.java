@@ -15,9 +15,6 @@
  */
 package org.apache.geronimo.ui.sections;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -37,7 +34,7 @@ public class BeansSection extends AbstractTableSection {
 	public BeansSection(EObject plan, Composite parent, FormToolkit toolkit,
 			int style) {
 		super(plan, parent, toolkit, style);
-		create();
+		createClient();
 	}
 
 	/*
@@ -88,15 +85,6 @@ public class BeansSection extends AbstractTableSection {
 	public Wizard getWizard() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getFactories()
-	 */
-	public List getFactories() {
-		return Collections.EMPTY_LIST;
 	}
 
 	/*

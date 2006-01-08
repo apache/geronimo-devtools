@@ -15,14 +15,9 @@
  */
 package org.apache.geronimo.ui.sections;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.GBeanWizard;
 import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
-import org.apache.geronimo.xml.ns.deployment.provider.DeploymentItemProviderAdapterFactory;
-import org.apache.geronimo.xml.ns.j2ee.web.provider.WebItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -44,7 +39,7 @@ public class GBeanSection extends AbstractTableSection {
 			FormToolkit toolkit, int style) {
 		super(plan, parent, toolkit, style);
 		this.gBeanERef = gBeanERef;
-		create();
+		createClient();
 	}
 
 	/*
@@ -91,18 +86,6 @@ public class GBeanSection extends AbstractTableSection {
 	 */
 	public Wizard getWizard() {
 		return new GBeanWizard(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getFactories()
-	 */
-	public List getFactories() {
-		List factories = new ArrayList();
-		factories.add(new WebItemProviderAdapterFactory());
-		factories.add(new DeploymentItemProviderAdapterFactory());
-		return factories;
 	}
 
 	/*

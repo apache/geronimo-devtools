@@ -15,15 +15,10 @@
  */
 package org.apache.geronimo.ui.sections;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.geronimo.ui.internal.GeronimoUIPlugin;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.DependencyWizard;
 import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
-import org.apache.geronimo.xml.ns.deployment.provider.DeploymentItemProviderAdapterFactory;
-import org.apache.geronimo.xml.ns.j2ee.web.provider.WebItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -49,7 +44,7 @@ public class DependencySection extends AbstractTableSection {
 			Composite parent, FormToolkit toolkit, int style) {
 		super(plan, parent, toolkit, style);
 		this.dependenciesERef = dependenciesERef;
-		create();
+		createClient();
 	}
 
 	/*
@@ -109,18 +104,6 @@ public class DependencySection extends AbstractTableSection {
 	public ImageDescriptor getImageDescriptor() {
 		return GeronimoUIPlugin.imageDescriptorFromPlugin("org.eclipse.jdt.ui",
 				"icons/full/obj16/jar_obj.gif");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getFactories()
-	 */
-	public List getFactories() {
-		List factories = new ArrayList();
-		factories.add(new WebItemProviderAdapterFactory());
-		factories.add(new DeploymentItemProviderAdapterFactory());
-		return factories;
 	}
 
 	/*
