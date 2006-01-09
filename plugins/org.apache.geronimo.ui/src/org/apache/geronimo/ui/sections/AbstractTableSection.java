@@ -60,8 +60,8 @@ import org.openejb.xml.ns.openejb.jar.provider.JarItemProviderAdapterFactory;
 import org.openejb.xml.ns.pkgen.provider.PkgenItemProviderAdapterFactory;
 
 public abstract class AbstractTableSection extends AbstractSectionPart {
-	
-	protected static String[] COLUMN_NAMES = new String[]{};
+
+	protected static String[] COLUMN_NAMES = new String[] {};
 
 	private Table table;
 
@@ -108,8 +108,8 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 
 	public void createClient() {
 
-		assert getTableEntryObjectType() != null
-				&& getTableColumnNames() != null;
+		if (getTableEntryObjectType() == null)
+			throw new NullPointerException();
 
 		getSection().setText(getTitle());
 		getSection().setDescription(getDescription());
@@ -298,7 +298,7 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 	protected Table getTable() {
 		return table;
 	}
-	
+
 	public String[] getTableColumnNames() {
 		return COLUMN_NAMES;
 	}
