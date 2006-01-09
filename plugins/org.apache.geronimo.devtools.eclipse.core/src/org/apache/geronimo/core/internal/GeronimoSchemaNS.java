@@ -30,7 +30,7 @@ public class GeronimoSchemaNS {
     
     public static final String GERONIMO_NAMING_NS = "http://geronimo.apache.org/xml/ns/naming-1.0";
     
-    public static final String GERONIMO_SECURITY_NS = "http://geronimo.apache.org/xml/ns/security-1.0";
+    public static final String GERONIMO_SECURITY_NS = "http://geronimo.apache.org/xml/ns/security-1.1";
     
     public static final String GERONIMO_DEPLOYMENT_NS = "http://geronimo.apache.org/xml/ns/deployment-1.0";
     
