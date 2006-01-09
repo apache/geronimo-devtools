@@ -59,7 +59,7 @@
       		classpathref="maven.dependency.classpath"/>
       <ant:property name="ant.regexp.regexpimpl" value="org.apache.tools.ant.util.regexp.JakartaOroRegexp"/>
       
-      <pathconvert property="plugin-version" targetos="unix">
+      <pathconvert property="plugin_version" targetos="unix">
         <path path="${pom.currentVersion}"/>
         <chainedmapper>
             <flattenmapper/>
@@ -67,7 +67,7 @@
         </chainedmapper>
       </pathconvert>
     	
-      <replaceregexp file="plugin.xml" match="@runtime.v1.plugin.version@" replace="${plugin-version}" byline="true"/>
+      <replaceregexp file="plugin.xml" match="@runtime.v1.plugin.version@" replace="${plugin_version}" byline="true"/>
       <replaceregexp file="plugin.xml" match="@geronimo_runtime_version@" replace="${geronimo_runtime_version}" byline="true"/>
       <replaceregexp file="plugin.xml" match="@geronimo_spec_version@" replace="${geronimo_spec_version}" byline="true"/>
       <replaceregexp file="plugin.xml" match="@mx4j_version@" replace="${mx4j_version}" byline="true"/>  
