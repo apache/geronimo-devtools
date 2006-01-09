@@ -19,7 +19,6 @@
     <pomVersion>3</pomVersion>
     <id>etc</id>
     <name>etc</name>
-    <currentVersion>${devtools_currentversion}</currentVersion>
     <groupId>geronimo-devtools</groupId>
     <organization>
         <name>Apache Software Foundation</name>

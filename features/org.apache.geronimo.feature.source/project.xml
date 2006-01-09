@@ -19,6 +19,7 @@
   <extend>../../etc/project.xml</extend>
   <id>org.apache.geronimo.source.feature</id>
   <name>org.apache.geronimo.source.feature</name>
+  <currentVersion>${org.apache.geronimo.source.feature_version}</currentVersion>
   <build>
     <resources>
       <resource>

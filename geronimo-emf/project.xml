@@ -19,6 +19,7 @@
   <extend>../etc/project.xml</extend>
   <id>geronimo-emf</id>
   <name>geronimo-emf</name>
+  <currentVersion>${geronimo_emf_version}</currentVersion>
   <dependencies>
     <dependency>
       <groupId>xerces</groupId>

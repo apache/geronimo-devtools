@@ -19,6 +19,7 @@
   <extend>../../etc/project.xml</extend>
   <id>org.apache.geronimo.deployment.model.edit</id>
   <name>org.apache.geronimo.deployment.model.edit</name>
+  <currentVersion>${org.apache.geronimo.deployment.model.edit_version}</currentVersion>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
@@ -46,7 +47,7 @@
     <dependency>
       <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.deployment.model</artifactId>
-      <version>${devtools_currentversion}</version>      
+      <version>${org.apache.geronimo.deployment.model_version}</version>      
     </dependency>      
     <!--  eclipse dependencies -->
     <dependency>

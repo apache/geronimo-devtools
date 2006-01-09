@@ -19,6 +19,7 @@
   <extend>../../etc/project.xml</extend>
   <id>org.apache.geronimo.runtime.v1</id>
   <name>org.apache.geronimo.runtime.v1</name>
+  <currentVersion>${org.apache.geronimo.runtime.v1_version}</currentVersion>
   <build>
     <resources>
       <resource>

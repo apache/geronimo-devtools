@@ -23,7 +23,7 @@
     <dependency>
       <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.devtools.eclipse.core</artifactId>
-      <version>${devtools_currentversion}</version>
+      <version>${org.apache.geronimo.devtools.eclipse.core_version}</version>
       <properties>
         <jar>true</jar>
         <zipdistro>true</zipdistro>
@@ -32,7 +32,7 @@
     <dependency>
       <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.deployment.model</artifactId>
-      <version>${devtools_currentversion}</version>
+      <version>${org.apache.geronimo.deployment.model_version}</version>
       <properties>
         <jar>true</jar>
         <zipdistro>true</zipdistro>
@@ -41,7 +41,7 @@
     <dependency>
       <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.deployment.model.edit</artifactId>
-      <version>${devtools_currentversion}</version>
+      <version>${org.apache.geronimo.deployment.model.edit_version}</version>
       <properties>
         <jar>true</jar>
         <zipdistro>true</zipdistro>
@@ -50,7 +50,7 @@
     <dependency>
       <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.feature</artifactId>
-      <version>${devtools_currentversion}</version>
+      <version>${org.apache.geronimo.feature_version}</version>
       <properties>
         <feature>true</feature>
         <zipdistro>true</zipdistro>
@@ -59,7 +59,7 @@
      <dependency>
       <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.installableruntime.feature</artifactId>
-      <version>${devtools_currentversion}</version>
+      <version>${org.apache.geronimo.installableruntime.feature_version}</version>
       <properties>
         <feature>true</feature>
       </properties>
@@ -67,7 +67,7 @@
     <dependency>
       <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.source.feature</artifactId>
-      <version>${devtools_currentversion}</version>
+      <version>${org.apache.geronimo.source.feature_version}</version>
       <properties>
         <feature>true</feature>
         <zipdistro>true</zipdistro>
@@ -76,7 +76,7 @@
     <dependency>
       <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.runtime.v1</artifactId>
-      <version>${devtools_currentversion}</version>
+      <version>${org.apache.geronimo.runtime.v1_version}</version>
       <properties>
         <jar>false</jar>
         <zipdistro>true</zipdistro>
@@ -85,7 +85,7 @@
     <dependency>
       <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.j2ee.server.v1</artifactId>
-      <version>${devtools_currentversion}</version>
+      <version>${org.apache.geronimo.j2ee.server.v1_version}</version>
       <properties>
         <jar>true</jar>
       </properties>
@@ -93,7 +93,7 @@
     <dependency>
       <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.ui</artifactId>
-      <version>${devtools_currentversion}</version>
+      <version>${org.apache.geronimo.ui_version}</version>
       <properties>
         <jar>true</jar>
         <zipdistro>true</zipdistro>
@@ -102,7 +102,7 @@
     <dependency>
       <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.feature.source</artifactId>
-      <version>${devtools_currentversion}</version>
+      <version>${org.apache.geronimo.feature.source_version}</version>
       <properties>
         <jar>false</jar>
         <zipdistro>true</zipdistro>

@@ -19,6 +19,7 @@
   <extend>../../etc/project.xml</extend>
   <id>org.apache.geronimo.deployment.model</id>
   <name>org.apache.geronimo.deployment.model</name>
+  <currentVersion>${org.apache.geronimo.deployment.model_version}</currentVersion>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
@@ -46,7 +47,7 @@
     <dependency>
       <groupId>geronimo-devtools</groupId>
       <artifactId>geronimo-emf</artifactId>
-      <version>${devtools_currentversion}</version>      
+      <version>${geronimo_emf_version}</version>      
     </dependency>      
     <!--  eclipse dependencies -->
     <dependency>

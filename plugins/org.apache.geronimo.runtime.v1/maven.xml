@@ -58,8 +58,16 @@
       		classname="org.apache.tools.ant.taskdefs.optional.ReplaceRegExp"
       		classpathref="maven.dependency.classpath"/>
       <ant:property name="ant.regexp.regexpimpl" value="org.apache.tools.ant.util.regexp.JakartaOroRegexp"/>
+      
+      <pathconvert property="plugin-version" targetos="unix">
+        <path path="${pom.currentVersion}"/>
+        <chainedmapper>
+            <flattenmapper/>
+            <globmapper from="*-SNAPSHOT" to="*"/>
+        </chainedmapper>
+      </pathconvert>
     	
-      <replaceregexp file="plugin.xml" match="@runtime.v1.plugin.version@" replace="${distributionjarversion}" byline="true"/>
+      <replaceregexp file="plugin.xml" match="@runtime.v1.plugin.version@" replace="${plugin-version}" byline="true"/>
       <replaceregexp file="plugin.xml" match="@geronimo_runtime_version@" replace="${geronimo_runtime_version}" byline="true"/>
       <replaceregexp file="plugin.xml" match="@geronimo_spec_version@" replace="${geronimo_spec_version}" byline="true"/>
       <replaceregexp file="plugin.xml" match="@mx4j_version@" replace="${mx4j_version}" byline="true"/>  

@@ -19,6 +19,7 @@
   <extend>../../etc/project.xml</extend>
   <id>org.apache.geronimo.installableruntime.feature</id>
   <name>org.apache.geronimo.installableruntime.feature</name>
+  <currentVersion>${org.apache.geronimo.installableruntime.feature_version}</currentVersion>
   <build>
     <resources>
       <resource>

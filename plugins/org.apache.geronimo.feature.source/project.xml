@@ -19,6 +19,7 @@
   <extend>../../etc/project.xml</extend>
   <id>org.apache.geronimo.feature.source</id>
   <name>org.apache.geronimo.feature.source</name>
+  <currentVersion>${org.apache.geronimo.feature.source_version}</currentVersion>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
@@ -46,17 +47,22 @@
     <dependency>
       <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.deployment.model</artifactId>
-      <version>${devtools_currentversion}</version>
+      <version>${org.apache.geronimo.deployment.model_version}</version>
+    </dependency>
+     <dependency>
+      <groupId>geronimo-devtools</groupId>
+      <artifactId>org.apache.geronimo.deployment.model.edit</artifactId>
+      <version>${org.apache.geronimo.deployment.model.edit_version}</version>
     </dependency>
     <dependency>
       <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.devtools.eclipse.core</artifactId>
-      <version>${devtools_currentversion}</version>
+      <version>${org.apache.geronimo.devtools.eclipse.core_version}</version>
     </dependency>
     <dependency>
       <groupId>geronimo-devtools</groupId>
       <artifactId>org.apache.geronimo.ui</artifactId>
-      <version>${devtools_currentversion}</version>
+      <version>${org.apache.geronimo.ui_version}</version>
     </dependency>
   </dependencies>
 </project>
