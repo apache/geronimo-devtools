@@ -65,8 +65,8 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
 		body = managedForm.getForm().getBody();
 		toolkit = managedForm.getToolkit();
 		ScrolledForm form = managedForm.getForm();
-		// form.setText(getTitle());
-		managedForm.addPart(new BannerPart(form.getBody(), toolkit, SWT.NONE));
+		form.setText(getFormTitle());
+		//managedForm.addPart(new BannerPart(form.getBody(), toolkit, SWT.NONE));
 		form.getBody().setLayout(getLayout());
 		fillBody(managedForm);
 		form.reflow(true);
@@ -90,6 +90,10 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
 
 	public EObject getDeploymentPlan() {
 		return deploymentPlan;
+	}
+	
+	public String getFormTitle() {
+		return getTitle();
 	}
 
 }

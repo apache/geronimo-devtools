@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.ui.pages;
 
+import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.sections.EjbLocalRefSection;
 import org.apache.geronimo.ui.sections.EjbRefSection;
 import org.apache.geronimo.ui.sections.GBeanRefSection;
@@ -65,6 +66,13 @@ public class NamingFormPage extends AbstractGeronimoFormPage {
 				toolkit, getStyle(), gbeanRef));
 		managedForm.addPart(new ServiceRefSection(getDeploymentPlan(), body,
 				toolkit, getStyle(), serviceRef));
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getFormTitle()
+	 */
+	public String getFormTitle() {
+		return Messages.namingFormPageTitle;
 	}
 
 }

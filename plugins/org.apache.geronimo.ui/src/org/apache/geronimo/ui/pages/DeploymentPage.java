@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.ui.pages;
 
+import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.sections.DependencySection;
 import org.apache.geronimo.ui.sections.GBeanSection;
 import org.apache.geronimo.ui.sections.ImportSection;
@@ -59,6 +60,13 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
 				body, toolkit, getStyle()));
 		managedForm.addPart(new GBeanSection(getDeploymentPlan(), gbeans, body,
 				toolkit, getStyle()));
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getFormTitle()
+	 */
+	public String getFormTitle() {
+		return Messages.deploymentPageTitle;
 	}
 
 }

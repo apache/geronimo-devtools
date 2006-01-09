@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.ui.pages;
 
+import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.sections.WebGeneralSection;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
@@ -37,5 +38,12 @@ public class WebGeneralPage extends AbstractGeronimoFormPage {
 	protected void fillBody(IManagedForm managedForm) {
 		managedForm.addPart(new WebGeneralSection(body, toolkit, getStyle(),
 				getDeploymentPlan()));
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getFormTitle()
+	 */
+	public String getFormTitle() {
+		return Messages.webGeneralPageTitle;
 	}
 }

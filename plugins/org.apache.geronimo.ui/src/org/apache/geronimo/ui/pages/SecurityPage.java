@@ -1,5 +1,6 @@
 package org.apache.geronimo.ui.pages;
 
+import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.sections.SecurityRootSection;
 import org.apache.geronimo.ui.sections.SecuritySection;
 import org.eclipse.emf.ecore.EReference;
@@ -42,6 +43,13 @@ public class SecurityPage extends AbstractGeronimoFormPage {
 		GridLayout layout = super.getLayout();
 		layout.numColumns = 1;
 		return layout;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getFormTitle()
+	 */
+	public String getFormTitle() {
+		return Messages.securityPageTitle;
 	}
 
 }

@@ -22,6 +22,18 @@ import org.eclipse.osgi.util.NLS;
  */
 public class Messages extends NLS {
 
+	public static String appGeneralPageTitle;
+
+	public static String connectorOverViewPageTitle;
+
+	public static String deploymentPageTitle;
+
+	public static String namingFormPageTitle;
+
+	public static String securityPageTitle;
+
+	public static String webGeneralPageTitle;
+
 	public static String editorTabGeneral;
 
 	public static String editorTabNaming;
