@@ -55,6 +55,12 @@
           <include>plugin.properties</include>
         </includes>
       </resource>
+       <resource>
+        <directory>.</directory>
+        <includes>
+          <include>.options</include>
+        </includes>
+      </resource>
     </resources>
   </build>
   <dependencies>
