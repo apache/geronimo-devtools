@@ -61,10 +61,15 @@
       
       <pathconvert property="plugin_version">
         <path path="${pom.currentVersion}"/>
-        <chainedmapper>
-            <flattenmapper/>
-            <globmapper from="*-SNAPSHOT" to="*"/>
-        </chainedmapper>
+         <pathconvert property="version" targetos="unix">
+                <path path="${artifact.dependency.version}"/>
+                <mapper>
+                    <chainedmapper>
+                        <flattenmapper/>
+                        <globmapper from="*-SNAPSHOT" to="*"/>
+                    </chainedmapper>
+                </mapper>
+        </pathconvert>      
       </pathconvert>
     	
       <replaceregexp file="plugin.xml" match="@runtime.v1.plugin.version@" replace="${plugin_version}" byline="true"/>
