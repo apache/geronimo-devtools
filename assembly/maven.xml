@@ -84,6 +84,7 @@
                 <path path="${artifact.dependency.version}"/>
                 <mapper>
                     <chainedmapper> 
+                         <flattenmapper/>
                         <globmapper from="*-SNAPSHOT" to="*"/>
                     </chainedmapper>
                 </mapper>
