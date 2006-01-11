@@ -126,8 +126,8 @@
       <version>${mx4j_version}</version>
     </dependency>
     <dependency>
-      <groupId>geronimo-spec</groupId>
-      <artifactId>geronimo-spec-j2ee-deployment</artifactId>
+      <groupId>org.apache.geronimo.specs</groupId>
+      <artifactId>geronimo-j2ee-deployment_1.1_spec</artifactId>
       <version>${geronimo_spec_version}</version>
     </dependency>
     <dependency>

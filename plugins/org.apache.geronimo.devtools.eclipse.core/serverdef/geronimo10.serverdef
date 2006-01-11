@@ -83,7 +83,7 @@
 	</classpath>
 
 	<classpath id="geronimo.project">
-		<archive path="${serverRootDirectory}/repository/geronimo-spec/jars" />
+		<archive path="${serverRootDirectory}/repository/org.apache.geronimo.specs/jars" />
 		<archive path="${serverRootDirectory}/lib" />
 	</classpath>
 	

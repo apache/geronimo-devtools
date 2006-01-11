@@ -12,7 +12,7 @@
       <library name="lib/geronimo-kernel-@geronimo_runtime_version@.jar">
          <export name="*"/>
       </library>     
-      <library name="lib/geronimo-spec-j2ee-deployment-@geronimo_spec_version@.jar">
+      <library name="lib/geronimo-j2ee-deployment_1.1_spec-@geronimo_spec_version@.jar">
          <export name="*"/>
       </library>     
       <library name="lib/mx4j-@mx4j_version@.jar">

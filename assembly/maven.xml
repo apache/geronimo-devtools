@@ -83,12 +83,11 @@
            <pathconvert property="version" targetos="unix">
                 <path path="${artifact.dependency.version}"/>
                 <mapper>
-                    <chainedmapper>
-                        <flattenmapper/>
+                    <chainedmapper> 
                         <globmapper from="*-SNAPSHOT" to="*"/>
                     </chainedmapper>
                 </mapper>
-            </pathconvert>      
+            </pathconvert>    
             <j:if test="${dependency.getProperty('feature') == 'true'}">
                 <echo>Processing ${dependency.artifactId}</echo>  
                 <ant:copy file="${artifact.path}" tofile="${distribution.dir.updatesite}/features/${dependency.artifactId}_${version}.jar" overwrite="true"/>
