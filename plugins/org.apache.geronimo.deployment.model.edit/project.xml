@@ -40,7 +40,14 @@
         <includes>
           <include>plugin.properties</include>
         </includes>
-     </resource>
+      </resource>
+      <resource>
+        <targetPath>icons</targetPath>
+        <directory>icons</directory>
+        <includes>
+          <include>**/*.gif</include>
+        </includes>
+      </resource>
     </resources>
   </build>
   <dependencies>
