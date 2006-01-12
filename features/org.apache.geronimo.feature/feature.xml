@@ -6,7 +6,7 @@
       provider-name="Apache Software Foundation">
 
    <description url="http://geronimo.apache.org/devtools">
-      Provides the WTP Server Adapter for Apache Geronimo
+      Provides the WTP Server Adapter and Development Tools for Apache Geronimo
    </description>
 
    <copyright url="http://www.apache.org/licenses/LICENSE-2.0.txt">
