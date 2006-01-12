@@ -20,15 +20,21 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jst.j2ee.internal.archive.operations.JavaComponentCreationDataModelProvider;
+import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IComponentCreationDataModelProperties;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IDelegate;
+import org.eclipse.wst.common.project.facet.core.IFacetedProject;
+import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
+import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 public class GeronimoFacetInstallDelegate implements IDelegate {
+	
+	public static final String FACET_ID = "org.apache.geronimo.facet";
 
 	public GeronimoFacetInstallDelegate() {
 		super();
@@ -44,13 +50,27 @@ public class GeronimoFacetInstallDelegate implements IDelegate {
 	public void execute(IProject project, IProjectFacetVersion fv,
 			Object config, IProgressMonitor monitor) throws CoreException {
 		
-		IVirtualComponent comp = ComponentCore.createComponent(project);
+		DeploymentPlanCreationOperation op = createDeploymentPlanCreationOp(project);
+		op.execute();
 		
+		IProject[] ears = J2EEProjectUtilities.getReferencingEARProjects(project);
+		IProjectFacet facet = ProjectFacetsManager.getProjectFacet(FACET_ID);
+		for(int i = 0; i < ears.length; i++) {
+			IFacetedProject fp = ProjectFacetsManager.create(ears[i]);
+			if(!fp.hasProjectFacet(facet)) {
+				op = createDeploymentPlanCreationOp(ears[i]);
+				op.execute();
+			}
+		}
+	}
+
+	private DeploymentPlanCreationOperation createDeploymentPlanCreationOp(IProject project) {
+		IVirtualComponent comp = ComponentCore.createComponent(project);
 		IDataModel model = DataModelFactory.createDataModel(new JavaComponentCreationDataModelProvider());
 		model.setStringProperty(IComponentCreationDataModelProperties.COMPONENT_NAME, comp.getName());
 		model.setStringProperty(IComponentCreationDataModelProperties.PROJECT_NAME, project.getName());
 		DeploymentPlanCreationOperation op = new DeploymentPlanCreationOperation(model);
-		op.execute();
+		return op;
 	}
 
 }
