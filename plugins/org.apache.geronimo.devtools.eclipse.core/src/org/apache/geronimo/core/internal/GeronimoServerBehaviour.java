@@ -188,6 +188,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		        && (deltaKind == ADDED || deltaKind == REMOVED)) {
 		    invokeCommand(deltaKind, module[0]);
 		} else if (deltaKind == CHANGED) {
+			//TODO This case is flawed due to WTP Bugzilla 123676
 		    invokeCommand(deltaKind, module[0]);
 		}
 			
