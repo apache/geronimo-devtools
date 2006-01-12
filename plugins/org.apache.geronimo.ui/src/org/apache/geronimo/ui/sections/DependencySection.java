@@ -19,10 +19,12 @@ import org.apache.geronimo.ui.internal.GeronimoUIPlugin;
 import org.apache.geronimo.ui.internal.Messages;
 import org.apache.geronimo.ui.wizards.DependencyWizard;
 import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -104,6 +106,16 @@ public class DependencySection extends AbstractTableSection {
 	 */
 	public EClass getTableEntryObjectType() {
 		return DeploymentPackage.eINSTANCE.getDependencyType();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#filter(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+	 */
+	protected boolean filter(Viewer viewer, Object parentElement, Object element) {
+		if(super.filter(viewer, parentElement, element)) {
+			return ((EList) getPlan().eGet(getEReference())).contains(element);
+		}
+		return false;
 	}
 
 }
