@@ -31,11 +31,9 @@ public class ResourceRefSection extends AbstractTableSection {
 
 	EReference resourceRefERef;
 	
-	static {
-		COLUMN_NAMES = new String[] { Messages.editorResRefNameTitle,
+	private static final String[] COLUMN_NAMES = new String[] { Messages.editorResRefNameTitle,
 				Messages.editorResRefLinkTitle,
 				Messages.editorResRefTargetNameTitle };
-	}
 
 	public ResourceRefSection(EObject plan, Composite parent,
 			FormToolkit toolkit, int style, EReference resourceRefERef) {
@@ -60,6 +58,13 @@ public class ResourceRefSection extends AbstractTableSection {
 	 */
 	public String getDescription() {
 		return Messages.editorResourceRefDescription;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
+	 */
+	public String[] getTableColumnNames() {
+		return COLUMN_NAMES;
 	}
 
 	/*

@@ -30,11 +30,9 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 public class EjbLocalRefSection extends AbstractTableSection {
 
 	EReference ejbLocalRefERef;
-	
-	static {
-		COLUMN_NAMES = new String[] {
-				Messages.editorEjbRefTargetName, Messages.editorEjbRefEjbLink };
-	}
+
+	private static final String[] COLUMN_NAMES = new String[] {
+			Messages.editorEjbRefTargetName, Messages.editorEjbRefEjbLink };
 
 	public EjbLocalRefSection(EObject plan, Composite parent,
 			FormToolkit toolkit, int style, EReference ejbLocalRefERef) {
@@ -59,6 +57,13 @@ public class EjbLocalRefSection extends AbstractTableSection {
 	 */
 	public String getDescription() {
 		return Messages.editorEjbLocalRefDescription;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
+	 */
+	public String[] getTableColumnNames() {
+		return COLUMN_NAMES;
 	}
 
 	/*

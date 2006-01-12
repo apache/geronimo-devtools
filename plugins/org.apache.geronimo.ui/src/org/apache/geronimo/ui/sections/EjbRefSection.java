@@ -31,10 +31,10 @@ public class EjbRefSection extends AbstractTableSection {
 
 	EReference ejbRefERef;
 	
-	static {
+	private static final String[]
 		COLUMN_NAMES = new String[] { Messages.editorEjbRefTargetName,
 				Messages.editorEjbRefEjbLink };
-	}
+	
 
 	/**
 	 * @param plan
@@ -65,6 +65,13 @@ public class EjbRefSection extends AbstractTableSection {
 	 */
 	public String getDescription() {
 		return Messages.editorEjbRefDescription;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
+	 */
+	public String[] getTableColumnNames() {
+		return COLUMN_NAMES;
 	}
 
 	/*

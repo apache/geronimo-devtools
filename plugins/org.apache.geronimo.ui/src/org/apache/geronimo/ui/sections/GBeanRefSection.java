@@ -28,11 +28,9 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 public class GBeanRefSection extends AbstractTableSection {
 
 	EReference gbeanERef;
-	
-	static {
-		COLUMN_NAMES = new String[] { Messages.editorGBeanRefName,
-				Messages.editorGBeanRefType, Messages.editorGBeanRefProxyType };
-	}
+
+	private static final String[] COLUMN_NAMES = new String[] { Messages.editorGBeanRefName,
+			Messages.editorGBeanRefType, Messages.editorGBeanRefProxyType };
 
 	public GBeanRefSection(EObject plan, Composite parent, FormToolkit toolkit,
 			int style, EReference gbeanERef) {
@@ -57,6 +55,13 @@ public class GBeanRefSection extends AbstractTableSection {
 	 */
 	public String getDescription() {
 		return Messages.editorGBeanRefDescription;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
+	 */
+	public String[] getTableColumnNames() {
+		return COLUMN_NAMES;
 	}
 
 	/*

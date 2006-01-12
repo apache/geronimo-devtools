@@ -23,6 +23,7 @@ import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -126,12 +127,10 @@ public class DependencyWizard extends AbstractTableWizard {
 		return Messages.wizardPageDescription_Dependency;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#processEAttributes(org.apache.geronimo.ui.wizards.DynamicAddEditWizard.DynamicWizardPage)
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.ui.wizards.AbstractTableWizard#processEAttributes(org.eclipse.jface.wizard.IWizardPage)
 	 */
-	public void processEAttributes(DynamicWizardPage page) {
+	public void processEAttributes(IWizardPage page) {
 		DependencyType dt = (DependencyType) eObject;
 
 		if (uriButton.getSelection()) {
@@ -159,8 +158,6 @@ public class DependencyWizard extends AbstractTableWizard {
 	}
 
 	public class DependencyWizardPage extends WizardPage {
-
-		Text[] textEntries = new Text[getTableColumnEAttributes().length];
 
 		public DependencyWizardPage(String pageName) {
 			super(pageName);

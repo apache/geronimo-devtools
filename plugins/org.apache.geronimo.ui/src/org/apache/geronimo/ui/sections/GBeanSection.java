@@ -29,11 +29,9 @@ public class GBeanSection extends AbstractTableSection {
 
 	private EReference gBeanERef;
 	
-	static {
-		COLUMN_NAMES = new String[] { Messages.name, Messages.GbeanName,
+	private static final String[] COLUMN_NAMES = new String[] { Messages.name, Messages.GbeanName,
 				Messages.className };
-	}
-
+	
 	/**
 	 * @param plan
 	 * @param parent
@@ -63,6 +61,13 @@ public class GBeanSection extends AbstractTableSection {
 	 */
 	public String getDescription() {
 		return Messages.editorSectionGBeanDescription;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
+	 */
+	public String[] getTableColumnNames() {
+		return COLUMN_NAMES;
 	}
 
 	/*

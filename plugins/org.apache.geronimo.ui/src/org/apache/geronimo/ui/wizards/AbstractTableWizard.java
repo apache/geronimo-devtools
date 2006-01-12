@@ -21,6 +21,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -54,29 +55,29 @@ public abstract class AbstractTableWizard extends Wizard implements TableWizard 
 	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
 	 */
 	public boolean performFinish() {
-		DynamicWizardPage page = (DynamicWizardPage) getPages()[0];
 
 		if (eObject == null) {
-			eObject = getEFactory().create(
-					getTableColumnEAttributes()[0].getEContainingClass());
+			eObject = getEFactory().create(section.getTableEntryObjectType());
 			EObject plan = section.getPlan();
-
 			((EList) plan.eGet(section.getEReference())).add(eObject);
 		}
 
-		processEAttributes(page);
+		processEAttributes(getPages()[0]);
 
 		return true;
 	}
 
-	public void processEAttributes(DynamicWizardPage page) {
-		for (int i = 0; i < getTableColumnEAttributes().length; i++) {
-			String value = page.textEntries[i].getText();
-			EAttribute attribute = getTableColumnEAttributes()[i];
-			if (attribute.getEContainingClass().equals(eObject.eClass())) {
-				eObject.eSet(attribute, value);
-			} else {
-				// TODO
+	public void processEAttributes(IWizardPage page) {
+		if (page instanceof DynamicWizardPage) {
+			for (int i = 0; i < getTableColumnEAttributes().length; i++) {
+				String value = ((DynamicWizardPage) page).textEntries[i]
+						.getText();
+				EAttribute attribute = getTableColumnEAttributes()[i];
+				if (attribute.getEContainingClass().equals(eObject.eClass())) {
+					eObject.eSet(attribute, value);
+				} else {
+					// TODO
+				}
 			}
 		}
 	}

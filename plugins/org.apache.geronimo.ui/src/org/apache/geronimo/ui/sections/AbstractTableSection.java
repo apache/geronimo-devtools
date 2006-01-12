@@ -61,7 +61,7 @@ import org.openejb.xml.ns.pkgen.provider.PkgenItemProviderAdapterFactory;
 
 public abstract class AbstractTableSection extends AbstractSectionPart {
 
-	protected static String[] COLUMN_NAMES = new String[] {};
+	private static final String[] COLUMN_NAMES = new String[]{};
 
 	private Table table;
 
