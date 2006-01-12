@@ -23,11 +23,6 @@ Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you ma
       <update label="Apache Geronimo Eclipse Update Site" url="http://geronimo.apache.org/devtools/"/>
    </url>
 
-   <includes
-         id="org.apache.geronimo.source.feature"
-         version="0.5.0"
-         optional="true"/>
-
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.core.resources"/>
