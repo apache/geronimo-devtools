@@ -180,16 +180,17 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	 */
 	public void publishModule(int kind, int deltaKind, IModule[] module,
 			IProgressMonitor monitor) throws CoreException {
-		Trace.trace(Trace.INFO, ">> publishModule(), deltaKind = " + kind);
+		Trace.trace(Trace.INFO, ">> publishModule(), deltaKind = " + deltaKind);
 		Trace.trace(Trace.INFO, Arrays.asList(module).toString());
 		_monitor = monitor;
 
-		if (deltaKind != NO_CHANGE && module.length == 1) {
-			invokeCommand(deltaKind, module[0]);
+		if (module.length == 1
+		        && (deltaKind == ADDED || deltaKind == REMOVED)) {
+		    invokeCommand(deltaKind, module[0]);
+		} else if (deltaKind == CHANGED) {
+		    invokeCommand(deltaKind, module[0]);
 		}
-
-		setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
-
+			
 		Trace.trace(Trace.INFO, "<< publishModule()");
 	}
 
@@ -321,10 +322,14 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 					existingPrgArgs);
 		}
 
-		Trace.trace(Trace.INFO, "VM_INSTALL_TYPE: " + workingCopy.getAttribute(
-				IJavaLaunchConfigurationConstants.ATTR_VM_INSTALL_TYPE, ""));
-		Trace.trace(Trace.INFO, "VM_INSTALL_NAME: " + workingCopy.getAttribute(
-				IJavaLaunchConfigurationConstants.ATTR_VM_INSTALL_NAME, ""));
+		Trace.trace(Trace.INFO, "VM_INSTALL_TYPE: "
+				+ workingCopy.getAttribute(
+						IJavaLaunchConfigurationConstants.ATTR_VM_INSTALL_TYPE,
+						""));
+		Trace.trace(Trace.INFO, "VM_INSTALL_NAME: "
+				+ workingCopy.getAttribute(
+						IJavaLaunchConfigurationConstants.ATTR_VM_INSTALL_NAME,
+						""));
 	}
 
 	/**
