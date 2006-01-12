@@ -24,22 +24,22 @@
     <dependency>
       <groupId>xerces</groupId>
       <artifactId>xercesImpl</artifactId>
-      <version>2.5.0</version>      
+      <version>${xercesImpl_version}</version>      
     </dependency>
     <dependency>
       <groupId>xerces</groupId>
       <artifactId>xmlParserAPIs</artifactId>
-      <version>2.6.2</version>      
+      <version>${xmlParserAPIs_version}</version>      
     </dependency>
     <dependency>
       <groupId>xerces</groupId>
       <artifactId>xerces</artifactId>
-      <version>2.4.0</version>      
+      <version>${xerces_version}</version>      
     </dependency>
     <dependency>
       <groupId>xml-resolver</groupId>
       <artifactId>xml-resolver</artifactId>
-      <version>1.1</version>      
+      <version>${xml_resolver_version}</version>      
     </dependency>
     <!--  geronimo dependencies needed for schemas during build -->
     <dependency>
