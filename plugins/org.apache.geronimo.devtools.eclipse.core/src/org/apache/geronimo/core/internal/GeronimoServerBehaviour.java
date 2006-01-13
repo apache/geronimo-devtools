@@ -259,6 +259,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (e instanceof TargetModuleIdNotFoundException) {
+				GeronimoPlugin.getInstance().log(Status.WARNING, "Module may have been uninstalled outside the workspace.", e);
 				doDeploy(module);
 			}
 		}

@@ -16,29 +16,34 @@
 package org.apache.geronimo.core.internal;
 
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 
 /**
  * The main plugin class.
  */
 public class GeronimoPlugin extends Plugin {
-    public static final String PLUGIN_ID = "org.apache.geronimo.devtools.eclipse.core";
+	public static final String PLUGIN_ID = "org.apache.geronimo.devtools.eclipse.core";
 
-    private static GeronimoPlugin singleton;
+	private static GeronimoPlugin singleton;
 
-    /**
-     * The constructor.
-     */
-    public GeronimoPlugin() {
-        super();
-        singleton = this;
-    }
+	/**
+	 * The constructor.
+	 */
+	public GeronimoPlugin() {
+		super();
+		singleton = this;
+	}
 
-    /**
-     * Returns the singleton instance of this plugin.
-     * 
-     * @return org.eclipse.jst.server.geronimo.core.internal.GeronimoPlugin
-     */
-    public static GeronimoPlugin getInstance() {
-        return singleton;
-    }
+	/**
+	 * Returns the singleton instance of this plugin.
+	 * 
+	 * @return org.eclipse.jst.server.geronimo.core.internal.GeronimoPlugin
+	 */
+	public static GeronimoPlugin getInstance() {
+		return singleton;
+	}
+
+	public void log(int severity, String message, Throwable throwable) {
+		getLog().log(new Status(severity, PLUGIN_ID, 0, message, throwable));
+	}
 }
