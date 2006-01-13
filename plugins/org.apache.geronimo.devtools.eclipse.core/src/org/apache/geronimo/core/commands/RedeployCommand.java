@@ -33,18 +33,18 @@ class RedeployCommand extends AbstractDeploymentCommand {
 		super(dm, module);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	public IStatus execute(IProgressMonitor monitor) {
+	public IStatus execute(IProgressMonitor monitor)
+			throws TargetModuleIdNotFoundException {
+		
 		TargetModuleID id = getTargetModuleID(getModule());
-		if (id != null) {
-			File jarFile = DeploymentUtils.createJarFile(getModule());
-			return new DeploymentCmdStatus(Status.OK_STATUS,
-					getDeploymentManager().redeploy(
-							new TargetModuleID[] { id }, jarFile, null));
-		}
-		return null;
+		File jarFile = DeploymentUtils.createJarFile(getModule());
+		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager()
+				.redeploy(new TargetModuleID[] { id }, jarFile, null));
 	}
 
 	/*

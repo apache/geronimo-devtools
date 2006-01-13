@@ -15,18 +15,24 @@
  */
 package org.apache.geronimo.core.commands;
 
-import javax.enterprise.deploy.shared.CommandType;
+public class TargetModuleIdNotFoundException extends Exception {
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.wst.server.core.IModule;
+	private static final long serialVersionUID = -2530352160336730134L;
 
-public interface IDeploymentCommand {
+	public TargetModuleIdNotFoundException() {
+		super();
+	}
 
-	public IStatus execute(IProgressMonitor monitor) throws Exception;
+	public TargetModuleIdNotFoundException(String arg0) {
+		super(arg0);
+	}
 
-	public CommandType getCommandType();
+	public TargetModuleIdNotFoundException(String arg0, Throwable arg1) {
+		super(arg0, arg1);
+	}
 
-	public IModule getModule();
+	public TargetModuleIdNotFoundException(Throwable arg0) {
+		super(arg0);
+	}
 
 }

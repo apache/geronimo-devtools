@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.core.commands;
 
+import javax.enterprise.deploy.shared.ModuleType;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
 import javax.enterprise.deploy.spi.exceptions.TargetException;
@@ -42,14 +43,17 @@ abstract class AbstractDeploymentCommand implements IDeploymentCommand {
 		return module;
 	}
 
-	public TargetModuleID getTargetModuleID(IModule module) {
+	public TargetModuleID getTargetModuleID(IModule module)
+			throws TargetModuleIdNotFoundException {
+
+		String configId = GeronimoUtils.getConfigId(module);
+		ModuleType moduleType = GeronimoUtils.getJSR88ModuleType(module);
+
 		try {
-			TargetModuleID ids[] = dm.getAvailableModules(GeronimoUtils
-					.getJSR88ModuleType(module), dm.getTargets());
+			TargetModuleID ids[] = dm.getAvailableModules(moduleType, dm.getTargets());
 			if (ids != null) {
 				for (int i = 0; i < ids.length; i++) {
-					if (ids[i].getModuleID().equals(
-							GeronimoUtils.getConfigId(module))) {
+					if (ids[i].getModuleID().equals(configId)) {
 						return ids[i];
 					}
 				}
@@ -59,7 +63,10 @@ abstract class AbstractDeploymentCommand implements IDeploymentCommand {
 		} catch (TargetException e) {
 			e.printStackTrace();
 		}
-		return null;
+
+		throw new TargetModuleIdNotFoundException(
+				"Could not find TargetModuleID for module " + module.getName()
+						+ " with configId " + configId);
 	}
 
 }

@@ -30,16 +30,17 @@ class StopCommand extends AbstractDeploymentCommand {
 		super(dm, module);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	public IStatus execute(IProgressMonitor monitor) {
+	public IStatus execute(IProgressMonitor monitor)
+			throws TargetModuleIdNotFoundException {
+
 		TargetModuleID id = getTargetModuleID(getModule());
-		if (id != null) {
-			return new DeploymentCmdStatus(Status.OK_STATUS,
-					getDeploymentManager().stop(new TargetModuleID[] { id }));
-		}
-		return new DeploymentCmdStatus(Status.CANCEL_STATUS, null);
+		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager()
+				.stop(new TargetModuleID[] { id }));
 	}
 
 	/*

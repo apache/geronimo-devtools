@@ -33,6 +33,7 @@ import org.apache.geronimo.core.GeronimoConnectionFactory;
 import org.apache.geronimo.core.commands.DeploymentCmdStatus;
 import org.apache.geronimo.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.core.commands.IDeploymentCommand;
+import org.apache.geronimo.core.commands.TargetModuleIdNotFoundException;
 import org.apache.geronimo.gbean.GBeanQuery;
 import org.apache.geronimo.kernel.GBeanNotFoundException;
 import org.apache.geronimo.kernel.Kernel;
@@ -184,14 +185,13 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		Trace.trace(Trace.INFO, Arrays.asList(module).toString());
 		_monitor = monitor;
 
-		if (module.length == 1
-		        && (deltaKind == ADDED || deltaKind == REMOVED)) {
-		    invokeCommand(deltaKind, module[0]);
+		if (module.length == 1 && (deltaKind == ADDED || deltaKind == REMOVED)) {
+			invokeCommand(deltaKind, module[0]);
 		} else if (deltaKind == CHANGED) {
-			//TODO This case is flawed due to WTP Bugzilla 123676
-		    invokeCommand(deltaKind, module[0]);
+			// TODO This case is flawed due to WTP Bugzilla 123676
+			invokeCommand(deltaKind, module[0]);
 		}
-			
+
 		Trace.trace(Trace.INFO, "<< publishModule()");
 	}
 
@@ -220,22 +220,27 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 		IDeploymentCommand cmd = DeploymentCommandFactory
 				.createDistributeCommand(module, getServer());
-		IStatus status = cmd.execute(_monitor);
 
-		if (!status.isOK()) {
-			doFail(status, Messages.DISTRIBUTE_FAIL);
-		}
-
-		if (status instanceof DeploymentCmdStatus) {
-			TargetModuleID[] ids = ((DeploymentCmdStatus) status)
-					.getResultTargetModuleIDs();
-			cmd = DeploymentCommandFactory.createStartCommand(ids, module,
-					getServer());
-			status = cmd.execute(_monitor);
+		try {
+			IStatus status = cmd.execute(_monitor);
 
 			if (!status.isOK()) {
-				doFail(status, Messages.START_FAIL);
+				doFail(status, Messages.DISTRIBUTE_FAIL);
 			}
+
+			if (status instanceof DeploymentCmdStatus) {
+				TargetModuleID[] ids = ((DeploymentCmdStatus) status)
+						.getResultTargetModuleIDs();
+				cmd = DeploymentCommandFactory.createStartCommand(ids, module,
+						getServer());
+				status = cmd.execute(_monitor);
+
+				if (!status.isOK()) {
+					doFail(status, Messages.START_FAIL);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		Trace.trace(Trace.INFO, "<< doDeploy() " + module.toString());
@@ -246,10 +251,16 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 		IDeploymentCommand cmd = DeploymentCommandFactory
 				.createRedeployCommand(module, getServer());
-		IStatus status = cmd.execute(_monitor);
-
-		if (!status.isOK()) {
-			doFail(status, Messages.REDEPLOY_FAIL);
+		try {
+			IStatus status = cmd.execute(_monitor);
+			if (!status.isOK()) {
+				doFail(status, Messages.REDEPLOY_FAIL);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (e instanceof TargetModuleIdNotFoundException) {
+				doDeploy(module);
+			}
 		}
 
 		Trace.trace(Trace.INFO, "<< doRedeploy() " + module.toString());
@@ -260,18 +271,23 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 		IDeploymentCommand cmd = DeploymentCommandFactory.createStopCommand(
 				module, getServer());
-		IStatus status = cmd.execute(_monitor);
+		try {
+			IStatus status = cmd.execute(_monitor);
 
-		if (!status.isOK()) {
-			doFail(status, Messages.STOP_FAIL);
-		}
+			if (!status.isOK()) {
+				doFail(status, Messages.STOP_FAIL);
+			}
 
-		cmd = DeploymentCommandFactory.createUndeployCommand(module,
-				getServer());
-		status = cmd.execute(_monitor);
+			cmd = DeploymentCommandFactory.createUndeployCommand(module,
+					getServer());
+			status = cmd.execute(_monitor);
 
-		if (!status.isOK()) {
-			doFail(status, Messages.UNDEPLOY_FAIL);
+			if (!status.isOK()) {
+				doFail(status, Messages.UNDEPLOY_FAIL);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		Trace.trace(Trace.INFO, "<< doUndeploy()" + module.toString());
@@ -322,15 +338,6 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 					IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,
 					existingPrgArgs);
 		}
-
-		Trace.trace(Trace.INFO, "VM_INSTALL_TYPE: "
-				+ workingCopy.getAttribute(
-						IJavaLaunchConfigurationConstants.ATTR_VM_INSTALL_TYPE,
-						""));
-		Trace.trace(Trace.INFO, "VM_INSTALL_NAME: "
-				+ workingCopy.getAttribute(
-						IJavaLaunchConfigurationConstants.ATTR_VM_INSTALL_NAME,
-						""));
 	}
 
 	/**

@@ -58,7 +58,7 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 	 * 
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	public IStatus execute(IProgressMonitor monitor) {
+	public IStatus execute(IProgressMonitor monitor) throws Exception {
 		
 		_monitor = monitor;
 
@@ -71,7 +71,7 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 		return new DeploymentCmdStatus(status, po);
 	}
 	
-	private synchronized ProgressObject run() {
+	private synchronized ProgressObject run() throws Exception {
 		Trace.trace(Trace.INFO, "--> run()");
 
 		IStatus ds = command.execute(_monitor);
