@@ -239,6 +239,8 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 					doFail(status, Messages.START_FAIL);
 				}
 			}
+		} catch (CoreException e) {
+			throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -256,10 +258,17 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 			if (!status.isOK()) {
 				doFail(status, Messages.REDEPLOY_FAIL);
 			}
+		} catch (CoreException e) {
+			throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (e instanceof TargetModuleIdNotFoundException) {
-				GeronimoPlugin.getInstance().log(Status.WARNING, "Module may have been uninstalled outside the workspace.", e);
+				GeronimoPlugin
+						.getInstance()
+						.log(
+								Status.WARNING,
+								"Module may have been uninstalled outside the workspace.",
+								e);
 				doDeploy(module);
 			}
 		}
@@ -287,6 +296,8 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 				doFail(status, Messages.UNDEPLOY_FAIL);
 			}
 
+		} catch (CoreException e) {
+			throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
