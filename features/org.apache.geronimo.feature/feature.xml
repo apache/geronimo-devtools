@@ -2,7 +2,7 @@
 <feature
       id="org.apache.geronimo.feature"
       label="org.apache.geronimo.feature"
-      version="0.5.0"
+      version="1.0.0"
       provider-name="Apache Software Foundation">
 
    <description url="http://geronimo.apache.org/devtools">
@@ -63,34 +63,34 @@ Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you ma
          id="org.apache.geronimo.devtools.eclipse.core"
          download-size="0"
          install-size="0"
-         version="0.5.0"
+         version="1.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.geronimo.deployment.model"
          download-size="0"
          install-size="0"
-         version="0.5.0"
+         version="1.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.geronimo.runtime.v1"
          download-size="0"
          install-size="0"
-         version="0.5.0"/>
+         version="1.0.0"/>
 
    <plugin
          id="org.apache.geronimo.ui"
          download-size="0"
          install-size="0"
-         version="0.5.0"
+         version="1.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.geronimo.deployment.model.edit"
          download-size="0"
          install-size="0"
-         version="0.5.0"
+         version="1.0.0"
          unpack="false"/>
 
 </feature>

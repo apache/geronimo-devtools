@@ -36,14 +36,14 @@
   </goal>
   
   <goal name="packagesource">
-     <mkdir dir="${packaged.source.root}/org.apache.geronimo.deployment.model_0.5.0/"/>
-     <mkdir dir="${packaged.source.root}/org.apache.geronimo.deployment.model.edit_0.5.0/"/>
-     <mkdir dir="${packaged.source.root}/org.apache.geronimo.devtools.eclipse.core_0.5.0/"/>
-     <mkdir dir="${packaged.source.root}/org.apache.geronimo.ui_0.5.0/"/>
-     <zip destfile="${packaged.source.root}/org.apache.geronimo.deployment.model_0.5.0/src.zip" basedir="${basedir}/../org.apache.geronimo.deployment.model/src"/>
-     <zip destfile="${packaged.source.root}/org.apache.geronimo.deployment.model.edit_0.5.0/src.zip" basedir="${basedir}/../org.apache.geronimo.deployment.model.edit/src"/>
-     <zip destfile="${packaged.source.root}/org.apache.geronimo.devtools.eclipse.core_0.5.0/src.zip" basedir="${basedir}/../org.apache.geronimo.devtools.eclipse.core/src"/>
-     <zip destfile="${packaged.source.root}/org.apache.geronimo.ui_0.5.0/src.zip" basedir="${basedir}/../org.apache.geronimo.ui/src"/>
+     <mkdir dir="${packaged.source.root}/org.apache.geronimo.deployment.model_1.0.0/"/>
+     <mkdir dir="${packaged.source.root}/org.apache.geronimo.deployment.model.edit_1.0.0/"/>
+     <mkdir dir="${packaged.source.root}/org.apache.geronimo.devtools.eclipse.core_1.0.0/"/>
+     <mkdir dir="${packaged.source.root}/org.apache.geronimo.ui_1.0.0/"/>
+     <zip destfile="${packaged.source.root}/org.apache.geronimo.deployment.model_1.0.0/src.zip" basedir="${basedir}/../org.apache.geronimo.deployment.model/src"/>
+     <zip destfile="${packaged.source.root}/org.apache.geronimo.deployment.model.edit_1.0.0/src.zip" basedir="${basedir}/../org.apache.geronimo.deployment.model.edit/src"/>
+     <zip destfile="${packaged.source.root}/org.apache.geronimo.devtools.eclipse.core_1.0.0/src.zip" basedir="${basedir}/../org.apache.geronimo.devtools.eclipse.core/src"/>
+     <zip destfile="${packaged.source.root}/org.apache.geronimo.ui_1.0.0/src.zip" basedir="${basedir}/../org.apache.geronimo.ui/src"/>
   </goal>
   
 </project>

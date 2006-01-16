@@ -2,7 +2,7 @@
 <feature
       id="org.apache.geronimo.installableruntime.feature"
       label="org.apache.geronimo.installableruntime.feature"
-      version="0.5.0"
+      version="1.0.0"
       provider-name="Apache.org">
 
    <description url="http://geronimo.apache.org/">
@@ -21,6 +21,6 @@
          id="org.apache.geronimo.j2ee.server.v1"
          download-size="0"
          install-size="0"
-         version="0.5.0"/>
+         version="1.0.0"/>
 
 </feature>

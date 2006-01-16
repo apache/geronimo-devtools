@@ -48,7 +48,7 @@
   <extension point="org.eclipse.wst.server.core.installableRuntimes">
     <installableRuntime
        id="org.apache.geronimo.generic.runtime.10"
-       featureVersion="0.5.0"
+       featureVersion="1.0.0"
        featureId="org.apache.geronimo.installableruntime.feature"
        featureSite="http://www.apache.org/dist/geronimo/eclipse/updates/"
        bundleId="org.apache.geronimo.j2ee.server.v1"
