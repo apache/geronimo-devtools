@@ -74,6 +74,8 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#stop(boolean)
 	 */
 	public void stop(boolean force) {
+		
+		setServerState(IServer.STATE_STOPPING);
 
 		if (getKernel() != null) {
 			// lets shutdown the kernel so shutdown messages are displayed in
