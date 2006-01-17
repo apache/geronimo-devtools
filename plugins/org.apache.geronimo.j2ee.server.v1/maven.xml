@@ -26,7 +26,7 @@
    </preGoal>  
     
   <goal name="getzip">
-    <ant:property name="geronimo.zip" value="geronimo-jetty-j2ee-${geronimo.version}.zip"/>
+    <ant:property name="geronimo.zip" value="geronimo-tomcat-j2ee-${geronimo.version}.zip"/>
     <ant:available file="${maven.repo.local}/geronimo/distributions/${geronimo.zip}" property="zip.present"/>
     <j:if test="${zip.present != 'true'}">
          <ant:mkdir dir="${maven.repo.local}/geronimo/distributions/"/>

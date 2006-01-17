@@ -52,7 +52,7 @@
        featureId="org.apache.geronimo.installableruntime.feature"
        featureSite="http://www.apache.org/dist/geronimo/eclipse/updates/"
        bundleId="org.apache.geronimo.j2ee.server.v1"
-       path="zips/geronimo-jetty-j2ee-1.0-SNAPSHOT.zip">
+       path="zips/geronimo-tomcat-j2ee-1.0.zip">
     </installableRuntime>
   </extension>
 
