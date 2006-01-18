@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.ui.internal;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.server.generic.core.internal.GenericServerRuntime;
@@ -93,6 +94,8 @@ public class GeronimoServerRuntimeWizardFragment extends
 		fDecorators[0] = new JRESelectDecorator(getRuntimeDelegate());
 		GenericServerComposite composite = new GenericServerComposite(parent,
 				fDecorators);
+		
+		//TODO Overide JRESelectDecorator to validate only 1.4.2 should be selected
 
 		Label label = new Label(composite, SWT.NONE);
 		label.setText(Messages.installDir);
@@ -106,7 +109,7 @@ public class GeronimoServerRuntimeWizardFragment extends
 		installDir.setLayoutData(data);
 		installDir.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				// runtimeWC.setLocation(new Path(installDir.getText()));
+				getRuntimeDelegate().getRuntimeWorkingCopy().setLocation(new Path(installDir.getText()));
 				// validate();
 			}
 		});
@@ -168,12 +171,13 @@ public class GeronimoServerRuntimeWizardFragment extends
 				public void widgetSelected(SelectionEvent se) {
 					if (installDir != null && isValidLocation()) {
 						try {
+							Path installPath = new Path(installDir.getText());
 							if(tomcat.getSelection()) {
-								gWithTomcat.install(new Path(installDir.getText()), new NullProgressMonitor());
+								gWithTomcat.install(installPath, new NullProgressMonitor());
 							} else {
-								gWithJetty.install(new Path(installDir.getText()), new NullProgressMonitor());
+								gWithJetty.install(installPath, new NullProgressMonitor());
 							}
-							//TODO update installDir
+							updateInstallDir(installPath);
 						} catch (Exception e) {
 							Trace.trace(Trace.SEVERE, "Error installing runtime", e);
 						}
@@ -182,6 +186,11 @@ public class GeronimoServerRuntimeWizardFragment extends
 				
 				boolean isValidLocation() {
 					return true;
+				}
+				
+				void updateInstallDir(IPath installPath) {
+					installPath = installPath.append("geronimo-1.0");
+					installDir.setText(installPath.toOSString());
 				}
 			});
 		}
