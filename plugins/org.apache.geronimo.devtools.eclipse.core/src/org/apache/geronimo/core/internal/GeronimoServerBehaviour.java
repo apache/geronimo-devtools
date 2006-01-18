@@ -74,7 +74,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#stop(boolean)
 	 */
 	public void stop(boolean force) {
-		
+
 		setServerState(IServer.STATE_STOPPING);
 
 		if (getKernel() != null) {
@@ -91,9 +91,17 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	}
 
 	private String getJMXServiceURL() {
+
 		String host = getServer().getHost();
-		return "service:jmx:rmi://" + host + "/jndi/rmi://" + host + ":"
-				+ getRMINamingPort() + "/JMXConnector";
+		String rmiPort = getRMINamingPort();
+
+		if (host != null && rmiPort != null) {
+			return "service:jmx:rmi://" + host + "/jndi/rmi://" + host + ":"
+					+ rmiPort + "/JMXConnector";
+		}
+
+		return null;
+
 	}
 
 	private Kernel getKernel() {
@@ -104,7 +112,9 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 					getPassword() });
 			try {
 				String url = getJMXServiceURL();
-				Trace.trace(Trace.INFO, url);
+				Trace.trace(Trace.INFO, "URL = " + url);
+				if (url == null)
+					return null;
 				JMXServiceURL address = new JMXServiceURL(url);
 				try {
 					JMXConnector jmxConnector = JMXConnectorFactory.connect(
@@ -199,58 +209,58 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 	private void invokeCommand(int deltaKind, IModule module)
 			throws CoreException {
-		switch (deltaKind) {
-		case ADDED: {
-			doDeploy(module);
-			break;
-		}
-		case CHANGED: {
-			doRedeploy(module);
-			break;
-		}
-		case REMOVED: {
-			doUndeploy(module);
-			break;
-		}
-		default:
-			throw new IllegalArgumentException();
-		}
-	}
-
-	private void doDeploy(IModule module) throws CoreException {
-		Trace.trace(Trace.INFO, ">> doDeploy() " + module.toString());
-
-		IDeploymentCommand cmd = DeploymentCommandFactory
-				.createDistributeCommand(module, getServer());
-
 		try {
-			IStatus status = cmd.execute(_monitor);
-
-			if (!status.isOK()) {
-				doFail(status, Messages.DISTRIBUTE_FAIL);
+			switch (deltaKind) {
+			case ADDED: {
+				doDeploy(module);
+				break;
 			}
-
-			if (status instanceof DeploymentCmdStatus) {
-				TargetModuleID[] ids = ((DeploymentCmdStatus) status)
-						.getResultTargetModuleIDs();
-				cmd = DeploymentCommandFactory.createStartCommand(ids, module,
-						getServer());
-				status = cmd.execute(_monitor);
-
-				if (!status.isOK()) {
-					doFail(status, Messages.START_FAIL);
-				}
+			case CHANGED: {
+				doRedeploy(module);
+				break;
+			}
+			case REMOVED: {
+				doUndeploy(module);
+				break;
+			}
+			default:
+				throw new IllegalArgumentException();
 			}
 		} catch (CoreException e) {
 			throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void doDeploy(IModule module) throws Exception {
+		Trace.trace(Trace.INFO, ">> doDeploy() " + module.toString());
+
+		IDeploymentCommand cmd = DeploymentCommandFactory
+				.createDistributeCommand(module, getServer());
+
+		IStatus status = cmd.execute(_monitor);
+
+		if (!status.isOK()) {
+			doFail(status, Messages.DISTRIBUTE_FAIL);
+		}
+
+		if (status instanceof DeploymentCmdStatus) {
+			TargetModuleID[] ids = ((DeploymentCmdStatus) status)
+					.getResultTargetModuleIDs();
+			cmd = DeploymentCommandFactory.createStartCommand(ids, module,
+					getServer());
+			status = cmd.execute(_monitor);
+
+			if (!status.isOK()) {
+				doFail(status, Messages.START_FAIL);
+			}
+		}
 
 		Trace.trace(Trace.INFO, "<< doDeploy() " + module.toString());
 	}
 
-	private void doRedeploy(IModule module) throws CoreException {
+	private void doRedeploy(IModule module) throws Exception {
 		Trace.trace(Trace.INFO, ">> doRedeploy() " + module.toString());
 
 		IDeploymentCommand cmd = DeploymentCommandFactory
@@ -260,48 +270,34 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 			if (!status.isOK()) {
 				doFail(status, Messages.REDEPLOY_FAIL);
 			}
-		} catch (CoreException e) {
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-			if (e instanceof TargetModuleIdNotFoundException) {
-				GeronimoPlugin
-						.getInstance()
-						.log(
-								Status.WARNING,
-								"Module may have been uninstalled outside the workspace.",
-								e);
-				doDeploy(module);
-			}
+		} catch (TargetModuleIdNotFoundException e) {
+			GeronimoPlugin.log(Status.WARNING,
+					"Module may have been uninstalled outside the workspace.",
+					e);
+			doDeploy(module);
 		}
 
 		Trace.trace(Trace.INFO, "<< doRedeploy() " + module.toString());
 	}
 
-	private void doUndeploy(IModule module) throws CoreException {
+	private void doUndeploy(IModule module) throws Exception {
 		Trace.trace(Trace.INFO, ">> doUndeploy() " + module.toString());
 
 		IDeploymentCommand cmd = DeploymentCommandFactory.createStopCommand(
 				module, getServer());
-		try {
-			IStatus status = cmd.execute(_monitor);
 
-			if (!status.isOK()) {
-				doFail(status, Messages.STOP_FAIL);
-			}
+		IStatus status = cmd.execute(_monitor);
 
-			cmd = DeploymentCommandFactory.createUndeployCommand(module,
-					getServer());
-			status = cmd.execute(_monitor);
+		if (!status.isOK()) {
+			doFail(status, Messages.STOP_FAIL);
+		}
 
-			if (!status.isOK()) {
-				doFail(status, Messages.UNDEPLOY_FAIL);
-			}
+		cmd = DeploymentCommandFactory.createUndeployCommand(module,
+				getServer());
+		status = cmd.execute(_monitor);
 
-		} catch (CoreException e) {
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (!status.isOK()) {
+			doFail(status, Messages.UNDEPLOY_FAIL);
 		}
 
 		Trace.trace(Trace.INFO, "<< doUndeploy()" + module.toString());
