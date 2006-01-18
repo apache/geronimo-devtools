@@ -29,5 +29,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.debug.core,
  org.eclipse.emf.edit,
  org.apache.geronimo.deployment.model.edit,
- org.eclipse.emf.edit.ui
+ org.eclipse.emf.edit.ui,
+ org.eclipse.jst.server.core
 Eclipse-AutoStart: true
