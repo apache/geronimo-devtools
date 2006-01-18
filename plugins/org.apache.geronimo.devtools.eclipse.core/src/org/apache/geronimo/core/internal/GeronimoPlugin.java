@@ -43,7 +43,9 @@ public class GeronimoPlugin extends Plugin {
 		return singleton;
 	}
 
-	public void log(int severity, String message, Throwable throwable) {
-		getLog().log(new Status(severity, PLUGIN_ID, 0, message, throwable));
+	public static void log(int severity, String message, Throwable throwable) {
+		singleton.getLog().log(
+				new Status(severity, PLUGIN_ID, 0, message, throwable));
 	}
+
 }
