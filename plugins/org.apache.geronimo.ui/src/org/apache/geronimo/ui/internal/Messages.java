@@ -169,7 +169,9 @@ public class Messages extends NLS {
 	public static String doasCurrentCaller;
 	public static String useContextHandler;
 	public static String defaultRole;
-	//
+	
+	//GeronimoServerRuntimeWizardFragment
+	public static String serverWizardDescription;
 	public static String browse;
 	public static String installDir;
 	public static String downloadOptions;

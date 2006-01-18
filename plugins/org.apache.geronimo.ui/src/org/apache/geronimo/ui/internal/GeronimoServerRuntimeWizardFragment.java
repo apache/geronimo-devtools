@@ -64,11 +64,7 @@ public class GeronimoServerRuntimeWizardFragment extends
 	 * @see org.eclipse.jst.server.generic.ui.internal.ServerDefinitionTypeAwareWizardFragment#description()
 	 */
 	public String description() {
-		String rName = getRuntimeName();
-		if (rName == null || rName.length() < 1)
-			rName = "Generic";
-		return GenericServerUIMessages.bind(
-				GenericServerUIMessages.runtimeWizardDescription, rName);
+		return Messages.serverWizardDescription;
 	}
 
 	/*
