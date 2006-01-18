@@ -6,7 +6,7 @@
      <fragment
         id="org.eclipse.jst.server.generic.runtime"
         typeIds="org.apache.geronimo.generic.runtime.10"
-        class="org.eclipse.jst.server.generic.ui.internal.GenericServerRuntimeWizardFragment"/>
+        class="org.apache.geronimo.ui.internal.GeronimoServerRuntimeWizardFragment"/>
      <fragment
         id="org.eclipse.jst.server.generic.server"
         typeIds="org.apache.geronimo.generic.server.10"
