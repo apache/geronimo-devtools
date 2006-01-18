@@ -16,6 +16,7 @@
 package org.apache.geronimo.ui.internal;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.server.generic.core.internal.GenericServerRuntime;
 import org.eclipse.jst.server.generic.ui.internal.GenericServerComposite;
 import org.eclipse.jst.server.generic.ui.internal.GenericServerCompositeDecorator;
@@ -53,6 +54,9 @@ public class GeronimoServerRuntimeWizardFragment extends
 
 	private GenericServerCompositeDecorator[] fDecorators;
 	protected Text installDir;
+	
+	private Button tomcat;
+	private Button jetty;
 
 	public GeronimoServerRuntimeWizardFragment() {
 		super();
@@ -73,11 +77,8 @@ public class GeronimoServerRuntimeWizardFragment extends
 	 * @see org.eclipse.jst.server.generic.ui.internal.ServerDefinitionTypeAwareWizardFragment#title()
 	 */
 	public String title() {
-		String rName = getRuntimeName();
-		if (rName == null || rName.length() < 1)
-			rName = "Generic";
 		return GenericServerUIMessages.bind(
-				GenericServerUIMessages.runtimeWizardTitle, rName);
+				GenericServerUIMessages.runtimeWizardTitle, getRuntimeName());
 	}
 
 	/*
@@ -92,11 +93,6 @@ public class GeronimoServerRuntimeWizardFragment extends
 		fDecorators[0] = new JRESelectDecorator(getRuntimeDelegate());
 		GenericServerComposite composite = new GenericServerComposite(parent,
 				fDecorators);
-
-		IInstallableRuntime gWithTomcat = ServerPlugin
-				.findInstallableRuntime(G_WITH_TOMCAT_ID);
-		IInstallableRuntime gWithJetty = ServerPlugin
-				.findInstallableRuntime(G_WITH_JETTY_ID);
 
 		Label label = new Label(composite, SWT.NONE);
 		label.setText(Messages.installDir);
@@ -115,11 +111,11 @@ public class GeronimoServerRuntimeWizardFragment extends
 			}
 		});
 
-		final Composite parentComp = composite;
+		final Composite browseComp = composite;
 		Button browse = SWTUtil.createButton(composite, Messages.browse);
 		browse.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent se) {
-				DirectoryDialog dialog = new DirectoryDialog(parentComp
+				DirectoryDialog dialog = new DirectoryDialog(browseComp
 						.getShell());
 				dialog.setMessage(Messages.installDir);
 				dialog.setFilterPath(installDir.getText());
@@ -133,34 +129,62 @@ public class GeronimoServerRuntimeWizardFragment extends
 		data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 3;
 
-		Group group = new Group(composite, SWT.NONE);
-		group.setText(Messages.downloadOptions);
-		group.setLayoutData(data);
-		group.setLayout(composite.getLayout());
+		final IInstallableRuntime gWithTomcat = ServerPlugin
+				.findInstallableRuntime(G_WITH_TOMCAT_ID);
+		final IInstallableRuntime gWithJetty = ServerPlugin
+				.findInstallableRuntime(G_WITH_JETTY_ID);
 
-		Label webContainer = new Label(group, SWT.NONE);
-		webContainer.setText(Messages.chooseWebContainer);
-		data = new GridData();
-		data.horizontalSpan = 3;
-		webContainer.setLayoutData(data);
+		if (gWithTomcat != null && gWithJetty != null) {
+			Group group = new Group(composite, SWT.NONE);
+			group.setText(Messages.downloadOptions);
+			group.setLayoutData(data);
+			group.setLayout(composite.getLayout());
 
-		Button tomcat = new Button(group, SWT.RADIO);
-		tomcat.setSelection(true);
-		tomcat.setText(Messages.gWithTomcat);
-		data = new GridData();
-		data.horizontalSpan = 3;
-		tomcat.setLayoutData(data);
+			Label webContainer = new Label(group, SWT.NONE);
+			webContainer.setText(Messages.chooseWebContainer);
+			data = new GridData();
+			data.horizontalSpan = 3;
+			webContainer.setLayoutData(data);
 
-		Button jetty = new Button(group, SWT.RADIO);
-		jetty.setText(Messages.gWithJetty);
-		data = new GridData();
-		data.horizontalSpan = 3;
-		jetty.setLayoutData(data);
+			tomcat = new Button(group, SWT.RADIO);
+			tomcat.setSelection(true);
+			tomcat.setText(Messages.gWithTomcat);
+			data = new GridData();
+			data.horizontalSpan = 3;
+			tomcat.setLayoutData(data);
 
-		Button install = SWTUtil.createButton(group, Messages.install);
-		data = new GridData();
-		data.horizontalSpan = 3;
-		install.setLayoutData(data);
+			jetty = new Button(group, SWT.RADIO);
+			jetty.setText(Messages.gWithJetty);
+			data = new GridData();
+			data.horizontalSpan = 3;
+			jetty.setLayoutData(data);
+
+			Button install = SWTUtil.createButton(group, Messages.install);
+			data = new GridData();
+			data.horizontalSpan = 3;
+			install.setLayoutData(data);
+			
+			install.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent se) {
+					if (installDir != null && isValidLocation()) {
+						try {
+							if(tomcat.getSelection()) {
+								gWithTomcat.install(new Path(installDir.getText()), new NullProgressMonitor());
+							} else {
+								gWithJetty.install(new Path(installDir.getText()), new NullProgressMonitor());
+							}
+							//TODO update installDir
+						} catch (Exception e) {
+							Trace.trace(Trace.SEVERE, "Error installing runtime", e);
+						}
+					} 
+				}
+				
+				boolean isValidLocation() {
+					return true;
+				}
+			});
+		}
 
 	}
 
