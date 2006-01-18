@@ -74,7 +74,7 @@ public abstract class AbstractTableWizard extends Wizard implements TableWizard 
 						.getText();
 				EAttribute attribute = getTableColumnEAttributes()[i];
 				if (attribute.getEContainingClass().equals(eObject.eClass())) {
-					if (value != null && value.trim().length() == 0)
+					if (value != null && value.trim().length() != 0)
 						eObject.eSet(attribute, value);
 				} else {
 					// TODO
