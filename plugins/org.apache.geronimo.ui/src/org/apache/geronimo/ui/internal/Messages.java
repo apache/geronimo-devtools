@@ -180,6 +180,8 @@ public class Messages extends NLS {
 	public static String gWithJetty;
 	public static String install;
 	public static String jvmWarning;
+	public static String installTitle;
+	public static String installMessage;
 	
 	static {
 		NLS.initializeMessages(GeronimoUIPlugin.PLUGIN_ID

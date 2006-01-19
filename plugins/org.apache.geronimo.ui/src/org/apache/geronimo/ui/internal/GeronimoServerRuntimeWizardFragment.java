@@ -44,6 +44,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeType;
@@ -180,20 +182,22 @@ public class GeronimoServerRuntimeWizardFragment extends
 			install.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent se) {
 					if (installDir != null && isValidLocation()) {
-						try {
-							Path installPath = new Path(installDir.getText());
-							if (tomcat.getSelection()) {
-								gWithTomcat.install(installPath,
+						Shell shell = installDir.getShell();
+						MessageBox mb = new MessageBox(shell,SWT.OK|SWT.CANCEL|SWT.ICON_QUESTION);
+						mb.setText(Messages.installTitle);
+						mb.setMessage(Messages.installMessage + "\n" + installDir.getText());
+						if(mb.open() == SWT.OK) {
+							try {
+								IInstallableRuntime installable = tomcat.getSelection() ? gWithTomcat : gWithJetty;
+								Path installPath = new Path(installDir.getText());
+								installable.install(installPath,
 										new NullProgressMonitor());
-							} else {
-								gWithJetty.install(installPath,
-										new NullProgressMonitor());
+								updateInstallDir(installPath);
+							} catch (Exception e) {
+								Trace.trace(Trace.SEVERE,
+										"Error installing runtime", e);
 							}
-							updateInstallDir(installPath);
-						} catch (Exception e) {
-							Trace.trace(Trace.SEVERE,
-									"Error installing runtime", e);
-						}
+						}	
 					}
 				}
 
