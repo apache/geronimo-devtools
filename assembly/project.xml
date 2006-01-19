@@ -56,10 +56,18 @@
         <zipdistro>true</zipdistro>
       </properties>
     </dependency>
-     <dependency>
+    <dependency>
       <groupId>geronimo-devtools</groupId>
-      <artifactId>org.apache.geronimo.installableruntime.feature</artifactId>
-      <version>${org.apache.geronimo.installableruntime.feature_version}</version>
+      <artifactId>org.apache.geronimo.installableruntime.jetty.feature</artifactId>
+      <version>${org.apache.geronimo.installableruntime.jetty.feature_version}</version>
+      <properties>
+        <feature>true</feature>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>geronimo-devtools</groupId>
+      <artifactId>org.apache.geronimo.installableruntime.tomcat.feature</artifactId>
+      <version>${org.apache.geronimo.installableruntime.tomcat.feature_version}</version>
       <properties>
         <feature>true</feature>
       </properties>
