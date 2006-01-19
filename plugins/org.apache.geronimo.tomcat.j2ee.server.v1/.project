@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.apache.geronimo.j2ee.server</name>
+	<name>org.apache.geronimo.tomcat.j2ee.server</name>
 	<comment></comment>
 	<projects>
 	</projects>
