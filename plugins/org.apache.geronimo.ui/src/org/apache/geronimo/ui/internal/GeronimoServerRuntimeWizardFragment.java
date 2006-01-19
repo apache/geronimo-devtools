@@ -15,10 +15,20 @@
  */
 package org.apache.geronimo.ui.internal;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jst.server.core.internal.GenericRuntime;
 import org.eclipse.jst.server.generic.core.internal.GenericServerRuntime;
+import org.eclipse.jst.server.generic.servertype.definition.Property;
+import org.eclipse.jst.server.generic.servertype.definition.ServerRuntime;
 import org.eclipse.jst.server.generic.ui.internal.GenericServerComposite;
 import org.eclipse.jst.server.generic.ui.internal.GenericServerCompositeDecorator;
 import org.eclipse.jst.server.generic.ui.internal.GenericServerUIMessages;
@@ -32,6 +42,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Group;
@@ -55,9 +66,11 @@ public class GeronimoServerRuntimeWizardFragment extends
 
 	private GenericServerCompositeDecorator[] fDecorators;
 	protected Text installDir;
-	
+
 	private Button tomcat;
 	private Button jetty;
+
+	private Group group;
 
 	public GeronimoServerRuntimeWizardFragment() {
 		super();
@@ -94,8 +107,9 @@ public class GeronimoServerRuntimeWizardFragment extends
 		fDecorators[0] = new JRESelectDecorator(getRuntimeDelegate());
 		GenericServerComposite composite = new GenericServerComposite(parent,
 				fDecorators);
-		
-		//TODO Overide JRESelectDecorator to validate only 1.4.2 should be selected
+
+		// TODO Overide JRESelectDecorator to validate only 1.4.2 should be
+		// selected
 
 		Label label = new Label(composite, SWT.NONE);
 		label.setText(Messages.installDir);
@@ -109,7 +123,8 @@ public class GeronimoServerRuntimeWizardFragment extends
 		installDir.setLayoutData(data);
 		installDir.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				getRuntimeDelegate().getRuntimeWorkingCopy().setLocation(new Path(installDir.getText()));
+				getRuntimeDelegate().getRuntimeWorkingCopy().setLocation(
+						new Path(installDir.getText()));
 				validate();
 			}
 		});
@@ -123,7 +138,7 @@ public class GeronimoServerRuntimeWizardFragment extends
 				dialog.setMessage(Messages.installDir);
 				dialog.setFilterPath(installDir.getText());
 				String selectedDirectory = dialog.open();
-				if (selectedDirectory != null) 
+				if (selectedDirectory != null)
 					installDir.setText(selectedDirectory);
 			}
 		});
@@ -138,10 +153,11 @@ public class GeronimoServerRuntimeWizardFragment extends
 				.findInstallableRuntime(G_WITH_JETTY_ID);
 
 		if (gWithTomcat != null && gWithJetty != null) {
-			Group group = new Group(composite, SWT.NONE);
+			group = new Group(composite, SWT.NONE);
 			group.setText(Messages.downloadOptions);
 			group.setLayoutData(data);
 			group.setLayout(composite.getLayout());
+			group.setEnabled(false);
 
 			Label webContainer = new Label(group, SWT.NONE);
 			webContainer.setText(Messages.chooseWebContainer);
@@ -166,28 +182,31 @@ public class GeronimoServerRuntimeWizardFragment extends
 			data = new GridData();
 			data.horizontalSpan = 3;
 			install.setLayoutData(data);
-			
+
 			install.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent se) {
 					if (installDir != null && isValidLocation()) {
 						try {
 							Path installPath = new Path(installDir.getText());
-							if(tomcat.getSelection()) {
-								gWithTomcat.install(installPath, new NullProgressMonitor());
+							if (tomcat.getSelection()) {
+								gWithTomcat.install(installPath,
+										new NullProgressMonitor());
 							} else {
-								gWithJetty.install(installPath, new NullProgressMonitor());
+								gWithJetty.install(installPath,
+										new NullProgressMonitor());
 							}
 							updateInstallDir(installPath);
 						} catch (Exception e) {
-							Trace.trace(Trace.SEVERE, "Error installing runtime", e);
+							Trace.trace(Trace.SEVERE,
+									"Error installing runtime", e);
 						}
-					} 
+					}
 				}
-				
+
 				boolean isValidLocation() {
 					return true;
 				}
-				
+
 				void updateInstallDir(IPath installPath) {
 					installPath = installPath.append("geronimo-1.0");
 					installDir.setText(installPath.toOSString());
@@ -196,22 +215,82 @@ public class GeronimoServerRuntimeWizardFragment extends
 		}
 
 	}
-	
+
 	protected void validate() {
-		//TODO validate installDir
-		//TODO group enablement/disablement
+		IRuntime runtime = getRuntimeDelegate().getRuntime();
+
+		if (runtime == null) {
+			getWizard().setMessage("", IMessageProvider.ERROR);
+			return;
+		}
+		// ----
+		ServerRuntime definition = null;
+		if (getRuntimeDelegate() != null) {
+			Map initialProperties = getRuntimeDelegate()
+					.getServerInstanceProperties();
+			definition = getServerTypeDefinition(getServerDefinitionId(),
+					initialProperties);
+		}
+		List properties = null;
+		if (definition == null) {
+			properties = new ArrayList(0);
+		} else {
+			properties = definition.getProperty();
+		}
+		Map propertyMap = new HashMap();
+		for (int i = 0; i < properties.size(); i++) {
+			Property property = (Property) properties.get(i);
+			if (Property.CONTEXT_RUNTIME.equals(property.getContext())) {
+				if (Property.TYPE_DIRECTORY.equals(property.getType())) {
+					propertyMap.put(property.getId(), installDir.getText());
+				}
+			}
+		}
+
+		// ----
+
+		IRuntimeWorkingCopy runtimeWC = getRuntimeDelegate()
+				.getRuntimeWorkingCopy();
+		getRuntimeDelegate().setServerDefinitionId(
+				runtime.getRuntimeType().getId());
+		getRuntimeDelegate().setServerInstanceProperties(propertyMap);
+
+		IStatus status = runtimeWC.validate(null);
+		if (status == null || status.isOK()) {
+			getWizard().setMessage(null, IMessageProvider.NONE);
+			group.setEnabled(false);
+		} else {
+			getWizard().setMessage(status.getMessage(), IMessageProvider.ERROR);
+			group.setEnabled(true);
+		}
+
+		// TODO validate installDir
+		// TODO group enablement/disablement
 	}
-	
+
+	private String getServerDefinitionId() {
+		String currentDefinition = null;
+		if (getRuntimeDelegate() != null)
+			currentDefinition = getRuntimeDelegate().getRuntime()
+					.getRuntimeType().getId();
+		if (currentDefinition != null && currentDefinition.length() > 0) {
+			return currentDefinition;
+		}
+		return null;
+	}
+
 	private void validateDecorators() {
 		for (int i = 0; i < fDecorators.length; i++) {
 			if (fDecorators[i].validate())
 				return;
 		}
-		//getRuntimeDelegate().setServerDefinitionId(getRuntimeDelegate().getRuntime().getRuntimeType().getId());
-        //getRuntimeDelegate().setServerInstanceProperties(getValues());
+		// getRuntimeDelegate().setServerDefinitionId(getRuntimeDelegate().getRuntime().getRuntimeType().getId());
+		// getRuntimeDelegate().setServerInstanceProperties(getValues());
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.wst.server.ui.wizard.WizardFragment#enter()
 	 */
 	public void enter() {
@@ -220,7 +299,9 @@ public class GeronimoServerRuntimeWizardFragment extends
 		validateDecorators();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.wst.server.ui.wizard.WizardFragment#exit()
 	 */
 	public void exit() {
