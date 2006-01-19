@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+cd<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Copyright 2004 The Apache Software Foundation
@@ -19,7 +19,7 @@
   <extend>../../etc/project.xml</extend>
   <id>org.apache.geronimo.tomcat.j2ee.server.v1</id>
   <name>org.apache.geronimo.tomcat.j2ee.server.v1</name>
-  <currentVersion>${org.apache.geronimo.j2ee.server.v1_version}</currentVersion>
+  <currentVersion>${org.apache.geronimo.tomcat.j2ee.server.v1_version}</currentVersion>
   <build>
     <resources>      
       <resource>
