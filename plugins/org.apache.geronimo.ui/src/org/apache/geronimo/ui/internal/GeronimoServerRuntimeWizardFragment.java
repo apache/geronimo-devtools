@@ -235,7 +235,10 @@ public class GeronimoServerRuntimeWizardFragment extends
 			group.setEnabled(false);
 		} else {
 			getWizard().setMessage(status.getMessage(), IMessageProvider.ERROR);
-			group.setEnabled(true);
+			Path installPath = new Path(installDir.getText());
+			if(installPath.toFile().exists()) {
+				group.setEnabled(true);
+			}
 			return;
 		}
 
