@@ -19,7 +19,7 @@
   <extend>../../etc/project.xml</extend>
   <id>org.apache.geronimo.jetty.j2ee.server.v1</id>
   <name>org.apache.geronimo.jetty.j2ee.server.v1</name>
-  <currentVersion>${org.apache.geronimo.jetty.j2ee.server_version}</currentVersion>
+  <currentVersion>${org.apache.geronimo.jetty.j2ee.server.v1_version}</currentVersion>
   <build>
     <resources>      
       <resource>
