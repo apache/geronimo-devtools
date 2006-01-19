@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Geronimo Jetty Server Plug-in
+Bundle-SymbolicName: org.apache.geronimo.jetty.j2ee.server.v1
+Bundle-Version: 1.0.0
+Bundle-Vendor: Apache.org
+Bundle-Localization: plugin

@@ -110,7 +110,7 @@ public class GeronimoServerRuntimeWizardFragment extends
 		installDir.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				getRuntimeDelegate().getRuntimeWorkingCopy().setLocation(new Path(installDir.getText()));
-				// validate();
+				validate();
 			}
 		});
 
@@ -123,7 +123,7 @@ public class GeronimoServerRuntimeWizardFragment extends
 				dialog.setMessage(Messages.installDir);
 				dialog.setFilterPath(installDir.getText());
 				String selectedDirectory = dialog.open();
-				if (selectedDirectory != null)
+				if (selectedDirectory != null) 
 					installDir.setText(selectedDirectory);
 			}
 		});
@@ -196,23 +196,36 @@ public class GeronimoServerRuntimeWizardFragment extends
 		}
 
 	}
+	
+	protected void validate() {
+		//TODO validate installDir
+		//TODO group enablement/disablement
+	}
+	
+	private void validateDecorators() {
+		for (int i = 0; i < fDecorators.length; i++) {
+			if (fDecorators[i].validate())
+				return;
+		}
+		//getRuntimeDelegate().setServerDefinitionId(getRuntimeDelegate().getRuntime().getRuntimeType().getId());
+        //getRuntimeDelegate().setServerInstanceProperties(getValues());
+	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.server.ui.wizard.WizardFragment#enter()
+	 */
 	public void enter() {
 		if (getRuntimeDelegate() != null)
 			getRuntimeDelegate().getRuntimeWorkingCopy().setName(createName());
-
-		for (int i = 0; i < fDecorators.length; i++) {
-			if (fDecorators[i].validate())
-				return;
-		}
+		validateDecorators();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.server.ui.wizard.WizardFragment#exit()
+	 */
 	public void exit() {
 		// validate to save latest values
-		for (int i = 0; i < fDecorators.length; i++) {
-			if (fDecorators[i].validate())
-				return;
-		}
+		validateDecorators();
 	}
 
 	private GenericServerRuntime getRuntimeDelegate() {

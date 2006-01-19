@@ -17,11 +17,11 @@
 -->
 <project default="default" xmlns:j="jelly:core" xmlns:ant="jelly:ant">
 
-  <goal name="default">
-    <attainGoal name="jar:install"/>
-  </goal>
+    <goal name="default">
+        <attainGoal name="jar:install"/>
+    </goal>
   
-   <preGoal name="java:jar-resources"> 
+    <preGoal name="java:jar-resources"> 
         <attainGoal name="getzip"/>       
    </preGoal>  
     
