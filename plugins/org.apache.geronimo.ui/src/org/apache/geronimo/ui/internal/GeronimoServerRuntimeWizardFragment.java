@@ -101,12 +101,9 @@ public class GeronimoServerRuntimeWizardFragment extends
 	public void createContent(Composite parent, IWizardHandle handle) {
 
 		fDecorators = new GenericServerCompositeDecorator[1];
-		fDecorators[0] = new JRESelectDecorator(getRuntimeDelegate());
+		fDecorators[0] = new GeronimoJRESelectDecorator(getRuntimeDelegate());
 		GenericServerComposite composite = new GenericServerComposite(parent,
 				fDecorators);
-
-		// TODO Overide JRESelectDecorator to validate only 1.4.2 should be
-		// selected
 
 		Label label = new Label(composite, SWT.NONE);
 		label.setText(Messages.installDir);
@@ -214,8 +211,7 @@ public class GeronimoServerRuntimeWizardFragment extends
 	}
 
 	protected void validate() {
-		validateDecorators();
-		
+
 		IRuntime runtime = getRuntimeDelegate().getRuntime();
 
 		if (runtime == null) {
@@ -236,9 +232,12 @@ public class GeronimoServerRuntimeWizardFragment extends
 		} else {
 			getWizard().setMessage(status.getMessage(), IMessageProvider.ERROR);
 			group.setEnabled(true);
+			return;
 		}
+
+		validateDecorators();
 	}
-	
+
 	private void validateDecorators() {
 		for (int i = 0; i < fDecorators.length; i++) {
 			if (fDecorators[i].validate())
@@ -335,6 +334,32 @@ public class GeronimoServerRuntimeWizardFragment extends
 				&& getRuntimeDelegate().getRuntime() != null)
 			return getRuntimeDelegate().getRuntime().getName();
 		return null;
+	}
+
+	private class GeronimoJRESelectDecorator extends JRESelectDecorator {
+		public GeronimoJRESelectDecorator(GenericServerRuntime runtime) {
+			super(runtime);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.jst.server.generic.ui.internal.GenericServerCompositeDecorator#validate()
+		 */
+		public boolean validate() {
+			if (isValidVM()) {
+				getWizard().setMessage(Messages.jvmWarning,
+						IMessageProvider.WARNING);
+				return true;
+			}
+			getWizard().setMessage(null, IMessageProvider.NONE);
+			return false;
+		}
+
+		private boolean isValidVM() {
+			String vmId = getRuntimeDelegate().getVMInstallId();
+			return vmId == null || !vmId.startsWith("1.4");
+		}
 	}
 
 }

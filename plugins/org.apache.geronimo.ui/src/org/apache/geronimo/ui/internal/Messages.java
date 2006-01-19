@@ -179,6 +179,7 @@ public class Messages extends NLS {
 	public static String gWithTomcat;
 	public static String gWithJetty;
 	public static String install;
+	public static String jvmWarning;
 	
 	static {
 		NLS.initializeMessages(GeronimoUIPlugin.PLUGIN_ID
