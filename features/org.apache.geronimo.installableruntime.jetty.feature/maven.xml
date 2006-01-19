@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project default="default" xmlns:j="jelly:core" xmlns:ant="jelly:ant">
+  
+  <goal name="eclipse:generate-classpath">
+  <!-- do nothing -->
+  </goal>
+  
+  <postGoal name="eclipse:generate-project">
+  <!-- TODO remove javabuilder/javanature -->
+  </postGoal>
+  
+</project>
