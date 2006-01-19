@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.apache.geronimo.installableruntime.feature"
-      label="org.apache.geronimo.installableruntime.feature"
+      id="org.apache.geronimo.installableruntime.tomcat.feature"
+      label="org.apache.geronimo.installableruntime.tomcat.feature"
       version="1.0.0"
       provider-name="Apache.org">
 
    <description url="http://geronimo.apache.org/">
-      This features provides the Apache Geronimo J2EE Server.
+      This features provides the Tomcat distribution of the Apache Geronimo J2EE Server.
    </description>
 
    <copyright url="http://www.apache.org/licenses/LICENSE-2.0.html">
@@ -18,7 +18,7 @@
    </license>
 
    <plugin
-         id="org.apache.geronimo.j2ee.server.v1"
+         id="org.apache.geronimo.tomcat.j2ee.server.v1"
          download-size="0"
          install-size="0"
          version="1.0.0"/>
