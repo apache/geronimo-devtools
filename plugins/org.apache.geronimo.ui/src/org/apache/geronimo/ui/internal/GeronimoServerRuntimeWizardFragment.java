@@ -15,7 +15,6 @@
  */
 package org.apache.geronimo.ui.internal;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jst.server.core.internal.GenericRuntime;
 import org.eclipse.jst.server.generic.core.internal.GenericServerRuntime;
 import org.eclipse.jst.server.generic.servertype.definition.Property;
 import org.eclipse.jst.server.generic.servertype.definition.ServerRuntime;
@@ -42,7 +40,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Group;
@@ -217,43 +214,20 @@ public class GeronimoServerRuntimeWizardFragment extends
 	}
 
 	protected void validate() {
+		validateDecorators();
+		
 		IRuntime runtime = getRuntimeDelegate().getRuntime();
 
 		if (runtime == null) {
 			getWizard().setMessage("", IMessageProvider.ERROR);
 			return;
 		}
-		// ----
-		ServerRuntime definition = null;
-		if (getRuntimeDelegate() != null) {
-			Map initialProperties = getRuntimeDelegate()
-					.getServerInstanceProperties();
-			definition = getServerTypeDefinition(getServerDefinitionId(),
-					initialProperties);
-		}
-		List properties = null;
-		if (definition == null) {
-			properties = new ArrayList(0);
-		} else {
-			properties = definition.getProperty();
-		}
-		Map propertyMap = new HashMap();
-		for (int i = 0; i < properties.size(); i++) {
-			Property property = (Property) properties.get(i);
-			if (Property.CONTEXT_RUNTIME.equals(property.getContext())) {
-				if (Property.TYPE_DIRECTORY.equals(property.getType())) {
-					propertyMap.put(property.getId(), installDir.getText());
-				}
-			}
-		}
-
-		// ----
 
 		IRuntimeWorkingCopy runtimeWC = getRuntimeDelegate()
 				.getRuntimeWorkingCopy();
 		getRuntimeDelegate().setServerDefinitionId(
 				runtime.getRuntimeType().getId());
-		getRuntimeDelegate().setServerInstanceProperties(propertyMap);
+		getRuntimeDelegate().setServerInstanceProperties(getValues());
 
 		IStatus status = runtimeWC.validate(null);
 		if (status == null || status.isOK()) {
@@ -263,9 +237,35 @@ public class GeronimoServerRuntimeWizardFragment extends
 			getWizard().setMessage(status.getMessage(), IMessageProvider.ERROR);
 			group.setEnabled(true);
 		}
+	}
+	
+	private void validateDecorators() {
+		for (int i = 0; i < fDecorators.length; i++) {
+			if (fDecorators[i].validate())
+				return;
+		}
+	}
 
-		// TODO validate installDir
-		// TODO group enablement/disablement
+	private Map getValues() {
+		Map propertyMap = new HashMap();
+		if (getRuntimeDelegate() != null) {
+			ServerRuntime definition = getServerTypeDefinition(
+					getServerDefinitionId(), getRuntimeDelegate()
+							.getServerInstanceProperties());
+			if (definition != null) {
+				List properties = definition.getProperty();
+				for (int i = 0; i < properties.size(); i++) {
+					Property property = (Property) properties.get(i);
+					if (Property.CONTEXT_RUNTIME.equals(property.getContext())) {
+						if (Property.TYPE_DIRECTORY.equals(property.getType())) {
+							propertyMap.put(property.getId(), installDir
+									.getText());
+						}
+					}
+				}
+			}
+		}
+		return propertyMap;
 	}
 
 	private String getServerDefinitionId() {
@@ -279,15 +279,6 @@ public class GeronimoServerRuntimeWizardFragment extends
 		return null;
 	}
 
-	private void validateDecorators() {
-		for (int i = 0; i < fDecorators.length; i++) {
-			if (fDecorators[i].validate())
-				return;
-		}
-		// getRuntimeDelegate().setServerDefinitionId(getRuntimeDelegate().getRuntime().getRuntimeType().getId());
-		// getRuntimeDelegate().setServerInstanceProperties(getValues());
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -296,7 +287,7 @@ public class GeronimoServerRuntimeWizardFragment extends
 	public void enter() {
 		if (getRuntimeDelegate() != null)
 			getRuntimeDelegate().getRuntimeWorkingCopy().setName(createName());
-		validateDecorators();
+		validate();
 	}
 
 	/*
