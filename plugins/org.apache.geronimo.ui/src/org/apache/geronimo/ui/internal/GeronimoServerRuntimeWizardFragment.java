@@ -241,8 +241,21 @@ public class GeronimoServerRuntimeWizardFragment extends
 			}
 			return;
 		}
-
-		validateDecorators();
+		
+		if (!isValidVM()) {
+			getWizard().setMessage(Messages.jvmWarning,
+					IMessageProvider.WARNING);
+			return;
+		}
+		
+		getWizard().setMessage(null, IMessageProvider.NONE);
+	
+		//validateDecorators();
+	}
+	
+	private boolean isValidVM() {
+		String vmId = getRuntimeDelegate().getVMInstallId();
+		return vmId != null && vmId.startsWith("1.4");
 	}
 
 	private void validateDecorators() {
@@ -302,8 +315,7 @@ public class GeronimoServerRuntimeWizardFragment extends
 	 * @see org.eclipse.wst.server.ui.wizard.WizardFragment#exit()
 	 */
 	public void exit() {
-		// validate to save latest values
-		validateDecorators();
+		validate();
 	}
 
 	private GenericServerRuntime getRuntimeDelegate() {
@@ -354,18 +366,8 @@ public class GeronimoServerRuntimeWizardFragment extends
 		 * @see org.eclipse.jst.server.generic.ui.internal.GenericServerCompositeDecorator#validate()
 		 */
 		public boolean validate() {
-			if (isValidVM()) {
-				getWizard().setMessage(Messages.jvmWarning,
-						IMessageProvider.WARNING);
-				return true;
-			}
-			getWizard().setMessage(null, IMessageProvider.NONE);
-			return false;
-		}
-
-		private boolean isValidVM() {
-			String vmId = getRuntimeDelegate().getVMInstallId();
-			return vmId == null || !vmId.startsWith("1.4");
+			GeronimoServerRuntimeWizardFragment.this.validate();
+			return true;
 		}
 	}
 
