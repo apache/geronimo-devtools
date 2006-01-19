@@ -84,8 +84,16 @@
     </dependency>
     <dependency>
       <groupId>geronimo-devtools</groupId>
-      <artifactId>org.apache.geronimo.j2ee.server.v1</artifactId>
-      <version>${org.apache.geronimo.j2ee.server.v1_version}</version>
+      <artifactId>org.apache.geronimo.tomcat.j2ee.server.v1</artifactId>
+      <version>${org.apache.geronimo.tomcat.j2ee.server.v1_version}</version>
+      <properties>
+        <jar>true</jar>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>geronimo-devtools</groupId>
+      <artifactId>org.apache.geronimo.jetty.j2ee.server.v1</artifactId>
+      <version>${org.apache.geronimo.jetty.j2ee.server.v1_version}</version>
       <properties>
         <jar>true</jar>
       </properties>
