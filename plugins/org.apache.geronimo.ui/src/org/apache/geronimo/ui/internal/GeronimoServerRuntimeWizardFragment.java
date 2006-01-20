@@ -48,6 +48,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
@@ -117,11 +118,13 @@ public class GeronimoServerRuntimeWizardFragment extends
 		GridData data = new GridData();
 		data.horizontalSpan = 3;
 		label.setLayoutData(data);
+		label.setToolTipText(Messages.tooltipLoc);
 
 		installDir = new Text(composite, SWT.BORDER);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 2;
 		installDir.setLayoutData(data);
+		installDir.setToolTipText(Messages.tooltipLoc);
 		installDir.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				getRuntimeDelegate().getRuntimeWorkingCopy().setLocation(
@@ -129,7 +132,7 @@ public class GeronimoServerRuntimeWizardFragment extends
 				validate();
 			}
 		});
-
+	
 		final Composite browseComp = composite;
 		Button browse = SWTUtil.createButton(composite, Messages.browse);
 		browse.addSelectionListener(new SelectionAdapter() {
@@ -172,18 +175,20 @@ public class GeronimoServerRuntimeWizardFragment extends
 			data = new GridData();
 			data.horizontalSpan = 3;
 			tomcat.setLayoutData(data);
+			tomcat.setToolTipText(Messages.tooltipTomcat);
 
 			jetty = new Button(group, SWT.RADIO);
 			jetty.setText(Messages.gWithJetty);
 			data = new GridData();
 			data.horizontalSpan = 3;
 			jetty.setLayoutData(data);
+			jetty.setToolTipText(Messages.tooltipJetty);
 
 			Button install = SWTUtil.createButton(group, Messages.install);
 			data = new GridData();
 			data.horizontalSpan = 3;
 			install.setLayoutData(data);
-
+			install.setToolTipText(Messages.tooltipInstall);
 			install.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent se) {
 					if (installDir != null && isValidLocation()) {

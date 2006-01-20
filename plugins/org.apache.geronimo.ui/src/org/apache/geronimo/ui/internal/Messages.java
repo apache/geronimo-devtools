@@ -182,6 +182,10 @@ public class Messages extends NLS {
 	public static String jvmWarning;
 	public static String installTitle;
 	public static String installMessage;
+	public static String tooltipLoc;
+	public static String tooltipInstall;
+	public static String tooltipJetty;
+	public static String tooltipTomcat;
 	
 	static {
 		NLS.initializeMessages(GeronimoUIPlugin.PLUGIN_ID
