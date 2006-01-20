@@ -16,6 +16,7 @@
 package org.apache.geronimo.ui.internal;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,8 +37,10 @@ public class GeronimoUIPlugin extends AbstractUIPlugin {
 	private static String iconLocation;
 
 	private static GeronimoUIPlugin singleton;
-	
+
 	protected Map imageDescriptors = new HashMap();
+
+	public static final String IMG_WIZ_GERONIMO = "gServer";
 
 	/**
 	 * The constructor.
@@ -69,10 +72,12 @@ public class GeronimoUIPlugin extends AbstractUIPlugin {
 		}
 		return iconLocation;
 	}
-	
+
 	/**
 	 * Return the image with the given key from the image registry.
-	 * @param key java.lang.String
+	 * 
+	 * @param key
+	 *            java.lang.String
 	 * @return org.eclipse.jface.parts.IImage
 	 */
 	public static Image getImage(String key) {
@@ -81,7 +86,9 @@ public class GeronimoUIPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Return the image with the given key from the image registry.
-	 * @param key java.lang.String
+	 * 
+	 * @param key
+	 *            java.lang.String
 	 * @return org.eclipse.jface.parts.IImage
 	 */
 	public static ImageDescriptor getImageDescriptor(String key) {
@@ -92,11 +99,28 @@ public class GeronimoUIPlugin extends AbstractUIPlugin {
 			return null;
 		}
 	}
-	
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#initializeImageRegistry(org.eclipse.jface.resource.ImageRegistry)
-     */
-    protected void initializeImageRegistry(ImageRegistry reg) {
-       
-    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#initializeImageRegistry(org.eclipse.jface.resource.ImageRegistry)
+	 */
+	protected void initializeImageRegistry(ImageRegistry reg) {
+		registerImage(reg, IMG_WIZ_GERONIMO, "g_server.gif");
+	}
+
+	private void registerImage(ImageRegistry registry, String key,
+			String partialURL) {
+
+		URL iconsURL = singleton.getBundle().getEntry(ICONS_DIRECTORY);
+
+		try {
+			ImageDescriptor id = ImageDescriptor.createFromURL(new URL(
+					iconsURL, partialURL));
+			registry.put(key, id);
+			imageDescriptors.put(key, id);
+		} catch (Exception e) {
+			Trace.trace(Trace.WARNING, "Error registering image", e);
+		}
+	}
 }

@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jst.server.generic.core.internal.GenericServerRuntime;
 import org.eclipse.jst.server.generic.servertype.definition.Property;
 import org.eclipse.jst.server.generic.servertype.definition.ServerRuntime;
@@ -101,6 +102,8 @@ public class GeronimoServerRuntimeWizardFragment extends
 	 *      org.eclipse.wst.server.ui.wizard.IWizardHandle)
 	 */
 	public void createContent(Composite parent, IWizardHandle handle) {
+
+		getWizard().setImageDescriptor(GeronimoUIPlugin.getImageDescriptor(GeronimoUIPlugin.IMG_WIZ_GERONIMO));
 
 		fDecorators = new GenericServerCompositeDecorator[1];
 		fDecorators[0] = new GeronimoJRESelectDecorator(getRuntimeDelegate());
@@ -183,13 +186,18 @@ public class GeronimoServerRuntimeWizardFragment extends
 				public void widgetSelected(SelectionEvent se) {
 					if (installDir != null && isValidLocation()) {
 						Shell shell = installDir.getShell();
-						MessageBox mb = new MessageBox(shell,SWT.OK|SWT.CANCEL|SWT.ICON_QUESTION);
+						MessageBox mb = new MessageBox(shell, SWT.OK
+								| SWT.CANCEL | SWT.ICON_QUESTION);
 						mb.setText(Messages.installTitle);
-						mb.setMessage(Messages.installMessage + "\n" + installDir.getText());
-						if(mb.open() == SWT.OK) {
+						mb.setMessage(Messages.installMessage + "\n"
+								+ installDir.getText());
+						if (mb.open() == SWT.OK) {
 							try {
-								IInstallableRuntime installable = tomcat.getSelection() ? gWithTomcat : gWithJetty;
-								Path installPath = new Path(installDir.getText());
+								IInstallableRuntime installable = tomcat
+										.getSelection() ? gWithTomcat
+										: gWithJetty;
+								Path installPath = new Path(installDir
+										.getText());
 								installable.install(installPath,
 										new NullProgressMonitor());
 								updateInstallDir(installPath);
@@ -197,7 +205,7 @@ public class GeronimoServerRuntimeWizardFragment extends
 								Trace.trace(Trace.SEVERE,
 										"Error installing runtime", e);
 							}
-						}	
+						}
 					}
 				}
 
@@ -236,23 +244,23 @@ public class GeronimoServerRuntimeWizardFragment extends
 		} else {
 			getWizard().setMessage(status.getMessage(), IMessageProvider.ERROR);
 			Path installPath = new Path(installDir.getText());
-			if(installPath.toFile().exists()) {
+			if (installPath.toFile().exists()) {
 				group.setEnabled(true);
 			}
 			return;
 		}
-		
+
 		if (!isValidVM()) {
 			getWizard().setMessage(Messages.jvmWarning,
 					IMessageProvider.WARNING);
 			return;
 		}
-		
+
 		getWizard().setMessage(null, IMessageProvider.NONE);
-	
-		//validateDecorators();
+
+		// validateDecorators();
 	}
-	
+
 	private boolean isValidVM() {
 		String vmId = getRuntimeDelegate().getVMInstallId();
 		return vmId != null && vmId.startsWith("1.4");
