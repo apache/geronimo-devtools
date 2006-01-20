@@ -16,8 +16,13 @@
 package org.apache.geronimo.ui.internal;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
@@ -31,6 +36,8 @@ public class GeronimoUIPlugin extends AbstractUIPlugin {
 	private static String iconLocation;
 
 	private static GeronimoUIPlugin singleton;
+	
+	protected Map imageDescriptors = new HashMap();
 
 	/**
 	 * The constructor.
@@ -62,4 +69,34 @@ public class GeronimoUIPlugin extends AbstractUIPlugin {
 		}
 		return iconLocation;
 	}
+	
+	/**
+	 * Return the image with the given key from the image registry.
+	 * @param key java.lang.String
+	 * @return org.eclipse.jface.parts.IImage
+	 */
+	public static Image getImage(String key) {
+		return getInstance().getImageRegistry().get(key);
+	}
+
+	/**
+	 * Return the image with the given key from the image registry.
+	 * @param key java.lang.String
+	 * @return org.eclipse.jface.parts.IImage
+	 */
+	public static ImageDescriptor getImageDescriptor(String key) {
+		try {
+			getInstance().getImageRegistry();
+			return (ImageDescriptor) getInstance().imageDescriptors.get(key);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#initializeImageRegistry(org.eclipse.jface.resource.ImageRegistry)
+     */
+    protected void initializeImageRegistry(ImageRegistry reg) {
+       
+    }
 }
