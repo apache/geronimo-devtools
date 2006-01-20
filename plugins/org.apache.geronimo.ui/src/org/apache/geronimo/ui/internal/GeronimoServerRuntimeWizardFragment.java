@@ -103,7 +103,9 @@ public class GeronimoServerRuntimeWizardFragment extends
 	 */
 	public void createContent(Composite parent, IWizardHandle handle) {
 
-		getWizard().setImageDescriptor(GeronimoUIPlugin.getImageDescriptor(GeronimoUIPlugin.IMG_WIZ_GERONIMO));
+		getWizard().setImageDescriptor(
+				GeronimoUIPlugin
+						.getImageDescriptor(GeronimoUIPlugin.IMG_WIZ_GERONIMO));
 
 		fDecorators = new GenericServerCompositeDecorator[1];
 		fDecorators[0] = new GeronimoJRESelectDecorator(getRuntimeDelegate());
@@ -221,14 +223,17 @@ public class GeronimoServerRuntimeWizardFragment extends
 		}
 
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.wst.server.ui.wizard.WizardFragment#isComplete()
 	 */
 	public boolean isComplete() {
 		IRuntimeWorkingCopy runtimeWC = getRuntimeDelegate()
-		.getRuntimeWorkingCopy();
-		return runtimeWC.validate(null).isOK();
+				.getRuntimeWorkingCopy();
+		IStatus status = runtimeWC.validate(null);
+		return status == null || status.isOK();
 	}
 
 	protected void validate() {
