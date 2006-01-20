@@ -221,6 +221,15 @@ public class GeronimoServerRuntimeWizardFragment extends
 		}
 
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.server.ui.wizard.WizardFragment#isComplete()
+	 */
+	public boolean isComplete() {
+		IRuntimeWorkingCopy runtimeWC = getRuntimeDelegate()
+		.getRuntimeWorkingCopy();
+		return runtimeWC.validate(null).isOK();
+	}
 
 	protected void validate() {
 
