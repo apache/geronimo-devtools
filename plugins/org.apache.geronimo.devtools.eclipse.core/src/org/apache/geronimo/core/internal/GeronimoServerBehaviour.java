@@ -203,6 +203,8 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 			// TODO This case is flawed due to WTP Bugzilla 123676
 			invokeCommand(deltaKind, module[0]);
 		}
+		
+		setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
 
 		Trace.trace(Trace.INFO, "<< publishModule()");
 	}
