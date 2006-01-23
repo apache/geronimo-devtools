@@ -16,11 +16,12 @@
 package org.apache.geronimo.core.internal;
 
 import java.net.MalformedURLException;
+import java.rmi.ConnectException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TimerTask;
+import java.util.Timer;
 
 import javax.enterprise.deploy.spi.TargetModuleID;
 import javax.management.MBeanServerConnection;
@@ -54,7 +55,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 	private static final int MAX_TRIES = 30;
 
-	private static final int TIMER_TASK_INTERVAL = 30;
+	private static final int TIMER_TASK_INTERVAL = 10;
 
 	private IProgressMonitor _monitor = null;
 
@@ -62,10 +63,6 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 	public GeronimoServerBehaviour() {
 		super();
-		/*
-		 * Timer timer = new Timer(true); timer.schedule(new
-		 * UpdateServerStateTask(), 0, TIMER_TASK_INTERVAL * 1000);
-		 */
 	}
 
 	/*
@@ -73,7 +70,9 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	 * 
 	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#stop(boolean)
 	 */
-	public void stop(boolean force) {
+	public synchronized void stop(boolean force) {
+
+		Trace.trace(Trace.INFO, "--> stop()");
 
 		setServerState(IServer.STATE_STOPPING);
 
@@ -88,6 +87,8 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 		// kill the process
 		super.stop(true);
+
+		Trace.trace(Trace.INFO, "<-- stop()");
 	}
 
 	private String getJMXServiceURL() {
@@ -139,7 +140,8 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	 * 
 	 * @see org.eclipse.jst.server.generic.core.internal.GenericServerBehaviour#setServerStarted()
 	 */
-	protected void setServerStarted() {
+	protected synchronized void setServerStarted() {
+		Trace.trace(Trace.INFO, "--> setServerStarted()");
 		for (int tries = MAX_TRIES; tries > 0; tries--) {
 			try {
 				Thread.sleep(5000);
@@ -147,20 +149,26 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 				// ignore
 			}
 			boolean isFullyStarted = isKernelFullyStarted();
-			Trace.trace(Trace.INFO, "kernelFullyStarted = " + isFullyStarted
-					+ ", " + (tries - 1) + " attempts left.");
+			Trace.trace(Trace.INFO, "kernelFullyStarted = " + isFullyStarted);
 			if (isFullyStarted) {
 				setServerState(IServer.STATE_STARTED);
 				break;
 			}
 		}
+		Trace.trace(Trace.INFO, "<-- setServerStarted()");
 	}
 
-	private boolean isKernelAlive() {
-		return getKernel() != null && kernel.isRunning();
+	protected boolean isKernelAlive() {
+		try {
+			return getKernel() != null && kernel.isRunning();
+		} catch (Exception e) {
+			e.printStackTrace();
+			kernel = null;
+		}
+		return false;
 	}
 
-	private boolean isKernelFullyStarted() {
+	protected boolean isKernelFullyStarted() {
 		if (isKernelAlive()) {
 			Set configLists = kernel.listGBeans(new GBeanQuery(null,
 					PersistentConfigurationList.class.getName()));
@@ -203,7 +211,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 			// TODO This case is flawed due to WTP Bugzilla 123676
 			invokeCommand(deltaKind, module[0]);
 		}
-		
+
 		setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
 
 		Trace.trace(Trace.INFO, "<< publishModule()");
@@ -352,38 +360,16 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		}
 	}
 
-	/**
-	 * This timer task runs at scheduled intervals to sync the server state if
-	 * the users controls the server instance outside of the eclipse workbench.
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * WTP manages the server process, and if the process is dead, the state is
-	 * updated. So the only scenario that needs to be considered is if the
-	 * server is restarted.
-	 * 
-	 * FIXME When the server is stop the GeronimoServerBehavior instance is
-	 * destroyed so the task never runs to handle this scenario.
+	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#initialize(org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	private class UpdateServerStateTask extends TimerTask {
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Runnable#run()
-		 */
-		public void run() {
-			synchronized (GeronimoServerBehaviour.this) {
-				Trace.trace(Trace.INFO, "--> UpdateServerStateTask.run()");
-				int currentState = getServer().getServerState();
-				if (currentState == IServer.STATE_STOPPED && isKernelAlive()) {
-					if (isKernelFullyStarted()) {
-						setServerState(IServer.STATE_STARTED);
-					} else {
-						setServerState(IServer.STATE_STARTING);
-					}
-				}
-				Trace.trace(Trace.INFO, "<-- UpdateServerStateTask.run()");
-			}
-		}
+	protected void initialize(IProgressMonitor monitor) {
+		Trace.trace(Trace.INFO, "GeronimoServerBehavior.initialize()");
+		Timer timer = new Timer(true);
+		timer.schedule(new UpdateServerStateTask(this), 0,
+				TIMER_TASK_INTERVAL * 1000);
 	}
 
 }
