@@ -8,7 +8,10 @@
    <runtime>     
       <library name="lib/geronimo-deploy-jsr88-@geronimo_runtime_version@.jar">
          <export name="*"/>
-      </library>     
+      </library>    
+       <library name="lib/geronimo-util-@geronimo_runtime_version@.jar">
+         <export name="*"/>
+      </library> 
       <library name="lib/geronimo-kernel-@geronimo_runtime_version@.jar">
          <export name="*"/>
       </library>     
