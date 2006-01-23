@@ -162,7 +162,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		try {
 			return getKernel() != null && kernel.isRunning();
 		} catch (Exception e) {
-			e.printStackTrace();
+			GeronimoPlugin.log(Status.WARNING, "Geronimo Server may have been terminated manually outside of workspace.", e);
 			kernel = null;
 		}
 		return false;
