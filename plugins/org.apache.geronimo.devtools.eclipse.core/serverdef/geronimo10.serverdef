@@ -87,8 +87,12 @@
 		<providerUrl>localhost:4201</providerUrl>
 		<initialContextFactory>org.openejb.client.RemoteInitialContextFactory</initialContextFactory>
 		<jndiProperty>
-			<name></name>
-			<value></value>
+			<name>java.naming.security.principal</name>
+			<value>${adminID}</value>
+		</jndiProperty>
+		<jndiProperty>
+			<name>java.naming.security.credentials</name>
+			<value>${adminPassword}</value>
 		</jndiProperty>
 	</jndiConnection>
 </tns:ServerRuntime>
