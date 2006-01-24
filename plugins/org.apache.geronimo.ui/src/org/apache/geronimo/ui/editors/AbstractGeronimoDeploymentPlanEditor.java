@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.ui.editors;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,9 +54,11 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 		try {
 			IEditorInput input = getEditorInput();
 			if (input instanceof IFileEditorInput) {
-				if (deploymentPlan != null && getActiveEditor() == null) {
-					deploymentPlan.eResource().save(Collections.EMPTY_MAP);
-					commitFormPages(true);
+				if (deploymentPlan != null) {
+					saveEditors();
+				}
+
+				if (getActiveEditor() == null) {
 					editorDirtyStateChanged();
 				} else {
 					getActiveEditor().doSave(monitor);
@@ -80,6 +83,11 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 				// do nothing
 			}
 		}
+	}
+
+	private void saveEditors() throws IOException {
+		deploymentPlan.eResource().save(Collections.EMPTY_MAP);
+		commitFormPages(true);
 	}
 
 	/*
