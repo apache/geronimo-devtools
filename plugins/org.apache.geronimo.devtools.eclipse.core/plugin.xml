@@ -1,132 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-
- <extension point="org.eclipse.wst.server.core.runtimeTypes">
-    <runtimeType
-       id="org.apache.geronimo.generic.runtime.10"
-       name="%runtimeTypeName"
-       description="%runtimeTypeDescription"
-       vendor="%runtimeTypeVendor"
-       version="1.0"
-       class="org.eclipse.jst.server.generic.core.internal.GenericServerRuntime">
-       <moduleType
-         types="jst.web"
-         versions="2.2, 2.3, 2.4"/>
-      <moduleType
-         types="jst.ejb"
-         versions="1.1, 2.0, 2.1"/>
-      <moduleType
-         types="jst.connector"
-         versions="1.0, 1.5"/>
-      <moduleType
-         types="jst.ear"
-         versions="1.2, 1.3, 1.4"/>
-    </runtimeType>
- </extension>
-
-<extension point="org.eclipse.wst.server.core.serverTypes">
-     <serverType
-           id="org.apache.geronimo.generic.server.10"
-           name="%serverTypeName"
-           description="%serverTypeDescription"
-           runtime="true"
-           class="org.apache.geronimo.core.internal.GeronimoServer"
-           initialState="stopped"
-           supportsRemoteHosts="true"
-           startTimeout="240000"
-	       stopTimeout="30000"
-           startBeforePublish="true"
-           runtimeTypeId="org.apache.geronimo.generic.runtime.10"
-           launchConfigId="org.eclipse.jst.server.generic.core.launchConfigurationType"
-           behaviourClass="org.apache.geronimo.core.internal.GeronimoServerBehaviour"
-           hasConfiguration="false"
-           launchModes="run,debug">         
-     </serverType>     
-</extension>
-
-  <extension point="org.eclipse.wst.server.core.installableRuntimes">
-    <installableRuntime
-       id="org.apache.geronimo.runtime.tomcat.10"
-       featureVersion="1.0.0"
-       featureId="org.apache.geronimo.installableruntime.tomcat.feature"
-       featureSite="http://www.apache.org/dist/geronimo/eclipse/updates/"
-       bundleId="org.apache.geronimo.tomcat.j2ee.server.v1"
-       path="zips/geronimo-tomcat-j2ee-1.0.zip">
-    </installableRuntime>
-    <installableRuntime
-       id="org.apache.geronimo.runtime.jetty.10"
-       featureVersion="1.0.0"
-       featureId="org.apache.geronimo.installableruntime.jetty.feature"
-       featureSite="http://www.apache.org/dist/geronimo/eclipse/updates/"
-       bundleId="org.apache.geronimo.jetty.j2ee.server.v1"
-       path="zips/geronimo-jetty-j2ee-1.0.zip">
-    </installableRuntime>
-  </extension>
-
-<!-- Server type definitions -->
-   <extension point="org.eclipse.jst.server.generic.core.serverdefinition">
-		<serverdefinition id="org.apache.geronimo.generic.runtime.10" 
-			definitionfile="/serverdef/geronimo10.serverdef">
-		</serverdefinition>
-   </extension>
-  
-   <extension point="org.eclipse.wst.server.core.runtimeTargetHandlers">
-     <runtimeTargetHandler
-        id="org.eclipse.jst.server.geronimo.runtimeTarget"
-        runtimeTypeIds="org.apache.geronimo.generic.runtime.*"
-        class="org.apache.geronimo.core.internal.GeronimoServerRuntimeTargetHandler"/>
-   </extension>
-   
-   <extension id="GeronimoOpExtensions" name="GeronimoOpExtensions" point="org.eclipse.wst.common.frameworks.OperationExtension">									
-		<operationExtension
-			id="org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentCreationFacetOperation"
-			postOperationClass="org.apache.geronimo.core.operations.DeploymentPlanCreationOperation">			
-	    </operationExtension>	   
-	    <operationExtension
-			id="org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EjbComponentCreationFacetOperation"
-			postOperationClass="org.apache.geronimo.core.operations.DeploymentPlanCreationOperation">
-		</operationExtension>		
-		<operationExtension
-			id="org.eclipse.jst.j2ee.application.internal.operations.EARComponentCreationFacetOperation"
-			postOperationClass="org.apache.geronimo.core.operations.DeploymentPlanCreationOperation">
-		</operationExtension>	
-	    <operationExtension
-			id="org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentCreationFacetOperation"
-			postOperationClass="org.apache.geronimo.core.operations.DeploymentPlanCreationOperation">
-		</operationExtension>
-		
-		<operationExtension
-			id="org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentImportOperation"
-			postOperationClass="org.apache.geronimo.core.operations.ImportDeploymentPlanOperation">
-		</operationExtension>	
-		<operationExtension
-			id="org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EJBComponentImportOperation"
-			postOperationClass="org.apache.geronimo.core.operations.ImportDeploymentPlanOperation">
-		</operationExtension>	
-		<operationExtension
-			id="org.eclipse.jst.j2ee.internal.archive.operations.EARComponentImportOperation"
-			postOperationClass="org.apache.geronimo.core.operations.ImportDeploymentPlanOperation">
-		</operationExtension>	
-		<operationExtension
-			id="org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentImportOperation"
-			postOperationClass="org.apache.geronimo.core.operations.ImportDeploymentPlanOperation">
-		</operationExtension>		
-   </extension>
-   
-    <extension
-         point="org.eclipse.wst.common.project.facet.core.facets">
-         
+    
+    <extension point="org.eclipse.wst.server.core.runtimeTypes">
+        <runtimeType id="org.apache.geronimo.generic.runtime.10"
+            name="%runtimeTypeName" description="%runtimeTypeDescription"
+            vendor="%runtimeTypeVendor" version="1.0"
+            class="org.eclipse.jst.server.generic.core.internal.GenericServerRuntime">
+            <moduleType types="jst.web" versions="2.2, 2.3, 2.4"/>
+            <moduleType types="jst.ejb" versions="1.1, 2.0, 2.1"/>
+            <moduleType types="jst.connector" versions="1.0, 1.5"/>
+            <moduleType types="jst.ear" versions="1.2, 1.3, 1.4"/>
+        </runtimeType>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.core.serverTypes">
+        <serverType id="org.apache.geronimo.generic.server.10"
+            name="%serverTypeName" description="%serverTypeDescription"
+            runtime="true"
+            class="org.apache.geronimo.core.internal.GeronimoServer"
+            initialState="stopped" supportsRemoteHosts="true"
+            startTimeout="240000" stopTimeout="30000" startBeforePublish="true"
+            runtimeTypeId="org.apache.geronimo.generic.runtime.10"
+            launchConfigId="org.eclipse.jst.server.generic.core.launchConfigurationType"
+            behaviourClass="org.apache.geronimo.core.internal.GeronimoServerBehaviour"
+            hasConfiguration="false" launchModes="run,debug">
+        </serverType>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.core.installableRuntimes">
+        <installableRuntime id="org.apache.geronimo.runtime.tomcat.10"
+            featureVersion="1.0.0"
+            featureId="org.apache.geronimo.installableruntime.tomcat.feature"
+            featureSite="http://www.apache.org/dist/geronimo/eclipse/updates/"
+            bundleId="org.apache.geronimo.tomcat.j2ee.server.v1"
+            path="zips/geronimo-tomcat-j2ee-1.0.zip">
+        </installableRuntime>
+        <installableRuntime id="org.apache.geronimo.runtime.jetty.10"
+            featureVersion="1.0.0"
+            featureId="org.apache.geronimo.installableruntime.jetty.feature"
+            featureSite="http://www.apache.org/dist/geronimo/eclipse/updates/"
+            bundleId="org.apache.geronimo.jetty.j2ee.server.v1"
+            path="zips/geronimo-jetty-j2ee-1.0.zip">
+        </installableRuntime>
+    </extension>
+    
+    <!-- Server type definitions -->
+    <extension point="org.eclipse.jst.server.generic.core.serverdefinition">
+        <serverdefinition id="org.apache.geronimo.generic.runtime.10"
+            definitionfile="/serverdef/geronimo10.serverdef">
+        </serverdefinition>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.core.runtimeTargetHandlers">
+        <runtimeTargetHandler id="org.eclipse.jst.server.geronimo.runtimeTarget"
+            runtimeTypeIds="org.apache.geronimo.generic.runtime.*"
+            class="org.apache.geronimo.core.internal.GeronimoServerRuntimeTargetHandler"/>
+    </extension>
+    
+    <extension id="GeronimoOpExtensions" name="GeronimoOpExtensions"
+        point="org.eclipse.wst.common.frameworks.OperationExtension">
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentCreationFacetOperation"
+            postOperationClass="org.apache.geronimo.core.operations.DeploymentPlanCreationOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EjbComponentCreationFacetOperation"
+            postOperationClass="org.apache.geronimo.core.operations.DeploymentPlanCreationOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.application.internal.operations.EARComponentCreationFacetOperation"
+            postOperationClass="org.apache.geronimo.core.operations.DeploymentPlanCreationOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentCreationFacetOperation"
+            postOperationClass="org.apache.geronimo.core.operations.DeploymentPlanCreationOperation">
+        </operationExtension>
+        
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentImportOperation"
+            postOperationClass="org.apache.geronimo.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EJBComponentImportOperation"
+            postOperationClass="org.apache.geronimo.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.archive.operations.EARComponentImportOperation"
+            postOperationClass="org.apache.geronimo.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentImportOperation"
+            postOperationClass="org.apache.geronimo.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+    </extension>
+    
+    <extension point="org.eclipse.wst.common.project.facet.core.facets">
+        
         <project-facet id="org.apache.geronimo.facet">
             <label>%geronimo-facet-label</label>
             <description>%geronimo-facet-description</description>
         </project-facet>
-
+        
         <project-facet-version facet="org.apache.geronimo.facet" version="1.0">
             <action type="install">
-                <delegate class="org.apache.geronimo.core.GeronimoFacetInstallDelegate"/>
+                <delegate
+                    class="org.apache.geronimo.core.GeronimoFacetInstallDelegate"/>
             </action>
-           	<constraint>
+            <constraint>
                 <or>
                     <requires facet="jst.ear" version="1.2"/>
                     <requires facet="jst.ear" version="1.3"/>
@@ -145,72 +126,52 @@
                 </or>
             </constraint>
         </project-facet-version>
-   </extension>
-   
-   <extension point="org.eclipse.jst.server.core.runtimeClasspathProviders">
-     <runtimeClasspathProvider
-        id="org.apache.geronimo.generic.runtime.10"
-        runtimeTypeIds="org.apache.geronimo.generic.runtime.10"
-        class="org.apache.geronimo.core.internal.GeronimoServerRuntimeTargetHandler"/>
-   </extension>
-   
-   <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
-    <runtime-component-type
-       id="org.apache.geronimo.runtime"/>
-
-    <runtime-component-version
-       type="org.apache.geronimo.runtime"
-       version="1.0"/>
-
-    <adapter>
-      <runtime-component
-         id="org.apache.geronimo.runtime"/>
-      <factory
-         class="org.eclipse.jst.server.core.internal.RuntimeClasspathProvider$Factory"/>
-      <type
-         class="org.eclipse.jst.common.project.facet.core.IClasspathProvider"/>
-    </adapter>
-
-    <supported>
-      <runtime-component
-         id="org.apache.geronimo.runtime"
-         version="1.0"/>
-      <facet
-         id="org.apache.geronimo.facet"
-         version="1.0"/>
-      <facet
-         id="jst.web"
-         version="2.2,2.3,2.4"/>
-      <facet
-         id="jst.ejb"
-         version="1.1,2.0,2.1"/>
-      <facet
-         id="jst.ear"
-         version="1.2,1.3,1.4"/>
-      <facet
-         id="jst.connector"
-         version="1.0,1.5"/>
-      <facet
-         id="jst.appclient"
-         version="1.2,1.3,1.4"/>
-    </supported>
-  </extension>
-  
-  <extension point="org.eclipse.jst.server.core.runtimeFacetMappings">
-    <runtimeFacetMapping
-      runtimeTypeId="org.apache.geronimo.generic.runtime.10"
-      runtime-component="org.apache.geronimo.runtime"
-      version="1.0"/>
-  </extension>
-  
-  <extension
-        id="org.apache.geronimo.defaultFacets"
+    </extension>
+    
+    <extension point="org.eclipse.jst.server.core.runtimeClasspathProviders">
+        <runtimeClasspathProvider id="org.apache.geronimo.generic.runtime.10"
+            runtimeTypeIds="org.apache.geronimo.generic.runtime.10"
+            class="org.apache.geronimo.core.internal.GeronimoServerRuntimeTargetHandler"/>
+    </extension>
+    
+    <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
+        <runtime-component-type id="org.apache.geronimo.runtime"/>
+        
+        <runtime-component-version type="org.apache.geronimo.runtime"
+            version="1.0"/>
+        
+        <adapter>
+            <runtime-component id="org.apache.geronimo.runtime"/>
+            <factory
+                class="org.eclipse.jst.server.core.internal.RuntimeClasspathProvider$Factory"/>
+            <type
+                class="org.eclipse.jst.common.project.facet.core.IClasspathProvider"/>
+        </adapter>
+        
+        <supported>
+            <runtime-component id="org.apache.geronimo.runtime" version="1.0"/>
+            <facet id="org.apache.geronimo.facet" version="1.0"/>
+            <facet id="jst.web" version="2.2,2.3,2.4"/>
+            <facet id="jst.ejb" version="1.1,2.0,2.1"/>
+            <facet id="jst.ear" version="1.2,1.3,1.4"/>
+            <facet id="jst.connector" version="1.0,1.5"/>
+            <facet id="jst.appclient" version="1.2,1.3,1.4"/>
+        </supported>
+    </extension>
+    
+    <extension point="org.eclipse.jst.server.core.runtimeFacetMappings">
+        <runtimeFacetMapping
+            runtimeTypeId="org.apache.geronimo.generic.runtime.10"
+            runtime-component="org.apache.geronimo.runtime" version="1.0"/>
+    </extension>
+    
+    <extension id="org.apache.geronimo.defaultFacets"
         name="Geronimo Default Facets"
         point="org.eclipse.wst.common.project.facet.core.defaultFacets">
-	<default-facets>
-		<runtime-component id="org.apache.geronimo.runtime" version="1.0"/>
-		<facet id="org.apache.geronimo.facet" version="1.0" />
-	</default-facets>
-  </extension>
-  
+        <default-facets>
+            <runtime-component id="org.apache.geronimo.runtime" version="1.0"/>
+            <facet id="org.apache.geronimo.facet" version="1.0"/>
+        </default-facets>
+    </extension>
+    
 </plugin>

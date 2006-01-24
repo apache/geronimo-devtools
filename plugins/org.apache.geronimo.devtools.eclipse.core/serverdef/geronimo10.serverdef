@@ -4,31 +4,32 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://eclipse.org/jst/server/generic/ServerTypeDefinition ServerTypeDefinitionSchema.xsd "
 	name="Apache Geronimo 1.0" version="v1.0">
-<property id="serverRootDirectory"
-	label="%serverRootDirectory"
-	type="directory"
-	context="runtime"
-	default="" />
-<property id="port"
-	label="%port"
-	type="string"
-	context="server"
-	default="8080" />
-<property id="rmiport"
-	label="%rmiport"
-	type="string"
-	context="server"
-	default="1099" />
-<property id="adminID"
-	label="%adminId"
-	type="string"
-	context="server"
-	default="system" />
-<property id="adminPassword"
-	label="%adminPassword"
-	type="string"
-	context="server"
-	default="manager" />
+	
+	<property id="serverRootDirectory"
+		label="%serverRootDirectory"
+		type="directory"
+		context="runtime"
+		default=""/>
+	<property id="port"
+		label="%port"
+		type="string"
+		context="server"
+		default="8080"/>
+	<property id="rmiport"
+		label="%rmiport"
+		type="string"
+		context="server"
+		default="1099"/>
+	<property id="adminID"
+		label="%adminId"
+		type="string"
+		context="server"
+		default="system"/>
+	<property id="adminPassword"
+		label="%adminPassword"
+		type="string"
+		context="server"
+		default="manager"/>
 
 	<port>
 		<no>${port}</no>
