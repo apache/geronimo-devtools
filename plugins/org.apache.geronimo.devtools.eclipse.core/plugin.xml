@@ -33,7 +33,7 @@
            runtime="true"
            class="org.apache.geronimo.core.internal.GeronimoServer"
            initialState="stopped"
-           supportsRemoteHosts="false"
+           supportsRemoteHosts="true"
            startTimeout="240000"
 	       stopTimeout="30000"
            startBeforePublish="true"

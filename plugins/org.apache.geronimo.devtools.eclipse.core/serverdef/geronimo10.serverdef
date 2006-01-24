@@ -9,11 +9,6 @@
 	type="directory"
 	context="runtime"
 	default="" />
-<property id="serverAddress"
-	label="%serverAddress"
-	type="string"
-	context="server"
-	default="127.0.0.1" />
 <property id="port"
 	label="%port"
 	type="string"
