@@ -84,8 +84,8 @@
 	</classpath>
 	
 	<jndiConnection>
-		<providerUrl>jnp://${serverAddress}:1099</providerUrl>
-		<initialContextFactory>org.jnp.interfaces.NamingContextFactory</initialContextFactory>
+		<providerUrl>localhost:4201</providerUrl>
+		<initialContextFactory>org.openejb.client.RemoteInitialContextFactory</initialContextFactory>
 		<jndiProperty>
 			<name></name>
 			<value></value>
