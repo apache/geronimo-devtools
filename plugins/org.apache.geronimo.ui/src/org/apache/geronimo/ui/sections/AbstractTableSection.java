@@ -143,7 +143,7 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 
 	}
 
-	protected Object getInput() {
+	public Object getInput() {
 		return getPlan();
 	}
 
@@ -287,7 +287,7 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 	}
 
-	private TableViewer getTableViewer() {
+	public TableViewer getTableViewer() {
 		return tableViewer;
 	}
 

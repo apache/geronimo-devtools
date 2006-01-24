@@ -179,7 +179,7 @@ public class SecuritySection extends AbstractTableSection {
 	 * 
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getInput()
 	 */
-	protected Object getInput() {
+	public Object getInput() {
 		SecurityType secType = (SecurityType) getPlan().eGet(securityERef);
 		if (secType != null) {
 			return secType.getRoleMappings();

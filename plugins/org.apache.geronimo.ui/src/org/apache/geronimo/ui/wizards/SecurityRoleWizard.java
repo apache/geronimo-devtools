@@ -33,6 +33,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import sun.security.action.GetIntegerAction;
+
 public class SecurityRoleWizard extends AbstractTableWizard {
 
 	public SecurityRoleWizard(AbstractTableSection section) {
@@ -157,18 +159,9 @@ public class SecurityRoleWizard extends AbstractTableWizard {
 		}
 		type.setValue(page.descriptionText.getText());
 
-		/*
-		 * String[] tableText = section.getTableText(eObject);
-		 * 
-		 * if (isNew) { TableItem item = new
-		 * TableItem(section.getTableViewer().getTable(), SWT.NONE);
-		 * item.setImage(section.getImage()); item.setData(eObject);
-		 * item.setText((String) eObject.eGet(SecurityPackage.eINSTANCE
-		 * .getRoleType_RoleName())); } else { int index =
-		 * section.getTableViewer().getTable().getSelectionIndex(); if (index !=
-		 * -1) { TableItem item = section.getTableViewer().getTable().getItem(
-		 * index); item.setText(tableText); } }
-		 */
+		if(section.getTableViewer().getInput() == section.getPlan()) {
+			section.getTableViewer().setInput(section.getInput());
+		}
 
 		return true;
 	}
