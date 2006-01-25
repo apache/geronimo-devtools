@@ -16,13 +16,13 @@
 package org.apache.geronimo.core.internal;
 
 import java.net.MalformedURLException;
-import java.rmi.ConnectException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 
+import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
@@ -30,6 +30,7 @@ import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
+import org.apache.geronimo.core.DeploymentUtils;
 import org.apache.geronimo.core.GeronimoConnectionFactory;
 import org.apache.geronimo.core.commands.DeploymentCmdStatus;
 import org.apache.geronimo.core.commands.DeploymentCommandFactory;
@@ -45,13 +46,21 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jst.server.generic.core.internal.CorePlugin;
 import org.eclipse.jst.server.generic.core.internal.GenericServerBehaviour;
+import org.eclipse.jst.server.generic.core.internal.GenericServerCoreMessages;
+import org.eclipse.jst.server.generic.core.internal.PingThread;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.ServerPort;
+import org.eclipse.wst.server.core.util.SocketUtil;
 
 public class GeronimoServerBehaviour extends GenericServerBehaviour {
+
+	private static final String ATTR_STOP = "stop-server";
 
 	private static final int MAX_TRIES = 30;
 
@@ -70,7 +79,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	 * 
 	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#stop(boolean)
 	 */
-	public synchronized void stop(boolean force) {
+	public void stop(boolean force) {
 
 		Trace.trace(Trace.INFO, "--> stop()");
 
@@ -140,7 +149,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	 * 
 	 * @see org.eclipse.jst.server.generic.core.internal.GenericServerBehaviour#setServerStarted()
 	 */
-	protected synchronized void setServerStarted() {
+	protected void setServerStarted() {
 		Trace.trace(Trace.INFO, "--> setServerStarted()");
 		for (int tries = MAX_TRIES; tries > 0; tries--) {
 			try {
@@ -162,7 +171,11 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		try {
 			return getKernel() != null && kernel.isRunning();
 		} catch (Exception e) {
-			GeronimoPlugin.log(Status.WARNING, "Geronimo Server may have been terminated manually outside of workspace.", e);
+			GeronimoPlugin
+					.log(
+							Status.WARNING,
+							"Geronimo Server may have been terminated manually outside of workspace.",
+							e);
 			kernel = null;
 		}
 		return false;
@@ -240,6 +253,23 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 			throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void deploy(IModule module) throws Exception {
+		DeploymentManager dm = DeploymentCommandFactory
+				.getDeploymentManager(getServer());
+		if (!DeploymentUtils.configurationExists(module, dm)) {
+			doDeploy(module);
+		} else {
+			GeronimoPlugin
+					.log(
+							Status.WARNING,
+							"Configuration with id "
+									+ GeronimoUtils.getConfigId(module)
+									+ "already exists.  Existing configuration will be overwritten with redeploy.",
+							null);
+			doRedeploy(module);
 		}
 	}
 
@@ -360,6 +390,41 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		}
 	}
 
+	protected void setupLaunch(ILaunch launch, String launchMode,
+			IProgressMonitor monitor) throws CoreException {
+		if ("true".equals(launch.getLaunchConfiguration().getAttribute(ATTR_STOP, "false"))) //$NON-NLS-1$ //$NON-NLS-2$
+			return;
+
+		String host = getServer().getHost();
+		ServerPort[] ports = getServer().getServerPorts(null);
+		ServerPort sp = null;
+		if (SocketUtil.isLocalhost(host)) {
+			for (int i = 0; i < ports.length; i++) {
+				sp = ports[i];
+				if (SocketUtil.isPortInUse(ports[i].getPort(), 5))
+					throw new CoreException(new Status(IStatus.ERROR,
+							CorePlugin.PLUGIN_ID, 0,
+							GenericServerCoreMessages.bind(
+									GenericServerCoreMessages.errorPortInUse,
+									Integer.toString(sp.getPort()), sp
+											.getName()), null));
+			}
+		}
+		setServerState(IServer.STATE_STARTING);
+		setMode(launchMode);
+
+		// ping server to check for startup
+		try {
+			String url = "http://" + host; //$NON-NLS-1$
+			int port = sp.getPort();
+			if (port != 80)
+				url += ":" + port; //$NON-NLS-1$
+			ping = new PingThread(getServer(), url, this);
+		} catch (Exception e) {
+			Trace.trace(Trace.SEVERE, "Can't ping for server startup."); //$NON-NLS-1$
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -368,8 +433,8 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	protected void initialize(IProgressMonitor monitor) {
 		Trace.trace(Trace.INFO, "GeronimoServerBehavior.initialize()");
 		Timer timer = new Timer(true);
-		timer.schedule(new UpdateServerStateTask(this), 0,
-				TIMER_TASK_INTERVAL * 1000);
+		// timer.schedule(new UpdateServerStateTask(this), 0,
+		// TIMER_TASK_INTERVAL * 1000);
 	}
 
 }

@@ -15,12 +15,8 @@
  */
 package org.apache.geronimo.core.commands;
 
-import javax.enterprise.deploy.shared.ModuleType;
 import javax.enterprise.deploy.spi.DeploymentManager;
-import javax.enterprise.deploy.spi.TargetModuleID;
-import javax.enterprise.deploy.spi.exceptions.TargetException;
 
-import org.apache.geronimo.core.internal.GeronimoUtils;
 import org.eclipse.wst.server.core.IModule;
 
 abstract class AbstractDeploymentCommand implements IDeploymentCommand {
@@ -42,31 +38,4 @@ abstract class AbstractDeploymentCommand implements IDeploymentCommand {
 	public IModule getModule() {
 		return module;
 	}
-
-	public TargetModuleID getTargetModuleID(IModule module)
-			throws TargetModuleIdNotFoundException {
-
-		String configId = GeronimoUtils.getConfigId(module);
-		ModuleType moduleType = GeronimoUtils.getJSR88ModuleType(module);
-
-		try {
-			TargetModuleID ids[] = dm.getAvailableModules(moduleType, dm.getTargets());
-			if (ids != null) {
-				for (int i = 0; i < ids.length; i++) {
-					if (ids[i].getModuleID().equals(configId)) {
-						return ids[i];
-					}
-				}
-			}
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (TargetException e) {
-			e.printStackTrace();
-		}
-
-		throw new TargetModuleIdNotFoundException(
-				"Could not find TargetModuleID for module " + module.getName()
-						+ " with configId " + configId);
-	}
-
 }

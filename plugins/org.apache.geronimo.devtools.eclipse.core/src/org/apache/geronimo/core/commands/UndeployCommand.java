@@ -19,6 +19,7 @@ import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
+import org.apache.geronimo.core.DeploymentUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -38,7 +39,7 @@ class UndeployCommand extends AbstractDeploymentCommand {
 	public IStatus execute(IProgressMonitor monitor)
 			throws TargetModuleIdNotFoundException {
 
-		TargetModuleID id = getTargetModuleID(getModule());
+		TargetModuleID id = DeploymentUtils.getTargetModuleID(getModule(), getDeploymentManager());
 		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager()
 				.undeploy(new TargetModuleID[] { id }));
 	}

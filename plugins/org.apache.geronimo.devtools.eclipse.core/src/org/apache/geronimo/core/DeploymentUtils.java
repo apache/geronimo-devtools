@@ -17,7 +17,14 @@ package org.apache.geronimo.core;
 
 import java.io.File;
 
+import javax.enterprise.deploy.shared.ModuleType;
+import javax.enterprise.deploy.spi.DeploymentManager;
+import javax.enterprise.deploy.spi.TargetModuleID;
+import javax.enterprise.deploy.spi.exceptions.TargetException;
+
+import org.apache.geronimo.core.commands.TargetModuleIdNotFoundException;
 import org.apache.geronimo.core.internal.GeronimoPlugin;
+import org.apache.geronimo.core.internal.GeronimoUtils;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jst.j2ee.application.internal.operations.AppClientComponentExportDataModelProvider;
@@ -95,6 +102,42 @@ public class DeploymentUtils {
 					.createDataModel(new AppClientComponentExportDataModelProvider());
 		}
 		return null;
+	}
+
+	public static TargetModuleID getTargetModuleID(IModule module,
+			DeploymentManager dm) throws TargetModuleIdNotFoundException {
+
+		String configId = GeronimoUtils.getConfigId(module);
+		ModuleType moduleType = GeronimoUtils.getJSR88ModuleType(module);
+
+		try {
+			TargetModuleID ids[] = dm.getAvailableModules(moduleType, dm
+					.getTargets());
+			if (ids != null) {
+				for (int i = 0; i < ids.length; i++) {
+					if (ids[i].getModuleID().equals(configId)) {
+						return ids[i];
+					}
+				}
+			}
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (TargetException e) {
+			e.printStackTrace();
+		}
+
+		throw new TargetModuleIdNotFoundException(
+				"Could not find TargetModuleID for module " + module.getName()
+						+ " with configId " + configId);
+	}
+
+	public static boolean configurationExists(IModule module,
+			DeploymentManager dm) {
+		try {
+			return getTargetModuleID(module, dm) != null;
+		} catch (TargetModuleIdNotFoundException e) {
+			return false;
+		}
 	}
 
 }

@@ -36,8 +36,6 @@ import org.eclipse.wst.server.core.IServer;
  */
 public class DeploymentCommandFactory {
 
-	private static final DeploymentCommandFactory INSTANCE = new DeploymentCommandFactory();
-
 	private DeploymentCommandFactory() {
 	}
 
@@ -47,10 +45,10 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static IDeploymentCommand createDistributeCommand(
-			IModule module, IServer server) throws CoreException {
+	public static IDeploymentCommand createDistributeCommand(IModule module,
+			IServer server) throws CoreException {
 		return new SynchronizedDeploymentOp(new DistributeCommand(module,
-				INSTANCE.getDeploymentManager(server)));
+				getDeploymentManager(server)));
 	}
 
 	/**
@@ -60,11 +58,10 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static IDeploymentCommand createStartCommand(
-			TargetModuleID[] ids, IModule module, IServer server)
-			throws CoreException {
+	public static IDeploymentCommand createStartCommand(TargetModuleID[] ids,
+			IModule module, IServer server) throws CoreException {
 		return new SynchronizedDeploymentOp(new StartCommand(ids, module,
-				INSTANCE.getDeploymentManager(server)));
+				getDeploymentManager(server)));
 	}
 
 	/**
@@ -75,8 +72,8 @@ public class DeploymentCommandFactory {
 	 */
 	public static IDeploymentCommand createStopCommand(IModule module,
 			IServer server) throws CoreException {
-		return new SynchronizedDeploymentOp(new StopCommand(module, INSTANCE
-				.getDeploymentManager(server)));
+		return new SynchronizedDeploymentOp(new StopCommand(module,
+				getDeploymentManager(server)));
 	}
 
 	/**
@@ -85,10 +82,10 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static IDeploymentCommand createRedeployCommand(
-			IModule module, IServer server) throws CoreException {
+	public static IDeploymentCommand createRedeployCommand(IModule module,
+			IServer server) throws CoreException {
 		return new SynchronizedDeploymentOp(new RedeployCommand(module,
-				INSTANCE.getDeploymentManager(server)));
+				getDeploymentManager(server)));
 	}
 
 	/**
@@ -97,10 +94,10 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static IDeploymentCommand createUndeployCommand(
-			IModule module, IServer server) throws CoreException {
+	public static IDeploymentCommand createUndeployCommand(IModule module,
+			IServer server) throws CoreException {
 		return new SynchronizedDeploymentOp(new UndeployCommand(module,
-				INSTANCE.getDeploymentManager(server)));
+				getDeploymentManager(server)));
 	}
 
 	/**
@@ -108,7 +105,7 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	private DeploymentManager getDeploymentManager(IServer server)
+	public static DeploymentManager getDeploymentManager(IServer server)
 			throws CoreException {
 		try {
 			return GeronimoConnectionFactory.getInstance()

@@ -41,7 +41,7 @@ class RedeployCommand extends AbstractDeploymentCommand {
 	public IStatus execute(IProgressMonitor monitor)
 			throws TargetModuleIdNotFoundException {
 		
-		TargetModuleID id = getTargetModuleID(getModule());
+		TargetModuleID id = DeploymentUtils.getTargetModuleID(getModule(), getDeploymentManager());
 		File jarFile = DeploymentUtils.createJarFile(getModule());
 		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager()
 				.redeploy(new TargetModuleID[] { id }, jarFile, null));
