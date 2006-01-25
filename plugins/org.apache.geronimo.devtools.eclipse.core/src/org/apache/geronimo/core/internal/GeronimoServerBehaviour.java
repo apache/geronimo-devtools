@@ -52,7 +52,6 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jst.server.generic.core.internal.CorePlugin;
 import org.eclipse.jst.server.generic.core.internal.GenericServerBehaviour;
 import org.eclipse.jst.server.generic.core.internal.GenericServerCoreMessages;
-import org.eclipse.jst.server.generic.core.internal.PingThread;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerListener;
@@ -146,13 +145,17 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 		return kernel;
 	}
+	
+	protected void setServerStarted() {
+		super.setServerStarted();
+	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.eclipse.jst.server.generic.core.internal.GenericServerBehaviour#setServerStarted()
 	 */
-	protected void setServerStarted() {
+	/*protected void setServerStarted() {
 		Trace.trace(Trace.INFO, "--> setServerStarted()");
 		for (int tries = MAX_TRIES; tries > 0; tries--) {
 			try {
@@ -168,7 +171,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 			}
 		}
 		Trace.trace(Trace.INFO, "<-- setServerStarted()");
-	}
+	}*/
 
 	protected boolean isKernelAlive() {
 		try {
@@ -401,26 +404,28 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	 */
 	protected void setupLaunch(ILaunch launch, String launchMode,
 			IProgressMonitor monitor) throws CoreException {
-		if ("true".equals(launch.getLaunchConfiguration().getAttribute(ATTR_STOP, "false"))) //$NON-NLS-1$ //$NON-NLS-2$
+
+		if ("true".equals(launch.getLaunchConfiguration().getAttribute(
+				ATTR_STOP, "false")))
+			return;
+
+		if (!SocketUtil.isLocalhost(getServer().getHost()))
 			return;
 
 		String host = getServer().getHost();
+
 		ServerPort[] ports = getServer().getServerPorts(null);
-		ServerPort sp = null;
-		if (SocketUtil.isLocalhost(host)) {
-			for (int i = 0; i < ports.length; i++) {
-				sp = ports[i];
-				if (SocketUtil.isPortInUse(ports[i].getPort(), 5))
-					throw new CoreException(new Status(IStatus.ERROR,
-							CorePlugin.PLUGIN_ID, 0,
-							GenericServerCoreMessages.bind(
-									GenericServerCoreMessages.errorPortInUse,
-									Integer.toString(sp.getPort()), sp
-											.getName()), null));
-			}
+		for (int i = 0; i < ports.length; i++) {
+			ServerPort sp = ports[i];
+			if (SocketUtil.isPortInUse(ports[i].getPort(), 5))
+				throw new CoreException(new Status(IStatus.ERROR,
+						CorePlugin.PLUGIN_ID, 0, GenericServerCoreMessages
+								.bind(GenericServerCoreMessages.errorPortInUse,
+										Integer.toString(sp.getPort()), sp
+												.getName()), null));
 		}
 
-		stopPing();
+		stopUpdateServerStateTask();
 		setServerState(IServer.STATE_STARTING);
 		setMode(launchMode);
 
@@ -435,7 +440,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 							|| state == IServer.STATE_STOPPED) {
 						GeronimoServerBehaviour.this.getServer()
 								.removeServerListener(this);
-						startPing();
+						startUpdateServerStateTask();
 					}
 				}
 			}
@@ -443,27 +448,20 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 		getServer().addServerListener(listener);
 
-		// ping server to check for startup
-		try {
-			String url = "http://" + host;
-			int port = sp.getPort();
-			if (port != 80)
-				url += ":" + port;
-			ping = new PingThread(getServer(), url, this);
-		} catch (Exception e) {
-			Trace.trace(Trace.SEVERE, "Can't ping for server startup.");
-		}
+		PingThread pingThread = new PingThread(this);
+		pingThread.start();
+
 	}
 
-	private void startPing() {
-		Trace.trace(Trace.INFO, "startPing()");
+	private void startUpdateServerStateTask() {
+		Trace.trace(Trace.INFO, "startUpdateServerStateTask()");
 		timer = new Timer(true);
 		timer.schedule(new UpdateServerStateTask(this), 10000,
 				TIMER_TASK_INTERVAL * 1000);
 	}
 
-	private void stopPing() {
-		Trace.trace(Trace.INFO, "stopPing()");
+	private void stopUpdateServerStateTask() {
+		Trace.trace(Trace.INFO, "stopUpdateServerStateTask()");
 		if (timer != null)
 			timer.cancel();
 	}
@@ -475,7 +473,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	 */
 	protected void initialize(IProgressMonitor monitor) {
 		Trace.trace(Trace.INFO, "GeronimoServerBehavior.initialize()");
-		startPing();
+		startUpdateServerStateTask();
 	}
 
 }
