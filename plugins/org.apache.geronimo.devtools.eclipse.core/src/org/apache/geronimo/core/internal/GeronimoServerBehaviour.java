@@ -432,7 +432,6 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		IServerListener listener = new IServerListener() {
 			public void serverChanged(ServerEvent event) {
 				int eventKind = event.getKind();
-				System.out.println("eventKind = " + eventKind);
 				if (eventKind == (ServerEvent.SERVER_CHANGE | ServerEvent.STATE_CHANGE)) {
 					IServer server = event.getServer();
 					int state = server.getServerState();
