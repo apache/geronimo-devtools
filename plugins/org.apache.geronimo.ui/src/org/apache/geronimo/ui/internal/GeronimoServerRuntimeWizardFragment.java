@@ -119,8 +119,11 @@ public class GeronimoServerRuntimeWizardFragment extends
 		data.horizontalSpan = 3;
 		label.setLayoutData(data);
 		label.setToolTipText(Messages.tooltipLoc);
+		
+		String currentValue = getRuntimeDelegate().getRuntimeWorkingCopy().getLocation().toOSString();
 
 		installDir = new Text(composite, SWT.BORDER);
+		installDir.setText(currentValue);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 2;
 		installDir.setLayoutData(data);
