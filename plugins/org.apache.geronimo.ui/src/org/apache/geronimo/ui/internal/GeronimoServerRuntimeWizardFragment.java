@@ -119,11 +119,15 @@ public class GeronimoServerRuntimeWizardFragment extends
 		data.horizontalSpan = 3;
 		label.setLayoutData(data);
 		label.setToolTipText(Messages.tooltipLoc);
-		
-		String currentValue = getRuntimeDelegate().getRuntimeWorkingCopy().getLocation().toOSString();
 
 		installDir = new Text(composite, SWT.BORDER);
-		installDir.setText(currentValue);
+
+		IPath currentLocation = getRuntimeDelegate().getRuntimeWorkingCopy()
+				.getLocation();
+		if (currentLocation != null) {
+			installDir.setText(currentLocation.toOSString());
+		}
+
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 2;
 		installDir.setLayoutData(data);
@@ -135,7 +139,7 @@ public class GeronimoServerRuntimeWizardFragment extends
 				validate();
 			}
 		});
-	
+
 		final Composite browseComp = composite;
 		Button browse = SWTUtil.createButton(composite, Messages.browse);
 		browse.addSelectionListener(new SelectionAdapter() {
