@@ -145,33 +145,10 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 		return kernel;
 	}
-	
+
 	protected void setServerStarted() {
 		super.setServerStarted();
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jst.server.generic.core.internal.GenericServerBehaviour#setServerStarted()
-	 */
-	/*protected void setServerStarted() {
-		Trace.trace(Trace.INFO, "--> setServerStarted()");
-		for (int tries = MAX_TRIES; tries > 0; tries--) {
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e1) {
-				// ignore
-			}
-			boolean isFullyStarted = isKernelFullyStarted();
-			Trace.trace(Trace.INFO, "kernelFullyStarted = " + isFullyStarted);
-			if (isFullyStarted) {
-				setServerState(IServer.STATE_STARTED);
-				break;
-			}
-		}
-		Trace.trace(Trace.INFO, "<-- setServerStarted()");
-	}*/
 
 	protected boolean isKernelAlive() {
 		try {
@@ -241,7 +218,8 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		try {
 			switch (deltaKind) {
 			case ADDED: {
-				doDeploy(module);
+				deploy(module);
+				// doDeploy(module);
 				break;
 			}
 			case CHANGED: {
@@ -262,6 +240,12 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		}
 	}
 
+	/**
+	 * Safty net to prevent a deploy call on an existing configuration.
+	 * 
+	 * @param module
+	 * @throws Exception
+	 */
 	private void deploy(IModule module) throws Exception {
 		DeploymentManager dm = DeploymentCommandFactory
 				.getDeploymentManager(getServer());
@@ -270,7 +254,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		} else {
 			GeronimoPlugin
 					.log(
-							Status.WARNING,
+							Status.ERROR,
 							"Configuration with id "
 									+ GeronimoUtils.getConfigId(module)
 									+ "already exists.  Existing configuration will be overwritten with redeploy.",
@@ -405,14 +389,14 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	protected void setupLaunch(ILaunch launch, String launchMode,
 			IProgressMonitor monitor) throws CoreException {
 
+		Trace.trace(Trace.INFO, "--> GeronimoServerBehavior.setupLaunch()");
+
 		if ("true".equals(launch.getLaunchConfiguration().getAttribute(
 				ATTR_STOP, "false")))
 			return;
 
 		if (!SocketUtil.isLocalhost(getServer().getHost()))
 			return;
-
-		String host = getServer().getHost();
 
 		ServerPort[] ports = getServer().getServerPorts(null);
 		for (int i = 0; i < ports.length; i++) {
@@ -449,6 +433,8 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 		PingThread pingThread = new PingThread(this);
 		pingThread.start();
+
+		Trace.trace(Trace.INFO, "<-- GeronimoServerBehavior.setupLaunch()");
 
 	}
 
