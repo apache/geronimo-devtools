@@ -92,13 +92,13 @@
 		<j:set var="emf.build.filename" value="emf-sdo-xsd-SDK-2.1.1.zip"/>
 		<j:set var="gef.build.filename" value="GEF-SDK-3.1.1.zip"/>
 		<j:set var="jem.build.filename" value="JEM-SDK-1.1.0.1.zip"/>
-		<j:set var="wtp.build.filename" value="wtp-sdk-I200601270511.zip"/>
+		<j:set var="wtp.build.filename" value="wtp-sdk-M200601281544.zip"/>
 
 		<j:set var="eclipse.download" value="http://download.eclipse.org/eclipse/downloads/drops/R-3.1.1-200509290840/${eclipse.build.filename}"/>
 		<j:set var="emf.download" value="http://download.eclipse.org/tools/emf/downloads/drops/2.1.1/R200509281310/${emf.build.filename}"/>
 		<j:set var="gef.download" value="http://download.eclipse.org/tools/gef/downloads/drops/R-3.1.1-200509301327/${gef.build.filename}"/>
 		<j:set var="jem.download" value="http://download.eclipse.org/tools/ve/downloads/drops/R-1.1.0.1-200509071822/${jem.build.filename}"/>
-		<j:set var="wtp.download" value="http://download.eclipse.org/webtools/downloads/drops/I-I200601270511-200601270511/${wtp.build.filename}"/>
+		<j:set var="wtp.download" value="http://download.eclipse.org/webtools/committers/drops/M-M200601281544-200601281544/${wtp.build.filename}"/>
 			
 		<j:set var="wtp.dist" value="${maven.repo.local}/eclipse/wtp/distributions/${wtp.build.filename}"/>
 		<j:set var="eclipse.dist" value="${maven.repo.local}/eclipse/eclipse/distributions/${eclipse.build.filename}"/>
@@ -143,12 +143,6 @@
 			<unjar src="${eclipse.dist}" dest="${target.dir}"/>
 		</j:if>
 		<j:if test="${os.startsWith('Linux') || os.startsWith('Mac')}">
-			<!--<gunzip src="${eclipse.dist}" dest="${maven.repo.local}/eclipse/eclipse/distributions"/>
-			<untar dest="${target.dir}">
-			    <fileset dir="${maven.repo.local}/eclipse/eclipse/distributions">
-			    		<include name="*.tar"/>
-			    </fileset>
-			</untar>-->
 			<gunzip src="${eclipse.dist}" dest="${target.dir}"/>
 			<exec executable="tar" dir="${target.dir}">
 				<arg value="-xvf"/>
