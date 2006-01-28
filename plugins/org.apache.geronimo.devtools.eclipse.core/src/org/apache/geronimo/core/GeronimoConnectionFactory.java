@@ -45,10 +45,7 @@ public class GeronimoConnectionFactory {
 		if (dm == null) {
 			DeploymentFactoryManager mgr = DeploymentFactoryManager
 					.getInstance();
-			DeploymentFactory factory = discoverDeploymentFactory(server);
-			if (factory == null) {
-				factory = new DeploymentFactoryImpl();
-			}
+			DeploymentFactory factory = new DeploymentFactoryImpl();
 			mgr.registerDeploymentFactory(factory);
 			String deployerURL = getDeployerURL(server);
 			Trace.trace(Trace.INFO, "DeployerURL: " + deployerURL);
