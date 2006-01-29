@@ -79,12 +79,13 @@
        <ant:echo>Packaging feature for update site</ant:echo>  
         <ant:delete dir="${distribution.dir}/updates"/>
         <j:forEach var="artifact" items="${pom.artifacts}">        
-            <j:set var="dependency" value="${artifact.dependency}"/>  
-           <pathconvert property="version" targetos="unix">
+            <j:set var="dependency" value="${artifact.dependency}"/>
+            <j:set var="version" value="${artifact.dependency.version}"/>  
+            <pathconvert property="version" targetos="unix">
                 <path path="${artifact.dependency.version}"/>
                 <mapper>
                     <chainedmapper> 
-                         <flattenmapper/>
+                        <flattenmapper/>
                         <globmapper from="*-SNAPSHOT" to="*"/>
                     </chainedmapper>
                 </mapper>
