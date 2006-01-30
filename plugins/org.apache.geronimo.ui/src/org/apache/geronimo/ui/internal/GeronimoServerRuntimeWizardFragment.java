@@ -221,7 +221,6 @@ public class GeronimoServerRuntimeWizardFragment extends
 										InterruptedException {
 									try {
 										installable.install(installPath, monitor);
-										updateInstallDir(installPath);
 									} catch (CoreException e) {
 										Trace.trace(Trace.SEVERE,
 												"Error installing runtime", e);
@@ -239,6 +238,8 @@ public class GeronimoServerRuntimeWizardFragment extends
 								Trace.trace(Trace.SEVERE,
 										"Error installing runtime", e);
 							}
+							
+							updateInstallDir(installPath);
 
 						}
 					}
