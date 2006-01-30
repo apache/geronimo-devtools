@@ -15,15 +15,19 @@
  */
 package org.apache.geronimo.ui.internal;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jst.server.generic.core.internal.GenericServerRuntime;
 import org.eclipse.jst.server.generic.servertype.definition.Property;
@@ -206,19 +210,36 @@ public class GeronimoServerRuntimeWizardFragment extends
 						mb.setMessage(Messages.installMessage + "\n"
 								+ installDir.getText());
 						if (mb.open() == SWT.OK) {
+
+							final IInstallableRuntime installable = tomcat
+									.getSelection() ? gWithTomcat : gWithJetty;
+							final Path installPath = new Path(installDir
+									.getText());
+							IRunnableWithProgress runnable = new IRunnableWithProgress() {
+								public void run(IProgressMonitor monitor)
+										throws InvocationTargetException,
+										InterruptedException {
+									try {
+										installable.install(installPath, monitor);
+										updateInstallDir(installPath);
+									} catch (CoreException e) {
+										Trace.trace(Trace.SEVERE,
+												"Error installing runtime", e);
+									}
+								}
+							};
+							
 							try {
-								IInstallableRuntime installable = tomcat
-										.getSelection() ? gWithTomcat
-										: gWithJetty;
-								Path installPath = new Path(installDir
-										.getText());
-								installable.install(installPath,
-										new NullProgressMonitor());
-								updateInstallDir(installPath);
+								getWizard().run(false, false, runnable);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							} catch (InvocationTargetException e) {
+								e.printStackTrace();
 							} catch (Exception e) {
 								Trace.trace(Trace.SEVERE,
 										"Error installing runtime", e);
 							}
+
 						}
 					}
 				}
