@@ -230,7 +230,7 @@ public class GeronimoServerRuntimeWizardFragment extends
 							};
 							
 							try {
-								getWizard().run(false, false, runnable);
+								getWizard().run(true, false, runnable);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							} catch (InvocationTargetException e) {
