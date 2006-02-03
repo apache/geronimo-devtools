@@ -25,81 +25,84 @@ import org.eclipse.wst.server.core.internal.ServerMonitorManager;
 
 public class GeronimoServer extends GenericServer {
 
-    public static final String PROPERTY_ADMIN_ID = "adminID";
+	public static final String PROPERTY_ADMIN_ID = "adminID";
 
-    public static final String PROPERTY_ADMIN_PW = "adminPassword";
-    
-    public static final String PROPERTY_RMI_PORT = "rmiport";
-    
-    public static final String PROPERTY_HTTP_PORT = "port";
+	public static final String PROPERTY_ADMIN_PW = "adminPassword";
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.wst.server.core.model.IURLProvider#getModuleRootURL(org.eclipse.wst.server.core.IModule)
-     */
-    public URL getModuleRootURL(IModule module) {
-        try {
-            if (module == null
-                    || module.loadAdapter(IWebModule.class, null) == null)
-                return null;
+	public static final String PROPERTY_RMI_PORT = "rmiport";
 
-            String url = "http://localhost";
-            int port = 0;
+	public static final String PROPERTY_HTTP_PORT = "port";
 
-            port = getHttpPort();
-            port = ServerMonitorManager.getInstance().getMonitoredPort(
-                    getServer(), port, "web");
-            if (port != 80)
-                url += ":" + port;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.wst.server.core.model.IURLProvider#getModuleRootURL(org.eclipse.wst.server.core.IModule)
+	 */
+	public URL getModuleRootURL(IModule module) {
+		try {
+			if (module == null
+					|| module.loadAdapter(IWebModule.class, null) == null)
+				return null;
 
-            String moduleId = GeronimoUtils.getContextRoot(module);
-            if (!moduleId.startsWith("/"))
-                url += "/";
-            url += moduleId;
+			String host = getServer().getHost();
+			String url = "http://" + host;
+			int port = 0;
 
-            if (!url.endsWith("/"))
-                url += "/";
+			port = getHttpPort();
+			port = ServerMonitorManager.getInstance().getMonitoredPort(
+					getServer(), port, "web");
+			if (port != 80)
+				url += ":" + port;
 
-            return new URL(url);
-        } catch (Exception e) {
-            Trace.trace("Could not get root URL", e);
-            return null;
-        }
+			String moduleId = GeronimoUtils.getContextRoot(module);
+			if (!moduleId.startsWith("/"))
+				url += "/";
+			url += moduleId;
 
-    }
+			if (!url.endsWith("/"))
+				url += "/";
 
-    public String getAdminID() {
-       return (String) getServerInstanceProperties().get(PROPERTY_ADMIN_ID);      
-    }
+			return new URL(url);
+		} catch (Exception e) {
+			Trace.trace("Could not get root URL", e);
+			return null;
+		}
 
-    public String getAdminPassword() {
-        return (String) getServerInstanceProperties().get(PROPERTY_ADMIN_PW);      
-    }
-    
-    public String getRMINamingPort() {
-        return (String) getServerInstanceProperties().get(PROPERTY_RMI_PORT);    
-    }
-    
-    public String getHTTPPort() {
-        return (String) getServerInstanceProperties().get(PROPERTY_HTTP_PORT);    
-    }
+	}
 
-    public void setAdminID(String value) {
-        getServerInstanceProperties().put(PROPERTY_ADMIN_ID, value);    
-    }
+	public String getAdminID() {
+		return (String) getServerInstanceProperties().get(PROPERTY_ADMIN_ID);
+	}
 
-    public void setAdminPassword(String value) {
-        getServerInstanceProperties().put(PROPERTY_ADMIN_PW, value);    
-    }
+	public String getAdminPassword() {
+		return (String) getServerInstanceProperties().get(PROPERTY_ADMIN_PW);
+	}
 
-    public void setRMINamingPort(String value) {
-        getServerInstanceProperties().put(PROPERTY_RMI_PORT, value);    
-    }
-    
-    public void setHTTPPort(String value) {
-        getServerInstanceProperties().put(PROPERTY_HTTP_PORT, value);    
-    }
-    
-    
+	public String getRMINamingPort() {
+		return (String) getServerInstanceProperties().get(PROPERTY_RMI_PORT);
+	}
+
+	/**
+	 * @return
+	 */
+	public String getHTTPPort() {
+		return (String) getServerInstanceProperties().get(PROPERTY_HTTP_PORT);
+	}
+
+	public void setAdminID(String value) {
+		getServerInstanceProperties().put(PROPERTY_ADMIN_ID, value);
+	}
+
+	public void setAdminPassword(String value) {
+		getServerInstanceProperties().put(PROPERTY_ADMIN_PW, value);
+	}
+
+	public void setRMINamingPort(String value) {
+		getServerInstanceProperties().put(PROPERTY_RMI_PORT, value);
+	}
+
+	public void setHTTPPort(String value) {
+		getServerInstanceProperties().put(PROPERTY_HTTP_PORT, value);
+	}
+
 }
