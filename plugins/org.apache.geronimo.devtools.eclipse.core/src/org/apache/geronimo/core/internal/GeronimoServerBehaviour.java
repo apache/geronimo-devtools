@@ -72,6 +72,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	private Kernel kernel = null;
 
 	private Timer timer = null;
+	PingThread pingThread;
 
 	public GeronimoServerBehaviour() {
 		super();
@@ -88,7 +89,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 		if (getServer().getServerState() != IServer.STATE_STOPPED) {
 			setServerState(IServer.STATE_STOPPING);
-			if (getKernel() != null) {
+			if (kernel != null) {
 				kernel.shutdown();
 			}
 		}
@@ -116,7 +117,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 	}
 
-	private Kernel getKernel() {
+	private Kernel getKernel() throws SecurityException {
 
 		if (kernel == null) {
 			Map map = new HashMap();
@@ -135,6 +136,8 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 							.getMBeanServerConnection();
 					kernel = new KernelDelegate(mbServerConnection);
 					Trace.trace(Trace.INFO, "Connected to kernel.");
+				} catch (SecurityException e) {
+					throw e;
 				} catch (Exception e) {
 					Trace.trace(Trace.WARNING, "Kernel connection failed.");
 				}
@@ -153,6 +156,13 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	protected boolean isKernelAlive() {
 		try {
 			return getKernel() != null && kernel.isRunning();
+		} catch (SecurityException e) {
+			GeronimoPlugin.log(Status.ERROR,
+					"Invalid username and/or password.", e);
+			pingThread.interrupt();
+			if (getServer().getServerState() != IServer.STATE_STOPPED) {
+				stop(true);
+			}
 		} catch (Exception e) {
 			GeronimoPlugin
 					.log(
@@ -431,7 +441,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 
 		getServer().addServerListener(listener);
 
-		PingThread pingThread = new PingThread(this);
+		pingThread = new PingThread(this);
 		pingThread.start();
 
 		Trace.trace(Trace.INFO, "<-- GeronimoServerBehavior.setupLaunch()");
