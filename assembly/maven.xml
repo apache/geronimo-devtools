@@ -45,7 +45,8 @@
         <ant:delete dir="${distribution.dir.temp}"/>
         <ant:echo>Packaging feature for zip distribution</ant:echo>
         <j:forEach var="artifact" items="${pom.artifacts}">        
-            <j:set var="dependency" value="${artifact.dependency}"/>  
+            <j:set var="dependency" value="${artifact.dependency}"/> 
+            <j:set var="version" value="${artifact.dependency.version}"/>  
             <pathconvert property="version" targetos="unix">
                 <path path="${artifact.dependency.version}"/>
                 <mapper>
