@@ -90,7 +90,6 @@ public class GeronimoServerRuntimeTargetHandler extends
 	 */
 	public IClasspathEntry[] resolveClasspathContainer(IRuntime runtime,
 			String id) {
-		System.out.println(runtime.getRuntimeType().getId());
 		this.runtimeTypeId = runtime.getRuntimeType().getId();
 		return getServerClassPathEntry(runtime);
 	}
