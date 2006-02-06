@@ -129,7 +129,9 @@ public class GeronimoServerRuntimeTargetHandler extends
 		Iterator i = discouragedAccessPaths.iterator();
 		while (i.hasNext()) {
 			IPath xPath = (IPath) i.next();
-			if (runtimeLoc.append(xPath).isPrefixOf(path)) {
+			if(path.toFile().isDirectory() && runtimeLoc.append(xPath).isPrefixOf(path)) {
+				return true;
+			} else if(runtimeLoc.append(xPath).equals(path)) {
 				return true;
 			}
 		}
