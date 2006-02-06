@@ -37,6 +37,13 @@
         </includes>
       </resource>
       <resource>
+        <targetPath>schema/</targetPath>
+        <directory>schema</directory>
+        <includes>
+          <include>discouragedRuntimeAccess.exsd</include>
+        </includes>
+      </resource>
+      <resource>
         <directory>.</directory>
         <includes>
           <include>plugin.properties</include>
