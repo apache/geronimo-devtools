@@ -17,10 +17,18 @@ package org.apache.geronimo.core.internal;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.jdt.core.IAccessRule;
+import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.server.generic.core.internal.GenericServerRuntimeTargetHandler;
@@ -32,92 +40,150 @@ import org.eclipse.wst.server.core.IRuntime;
 
 public class GeronimoServerRuntimeTargetHandler extends
 		GenericServerRuntimeTargetHandler {
-	
-	String cachedArchiveString=null;
-	IClasspathEntry[] cachedClasspath=null;
-	
 
-	/* (non-Javadoc)
-	 * @see ClasspathRuntimeTargetHandler#resolveClasspathContainer(IRuntime, java.lang.String)
+	private static final String EXTENSION_RUNTIME_ACCESS = "discouragedRuntimeAccess";
+
+	String cachedArchiveString = null;
+	IClasspathEntry[] cachedClasspath = null;
+	private static Set discouragedAccessPaths;
+	private IPath runtimeLoc;
+
+	static {
+		loadExtensions();
+	}
+
+	private static synchronized void loadExtensions() {
+		discouragedAccessPaths = new HashSet();
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IConfigurationElement[] cf = registry.getConfigurationElementsFor(
+				GeronimoPlugin.PLUGIN_ID, EXTENSION_RUNTIME_ACCESS);
+		for (int i = 0; i < cf.length; i++) {
+			IConfigurationElement element = cf[i];
+			if ("path".equals(element.getName())) {
+				String path = element.getAttribute("value");
+				if (path != null) {
+					discouragedAccessPaths.add(new Path(path));
+				}
+			}
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ClasspathRuntimeTargetHandler#resolveClasspathContainer(IRuntime,
+	 *      java.lang.String)
 	 */
-	public IClasspathEntry[] resolveClasspathContainer(IRuntime runtime,String id){		
+	public IClasspathEntry[] resolveClasspathContainer(IRuntime runtime,
+			String id) {
 		return getServerClassPathEntry(runtime);
 	}
-	
-	public IClasspathEntry[] getServerClassPathEntry(IRuntime runtime)
-	{
-		ServerRuntime serverDefinition = ServerTypeDefinitionUtil.getServerTypeDefinition(runtime);		
+
+	public IClasspathEntry[] getServerClassPathEntry(IRuntime runtime) {
+		this.runtimeLoc = runtime.getLocation();
+		ServerRuntime serverDefinition = ServerTypeDefinitionUtil
+				.getServerTypeDefinition(runtime);
 		String ref = serverDefinition.getProject().getClasspathReference();
 		Classpath cp = serverDefinition.getClasspath(ref);
 		List archives = cp.getArchive();
-		
-		// It's expensive to keep searching directories, so try to cache the result
-		IClasspathEntry[] savedClasspath=getCachedClasspathFor(serverDefinition, archives);
-		if(savedClasspath!=null)
+
+		// It's expensive to keep searching directories, so try to cache the
+		// result
+		IClasspathEntry[] savedClasspath = getCachedClasspathFor(
+				serverDefinition, archives);
+		if (savedClasspath != null)
 			return savedClasspath;
-		
+
 		Iterator archiveIter = archives.iterator();
 		ArrayList entryList = new ArrayList();
 		while (archiveIter.hasNext()) {
 			ArchiveType archive = (ArchiveType) archiveIter.next();
-			String item = serverDefinition.getResolver().resolveProperties(archive.getPath());
-			Path path=new Path(item);
-			File file=path.toFile();
-			if(file.isDirectory())
-			{
-				File[] list=file.listFiles();
-				for(int i=0; i<list.length; i++)
-				{
-					if(!list[i].isDirectory())
-					{
-						Path p=new Path(list[i].getAbsolutePath());
-						IClasspathEntry entry = JavaCore.newLibraryEntry(p,null,null );
-						entryList.add(entry);	
-					}					
+			String item = serverDefinition.getResolver().resolveProperties(
+					archive.getPath());
+			IPath path = new Path(item);
+			File file = path.toFile();
+			if (file.isDirectory()) {
+				boolean discourageAccess = isAccessDiscouraged(path);
+				File[] list = file.listFiles();
+				for (int i = 0; i < list.length; i++) {
+					if (!list[i].isDirectory()) {
+						Path p = new Path(list[i].getAbsolutePath());
+						if (!discourageAccess)
+							discourageAccess = isAccessDiscouraged(p);
+						addLibEntry(entryList, p, discourageAccess);
+					}
 				}
-	
-			}
-			else
-			{
-				IClasspathEntry entry = JavaCore.newLibraryEntry(path,null,null );
-				entryList.add(entry);
+			} else {
+				addLibEntry(entryList, path, isAccessDiscouraged(path));
 			}
 		}
-		
-		IClasspathEntry[] classpath=(IClasspathEntry[])entryList.toArray(new IClasspathEntry[entryList.size()]);
+
+		IClasspathEntry[] classpath = (IClasspathEntry[]) entryList
+				.toArray(new IClasspathEntry[entryList.size()]);
 		setCachedClasspath(classpath);
 
 		return classpath;
 	}
 
-	private IClasspathEntry[] getCachedClasspathFor(ServerRuntime serverDefinition, List archives) {
-		
-		// Need to iterate through the list, and expand the variables (in case they have changed)
+	private boolean isAccessDiscouraged(IPath path) {
+		Iterator i = discouragedAccessPaths.iterator();
+		while (i.hasNext()) {
+			IPath xPath = (IPath) i.next();
+			if (runtimeLoc.append(xPath).isPrefixOf(path)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void addLibEntry(ArrayList entryList, IPath path,
+			boolean discourageAccess) {
+		IClasspathEntry entry = null;
+		if (discourageAccess) {
+			IAccessRule rule = JavaCore.newAccessRule(new Path("**"),
+					IAccessRule.K_DISCOURAGED);
+			IAccessRule rules[] = new IAccessRule[] { rule };
+			entry = JavaCore.newLibraryEntry(path, null, null, rules,
+					new IClasspathAttribute[] {}, false);
+		} else {
+			entry = JavaCore.newLibraryEntry(path, null, null);
+		}
+		entryList.add(entry);
+	}
+
+	private IClasspathEntry[] getCachedClasspathFor(
+			ServerRuntime serverDefinition, List archives) {
+
+		// Need to iterate through the list, and expand the variables (in case
+		// they have changed)
 		// The simplest approach is to construct/cache a string for this
 		// That will still save the overhead of going to the filesystem
-		
-		StringBuffer buffer=new StringBuffer();
+
+		StringBuffer buffer = new StringBuffer();
 		Iterator archiveIter = archives.iterator();
 		while (archiveIter.hasNext()) {
 			ArchiveType archive = (ArchiveType) archiveIter.next();
-			String item = serverDefinition.getResolver().resolveProperties(archive.getPath());
+			String item = serverDefinition.getResolver().resolveProperties(
+					archive.getPath());
 			buffer.append(item);
 			buffer.append(File.pathSeparatorChar);
 		}
-		
-		String archiveString=buffer.toString();
-		
-		if(cachedArchiveString != null && cachedArchiveString.equals(archiveString))
+
+		String archiveString = buffer.toString();
+
+		if (cachedArchiveString != null
+				&& cachedArchiveString.equals(archiveString))
 			return cachedClasspath;
-		
-		// This is a cache miss - ensure the data is null (to be safe), but save the key (archiveString) now
+
+		// This is a cache miss - ensure the data is null (to be safe), but save
+		// the key (archiveString) now
 		// The data will be set once it's calculated
-		cachedClasspath=null;
-		cachedArchiveString=archiveString;
+		cachedClasspath = null;
+		cachedArchiveString = archiveString;
 		return null;
 	}
 
 	private void setCachedClasspath(IClasspathEntry[] classpath) {
-		cachedClasspath=classpath;
+		cachedClasspath = classpath;
 	}
 }
