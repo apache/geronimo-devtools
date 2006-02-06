@@ -17,10 +17,11 @@ package org.apache.geronimo.core.internal;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -45,26 +46,39 @@ public class GeronimoServerRuntimeTargetHandler extends
 
 	String cachedArchiveString = null;
 	IClasspathEntry[] cachedClasspath = null;
-	private static Set discouragedAccessPaths;
+	private static Map map;
 	private IPath runtimeLoc;
+	private String runtimeTypeId;
 
 	static {
 		loadExtensions();
 	}
 
 	private static synchronized void loadExtensions() {
-		discouragedAccessPaths = new HashSet();
+		map = new HashMap();
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IConfigurationElement[] cf = registry.getConfigurationElementsFor(
 				GeronimoPlugin.PLUGIN_ID, EXTENSION_RUNTIME_ACCESS);
 		for (int i = 0; i < cf.length; i++) {
 			IConfigurationElement element = cf[i];
-			if ("path".equals(element.getName())) {
-				String path = element.getAttribute("value");
-				if (path != null) {
-					discouragedAccessPaths.add(new Path(path));
+			if ("restriction".equals(element.getName())) {
+				String runtimeId = element.getAttribute("id");
+				if (runtimeId != null) {
+					IConfigurationElement[] children = element.getChildren();
+					for (int j = 0; j < children.length; j++) {
+						String path = children[j].getAttribute("value");
+						if (path != null) {
+							Collection c = (Collection) map.get(runtimeId);
+							if (c == null) {
+								c = new ArrayList();
+								map.put(runtimeId, c);
+							}
+							c.add(new Path(path));
+						}
+					}
 				}
 			}
+
 		}
 	}
 
@@ -76,6 +90,8 @@ public class GeronimoServerRuntimeTargetHandler extends
 	 */
 	public IClasspathEntry[] resolveClasspathContainer(IRuntime runtime,
 			String id) {
+		System.out.println(runtime.getRuntimeType().getId());
+		this.runtimeTypeId = runtime.getRuntimeType().getId();
 		return getServerClassPathEntry(runtime);
 	}
 
@@ -126,12 +142,17 @@ public class GeronimoServerRuntimeTargetHandler extends
 	}
 
 	private boolean isAccessDiscouraged(IPath path) {
-		Iterator i = discouragedAccessPaths.iterator();
+		Collection c = (Collection) map.get(runtimeTypeId);
+		if (c == null || c.isEmpty())
+			return false;
+
+		Iterator i = c.iterator();
 		while (i.hasNext()) {
 			IPath xPath = (IPath) i.next();
-			if(path.toFile().isDirectory() && runtimeLoc.append(xPath).isPrefixOf(path)) {
+			if (path.toFile().isDirectory()
+					&& runtimeLoc.append(xPath).isPrefixOf(path)) {
 				return true;
-			} else if(runtimeLoc.append(xPath).equals(path)) {
+			} else if (runtimeLoc.append(xPath).equals(path)) {
 				return true;
 			}
 		}
