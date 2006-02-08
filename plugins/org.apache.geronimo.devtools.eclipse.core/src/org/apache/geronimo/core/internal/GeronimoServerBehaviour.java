@@ -470,5 +470,12 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		Trace.trace(Trace.INFO, "GeronimoServerBehavior.initialize()");
 		startUpdateServerStateTask();
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#dispose()
+	 */
+	public void dispose() {
+		stopUpdateServerStateTask();
+	}
 
 }

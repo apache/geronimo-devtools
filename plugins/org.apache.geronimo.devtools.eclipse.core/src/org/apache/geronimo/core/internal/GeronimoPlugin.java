@@ -17,6 +17,11 @@ package org.apache.geronimo.core.internal;
 
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.wst.server.core.IServerLifecycleListener;
+import org.eclipse.wst.server.core.internal.ResourceManager;
+import org.eclipse.wst.server.core.internal.ServerListener;
+import org.eclipse.wst.server.core.util.ServerLifecycleAdapter;
+import org.osgi.framework.BundleContext;
 
 /**
  * The main plugin class.
@@ -25,6 +30,8 @@ public class GeronimoPlugin extends Plugin {
 	public static final String PLUGIN_ID = "org.apache.geronimo.devtools.eclipse.core";
 
 	private static GeronimoPlugin singleton;
+	
+	private static final IServerLifecycleListener listener = new GeronimoServerLifeCycleListener();
 
 	/**
 	 * The constructor.
@@ -46,6 +53,22 @@ public class GeronimoPlugin extends Plugin {
 	public static void log(int severity, String message, Throwable throwable) {
 		singleton.getLog().log(
 				new Status(severity, PLUGIN_ID, 0, message, throwable));
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+	 */
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
+		ResourceManager.getInstance().addServerLifecycleListener(listener);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	 */
+	public void stop(BundleContext context) throws Exception {
+		super.stop(context);
+		ResourceManager.getInstance().removeServerLifecycleListener(listener);
 	}
 
 }
