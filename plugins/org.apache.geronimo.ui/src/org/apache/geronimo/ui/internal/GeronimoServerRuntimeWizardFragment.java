@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -61,6 +62,7 @@ import org.eclipse.wst.server.core.TaskModel;
 import org.eclipse.wst.server.core.internal.IInstallableRuntime;
 import org.eclipse.wst.server.core.internal.ServerPlugin;
 import org.eclipse.wst.server.core.model.RuntimeDelegate;
+import org.eclipse.wst.server.ui.internal.TerminationDialog;
 import org.eclipse.wst.server.ui.wizard.IWizardHandle;
 
 public class GeronimoServerRuntimeWizardFragment extends
@@ -204,12 +206,9 @@ public class GeronimoServerRuntimeWizardFragment extends
 				public void widgetSelected(SelectionEvent se) {
 					if (installDir != null && isValidLocation()) {
 						Shell shell = installDir.getShell();
-						MessageBox mb = new MessageBox(shell, SWT.OK
-								| SWT.CANCEL | SWT.ICON_QUESTION);
-						mb.setText(Messages.installTitle);
-						mb.setMessage(Messages.installMessage + "\n"
-								+ installDir.getText());
-						if (mb.open() == SWT.OK) {
+						ConfirmInstallDialog dialog = new ConfirmInstallDialog(shell, installDir.getText());
+						dialog.open();
+						if (dialog.getReturnCode() == IDialogConstants.OK_ID) {
 
 							final IInstallableRuntime installable = tomcat
 									.getSelection() ? gWithTomcat : gWithJetty;
