@@ -166,6 +166,8 @@ public class DeploymentPlanCreationOperation extends
 		map.put("pkgen", GeronimoSchemaNS.GERONIMO_PKGEN_NS);
 
 		root.setConfigId(getProject().getName() + "/" + getComponentName());
+		
+		root.setEnterpriseBeans(JarFactory.eINSTANCE.createEnterpriseBeansType());
 
 		documentRoot.setOpenejbJar(root);
 		resource.getContents().add(documentRoot);
