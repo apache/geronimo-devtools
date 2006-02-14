@@ -32,7 +32,6 @@ import javax.management.remote.JMXServiceURL;
 
 import org.apache.geronimo.core.DeploymentUtils;
 import org.apache.geronimo.core.GeronimoConnectionFactory;
-import org.apache.geronimo.core.commands.DeploymentCmdStatus;
 import org.apache.geronimo.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.core.commands.IDeploymentCommand;
 import org.apache.geronimo.core.commands.TargetModuleIdNotFoundException;
@@ -228,8 +227,7 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		try {
 			switch (deltaKind) {
 			case ADDED: {
-				deploy(module);
-				// doDeploy(module);
+				doDeploy(module);
 				break;
 			}
 			case CHANGED: {
@@ -250,51 +248,28 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		}
 	}
 
-	/**
-	 * Safty net to prevent a deploy call on an existing configuration.
-	 * 
-	 * @param module
-	 * @throws Exception
-	 */
-	private void deploy(IModule module) throws Exception {
-		DeploymentManager dm = DeploymentCommandFactory
-				.getDeploymentManager(getServer());
-		if (!DeploymentUtils.configurationExists(module, dm)) {
-			doDeploy(module);
-		} else {
-			GeronimoPlugin
-					.log(
-							Status.ERROR,
-							"Configuration with id "
-									+ GeronimoUtils.getConfigId(module)
-									+ "already exists.  Existing configuration will be overwritten with redeploy.",
-							null);
-			doRedeploy(module);
-		}
-	}
-
 	private void doDeploy(IModule module) throws Exception {
 		Trace.trace(Trace.INFO, ">> doDeploy() " + module.toString());
 
-		IDeploymentCommand cmd = DeploymentCommandFactory
-				.createDistributeCommand(module, getServer());
+		DeploymentManager dm = DeploymentCommandFactory
+				.getDeploymentManager(getServer());
 
-		IStatus status = cmd.execute(_monitor);
+		if (!DeploymentUtils.configurationExists(module, dm)) {
+			IStatus status = distribute(module);
+			if (!status.isOK()) {
+				doFail(status, Messages.DISTRIBUTE_FAIL);
+			}
 
-		if (!status.isOK()) {
-			doFail(status, Messages.DISTRIBUTE_FAIL);
-		}
-
-		if (status instanceof DeploymentCmdStatus) {
-			TargetModuleID[] ids = ((DeploymentCmdStatus) status)
-					.getResultTargetModuleIDs();
-			cmd = DeploymentCommandFactory.createStartCommand(ids, module,
-					getServer());
-			status = cmd.execute(_monitor);
-
+			status = start(module);
 			if (!status.isOK()) {
 				doFail(status, Messages.START_FAIL);
 			}
+		} else {
+			String id = GeronimoUtils.getConfigId(module);
+			String message = id
+					+ "already exists.  Existing configuration will be overwritten.";
+			GeronimoPlugin.log(Status.ERROR, message, null);
+			doRedeploy(module);
 		}
 
 		Trace.trace(Trace.INFO, "<< doDeploy() " + module.toString());
@@ -303,10 +278,8 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	private void doRedeploy(IModule module) throws Exception {
 		Trace.trace(Trace.INFO, ">> doRedeploy() " + module.toString());
 
-		IDeploymentCommand cmd = DeploymentCommandFactory
-				.createRedeployCommand(module, getServer());
 		try {
-			IStatus status = cmd.execute(_monitor);
+			IStatus status = reDeploy(module);
 			if (!status.isOK()) {
 				doFail(status, Messages.REDEPLOY_FAIL);
 			}
@@ -323,19 +296,12 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	private void doUndeploy(IModule module) throws Exception {
 		Trace.trace(Trace.INFO, ">> doUndeploy() " + module.toString());
 
-		IDeploymentCommand cmd = DeploymentCommandFactory.createStopCommand(
-				module, getServer());
-
-		IStatus status = cmd.execute(_monitor);
-
+		IStatus status = stop(module);
 		if (!status.isOK()) {
 			doFail(status, Messages.STOP_FAIL);
 		}
 
-		cmd = DeploymentCommandFactory.createUndeployCommand(module,
-				getServer());
-		status = cmd.execute(_monitor);
-
+		status = unDeploy(module);
 		if (!status.isOK()) {
 			doFail(status, Messages.UNDEPLOY_FAIL);
 		}
@@ -343,10 +309,58 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		Trace.trace(Trace.INFO, "<< doUndeploy()" + module.toString());
 	}
 
+	private void doRestart(IModule module) throws Exception {
+		Trace.trace(Trace.INFO, ">> doRestart() " + module.toString());
+
+		IStatus status = stop(module);
+		if (!status.isOK()) {
+			doFail(status, Messages.STOP_FAIL);
+		}
+
+		status = start(module);
+		if (!status.isOK()) {
+			doFail(status, Messages.START_FAIL);
+		}
+
+		Trace.trace(Trace.INFO, ">> doRestart() " + module.toString());
+	}
+
 	private void doFail(IStatus status, String message) throws CoreException {
 		throw new CoreException(new Status(IStatus.ERROR,
 				GeronimoPlugin.PLUGIN_ID, 0, message, new Exception(status
 						.getMessage())));
+	}
+
+	private IStatus distribute(IModule module) throws Exception {
+		IDeploymentCommand cmd = DeploymentCommandFactory
+				.createDistributeCommand(module, getServer());
+		return cmd.execute(_monitor);
+	}
+
+	private IStatus start(IModule module) throws Exception {
+		TargetModuleID id = DeploymentUtils.getTargetModuleID(module,
+				DeploymentCommandFactory.getDeploymentManager(getServer()));
+		IDeploymentCommand cmd = DeploymentCommandFactory.createStartCommand(
+				new TargetModuleID[] { id }, module, getServer());
+		return cmd.execute(_monitor);
+	}
+
+	private IStatus stop(IModule module) throws Exception {
+		IDeploymentCommand cmd = DeploymentCommandFactory.createStopCommand(
+				module, getServer());
+		return cmd.execute(_monitor);
+	}
+
+	private IStatus unDeploy(IModule module) throws Exception {
+		IDeploymentCommand cmd = DeploymentCommandFactory
+				.createUndeployCommand(module, getServer());
+		return cmd.execute(_monitor);
+	}
+
+	private IStatus reDeploy(IModule module) throws Exception {
+		IDeploymentCommand cmd = DeploymentCommandFactory
+				.createRedeployCommand(module, getServer());
+		return cmd.execute(_monitor);
 	}
 
 	public Map getServerInstanceProperties() {
@@ -398,7 +412,6 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	 */
 	protected void setupLaunch(ILaunch launch, String launchMode,
 			IProgressMonitor monitor) throws CoreException {
-
 		Trace.trace(Trace.INFO, "--> GeronimoServerBehavior.setupLaunch()");
 
 		if ("true".equals(launch.getLaunchConfiguration().getAttribute(
@@ -440,12 +453,9 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		};
 
 		getServer().addServerListener(listener);
-
 		pingThread = new PingThread(this);
 		pingThread.start();
-
 		Trace.trace(Trace.INFO, "<-- GeronimoServerBehavior.setupLaunch()");
-
 	}
 
 	private void startUpdateServerStateTask() {
@@ -470,8 +480,10 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 		Trace.trace(Trace.INFO, "GeronimoServerBehavior.initialize()");
 		startUpdateServerStateTask();
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#dispose()
 	 */
 	public void dispose() {
