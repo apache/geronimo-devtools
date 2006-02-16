@@ -459,14 +459,14 @@ public class GeronimoServerBehaviour extends GenericServerBehaviour {
 	}
 
 	private void startUpdateServerStateTask() {
-		Trace.trace(Trace.INFO, "startUpdateServerStateTask()");
+		Trace.trace(Trace.INFO, "startUpdateServerStateTask() " + getServer().getName());
 		timer = new Timer(true);
 		timer.schedule(new UpdateServerStateTask(this), 10000,
 				TIMER_TASK_INTERVAL * 1000);
 	}
 
 	private void stopUpdateServerStateTask() {
-		Trace.trace(Trace.INFO, "stopUpdateServerStateTask()");
+		Trace.trace(Trace.INFO, "stopUpdateServerStateTask() " + getServer().getName());
 		if (timer != null)
 			timer.cancel();
 	}

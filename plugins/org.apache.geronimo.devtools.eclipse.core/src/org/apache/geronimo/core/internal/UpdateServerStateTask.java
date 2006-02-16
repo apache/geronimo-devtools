@@ -36,7 +36,7 @@ public class UpdateServerStateTask extends TimerTask {
 	 */
 	public void run() {
 		synchronized (delegate) {
-			Trace.trace(Trace.INFO, "--> UpdateServerStateTask.run()");
+			Trace.trace(Trace.INFO, "--> UpdateServerStateTask.run() " + delegate.getServer().getName());
 			int currentState = delegate.getServer().getServerState();
 			Server server = (Server) delegate.getServer();
 			try {
@@ -59,7 +59,7 @@ public class UpdateServerStateTask extends TimerTask {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			Trace.trace(Trace.INFO, "<-- UpdateServerStateTask.run()");
+			Trace.trace(Trace.INFO, "<-- UpdateServerStateTask.run() " + delegate.getServer().getName());
 		}
 	}
 
