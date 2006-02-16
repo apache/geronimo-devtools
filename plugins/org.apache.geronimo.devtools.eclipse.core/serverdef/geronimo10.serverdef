@@ -20,6 +20,11 @@
 		type="string"
 		context="server"
 		default="1099"/>
+	<property id="ejbport"
+		label="%ejbport"
+		type="string"
+		context="server"
+		default="4201"/>
 	<property id="adminID"
 		label="%adminId"
 		type="string"
@@ -35,6 +40,16 @@
 		<no>${port}</no>
 		<name>Http</name>
 		<protocol>http</protocol>
+	</port>
+	<port>
+		<no>${rmiport}</no>
+		<name>Naming</name>
+		<protocol>iiop</protocol>
+	</port>
+	<port>
+		<no>${ejbport}</no>
+		<name>Ejb</name>
+		<protocol>iiop</protocol>
 	</port>
 
 	<module>
@@ -84,7 +99,7 @@
 	</classpath>
 	
 	<jndiConnection>
-		<providerUrl>localhost:4201</providerUrl>
+		<providerUrl>localhost:${ejbport}</providerUrl>
 		<initialContextFactory>org.openejb.client.RemoteInitialContextFactory</initialContextFactory>
 		<jndiProperty>
 			<name>java.naming.security.principal</name>
