@@ -108,15 +108,15 @@
     <commons_logging_version></commons_logging_version>
     <cglib_version></cglib_version>
     <openejb_version></openejb_version>
-    <oro_version></oroVersion>
-    <ant_apache_oro_version><ant_apache_oro_version>
+    <oro_version></oro_version>
+    <ant_apache_oro_version></ant_apache_oro_version>
     <ant_optional_version></ant_optional_version>
     <xercesImpl_version></xercesImpl_version>
     <xmlParsersAPIs_version></xmlParsersAPIs_version>
     <xerces_version></xerces_version>
     <xml_resolver_version></xml_resolver_version>
     <!-- Eclipse Plugin Dependencies -->
-    <org.eclipse.osgi_version></org.eclipse_osgi_version>
+    <org.eclipse.osgi_version></org.eclipse.osgi_version>
     <org.eclipse.debug.core_version></org.eclipse.debug.core_version>
     <org.eclipse.jdt.launching_version></org.eclipse.jdt.launching_version>
     <org.eclipse.core.runtime_version></org.eclipse.core.runtime_version>
