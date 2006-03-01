@@ -31,6 +31,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
+import sun.security.action.GetLongAction;
+
 /**
  * @goal install
  */
@@ -87,7 +89,6 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		File pluginsDir = new File(eclipsehome.getAbsolutePath().concat(File.separator
 				+ "plugins"));
 		
-		//process(pluginsDir, 0, null);
 		processDependenciesOnly(pluginsDir);
 	}
 
@@ -96,8 +97,8 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		Iterator i = dependencies.iterator();
 		while (i.hasNext()) {
 			Dependency dependency = (Dependency) i.next();
-			getLog().debug(dependency.toString());
 			if (GROUP_ID.equals(dependency.getGroupId())) {
+				getLog().info("Eclipse dependency: " + dependency.toString());
 				process(pluginsDir, 0, dependency.getArtifactId());
 			}
 		}
@@ -127,7 +128,7 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 	protected boolean shouldInstall(String artifactId, File file) {
 		if (!file.getName().endsWith(".jar"))
 			return false;
-		return artifactId == null || getArtifactID(file).equals(artifactId);
+		return artifactId == null || getBundleName(file).equals(artifactId);
 	}
 
 	protected void install(File file, int depth) {
@@ -138,7 +139,7 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 			artifactId = getBundleName(bundleDir) + "." + getArtifactID(file);
 			version = getBundleVersion(bundleDir);
 		} else {
-			artifactId = getArtifactID(file);
+			artifactId = getBundleName(file);
 			version = getBundleVersion(file);
 		}
 
@@ -161,7 +162,9 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 
 	public static String getBundleName(File bundle) {
 		String id = getArtifactID(bundle);
-		return id.substring(0, id.indexOf("_"));
+		if(id.indexOf("_") != -1)
+			id = id.substring(0, id.indexOf("_"));
+		return id;
 	}
 
 	public static String getBundleVersion(File bundle) {
