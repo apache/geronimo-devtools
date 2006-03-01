@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2006 The Apache Software Foundation
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<!-- $Rev$ $Date$ -->
+
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.geronimo.devtools</groupId>
+  <artifactId>geronimo-eclipse-plugin</artifactId>
+  <packaging>pom</packaging>
+  <name>Geronimo Eclipse Plugin</name>
+  <version>1.0-SNAPSHOT</version>
+  <description>Parent POM for Geronimo Eclipse Plugin</description>
+  <url>http://geronimo.apache.org/devtools</url>
+
+  <issueManagement>
+    <system>jira</system>
+    <url>
+      http://issues.apache.org/jira/browse/GERONIMODEVTOOLS
+    </url>
+  </issueManagement>
+
+  <mailingLists>
+    <mailingList>
+      <name>Geronimo User List</name>
+      <subscribe>users-subscribe@geronimo.apache.org</subscribe>
+      <unsubscribe>users-unsubscribe@geronimo.apache.org</unsubscribe>
+      <archive>
+        http://mail-archives.apache.org/mod_mbox/geronimo-user/
+      </archive>
+    </mailingList>
+    <mailingList>
+      <name>Geronimo Developer List</name>
+      <subscribe>dev-subscribe@geronimo.apache.org</subscribe>
+      <unsubscribe>dev-unsubscribe@geronimo.apache.org</unsubscribe>
+      <archive>
+        http://mail-archives.apache.org/mod_mbox/geronimo-dev/
+      </archive>
+    </mailingList>
+    <mailingList>
+      <name>Source Control List</name>
+      <subscribe>scm-subscribe@geronimo.apache.org</subscribe>
+      <unsubscribe>scm-unsubscribe@geronimo.apache.org</unsubscribe>
+      <archive>
+        http://mail-archives.apache.org/mod_mbox/geronimo-scm/
+      </archive>
+    </mailingList>
+  </mailingLists>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>
+      scm:svn:https://svn.apache.org/repos/asf/geronimo/
+    </connection>
+    <developerConnection>
+      scm:svn:https://${maven.username}@svn.apache.org/repos/asf/geronimo/
+    </developerConnection>
+    <url>https://svn.apache.org/repos/asf/geronimo/</url>
+  </scm>
+
+  <organization>
+    <name>Geronimo</name>
+    <url>http://geronimo.apache.org/</url>
+  </organization>
+
+  <properties>
+    <!-- Plugin Versions -->
+    <org.apache.geronimo.deployment.model_version>1.0.0</org.apache.geronimo.deployment.model_version>
+    <org.apache.geronimo.deployment.model.edit_version>1.0.0</org.apache.geronimo.deployment.model.edit_version>
+    <org.apache.geronimo.devtools.eclipse.core_version>1.0.0</org.apache.geronimo.devtools.eclipse.core_version>
+    <org.apache.geronimo.feature.source_version>1.0.0</org.apache.geronimo.feature.source_version>
+    <org.apache.geronimo.runtime.v1_version>1.0.0</org.apache.geronimo.runtime.v1_version>
+    <org.apache.geronimo.ui_version>1.0.0</org.apache.geronimo.ui_version>
+    <org.apache.geronimo.jetty.j2ee.server.v1_version>1.0.0</org.apache.geronimo.jetty.j2ee.server.v1_version>
+    <org.apache.geronimo.tomcat.j2ee.server.v1_version>1.0.0</org.apache.geronimo.tomcat.j2ee.server.v1_version>
+    <!-- Feature Versions -->
+    <org.apache.geronimo.feature_version>1.0.0</org.apache.geronimo.feature_version>
+    <org.apache.geronimo.source.feature_version>1.0.0</org.apache.geronimo.source.feature_version>
+    <org.apache.geronimo.installableruntime.tomcat.feature_version>1.0.0</org.apache.geronimo.installableruntime.tomcat.feature_version>
+    <org.apache.geronimo.installableruntime.jetty.feature_version>1.0.0</org.apache.geronimo.installableruntime.jetty.feature_version>
+    <!-- Ext. Jar Dependency Versions -->
+    <geronimo.version>1.0</geronimo.version>
+    <geronimo_runtime_version>${geronimo.version}</geronimo_runtime_version>
+    <geronimo_spec_version></geronimo_spec_version>
+    <mx4j_version></mx4j_version>
+    <commons_logging_version></commons_logging_version>
+    <cglib_version></cglib_version>
+    <openejb_version></openejb_version>
+    <oro_version></oroVersion>
+    <ant_apache_oro_version><ant_apache_oro_version>
+    <ant_optional_version></ant_optional_version>
+    <xercesImpl_version></xercesImpl_version>
+    <xmlParsersAPIs_version></xmlParsersAPIs_version>
+    <xerces_version></xerces_version>
+    <xml_resolver_version></xml_resolver_version>
+    <!-- Eclipse Plugin Dependencies -->
+    <org.eclipse.osgi_version></org.eclipse_osgi_version>
+    <org.eclipse.debug.core_version></org.eclipse.debug.core_version>
+    <org.eclipse.jdt.launching_version></org.eclipse.jdt.launching_version>
+    <org.eclipse.core.runtime_version></org.eclipse.core.runtime_version>
+    <org.eclipse.core.resources_version></org.eclipse.core.resources_version>
+    <org.eclipse.debug.core_version></org.eclipse.debug.core_version>
+    <org.eclipse.jdt.core_version></org.eclipse.jdt.core_version>
+    <org.eclipse.jdt.launching_version></org.eclipse.jdt.launching_version>
+    <org.eclipse.wst.server.core_version></org.eclipse.wst.server.core_version>
+    <org.eclipse.jst.server.core_version></org.eclipse.jst.server.core_version>
+    <org.eclipse.emf.ecore_version></org.eclipse.emf.ecore_version>
+    <org.eclipse.emf.ecore.edit_version></org.eclipse.emf.ecore.edit_version>
+    <org.eclipse.emf.edit_version></org.eclipse.emf.edit_version>
+    <org.eclipse.emf.ecore.xmi_version></org.eclipse.emf.ecore.xmi_version>
+    <org.eclipse.emf.common_version></org.eclipse.emf.common_version>
+    <org.eclipse.core.commands_version></org.eclipse.core.commands_version>
+    <org.eclipse.jst.j2ee.web_version></org.eclipse.jst.j2ee.web_version>
+    <org.eclipse.jst.j2ee.ejb_version></org.eclipse.jst.j2ee.ejb_version>
+    <org.eclipse.jst.j2ee.jca_version></org.eclipse.jst.j2ee.jca_version>
+    <org.eclipse.jst.j2ee_version></org.eclipse.jst.j2ee_version>
+    <org.eclipse.wst.web_version></org.eclipse.wst.web_version>
+    <org.eclipse.wst.common.modulecore_version></org.eclipse.wst.common.modulecore_version>
+    <org.eclipse.jst.common.frameworks_version></org.eclipse.jst.common.frameworks_version>
+    <org.eclipse.wst.common.project.facet.core_version></org.eclipse.wst.common.project.facet.core_version>
+    <org.eclipse.jst.server.generic.core_version></org.eclipse.jst.server.generic.core_version>
+    <org.eclipse.jst.server.core_version></org.eclipse.jst.server.core_version>
+    <org.eclipse.jst.j2ee.core_version></org.eclipse.jst.j2ee.core_version>
+    <org.eclipse.wst.common.frameworks_version></org.eclipse.wst.common.frameworks_version>
+    <!-- Non packaged jar bundles -->
+    <org.eclipse.jem.util.util_version></org.eclipse.jem.util.util_version>
+    <!-- UI Dependencies -->
+    <org.eclipse.ui_version></org.eclipse.ui_version>
+    <org.eclipse.ui.browser_version></org.eclipse.ui.browser_version>
+    <org.eclipse.ui.editors_version></org.eclipse.ui.editors_version>
+    <org.eclipse.ui.forms_version></org.eclipse.ui.forms_version>
+    <org.eclipse.ui.ide_version></org.eclipse.ui.ide_version>
+    <org.eclipse.ui.workbench_version></org.eclipse.ui.workbench_version>
+    <org.eclipse.ui.workbench.texteditor_version></org.eclipse.ui.workbench.texteditor_version>
+    <org.eclipse.wst.server.ui_version></org.eclipse.wst.server.ui_version>
+    <org.eclipse.jface_version></org.eclipse.jface_version>
+    <org.eclipse.jst.server.generic.ui_version></org.eclipse.jst.server.generic.ui_version>
+    <org.eclipse.swt.fragment_version></org.eclipse.swt.fragment_version>
+    <org.eclipse.emf.edit.ui_version></org.eclipse.emf.edit.ui_version>
+   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junitVersion}</version>
+    </dependency>
+  </dependencies>
+
+  <distributionManagement>
+    <repository>
+      <id>apache-repo</id>
+      <name>Apache CVS Repository</name>
+      <url>
+        scpexe://cvs.apache.org/www/cvs.apache.org/maven-snapshot-repository
+      </url>
+    </repository>
+    <snapshotRepository>
+      <id>apache-snapshots</id>
+      <name>Apache CVS Development Repository</name>
+      <url>
+        scpexe://cvs.apache.org/www/cvs.apache.org/maven-snapshot-repository
+      </url>
+    </snapshotRepository>
+    <site>
+      <id>geronimo-website</id>
+      <url>
+        scpexe://minotaur.apache.org/www/geronimo.apache.org/maven/
+      </url>
+    </site>
+  </distributionManagement>
+
+  <build>
+    <defaultGoal>install</defaultGoal>
+    <sourceDirectory>src/java</sourceDirectory>
+  </build>
+
+  <modules>
+    <module>geronimo-emf</module>
+    <module>plugins/org.apache.geronimo.deployment.model</module>
+    <module>plugins/org.apache.geronimo.deployment.model.edit</module>
+    <module>plugins/org.apache.geronimo.devtools.eclipse.core</module>
+    <module>plugins/org.apache.geronimo.jetty.j2ee.server.v1</module>
+    <module>plugins/org.apache.geronimo.tomcat.j2ee.server.v1</module>
+    <module>plugins/org.apache.geronimo.ui</module>
+    <module>features/org.apache.geronimo.feature</module>
+    <module>features/org.apache.geronimo.installableruntime.j2ee.feature</module>
+    <module>features/org.apache.geronimo.installableruntime.tomcat.feature</module>
+    <module>assembly</module>
+  </modules>
+
+</project>
