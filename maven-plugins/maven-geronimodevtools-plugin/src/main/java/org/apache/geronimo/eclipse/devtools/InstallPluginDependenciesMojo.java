@@ -86,7 +86,7 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 
 		File pluginsDir = new File(eclipsehome.getAbsolutePath().concat(File.separator
 				+ "plugins"));
-		
+
 		processDependenciesOnly(pluginsDir);
 	}
 
@@ -97,7 +97,7 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 			Dependency dependency = (Dependency) i.next();
 			if (GROUP_ID.equals(dependency.getGroupId())) {
 				getLog().info("Eclipse dependency: " + dependency.toString());
-				process(pluginsDir, 0, dependency.getArtifactId());
+				process(pluginsDir, 0, dependency);
 			}
 		}
 	}
@@ -106,27 +106,28 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		return eclipsehome != null && eclipsehome.isDirectory();
 	}
 
-	protected void process(File file, int depth, String artifactId) {
+	protected void process(File file, int depth, Dependency dependency) {
 		getLog().debug("processFile() depth = " + Integer.toString(depth) + " "
 				+ file.getAbsolutePath());
 		if (file.isDirectory()) {
 			depth++;
 			File[] members = file.listFiles();
 			for (int i = 0; i < members.length; i++) {
-				process(members[i], depth, artifactId);
+				process(members[i], depth, dependency);
 			}
 			depth--;
 		} else {
-			if (shouldInstall(artifactId, file)) {
+			if (shouldInstall(dependency, file)) {
 				install(file, depth);
 			}
 		}
 	}
 
-	protected boolean shouldInstall(String artifactId, File file) {
+	protected boolean shouldInstall(Dependency dependency, File file) {
 		if (!file.getName().endsWith(".jar"))
 			return false;
-		return artifactId == null || getBundleName(file).equals(artifactId);
+		return dependency == null
+				|| (getBundleName(file).equals(dependency.getArtifactId()) && getBundleVersion(file).equals(dependency.getVersion()));
 	}
 
 	protected void install(File file, int depth) {
@@ -160,7 +161,7 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 
 	public static String getBundleName(File bundle) {
 		String id = getArtifactID(bundle);
-		if(id.indexOf("_") != -1)
+		if (id.indexOf("_") != -1)
 			id = id.substring(0, id.indexOf("_"));
 		return id;
 	}
@@ -180,18 +181,19 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 	private void doIt(File file, String groupId, String artifactId,
 			String version, String packaging) throws MojoExecutionException,
 			MojoFailureException {
-		
+
 		Artifact artifact = artifactFactory.createArtifact(groupId, artifactId, version, null, packaging);
 
 		try {
 			String localPath = localRepository.pathOf(artifact);
 			File destination = new File(localRepository.getBasedir(), localPath);
-			
-			if(destination.exists()) {
-				getLog().info(artifactId + " " + version + " already exists in local repository.");
+
+			if (destination.exists()) {
+				getLog().info(artifactId + " " + version
+						+ " already exists in local repository.");
 				return;
 			}
-			
+
 			if (!file.getPath().equals(destination.getPath())) {
 				installer.install(file, artifact, localRepository);
 			} else {
