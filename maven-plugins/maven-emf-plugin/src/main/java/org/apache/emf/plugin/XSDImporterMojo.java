@@ -1,4 +1,5 @@
 package org.apache.emf.plugin;
+
 /**
  * Copyright 2004, 2005 The Apache Software Foundation or its licensors, as applicable
  *
@@ -17,15 +18,12 @@ package org.apache.emf.plugin;
 import java.io.File;
 import java.util.Map;
 
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.eclipse.xsd.ecore.importer.XSDImporterApplication;
-
 /**
- * @goal xsd2Java
+ * @goal xsd2java
  */
-public class XSDImporterMojo extends AbstractMojo {
+public class XSDImporterMojo extends LaunchOSGIMojo {
+
+	public static final String APPLICATION_ID = "org.eclipse.xsd.ecore.importer.XSD2GenModel";
 
 	/**
 	 * @parameter
@@ -33,38 +31,52 @@ public class XSDImporterMojo extends AbstractMojo {
 	protected Map packageMap;
 
 	/**
-	 * @paramter
-	 * @required
+	 * @parameter
+	 * 
+	 */
+	protected File schema;
+
+	/**
+	 * @parameter
+	 * 
 	 */
 	protected File genModel;
 
 	/**
-	 * @paramter
-	 * @required
+	 * @parameter
+	 * 
 	 */
 	protected File project;
 
 	/**
-	 * @paramter
-	 * @required
+	 * @parameter
+	 * 
 	 */
 	protected String projectId;
 
 	/**
-	 * @paramter
-	 * @required
+	 * @parameter
+	 * 
 	 */
 	protected String type;
 
-	XSDImporterApplication application;
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.maven.plugin.Mojo#execute()
+	/* (non-Javadoc)
+	 * @see org.apache.emf.plugin.LaunchOSGIMojo#getArguments()
 	 */
-	public void execute() throws MojoExecutionException, MojoFailureException {
+	protected String[] getArguments() {
+		return null;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.emf.plugin.LaunchOSGIMojo#getApplicationID()
+	 */
+	protected String getApplicationID() {
+		return APPLICATION_ID;
+	}
 
+	protected StringBuffer processParameters() {
+		StringBuffer buffer = new StringBuffer();
+		return buffer;
 	}
 
 }

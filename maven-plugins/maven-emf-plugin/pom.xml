@@ -24,22 +24,7 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.xsd.ecore.importer</artifactId>
-      <version>2.1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.core.runtime</artifactId>
-      <version>3.1.2</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.emf.importer</artifactId>
-      <version>2.1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>eclipse</groupId>
-      <artifactId>startup</artifactId>
+      <artifactId>org.eclipse.osgi</artifactId>
       <version>3.1.2</version>
     </dependency>
   </dependencies>
