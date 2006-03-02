@@ -21,10 +21,9 @@ import java.net.URL;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.install.InstallFileMojo;
-import org.apache.maven.project.MavenProject;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Expand;
+import org.apache.tools.ant.taskdefs.GUnzip;
 import org.apache.tools.ant.taskdefs.Get;
 import org.apache.tools.ant.taskdefs.Untar;
 
@@ -37,12 +36,6 @@ public class DownloadMojo extends AbstractMojo {
 	private static final String ECLIPSE_INSTALL_PATH = "eclipse/";
 	private static final String DISTRO_PATH = ECLIPSE_INSTALL_PATH
 			+ "distributions/";
-
-	/**
-	 * @parameter expression="${project}"
-	 * @required
-	 */
-	private MavenProject project;
 
 	/**
 	 * @parameter expression="${settings.localRepository}"
@@ -115,8 +108,28 @@ public class DownloadMojo extends AbstractMojo {
 	}
 
 	private void install(File file) {
+
+		if (file.getName().endsWith("tar.gz")) {
+			String path = file.getAbsolutePath();
+			File tarDist = new File(path.substring(0, path.indexOf(".gz")));
+			if (!tarDist.exists()) {
+				GUnzip task = new GUnzip();
+				task.setProject(new Project());
+				task.setSrc(file);
+				task.setDest(file.getParentFile());
+				task.execute();
+			}
+			file = tarDist;
+		}
+
+		Expand expandTask = null;
 		if (file.getName().endsWith(".zip")) {
-			Expand expandTask = new Expand();
+			expandTask = new Expand();
+		} else if (file.getName().endsWith("tar")) {
+			expandTask = new Untar();
+		}
+		
+		if (expandTask != null) {
 			expandTask.setProject(new Project());
 			expandTask.setSrc(file);
 			expandTask.setDest(installDir);
