@@ -16,7 +16,12 @@ package org.apache.geronimo.eclipse.devtools;
  *  limitations under the License.
  */
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -49,6 +54,10 @@ public class DownloadMojo extends AbstractMojo {
 
 	private File distributionDir;
 	private File installDir;
+	private File pluginsDir;
+	private File propsFile;
+	
+	private Properties props;
 
 	public DownloadMojo() {
 		super();
@@ -58,9 +67,13 @@ public class DownloadMojo extends AbstractMojo {
 		distributionDir = new File(localRepoLoc + File.separator + DISTRO_PATH);
 		installDir = new File(localRepoLoc + File.separator
 				+ ECLIPSE_INSTALL_PATH);
-		getLog().info("Distribution directory set to: "
+		pluginsDir = new File(installDir.getAbsolutePath() + File.separator
+				+ "eclipse" + File.separator + "plugins");
+		propsFile = new File(installDir.getAbsolutePath() + File.separator
+				+ "install.props");
+		getLog().debug("Distribution directory: "
 				+ distributionDir.getAbsolutePath());
-		getLog().info("Installation directory set to: "
+		getLog().debug("Installation directory: "
 				+ installDir.getAbsolutePath());
 	}
 
@@ -80,16 +93,20 @@ public class DownloadMojo extends AbstractMojo {
 		if (!distributionDir.exists())
 			distributionDir.mkdirs();
 
+		load();
 		for (int i = 0; i < urls.length; i++) {
 			File distro = getRepositoryDestination(urls[i]);
 			if (!distro.exists()) {
 				download(urls[i]);
 			} else {
-				getLog().info(distro.getAbsolutePath()
+				getLog().info(distro.getName()
 						+ " already exists in local repository");
 			}
-			install(distro);
+			if (shouldExtract())
+				install(distro);
 		}
+		setModified();
+		save();
 	}
 
 	private File getRepositoryDestination(URL url) {
@@ -128,13 +145,66 @@ public class DownloadMojo extends AbstractMojo {
 		} else if (file.getName().endsWith("tar")) {
 			expandTask = new Untar();
 		}
-		
+
 		if (expandTask != null) {
 			expandTask.setProject(new Project());
 			expandTask.setSrc(file);
 			expandTask.setDest(installDir);
 			getLog().info("Extracting " + file.getAbsolutePath());
 			expandTask.execute();
+		}
+	}
+
+	private boolean shouldExtract() {
+		return distributionDir.lastModified() > getModified()
+				|| !pluginsDir.exists()
+				|| pluginsDir.lastModified() > getModified();
+	}
+
+	private void setModified() {
+		long tds = System.currentTimeMillis();
+		props.put("tds", Long.toString(tds));
+	}
+
+	private long getModified() {
+		String tds = (String) props.get("tds");
+		if (tds != null)
+			return Long.parseLong(tds);
+		return 0;
+	}
+
+	private Properties load() {
+		if (props == null) {
+			props = new Properties();
+			FileInputStream fis;
+			try {
+				fis = new FileInputStream(propsFile);
+				props.load(fis);
+			} catch (FileNotFoundException e) {
+				// ignore
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return props;
+	}
+
+	private void save() {
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(propsFile);
+			props.store(fos, null);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (fos != null)
+				try {
+					fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 		}
 	}
 
