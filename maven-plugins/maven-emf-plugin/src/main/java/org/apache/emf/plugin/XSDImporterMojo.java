@@ -16,7 +16,10 @@ package org.apache.emf.plugin;
  *  limitations under the License.
  */
 import java.io.File;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * @goal xsd2java
@@ -28,46 +31,55 @@ public class XSDImporterMojo extends LaunchOSGIMojo {
 	/**
 	 * @parameter
 	 */
-	protected Map packageMap;
+	protected Map packagemap;
 
 	/**
 	 * @parameter
-	 * 
+	 */
+	protected String[] packages;
+
+	/**
+	 * @parameter
+	 * @required
 	 */
 	protected File schema;
 
 	/**
 	 * @parameter
-	 * 
+	 * @required
 	 */
-	protected File genModel;
+	protected File genmodel;
 
 	/**
 	 * @parameter
-	 * 
-	 */
-	protected File project;
-
-	/**
-	 * @parameter
-	 * 
-	 */
-	protected String projectId;
-
-	/**
-	 * @parameter
-	 * 
+	 * @required
 	 */
 	protected String type;
 
-	/* (non-Javadoc)
+	protected String projectId;
+
+	public static final String SPACE = " ";
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.emf.plugin.LaunchOSGIMojo#getArguments()
 	 */
 	protected String[] getArguments() {
-		return null;
+		String params = processParameters().toString();
+		getLog().info(params.toString());
+		StringTokenizer st = new StringTokenizer(params);
+		String[] args = new String[st.countTokens()];
+		int i = 0;
+		while (st.hasMoreTokens()) {
+			args[i++] = st.nextToken();
+		}
+		return args;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.emf.plugin.LaunchOSGIMojo#getApplicationID()
 	 */
 	protected String getApplicationID() {
@@ -76,7 +88,43 @@ public class XSDImporterMojo extends LaunchOSGIMojo {
 
 	protected StringBuffer processParameters() {
 		StringBuffer buffer = new StringBuffer();
+		buffer.append(schema.getAbsolutePath() + SPACE);
+		buffer.append(genmodel.getAbsolutePath() + SPACE);
+		if ("model".equals(type)) {
+			buffer.append("-modelProject");
+		} else if ("edit".equals(type)) {
+			buffer.append("-editProject");
+		} else if ("editor".equals(type)) {
+			buffer.append("-editorProject");
+		}
+		buffer.append(SPACE);
+		buffer.append(project.getBasedir() + SPACE);
+		buffer.append(getRelativeSrcDir() + SPACE);
+		if (packages != null) {
+			buffer.append("-packages" + SPACE);
+			for (int i = 0; i < packages.length; i++) {
+				buffer.append(packages[i] + SPACE);
+			}
+		}
+
+		if (packagemap != null) {
+			buffer.append("-packagemap" + SPACE);
+			Set keys = packagemap.keySet();
+			for (Iterator i = keys.iterator(); i.hasNext();) {
+				String pkg = (String) i.next();
+				String mapping = (String) packagemap.get(pkg);
+				buffer.append(pkg + SPACE + mapping + SPACE);
+			}
+		}
 		return buffer;
+	}
+	
+	private String getRelativeSrcDir() {
+		String src = project.getBuild().getSourceDirectory();
+		src = src.split(project.getBasedir().getAbsolutePath())[1];
+		if(src.startsWith(File.separator))
+			src = src.substring(1);
+		return src;
 	}
 
 }

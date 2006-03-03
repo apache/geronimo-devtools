@@ -24,6 +24,7 @@ import java.util.Arrays;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
 import org.eclipse.core.runtime.adaptor.EclipseStarter;
 
 abstract public class LaunchOSGIMojo extends AbstractMojo {
@@ -32,6 +33,11 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 	 * @parameter expression="${settings.localRepository}/eclipse/eclipse"
 	 */
 	protected File eclipseHome;
+	
+	/**
+	 * @parameter expression="${project}"
+	 */
+	protected MavenProject project;
 
 	/*
 	 * (non-Javadoc)
