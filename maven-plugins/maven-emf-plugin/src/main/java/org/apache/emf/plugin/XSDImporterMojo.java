@@ -109,18 +109,18 @@ public class XSDImporterMojo extends LaunchOSGIMojo {
 			buffer.append("-packagemap" + SPACE);
 			Set keys = packagemap.keySet();
 			for (Iterator i = keys.iterator(); i.hasNext();) {
-				String pkg = (String) i.next();
-				String mapping = (String) packagemap.get(pkg);
+				String mapping = (String) i.next(); // org.apache...
+				String pkg = (String) packagemap.get(mapping); // http://...
 				buffer.append(pkg + SPACE + mapping + SPACE);
 			}
 		}
 		return buffer;
 	}
-	
+
 	private String getRelativeSrcDir() {
 		String src = project.getBuild().getSourceDirectory();
 		src = src.split(project.getBasedir().getAbsolutePath())[1];
-		if(src.startsWith(File.separator))
+		if (src.startsWith(File.separator))
 			src = src.substring(1);
 		return src;
 	}
