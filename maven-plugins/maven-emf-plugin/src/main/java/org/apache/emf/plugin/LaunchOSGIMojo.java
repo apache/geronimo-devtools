@@ -33,7 +33,7 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 	 * @parameter expression="${settings.localRepository}/eclipse/eclipse"
 	 */
 	protected File eclipseHome;
-	
+
 	/**
 	 * @parameter expression="${project}"
 	 */
@@ -54,7 +54,8 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 			throw new MojoFailureException("OSGI bundle not found");
 		}
 
-		System.setProperty(EclipseStarter.PROP_CONSOLE_LOG, "true");
+		if (getLog().isDebugEnabled())
+			System.setProperty(EclipseStarter.PROP_CONSOLE_LOG, "true");
 		System.setProperty(EclipseStarter.PROP_CLEAN, "true");
 		System.setProperty(EclipseStarter.PROP_INSTALL_AREA, eclipseHome.getAbsolutePath());
 		System.setProperty(EclipseStarter.PROP_FRAMEWORK, osgi.toExternalForm());
@@ -62,10 +63,10 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 
 		String[] args = getArguments();
 		if (args == null)
-			args = new String[]{};
-			
+			args = new String[] {};
+
 		getLog().debug(Arrays.asList(args).toString());
-		
+
 		try {
 			EclipseStarter.run(args, null);
 		} catch (Exception e) {

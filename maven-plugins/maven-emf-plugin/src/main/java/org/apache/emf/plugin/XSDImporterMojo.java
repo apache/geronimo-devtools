@@ -56,8 +56,6 @@ public class XSDImporterMojo extends LaunchOSGIMojo {
 	 */
 	protected String type;
 
-	protected String projectId;
-
 	public static final String SPACE = " ";
 
 	/*
