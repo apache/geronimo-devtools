@@ -1,4 +1,5 @@
 <project>
+  <modelVersion>4.0.0</modelVersion>
   <artifactId>org.apache.geronimo.deployment.model</artifactId>
   <packaging>jar</packaging>
   <version>${org.apache.geronimo.deployment.model_version}</version>

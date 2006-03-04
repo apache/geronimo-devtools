@@ -1,4 +1,6 @@
 <project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.geronimo.devtools</groupId>
   <artifactId>org.apache.geronimo.tomcat.j2ee.server.v1</artifactId>
   <packaging>jar</packaging>
   <version>${org.apache.geronimo.tomcat.j2ee.server.v1_version}</version>

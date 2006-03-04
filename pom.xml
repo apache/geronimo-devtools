@@ -101,22 +101,21 @@
     <org.apache.geronimo.installableruntime.tomcat.feature_version>1.0.0</org.apache.geronimo.installableruntime.tomcat.feature_version>
     <org.apache.geronimo.installableruntime.jetty.feature_version>1.0.0</org.apache.geronimo.installableruntime.jetty.feature_version>
     <!-- Ext. Jar Dependency Versions -->
-    <geronimo.version>1.0</geronimo.version>
-    <geronimo_runtime_version>${geronimo.version}</geronimo_runtime_version>
-    <geronimo_spec_version></geronimo_spec_version>
-    <mx4j_version></mx4j_version>
-    <commons_logging_version></commons_logging_version>
-    <cglib_version></cglib_version>
-    <openejb_version></openejb_version>
-    <oro_version></oro_version>
-    <ant_apache_oro_version></ant_apache_oro_version>
-    <ant_optional_version></ant_optional_version>
-    <xercesImpl_version></xercesImpl_version>
-    <xmlParsersAPIs_version></xmlParsersAPIs_version>
-    <xerces_version></xerces_version>
-    <xml_resolver_version></xml_resolver_version>
+    <geronimo_version>1.0</geronimo_version>
+    <geronimo_spec_version>1.0</geronimo_spec_version>
+    <mx4j_version>3.0.1</mx4j_version>
+    <commons_logging_version>1.0.4</commons_logging_version>
+    <cglib_version>2.1.3</cglib_version>
+    <openejb_version>2.0</openejb_version>
+    <oro_version>2.0.8</oro_version>
+    <ant_apache_oro_version>1.6.4</ant_apache_oro_version>
+    <ant_optional_version>1.5.3-1</ant_optional_version>
+    <xercesImpl_version>2.5.0</xercesImpl_version>
+    <xmlParsersAPIs_version>2.6.2</xmlParsersAPIs_version>
+    <xerces_version>2.4.0</xerces_version>
+    <xml_resolver_version>1.1</xml_resolver_version>
     <xbean_version>2.0.0</xbean_version>
-    <stax-api_version>1.0<stax-api_version>
+    <stax-api_version>1.0</stax-api_version>
     <!-- Eclipse Plugin Dependencies -->
     <org.eclipse.osgi_version></org.eclipse.osgi_version>
     <org.eclipse.debug.core_version></org.eclipse.debug.core_version>
@@ -162,11 +161,6 @@
     <org.eclipse.swt.fragment_version></org.eclipse.swt.fragment_version>
     <org.eclipse.emf.edit.ui_version></org.eclipse.emf.edit.ui_version>
    </properties>
-
-  <dependencyManagement>
-    <dependencies>
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -225,9 +219,35 @@
       </plugin>
     </plugins>
   </build>
+  
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>Apache CVS</id>
+      <name>Apache CVS of the Central Repository</name>
+      <url>http://cvs.apache.org/maven-snapshot-repository</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <id>snapshots</id>
+      <name>Maven Central Development Repository</name>
+      <url>http://snapshots.maven.codehaus.org/maven2</url>
+    </repository>
+  </repositories>
+  
+  <pluginRepositories>
+    <pluginRepository>
+      <id>snapshots</id>
+      <name>Maven Central Plugins Development Repository</name>
+      <url>http://snapshots.maven.codehaus.org/maven2</url>
+    </pluginRepository>
+  </pluginRepositories>
 
   <modules>
-    <module>geronimo-emf</module>
     <module>plugins/org.apache.geronimo.deployment.model</module>
     <module>plugins/org.apache.geronimo.deployment.model.edit</module>
     <module>plugins/org.apache.geronimo.devtools.eclipse.core</module>
@@ -237,7 +257,6 @@
     <module>features/org.apache.geronimo.feature</module>
     <module>features/org.apache.geronimo.installableruntime.j2ee.feature</module>
     <module>features/org.apache.geronimo.installableruntime.tomcat.feature</module>
-    <module>assembly</module>
   </modules>
-
+  
 </project>
