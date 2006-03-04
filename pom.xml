@@ -115,6 +115,8 @@
     <xmlParsersAPIs_version></xmlParsersAPIs_version>
     <xerces_version></xerces_version>
     <xml_resolver_version></xml_resolver_version>
+    <xbean_version>2.0.0</xbean_version>
+    <stax-api_version>1.0<stax-api_version>
     <!-- Eclipse Plugin Dependencies -->
     <org.eclipse.osgi_version></org.eclipse.osgi_version>
     <org.eclipse.debug.core_version></org.eclipse.debug.core_version>

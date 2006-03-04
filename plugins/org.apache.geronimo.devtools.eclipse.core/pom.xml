@@ -1,7 +1,7 @@
 <project>
 	<artifactId>org.apache.geronimo.devtools.eclipse.core</artifactId>
   <packaging>jar</packaging>
-  <version>1.0</version>
+  <version>${org.apache.geronimo.devtools.eclipse.core_version}</version>
   <name>${artifactId}</name>
   <parent>
     <groupId>org.apache.geronimo.devtools</groupId>
