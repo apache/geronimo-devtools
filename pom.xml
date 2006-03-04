@@ -24,7 +24,7 @@
   <artifactId>geronimo-eclipse-plugin</artifactId>
   <packaging>pom</packaging>
   <name>Geronimo Eclipse Plugin</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <description>Parent POM for Geronimo Eclipse Plugin</description>
   <url>http://geronimo.apache.org/devtools</url>
 
