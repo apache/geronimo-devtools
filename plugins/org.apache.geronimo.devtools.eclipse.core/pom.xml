@@ -15,6 +15,11 @@
       <artifactId>org.apache.geronimo.deployment.model</artifactId>
       <version>${org.apache.geronimo.deployment.model_version}</version>      
     </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.runtime.v1</artifactId>
+      <version>${org.apache.geronimo.runtime.v1_version}</version>      
+    </dependency>
     <!-- eclipse plugin dependencies -->
     <dependency>
       <groupId>org.eclipse.plugins</groupId>
