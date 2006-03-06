@@ -32,11 +32,41 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
 /**
+ * This maven plugin installs to the local maven repository the eclipse plugin
+ * dependencies for a pom from an eclipse distribution. Since the eclipse jars
+ * do not follow a maven-style versioning convention the versionType parameter
+ * allows the plugin to be configured to determine the versioning style when
+ * installing. See the INSTALL_TYPE_X descriptions.
+ * 
  * @goal install
  */
 public class InstallPluginDependenciesMojo extends AbstractMojo {
 
 	private static final String GROUP_ID = "org.eclipse.plugins";
+
+	/**
+	 * Install type option which would install a plugin
+	 * org.eclipse.core.runtime_3.2.0.v20060216.jar as
+	 * org.eclipse.core.runtime-SNAPSHOT.jar
+	 */
+	public static final String INSTALL_TYPE_SNAPSHOT = "SNAPSHOT";
+
+	/**
+	 * Install type option which would install a plugin
+	 * org.eclipse.core.runtime_3.2.0.v20060216.jar as
+	 * org.eclipse.core.runtime-3.2.0-SNAPSHOT.jar
+	 */
+	public static final String INSTALL_TYPE_SNAPSHOT_VERSIONED = "SNAPSHOT-VERSIONED";
+
+	/**
+	 * TODO Need to investigate how the qualifier needs to be tweaked to so that maven can
+	 * do version comparisons on the artifact.
+	 * 
+	 * Install type option which would install a plugin
+	 * org.eclipse.core.runtime_3.2.0.v20060216.jar as
+	 * org.eclipse.core.runtime-3.2.0.v20060216.jar
+	 */
+	public static final String INSTALL_TYPE_QUALIFIED = "QUALIFIED";
 
 	/**
 	 * @parameter expression="${project}"
@@ -69,6 +99,11 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 	 */
 	protected ArtifactRepository localRepository;
 
+	/**
+	 * @parameter expression="SNAPSHOT"
+	 */
+	protected String versionType;
+
 	public InstallPluginDependenciesMojo() {
 		super();
 	}
@@ -96,7 +131,7 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		while (i.hasNext()) {
 			Dependency dependency = (Dependency) i.next();
 			if (GROUP_ID.equals(dependency.getGroupId())) {
-				getLog().info("Eclipse dependency: " + dependency.toString());
+				getLog().debug("Eclipse dependency: " + dependency.toString());
 				process(pluginsDir, 0, dependency);
 			}
 		}
@@ -127,20 +162,29 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		if (!file.getName().endsWith(".jar"))
 			return false;
 		return dependency == null
-				|| (getBundleName(file).equals(dependency.getArtifactId()) && getBundleVersion(file).equals(dependency.getVersion()));
+				|| (getBundleName(file).equals(dependency.getArtifactId()));
 	}
 
 	protected void install(File file, int depth) {
-		String artifactId;
-		String version;
-		if (depth > 1) {
-			File bundleDir = getBundleDir(file, depth);
-			artifactId = getBundleName(bundleDir) + "." + getArtifactID(file);
-			version = getBundleVersion(bundleDir);
-		} else {
-			artifactId = getBundleName(file);
-			version = getBundleVersion(file);
+		File bundle = file;
+		boolean isBundleJar = depth > 1 ? false : true;
+
+		if (!isBundleJar)
+			bundle = getBundleDir(file, depth);
+
+		String artifactId = getBundleName(bundle);
+		String version = "SNAPSHOT";
+
+		if (INSTALL_TYPE_QUALIFIED.equalsIgnoreCase(versionType)) {
+			version = getBundleVersion(bundle);
+		} else if (INSTALL_TYPE_SNAPSHOT_VERSIONED.equalsIgnoreCase(versionType)) {
+			version = getBundleVersion(bundle);
+			version = version.split("[0-9].[0-9].[0-9]")[0];
+			version = version + "-SNAPSHOT";
 		}
+
+		if (!isBundleJar)
+			artifactId = artifactId + "." + getArtifactID(file);
 
 		try {
 			doIt(file, GROUP_ID, artifactId, version, "jar");
@@ -189,7 +233,7 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 			File destination = new File(localRepository.getBasedir(), localPath);
 
 			if (destination.exists()) {
-				getLog().info(artifactId + " " + version
+				getLog().info(artifactId + " : " + version
 						+ " already exists in local repository.");
 				return;
 			}
