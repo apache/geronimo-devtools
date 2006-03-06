@@ -179,8 +179,8 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 			version = getBundleVersion(bundle);
 		} else if (INSTALL_TYPE_SNAPSHOT_VERSIONED.equalsIgnoreCase(versionType)) {
 			version = getBundleVersion(bundle);
-			version = version.split("[0-9].[0-9].[0-9]")[0];
-			version = version + "-SNAPSHOT";
+			String mmrq[] = version.split("\\.");  //assumes plugin version is major.minor.revision.qualifier
+			version = mmrq[0] + "." + mmrq[1] + "." + mmrq[2] + "-SNAPSHOT";
 		}
 
 		if (!isBundleJar)
