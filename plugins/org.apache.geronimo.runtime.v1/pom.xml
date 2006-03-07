@@ -1,11 +1,12 @@
 <project>
+  <modelVersion>4.0.0</modelVersion>
   <artifactId>org.apache.geronimo.runtime.v1</artifactId>
   <packaging>jar</packaging>
   <version>${org.apache.geronimo.runtime.v1_version}</version>
   <name>${artifactId}</name>
   <parent>
-  <groupId>org.apache.geronimo.devtools</groupId>
-  <artifactId>geronimo-eclipse-plugin</artifactId>
+    <groupId>org.apache.geronimo.devtools</groupId>
+    <artifactId>geronimo-eclipse-plugin</artifactId>
     <version>1.0</version>
   </parent>
   <dependencies>
@@ -13,17 +14,17 @@
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-kernel</artifactId>
-      <version>${geronimo_runtime_version}</version>
+      <version>${geronimo_version}</version>
     </dependency>
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-util</artifactId>
-      <version>${geronimo_runtime_version}</version>
+      <version>${geronimo_version}</version>
     </dependency>
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-deploy-jsr88</artifactId>
-      <version>${geronimo_runtime_version}</version>
+      <version>${geronimo_version}</version>
     </dependency>
     <dependency>
       <groupId>mx4j</groupId>
@@ -53,12 +54,12 @@
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-common</artifactId>
-      <version>${geronimo_runtime_version}</version>
+      <version>${geronimo_version}</version>
     </dependency>
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-j2ee-schema</artifactId>
-      <version>${geronimo_runtime_version}</version>
+      <version>${geronimo_version}</version>
     </dependency>
     <dependency>
       <groupId>xmlbeans</groupId>
@@ -68,27 +69,27 @@
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-service-builder</artifactId>
-      <version>${geronimo_runtime_version}</version>
+      <version>${geronimo_version}</version>
     </dependency>
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-connector-builder</artifactId>
-      <version>${geronimo_runtime_version}</version>
+      <version>${geronimo_version}</version>
     </dependency>
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-web-builder</artifactId>
-      <version>${geronimo_runtime_version}</version>
+      <version>${geronimo_version}</version>
     </dependency>
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-naming-builder</artifactId>
-      <version>${geronimo_runtime_version}</version>
+      <version>${geronimo_version}</version>
     </dependency>
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-j2ee-builder</artifactId>
-      <version>${geronimo_runtime_version}</version>
+      <version>${geronimo_version}</version>
     </dependency>
     <dependency>
       <groupId>openejb</groupId>
@@ -98,12 +99,12 @@
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-security-builder</artifactId>
-      <version>${geronimo_runtime_version}</version>
+      <version>${geronimo_version}</version>
     </dependency>
     <dependency>
       <groupId>stax</groupId>
       <artifactId>stax-api</artifactId>
-      <version>1.0</version>
+      <version>${stax-api_version}</version>
     </dependency>
   </dependencies>
 </project>

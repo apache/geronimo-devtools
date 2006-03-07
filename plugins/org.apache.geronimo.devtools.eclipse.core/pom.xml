@@ -89,8 +89,8 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.jem.util</artifactId>
-      <version>${org.eclipse.jem.util_version}</version>
+      <artifactId>org.eclipse.jem.util.util</artifactId>
+      <version>${org.eclipse.jem.util.util_version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.plugins</groupId>

@@ -17,6 +17,8 @@
 package org.apache.geronimo.eclipse.devtools;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,49 +26,27 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.installer.ArtifactInstaller;
+import org.apache.maven.artifact.metadata.ArtifactMetadata;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.artifact.ProjectArtifactMetadata;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
- * This maven plugin installs to the local maven repository the eclipse plugin
- * dependencies for a pom from an eclipse distribution. Since the eclipse jars
- * do not follow a maven-style versioning convention the versionType parameter
- * allows the plugin to be configured to determine the versioning style when
- * installing. See the INSTALL_TYPE_X descriptions.
+ * This maven plugin installs to the local maven repository eclipse plugin
+ * dependencies for a pom from an eclipse distribution.
  * 
  * @goal install
  */
 public class InstallPluginDependenciesMojo extends AbstractMojo {
 
 	private static final String GROUP_ID = "org.eclipse.plugins";
-
-	/**
-	 * Install type option which would install a plugin
-	 * org.eclipse.core.runtime_3.2.0.v20060216.jar as
-	 * org.eclipse.core.runtime-SNAPSHOT.jar
-	 */
-	public static final String INSTALL_TYPE_SNAPSHOT = "SNAPSHOT";
-
-	/**
-	 * Install type option which would install a plugin
-	 * org.eclipse.core.runtime_3.2.0.v20060216.jar as
-	 * org.eclipse.core.runtime-3.2.0-SNAPSHOT.jar
-	 */
-	public static final String INSTALL_TYPE_SNAPSHOT_VERSIONED = "SNAPSHOT-VERSIONED";
-
-	/**
-	 * TODO Need to investigate how the qualifier needs to be tweaked to so that maven can
-	 * do version comparisons on the artifact.
-	 * 
-	 * Install type option which would install a plugin
-	 * org.eclipse.core.runtime_3.2.0.v20060216.jar as
-	 * org.eclipse.core.runtime-3.2.0.v20060216.jar
-	 */
-	public static final String INSTALL_TYPE_QUALIFIED = "QUALIFIED";
 
 	/**
 	 * @parameter expression="${project}"
@@ -98,11 +78,6 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 	 * @readonly
 	 */
 	protected ArtifactRepository localRepository;
-
-	/**
-	 * @parameter expression="SNAPSHOT"
-	 */
-	protected String versionType;
 
 	public InstallPluginDependenciesMojo() {
 		super();
@@ -152,42 +127,24 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 			}
 			depth--;
 		} else {
-			if (shouldInstall(dependency, file)) {
-				install(file, depth);
+			if (file.getName().endsWith(".jar")) {
+				File bundle = getBundle(file, depth);
+				if (getArtifactID(file, bundle).equals(dependency.getArtifactId())) {
+					install(file, bundle);
+					if ("DISTRO".equals(dependency.getVersion()))
+						dependency.setVersion(getBundleVersion(bundle));
+				}
 			}
 		}
 	}
 
-	protected boolean shouldInstall(Dependency dependency, File file) {
-		if (!file.getName().endsWith(".jar"))
-			return false;
-		return dependency == null
-				|| (getBundleName(file).equals(dependency.getArtifactId()));
-	}
+	protected void install(File artifact, File bundle) {
 
-	protected void install(File file, int depth) {
-		File bundle = file;
-		boolean isBundleJar = depth > 1 ? false : true;
-
-		if (!isBundleJar)
-			bundle = getBundleDir(file, depth);
-
-		String artifactId = getBundleName(bundle);
-		String version = "SNAPSHOT";
-
-		if (INSTALL_TYPE_QUALIFIED.equalsIgnoreCase(versionType)) {
-			version = getBundleVersion(bundle);
-		} else if (INSTALL_TYPE_SNAPSHOT_VERSIONED.equalsIgnoreCase(versionType)) {
-			version = getBundleVersion(bundle);
-			String mmrq[] = version.split("\\.");  //assumes plugin version is major.minor.revision.qualifier
-			version = mmrq[0] + "." + mmrq[1] + "." + mmrq[2] + "-SNAPSHOT";
-		}
-
-		if (!isBundleJar)
-			artifactId = artifactId + "." + getArtifactID(file);
+		String artifactId = getArtifactID(artifact, bundle);
+		String version = getBundleVersion(bundle);
 
 		try {
-			doIt(file, GROUP_ID, artifactId, version, "jar");
+			doIt(artifact, GROUP_ID, artifactId, version, "jar");
 		} catch (MojoExecutionException e) {
 			e.printStackTrace();
 		} catch (MojoFailureException e) {
@@ -195,31 +152,34 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		}
 	}
 
-	protected File getBundleDir(File file, int depth) {
-		File pluginDir = file.getParentFile();
-		for (int i = depth - 1; i > 1; i--) {
-			pluginDir = pluginDir.getParentFile();
+	protected File getBundle(File file, int depth) {
+		File bundle = file;
+		if (depth > 1) {
+			bundle = file.getParentFile();
+			for (int i = depth - 1; i > 1; i--) {
+				bundle = bundle.getParentFile();
+			}
 		}
-		return pluginDir;
+		return bundle;
 	}
 
 	public static String getBundleName(File bundle) {
-		String id = getArtifactID(bundle);
+		String id = removeJarExtension(bundle);
 		if (id.indexOf("_") != -1)
 			id = id.substring(0, id.indexOf("_"));
 		return id;
 	}
 
 	public static String getBundleVersion(File bundle) {
-		String id = getArtifactID(bundle);
+		String id = removeJarExtension(bundle);
 		return id.substring(id.indexOf("_") + 1, id.length());
 	}
 
-	public static String getArtifactID(File file) {
-		String name = file.getName();
-		if (file.isFile())
-			name = name.substring(0, name.lastIndexOf(".jar"));
-		return name;
+	public static String getArtifactID(File artifact, File bundle) {
+		String artifactId = getBundleName(bundle);
+		if (bundle.isDirectory())
+			artifactId = artifactId + "." + removeJarExtension(artifact);
+		return artifactId;
 	}
 
 	private void doIt(File file, String groupId, String artifactId,
@@ -227,6 +187,7 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 			MojoFailureException {
 
 		Artifact artifact = artifactFactory.createArtifact(groupId, artifactId, version, null, packaging);
+		generatePOM(artifact, groupId, artifactId, version);
 
 		try {
 			String localPath = localRepository.pathOf(artifact);
@@ -249,6 +210,41 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 					+ artifact.getDependencyConflictId() + "': "
 					+ e.getMessage(), e);
 		}
+	}
+
+	private void generatePOM(Artifact artifact, String groupId, String artifactId, String version) throws MojoExecutionException{
+
+		FileWriter fw = null;
+		try {
+			File tempFile = File.createTempFile("mvninstall", ".pom");
+			tempFile.deleteOnExit();
+
+			Model model = new Model();
+			model.setModelVersion("4.0.0");
+			model.setGroupId(groupId);
+			model.setArtifactId(artifactId);
+			model.setVersion(version);
+			model.setPackaging(".jar");
+			model.setDescription("POM was created from install:install-file");
+			fw = new FileWriter(tempFile);
+			tempFile.deleteOnExit();
+			new MavenXpp3Writer().write(fw, model);
+			ArtifactMetadata metadata = new ProjectArtifactMetadata(artifact, tempFile);
+			artifact.addMetadata(metadata);
+		} catch (IOException e) {
+			throw new MojoExecutionException("Error writing temporary pom file: "
+					+ e.getMessage(), e);
+		} finally {
+			IOUtil.close(fw);
+		}
+
+	}
+
+	public static String removeJarExtension(File file) {
+		String fileName = file.getName();
+		if (fileName.endsWith(".jar"))
+			return fileName.substring(0, fileName.lastIndexOf(".jar"));
+		return fileName;
 	}
 
 }
