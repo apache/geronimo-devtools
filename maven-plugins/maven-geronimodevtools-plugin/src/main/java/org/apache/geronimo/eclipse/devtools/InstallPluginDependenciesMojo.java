@@ -106,8 +106,23 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		while (i.hasNext()) {
 			Dependency dependency = (Dependency) i.next();
 			if (GROUP_ID.equals(dependency.getGroupId())) {
+				updateForSWTFragment(dependency);
 				getLog().debug("Eclipse dependency: " + dependency.toString());
 				process(pluginsDir, 0, dependency);
+			}
+		}
+	}
+
+	private void updateForSWTFragment(Dependency dependency) {
+		if("org.eclipse.swt.fragment".equals(dependency.getArtifactId())) {
+			String platform = System.getProperty("os.name");
+			String id = dependency.getArtifactId();
+			if(platform.startsWith("Windows")) {
+				dependency.setArtifactId(id.replaceFirst("fragment", "win32.win32.x86"));
+			} else if(platform.startsWith("Linux")) {
+				dependency.setArtifactId(id.replaceFirst("fragment", "gtk.linux.x86"));
+			} else if(platform.startsWith("Mac")) {
+				dependency.setArtifactId(id.replaceFirst("fragment", "carbon.macosx.ppc"));
 			}
 		}
 	}

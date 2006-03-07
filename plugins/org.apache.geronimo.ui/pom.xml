@@ -9,6 +9,42 @@
     <artifactId>geronimo-eclipse-plugin</artifactId>
     <version>1.0</version>
   </parent>
+  <build>
+    <resources>
+      <resource>
+        <directory>.</directory>
+        <includes>
+          <include>plugin.xml</include>
+        </includes>
+      </resource>      
+      <resource>
+        <targetPath>org/apache/geronimo/ui/internal</targetPath>
+        <directory>src/org/apache/geronimo/ui/internal</directory>
+        <includes>
+          <include>Messages.properties</include>
+        </includes>
+      </resource>
+      <resource>
+        <targetPath>icons</targetPath>
+        <directory>icons</directory>
+        <includes>
+          <include>**/*.gif</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>.</directory>
+        <includes>
+          <include>plugin.properties</include>
+        </includes>
+      </resource>
+       <resource>
+        <directory>.</directory>
+        <includes>
+          <include>.options</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
   <dependencies>
     <!-- g plugin dependencies -->
     <dependency>
