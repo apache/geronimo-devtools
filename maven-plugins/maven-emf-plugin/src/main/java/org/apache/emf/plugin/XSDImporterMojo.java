@@ -27,34 +27,39 @@ import java.util.StringTokenizer;
 public class XSDImporterMojo extends LaunchOSGIMojo {
 
 	public static final String APPLICATION_ID = "org.eclipse.xsd.ecore.importer.XSD2GenModel";
-
-	/**
-	 * @parameter
-	 */
-	protected Map packagemap;
-
-	/**
-	 * @parameter
-	 */
-	protected String[] packages;
-
+	
 	/**
 	 * @parameter
 	 * @required
 	 */
-	protected File schema;
-
+	protected File[] schemas;
+	
 	/**
 	 * @parameter
 	 * @required
 	 */
 	protected File genmodel;
-
+	
 	/**
 	 * @parameter
 	 * @required
 	 */
 	protected String type;
+
+	/**
+	 * @parameter
+	 */
+	protected String[] packages;
+	
+	/**
+	 * @parameter
+	 */
+	protected Map packagemap;
+	
+	/**
+	 * @paramter expression="false"
+	 */
+	protected boolean reload;
 
 	public static final String SPACE = " ";
 
@@ -86,8 +91,15 @@ public class XSDImporterMojo extends LaunchOSGIMojo {
 
 	protected StringBuffer processParameters() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(schema.getAbsolutePath() + SPACE);
-		buffer.append(genmodel.getAbsolutePath() + SPACE);
+		
+		for(int i = 0; i < schemas.length; i++) {
+			buffer.append(schemas[i].getAbsolutePath()).append(SPACE);
+		}
+	
+		buffer.append(genmodel.getAbsolutePath()).append(SPACE);
+		if(reload)
+			buffer.append("-reload").append(SPACE);
+		
 		if ("model".equals(type)) {
 			buffer.append("-modelProject");
 		} else if ("edit".equals(type)) {
@@ -96,22 +108,22 @@ public class XSDImporterMojo extends LaunchOSGIMojo {
 			buffer.append("-editorProject");
 		}
 		buffer.append(SPACE);
-		buffer.append(project.getBasedir() + SPACE);
-		buffer.append(getRelativeSrcDir() + SPACE);
+		buffer.append(project.getBasedir()).append(SPACE);
+		buffer.append(getRelativeSrcDir()).append(SPACE);
 		if (packages != null) {
-			buffer.append("-packages" + SPACE);
+			buffer.append("-packages").append(SPACE);
 			for (int i = 0; i < packages.length; i++) {
-				buffer.append(packages[i] + SPACE);
+				buffer.append(packages[i]).append(SPACE);
 			}
 		}
 
 		if (packagemap != null) {
-			buffer.append("-packagemap" + SPACE);
+			buffer.append("-packagemap").append(SPACE);
 			Set keys = packagemap.keySet();
 			for (Iterator i = keys.iterator(); i.hasNext();) {
 				String mapping = (String) i.next(); // org.apache...
 				String pkg = (String) packagemap.get(mapping); // http://...
-				buffer.append(pkg + SPACE + mapping + SPACE);
+				buffer.append(pkg).append(SPACE).append(mapping).append(SPACE);
 			}
 		}
 		return buffer;

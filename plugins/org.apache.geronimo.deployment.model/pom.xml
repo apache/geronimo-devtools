@@ -24,8 +24,64 @@
         </includes>
       </resource>
     </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.geronimo.devtools</groupId>
+        <artifactId>maven-emf-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>execution-web</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>xsd2java</goal>
+            </goals>
+            <configuration>
+              <schemas>
+                <schema>geronimo-web-1.0.xsd</schema>
+              </schemas>
+              <genmodel>geronimo-web.genmodel</genmodel>
+              <type>model</type>
+              <packages>
+                <package>http://geronimo.apache.org/xml/ns/naming-1.0</package>
+                <package>http://geronimo.apache.org/xml/ns/security-1.1</package>
+                <package>http://geronimo.apache.org/xml/ns/deployment-1.0</package>
+                <package>http://geronimo.apache.org/xml/ns/j2ee/web-1.0</package>
+              </packages>
+              <packagemap>
+                <org.apache.geronimo.xml.ns.naming>http://geronimo.apache.org/xml/ns/naming-1.0</org.apache.geronimo.xml.ns.naming> 
+                <org.apache.geronimo.xml.ns.security>http://geronimo.apache.org/xml/ns/security-1.1</org.apache.geronimo.xml.ns.security> 
+                <org.apache.geronimo.xml.ns.deployment>http://geronimo.apache.org/xml/ns/deployment-1.0</org.apache.geronimo.xml.ns.deployment> 
+                <org.apache.geronimo.xml.ns.j2ee.web>http://geronimo.apache.org/xml/ns/j2ee/web-1.0</org.apache.geronimo.xml.ns.j2ee.web>    
+              </packagemap>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
   <dependencies>
+    <!-- Dependencies for Crimson DOM Bug Workaround -->
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <version>${xercesImpl_version}</version>      
+    </dependency>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xmlParserAPIs</artifactId>
+      <version>${xmlParserAPIs_version}</version>      
+    </dependency>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xerces</artifactId>
+      <version>${xerces_version}</version>      
+    </dependency>
+    <dependency>
+      <groupId>xml-resolver</groupId>
+      <artifactId>xml-resolver</artifactId>
+      <version>${xml_resolver_version}</version>      
+    </dependency>
+    <!-- Eclipse Plugin Dependencies -->
     <dependency>
       <groupId>org.eclipse.plugins</groupId>
       <artifactId>org.eclipse.osgi</artifactId>
