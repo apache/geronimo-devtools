@@ -90,6 +90,7 @@
   </organization>
 
   <properties>
+    <geronimo-emf-common_version>1.0.0</geronimo-emf-common_version>
     <!-- Plugin Versions -->
     <org.apache.geronimo.deployment.model_version>1.0.0</org.apache.geronimo.deployment.model_version>
     <org.apache.geronimo.deployment.model.edit_version>1.0.0</org.apache.geronimo.deployment.model.edit_version>
