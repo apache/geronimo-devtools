@@ -136,7 +136,7 @@ public class ImportResourcesMojo extends AbstractMojo {
 	private File getTargetDestination() {
 		if (targetDestination == null) {
 			String base = project.getBasedir().getAbsolutePath();
-			return new File(base + File.separator + targetPath);
+			targetDestination = new File(base + File.separator + targetPath);
 		}
 		return targetDestination;
 	}
