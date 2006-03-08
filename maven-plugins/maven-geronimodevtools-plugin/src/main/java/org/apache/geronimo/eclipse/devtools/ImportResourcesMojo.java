@@ -47,7 +47,7 @@ public class ImportResourcesMojo extends AbstractMojo {
 	 * @parameter
 	 * @required
 	 */
-	private String targetPath;
+	private File target;
 
 	/**
 	 * @parameter expression="true"
@@ -60,7 +60,6 @@ public class ImportResourcesMojo extends AbstractMojo {
 	private String[] includes;
 
 	private File importDestination;
-	private File targetDestination;
 
 	/*
 	 * (non-Javadoc)
@@ -73,7 +72,11 @@ public class ImportResourcesMojo extends AbstractMojo {
 		Iterator i = dependencies.iterator();
 
 		if (dependencies.size() > 0) {
-
+			
+			getLog().debug("ImportDestination: " + getImportDestination());
+			getLog().debug("TargetDestination: " + target);
+			getLog().debug("Flatten: " + flatten);
+			
 			while (i.hasNext()) {
 				Artifact artifact = (Artifact) i.next();
 				Expand expandTask = new Expand();
@@ -87,6 +90,9 @@ public class ImportResourcesMojo extends AbstractMojo {
 					}
 					expandTask.addPatternset(set);
 				}
+				getLog().info("Importing specified resources from "
+						+ artifact.getGroupId() + ":"
+						+ artifact.getArtifactId());
 				expandTask.execute();
 			}
 
@@ -100,7 +106,7 @@ public class ImportResourcesMojo extends AbstractMojo {
 	private void flatten() {
 		Move moveTask = new Move();
 		moveTask.setProject(new Project());
-		moveTask.setTodir(getTargetDestination());
+		moveTask.setTodir(target);
 		moveTask.setFlatten(true);
 
 		if (includes != null) {
@@ -127,17 +133,10 @@ public class ImportResourcesMojo extends AbstractMojo {
 			String base = project.getBasedir().getAbsolutePath();
 			if (flatten) {
 				importDestination = new File(base + File.separator + "temp");
+			} else {
+				importDestination = target;
 			}
-			importDestination = getTargetDestination();
 		}
 		return importDestination;
-	}
-
-	private File getTargetDestination() {
-		if (targetDestination == null) {
-			String base = project.getBasedir().getAbsolutePath();
-			targetDestination = new File(base + File.separator + targetPath);
-		}
-		return targetDestination;
 	}
 }

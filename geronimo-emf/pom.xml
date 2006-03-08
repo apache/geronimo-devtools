@@ -10,19 +10,36 @@
     <version>1.0</version>
   </parent>
   <build>
+    <resources>
+      <resource>
+        <targetPath>genmodels</targetPath>
+        <directory>genmodels</directory>
+        <includes>
+          <include>**/*.genmodel</include>
+        </includes>
+      </resource>
+      <!-- TODO REMOVE THIS ENTRY--> 
+      <resource>
+        <targetPath>genmodels</targetPath>
+        <directory>.</directory>
+        <includes>
+          <include>*.genmodel</include>
+        </includes>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>maven-geronimodevtools-plugin</artifactId>
         <configuration>
-          <targetPath>schema</targetPath>
+          <target>${project.build.directory}/classes/schemas</target>
           <includes>
             <include>**/*.xsd</include>
           </includes>
         </configuration>
         <executions>
           <execution>
-            <phase>process-resources</phase>
+            <phase>generate-resources</phase>
             <goals>
               <goal>importresources</goal>
             </goals>
