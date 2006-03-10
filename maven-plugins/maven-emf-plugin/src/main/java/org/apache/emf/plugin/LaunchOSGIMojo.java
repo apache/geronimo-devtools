@@ -26,6 +26,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.runtime.adaptor.EclipseStarter;
+import org.eclipse.core.runtime.adaptor.LocationManager;
 
 abstract public class LaunchOSGIMojo extends AbstractMojo {
 
@@ -59,6 +60,7 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 		System.setProperty(EclipseStarter.PROP_CLEAN, "true");
 		System.setProperty(EclipseStarter.PROP_INSTALL_AREA, eclipseHome.getAbsolutePath());
 		System.setProperty(EclipseStarter.PROP_FRAMEWORK, osgi.toExternalForm());
+		System.setProperty(LocationManager.PROP_INSTANCE_AREA, project.getBuild().getOutputDirectory());
 		System.setProperty("eclipse.application", getApplicationID());
 
 		String[] args = getArguments();
