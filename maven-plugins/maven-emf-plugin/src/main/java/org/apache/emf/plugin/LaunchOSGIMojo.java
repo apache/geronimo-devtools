@@ -104,8 +104,4 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 		}
 		return null;
 	}
-	
-	protected String getVMArgs() {
-		return null;
-	}
 }
