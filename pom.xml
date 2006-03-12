@@ -270,6 +270,7 @@
   </pluginRepositories>
 
   <modules>
+    <module>geronimo-emf-common</module>
     <module>plugins/org.apache.geronimo.deployment.model</module>
     <module>plugins/org.apache.geronimo.deployment.model.edit</module>
     <module>plugins/org.apache.geronimo.devtools.eclipse.core</module>
