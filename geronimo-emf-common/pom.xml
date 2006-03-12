@@ -38,6 +38,15 @@
           <editProject>${project.build.directory}/org.apache.geronimo.deployment.model.edit</editProject>
           <src>src</src>
           <reload>true</reload>
+          <packagemap>
+            <org.apache.geronimo.xml.ns.naming>http://geronimo.apache.org/xml/ns/naming-1.0</org.apache.geronimo.xml.ns.naming> 
+            <org.apache.geronimo.xml.ns.security>http://geronimo.apache.org/xml/ns/security-1.1</org.apache.geronimo.xml.ns.security> 
+            <org.apache.geronimo.xml.ns.deployment>http://geronimo.apache.org/xml/ns/deployment-1.0</org.apache.geronimo.xml.ns.deployment>
+            <org.apache.geronimo.xml.ns.j2ee.application>http://geronimo.apache.org/xml/ns/j2ee/application-1.0</org.apache.geronimo.xml.ns.j2ee.application>
+            <org.apache.geronimo.xml.ns.j2ee.web>http://geronimo.apache.org/xml/ns/j2ee/web-1.0</org.apache.geronimo.xml.ns.j2ee.web>      
+            <org.openejb.xml.ns.openejb.jar>http://www.openejb.org/xml/ns/openejb-jar-2.0</org.openejb.xml.ns.openejb.jar>   
+            <org.openejb.xml.ns.pkgen>http://www.openejb.org/xml/ns/pkgen-2.0</org.openejb.xml.ns.pkgen>
+          </packagemap>
         </configuration>
         <executions>
           <execution>
@@ -57,12 +66,71 @@
                 <package>http://geronimo.apache.org/xml/ns/deployment-1.0</package>
                 <package>http://geronimo.apache.org/xml/ns/j2ee/web-1.0</package>
               </packages>
-              <packagemap>
-                <org.apache.geronimo.xml.ns.naming>http://geronimo.apache.org/xml/ns/naming-1.0</org.apache.geronimo.xml.ns.naming> 
-                <org.apache.geronimo.xml.ns.security>http://geronimo.apache.org/xml/ns/security-1.1</org.apache.geronimo.xml.ns.security> 
-                <org.apache.geronimo.xml.ns.deployment>http://geronimo.apache.org/xml/ns/deployment-1.0</org.apache.geronimo.xml.ns.deployment> 
-                <org.apache.geronimo.xml.ns.j2ee.web>http://geronimo.apache.org/xml/ns/j2ee/web-1.0</org.apache.geronimo.xml.ns.j2ee.web>    
-              </packagemap>
+            </configuration>
+          </execution>
+          <execution>
+            <id>execution-application</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>xsd2genmodel</goal>
+            </goals>
+            <configuration>
+              <schemas>
+                <schema>${project.build.directory}/schemas/geronimo-application-1.0.xsd</schema>
+              </schemas>
+              <genmodel>${project.build.outputDirectory}/emf/geronimo-application.genmodel</genmodel>
+              <packages>
+                <package>http://geronimo.apache.org/xml/ns/j2ee/application-1.0</package>
+              </packages>
+            </configuration>
+          </execution>
+          <execution>
+            <id>execution-openejb</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>xsd2genmodel</goal>
+            </goals>
+            <configuration>
+              <schemas>
+                <schema>${project.build.directory}/schemas/openejb-jar-2.0.xsd</schema>
+              </schemas>
+              <genmodel>${project.build.outputDirectory}/emf/openejb-jar.genmodel</genmodel>
+              <packages>
+                <package>http://www.openejb.org/xml/ns/openejb-jar-2.0</package>
+                <package>http://www.openejb.org/xml/ns/pkgen-2.0</package>
+              </packages>
+            </configuration>
+          </execution>
+          <execution>
+            <id>execution-connector</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>xsd2genmodel</goal>
+            </goals>
+            <configuration>
+              <schemas>
+                <schema>${project.build.directory}/schemas/geronimo-connector-1.0.xsd</schema>
+              </schemas>
+              <genmodel>${project.build.outputDirectory}/emf/geronimo-connector.genmodel</genmodel>
+              <packages>
+                <package>http://geronimo.apache.org/xml/ns/j2ee/connector-1.0</package>
+              </packages>
+            </configuration>
+          </execution>
+          <execution>
+            <id>execution-appclient</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>xsd2genmodel</goal>
+            </goals>
+            <configuration>
+              <schemas>
+                <schema>${project.build.directory}/schemas/geronimo-application-client-1.0.xsd</schema>
+              </schemas>
+              <genmodel>${project.build.outputDirectory}/emf/geronimo-application-client.genmodel</genmodel>
+              <packages>
+                <package>http://geronimo.apache.org/xml/ns/j2ee/application-client-1.0</package>
+              </packages>
             </configuration>
           </execution>
         </executions>

@@ -19,13 +19,11 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import org.apache.maven.artifact.Artifact;
 
 /**
  * @goal xsd2genmodel
- * @requiresDependencyResolution
  */
 public class XSDImporterMojo extends LaunchOSGIMojo {
 
@@ -78,10 +76,8 @@ public class XSDImporterMojo extends LaunchOSGIMojo {
 	 * @paramter expression="false"
 	 */
 	protected boolean reload;
-	
-	protected Artifact[] vmargs;
 
-	public static final String SPACE = " ";
+	protected Artifact[] vmargs;
 
 	/*
 	 * (non-Javadoc)
@@ -89,14 +85,7 @@ public class XSDImporterMojo extends LaunchOSGIMojo {
 	 * @see org.apache.emf.plugin.LaunchOSGIMojo#getArguments()
 	 */
 	protected String[] getArguments() {
-		String params = processParameters().toString();
-		StringTokenizer st = new StringTokenizer(params);
-		String[] args = new String[st.countTokens()];
-		int i = 0;
-		while (st.hasMoreTokens()) {
-			args[i++] = st.nextToken();
-		}
-		return args;
+		return getArguments(processParameters());
 	}
 
 	/*

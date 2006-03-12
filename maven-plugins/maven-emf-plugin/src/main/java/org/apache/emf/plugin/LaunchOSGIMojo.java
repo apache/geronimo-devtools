@@ -20,6 +20,7 @@ import java.io.FilenameFilter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.StringTokenizer;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -34,7 +35,7 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 	 * @parameter expression="${settings.localRepository}/eclipse/eclipse"
 	 */
 	protected File eclipseHome;
-	
+
 	/**
 	 * @parameter expression="${project.basedir}"
 	 */
@@ -44,6 +45,8 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 	 * @parameter expression="${project}"
 	 */
 	protected MavenProject mavenProject;
+
+	protected static final String SPACE = " ";
 
 	/*
 	 * (non-Javadoc)
@@ -62,21 +65,31 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 
 		if (getLog().isDebugEnabled())
 			System.setProperty(EclipseStarter.PROP_CONSOLE_LOG, "true");
-		
+
 		System.setProperty(EclipseStarter.PROP_CLEAN, "true");
 		System.setProperty(EclipseStarter.PROP_INSTALL_AREA, eclipseHome.getAbsolutePath());
 		System.setProperty(EclipseStarter.PROP_FRAMEWORK, osgi.toExternalForm());
 		System.setProperty(LocationManager.PROP_INSTANCE_AREA, workspace.getAbsolutePath());
 		System.setProperty("eclipse.application", getApplicationID());
 
+		validate();
+
 		String[] args = getArguments();
 		if (args == null)
 			args = new String[] {};
 
 		getLog().debug(Arrays.asList(args).toString());
-
+		
 		try {
-			EclipseStarter.run(args, null);
+			//workaround for bugzilla 107909
+			System.setProperty(EclipseStarter.PROP_NOSHUTDOWN, "true"); 
+			EclipseStarter.run(args);
+		} catch (IllegalStateException e) {
+			try {
+				EclipseStarter.run(args, null);
+			} catch (Exception e1) {
+				throw new MojoFailureException(e.getMessage());
+			}
 		} catch (Exception e) {
 			throw new MojoFailureException(e.getMessage());
 		}
@@ -103,5 +116,18 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 				}
 		}
 		return null;
+	}
+
+	public static String[] getArguments(StringBuffer buffer) {
+		StringTokenizer st = new StringTokenizer(buffer.toString());
+		String[] args = new String[st.countTokens()];
+		for (int i = 0; st.hasMoreTokens(); i++) {
+			args[i] = st.nextToken();
+		}
+		return args;
+	}
+
+	protected void validate() throws MojoFailureException {
+
 	}
 }
