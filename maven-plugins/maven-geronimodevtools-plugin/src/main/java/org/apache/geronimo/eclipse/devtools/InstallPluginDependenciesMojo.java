@@ -132,8 +132,6 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 	}
 
 	protected void process(File file, int depth, Dependency dependency) {
-		getLog().debug("processFile() depth = " + Integer.toString(depth) + " "
-				+ file.getAbsolutePath());
 		if (file.isDirectory()) {
 			depth++;
 			File[] members = file.listFiles();

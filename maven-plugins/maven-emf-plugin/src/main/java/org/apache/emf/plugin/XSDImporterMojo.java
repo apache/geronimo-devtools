@@ -21,45 +21,65 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.apache.maven.artifact.Artifact;
+
 /**
- * @goal xsd2java
+ * @goal xsd2genmodel
+ * @requiresDependencyResolution
  */
 public class XSDImporterMojo extends LaunchOSGIMojo {
 
 	public static final String APPLICATION_ID = "org.eclipse.xsd.ecore.importer.XSD2GenModel";
-	
+
 	/**
 	 * @parameter
 	 * @required
 	 */
 	protected File[] schemas;
-	
+
 	/**
 	 * @parameter
 	 * @required
 	 */
 	protected File genmodel;
-	
+
+	/**
+	 * @parameter
+	 */
+	protected String modelProject;
+
+	/**
+	 * @parameter
+	 */
+	protected String editProject;
+
+	/**
+	 * @parameter
+	 */
+	protected String editorProject;
+
 	/**
 	 * @parameter
 	 * @required
 	 */
-	protected String type;
+	protected String src;
 
 	/**
 	 * @parameter
 	 */
 	protected String[] packages;
-	
+
 	/**
 	 * @parameter
 	 */
 	protected Map packagemap;
-	
+
 	/**
 	 * @paramter expression="false"
 	 */
 	protected boolean reload;
+	
+	protected Artifact[] vmargs;
 
 	public static final String SPACE = " ";
 
@@ -70,7 +90,6 @@ public class XSDImporterMojo extends LaunchOSGIMojo {
 	 */
 	protected String[] getArguments() {
 		String params = processParameters().toString();
-		getLog().info(params.toString());
 		StringTokenizer st = new StringTokenizer(params);
 		String[] args = new String[st.countTokens()];
 		int i = 0;
@@ -91,25 +110,22 @@ public class XSDImporterMojo extends LaunchOSGIMojo {
 
 	protected StringBuffer processParameters() {
 		StringBuffer buffer = new StringBuffer();
-		
-		for(int i = 0; i < schemas.length; i++) {
+
+		for (int i = 0; i < schemas.length; i++) {
 			buffer.append(schemas[i].getAbsolutePath()).append(SPACE);
 		}
-	
+
 		buffer.append(genmodel.getAbsolutePath()).append(SPACE);
-		if(reload)
+		if (reload)
 			buffer.append("-reload").append(SPACE);
-		
-		if ("model".equals(type)) {
-			buffer.append("-modelProject");
-		} else if ("edit".equals(type)) {
-			buffer.append("-editProject");
-		} else if ("editor".equals(type)) {
-			buffer.append("-editorProject");
-		}
-		buffer.append(SPACE);
-		buffer.append(project.getBasedir()).append(SPACE);
-		buffer.append(getRelativeSrcDir()).append(SPACE);
+
+		if (modelProject != null)
+			buffer.append("-modelProject").append(SPACE).append(modelProject).append(SPACE).append(src).append(SPACE);
+		if (editProject != null)
+			buffer.append("-editProject").append(SPACE).append(editProject).append(SPACE).append(src).append(SPACE);
+		if (editorProject != null)
+			buffer.append("-editorProject").append(SPACE).append(editorProject).append(SPACE).append(src).append(SPACE);
+
 		if (packages != null) {
 			buffer.append("-packages").append(SPACE);
 			for (int i = 0; i < packages.length; i++) {
@@ -128,13 +144,4 @@ public class XSDImporterMojo extends LaunchOSGIMojo {
 		}
 		return buffer;
 	}
-
-	private String getRelativeSrcDir() {
-		String src = project.getBuild().getSourceDirectory();
-		src = src.split(project.getBasedir().getAbsolutePath())[1];
-		if (src.startsWith(File.separator))
-			src = src.substring(1);
-		return src;
-	}
-
 }

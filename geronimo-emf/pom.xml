@@ -10,29 +10,12 @@
     <version>1.0</version>
   </parent>
   <build>
-    <resources>
-      <resource>
-        <targetPath>genmodels</targetPath>
-        <directory>genmodels</directory>
-        <includes>
-          <include>**/*.genmodel</include>
-        </includes>
-      </resource>
-      <!-- TODO REMOVE THIS ENTRY--> 
-      <resource>
-        <targetPath>genmodels</targetPath>
-        <directory>.</directory>
-        <includes>
-          <include>*.genmodel</include>
-        </includes>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>maven-geronimodevtools-plugin</artifactId>
         <configuration>
-          <target>${project.build.directory}/classes/schemas</target>
+          <target>${project.build.directory}/schemas</target>
           <includes>
             <include>**/*.xsd</include>
           </includes>
@@ -43,6 +26,44 @@
             <goals>
               <goal>importresources</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.geronimo.devtools</groupId>
+        <artifactId>maven-emf-plugin</artifactId>
+        <configuration>
+          <workspace>${project.build.directory}/workspace</workspace>
+          <modelProject>${project.build.directory}/org.apache.geronimo.deployment.model</modelProject>
+          <editProject>${project.build.directory}/org.apache.geronimo.deployment.model.edit</editProject>
+          <src>src</src>
+          <reload>true</reload>
+        </configuration>
+        <executions>
+          <execution>
+            <id>execution-web</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>xsd2genmodel</goal>
+            </goals>
+            <configuration>
+              <schemas>
+                <schema>${project.build.directory}/schemas/geronimo-web-1.0.xsd</schema>
+              </schemas>
+              <genmodel>${project.build.outputDirectory}/emf/geronimo-web.genmodel</genmodel>
+              <packages>
+                <package>http://geronimo.apache.org/xml/ns/naming-1.0</package>
+                <package>http://geronimo.apache.org/xml/ns/security-1.1</package>
+                <package>http://geronimo.apache.org/xml/ns/deployment-1.0</package>
+                <package>http://geronimo.apache.org/xml/ns/j2ee/web-1.0</package>
+              </packages>
+              <packagemap>
+                <org.apache.geronimo.xml.ns.naming>http://geronimo.apache.org/xml/ns/naming-1.0</org.apache.geronimo.xml.ns.naming> 
+                <org.apache.geronimo.xml.ns.security>http://geronimo.apache.org/xml/ns/security-1.1</org.apache.geronimo.xml.ns.security> 
+                <org.apache.geronimo.xml.ns.deployment>http://geronimo.apache.org/xml/ns/deployment-1.0</org.apache.geronimo.xml.ns.deployment> 
+                <org.apache.geronimo.xml.ns.j2ee.web>http://geronimo.apache.org/xml/ns/j2ee/web-1.0</org.apache.geronimo.xml.ns.j2ee.web>    
+              </packagemap>
+            </configuration>
           </execution>
         </executions>
       </plugin>

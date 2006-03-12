@@ -34,11 +34,16 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 	 * @parameter expression="${settings.localRepository}/eclipse/eclipse"
 	 */
 	protected File eclipseHome;
+	
+	/**
+	 * @parameter expression="${project.basedir}"
+	 */
+	protected File workspace;
 
 	/**
 	 * @parameter expression="${project}"
 	 */
-	protected MavenProject project;
+	protected MavenProject mavenProject;
 
 	/*
 	 * (non-Javadoc)
@@ -57,10 +62,11 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 
 		if (getLog().isDebugEnabled())
 			System.setProperty(EclipseStarter.PROP_CONSOLE_LOG, "true");
+		
 		System.setProperty(EclipseStarter.PROP_CLEAN, "true");
 		System.setProperty(EclipseStarter.PROP_INSTALL_AREA, eclipseHome.getAbsolutePath());
 		System.setProperty(EclipseStarter.PROP_FRAMEWORK, osgi.toExternalForm());
-		System.setProperty(LocationManager.PROP_INSTANCE_AREA, project.getBuild().getOutputDirectory());
+		System.setProperty(LocationManager.PROP_INSTANCE_AREA, workspace.getAbsolutePath());
 		System.setProperty("eclipse.application", getApplicationID());
 
 		String[] args = getArguments();
@@ -72,7 +78,7 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 		try {
 			EclipseStarter.run(args, null);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new MojoFailureException(e.getMessage());
 		}
 	}
 
@@ -98,5 +104,8 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 		}
 		return null;
 	}
-
+	
+	protected String getVMArgs() {
+		return null;
+	}
 }
