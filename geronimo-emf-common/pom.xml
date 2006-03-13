@@ -44,9 +44,16 @@
             <org.apache.geronimo.xml.ns.deployment>http://geronimo.apache.org/xml/ns/deployment-1.0</org.apache.geronimo.xml.ns.deployment>
             <org.apache.geronimo.xml.ns.j2ee.application>http://geronimo.apache.org/xml/ns/j2ee/application-1.0</org.apache.geronimo.xml.ns.j2ee.application>
             <org.apache.geronimo.xml.ns.j2ee.web>http://geronimo.apache.org/xml/ns/j2ee/web-1.0</org.apache.geronimo.xml.ns.j2ee.web>      
+            <org.apache.geronimo.xml.ns.j2ee.connector>http://geronimo.apache.org/xml/ns/j2ee/connector-1.0</org.apache.geronimo.xml.ns.j2ee.connector>
             <org.openejb.xml.ns.openejb.jar>http://www.openejb.org/xml/ns/openejb-jar-2.0</org.openejb.xml.ns.openejb.jar>   
             <org.openejb.xml.ns.pkgen>http://www.openejb.org/xml/ns/pkgen-2.0</org.openejb.xml.ns.pkgen>
+            <org.apache.geronimo.xml.ns.j2ee.application.client>http://geronimo.apache.org/xml/ns/j2ee/application-client-1.0</org.apache.geronimo.xml.ns.j2ee.application.client>
           </packagemap>
+          <attributes>
+            <modelPluginClass>org.apache.geronimo.deployment.model.GeronimoEMFModelPlugin</modelPluginClass>
+            <editPluginClass>org.apache.geronimo.deployment.model.edit.GeronimoEMFEditPlugin</editPluginClass>
+            <updateClasspath>false</updateClasspath>
+          </attributes>
         </configuration>
         <executions>
           <execution>
@@ -54,6 +61,7 @@
             <phase>generate-resources</phase>
             <goals>
               <goal>xsd2genmodel</goal>
+              <goal>setattributes</goal>
             </goals>
             <configuration>
               <schemas>
@@ -73,6 +81,7 @@
             <phase>generate-resources</phase>
             <goals>
               <goal>xsd2genmodel</goal>
+              <goal>setattributes</goal>
             </goals>
             <configuration>
               <schemas>
@@ -89,6 +98,7 @@
             <phase>generate-resources</phase>
             <goals>
               <goal>xsd2genmodel</goal>
+              <goal>setattributes</goal>
             </goals>
             <configuration>
               <schemas>
@@ -106,6 +116,7 @@
             <phase>generate-resources</phase>
             <goals>
               <goal>xsd2genmodel</goal>
+              <goal>setattributes</goal>
             </goals>
             <configuration>
               <schemas>
@@ -122,6 +133,7 @@
             <phase>generate-resources</phase>
             <goals>
               <goal>xsd2genmodel</goal>
+              <goal>setattributes</goal>
             </goals>
             <configuration>
               <schemas>
