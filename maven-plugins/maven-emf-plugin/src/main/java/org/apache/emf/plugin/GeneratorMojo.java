@@ -35,7 +35,7 @@ public class GeneratorMojo extends LaunchOSGIMojo {
 	 * @parameter
 	 * @required
 	 */
-	private File genModel;
+	private File genmodel;
 
 	/**
 	 * @parameter
@@ -67,18 +67,19 @@ public class GeneratorMojo extends LaunchOSGIMojo {
 			buffer.append("-projects").append(projectRootDirectory.getAbsolutePath()).append(SPACE);
 		}
 
-		buffer.append("-").append("type").append(SPACE);
-		buffer.append(genModel.getAbsolutePath());
+		buffer.append("-").append(type).append(SPACE);
+		buffer.append(genmodel.getAbsolutePath());
 
 		return buffer;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.emf.plugin.LaunchOSGIMojo#validate()
 	 */
 	protected void validate() throws MojoFailureException {
-		if (!"model".equalsIgnoreCase(type) || !"edit".equalsIgnoreCase(type)
-				|| !"editor".equalsIgnoreCase(type)) {
+		if (!("model".equalsIgnoreCase(type) || "edit".equalsIgnoreCase(type) || "editor".equalsIgnoreCase(type))) {
 			throw new MojoFailureException("<type> must be set to either 'model', 'edit', or 'editor'");
 		}
 	}

@@ -51,6 +51,26 @@
           <outputDirectory>${imported-resources}</outputDirectory>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.geronimo.devtools</groupId>
+        <artifactId>maven-emf-plugin</artifactId>
+        <configuration>
+          <projectRootDirectory>${project.base.directory}/..</projectRootDirectory>
+          <type>model</type>
+        </configuration>
+        <executions>
+          <execution>
+            <id>execution-web</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <genmodel>${imported-resources}/emf/geronimo-web.genmodel</genmodel>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <dependencies>

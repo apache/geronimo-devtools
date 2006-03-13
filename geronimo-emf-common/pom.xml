@@ -15,16 +15,51 @@
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>maven-geronimodevtools-plugin</artifactId>
         <configuration>
-          <target>${project.build.directory}/schemas</target>
+          <target>${project.build.outputDirectory}/schemas</target>
           <includes>
             <include>**/*.xsd</include>
           </includes>
         </configuration>
         <executions>
           <execution>
-            <phase>generate-resources</phase>
+            <phase>process-resources</phase>
             <goals>
               <goal>importresources</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <dependencies>
+          <dependency>
+            <groupId>oro</groupId>
+            <artifactId>oro</artifactId>
+            <version>2.0.8</version>
+          </dependency>
+          <dependency>
+            <groupId>ant</groupId>
+            <artifactId>ant-apache-oro</artifactId>
+            <version>1.6.4</version>
+          </dependency>
+          <dependency>
+            <groupId>ant</groupId>
+            <artifactId>ant-optional</artifactId>
+            <version>1.5.3-1</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <phase>process-classes</phase>
+            <configuration>
+              <tasks>
+                <taskdef name="replaceregexp" classname="org.apache.tools.ant.taskdefs.optional.ReplaceRegExp" classpathref="maven.plugin.classpath"/>
+                <property name="ant.regexp.regexpimpl" value="org.apache.tools.ant.util.regexp.JakartaOroRegexp"/>
+                <replaceregexp file="${project.build.outputDirectory}/schemas/geronimo-security-1.1.xsd" match='schemaLocation="http://www.w3.org/2001/xml.xsd"' replace='schemaLocation="http://www.w3.org/2001/03/xml.xsd"' byline="true"/>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
             </goals>
           </execution>
         </executions>
@@ -50,6 +85,8 @@
             <org.apache.geronimo.xml.ns.j2ee.application.client>http://geronimo.apache.org/xml/ns/j2ee/application-client-1.0</org.apache.geronimo.xml.ns.j2ee.application.client>
           </packagemap>
           <attributes>
+            <modelDirectory>/org.apache.geronimo.deployment.model/src</modelDirectory>
+            <editDirectory>/org.apache.geronimo.deployment.model.edit/src</editDirectory>
             <modelPluginClass>org.apache.geronimo.deployment.model.GeronimoEMFModelPlugin</modelPluginClass>
             <editPluginClass>org.apache.geronimo.deployment.model.edit.GeronimoEMFEditPlugin</editPluginClass>
             <updateClasspath>false</updateClasspath>
@@ -58,14 +95,14 @@
         <executions>
           <execution>
             <id>execution-web</id>
-            <phase>generate-resources</phase>
+            <phase>process-classes</phase>
             <goals>
               <goal>xsd2genmodel</goal>
               <goal>setattributes</goal>
             </goals>
             <configuration>
               <schemas>
-                <schema>${project.build.directory}/schemas/geronimo-web-1.0.xsd</schema>
+                <schema>${project.build.outputDirectory}/schemas/geronimo-web-1.0.xsd</schema>
               </schemas>
               <genmodel>${project.build.outputDirectory}/emf/geronimo-web.genmodel</genmodel>
               <packages>
@@ -78,14 +115,14 @@
           </execution>
           <execution>
             <id>execution-application</id>
-            <phase>generate-resources</phase>
+            <phase>process-classes</phase>
             <goals>
               <goal>xsd2genmodel</goal>
               <goal>setattributes</goal>
             </goals>
             <configuration>
               <schemas>
-                <schema>${project.build.directory}/schemas/geronimo-application-1.0.xsd</schema>
+                <schema>${project.build.outputDirectory}/schemas/geronimo-application-1.0.xsd</schema>
               </schemas>
               <genmodel>${project.build.outputDirectory}/emf/geronimo-application.genmodel</genmodel>
               <packages>
@@ -95,14 +132,14 @@
           </execution>
           <execution>
             <id>execution-openejb</id>
-            <phase>generate-resources</phase>
+            <phase>process-classes</phase>
             <goals>
               <goal>xsd2genmodel</goal>
               <goal>setattributes</goal>
             </goals>
             <configuration>
               <schemas>
-                <schema>${project.build.directory}/schemas/openejb-jar-2.0.xsd</schema>
+                <schema>${project.build.outputDirectory}/schemas/openejb-jar-2.0.xsd</schema>
               </schemas>
               <genmodel>${project.build.outputDirectory}/emf/openejb-jar.genmodel</genmodel>
               <packages>
@@ -113,14 +150,14 @@
           </execution>
           <execution>
             <id>execution-connector</id>
-            <phase>generate-resources</phase>
+            <phase>process-classes</phase>
             <goals>
               <goal>xsd2genmodel</goal>
               <goal>setattributes</goal>
             </goals>
             <configuration>
               <schemas>
-                <schema>${project.build.directory}/schemas/geronimo-connector-1.0.xsd</schema>
+                <schema>${project.build.outputDirectory}/schemas/geronimo-connector-1.0.xsd</schema>
               </schemas>
               <genmodel>${project.build.outputDirectory}/emf/geronimo-connector.genmodel</genmodel>
               <packages>
@@ -130,14 +167,14 @@
           </execution>
           <execution>
             <id>execution-appclient</id>
-            <phase>generate-resources</phase>
+            <phase>process-classes</phase>
             <goals>
               <goal>xsd2genmodel</goal>
               <goal>setattributes</goal>
             </goals>
             <configuration>
               <schemas>
-                <schema>${project.build.directory}/schemas/geronimo-application-client-1.0.xsd</schema>
+                <schema>${project.build.outputDirectory}/schemas/geronimo-application-client-1.0.xsd</schema>
               </schemas>
               <genmodel>${project.build.outputDirectory}/emf/geronimo-application-client.genmodel</genmodel>
               <packages>
