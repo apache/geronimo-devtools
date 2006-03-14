@@ -122,51 +122,63 @@
     <xbean_version>2.0.0</xbean_version>
     <stax-api_version>1.0</stax-api_version>
     <junitVersion>3.8.1</junitVersion>
-    <!-- Eclipse Plugin Dependencies -->
-    <org.eclipse.osgi_version>DISTRO</org.eclipse.osgi_version>
-    <org.eclipse.debug.core_version>DISTRO</org.eclipse.debug.core_version>
-    <org.eclipse.jdt.launching_version>DISTRO</org.eclipse.jdt.launching_version>
-    <org.eclipse.core.runtime_version>DISTRO</org.eclipse.core.runtime_version>
-    <org.eclipse.core.resources_version>DISTRO</org.eclipse.core.resources_version>
-    <org.eclipse.debug.core_version>DISTRO</org.eclipse.debug.core_version>
-    <org.eclipse.jdt.core_version>DISTRO</org.eclipse.jdt.core_version>
-    <org.eclipse.jdt.launching_version>DISTRO</org.eclipse.jdt.launching_version>
-    <org.eclipse.wst.server.core_version>DISTRO</org.eclipse.wst.server.core_version>
-    <org.eclipse.jst.server.core_version>DISTRO</org.eclipse.jst.server.core_version>
-    <org.eclipse.emf.ecore_version>DISTRO</org.eclipse.emf.ecore_version>
-    <org.eclipse.emf.ecore.edit_version>DISTRO</org.eclipse.emf.ecore.edit_version>
-    <org.eclipse.emf.edit_version>DISTRO</org.eclipse.emf.edit_version>
-    <org.eclipse.emf.ecore.xmi_version>DISTRO</org.eclipse.emf.ecore.xmi_version>
-    <org.eclipse.emf.common_version>DISTRO</org.eclipse.emf.common_version>
-    <org.eclipse.core.commands_version>DISTRO</org.eclipse.core.commands_version>
-    <org.eclipse.jst.j2ee.web_version>DISTRO</org.eclipse.jst.j2ee.web_version>
-    <org.eclipse.jst.j2ee.ejb_version>DISTRO</org.eclipse.jst.j2ee.ejb_version>
-    <org.eclipse.jst.j2ee.jca_version>DISTRO</org.eclipse.jst.j2ee.jca_version>
-    <org.eclipse.jst.j2ee_version>DISTRO</org.eclipse.jst.j2ee_version>
-    <org.eclipse.wst.web_version>DISTRO</org.eclipse.wst.web_version>
-    <org.eclipse.wst.common.modulecore_version>DISTRO</org.eclipse.wst.common.modulecore_version>
-    <org.eclipse.jst.common.frameworks_version>DISTRO</org.eclipse.jst.common.frameworks_version>
-    <org.eclipse.wst.common.project.facet.core_version>DISTRO</org.eclipse.wst.common.project.facet.core_version>
-    <org.eclipse.jst.server.generic.core_version>DISTRO</org.eclipse.jst.server.generic.core_version>
-    <org.eclipse.jst.server.core_version>DISTRO</org.eclipse.jst.server.core_version>
-    <org.eclipse.jst.j2ee.core_version>DISTRO</org.eclipse.jst.j2ee.core_version>
-    <org.eclipse.wst.common.frameworks_version>DISTRO</org.eclipse.wst.common.frameworks_version>
-    <!-- Non packaged jar bundles -->
-    <org.eclipse.jem.util.util_version>DISTRO</org.eclipse.jem.util.util_version>
-    <!-- UI Dependencies -->
-    <org.eclipse.ui_version>DISTRO</org.eclipse.ui_version>
-    <org.eclipse.ui.browser_version>DISTRO</org.eclipse.ui.browser_version>
-    <org.eclipse.ui.editors_version>DISTRO</org.eclipse.ui.editors_version>
-    <org.eclipse.ui.forms_version>DISTRO</org.eclipse.ui.forms_version>
-    <org.eclipse.ui.ide_version>DISTRO</org.eclipse.ui.ide_version>
-    <org.eclipse.ui.workbench_version>DISTRO</org.eclipse.ui.workbench_version>
-    <org.eclipse.ui.workbench.texteditor_version>DISTRO</org.eclipse.ui.workbench.texteditor_version>
-    <org.eclipse.wst.server.ui_version>DISTRO</org.eclipse.wst.server.ui_version>
-    <org.eclipse.jface_version>DISTRO</org.eclipse.jface_version>
-    <org.eclipse.jst.server.generic.ui_version>DISTRO</org.eclipse.jst.server.generic.ui_version>
-    <org.eclipse.swt.fragment_version>DISTRO</org.eclipse.swt.fragment_version>
-    <org.eclipse.emf.edit.ui_version>DISTRO</org.eclipse.emf.edit.ui_version>
-   </properties>
+    <!-- Eclipse Distribution URLs -->
+    <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/R-3.1.2-200601181600/eclipse-SDK-3.1.2-macosx-carbon.tar.gz</platformUrl>
+    <emfUrl>http://download.eclipse.org/tools/emf/downloads/drops/2.1.2/R200601191349/emf-sdo-xsd-SDK-2.1.2.zip</emfUrl>
+    <jemUrl>http://download.eclipse.org/tools/ve/downloads/drops/R-1.1.0.1-200509071822/JEM-SDK-1.1.0.1.zip</jemUrl>
+    <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/R-3.1.1-200509301327/GEF-SDK-3.1.1.zip</gefUrl>
+    <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/R-1.0.1-200602171228/wtp-sdk-R-1.0.1-200602171228.zip</wtpUrl>
+    <!-- Eclipse Project Distro Versions -->
+    <platformVersion>3.1.2</platformVersion>
+    <emfVersion>2.1.2</emfVersion>
+    <jemVersion>3.1.1</jemVersion>
+    <wtpVersion>1.1.0.1</wtpVersion>
+    <!-- Eclipse Platform Dependencies -->
+    <org.eclipse.core.runtime_version>${platformVersion}</org.eclipse.core.runtime_version>
+    <org.eclipse.core.resources_version>${platformVersion}</org.eclipse.core.resources_version>
+    <org.eclipse.core.commands_version>${platformVersion}</org.eclipse.core.commands_version>
+    <org.eclipse.debug.core_version>${platformVersion}</org.eclipse.debug.core_version>
+    <org.eclipse.jdt.launching_version>${platformVersion}</org.eclipse.jdt.launching_version>
+    <org.eclipse.jdt.core_version>${platformVersion}</org.eclipse.jdt.core_version>
+    <org.eclipse.jdt.launching_version>${platformVersion}</org.eclipse.jdt.launching_version>
+    <org.eclipse.jface_version>${platformVersion}</org.eclipse.jface_version>
+    <org.eclipse.osgi_version>${platformVersion}</org.eclipse.osgi_version>
+    <org.eclipse.swt.fragment_version>${platformVersion}</org.eclipse.swt.fragment_version>
+    <org.eclipse.ui_version>${platformVersion}</org.eclipse.ui_version>
+    <org.eclipse.ui.browser_version>${platformVersion}</org.eclipse.ui.browser_version>
+    <org.eclipse.ui.editors_version>${platformVersion}</org.eclipse.ui.editors_version>
+    <org.eclipse.ui.forms_version>${platformVersion}</org.eclipse.ui.forms_version>
+    <org.eclipse.ui.ide_version>${platformVersion}</org.eclipse.ui.ide_version>
+    <org.eclipse.ui.workbench_version>${platformVersion}</org.eclipse.ui.workbench_version>
+    <org.eclipse.ui.workbench.texteditor_version>${platformVersion}</org.eclipse.ui.workbench.texteditor_version>
+    <!-- EMF Dependencies -->
+    <org.eclipse.emf.ecore_version>${emfVersion}</org.eclipse.emf.ecore_version>
+    <org.eclipse.emf.ecore.edit_version>${emfVersion}</org.eclipse.emf.ecore.edit_version>
+    <org.eclipse.emf.edit_version>${emfVersion}</org.eclipse.emf.edit_version>
+    <org.eclipse.emf.edit.ui_version>${emfVersion}</org.eclipse.emf.edit.ui_version>
+    <org.eclipse.emf.ecore.xmi_version>${emfVersion}</org.eclipse.emf.ecore.xmi_version>
+    <org.eclipse.emf.common_version>${emfVersion}</org.eclipse.emf.common_version>
+    <!-- GEF Dependencies -->    
+    <!-- JEM Dependencies -->
+    <org.eclipse.jem.util.util_version>${jemVersion}</org.eclipse.jem.util.util_version>
+    <!-- WTP Dependencies -->
+    <org.eclipse.wst.server.core_version>${wtpVersion}</org.eclipse.wst.server.core_version>
+    <org.eclipse.wst.web_version>${wtpVersion}</org.eclipse.wst.web_version>
+    <org.eclipse.wst.common.modulecore_version>${wtpVersion}</org.eclipse.wst.common.modulecore_version>
+    <org.eclipse.wst.common.project.facet.core_version>${wtpVersion}</org.eclipse.wst.common.project.facet.core_version>
+    <org.eclipse.wst.common.frameworks_version>${wtpVersion}</org.eclipse.wst.common.frameworks_version>
+    <org.eclipse.wst.server.ui_version>${wtpVersion}</org.eclipse.wst.server.ui_version>
+    <org.eclipse.jst.server.core_version>${wtpVersion}</org.eclipse.jst.server.core_version>
+    <org.eclipse.jst.j2ee.web_version>${wtpVersion}</org.eclipse.jst.j2ee.web_version>
+    <org.eclipse.jst.j2ee.ejb_version>${wtpVersion}</org.eclipse.jst.j2ee.ejb_version>
+    <org.eclipse.jst.j2ee.jca_version>${wtpVersion}</org.eclipse.jst.j2ee.jca_version>
+    <org.eclipse.jst.j2ee_version>${wtpVersion}</org.eclipse.jst.j2ee_version>
+    <org.eclipse.jst.common.frameworks_version>${wtpVersion}</org.eclipse.jst.common.frameworks_version>
+    <org.eclipse.jst.server.generic.core_version>${wtpVersion}</org.eclipse.jst.server.generic.core_version>
+    <org.eclipse.jst.server.core_version>${wtpVersion}</org.eclipse.jst.server.core_version>
+    <org.eclipse.jst.server.generic.ui_version>${wtpVersion}</org.eclipse.jst.server.generic.ui_version>
+    <org.eclipse.jst.j2ee.core_version>${wtpVersion}</org.eclipse.jst.j2ee.core_version>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -208,11 +220,11 @@
         <artifactId>maven-geronimodevtools-plugin</artifactId>
         <configuration>
           <urls>
-            <url>http://download.eclipse.org/eclipse/downloads/drops/R-3.1.2-200601181600/eclipse-SDK-3.1.2-macosx-carbon.tar.gz</url>
-            <url>http://download.eclipse.org/tools/ve/downloads/drops/R-1.1.0.1-200509071822/JEM-SDK-1.1.0.1.zip</url>
-            <url>http://download.eclipse.org/tools/emf/downloads/drops/2.1.2/R200601191349/emf-sdo-xsd-SDK-2.1.2.zip</url>
-            <url>http://download.eclipse.org/tools/gef/downloads/drops/R-3.1.1-200509301327/GEF-SDK-3.1.1.zip</url>
-            <url>http://download.eclipse.org/webtools/downloads/drops/R-1.0.1-200602171228/wtp-sdk-R-1.0.1-200602171228.zip</url>
+            <url>${platformUrl}</url>
+            <url>${emfUrl}</url>
+            <url>${jemUrl}</url>
+            <url>${gefUrl}</url>
+            <url>${wtpUrl}</url>
           </urls>
           <eclipsehome>${settings.localRepository}/eclipse/eclipse/</eclipsehome>
           <versionType>snapshot</versionType>
