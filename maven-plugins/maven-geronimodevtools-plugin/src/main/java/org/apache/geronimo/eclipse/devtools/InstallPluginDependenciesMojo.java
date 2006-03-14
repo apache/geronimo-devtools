@@ -47,7 +47,7 @@ import org.codehaus.plexus.util.IOUtil;
 public class InstallPluginDependenciesMojo extends AbstractMojo {
 
 	private static final String GROUP_ID = "org.eclipse.plugins";
-
+	
 	/**
 	 * @parameter expression="${project}"
 	 */
@@ -78,6 +78,11 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 	 * @readonly
 	 */
 	protected ArtifactRepository localRepository;
+	
+	/**
+	 * @parameter expression="${useDistributionVersions}"
+	 */
+	protected boolean useDistributionVersion;
 
 	public InstallPluginDependenciesMojo() {
 		super();
@@ -144,7 +149,8 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 				File bundle = getBundle(file, depth);
 				if (getArtifactID(file, bundle).equals(dependency.getArtifactId())) {
 					install(file, bundle);
-					if ("DISTRO".equals(dependency.getVersion()))
+					//if ("DISTRO".equals(dependency.getVersion()))
+					if(useDistributionVersion)
 						dependency.setVersion(getBundleVersion(bundle));
 				}
 			}
