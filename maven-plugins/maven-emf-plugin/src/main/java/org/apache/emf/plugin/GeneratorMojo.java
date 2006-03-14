@@ -64,7 +64,7 @@ public class GeneratorMojo extends LaunchOSGIMojo {
 	protected StringBuffer processParameters() {
 		StringBuffer buffer = new StringBuffer();
 		if (projectRootDirectory != null) {
-			buffer.append("-projects").append(projectRootDirectory.getAbsolutePath()).append(SPACE);
+			buffer.append("-projects").append(SPACE).append(projectRootDirectory.getAbsolutePath()).append(SPACE);
 		}
 
 		buffer.append("-").append(type).append(SPACE);

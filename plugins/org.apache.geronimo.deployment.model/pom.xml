@@ -55,7 +55,8 @@
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>maven-emf-plugin</artifactId>
         <configuration>
-          <projectRootDirectory>${project.base.directory}/..</projectRootDirectory>
+          <workspace>${project.basedir}/..</workspace>
+          <!--<projectRootDirectory>${project.basedir}/..</projectRootDirectory>-->
           <type>model</type>
         </configuration>
         <executions>
@@ -67,6 +68,46 @@
             </goals>
             <configuration>
               <genmodel>${imported-resources}/emf/geronimo-web.genmodel</genmodel>
+            </configuration>
+          </execution>
+          <execution>
+            <id>execution-openejb</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <genmodel>${imported-resources}/emf/openejb-jar.genmodel</genmodel>
+            </configuration>
+          </execution>
+          <execution>
+            <id>execution-connector</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <genmodel>${imported-resources}/emf/geronimo-connector.genmodel</genmodel>
+            </configuration>
+          </execution>
+          <execution>
+            <id>execution-application</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <genmodel>${imported-resources}/emf/geronimo-application.genmodel</genmodel>
+            </configuration>
+          </execution>
+          <execution>
+            <id>execution-appclient</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <genmodel>${imported-resources}/emf/geronimo-application-client.genmodel</genmodel>
             </configuration>
           </execution>
         </executions>

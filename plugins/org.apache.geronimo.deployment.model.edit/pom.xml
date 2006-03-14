@@ -9,6 +9,9 @@
     <artifactId>geronimo-eclipse-plugin</artifactId>
     <version>1.0</version>
   </parent>
+  <properties>
+    <imported-resources>${project.build.directory}/imported-resources</imported-resources>
+  </properties>
   <build>
     <resources>
       <resource>
@@ -24,6 +27,92 @@
         </includes>
       </resource>
     </resources>
+        <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>dependency-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+          </execution>
+        </executions>     
+        <configuration>
+          <artifactItems>
+            <artifactItem>
+              <groupId>org.apache.geronimo.devtools</groupId>
+              <artifactId>geronimo-emf-common</artifactId>
+              <version>${geronimo-emf-common_version}</version>
+              <type>jar</type>
+            </artifactItem>
+          </artifactItems>
+          <outputDirectory>${imported-resources}</outputDirectory>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.geronimo.devtools</groupId>
+        <artifactId>maven-emf-plugin</artifactId>
+        <configuration>
+          <workspace>${project.basedir}/..</workspace>
+          <!--<projectRootDirectory>${project.basedir}/..</projectRootDirectory>-->
+          <type>edit</type>
+        </configuration>
+        <executions>
+          <execution>
+            <id>execution-web</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <genmodel>${imported-resources}/emf/geronimo-web.genmodel</genmodel>
+            </configuration>
+          </execution>
+          <execution>
+            <id>execution-openejb</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <genmodel>${imported-resources}/emf/openejb-jar.genmodel</genmodel>
+            </configuration>
+          </execution>
+          <execution>
+            <id>execution-connector</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <genmodel>${imported-resources}/emf/geronimo-connector.genmodel</genmodel>
+            </configuration>
+          </execution>
+          <execution>
+            <id>execution-application</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <genmodel>${imported-resources}/emf/geronimo-application.genmodel</genmodel>
+            </configuration>
+          </execution>
+          <execution>
+            <id>execution-appclient</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <genmodel>${imported-resources}/emf/geronimo-application-client.genmodel</genmodel>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
   <dependencies>
   	<!-- g plugin dependencies -->
