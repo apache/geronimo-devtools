@@ -1,0 +1,22 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>org.apache.geronimo.feature.source</artifactId>
+  <packaging>jar</packaging>
+  <version>${org.apache.geronimo.deployment.feature_version}</version>
+  <name>Geronio Eclipse Plugin :: Feature :: ${artifactId}</name>
+  <parent>
+    <groupId>org.apache.geronimo.devtools</groupId>
+    <artifactId>geronimo-eclipse-plugin</artifactId>
+    <version>1.0</version>
+  </parent>
+  <build>
+    <resources>
+      <resource>
+        <directory>.</directory>
+        <includes>
+          <include>feature.xml</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
+</project>
