@@ -290,9 +290,9 @@
     <module>plugins/org.apache.geronimo.tomcat.j2ee.server.v1</module>
     <module>plugins/org.apache.geronimo.ui</module>
     <module>plugins/org.apache.geronimo.runtime.v1</module>
-    <!--<module>features/org.apache.geronimo.feature</module>
+    <module>features/org.apache.geronimo.feature</module>
     <module>features/org.apache.geronimo.installableruntime.j2ee.feature</module>
-    <module>features/org.apache.geronimo.installableruntime.tomcat.feature</module>-->
+    <module>features/org.apache.geronimo.installableruntime.tomcat.feature</module>
   </modules>
   
 </project>
