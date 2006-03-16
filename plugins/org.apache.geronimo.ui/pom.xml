@@ -3,7 +3,7 @@
 	<artifactId>org.apache.geronimo.ui</artifactId>
   <packaging>jar</packaging>
   <version>${org.apache.geronimo.ui_version}</version>
-  <name>${artifactId}</name>
+  <name>Geronimo Eclipse Plugin :: Plugin :: ${artifactId}</name>
   <parent>
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>geronimo-eclipse-plugin</artifactId>

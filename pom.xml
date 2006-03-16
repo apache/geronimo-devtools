@@ -23,7 +23,7 @@
   <groupId>org.apache.geronimo.devtools</groupId>
   <artifactId>geronimo-eclipse-plugin</artifactId>
   <packaging>pom</packaging>
-  <name>Geronimo Eclipse Plugin</name>
+  <name>Geronimo Eclipse Plugin :: Root POM :: ${artifactId}</name>
   <version>1.0</version>
   <description>Parent POM for Geronimo Eclipse Plugin</description>
   <url>http://geronimo.apache.org/devtools</url>
@@ -123,7 +123,8 @@
     <stax-api_version>1.0</stax-api_version>
     <junitVersion>3.8.1</junitVersion>
     <!-- Eclipse Distribution URLs -->
-    <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/R-3.1.2-200601181600/eclipse-SDK-3.1.2-macosx-carbon.tar.gz</platformUrl>
+    <platformDriverName>eclipse-SDK-3.1.2</platformDriverName>
+    <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/R-3.1.2-200601181600/${platformDriverName}</platformUrl>
     <emfUrl>http://download.eclipse.org/tools/emf/downloads/drops/2.1.2/R200601191349/emf-sdo-xsd-SDK-2.1.2.zip</emfUrl>
     <jemUrl>http://download.eclipse.org/tools/ve/downloads/drops/R-1.1.0.1-200509071822/JEM-SDK-1.1.0.1.zip</jemUrl>
     <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/R-3.1.1-200509301327/GEF-SDK-3.1.1.zip</gefUrl>
@@ -219,8 +220,8 @@
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>maven-geronimodevtools-plugin</artifactId>
         <configuration>
+          <platformUrl>${platformUrl}</platformUrl>
           <urls>
-            <url>${platformUrl}</url>
             <url>${emfUrl}</url>
             <url>${jemUrl}</url>
             <url>${gefUrl}</url>
@@ -291,7 +292,7 @@
     <module>plugins/org.apache.geronimo.ui</module>
     <module>plugins/org.apache.geronimo.runtime.v1</module>
     <module>features/org.apache.geronimo.feature</module>
-    <module>features/org.apache.geronimo.installableruntime.j2ee.feature</module>
+    <module>features/org.apache.geronimo.installableruntime.jetty.feature</module>
     <module>features/org.apache.geronimo.installableruntime.tomcat.feature</module>
   </modules>
   

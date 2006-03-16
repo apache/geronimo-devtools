@@ -20,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 
@@ -49,14 +50,21 @@ public class DownloadMojo extends AbstractMojo {
 
 	/**
 	 * @parameter
+	 * @required
 	 */
 	private URL[] urls;
+
+	/**
+	 * @parameter
+	 * @required
+	 */
+	private URL platformUrl;
 
 	private File distributionDir;
 	private File installDir;
 	private File pluginsDir;
 	private File propsFile;
-	
+
 	private Properties props;
 
 	public DownloadMojo() {
@@ -94,10 +102,25 @@ public class DownloadMojo extends AbstractMojo {
 			distributionDir.mkdirs();
 
 		load();
-		for (int i = 0; i < urls.length; i++) {
-			File distro = getRepositoryDestination(urls[i]);
+
+		URL[] allUrls = urls;
+		if (platformUrl != null) {
+			String platformDriver = platformUrl.toExternalForm()
+					+ "-" + getPlatformUrlSuffix();
+			allUrls = new URL[urls.length + 1];
+			try {
+				URL url = new URL(platformDriver);
+				System.arraycopy(urls, 0, allUrls, 0, urls.length);
+				allUrls[allUrls.length - 1] = url;
+			} catch (MalformedURLException e) {
+				throw new MojoFailureException(e.getMessage());
+			}
+		}
+
+		for (int i = 0; i < allUrls.length; i++) {
+			File distro = getRepositoryDestination(allUrls[i]);
 			if (!distro.exists()) {
-				download(urls[i]);
+				download(allUrls[i]);
 			} else {
 				getLog().info(distro.getName()
 						+ " already exists in local repository");
@@ -107,6 +130,18 @@ public class DownloadMojo extends AbstractMojo {
 		}
 		setModified();
 		save();
+	}
+
+	private String getPlatformUrlSuffix() {
+		String os = System.getProperty("os.name");
+		if (os.startsWith("Windows")) {
+			return "win32.zip";
+		} else if (os.startsWith("Linux")) {
+			return "linux-gtk.tar.gz";
+		} else if (os.startsWith("Mac")) {
+			return "macosx-carbon.tar.gz";
+		}
+		return "win32.zip";
 	}
 
 	private File getRepositoryDestination(URL url) {

@@ -4,5 +4,5 @@
   <artifactId>org.apache.geronimo.tomcat.j2ee.server.v1</artifactId>
   <packaging>jar</packaging>
   <version>${org.apache.geronimo.tomcat.j2ee.server.v1_version}</version>
-  <name>${artifactId}</name>
+  <name>Geronimo Eclipse Plugin :: Plugin :: ${artifactId}</name>
 </project>
