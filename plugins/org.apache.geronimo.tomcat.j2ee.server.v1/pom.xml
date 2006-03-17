@@ -5,4 +5,24 @@
   <packaging>jar</packaging>
   <version>${org.apache.geronimo.tomcat.j2ee.server.v1_version}</version>
   <name>Geronimo Eclipse Plugin :: Plugin :: ${artifactId}</name>
+  <build>
+    <plugins>
+        <plugin>
+          <groupId>org.apache.geronimo.devtools</groupId>
+          <artifactId>maven-geronimodevtools-plugin</artifactId>
+          <configuration>
+            <distribution>geronimo-tomcat-j2ee</distribution>
+            <version>${geronimo_version}</version>
+          </configuration>
+          <executions>
+            <execution>
+              <phase>process-resources</phase>
+              <goals>
+                <goal>getg</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+    </plugins>
+  </build>
 </project>
