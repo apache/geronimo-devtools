@@ -59,6 +59,7 @@
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>maven-geronimodevtools-plugin</artifactId>
         <configuration>
+          <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/R-3.1.2-200601181600/eclipse-SDK-3.1.2</platformUrl>
           <urls>
             <url>http://download.eclipse.org/tools/ve/downloads/drops/R-1.1.0.1-200509071822/JEM-SDK-1.1.0.1.zip</url>
             <url>http://download.eclipse.org/tools/emf/downloads/drops/2.1.2/R200601191349/emf-sdo-xsd-SDK-2.1.2.zip</url>
