@@ -61,6 +61,10 @@ public class GenModelModifierMojo extends AbstractMojo {
 	 * @see org.apache.maven.plugin.Mojo#execute()
 	 */
 	public void execute() throws MojoExecutionException, MojoFailureException {
+		
+		if(!genmodel.exists()) 
+			throw new MojoFailureException(genmodel.getAbsolutePath() + " " + "does not exist.");
+		
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		try {
@@ -73,7 +77,7 @@ public class GenModelModifierMojo extends AbstractMojo {
 				String attribute = (String) j.next();
 				String value = (String) attributes.get(attribute);
 				root.setAttribute(attribute, value);
-				getLog().info("Attribute " + attribute + " : " + value);
+				getLog().debug("Attribute " + attribute + " : " + value);
 			}
 			Source src = new DOMSource(doc);
 			Result result = new StreamResult(new FileOutputStream(genmodel));
