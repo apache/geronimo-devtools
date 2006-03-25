@@ -22,12 +22,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.tools.ant.Project;
+import org.apache.tools.ant.taskdefs.Delete;
 import org.apache.tools.ant.taskdefs.Expand;
 import org.apache.tools.ant.taskdefs.GUnzip;
 import org.apache.tools.ant.taskdefs.Get;
@@ -60,10 +64,10 @@ public class DownloadMojo extends AbstractMojo {
 	 */
 	private URL platformUrl;
 
-	private File distributionDir;
-	private File installDir;
-	private File pluginsDir;
-	private File propsFile;
+	private File distributionsDir; // ../repository/eclipse/distributions
+	private File installToDir; // ../repository/eclipse/
+	private File pluginsDir; // ../repository/eclipse/plugins
+	private File propsFile; // ../repository/eclipse/install.props
 
 	private Properties props;
 
@@ -72,17 +76,17 @@ public class DownloadMojo extends AbstractMojo {
 	}
 
 	private void init() {
-		distributionDir = new File(localRepoLoc + File.separator + DISTRO_PATH);
-		installDir = new File(localRepoLoc + File.separator
+		distributionsDir = new File(localRepoLoc + File.separator + DISTRO_PATH);
+		installToDir = new File(localRepoLoc + File.separator
 				+ ECLIPSE_INSTALL_PATH);
-		pluginsDir = new File(installDir.getAbsolutePath() + File.separator
+		pluginsDir = new File(installToDir.getAbsolutePath() + File.separator
 				+ "eclipse" + File.separator + "plugins");
-		propsFile = new File(installDir.getAbsolutePath() + File.separator
+		propsFile = new File(installToDir.getAbsolutePath() + File.separator
 				+ "install.props");
 		getLog().debug("Distribution directory: "
-				+ distributionDir.getAbsolutePath());
+				+ distributionsDir.getAbsolutePath());
 		getLog().debug("Installation directory: "
-				+ installDir.getAbsolutePath());
+				+ installToDir.getAbsolutePath());
 	}
 
 	/*
@@ -98,15 +102,15 @@ public class DownloadMojo extends AbstractMojo {
 			return;
 		}
 
-		if (!distributionDir.exists())
-			distributionDir.mkdirs();
+		if (!distributionsDir.exists())
+			distributionsDir.mkdirs();
 
 		load();
 
 		URL[] allUrls = urls;
 		if (platformUrl != null) {
-			String platformDriver = platformUrl.toExternalForm()
-					+ "-" + getPlatformUrlSuffix();
+			String platformDriver = platformUrl.toExternalForm() + "-"
+					+ getPlatformUrlSuffix();
 			allUrls = new URL[urls.length + 1];
 			try {
 				URL url = new URL(platformDriver);
@@ -117,19 +121,34 @@ public class DownloadMojo extends AbstractMojo {
 			}
 		}
 
+		List images = new ArrayList();
 		for (int i = 0; i < allUrls.length; i++) {
 			File distro = getRepositoryDestination(allUrls[i]);
+			images.add(distro);
 			if (!distro.exists()) {
 				download(allUrls[i]);
 			} else {
 				getLog().info(distro.getName()
 						+ " already exists in local repository");
 			}
-			if (shouldExtract())
-				install(distro);
 		}
+
+		if (shouldExtract()) {
+			clean();
+			Iterator i = images.iterator();
+			while (i.hasNext())
+				install((File) i.next());
+		}
+
 		setModified();
 		save();
+	}
+
+	private void clean() {
+		Delete deleteTask = new Delete();
+		deleteTask.setProject(new Project());
+		deleteTask.setDir(pluginsDir.getParentFile());
+		deleteTask.execute();
 	}
 
 	private String getPlatformUrlSuffix() {
@@ -184,14 +203,14 @@ public class DownloadMojo extends AbstractMojo {
 		if (expandTask != null) {
 			expandTask.setProject(new Project());
 			expandTask.setSrc(file);
-			expandTask.setDest(installDir);
+			expandTask.setDest(installToDir);
 			getLog().info("Extracting " + file.getAbsolutePath());
 			expandTask.execute();
 		}
 	}
 
 	private boolean shouldExtract() {
-		return distributionDir.lastModified() > getModified()
+		return distributionsDir.lastModified() > getModified()
 				|| !pluginsDir.exists()
 				|| pluginsDir.lastModified() > getModified();
 	}
