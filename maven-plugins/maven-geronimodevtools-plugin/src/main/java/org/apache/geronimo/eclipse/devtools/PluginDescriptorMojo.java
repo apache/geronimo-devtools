@@ -24,6 +24,7 @@ import java.util.Map;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -56,6 +57,12 @@ public class PluginDescriptorMojo extends AbstractMojo {
 	 * @required
 	 */
 	private Map contextMap;
+	
+	/**
+	 * @parameter expression="${project}"
+	 * @required
+	 */
+	private MavenProject project;
 
 	/*
 	 * (non-Javadoc)
@@ -65,6 +72,7 @@ public class PluginDescriptorMojo extends AbstractMojo {
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		try {
 
+			Velocity.setProperty("file.resource.loader.path", project.getBasedir().getAbsolutePath());
 			Velocity.init();
 
 			VelocityContext context = new VelocityContext();
