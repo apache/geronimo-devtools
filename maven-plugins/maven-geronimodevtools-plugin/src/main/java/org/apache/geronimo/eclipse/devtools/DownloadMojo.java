@@ -43,14 +43,8 @@ import org.apache.tools.ant.taskdefs.Untar;
  */
 public class DownloadMojo extends AbstractMojo {
 
-	private static final String ECLIPSE_INSTALL_PATH = "eclipse/";
-	private static final String DISTRO_PATH = ECLIPSE_INSTALL_PATH
-			+ "distributions/";
-
-	/**
-	 * @parameter expression="${settings.localRepository}"
-	 */
-	private String localRepoLoc;
+	private static final String TDS = "tds";
+	private static final String IDENTIFIER = "identifier";
 
 	/**
 	 * @parameter
@@ -64,29 +58,26 @@ public class DownloadMojo extends AbstractMojo {
 	 */
 	private URL platformUrl;
 
-	private File distributionsDir; // ../repository/eclipse/distributions
-	private File installToDir; // ../repository/eclipse/
-	private File pluginsDir; // ../repository/eclipse/plugins
-	private File propsFile; // ../repository/eclipse/install.props
+	/**
+	 * @parameter expression="{settings.localRepository}/eclipse/distributions"
+	 */
+	private File distributionsDir;
+
+	/**
+	 * @parameter expression="{settings.localRepository}/eclipse/"
+	 */
+	private File installLocation;
+
+	/**
+	 * @parameter expression="{settings.localRepository}/eclipse/install.props"
+	 */
+	private File propsFile;
 
 	private Properties props;
+	private long propLastModified = -1;
 
 	public DownloadMojo() {
 		super();
-	}
-
-	private void init() {
-		distributionsDir = new File(localRepoLoc + File.separator + DISTRO_PATH);
-		installToDir = new File(localRepoLoc + File.separator
-				+ ECLIPSE_INSTALL_PATH);
-		pluginsDir = new File(installToDir.getAbsolutePath() + File.separator
-				+ "eclipse" + File.separator + "plugins");
-		propsFile = new File(installToDir.getAbsolutePath() + File.separator
-				+ "install.props");
-		getLog().debug("Distribution directory: "
-				+ distributionsDir.getAbsolutePath());
-		getLog().debug("Installation directory: "
-				+ installToDir.getAbsolutePath());
 	}
 
 	/*
@@ -95,7 +86,6 @@ public class DownloadMojo extends AbstractMojo {
 	 * @see org.apache.maven.plugin.Mojo#execute()
 	 */
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		init();
 
 		if (urls == null) {
 			getLog().info("No URL's specified in configuration.  Nothing to download.");
@@ -133,21 +123,35 @@ public class DownloadMojo extends AbstractMojo {
 			}
 		}
 
-		if (shouldExtract()) {
+		int identifier = generateInstallIdentifier(images);
+
+		if (shouldExtract(identifier)) {
 			clean();
 			Iterator i = images.iterator();
 			while (i.hasNext())
 				install((File) i.next());
 		}
 
-		setModified();
+		setProperties(System.currentTimeMillis(), identifier);
 		save();
+	}
+
+	private int generateInstallIdentifier(List images) {
+		int id = 0;
+		Iterator i = images.iterator();
+		while (i.hasNext()) {
+			File file = (File) i.next();
+			id = id + file.hashCode()
+					+ (Long.toString(file.length()).hashCode());
+		}
+		return id;
 	}
 
 	private void clean() {
 		Delete deleteTask = new Delete();
 		deleteTask.setProject(new Project());
-		deleteTask.setDir(pluginsDir.getParentFile());
+		deleteTask.setDir(new File(installLocation.getAbsolutePath()
+				+ File.separator + "eclipse"));
 		deleteTask.execute();
 	}
 
@@ -164,9 +168,8 @@ public class DownloadMojo extends AbstractMojo {
 	}
 
 	private File getRepositoryDestination(URL url) {
-		File file = new File(url.getFile());
-		return new File(localRepoLoc + File.separator + DISTRO_PATH
-				+ file.getName());
+		return new File(distributionsDir.getAbsolutePath() + File.separator
+				+ new File(url.getFile()).getName());
 	}
 
 	private void download(URL url) {
@@ -174,7 +177,7 @@ public class DownloadMojo extends AbstractMojo {
 		getTask.setProject(new Project());
 		getTask.setSrc(url);
 		getTask.setDest(getRepositoryDestination(url));
-		getLog().info("Downloading " + url.toExternalForm() + "...");
+		getLog().info("Downloading " + url.toExternalForm() + " ...");
 		getTask.execute();
 	}
 
@@ -203,27 +206,59 @@ public class DownloadMojo extends AbstractMojo {
 		if (expandTask != null) {
 			expandTask.setProject(new Project());
 			expandTask.setSrc(file);
-			expandTask.setDest(installToDir);
+			expandTask.setDest(installLocation);
 			getLog().info("Extracting " + file.getAbsolutePath());
 			expandTask.execute();
 		}
 	}
 
-	private boolean shouldExtract() {
-		return distributionsDir.lastModified() > getModified()
-				|| !pluginsDir.exists()
-				|| pluginsDir.lastModified() > getModified();
+	private boolean shouldExtract(int identifier) {
+		if (identifier != getInstallIdentifier())
+			return true;
+
+		File installImage = new File(installLocation.getAbsolutePath()
+				+ File.separator + "eclipse");
+		if (!installImage.exists()
+				|| installImage.lastModified() > getModified())
+			return true;
+
+		return isModified(installImage);
 	}
 
-	private void setModified() {
-		long tds = System.currentTimeMillis();
-		props.put("tds", Long.toString(tds));
+	private boolean isModified(File file) {
+		boolean modified = file.lastModified() > getModified();
+		File[] children = file.listFiles();
+		if (!modified && children != null) {
+			for (int i = 0; i < children.length; i++) {
+				if (children[i].isDirectory()) {
+					modified = isModified(children[i]);
+					if (modified)
+						break;
+				}
+			}
+		}
+		return modified;
+	}
+
+	private void setProperties(long tds, int identifier) {
+		props.put(TDS, Long.toString(System.currentTimeMillis()));
+		props.put(IDENTIFIER, Integer.toString(identifier));
 	}
 
 	private long getModified() {
-		String tds = (String) props.get("tds");
-		if (tds != null)
-			return Long.parseLong(tds);
+		if (propLastModified == -1) {
+			String tds = (String) props.get(TDS);
+			if (tds != null)
+				return Long.parseLong(tds);
+			propLastModified = 0;
+		}
+		return propLastModified;
+	}
+
+	private int getInstallIdentifier() {
+		String identifer = (String) props.get(IDENTIFIER);
+		if (identifer != null)
+			return Integer.parseInt(identifer);
 		return 0;
 	}
 
