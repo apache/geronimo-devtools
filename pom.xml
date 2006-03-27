@@ -123,15 +123,16 @@
     <stax-api_version>1.0</stax-api_version>
     <junitVersion>3.8.1</junitVersion>
     <!-- Eclipse Distribution URLs -->
-    <platformDriverName>eclipse-SDK-3.1.2</platformDriverName>
-    <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/R-3.1.2-200601181600/${platformDriverName}</platformUrl>
+    <!--<platformDriver>R-3.1.2-200601181600/eclipse-SDK-3.1.2</platformDriver>-->
+    <platformDriver>S-3.2M5a-200602231656/eclipse-SDK-3.2M5a</platformDriver>
+    <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/${platformDriver}</platformUrl>
     <emfUrl>http://download.eclipse.org/tools/emf/downloads/drops/2.1.2/R200601191349/emf-sdo-xsd-SDK-2.1.2.zip</emfUrl>
     <jemUrl>http://download.eclipse.org/tools/ve/downloads/drops/R-1.1.0.1-200509071822/JEM-SDK-1.1.0.1.zip</jemUrl>
     <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/R-3.1.1-200509301327/GEF-SDK-3.1.1.zip</gefUrl>
     <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/R-1.0.1-200602171228/wtp-sdk-R-1.0.1-200602171228.zip</wtpUrl>
     <!-- Eclipse Project Distro Versions -->
-    <platformVersion>3.1.2</platformVersion>
-    <emfVersion>[2.1.0,2.1.2)</emfVersion>
+    <platformVersion>[3.1.2,)</platformVersion>
+    <emfVersion>[2.1.0,)</emfVersion>
     <jemVersion>3.1.1</jemVersion>
     <wtpVersion>1.1.0.1</wtpVersion>
     <!-- Eclipse Platform Dependencies -->
