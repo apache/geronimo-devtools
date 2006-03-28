@@ -59,17 +59,17 @@ public class DownloadMojo extends AbstractMojo {
 	private URL platformUrl;
 
 	/**
-	 * @parameter expression="{settings.localRepository}/eclipse/distributions"
+	 * @parameter expression="${settings.localRepository}/eclipse/distributions"
 	 */
 	private File distributionsDir;
 
 	/**
-	 * @parameter expression="{settings.localRepository}/eclipse/"
+	 * @parameter expression="${settings.localRepository}/eclipse/"
 	 */
 	private File installLocation;
 
 	/**
-	 * @parameter expression="{settings.localRepository}/eclipse/install.props"
+	 * @parameter expression="${settings.localRepository}/eclipse/install.props"
 	 */
 	private File propsFile;
 
