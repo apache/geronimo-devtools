@@ -73,6 +73,11 @@ public class DownloadMojo extends AbstractMojo {
 	 */
 	private File propsFile;
 
+	/**
+	 * @parameter expression="${install}"
+	 */
+	private boolean install = true;
+
 	private Properties props;
 	private long propLastModified = -1;
 
@@ -94,8 +99,6 @@ public class DownloadMojo extends AbstractMojo {
 
 		if (!distributionsDir.exists())
 			distributionsDir.mkdirs();
-
-		load();
 
 		URL[] allUrls = urls;
 		if (platformUrl != null) {
@@ -123,17 +126,19 @@ public class DownloadMojo extends AbstractMojo {
 			}
 		}
 
-		int identifier = generateInstallIdentifier(images);
+		if (install) {
+			int identifier = generateInstallIdentifier(images);
+			load();
+			if (shouldExtract(identifier)) {
+				clean();
+				Iterator i = images.iterator();
+				while (i.hasNext())
+					install((File) i.next());
+			}
 
-		if (shouldExtract(identifier)) {
-			clean();
-			Iterator i = images.iterator();
-			while (i.hasNext())
-				install((File) i.next());
+			setProperties(System.currentTimeMillis(), identifier);
+			save();
 		}
-
-		setProperties(System.currentTimeMillis(), identifier);
-		save();
 	}
 
 	private int generateInstallIdentifier(List images) {
