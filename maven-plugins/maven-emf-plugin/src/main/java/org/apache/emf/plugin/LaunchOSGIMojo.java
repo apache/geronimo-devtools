@@ -17,19 +17,30 @@ package org.apache.emf.plugin;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
-import org.eclipse.core.runtime.adaptor.EclipseStarter;
-import org.eclipse.core.runtime.adaptor.LocationManager;
 
 abstract public class LaunchOSGIMojo extends AbstractMojo {
+
+	public static final String PROP_CLEAN = "osgi.clean";
+	public static final String PROP_CONSOLE_LOG = "eclipse.consoleLog";
+	public static final String PROP_FRAMEWORK = "osgi.framework";
+	public static final String PROP_INSTALL_AREA = "osgi.install.area";
+	public static final String PROP_INSTANCE_AREA = "osgi.instance.area";
+	public static final String PROP_APPLICATION_ID = "eclipse.application";
+	public static final String PROP_USE_SYS_PROPS = "osgi.framework.useSystemProperties";
+	public static final String STARTER = "org.eclipse.core.runtime.adaptor.EclipseStarter";
 
 	/**
 	 * @parameter expression="${settings.localRepository}/eclipse/eclipse"
@@ -63,15 +74,6 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 			throw new MojoFailureException("OSGI bundle not found");
 		}
 
-		if (getLog().isDebugEnabled())
-			System.setProperty(EclipseStarter.PROP_CONSOLE_LOG, "true");
-
-		System.setProperty(EclipseStarter.PROP_CLEAN, "true");
-		System.setProperty(EclipseStarter.PROP_INSTALL_AREA, eclipseHome.getAbsolutePath());
-		System.setProperty(EclipseStarter.PROP_FRAMEWORK, osgi.toExternalForm());
-		System.setProperty(LocationManager.PROP_INSTANCE_AREA, workspace.getAbsolutePath());
-		System.setProperty("eclipse.application", getApplicationID());
-
 		validate();
 
 		String[] args = getArguments();
@@ -79,17 +81,29 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 			args = new String[] {};
 
 		getLog().debug(Arrays.asList(args).toString());
-		
+
+		System.setProperty(PROP_USE_SYS_PROPS, "true");
+
 		try {
-			//workaround for bugzilla 107909
-			System.setProperty(EclipseStarter.PROP_NOSHUTDOWN, "true"); 
-			EclipseStarter.run(args);
-		} catch (IllegalStateException e) {
-			try {
-				EclipseStarter.run(args, null);
-			} catch (Exception e1) {
-				throw new MojoFailureException(e.getMessage());
-			}
+			Map initalPropertyMap = new HashMap();
+			if (getLog().isDebugEnabled())
+				initalPropertyMap.put(PROP_CONSOLE_LOG, "true");
+			initalPropertyMap.put(PROP_CLEAN, "true");
+			initalPropertyMap.put(PROP_INSTALL_AREA, eclipseHome.toURL().toExternalForm());
+			initalPropertyMap.put(PROP_FRAMEWORK, osgi.toExternalForm());
+			initalPropertyMap.put(PROP_INSTANCE_AREA, workspace.toURL().toExternalForm());
+			initalPropertyMap.put(PROP_APPLICATION_ID, getApplicationID());
+
+			URL[] osgiURLArray = { new URL((String) initalPropertyMap.get(PROP_FRAMEWORK)) };
+			URLClassLoader frameworkClassLoader = new URLClassLoader(osgiURLArray);
+			Class clazz = frameworkClassLoader.loadClass(STARTER);
+
+			Method setInitialProperties = clazz.getMethod("setInitialProperties", new Class[] { Map.class });
+			setInitialProperties.invoke(null, new Object[] { initalPropertyMap });
+
+			Method runMethod = clazz.getMethod("run", new Class[] {
+					String[].class, Runnable.class });
+			runMethod.invoke(null, new Object[] { args, null });
 		} catch (Exception e) {
 			throw new MojoFailureException(e.getMessage());
 		}

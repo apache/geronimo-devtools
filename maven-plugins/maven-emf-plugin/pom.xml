@@ -21,11 +21,6 @@
       <artifactId>ant</artifactId>
       <version>1.6.5</version>
     </dependency>
-    <dependency>
-      <groupId>eclipse</groupId>
-      <artifactId>org.eclipse.osgi</artifactId>
-      <version>3.2.0.v20060214</version>
-    </dependency>
     <!-- Dependencies for Crimson DOM Bug Workaround -->
     <dependency>
       <groupId>xerces</groupId>
