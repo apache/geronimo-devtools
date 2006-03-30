@@ -149,7 +149,6 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 				File bundle = getBundle(file, depth);
 				if (getArtifactID(file, bundle).equals(dependency.getArtifactId())) {
 					install(file, bundle);
-					//if ("DISTRO".equals(dependency.getVersion()))
 					if(useDistributionVersion)
 						dependency.setVersion(getBundleVersion(bundle));
 				}
@@ -161,7 +160,10 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 
 		String artifactId = getArtifactID(artifact, bundle);
 		String version = getBundleVersion(bundle);
-
+		
+		if(!useDistributionVersion) 
+			version = fixVersion(version);
+		
 		try {
 			doIt(artifact, GROUP_ID, artifactId, version, "jar");
 		} catch (MojoExecutionException e) {
@@ -169,6 +171,24 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		} catch (MojoFailureException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Converts eclipse qualifier convention to maven convention.
+	 * 
+	 * major.minor.revision.qualifier is converted to major.minor.revision-build where
+	 * build is the eclipse qualifier with all non-numeric characters removed.
+	 * 
+	 * @param version
+	 * @return
+	 */
+	public static String fixVersion(String version) {
+		int qualifierIndex = version.indexOf(".", 5);
+		if(qualifierIndex == -1)  
+			return version; //has no qualifier
+		String eclipseQualifier = version.substring(qualifierIndex + 1);
+		String newQualifier = eclipseQualifier.replaceAll("[^\\d]", "");
+		return version.substring(0, qualifierIndex) + "-" + newQualifier;
 	}
 
 	protected File getBundle(File file, int depth) {
