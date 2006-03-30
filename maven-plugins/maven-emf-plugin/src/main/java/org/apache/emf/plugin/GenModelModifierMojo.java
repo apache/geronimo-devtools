@@ -34,7 +34,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
@@ -45,33 +44,17 @@ import org.w3c.dom.NodeList;
  */
 public class GenModelModifierMojo extends AbstractMojo {
 
-	public static final String EMF = "/Users/sppatel/work/geronimo-emf-common/target/classes/emf/";
-	public static final String G = "geronimo-web.genmodel";
-
 	/**
 	 * @parameter
 	 * @required
 	 */
-	private File genmodel = new File(EMF + G);
+	private File genmodel;
 
 	/**
 	 * @parameter
 	 * @required
 	 */
 	private Map attributes;
-
-	public static void main(String[] args) {
-		GenModelModifierMojo mojo = new GenModelModifierMojo();
-		try {
-			mojo.execute();
-		} catch (MojoExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MojoFailureException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	/*
 	 * (non-Javadoc)
