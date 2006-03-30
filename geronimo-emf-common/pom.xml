@@ -9,6 +9,13 @@
     <artifactId>geronimo-eclipse-plugin</artifactId>
     <version>1.0</version>
   </parent>
+  
+  <!--TODO remove following properties after 3.2 migration -->
+  <properties>
+    <installLocation>${settings.localRepository}/eclipse/temp/</installLocation>
+    <platformDriver>I20060329-0800/eclipse-SDK-I20060329-0800</platformDriver>
+  </properties>
+  
   <build>
     <resources>
       <resource>
@@ -31,10 +38,28 @@
         </configuration>
         <executions>
           <execution>
+            <id>import-resources</id>
             <phase>process-resources</phase>
             <goals>
               <goal>importresources</goal>
             </goals>
+          </execution>
+          <!-- TODO remove following execution after 3.2 migration
+          need for running osgi under 3.2 due to platform bugs -->
+          <execution>
+            <id>create-eclipse-image</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>download</goal>
+            </goals>
+            <configuration>
+              <platformUrl>${platformUrl}</platformUrl>
+              <urls>
+                <url>${emfUrl}</url>
+              </urls>
+              <installLocation>${installLocation}</installLocation>
+              <propsFile>${installLocation}/install.props</propsFile>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -79,6 +104,8 @@
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>maven-emf-plugin</artifactId>
         <configuration>
+          <!-- TODO remove <eclipseHome> after 3.2 migration -->
+          <eclipseHome>${installLocation}/eclipse</eclipseHome>
           <workspace>${project.build.directory}/workspace</workspace>
           <modelProject>${project.build.directory}/org.apache.geronimo.deployment.model</modelProject>
           <editProject>${project.build.directory}/org.apache.geronimo.deployment.model.edit</editProject>
