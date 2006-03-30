@@ -34,6 +34,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Utility mojo that sets attributes in the generated .genmodel that are not
@@ -43,11 +45,14 @@ import org.w3c.dom.Element;
  */
 public class GenModelModifierMojo extends AbstractMojo {
 
+	public static final String EMF = "/Users/sppatel/work/geronimo-emf-common/target/classes/emf/";
+	public static final String G = "geronimo-web.genmodel";
+
 	/**
 	 * @parameter
 	 * @required
 	 */
-	private File genmodel;
+	private File genmodel = new File(EMF + G);
 
 	/**
 	 * @parameter
@@ -55,33 +60,51 @@ public class GenModelModifierMojo extends AbstractMojo {
 	 */
 	private Map attributes;
 
+	public static void main(String[] args) {
+		GenModelModifierMojo mojo = new GenModelModifierMojo();
+		try {
+			mojo.execute();
+		} catch (MojoExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MojoFailureException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.apache.maven.plugin.Mojo#execute()
 	 */
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		
-		if(!genmodel.exists()) 
-			throw new MojoFailureException(genmodel.getAbsolutePath() + " " + "does not exist.");
-		
+
+		if (!genmodel.exists())
+			throw new MojoFailureException(genmodel.getAbsolutePath() + " "
+					+ "does not exist.");
+
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		try {
 			DocumentBuilder builder = docBuilderFactory.newDocumentBuilder();
 			Transformer transformer = transformerFactory.newTransformer();
 			Document doc = builder.parse(genmodel);
-			Element root = doc.getDocumentElement();
-			Iterator j = attributes.keySet().iterator();
-			while (j.hasNext()) {
-				String attribute = (String) j.next();
-				String value = (String) attributes.get(attribute);
-				root.setAttribute(attribute, value);
-				getLog().debug("Attribute " + attribute + " : " + value);
+
+			NodeList nodeList = doc.getElementsByTagName("genmodel:GenModel");
+			Element element = (Element) nodeList.item(0);
+			if (element != null) {
+				Iterator j = attributes.keySet().iterator();
+				while (j.hasNext()) {
+					String attribute = (String) j.next();
+					String value = (String) attributes.get(attribute);
+					element.setAttribute(attribute, value);
+					getLog().debug("Attribute " + attribute + " : " + value);
+				}
+				Source src = new DOMSource(doc);
+				Result result = new StreamResult(new FileOutputStream(genmodel));
+				transformer.transform(src, result);
 			}
-			Source src = new DOMSource(doc);
-			Result result = new StreamResult(new FileOutputStream(genmodel));
-			transformer.transform(src, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new MojoFailureException(e.getMessage());

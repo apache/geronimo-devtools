@@ -44,17 +44,17 @@ public class XSDImporterMojo extends LaunchOSGIMojo {
 	/**
 	 * @parameter
 	 */
-	protected String modelProject;
+	protected File modelProject;
 
 	/**
 	 * @parameter
 	 */
-	protected String editProject;
+	protected File editProject;
 
 	/**
 	 * @parameter
 	 */
-	protected String editorProject;
+	protected File editorProject;
 
 	/**
 	 * @parameter

@@ -74,9 +74,14 @@ public class DownloadMojo extends AbstractMojo {
 	private File propsFile;
 
 	/**
-	 * @parameter expression="${install}"
+	 * @parameter expression="${forceInstall}"
 	 */
-	private boolean install = true;
+	private boolean forceInstall = false;
+
+	/**
+	 * @parameter expression="${checkModified}"
+	 */
+	private boolean checkModified = true;
 
 	private Properties props;
 	private long propLastModified = -1;
@@ -126,19 +131,17 @@ public class DownloadMojo extends AbstractMojo {
 			}
 		}
 
-		if (install) {
-			int identifier = generateInstallIdentifier(images);
+		int identifier = generateInstallIdentifier(images);
+		if (forceInstall || shouldExtract(identifier)) {
 			load();
-			if (shouldExtract(identifier)) {
-				clean();
-				Iterator i = images.iterator();
-				while (i.hasNext())
-					install((File) i.next());
-			}
-
+			clean();
+			Iterator i = images.iterator();
+			while (i.hasNext())
+				install((File) i.next());
 			setProperties(System.currentTimeMillis(), identifier);
 			save();
 		}
+
 	}
 
 	private int generateInstallIdentifier(List images) {
@@ -223,14 +226,17 @@ public class DownloadMojo extends AbstractMojo {
 
 		File installImage = new File(installLocation.getAbsolutePath()
 				+ File.separator + "eclipse");
-		if (!installImage.exists()
-				|| installImage.lastModified() > getModified())
+
+		if (!installImage.exists())
 			return true;
 
-		return isModified(installImage);
+		return checkModified
+				&& isModified(new File(installImage.getAbsolutePath()
+						+ File.separator + "plugins"));
 	}
 
 	private boolean isModified(File file) {
+
 		boolean modified = file.lastModified() > getModified();
 		File[] children = file.listFiles();
 		if (!modified && children != null) {
