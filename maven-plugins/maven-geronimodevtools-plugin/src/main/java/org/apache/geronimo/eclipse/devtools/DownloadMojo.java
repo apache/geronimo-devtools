@@ -131,9 +131,9 @@ public class DownloadMojo extends AbstractMojo {
 			}
 		}
 
+		load();
 		int identifier = generateInstallIdentifier(images);
 		if (forceInstall || shouldExtract(identifier)) {
-			load();
 			clean();
 			Iterator i = images.iterator();
 			while (i.hasNext())

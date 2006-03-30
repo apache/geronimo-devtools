@@ -124,7 +124,7 @@
     <junitVersion>3.8.1</junitVersion>
     <!-- Eclipse Distribution URLs -->
     <!--<platformDriver>R-3.1.2-200601181600/eclipse-SDK-3.1.2</platformDriver>-->
-    <platformDriver>S-3.2M5a-200602231656/eclipse-SDK-3.2M5a</platformDriver>
+    <platformDriver>I20060329-0800/eclipse-SDK-I20060329-0800</platformDriver>
     <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/${platformDriver}</platformUrl>
     <emfUrl>http://download.eclipse.org/tools/emf/downloads/drops/2.1.2/R200601191349/emf-sdo-xsd-SDK-2.1.2.zip</emfUrl>
     <jemUrl>http://download.eclipse.org/tools/ve/downloads/drops/R-1.1.0.1-200509071822/JEM-SDK-1.1.0.1.zip</jemUrl>
