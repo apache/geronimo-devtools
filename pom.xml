@@ -29,7 +29,7 @@
   <url>http://geronimo.apache.org/devtools</url>
   
   <prerequisites>
-    <maven>2.0.3-SNAPSHOT</maven>
+    <maven>2.0.3</maven>
   </prerequisites>
 
   <issueManagement>
@@ -123,8 +123,8 @@
     <stax-api_version>1.0</stax-api_version>
     <junitVersion>3.8.1</junitVersion>
     <!-- Eclipse Distribution URLs -->
-    <!--<platformDriver>R-3.1.2-200601181600/eclipse-SDK-3.1.2</platformDriver>-->
-    <platformDriver>I20060329-0800/eclipse-SDK-I20060329-0800</platformDriver>
+    <platformDriver>R-3.1.2-200601181600/eclipse-SDK-3.1.2</platformDriver>
+    <!--<platformDriver>I20060329-0800/eclipse-SDK-I20060329-0800</platformDriver>-->
     <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/${platformDriver}</platformUrl>
     <emfUrl>http://download.eclipse.org/tools/emf/downloads/drops/2.1.2/R200601191349/emf-sdo-xsd-SDK-2.1.2.zip</emfUrl>
     <jemUrl>http://download.eclipse.org/tools/ve/downloads/drops/R-1.1.0.1-200509071822/JEM-SDK-1.1.0.1.zip</jemUrl>
@@ -133,8 +133,8 @@
     <!-- Eclipse Project Distro Versions -->
     <platformVersion>[3.1.2,)</platformVersion>
     <emfVersion>[2.1.0,)</emfVersion>
-    <jemVersion>3.1.1</jemVersion>
-    <wtpVersion>1.1.0.1</wtpVersion>
+    <jemVersion>1.0.1-1</jemVersion>
+    <wtpVersion>1.0.1</wtpVersion>
     <!-- Eclipse Platform Dependencies -->
     <org.eclipse.core.runtime_version>${platformVersion}</org.eclipse.core.runtime_version>
     <org.eclipse.core.resources_version>${platformVersion}</org.eclipse.core.resources_version>
@@ -216,32 +216,6 @@
   <build>
     <defaultGoal>install</defaultGoal>
     <sourceDirectory>src/</sourceDirectory>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.geronimo.devtools</groupId>
-        <artifactId>maven-geronimodevtools-plugin</artifactId>
-        <configuration>
-          <platformUrl>${platformUrl}</platformUrl>
-          <urls>
-            <url>${emfUrl}</url>
-            <url>${jemUrl}</url>
-            <url>${gefUrl}</url>
-            <url>${wtpUrl}</url>
-          </urls>
-          <eclipsehome>${settings.localRepository}/eclipse/eclipse/</eclipsehome>
-          <versionType>snapshot</versionType>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>download</goal>
-              <goal>install</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
   </build>
   
   <repositories>
@@ -285,13 +259,7 @@
 
   <modules>
     <module>geronimo-emf-common</module>
-    <module>plugins/org.apache.geronimo.deployment.model</module>
-    <module>plugins/org.apache.geronimo.deployment.model.edit</module>
-    <module>plugins/org.apache.geronimo.devtools.eclipse.core</module>
-    <module>plugins/org.apache.geronimo.jetty.j2ee.server.v1</module>
-    <module>plugins/org.apache.geronimo.tomcat.j2ee.server.v1</module>
-    <module>plugins/org.apache.geronimo.ui</module>
-    <module>plugins/org.apache.geronimo.runtime.v1</module>
+    <module>plugins/</module>
     <module>features/org.apache.geronimo.feature</module>
     <module>features/org.apache.geronimo.installableruntime.jetty.feature</module>
     <module>features/org.apache.geronimo.installableruntime.tomcat.feature</module>

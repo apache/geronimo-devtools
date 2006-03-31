@@ -54,9 +54,9 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 	private MavenProject project;
 
 	/**
-	 * @parameter expression="${eclipse.home}"
+	 * @parameter expression="${eclipseHome}"
 	 */
-	private File eclipsehome;
+	private File eclipseHome;
 
 	/**
 	 * @parameter expression="${component.org.apache.maven.artifact.factory.ArtifactFactory}"
@@ -97,9 +97,9 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 
 		if (!isValid())
 			throw new MojoFailureException("Eclipse home directory is not valid. "
-					+ eclipsehome);
+					+ eclipseHome);
 
-		File pluginsDir = new File(eclipsehome.getAbsolutePath().concat(File.separator
+		File pluginsDir = new File(eclipseHome.getAbsolutePath().concat(File.separator
 				+ "plugins"));
 
 		processDependenciesOnly(pluginsDir);
@@ -133,7 +133,7 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 	}
 
 	protected boolean isValid() {
-		return eclipsehome != null && eclipsehome.isDirectory();
+		return eclipseHome != null && eclipseHome.isDirectory();
 	}
 
 	protected void process(File file, int depth, Dependency dependency) {

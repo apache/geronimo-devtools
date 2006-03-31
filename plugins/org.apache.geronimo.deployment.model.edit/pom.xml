@@ -6,7 +6,7 @@
   <name>Geronimo Eclipse Plugin :: Plugin :: ${artifactId}</name>
   <parent>
     <groupId>org.apache.geronimo.devtools</groupId>
-    <artifactId>geronimo-eclipse-plugin</artifactId>
+    <artifactId>eclipse-plugins-parent</artifactId>
     <version>1.0</version>
   </parent>
   <properties>
@@ -27,7 +27,40 @@
         </includes>
       </resource>
     </resources>
+    
     <plugins>
+      <plugin>
+        <groupId>org.apache.geronimo.devtools</groupId>
+        <artifactId>maven-geronimodevtools-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>install-dependencies</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>download</goal>
+              <goal>install</goal>
+            </goals>
+          </execution>
+          <!-- TODO remove following execution after 3.2 migration
+          need for running osgi under 3.2 due to platform bugs -->
+          <execution>
+            <id>create-emf-image</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>download</goal>
+            </goals>
+            <configuration>
+              <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/I20060329-0800/eclipse-SDK-I20060329-0800</platformUrl>
+              <urls>
+                <url>${emfUrl}</url>
+              </urls>
+              <installLocation>${settings.localRepository}/eclipse/temp/</installLocation>
+              <propsFile>${settings.localRepository}/eclipse/temp/install.props</propsFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -37,6 +70,7 @@
           </archive>
         </configuration>
       </plugin>
+      
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>dependency-maven-plugin</artifactId>
@@ -60,12 +94,14 @@
           <outputDirectory>${imported-resources}</outputDirectory>
         </configuration>
       </plugin>
+      
       <plugin>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>maven-emf-plugin</artifactId>
         <configuration>
+          <!-- TODO remove <eclipseHome> after 3.2 migration -->
+          <eclipseHome>${settings.localRepository}/eclipse/temp/eclipse</eclipseHome>
           <workspace>${project.basedir}/..</workspace>
-          <!--<projectRootDirectory>${project.basedir}/..</projectRootDirectory>-->
           <type>edit</type>
         </configuration>
         <executions>
