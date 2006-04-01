@@ -5,6 +5,11 @@
   <packaging>jar</packaging>
   <version>${org.apache.geronimo.tomcat.j2ee.server.v1_version}</version>
   <name>Geronimo Eclipse Plugin :: Plugin :: ${artifactId}</name>
+  <parent>
+    <groupId>org.apache.geronimo.devtools</groupId>
+    <artifactId>geronimo-eclipse-plugin</artifactId>
+    <version>1.0</version>
+  </parent>
   <build>
     <plugins>
         <plugin>
