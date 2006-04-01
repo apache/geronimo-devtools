@@ -171,6 +171,7 @@
     <org.eclipse.wst.common.frameworks_version>${wtpVersion}</org.eclipse.wst.common.frameworks_version>
     <org.eclipse.wst.server.ui_version>${wtpVersion}</org.eclipse.wst.server.ui_version>
     <org.eclipse.jst.server.core_version>${wtpVersion}</org.eclipse.jst.server.core_version>
+    <org.eclipse.jst.j2ee_version>${wtpVersion}</org.eclipse.jst.j2ee_version>
     <org.eclipse.jst.j2ee.web_version>${wtpVersion}</org.eclipse.jst.j2ee.web_version>
     <org.eclipse.jst.j2ee.ejb_version>${wtpVersion}</org.eclipse.jst.j2ee.ejb_version>
     <org.eclipse.jst.j2ee.jca_version>${wtpVersion}</org.eclipse.jst.j2ee.jca_version>

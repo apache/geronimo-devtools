@@ -131,7 +131,12 @@
       <groupId>org.eclipse.plugins</groupId>
       <artifactId>org.eclipse.wst.web</artifactId>
       <version>${org.eclipse.wst.web_version}</version>
-    </dependency>    
+    </dependency> 
+    <dependency>
+      <groupId>org.eclipse.plugins</groupId>
+      <artifactId>org.eclipse.jst.j2ee</artifactId>
+      <version>${org.eclipse.jst.j2ee_version}</version>
+    </dependency>     
     <dependency>
       <groupId>org.eclipse.plugins</groupId>
       <artifactId>org.eclipse.jst.j2ee.web</artifactId>

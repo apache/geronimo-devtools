@@ -139,28 +139,51 @@
           </execution>
         </executions>
       </plugin>
-        <plugin>
-          <groupId>org.apache.geronimo.devtools</groupId>
-          <artifactId>maven-geronimodevtools-plugin</artifactId>
-          <configuration>
-            <templateFile>pluginXmlTemplate.vm</templateFile>
-            <destFile>plugin.xml</destFile>
-            <libDir>lib</libDir>
-            <contextMap>
-              <id>${artifactId}</id>
-              <name>Apache Geronimo Runtime V${version} Plug-in</name>
-              <version>${version}</version>
-            </contextMap>
-          </configuration>
-          <executions>
-            <execution>
-              <phase>process-resources</phase>
-              <goals>
-                <goal>pluginxml</goal>
-              </goals>
-            </execution>
-          </executions>
+      <plugin>
+        <groupId>org.apache.geronimo.devtools</groupId>
+        <artifactId>maven-geronimodevtools-plugin</artifactId>
+        <configuration>
+          <templateFile>pluginXmlTemplate.vm</templateFile>
+          <destFile>plugin.xml</destFile>
+          <libDir>lib</libDir>
+          <contextMap>
+            <id>${artifactId}</id>
+            <name>Apache Geronimo Runtime V${version} Plug-in</name>
+            <version>${version}</version>
+          </contextMap>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>pluginxml</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
+  
+  <dependencies>
+    <dependency>
+      <groupId>geronimo</groupId>
+      <artifactId>geronimo-kernel</artifactId>
+      <version>${geronimo_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>geronimo</groupId>
+      <artifactId>geronimo-deploy-jsr88</artifactId>
+      <version>${geronimo_version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.geronimo.specs</groupId>
+        <artifactId>geronimo-j2ee-deployment_1.1_spec</artifactId>
+        <version>${geronimo_spec_version}</version>
+    </dependency>
+    <dependency>
+        <groupId>openejb</groupId>
+        <artifactId>openejb-builder</artifactId>
+        <version>${openejb_version}</version>
+    </dependency>
+  </dependencies>
 </project>
