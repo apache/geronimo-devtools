@@ -23,18 +23,13 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.taskdefs.Delete;
 
 abstract public class LaunchOSGIMojo extends AbstractMojo {
 
@@ -151,19 +146,5 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 
 	protected void validate() throws MojoFailureException {
 
-	}
-	
-	private int getTotalExecutions() {
-		int totalExecutions = 0;
-		List plugins = mavenProject.getBuild().getPlugins();
-		Iterator i = plugins.iterator();
-		while(i.hasNext()) {
-			Plugin plugin = (Plugin) i.next();
-			if(plugin.getArtifactId().equals("maven-emf-plugin")) {
-				totalExecutions = plugin.getExecutions().size();
-				break;
-			}
-		}
-		return totalExecutions;
 	}
 }
