@@ -18,5 +18,19 @@
         </includes>
       </resource>
     </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <projectnatures>
+            <projectnature>org.eclipse.pde.FeatureNature</projectnature>
+          </projectnatures>
+          <buildcommands>
+            <java.lang.String>org.eclipse.pde.FeatureBuilder</java.lang.String>
+          </buildcommands>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 </project>
