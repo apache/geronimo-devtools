@@ -59,10 +59,14 @@
             <projectnature>org.eclipse.jdt.core.javanature</projectnature>
           </projectnatures>
           <buildcommands>
-            <java.lang.String>org.eclipse.jdt.core.javabuilder</java.lang.String>
-            <java.lang.String>org.eclipse.pde.ManifestBuilder</java.lang.String>
-            <java.lang.String>org.eclipse.pde.SchemaBuilder</java.lang.String>
+            <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
+            <buildcommand>org.eclipse.pde.ManifestBuilder</buildcommand>
+            <buildcommand>org.eclipse.pde.SchemaBuilder</buildcommand>
           </buildcommands>
+          <classpathContainers>
+            <java.lang.String>org.eclipse.jdt.launching.JRE_CONTAINER</java.lang.String>
+            <java.lang.String>org.eclipse.pde.core.requiredPlugins</java.lang.String>
+          </classpathContainers>
         </configuration>
       </plugin>
     </plugins>

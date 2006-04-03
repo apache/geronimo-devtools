@@ -27,7 +27,7 @@
             <projectnature>org.eclipse.pde.FeatureNature</projectnature>
           </projectnatures>
           <buildcommands>
-            <java.lang.String>org.eclipse.pde.FeatureBuilder</java.lang.String>
+            <buildcommand>org.eclipse.pde.FeatureBuilder</buildcommand>
           </buildcommands>
         </configuration>
       </plugin>
