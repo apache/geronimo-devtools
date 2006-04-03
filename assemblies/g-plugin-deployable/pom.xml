@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2006 The Apache Software Foundation
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<!-- $Rev$ $Date$ -->
+
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.geronimo.devtools</groupId>
+  <artifactId>g-plugin-deployable</artifactId>
+  <packaging>zip</packaging>
+  <name>Geronimo Eclipse Plugin :: Assembly :: ${artifactId}</name>
+  <version>1.0</version>
+ <parent>
+    <groupId>org.apache.geronimo.devtools</groupId>
+    <artifactId>geronimo-eclipse-plugin</artifactId> 
+    <version>1.0</version>
+  </parent>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.geronimo.devtools</groupId>
+        <artifactId>maven-geronimodevtools-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>createdeployable</goal>
+            </goals>
+            <configuration>
+              <explodedBundles>
+                <explodedBundle>org.apache.geronimo.runtime.v1</explodedBundle>
+              </explodedBundles>
+            </configuration>
+          </execution>
+        </executions>     
+      </plugin>
+    </plugins>
+  </build>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.devtools.eclipse.core</artifactId>
+      <version>${org.apache.geronimo.devtools.eclipse.core_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.deployment.model</artifactId>
+      <version>${org.apache.geronimo.deployment.model_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.deployment.model.edit</artifactId>
+      <version>${org.apache.geronimo.deployment.model.edit_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.feature</artifactId>
+      <version>${org.apache.geronimo.feature_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.installableruntime.jetty.feature</artifactId>
+      <version>${org.apache.geronimo.installableruntime.jetty.feature_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.installableruntime.tomcat.feature</artifactId>
+      <version>${org.apache.geronimo.installableruntime.tomcat.feature_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.runtime.v1</artifactId>
+      <version>${org.apache.geronimo.runtime.v1_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.tomcat.j2ee.server.v1</artifactId>
+      <version>${org.apache.geronimo.tomcat.j2ee.server.v1_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.jetty.j2ee.server.v1</artifactId>
+      <version>${org.apache.geronimo.jetty.j2ee.server.v1_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.ui</artifactId>
+      <version>${org.apache.geronimo.ui_version}</version>
+    </dependency>
+  </dependencies>  
+</project>

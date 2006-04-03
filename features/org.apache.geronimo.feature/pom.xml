@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>org.apache.geronimo.feature</artifactId>
   <packaging>jar</packaging>
-  <version>${org.apache.geronimo.deployment.feature_version}</version>
+  <version>${org.apache.geronimo.feature_version}</version>
   <name>Geronio Eclipse Plugin :: Feature :: ${artifactId}</name>
   <parent>
     <groupId>org.apache.geronimo.devtools</groupId>
