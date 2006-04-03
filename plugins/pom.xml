@@ -49,15 +49,21 @@
           </urls>
           <eclipseHome>${settings.localRepository}/eclipse/eclipse/</eclipseHome>
         </configuration>
-        <!--<executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>download</goal>
-              <goal>install</goal>
-            </goals>
-          </execution>
-        </executions>-->
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <projectnatures>
+            <projectnature>org.eclipse.pde.PluginNature</projectnature>
+            <projectnature>org.eclipse.jdt.core.javanature</projectnature>
+          </projectnatures>
+          <buildcommands>
+            <java.lang.String>org.eclipse.jdt.core.javabuilder</java.lang.String>
+            <java.lang.String>org.eclipse.pde.ManifestBuilder</java.lang.String>
+            <java.lang.String>org.eclipse.pde.SchemaBuilder</java.lang.String>
+          </buildcommands>
+        </configuration>
       </plugin>
     </plugins>
   </build>

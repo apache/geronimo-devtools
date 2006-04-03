@@ -12,22 +12,35 @@
   </parent>
   <build>
     <plugins>
-        <plugin>
-          <groupId>org.apache.geronimo.devtools</groupId>
-          <artifactId>maven-geronimodevtools-plugin</artifactId>
-          <configuration>
-            <distribution>geronimo-jetty-j2ee</distribution>
-            <version>${geronimo_version}</version>
-          </configuration>
-          <executions>
-            <execution>
-              <phase>process-resources</phase>
-              <goals>
-                <goal>getg</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
+      <plugin>
+        <groupId>org.apache.geronimo.devtools</groupId>
+        <artifactId>maven-geronimodevtools-plugin</artifactId>
+        <configuration>
+          <distribution>geronimo-jetty-j2ee</distribution>
+          <version>${geronimo_version}</version>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>getg</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <projectnatures>
+            <projectnature>org.eclipse.pde.PluginNature</projectnature>
+          </projectnatures>
+          <buildcommands>
+            <java.lang.String>org.eclipse.pde.ManifestBuilder</java.lang.String>
+            <java.lang.String>org.eclipse.pde.SchemaBuilder</java.lang.String>
+          </buildcommands>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
