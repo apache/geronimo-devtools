@@ -79,7 +79,7 @@
       <groupId>org.apache.geronimo.devtools</groupId>
       <artifactId>org.apache.geronimo.installableruntime.tomcat.feature</artifactId>
       <version>${org.apache.geronimo.installableruntime.tomcat.feature_version}</version>
-    </dependency>-->
+    </dependency>
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
       <artifactId>org.apache.geronimo.runtime.v1</artifactId>
@@ -99,6 +99,6 @@
       <groupId>org.apache.geronimo.devtools</groupId>
       <artifactId>org.apache.geronimo.ui</artifactId>
       <version>${org.apache.geronimo.ui_version}</version>
-    </dependency>-->
+    </dependency>
   </dependencies>
 </project>

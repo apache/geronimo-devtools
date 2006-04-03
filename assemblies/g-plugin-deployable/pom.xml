@@ -22,7 +22,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.geronimo.devtools</groupId>
   <artifactId>g-plugin-deployable</artifactId>
-  <packaging>zip</packaging>
+  <packaging>jar</packaging>
   <name>Geronimo Eclipse Plugin :: Assembly :: ${artifactId}</name>
   <version>1.0</version>
  <parent>
