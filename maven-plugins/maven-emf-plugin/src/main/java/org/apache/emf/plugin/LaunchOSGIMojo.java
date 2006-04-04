@@ -120,7 +120,9 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 			Method setInitialProperties = clazz.getMethod("setInitialProperties", new Class[] { Map.class });
 			setInitialProperties.invoke(null, new Object[] { initalPropertyMap });
 
-			if (!keepFrameworkAlive || getCurrentExecution() == 1) {
+			getLog().debug("Framework Execution " + getCurrentExecution() + "/" + getTotalExecutions());
+			
+			if (getCurrentExecution() == 1) {
 				Method runMethod = clazz.getMethod("run", new Class[] {
 						String[].class, Runnable.class });
 				runMethod.invoke(null, new Object[] { args, null });			
