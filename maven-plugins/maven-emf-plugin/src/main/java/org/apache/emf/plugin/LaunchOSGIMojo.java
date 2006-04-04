@@ -86,7 +86,6 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 		validate();
 
 		boolean keepFrameworkAlive = keepFrameworkAlive();
-		System.out.println("keepFrameworkAlive = " + keepFrameworkAlive);
 
 		String[] args = getArguments();
 		if (args == null)
@@ -193,7 +192,6 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 
 	private int getTotalExecutions() {
 		if (!getPluginContext().containsKey(TOTAL_EXECUTIONS)) {
-			System.out.println("totalExecutions not set");
 			int totalExecutions = 0;
 			List plugins = mavenProject.getBuild().getPlugins();
 			Iterator i = plugins.iterator();
