@@ -23,9 +23,13 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.maven.model.Plugin;
+import org.apache.maven.model.PluginExecution;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -40,7 +44,12 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 	public static final String PROP_INSTANCE_AREA = "osgi.instance.area";
 	public static final String PROP_APPLICATION_ID = "eclipse.application";
 	public static final String PROP_USE_SYS_PROPS = "osgi.framework.useSystemProperties";
+	public static final String PROP_NOSHUTDOWN = "osgi.noShutdown";
 	public static final String STARTER = "org.eclipse.core.runtime.adaptor.EclipseStarter";
+
+	public static final String TOTAL_EXECUTIONS = "plugin.total.executions";
+	public static final String CURRENT_EXECUTION = "plugin.current.execution";
+	public static final String PLUGIN_ARTIFACT_ID = "maven-emf-plugin";
 
 	/**
 	 * @parameter expression="${settings.localRepository}/eclipse/eclipse"
@@ -76,6 +85,9 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 
 		validate();
 
+		boolean keepFrameworkAlive = keepFrameworkAlive();
+		System.out.println("keepFrameworkAlive = " + keepFrameworkAlive);
+
 		String[] args = getArguments();
 		if (args == null)
 			args = new String[] {};
@@ -93,28 +105,47 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 			initalPropertyMap.put(PROP_FRAMEWORK, osgi.toExternalForm());
 			initalPropertyMap.put(PROP_INSTANCE_AREA, workspace.toURL().toExternalForm());
 			initalPropertyMap.put(PROP_APPLICATION_ID, getApplicationID());
+			initalPropertyMap.put(PROP_NOSHUTDOWN, Boolean.toString(keepFrameworkAlive));
 
 			URL[] osgiURLArray = { new URL((String) initalPropertyMap.get(PROP_FRAMEWORK)) };
-			URLClassLoader frameworkClassLoader = new URLClassLoader(osgiURLArray);
-			Class clazz = frameworkClassLoader.loadClass(STARTER);
+			
+			Class clazz = null;
+			if(getPluginContext().containsKey(STARTER)) {
+				clazz = (Class) getPluginContext().get(STARTER);
+			} else  {
+				URLClassLoader frameworkClassLoader = new URLClassLoader(osgiURLArray);
+				clazz = frameworkClassLoader.loadClass(STARTER);
+				getPluginContext().put(STARTER, clazz);
+			}
 
 			Method setInitialProperties = clazz.getMethod("setInitialProperties", new Class[] { Map.class });
 			setInitialProperties.invoke(null, new Object[] { initalPropertyMap });
 
-			Method runMethod = clazz.getMethod("run", new Class[] {
-					String[].class, Runnable.class });
-			runMethod.invoke(null, new Object[] { args, null });
+			if (!keepFrameworkAlive || getCurrentExecution() == 1) {
+				Method runMethod = clazz.getMethod("run", new Class[] {
+						String[].class, Runnable.class });
+				runMethod.invoke(null, new Object[] { args, null });			
+			} else {				
+				Method runMethod = clazz.getMethod("run", new Class[] { Object.class });
+				runMethod.invoke(null, new Object[] { args });
+			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new MojoFailureException(e.getMessage());
 		}
 		
+		if(getCurrentExecution() == getTotalExecutions()) {
+			getPluginContext().remove(CURRENT_EXECUTION);
+		} else {
+			getPluginContext().put(CURRENT_EXECUTION, new Integer(getCurrentExecution() + 1));
+		}
 	}
-	
-
 
 	protected abstract String getApplicationID();
 
 	protected abstract String[] getArguments();
+
+	protected abstract String getGoalName();
 
 	protected URL findOSGI() {
 		File bundleDir = new File(eclipseHome.getAbsoluteFile()
@@ -146,5 +177,39 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 
 	protected void validate() throws MojoFailureException {
 
+	}
+
+	private boolean keepFrameworkAlive() {
+		return getCurrentExecution() <= getTotalExecutions();
+	}
+
+	private int getCurrentExecution() {
+		int currentExecution = 1;
+		if (getPluginContext().containsKey(CURRENT_EXECUTION)) {
+			currentExecution = ((Integer) getPluginContext().get(CURRENT_EXECUTION)).intValue();
+		}
+		return currentExecution;
+	}
+
+	private int getTotalExecutions() {
+		if (!getPluginContext().containsKey(TOTAL_EXECUTIONS)) {
+			System.out.println("totalExecutions not set");
+			int totalExecutions = 0;
+			List plugins = mavenProject.getBuild().getPlugins();
+			Iterator i = plugins.iterator();
+			while (i.hasNext()) {
+				Plugin plugin = (Plugin) i.next();
+				if (PLUGIN_ARTIFACT_ID.equals(plugin.getArtifactId())) {
+					Iterator j = plugin.getExecutions().iterator();
+					while (j.hasNext()) {
+						PluginExecution execution = (PluginExecution) j.next();
+						if (execution.getGoals().contains(getGoalName()))
+							totalExecutions++;
+					}
+				}
+			}
+			getPluginContext().put(TOTAL_EXECUTIONS, new Integer(totalExecutions));
+		}
+		return ((Integer) getPluginContext().get(TOTAL_EXECUTIONS)).intValue();
 	}
 }

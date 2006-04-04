@@ -28,6 +28,8 @@ import org.apache.maven.artifact.Artifact;
 public class XSDImporterMojo extends LaunchOSGIMojo {
 
 	public static final String APPLICATION_ID = "org.eclipse.xsd.ecore.importer.XSD2GenModel";
+	
+	public static final String GOAL_NAME = "xsd2genmodel";
 
 	/**
 	 * @parameter
@@ -95,6 +97,10 @@ public class XSDImporterMojo extends LaunchOSGIMojo {
 	 */
 	protected String getApplicationID() {
 		return APPLICATION_ID;
+	}
+	
+	protected String getGoalName() {
+		return GOAL_NAME;
 	}
 
 	protected StringBuffer processParameters() {

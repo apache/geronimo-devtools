@@ -26,6 +26,8 @@ import org.apache.maven.plugin.MojoFailureException;
 public class GeneratorMojo extends LaunchOSGIMojo {
 
 	public static final String APPLICATION_ID = "org.eclipse.emf.codegen.ecore.Generator";
+	
+	public static final String GOAL_NAME = "generate";
 
 	/**
 	 * @parameter
@@ -62,6 +64,10 @@ public class GeneratorMojo extends LaunchOSGIMojo {
 	 */
 	protected String getApplicationID() {
 		return APPLICATION_ID;
+	}
+	
+	protected String getGoalName() {
+		return GOAL_NAME;
 	}
 
 	/*
