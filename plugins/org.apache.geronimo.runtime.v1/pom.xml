@@ -161,19 +161,6 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <configuration>
-          <projectnatures>
-            <projectnature>org.eclipse.pde.PluginNature</projectnature>
-          </projectnatures>
-          <buildcommands>
-            <buildcommand>org.eclipse.pde.ManifestBuilder</buildcommand>
-            <buildcommand>org.eclipse.pde.SchemaBuilder</buildcommand>
-          </buildcommands>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
   
