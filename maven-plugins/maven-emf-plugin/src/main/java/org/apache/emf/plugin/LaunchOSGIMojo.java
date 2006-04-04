@@ -179,7 +179,7 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 	}
 
 	private boolean keepFrameworkAlive() {
-		return getCurrentExecution() <= getTotalExecutions();
+		return getCurrentExecution() < getTotalExecutions();
 	}
 
 	private int getCurrentExecution() {
