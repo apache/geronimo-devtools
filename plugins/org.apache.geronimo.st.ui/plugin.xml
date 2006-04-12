@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension point="org.eclipse.ui.popupMenus">
+        <objectContribution id="org.apache.geronimo.ui.serveractions"
+            objectClass="org.eclipse.wst.server.core.IServer">
+            <action id="org.apache.geronimo.ui.launchconsole"
+                label="%PopupMenus.launchconsole" icon="icons/obj16/littleG.gif"
+                class="org.apache.geronimo.st.ui.actions.LaunchGeronimoConsoleAction"
+                enablesFor="1">
+            </action>
+        </objectContribution>
+    </extension>
+</plugin>
+ 

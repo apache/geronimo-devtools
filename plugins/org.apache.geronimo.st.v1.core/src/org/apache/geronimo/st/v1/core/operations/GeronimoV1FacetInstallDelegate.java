@@ -1,0 +1,38 @@
+/**
+ * Copyright 2004, 2005 The Apache Software Foundation or its licensors, as applicable
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+package org.apache.geronimo.st.v1.core.operations;
+
+import org.apache.geronimo.st.core.GeronimoFacetInstallDelegate;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jst.j2ee.internal.archive.operations.JavaComponentCreationDataModelProvider;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.datamodel.properties.IComponentCreationDataModelProperties;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
+
+public class GeronimoV1FacetInstallDelegate extends
+		GeronimoFacetInstallDelegate {
+
+	public IDataModelOperation createDeploymentPlanCreationOp(IProject project) {
+		IVirtualComponent comp = ComponentCore.createComponent(project);
+		IDataModel model = DataModelFactory.createDataModel(new JavaComponentCreationDataModelProvider());
+		model.setStringProperty(IComponentCreationDataModelProperties.COMPONENT_NAME, comp.getName());
+		model.setStringProperty(IComponentCreationDataModelProperties.PROJECT_NAME, project.getName());
+		return new V1DeploymentPlanCreationOperation(model);
+	}
+}

@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Geronimo V1 Server Tools Core Plug-in
+Bundle-SymbolicName: org.apache.geronimo.st.v1.core;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.apache.geronimo.st.v1.core.Activator
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime,
+ org.apache.geronimo.st.core,
+ org.apache.geronimo.runtime.v1,
+ org.apache.geronimo.deployment.model,
+ org.eclipse.jdt.core,
+ org.eclipse.jst.server.core,
+ org.eclipse.jst.server.generic.core,
+ org.eclipse.wst.server.core,
+ org.eclipse.emf.mapping.xsd2ecore.editor,
+ org.eclipse.wst.common.modulecore,
+ org.eclipse.debug.core,
+ org.eclipse.jst.j2ee,
+ org.eclipse.wst.web,
+ org.eclipse.wst.common.project.facet.core,
+ org.eclipse.wst.common.frameworks
+Eclipse-AutoStart: true
+Bundle-Vendor: Apache
+Export-Package: org.apache.geronimo.st.v1.core.operations,
+ org.apache.geronimo.st.v1.core.internal,
+ org.apache.geronimo.st.v1.core
