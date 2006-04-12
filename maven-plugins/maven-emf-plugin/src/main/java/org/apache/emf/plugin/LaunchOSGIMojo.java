@@ -105,7 +105,7 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 			initalPropertyMap.put(PROP_INSTANCE_AREA, workspace.toURL().toExternalForm());
 			initalPropertyMap.put(PROP_APPLICATION_ID, getApplicationID());
 			initalPropertyMap.put(PROP_NOSHUTDOWN, Boolean.toString(keepFrameworkAlive));
-			initalPropertyMap.put(eclipse.vmargs,"-Xmx256M");
+			initalPropertyMap.put("eclipse.vmargs","-Xmx256M");
 
 			URL[] osgiURLArray = { new URL((String) initalPropertyMap.get(PROP_FRAMEWORK)) };
 			
