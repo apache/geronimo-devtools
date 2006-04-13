@@ -54,6 +54,7 @@
             <id>install-dependencies</id>
             <phase>validate</phase>
             <goals>
+              <goal>manifestbundles</goal> 
               <goal>download</goal>
               <goal>install</goal>
             </goals>
@@ -89,81 +90,6 @@
       <groupId>org.eclipse.plugins</groupId>
       <artifactId>org.eclipse.swt.fragment</artifactId>
       <version>${org.eclipse.swt.fragment_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.jface</artifactId>
-      <version>${org.eclipse.jface_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.ui</artifactId>
-      <version>${org.eclipse.ui_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.ui.browser</artifactId>
-      <version>${org.eclipse.ui.browser_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.ui.editors</artifactId>
-      <version>${org.eclipse.ui.editors_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.ui.forms</artifactId>
-      <version>${org.eclipse.ui.forms_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.ui.ide</artifactId>
-      <version>${org.eclipse.ui.ide_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.ui.workbench</artifactId>
-      <version>${org.eclipse.ui.workbench_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.core.commands</artifactId>
-      <version>${org.eclipse.core.commands_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.ui.workbench.texteditor</artifactId>
-      <version>${org.eclipse.ui.workbench.texteditor_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.wst.server.ui</artifactId>
-      <version>${org.eclipse.wst.server.ui_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.jst.server.generic.ui</artifactId>
-      <version>${org.eclipse.jst.server.generic.ui_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.wst.common.modulecore</artifactId>
-      <version>${org.eclipse.wst.common.modulecore_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.debug.core</artifactId>
-      <version>${org.eclipse.debug.core_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.jdt.launching</artifactId>
-      <version>${org.eclipse.debug.core_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.emf.edit.ui</artifactId>
-      <version>${org.eclipse.emf.edit.ui_version}</version>
     </dependency>
   </dependencies>
 </project>

@@ -90,9 +90,11 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 	/**
 	 * @parameter expression="${useDistributionVersions}"
 	 */
-	protected boolean useDistributionVersion;
+	protected boolean useDistributionVersion = true;
 
 	private List removeList = new ArrayList();
+	
+	private List addList = new ArrayList();
 
 	private int depth = 0;
 
@@ -113,6 +115,7 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		
 		processDependencies();
 		project.getDependencies().removeAll(removeList);
+		project.getDependencies().addAll(addList);
 	}
 
 	protected void processDependencies() {
@@ -122,8 +125,12 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 			Dependency dependency = (Dependency) i.next();
 			if (GROUP_ID.equals(dependency.getGroupId())) {
 				updateForSWTFragment(dependency);
-				File file = findBundleForDependency(dependency);
-				process(file, dependency);
+				File bundle = findBundleForDependency(dependency);
+				process(bundle, dependency);
+				if(bundle.isDirectory() && getBundleName(bundle).equals(dependency.getArtifactId())) {
+					getLog().info("Removing bundle directory dependency " + dependency.getArtifactId());
+					removeList.add(dependency);
+				}
 			}
 		}
 	}
@@ -172,12 +179,6 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		} else {
 			if (file.getName().endsWith(".jar")) {
 				File bundle = getBundle(file);
-				
-				if(bundle.isDirectory()) {
-					getLog().info("removing dependency " + dependency.getArtifactId());
-					removeList.add(dependency);
-				}
-				
 				install(file, bundle);
 				if (useDistributionVersion)
 					dependency.setVersion(getBundleVersion(bundle));
@@ -192,6 +193,9 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 
 		if (!useDistributionVersion)
 			version = fixVersion(version);
+		
+		if(bundle.isDirectory())
+			addList.add(createDependency(artifactId, version));
 
 		try {
 			doIt(artifact, GROUP_ID, artifactId, version, "jar");
@@ -317,4 +321,11 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		return fileName;
 	}
 
+	private Dependency createDependency(String artifactId, String version) {
+		Dependency dependency = new Dependency();
+		dependency.setGroupId("org.eclipse.plugins");
+		dependency.setArtifactId(artifactId);
+		dependency.setVersion(version);
+		return dependency;
+	}
 }

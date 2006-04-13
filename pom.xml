@@ -130,57 +130,6 @@
     <jemUrl>http://download.eclipse.org/tools/ve/downloads/drops/R-1.1.0.1-200509071822/JEM-SDK-1.1.0.1.zip</jemUrl>
     <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/R-3.1.1-200509301327/GEF-SDK-3.1.1.zip</gefUrl>
     <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/M-M200603280054-200603280054/wtp-sdk-M-M200603280054-200603280054.zip</wtpUrl>
-    <!-- Eclipse Project Distro Versions -->
-    <platformVersion>[3.1.2,)</platformVersion>
-    <emfVersion>[2.1.0,)</emfVersion>
-    <jemVersion>1.0.1-1</jemVersion>
-    <wtpVersion>1.0.1</wtpVersion>
-    <!-- Eclipse Platform Dependencies -->
-    <org.eclipse.core.runtime_version>${platformVersion}</org.eclipse.core.runtime_version>
-    <org.eclipse.core.resources_version>${platformVersion}</org.eclipse.core.resources_version>
-    <org.eclipse.core.commands_version>${platformVersion}</org.eclipse.core.commands_version>
-    <org.eclipse.debug.core_version>${platformVersion}</org.eclipse.debug.core_version>
-    <org.eclipse.jdt.launching_version>${platformVersion}</org.eclipse.jdt.launching_version>
-    <org.eclipse.jdt.core_version>${platformVersion}</org.eclipse.jdt.core_version>
-    <org.eclipse.jdt.launching_version>${platformVersion}</org.eclipse.jdt.launching_version>
-    <org.eclipse.jface_version>${platformVersion}</org.eclipse.jface_version>
-    <org.eclipse.osgi_version>${platformVersion}</org.eclipse.osgi_version>
-    <org.eclipse.swt.fragment_version>${platformVersion}</org.eclipse.swt.fragment_version>
-    <org.eclipse.ui_version>${platformVersion}</org.eclipse.ui_version>
-    <org.eclipse.ui.browser_version>${platformVersion}</org.eclipse.ui.browser_version>
-    <org.eclipse.ui.editors_version>${platformVersion}</org.eclipse.ui.editors_version>
-    <org.eclipse.ui.forms_version>${platformVersion}</org.eclipse.ui.forms_version>
-    <org.eclipse.ui.ide_version>${platformVersion}</org.eclipse.ui.ide_version>
-    <org.eclipse.ui.workbench_version>${platformVersion}</org.eclipse.ui.workbench_version>
-    <org.eclipse.ui.workbench.texteditor_version>${platformVersion}</org.eclipse.ui.workbench.texteditor_version>
-    <!-- EMF Dependencies -->
-    <org.eclipse.emf.ecore_version>${emfVersion}</org.eclipse.emf.ecore_version>
-    <org.eclipse.emf.ecore.edit_version>${emfVersion}</org.eclipse.emf.ecore.edit_version>
-    <org.eclipse.emf.edit_version>${emfVersion}</org.eclipse.emf.edit_version>
-    <org.eclipse.emf.edit.ui_version>${emfVersion}</org.eclipse.emf.edit.ui_version>
-    <org.eclipse.emf.ecore.xmi_version>${emfVersion}</org.eclipse.emf.ecore.xmi_version>
-    <org.eclipse.emf.common_version>${emfVersion}</org.eclipse.emf.common_version>
-    <!-- GEF Dependencies -->    
-    <!-- JEM Dependencies -->
-    <org.eclipse.jem.util.util_version>${jemVersion}</org.eclipse.jem.util.util_version>
-    <!-- WTP Dependencies -->
-    <org.eclipse.wst.server.core_version>${wtpVersion}</org.eclipse.wst.server.core_version>
-    <org.eclipse.wst.web_version>${wtpVersion}</org.eclipse.wst.web_version>
-    <org.eclipse.wst.common.modulecore_version>${wtpVersion}</org.eclipse.wst.common.modulecore_version>
-    <org.eclipse.wst.common.project.facet.core_version>${wtpVersion}</org.eclipse.wst.common.project.facet.core_version>
-    <org.eclipse.wst.common.frameworks_version>${wtpVersion}</org.eclipse.wst.common.frameworks_version>
-    <org.eclipse.wst.server.ui_version>${wtpVersion}</org.eclipse.wst.server.ui_version>
-    <org.eclipse.jst.server.core_version>${wtpVersion}</org.eclipse.jst.server.core_version>
-    <org.eclipse.jst.j2ee_version>${wtpVersion}</org.eclipse.jst.j2ee_version>
-    <org.eclipse.jst.j2ee.web_version>${wtpVersion}</org.eclipse.jst.j2ee.web_version>
-    <org.eclipse.jst.j2ee.ejb_version>${wtpVersion}</org.eclipse.jst.j2ee.ejb_version>
-    <org.eclipse.jst.j2ee.jca_version>${wtpVersion}</org.eclipse.jst.j2ee.jca_version>
-    <org.eclipse.jst.j2ee_version>${wtpVersion}</org.eclipse.jst.j2ee_version>
-    <org.eclipse.jst.common.frameworks_version>${wtpVersion}</org.eclipse.jst.common.frameworks_version>
-    <org.eclipse.jst.server.generic.core_version>${wtpVersion}</org.eclipse.jst.server.generic.core_version>
-    <org.eclipse.jst.server.core_version>${wtpVersion}</org.eclipse.jst.server.core_version>
-    <org.eclipse.jst.server.generic.ui_version>${wtpVersion}</org.eclipse.jst.server.generic.ui_version>
-    <org.eclipse.jst.j2ee.core_version>${wtpVersion}</org.eclipse.jst.j2ee.core_version>
   </properties>
 
   <dependencies>

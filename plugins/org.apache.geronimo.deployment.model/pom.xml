@@ -40,6 +40,7 @@
             <id>install-dependencies</id>
             <phase>validate</phase>
             <goals>
+              <goal>manifestbundles</goal>
               <goal>download</goal>
               <goal>install</goal>
             </goals>
@@ -161,37 +162,4 @@
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-    <!-- Eclipse Plugin Dependencies -->
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.osgi</artifactId>
-      <version>${org.eclipse.osgi_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.core.runtime</artifactId>
-      <version>${org.eclipse.core.runtime_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.emf.ecore</artifactId>
-      <version>${org.eclipse.emf.ecore_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.emf.ecore.edit</artifactId>
-      <version>${org.eclipse.emf.ecore.edit_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.emf.common</artifactId>
-      <version>${org.eclipse.emf.common_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
-      <version>${org.eclipse.emf.ecore.xmi_version}</version>
-    </dependency>
-  </dependencies>
 </project>

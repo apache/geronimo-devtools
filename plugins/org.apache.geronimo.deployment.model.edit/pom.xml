@@ -37,6 +37,7 @@
             <id>install-dependencies</id>
             <phase>validate</phase>
             <goals>
+              <goal>manifestbundles</goal>
               <goal>download</goal>
               <goal>install</goal>
             </goals>
@@ -166,11 +167,5 @@
       <artifactId>org.apache.geronimo.deployment.model</artifactId>
       <version>${org.apache.geronimo.deployment.model_version}</version>      
     </dependency>
-    <!-- eclipse plugin dependencies -->  
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.emf.edit</artifactId>
-      <version>${org.eclipse.emf.edit_version}</version>
-    </dependency>  
   </dependencies>
 </project>

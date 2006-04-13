@@ -68,7 +68,11 @@ public class ManifestDependenciesMojo extends AbstractMojo {
 			StringTokenizer st = new StringTokenizer(bundles);
 			List bundleEntries = new ArrayList();
 			while (st.hasMoreTokens()) {
-				bundleEntries.add(st.nextToken(","));
+				String bundle = st.nextToken(",");
+				int extraInfoIndex = bundle.indexOf(";");
+				if(extraInfoIndex != -1)
+					bundle = bundle.substring(0, extraInfoIndex);
+				bundleEntries.add(bundle);
 			}
 
 			List excludeList = new ArrayList();
