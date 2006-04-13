@@ -19,6 +19,7 @@ package org.apache.geronimo.eclipse.devtools;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,21 +43,23 @@ import org.codehaus.plexus.util.IOUtil;
  * This maven plugin installs to the local maven repository eclipse plugin
  * dependencies for a pom from an eclipse distribution.
  * 
+ * Plugins dependencies are defined with the "org.eclipse.plugins" groupId.
+ * 
+ * The artifactId is the bundle id. If the bundle is a directory, then all jars
+ * inside the bundle will be installed. The bundle id can be appendend with "." +
+ * the name of the jar inside the bundle, excluding the ".jar" extension in
+ * order to explicitly define a jar dependency.
+ * 
  * @goal install
  */
 public class InstallPluginDependenciesMojo extends AbstractMojo {
 
-	private static final String GROUP_ID = "org.eclipse.plugins";
-	
+	public static final String GROUP_ID = "org.eclipse.plugins";
+
 	/**
 	 * @parameter expression="${project}"
 	 */
 	private MavenProject project;
-
-	/**
-	 * @parameter expression="${eclipseHome}"
-	 */
-	private File eclipseHome;
 
 	/**
 	 * @parameter expression="${component.org.apache.maven.artifact.factory.ArtifactFactory}"
@@ -78,11 +81,20 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 	 * @readonly
 	 */
 	protected ArtifactRepository localRepository;
-	
+
+	/**
+	 * @parameter expression="${eclipseHome}"
+	 */
+	private File eclipseHome;
+
 	/**
 	 * @parameter expression="${useDistributionVersions}"
 	 */
 	protected boolean useDistributionVersion;
+
+	private List removeList = new ArrayList();
+
+	private int depth = 0;
 
 	public InstallPluginDependenciesMojo() {
 		super();
@@ -98,35 +110,33 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		if (!isValid())
 			throw new MojoFailureException("Eclipse home directory is not valid. "
 					+ eclipseHome);
-
-		File pluginsDir = new File(eclipseHome.getAbsolutePath().concat(File.separator
-				+ "plugins"));
-
-		processDependenciesOnly(pluginsDir);
+		
+		processDependencies();
+		project.getDependencies().removeAll(removeList);
 	}
 
-	protected void processDependenciesOnly(File pluginsDir) {
+	protected void processDependencies() {
 		List dependencies = project.getDependencies();
 		Iterator i = dependencies.iterator();
 		while (i.hasNext()) {
 			Dependency dependency = (Dependency) i.next();
 			if (GROUP_ID.equals(dependency.getGroupId())) {
 				updateForSWTFragment(dependency);
-				getLog().debug("Eclipse dependency: " + dependency.toString());
-				process(pluginsDir, 0, dependency);
+				File file = findBundleForDependency(dependency);
+				process(file, dependency);
 			}
 		}
 	}
 
 	private void updateForSWTFragment(Dependency dependency) {
-		if("org.eclipse.swt.fragment".equals(dependency.getArtifactId())) {
+		if ("org.eclipse.swt.fragment".equals(dependency.getArtifactId())) {
 			String platform = System.getProperty("os.name");
 			String id = dependency.getArtifactId();
-			if(platform.startsWith("Windows")) {
+			if (platform.startsWith("Windows")) {
 				dependency.setArtifactId(id.replaceFirst("fragment", "win32.win32.x86"));
-			} else if(platform.startsWith("Linux")) {
+			} else if (platform.startsWith("Linux")) {
 				dependency.setArtifactId(id.replaceFirst("fragment", "gtk.linux.x86"));
-			} else if(platform.startsWith("Mac")) {
+			} else if (platform.startsWith("Mac")) {
 				dependency.setArtifactId(id.replaceFirst("fragment", "carbon.macosx.ppc"));
 			}
 		}
@@ -136,22 +146,41 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		return eclipseHome != null && eclipseHome.isDirectory();
 	}
 
-	protected void process(File file, int depth, Dependency dependency) {
+	private File findBundleForDependency(Dependency dependency) {
+		File pluginsDir = new File(eclipseHome + File.separator + "plugins");
+		File[] members = pluginsDir.listFiles();
+		for (int i = 0; i < members.length; i++) {
+			if (isBundleForDependency(dependency, members[i]))
+				return members[i];
+		}
+		return null;
+	}
+
+	private boolean isBundleForDependency(Dependency dependency, File bundle) {
+		String bundleName = getBundleName(bundle);
+		return dependency.getArtifactId().startsWith(bundleName);
+	}
+
+	protected void process(File file, Dependency dependency) {
 		if (file.isDirectory()) {
 			depth++;
 			File[] members = file.listFiles();
 			for (int i = 0; i < members.length; i++) {
-				process(members[i], depth, dependency);
+				process(members[i], dependency);
 			}
 			depth--;
 		} else {
 			if (file.getName().endsWith(".jar")) {
-				File bundle = getBundle(file, depth);
-				if (getArtifactID(file, bundle).equals(dependency.getArtifactId())) {
-					install(file, bundle);
-					if(useDistributionVersion)
-						dependency.setVersion(getBundleVersion(bundle));
+				File bundle = getBundle(file);
+				
+				if(bundle.isDirectory()) {
+					getLog().info("removing dependency " + dependency.getArtifactId());
+					removeList.add(dependency);
 				}
+				
+				install(file, bundle);
+				if (useDistributionVersion)
+					dependency.setVersion(getBundleVersion(bundle));
 			}
 		}
 	}
@@ -160,10 +189,10 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 
 		String artifactId = getArtifactID(artifact, bundle);
 		String version = getBundleVersion(bundle);
-		
-		if(!useDistributionVersion) 
+
+		if (!useDistributionVersion)
 			version = fixVersion(version);
-		
+
 		try {
 			doIt(artifact, GROUP_ID, artifactId, version, "jar");
 		} catch (MojoExecutionException e) {
@@ -172,30 +201,31 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Converts eclipse qualifier convention to maven convention.
 	 * 
-	 * major.minor.revision.qualifier is converted to major.minor.revision-build where
-	 * build is the eclipse qualifier with all non-numeric characters removed.
+	 * major.minor.revision.qualifier is converted to major.minor.revision-build
+	 * where build is the eclipse qualifier with all non-numeric characters
+	 * removed.
 	 * 
 	 * @param version
 	 * @return
 	 */
 	public static String fixVersion(String version) {
 		int qualifierIndex = version.indexOf(".", 5);
-		if(qualifierIndex == -1)  
-			return version; //has no qualifier
+		if (qualifierIndex == -1)
+			return version; // has no qualifier
 		String eclipseQualifier = version.substring(qualifierIndex + 1);
 		String newQualifier = eclipseQualifier.replaceAll("[^\\d]", "");
 		return version.substring(0, qualifierIndex) + "-" + newQualifier;
 	}
 
-	protected File getBundle(File file, int depth) {
+	protected File getBundle(File file) {
 		File bundle = file;
-		if (depth > 1) {
+		if (depth > 0) {
 			bundle = file.getParentFile();
-			for (int i = depth - 1; i > 1; i--) {
+			for (int i = depth - 1; i > 0; i--) {
 				bundle = bundle.getParentFile();
 			}
 		}
@@ -251,7 +281,8 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		}
 	}
 
-	private void generatePOM(Artifact artifact, String groupId, String artifactId, String version) throws MojoExecutionException{
+	private void generatePOM(Artifact artifact, String groupId,
+			String artifactId, String version) throws MojoExecutionException {
 
 		FileWriter fw = null;
 		try {
