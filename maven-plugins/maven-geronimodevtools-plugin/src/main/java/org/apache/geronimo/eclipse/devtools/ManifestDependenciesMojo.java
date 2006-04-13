@@ -27,6 +27,9 @@ import java.util.StringTokenizer;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.factory.ArtifactFactory;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -57,6 +60,20 @@ public class ManifestDependenciesMojo extends AbstractMojo {
 	private File manifestFile;
 
 	/**
+	 * @parameter expression="${component.org.apache.maven.artifact.factory.ArtifactFactory}"
+	 * @required
+	 * @readonly
+	 */
+	private ArtifactFactory artifactFactory;
+
+	/**
+	 * @parameter expression="${localRepository}"
+	 * @required
+	 * @readonly
+	 */
+	protected ArtifactRepository localRepository;
+
+	/**
 	 * @parameter expression="true"
 	 */
 	private boolean excludePOMDependencies;
@@ -82,7 +99,10 @@ public class ManifestDependenciesMojo extends AbstractMojo {
 		while (i.hasNext()) {
 			addExportedBundles((String) i.next());
 		}
-
+		
+		getLog().debug("Bundle Entries: " + bundleEntries.toString());
+		getLog().debug("Exported Entries: " + exportedEntries.toString());
+		
 		bundleEntries.addAll(exportedEntries);
 
 		List excludeList = new ArrayList();
@@ -110,14 +130,10 @@ public class ManifestDependenciesMojo extends AbstractMojo {
 				String nextToken = st.nextToken(",");
 				String bundleId = getBundleId(nextToken);
 				if (exportedEntriesOnly) {
-					if (export(nextToken)
-							&& !exportedEntries.contains(bundleId)) {
-						getLog().info("Adding exported bundle entry: "
-								+ bundleId);
+					if (export(nextToken)) {
 						exportedEntries.add(bundleId);
 					}
-				} else if (!bundleEntries.contains(bundleId)) {
-					getLog().info("Adding required bundle entry: " + bundleId);
+				} else {
 					bundleEntries.add(bundleId);
 				}
 			}
@@ -164,7 +180,17 @@ public class ManifestDependenciesMojo extends AbstractMojo {
 					manifest = getManifestFromFile(manifestFile);
 				}
 			} else {
-				// check exclude list
+				// check POM dependencies
+				Iterator i = project.getDependencies().iterator();
+				while (i.hasNext()) {
+					Dependency dependency = (Dependency) i.next();
+					if (dependency.getArtifactId().equals(bundleId)) {
+						Artifact artifact = artifactFactory.createArtifact(dependency.getGroupId(), dependency.getArtifactId(), dependency.getVersion(), null, "jar");
+						File file = new File(localRepository.getBasedir(), localRepository.pathOf(artifact));
+						manifest = new JarFile(file).getManifest();
+						break;
+					}
+				}
 			}
 			if (manifest != null) {
 				addRequiredBundles(manifest, true);
