@@ -93,7 +93,7 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 	protected boolean useDistributionVersion = true;
 
 	private List removeList = new ArrayList();
-	
+
 	private List addList = new ArrayList();
 
 	private int depth = 0;
@@ -112,7 +112,7 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		if (!isValid())
 			throw new MojoFailureException("Eclipse home directory is not valid. "
 					+ eclipseHome);
-		
+
 		processDependencies();
 		project.getDependencies().removeAll(removeList);
 		project.getDependencies().addAll(addList);
@@ -126,10 +126,17 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 			if (GROUP_ID.equals(dependency.getGroupId())) {
 				updateForSWTFragment(dependency);
 				File bundle = findBundleForDependency(dependency);
-				process(bundle, dependency);
-				if(bundle.isDirectory() && getBundleName(bundle).equals(dependency.getArtifactId())) {
-					getLog().info("Removing bundle directory dependency " + dependency.getArtifactId());
-					removeList.add(dependency);
+				if (bundle != null) {
+					process(bundle, dependency);
+					if (bundle.isDirectory()
+							&& getBundleName(bundle).equals(dependency.getArtifactId())) {
+						getLog().info("Removing bundle directory dependency: "
+								+ dependency.getArtifactId());
+						removeList.add(dependency);
+					}
+				} else {
+					getLog().info("Bundle for dependency not found: "
+							+ dependency.getArtifactId());
 				}
 			}
 		}
@@ -193,8 +200,8 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 
 		if (!useDistributionVersion)
 			version = fixVersion(version);
-		
-		if(bundle.isDirectory())
+
+		if (bundle.isDirectory())
 			addList.add(createDependency(artifactId, version));
 
 		try {
