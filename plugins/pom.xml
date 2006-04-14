@@ -73,12 +73,14 @@
   </build>
   
   <modules>
+    <module>org.apache.geronimo.st.core</module>
+    <module>org.apache.geronimo.st.v1.core</module>
+    <module>org.apache.geronimo.st.ui</module>
+    <module>org.apache.geronimo.st.v1.ui</module>
     <module>org.apache.geronimo.deployment.model</module>
     <module>org.apache.geronimo.deployment.model.edit</module>
-    <module>org.apache.geronimo.devtools.eclipse.core</module>
     <module>org.apache.geronimo.jetty.j2ee.server.v1</module>
     <module>org.apache.geronimo.tomcat.j2ee.server.v1</module>
-    <module>org.apache.geronimo.ui</module>
     <module>org.apache.geronimo.runtime.v1</module>
   </modules>
   

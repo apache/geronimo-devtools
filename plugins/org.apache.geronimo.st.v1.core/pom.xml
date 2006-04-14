@@ -69,6 +69,11 @@
     <!-- g plugin dependencies -->
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.st.core</artifactId>
+      <version>${org.apache.geronimo.st.core_version}</version>      
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
       <artifactId>org.apache.geronimo.deployment.model</artifactId>
       <version>${org.apache.geronimo.deployment.model_version}</version>      
     </dependency>

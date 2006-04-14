@@ -92,14 +92,16 @@
   <properties>
     <geronimo-emf-common_version>1.0.0</geronimo-emf-common_version>
     <!-- Plugin Versions -->
+    <org.apache.geronimo.st.core_version>1.0.0</org.apache.geronimo.st.core_version>
+    <org.apache.geronimo.st.ui_version>1.0.0</org.apache.geronimo.st.ui_version>
+    <org.apache.geronimo.st.v1.core_version>1.0.0</org.apache.geronimo.st.v1.core_version>
+    <org.apache.geronimo.st.v1.ui_version>1.0.0</org.apache.geronimo.st.v1.ui_version>
+    <org.apache.geronimo.runtime.v1_version>1.0.0</org.apache.geronimo.runtime.v1_version>
     <org.apache.geronimo.deployment.model_version>1.0.0</org.apache.geronimo.deployment.model_version>
     <org.apache.geronimo.deployment.model.edit_version>1.0.0</org.apache.geronimo.deployment.model.edit_version>
-    <org.apache.geronimo.devtools.eclipse.core_version>1.0.0</org.apache.geronimo.devtools.eclipse.core_version>
-    <org.apache.geronimo.feature.source_version>1.0.0</org.apache.geronimo.feature.source_version>
-    <org.apache.geronimo.runtime.v1_version>1.0.0</org.apache.geronimo.runtime.v1_version>
-    <org.apache.geronimo.ui_version>1.0.0</org.apache.geronimo.ui_version>
     <org.apache.geronimo.jetty.j2ee.server.v1_version>1.0.0</org.apache.geronimo.jetty.j2ee.server.v1_version>
     <org.apache.geronimo.tomcat.j2ee.server.v1_version>1.0.0</org.apache.geronimo.tomcat.j2ee.server.v1_version>
+    <org.apache.geronimo.feature.source_version>1.0.0</org.apache.geronimo.feature.source_version>
     <!-- Feature Versions -->
     <org.apache.geronimo.feature_version>1.0.0</org.apache.geronimo.feature_version>
     <org.apache.geronimo.source.feature_version>1.0.0</org.apache.geronimo.source.feature_version>
