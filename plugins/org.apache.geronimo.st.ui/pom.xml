@@ -64,4 +64,11 @@
       </plugin>
     </plugins>
   </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.st.core</artifactId>
+      <version>${org.apache.geronimo.st.core_version}</version>      
+    </dependency>
+  </dependencies>
 </project>
