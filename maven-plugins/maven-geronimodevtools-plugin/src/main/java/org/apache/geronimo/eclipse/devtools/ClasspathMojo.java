@@ -16,38 +16,25 @@
 package org.apache.geronimo.eclipse.devtools;
 
 import java.io.File;
-import java.util.Iterator;
-import java.util.Map;
 
 import org.apache.velocity.VelocityContext;
 
 /**
- * @goal pluginxml
+ * @goal classpath
  */
-public class PluginDescriptorMojo extends VelocityMojo {
-
+public class ClasspathMojo extends VelocityMojo {
+	
 	/**
 	 * @parameter
 	 * @required
 	 */
 	private File libDir;
 
-	/**
-	 * @parameter
-	 * @required
-	 */
-	private Map contextMap;
-
 	/* (non-Javadoc)
 	 * @see org.apache.geronimo.eclipse.devtools.VelocityMojo#configureContext(org.apache.velocity.VelocityContext)
 	 */
 	public void configureContext(VelocityContext context) {
 		context.put("libDir", libDir);
-		Iterator i = contextMap.keySet().iterator();
-		while (i.hasNext()) {
-			Object o = i.next();
-			context.put((String) o, contextMap.get(o));
-		}
 	}
 
 }
