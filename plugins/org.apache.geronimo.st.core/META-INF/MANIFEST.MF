@@ -28,6 +28,14 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.common.project.facet.core,
  org.eclipse.jem.util
 Eclipse-AutoStart: true
-Export-Package: org.apache.geronimo.st.core,
+Export-Package: javax.enterprise.deploy.model,
+ javax.enterprise.deploy.model.exceptions,
+ javax.enterprise.deploy.shared,
+ javax.enterprise.deploy.shared.factories,
+ javax.enterprise.deploy.spi,
+ javax.enterprise.deploy.spi.exceptions,
+ javax.enterprise.deploy.spi.factories,
+ javax.enterprise.deploy.spi.status,
+ org.apache.geronimo.st.core,
  org.apache.geronimo.st.core.commands,
  org.apache.geronimo.st.core.operations
