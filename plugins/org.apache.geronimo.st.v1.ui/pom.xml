@@ -1,9 +1,9 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
-	<artifactId>org.apache.geronimo.ui</artifactId>
+	<artifactId>org.apache.geronimo.st.v1.ui</artifactId>
   <packaging>jar</packaging>
-  <version>${org.apache.geronimo.ui_version}</version>
-  <name>Geronimo Eclipse Plugin :: Plugin :: ${artifactId}</name>
+  <version>${org.apache.geronimo.st.v1.ui_version}</version>
+  <name>${artifactId}</name>
   <parent>
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>eclipse-plugins-parent</artifactId>
@@ -16,20 +16,6 @@
         <includes>
           <include>plugin.xml</include>
         </includes>
-      </resource>      
-      <resource>
-        <targetPath>org/apache/geronimo/ui/internal</targetPath>
-        <directory>src/org/apache/geronimo/ui/internal</directory>
-        <includes>
-          <include>Messages.properties</include>
-        </includes>
-      </resource>
-      <resource>
-        <targetPath>icons</targetPath>
-        <directory>icons</directory>
-        <includes>
-          <include>**/*.gif</include>
-        </includes>
       </resource>
       <resource>
         <directory>.</directory>
@@ -37,10 +23,17 @@
           <include>plugin.properties</include>
         </includes>
       </resource>
-       <resource>
+      <resource>
         <directory>.</directory>
         <includes>
           <include>.options</include>
+        </includes>
+      </resource>
+      <resource>
+        <targetPath>org/apache/geronimo/st/v1/uiinternal</targetPath>
+        <directory>src/org/apache/geronimo/st/v1/ui/internal</directory>
+        <includes>
+          <include>Messages.properties</include>
         </includes>
       </resource>
     </resources>
@@ -54,7 +47,7 @@
             <id>install-dependencies</id>
             <phase>validate</phase>
             <goals>
-              <goal>manifestbundles</goal> 
+              <goal>manifestbundles</goal>
               <goal>download</goal>
               <goal>install</goal>
             </goals>
@@ -77,24 +70,13 @@
     <!-- g plugin dependencies -->
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
-      <artifactId>org.apache.geronimo.devtools.eclipse.core</artifactId>
-      <version>${org.apache.geronimo.devtools.eclipse.core_version}</version>
+      <artifactId>org.apache.geronimo.deployment.model</artifactId>
+      <version>${org.apache.geronimo.deployment.model_version}</version>      
     </dependency>
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
       <artifactId>org.apache.geronimo.deployment.model.edit</artifactId>
-      <version>${org.apache.geronimo.deployment.model.edit_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.geronimo.devtools</groupId>
-      <artifactId>org.apache.geronimo.deployment.model</artifactId>
-      <version>${org.apache.geronimo.deployment.model_version}</version>
-    </dependency>
-    <!-- eclipse plugin dependencies -->
-    <dependency>
-      <groupId>org.eclipse.plugins</groupId>
-      <artifactId>org.eclipse.swt.fragment</artifactId>
-      <version>${org.eclipse.swt.fragment_version}</version>
+      <version>${org.apache.geronimo.deployment.model.edit_version}</version>      
     </dependency>
   </dependencies>
 </project>
