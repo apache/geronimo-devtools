@@ -10,12 +10,12 @@
         <version>1.0</version>
     </parent>
     <properties>
-        <geronimoVersion>1.1-SNAPSHOT</geronimoVersion>
+        <geronimoVersion>1.0</geronimoVersion>
         <mx4jVersion>3.0.1</mx4jVersion>
         <commonsLoggingVersion>1.0.4</commonsLoggingVersion>
         <cglibVersion>2.1_3</cglibVersion>
         <xbeanVersion>2.0.0</xbeanVersion>
-        <openejbVersion>2.1-SNAPSHOT</openejbVersion>
+        <openejbVersion>2.0</openejbVersion>
         <staxApiVersion>1.0</staxApiVersion>
     </properties>
     <build>
