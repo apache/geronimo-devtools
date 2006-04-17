@@ -82,6 +82,7 @@
     <module>org.apache.geronimo.jetty.j2ee.server.v1</module>
     <module>org.apache.geronimo.tomcat.j2ee.server.v1</module>
     <module>org.apache.geronimo.runtime.v1</module>
+    <module>org.apache.geronimo.runtime.v11</module>
   </modules>
   
 </project>
