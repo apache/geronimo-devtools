@@ -71,10 +71,10 @@ public abstract class PackagingMojo extends AbstractMojo {
 				try {
 					URL[] urls = { artifact.getFile().toURL() };
 					URLClassLoader cl = new URLClassLoader(urls);
-					if (cl.findResource("plugin.xml") != null) {
-						processPlugin(artifact);
-					} else if (cl.findResource("feature.xml") != null) {
+					if (cl.findResource("feature.xml") != null) {
 						processFeature(artifact);
+					} else {
+						processPlugin(artifact);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
