@@ -57,8 +57,18 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
-      <artifactId>org.apache.geronimo.devtools.eclipse.core</artifactId>
-      <version>${org.apache.geronimo.devtools.eclipse.core_version}</version>
+      <artifactId>org.apache.geronimo.st.core</artifactId>
+      <version>${org.apache.geronimo.st.core_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.st.v1.core</artifactId>
+      <version>${org.apache.geronimo.st.v1.core_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.st.v11.core</artifactId>
+      <version>${org.apache.geronimo.st.v11.core_version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
@@ -72,38 +82,28 @@
     </dependency>
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
-      <artifactId>org.apache.geronimo.feature</artifactId>
-      <version>${org.apache.geronimo.feature_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.geronimo.devtools</groupId>
-      <artifactId>org.apache.geronimo.installableruntime.jetty.feature</artifactId>
-      <version>${org.apache.geronimo.installableruntime.jetty.feature_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.geronimo.devtools</groupId>
-      <artifactId>org.apache.geronimo.installableruntime.tomcat.feature</artifactId>
-      <version>${org.apache.geronimo.installableruntime.tomcat.feature_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.geronimo.devtools</groupId>
       <artifactId>org.apache.geronimo.runtime.v1</artifactId>
       <version>${org.apache.geronimo.runtime.v1_version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
-      <artifactId>org.apache.geronimo.tomcat.j2ee.server.v1</artifactId>
-      <version>${org.apache.geronimo.tomcat.j2ee.server.v1_version}</version>
+      <artifactId>org.apache.geronimo.runtime.v1</artifactId>
+      <version>${org.apache.geronimo.runtime.v11_version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
-      <artifactId>org.apache.geronimo.jetty.j2ee.server.v1</artifactId>
-      <version>${org.apache.geronimo.jetty.j2ee.server.v1_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.geronimo.devtools</groupId>
-      <artifactId>org.apache.geronimo.ui</artifactId>
+      <artifactId>org.apache.geronimo.st.ui</artifactId>
       <version>${org.apache.geronimo.ui_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.st.v1.ui</artifactId>
+      <version>${org.apache.geronimo.ui_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.feature</artifactId>
+      <version>${org.apache.geronimo.feature_version}</version>
     </dependency>
   </dependencies>  
 </project>
