@@ -80,6 +80,8 @@
     <module>org.apache.geronimo.st.v1.ui</module>
     <module>org.apache.geronimo.deployment.model</module>
     <module>org.apache.geronimo.deployment.model.edit</module>
+    <module>org.apache.geronimo.v11.deployment.model</module>
+    <module>org.apache.geronimo.v11.deployment.model.edit</module>
     <module>org.apache.geronimo.jetty.j2ee.server.v1</module>
     <module>org.apache.geronimo.tomcat.j2ee.server.v1</module>
     <module>org.apache.geronimo.runtime.v1</module>
