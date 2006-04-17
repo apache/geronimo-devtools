@@ -14,6 +14,7 @@
   <properties>
     <installLocation>${settings.localRepository}/eclipse/temp/</installLocation>
     <platformDriver>I20060329-0800/eclipse-SDK-I20060329-0800</platformDriver>
+    <geronimoVersion>1.0</geronimoVersion>
   </properties>
   
   <build>
@@ -238,42 +239,42 @@
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-security-builder</artifactId>
-      <version>${geronimo_version}</version>
+      <version>${geronimoVersion}</version>
     </dependency>
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-naming-builder</artifactId>
-      <version>${geronimo_version}</version>
+      <version>${geronimoVersion}</version>
     </dependency>
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-web-builder</artifactId>
-      <version>${geronimo_version}</version>
+      <version>${geronimoVersion}</version>
     </dependency>
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-j2ee-builder</artifactId>
-      <version>${geronimo_version}</version>
+      <version>${geronimoVersion}</version>
     </dependency>
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-service-builder</artifactId>
-      <version>${geronimo_version}</version>
+      <version>${geronimoVersion}</version>
     </dependency>
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-j2ee-schema</artifactId>
-      <version>${geronimo_version}</version>
+      <version>${geronimoVersion}</version>
     </dependency>
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-connector-builder</artifactId>
-      <version>${geronimo_version}</version>
+      <version>${geronimoVersion}</version>
     </dependency>
     <dependency>
       <groupId>geronimo</groupId>
       <artifactId>geronimo-client-builder</artifactId>
-      <version>${geronimo_version}</version>
+      <version>${geronimoVersion}</version>
     </dependency>
   </dependencies>
 </project>

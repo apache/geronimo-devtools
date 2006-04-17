@@ -70,5 +70,10 @@
             <artifactId>org.apache.geronimo.st.core</artifactId>
             <version>${org.apache.geronimo.st.core_version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.plugins</groupId>
+            <artifactId>org.eclipse.swt.fragment</artifactId>
+            <version>${org.eclipse.swt.fragment_version}</version>
+        </dependency>
     </dependencies>
 </project>

@@ -21,7 +21,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.editors,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.jst.server.generic.core,
- org.eclipse.wst.server.ui
+ org.eclipse.wst.server.ui,
+ org.eclipse.core.commands
 Eclipse-AutoStart: true
 Export-Package: org.apache.geronimo.st.ui,
  org.apache.geronimo.st.ui.actions,

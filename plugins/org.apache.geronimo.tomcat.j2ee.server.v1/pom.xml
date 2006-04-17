@@ -17,7 +17,7 @@
                 <artifactId>maven-geronimodevtools-plugin</artifactId>
                 <configuration>
                     <distribution>geronimo-tomcat-j2ee</distribution>
-                    <version>${geronimo_version}</version>
+                    <version>1.0</version>
                 </configuration>
                 <executions>
                     <execution>

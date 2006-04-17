@@ -45,4 +45,17 @@
             </plugin>
         </plugins>
     </build>
+    <dependencies>
+        <!-- g plugin dependencies -->
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.st.core</artifactId>
+            <version>${org.apache.geronimo.st.core_version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.runtime.v11</artifactId>
+            <version>${org.apache.geronimo.runtime.v11_version}</version>
+        </dependency>
+    </dependencies>
 </project>
