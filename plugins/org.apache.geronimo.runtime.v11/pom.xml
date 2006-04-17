@@ -1,8 +1,8 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>org.apache.geronimo.runtime.v1</artifactId>
+    <artifactId>org.apache.geronimo.runtime.v11</artifactId>
     <packaging>jar</packaging>
-    <version>${org.apache.geronimo.runtime.v1_version}</version>
+    <version>${org.apache.geronimo.runtime.v11_version}</version>
     <name>${artifactId}</name>
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
@@ -47,7 +47,7 @@
                         </goals>
                         <configuration>
                             <artifactItems>
-                               <artifactItem>
+                                <artifactItem>
                                     <groupId>geronimo</groupId>
                                     <artifactId>geronimo-kernel</artifactId>
                                     <version>${geronimoVersion}</version>
@@ -170,7 +170,7 @@
                             <destFile>plugin.xml</destFile>
                             <contextMap>
                                 <id>${artifactId}</id>
-                                <name>Apache Geronimo Runtime V1.0 Plug-in</name>
+                                <name>Apache Geronimo Runtime V1.1 Plug-in</name>
                                 <version>${version}</version>
                             </contextMap>
                         </configuration>
