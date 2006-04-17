@@ -94,8 +94,8 @@
                     <artifactItems>
                         <artifactItem>
                             <groupId>org.apache.geronimo.devtools</groupId>
-                            <artifactId>geronimo-emf-common</artifactId>
-                            <version>${geronimo-emf-common_version}</version>
+                            <artifactId>geronimo-emf</artifactId>
+                            <version>1.0</version>
                             <type>jar</type>
                         </artifactItem>
                     </artifactItems>
@@ -121,7 +121,7 @@
                         </goals>
                         <configuration>
                             <genmodel>
-                                ${imported-resources}/emf/geronimo-web.genmodel</genmodel>
+                                ${imported-resources}/emf/geronimo-web-1.0.genmodel</genmodel>
                         </configuration>
                     </execution>
                     <execution>
@@ -132,7 +132,7 @@
                         </goals>
                         <configuration>
                             <genmodel>
-                                ${imported-resources}/emf/openejb-jar.genmodel</genmodel>
+                                ${imported-resources}/emf/openejb-jar-2.0.genmodel</genmodel>
                         </configuration>
                     </execution>
                     <execution>
@@ -143,7 +143,7 @@
                         </goals>
                         <configuration>
                             <genmodel>
-                                ${imported-resources}/emf/geronimo-connector.genmodel</genmodel>
+                                ${imported-resources}/emf/geronimo-connector-1.0.genmodel</genmodel>
                         </configuration>
                     </execution>
                     <execution>
@@ -154,7 +154,7 @@
                         </goals>
                         <configuration>
                             <genmodel>
-                                ${imported-resources}/emf/geronimo-application.genmodel</genmodel>
+                                ${imported-resources}/emf/geronimo-application-1.0.genmodel</genmodel>
                         </configuration>
                     </execution>
                     <execution>
@@ -165,7 +165,7 @@
                         </goals>
                         <configuration>
                             <genmodel>
-                                ${imported-resources}/emf/geronimo-application-client.genmodel</genmodel>
+                                ${imported-resources}/emf/geronimo-application-client-1.0.genmodel</genmodel>
                         </configuration>
                     </execution>
                 </executions>

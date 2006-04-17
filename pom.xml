@@ -200,7 +200,8 @@
   </pluginRepositories>
 
   <modules>
-    <module>geronimo-emf-common</module>
+    <module>emf/geronimo-1.0</module>
+    <module>emf/geronimo-1.1</module>
     <module>plugins</module>
     <module>features/org.apache.geronimo.feature</module>
     <module>features/org.apache.geronimo.installableruntime.jetty.feature</module>
