@@ -100,6 +100,18 @@ public class GeronimoUtils {
 		return ComponentCore.createComponent(module.getProject());
 	}
 
+	public static String getContextRoot(IModule module) {
+		String contextRoot = null;
+
+		J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) module.loadAdapter(J2EEFlexProjDeployable.class, null);
+		contextRoot = ((IWebModule) j2eeModule).getContextRoot();
+
+		if (contextRoot == null)
+			contextRoot = getId(module);
+
+		return contextRoot;
+	}
+
 	public static String getId(IModule module) {
 		// use the module ID
 		String moduleId = module.getId();

@@ -1,10 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo v11 Server Tools Core Plug-in
-Bundle-SymbolicName: org.apache.geronimo.st.v11.core
+Bundle-SymbolicName: org.apache.geronimo.st.v11.core;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.apache.geronimo.st.v11.core.Activator
 Bundle-Vendor: Apache
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.jst.server.generic.core,
+ org.apache.geronimo.runtime.v11,
+ org.apache.geronimo.st.core,
+ org.eclipse.wst.server.core,
+ org.eclipse.debug.core
 Eclipse-AutoStart: true

@@ -25,7 +25,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.web,
  org.eclipse.jst.server.generic.core,
  org.eclipse.wst.common.project.facet.core,
- org.eclipse.jem.util
+ org.eclipse.jem.util,
+ org.eclipse.jdt.core
 Eclipse-AutoStart: true
 Export-Package: javax.enterprise.deploy.model,
  javax.enterprise.deploy.model.exceptions,

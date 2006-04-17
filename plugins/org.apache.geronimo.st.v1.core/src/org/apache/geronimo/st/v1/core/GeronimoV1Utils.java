@@ -78,14 +78,9 @@ public class GeronimoV1Utils extends GeronimoUtils {
 		if (deploymentPlan != null)
 			contextRoot = deploymentPlan.getContextRoot();
 
-		if (contextRoot == null) {
-			J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) module.loadAdapter(J2EEFlexProjDeployable.class, null);
-			contextRoot = ((IWebModule) j2eeModule).getContextRoot();
-		}
-
 		if (contextRoot == null)
-			contextRoot = getId(module);
-
+			contextRoot = GeronimoUtils.getContextRoot(module);
+			
 		return contextRoot;
 	}
 
