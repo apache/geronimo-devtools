@@ -1,8 +1,8 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>geronimo-emf</artifactId>
+  <artifactId>geronimo-1.1-emf</artifactId>
   <packaging>jar</packaging>
-  <version>1.1</version>
+  <version>1.0</version>
   <name>${artifactId}</name>
   <parent>
     <groupId>org.apache.geronimo.devtools</groupId>

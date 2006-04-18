@@ -91,7 +91,7 @@
                     <artifactItems>
                         <artifactItem>
                             <groupId>org.apache.geronimo.devtools</groupId>
-                            <artifactId>geronimo-emf</artifactId>
+                            <artifactId>geronimo-1.0-emf</artifactId>
                             <version>1.0</version>
                             <type>jar</type>
                         </artifactItem>

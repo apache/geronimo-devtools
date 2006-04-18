@@ -82,6 +82,16 @@
     </dependency>
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.v11.deployment.model</artifactId>
+      <version>${org.apache.geronimo.v11.deployment.model_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.v11.deployment.model.edit</artifactId>
+      <version>${org.apache.geronimo.v11.deployment.model.edit_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
       <artifactId>org.apache.geronimo.runtime.v1</artifactId>
       <version>${org.apache.geronimo.runtime.v1_version}</version>
     </dependency>

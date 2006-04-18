@@ -1,8 +1,8 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>org.apache.geronimo.v11.deployment.model</artifactId>
+    <artifactId>org.apache.geronimo.v11.deployment.model.edit</artifactId>
     <packaging>jar</packaging>
-    <version>${org.apache.geronimo.v11.deployment.model_version}</version>
+    <version>${org.apache.geronimo.v11.deployment.model.edit_version}</version>
     <name>${artifactId}</name>
     
     <parent>
@@ -94,8 +94,8 @@
                     <artifactItems>
                         <artifactItem>
                             <groupId>org.apache.geronimo.devtools</groupId>
-                            <artifactId>geronimo-emf</artifactId>
-                            <version>1.1</version>
+                            <artifactId>geronimo-1.1-emf</artifactId>
+                            <version>1.0</version>
                             <type>jar</type>
                         </artifactItem>
                     </artifactItems>
@@ -172,4 +172,11 @@
             </plugin>
         </plugins>
     </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.deployment.model</artifactId>
+            <version>${org.apache.geronimo.v11.deployment.model_version}</version>
+        </dependency>
+    </dependencies>   
 </project>

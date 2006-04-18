@@ -101,6 +101,8 @@
     <org.apache.geronimo.runtime.v11_version>1.0.0</org.apache.geronimo.runtime.v11_version>
     <org.apache.geronimo.deployment.model_version>1.0.0</org.apache.geronimo.deployment.model_version>
     <org.apache.geronimo.deployment.model.edit_version>1.0.0</org.apache.geronimo.deployment.model.edit_version>
+    <org.apache.geronimo.v11.deployment.model_version>1.0.0</org.apache.geronimo.v11.deployment.model_version>
+    <org.apache.geronimo.v11.deployment.model.edit_version>1.0.0</org.apache.geronimo.v11.deployment.model.edit_version>
     <org.apache.geronimo.jetty.j2ee.server.v1_version>1.0.0</org.apache.geronimo.jetty.j2ee.server.v1_version>
     <org.apache.geronimo.tomcat.j2ee.server.v1_version>1.0.0</org.apache.geronimo.tomcat.j2ee.server.v1_version>
     <org.apache.geronimo.feature.source_version>1.0.0</org.apache.geronimo.feature.source_version>
@@ -200,6 +202,8 @@
   </pluginRepositories>
 
   <modules>
+    <module>maven-plugins/maven-emf-plugin</module>
+    <module>maven-plugins/maven-geronimodevtools-plugin</module>
     <module>emf/geronimo-1.0</module>
     <module>emf/geronimo-1.1</module>
     <module>plugins</module>
