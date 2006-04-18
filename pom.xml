@@ -90,7 +90,6 @@
   </organization>
 
   <properties>
-    <geronimo-emf-common_version>1.0.0</geronimo-emf-common_version>
     <!-- Plugin Versions -->
     <org.apache.geronimo.st.core_version>1.0.0</org.apache.geronimo.st.core_version>
     <org.apache.geronimo.st.v1.core_version>1.0.0</org.apache.geronimo.st.v1.core_version>
@@ -113,17 +112,15 @@
     <org.apache.geronimo.installableruntime.jetty.feature_version>1.0.0</org.apache.geronimo.installableruntime.jetty.feature_version>
     <!-- Ext. Jar Dependency Versions -->
     <geronimo_spec_version>1.0</geronimo_spec_version>
-    <openejb_version>2.0</openejb_version>
     <stax-api_version>1.0</stax-api_version>
     <junitVersion>3.8.1</junitVersion>
     <!-- Eclipse Distribution URLs -->
     <platformDriver>R-3.1.2-200601181600/eclipse-SDK-3.1.2</platformDriver>
-    <!--<platformDriver>I20060329-0800/eclipse-SDK-I20060329-0800</platformDriver>-->
     <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/${platformDriver}</platformUrl>
     <emfUrl>http://download.eclipse.org/tools/emf/downloads/drops/2.1.2/R200601191349/emf-sdo-xsd-SDK-2.1.2.zip</emfUrl>
     <jemUrl>http://download.eclipse.org/tools/ve/downloads/drops/R-1.1.0.1-200509071822/JEM-SDK-1.1.0.1.zip</jemUrl>
     <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/R-3.1.1-200509301327/GEF-SDK-3.1.1.zip</gefUrl>
-    <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/M-M200603280054-200603280054/wtp-sdk-M-M200603280054-200603280054.zip</wtpUrl>
+    <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/R-1.0.2RC2-200604132214/wtp-sdk-R-1.0.2RC2-200604132214.zip</wtpUrl>
   </properties>
 
   <dependencies>

@@ -15,6 +15,7 @@
     <installLocation>${settings.localRepository}/eclipse/temp/</installLocation>
     <platformDriver>I20060329-0800/eclipse-SDK-I20060329-0800</platformDriver>
     <geronimoVersion>1.0</geronimoVersion>
+    <openejbVersion>2.0</openejbVersion>
   </properties>
   
   <build>
@@ -229,12 +230,12 @@
     <dependency>
       <groupId>openejb</groupId>
       <artifactId>openejb-pkgen-builder</artifactId>
-      <version>${openejb_version}</version>
+      <version>${openejbVersion}</version>
     </dependency>
     <dependency>
       <groupId>openejb</groupId>
       <artifactId>openejb-builder</artifactId>
-      <version>${openejb_version}</version>
+      <version>${openejbVersion}</version>
     </dependency>
     <dependency>
       <groupId>geronimo</groupId>
