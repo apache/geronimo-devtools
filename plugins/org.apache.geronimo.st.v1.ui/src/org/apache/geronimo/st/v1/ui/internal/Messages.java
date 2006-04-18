@@ -160,6 +160,10 @@ public class Messages extends NLS {
 	public static String serverWizardDescription;
 	public static String browse;
 	public static String installDir;
+	public static String installDirInfo;
+	public static String noSuchDir;
+	public static String noImageFound;
+	public static String cannotInstallAtLocation;
 	public static String downloadOptions;
 	public static String chooseWebContainer;
 	public static String gWithTomcat;

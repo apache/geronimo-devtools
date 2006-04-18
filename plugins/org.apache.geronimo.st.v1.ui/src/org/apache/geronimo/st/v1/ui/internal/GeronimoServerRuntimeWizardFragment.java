@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.st.v1.ui.internal;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
@@ -266,25 +267,37 @@ public class GeronimoServerRuntimeWizardFragment extends
 		getRuntimeDelegate().setServerDefinitionId(runtime.getRuntimeType().getId());
 		getRuntimeDelegate().setServerInstanceProperties(getValues());
 
-		IStatus status = runtimeWC.validate(null);
-		if (status == null || status.isOK()) {
-			getWizard().setMessage(null, IMessageProvider.NONE);
-			group.setEnabled(false);
+		if (installDir.getText() == null || installDir.getText().length() == 0) {
+			// installDir field has not been entered
+			getWizard().setMessage(Messages.installDirInfo, IMessageProvider.ERROR);
 		} else {
-			getWizard().setMessage(status.getMessage(), IMessageProvider.ERROR);
-			Path installPath = new Path(installDir.getText());
-			if (installPath.toFile().exists()) {
-				group.setEnabled(true);
+			IStatus status = runtimeWC.validate(null);
+			if (status == null || status.isOK()) {
+				getWizard().setMessage(null, IMessageProvider.NONE);
+				group.setEnabled(false);
+			} else {
+				File file = new Path(installDir.getText()).toFile();
+				if (file.isDirectory()) {
+					boolean canWrite = file.canWrite();
+					String message = canWrite ? Messages.noImageFound
+							: Messages.cannotInstallAtLocation;
+					if (canWrite)
+						group.setEnabled(true);
+					getWizard().setMessage(message, IMessageProvider.ERROR);
+				} else {
+					group.setEnabled(false);
+					getWizard().setMessage(Messages.noSuchDir, IMessageProvider.ERROR);
+				}
+				return;
 			}
-			return;
-		}
 
-		if (!isValidVM()) {
-			getWizard().setMessage(Messages.jvmWarning, IMessageProvider.WARNING);
-			return;
-		}
+			if (!isValidVM()) {
+				getWizard().setMessage(Messages.jvmWarning, IMessageProvider.WARNING);
+				return;
+			}
 
-		getWizard().setMessage(null, IMessageProvider.NONE);
+			getWizard().setMessage(null, IMessageProvider.NONE);
+		}
 
 		// validateDecorators();
 	}
