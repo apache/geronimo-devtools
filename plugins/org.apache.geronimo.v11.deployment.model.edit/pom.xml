@@ -110,7 +110,7 @@
                     <eclipseHome>
                         ${settings.localRepository}/eclipse/temp/eclipse</eclipseHome>
                     <workspace>${project.basedir}/..</workspace>
-                    <type>model</type>
+                    <type>edit</type>
                 </configuration>
                 <executions>
                     <execution>
