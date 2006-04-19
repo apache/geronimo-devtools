@@ -28,6 +28,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.IVMInstall2;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -303,8 +305,13 @@ public class GeronimoServerRuntimeWizardFragment extends
 	}
 
 	private boolean isValidVM() {
-		String vmId = getRuntimeDelegate().getVMInstallId();
-		return vmId != null && vmId.startsWith("1.4");
+		String javaVersion = null;
+		IVMInstall vmInstall = getRuntimeDelegate().getVMInstall();
+		if (vmInstall instanceof IVMInstall2) 
+			javaVersion = ((IVMInstall2) vmInstall).getJavaVersion();
+		return javaVersion != null && javaVersion.startsWith("1.4");
+		//This returns false on MacOSX due to do no IVMInstall2.getJavaVersion() implementation
+		//on Mac, fixed in Eclipse 3.2
 	}
 
 	private void validateDecorators() {
