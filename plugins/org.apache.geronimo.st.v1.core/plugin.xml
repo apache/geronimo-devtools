@@ -51,7 +51,7 @@
         </serverdefinition>
     </extension>
     
-    <extension point="org.eclipse.wst.server.core.runtimeTargetHandlers">
+    <!--<extension point="org.eclipse.wst.server.core.runtimeTargetHandlers">
         <runtimeTargetHandler id="org.eclipse.jst.server.geronimo.runtimeTarget"
             runtimeTypeIds="org.apache.geronimo.generic.runtime.*"
             class="org.apache.geronimo.st.v1.core.GeronimoServerRuntimeTargetHandler"/>
@@ -61,7 +61,7 @@
         <runtimeClasspathProvider id="org.apache.geronimo.generic.runtime.10"
             runtimeTypeIds="org.apache.geronimo.generic.runtime.10"
             class="org.apache.geronimo.st.v1.core.GeronimoServerRuntimeTargetHandler"/>
-    </extension>
+    </extension> -->
     
     <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
         <runtime-component-type id="org.apache.geronimo.runtime"/>

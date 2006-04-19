@@ -11,5 +11,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.geronimo.runtime.v11,
  org.apache.geronimo.st.core,
  org.eclipse.wst.server.core,
- org.eclipse.debug.core
+ org.eclipse.debug.core,
+ com.ibm.etools.emf.event,
+ org.apache.geronimo.v11.deployment.model,
+ org.eclipse.wst.common.modulecore,
+ org.eclipse.core.resources
 Eclipse-AutoStart: true

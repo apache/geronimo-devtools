@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension point="org.eclipse.wst.server.core.runtimeTargetHandlers">
+		<runtimeTargetHandler id="org.eclipse.jst.server.geronimo.runtimeTarget"
+			runtimeTypeIds="org.apache.geronimo.generic.runtime.*"
+            class="org.apache.geronimo.st.core.GeronimoServerRuntimeTargetHandler"/>
+    </extension>
+    
+	<extension point="org.eclipse.jst.server.core.runtimeClasspathProviders">
+		<runtimeClasspathProvider id="org.apache.geronimo.generic.runtime.10"
+			runtimeTypeIds="org.apache.geronimo.generic.runtime.*"
+			class="org.apache.geronimo.st.core.GeronimoServerRuntimeTargetHandler"/>
+    </extension>
+
+</plugin>

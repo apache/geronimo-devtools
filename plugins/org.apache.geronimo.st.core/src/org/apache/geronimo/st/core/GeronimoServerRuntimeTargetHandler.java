@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.apache.geronimo.st.v1.core;
+package org.apache.geronimo.st.core;
 
 import java.io.File;
 import java.util.ArrayList;
