@@ -25,6 +25,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.xmi.XMIResource;
@@ -168,5 +169,11 @@ public class GeronimoUtils {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static void register(ResourceSet resourceSet,
+			Resource.Factory factory, EPackage pkg, String nsUri) {
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, factory);
+		resourceSet.getPackageRegistry().put(nsUri, pkg);
 	}
 }
