@@ -15,9 +15,17 @@
  */
 package org.apache.geronimo.st.core;
 
-import org.eclipse.jst.server.core.internal.GenericRuntime;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jst.server.generic.core.internal.GenericServerRuntime;
 
-public class GenericGeronimoRuntime extends GenericRuntime implements
+public class GenericGeronimoServerRuntime extends GenericServerRuntime implements
 		IGeronimoRuntime {
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.server.core.model.RuntimeDelegate#validate()
+	 */
+	public IStatus validate() {
+		return super.validate();
+	}
 
 }
