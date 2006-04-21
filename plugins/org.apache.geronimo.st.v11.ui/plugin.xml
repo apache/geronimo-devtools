@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+    <extension point="org.eclipse.wst.server.ui.wizardFragments">
+        <fragment id="org.eclipse.jst.server.generic.runtime"
+            typeIds="org.apache.geronimo.generic.runtime.11"
+            class="org.apache.geronimo.st.v1.ui.internal.GeronimoServerRuntimeWizardFragment"/>
+        <fragment id="org.eclipse.jst.server.generic.server"
+            typeIds="org.apache.geronimo.generic.server.11"
+            class="org.eclipse.jst.server.generic.ui.internal.GenericServerWizardFragment"/>
+    </extension>
+
+</plugin>

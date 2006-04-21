@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo Server Tools V11 UI Plug-in
-Bundle-SymbolicName: org.apache.geronimo.st.v11.ui
+Bundle-SymbolicName: org.apache.geronimo.st.v11.ui;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.apache.geronimo.st.v11.ui.Activator
 Bundle-Vendor: Apache
