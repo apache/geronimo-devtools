@@ -2,15 +2,6 @@
 <?eclipse version="3.0"?>
 <plugin>
     
-    <extension point="org.eclipse.wst.server.ui.wizardFragments">
-        <fragment id="org.eclipse.jst.server.generic.runtime"
-            typeIds="org.apache.geronimo.generic.runtime.10"
-            class="org.apache.geronimo.st.v1.ui.internal.GeronimoServerRuntimeWizardFragment"/>
-        <fragment id="org.eclipse.jst.server.generic.server"
-            typeIds="org.apache.geronimo.generic.server.10"
-            class="org.eclipse.jst.server.generic.ui.internal.GenericServerWizardFragment"/>
-    </extension>
-    
 	<extension point="org.eclipse.wst.server.ui.serverImages">
     	<image id="org.apache.geronimo.generic.runtime.image"
             icon="icons/obj16/littleG.gif"
