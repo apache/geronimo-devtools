@@ -20,20 +20,20 @@ public class GeronimoSchemaNS {
 	private GeronimoSchemaNS() {
 	}
 
-	public static final String GERONIMO_APP_NS = "http://geronimo.apache.org/xml/ns/j2ee/application-1.0";
-
-	public static final String GERONIMO_WEB_NS = "http://geronimo.apache.org/xml/ns/j2ee/web-1.0";
-
-	public static final String GERONIMO_OPENEJB_NS = "http://www.openejb.org/xml/ns/openejb-jar-2.0";
-
-	public static final String GERONIMO_CONNECTOR_NS = "http://geronimo.apache.org/xml/ns/j2ee/connector-1.0";
-
-	public static final String GERONIMO_NAMING_NS = "http://geronimo.apache.org/xml/ns/naming-1.0";
-
-	public static final String GERONIMO_SECURITY_NS = "http://geronimo.apache.org/xml/ns/security-1.1";
-
-	public static final String GERONIMO_DEPLOYMENT_NS = "http://geronimo.apache.org/xml/ns/deployment-1.0";
-
-	public static final String GERONIMO_PKGEN_NS = "http://www.openejb.org/xml/ns/pkgen-2.0";
+	public static final String GERONIMO_APP_NS_1_0 = "http://geronimo.apache.org/xml/ns/j2ee/application-1.0";
+	public static final String GERONIMO_WEB_NS_1_0 = "http://geronimo.apache.org/xml/ns/j2ee/web-1.0";
+	public static final String GERONIMO_OPENEJB_NS_2_0 = "http://www.openejb.org/xml/ns/openejb-jar-2.0";
+	public static final String GERONIMO_CONNECTOR_NS_1_0 = "http://geronimo.apache.org/xml/ns/j2ee/connector-1.0";
+	public static final String GERONIMO_NAMING_NS_1_0 = "http://geronimo.apache.org/xml/ns/naming-1.0";
+	public static final String GERONIMO_SECURITY_NS_1_1 = "http://geronimo.apache.org/xml/ns/security-1.1";
+	public static final String GERONIMO_DEPLOYMENT_NS_1_0 = "http://geronimo.apache.org/xml/ns/deployment-1.0";
+	public static final String GERONIMO_PKGEN_NS_2_0 = "http://www.openejb.org/xml/ns/pkgen-2.0";
+	
+	public static final String GERONIMO_APP_NS_1_1 = "http://geronimo.apache.org/xml/ns/j2ee/application-1.1";
+	public static final String GERONIMO_WEB_NS_1_1 = "http://geronimo.apache.org/xml/ns/j2ee/web-1.1";
+	public static final String GERONIMO_OPENEJB_NS_2_1 = "http://www.openejb.org/xml/ns/openejb-jar-2.1";
+	public static final String GERONIMO_CONNECTOR_NS_1_1 = "http://geronimo.apache.org/xml/ns/j2ee/connector-1.1";
+	public static final String GERONIMO_NAMING_NS_1_1 = "http://geronimo.apache.org/xml/ns/naming-1.1";
+	public static final String GERONIMO_DEPLOYMENT_NS_1_1 = "http://geronimo.apache.org/xml/ns/deployment-1.1";
 
 }
