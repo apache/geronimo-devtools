@@ -1,6 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
+
+	<extension point="org.eclipse.wst.common.project.facet.core.runtimes">
+        <runtime-component-type id="org.apache.geronimo.runtime"/>
+        
+        <runtime-component-version type="org.apache.geronimo.runtime" version="1.0"/>
+        <runtime-component-version type="org.apache.geronimo.runtime" version="1.1"/>
+        
+        <adapter>
+            <runtime-component id="org.apache.geronimo.runtime"/>
+            <factory
+                class="org.eclipse.jst.server.core.internal.RuntimeClasspathProvider$Factory"/>
+            <type
+                class="org.eclipse.jst.common.project.facet.core.IClasspathProvider"/>
+        </adapter>
+        
+        <supported>
+            <runtime-component id="org.apache.geronimo.runtime" version="1.0"/>
+            <facet id="org.apache.geronimo.facet" version="1.0"/>
+            <facet id="jst.web" version="2.2,2.3,2.4"/>
+            <facet id="jst.ejb" version="1.1,2.0,2.1"/>
+            <facet id="jst.ear" version="1.2,1.3,1.4"/>
+            <facet id="jst.connector" version="1.0,1.5"/>
+            <facet id="jst.appclient" version="1.2,1.3,1.4"/>
+        </supported>
+            
+        <supported>
+            <runtime-component id="org.apache.geronimo.runtime" version="1.1"/>
+            <facet id="org.apache.geronimo.facet" version="1.1"/>
+            <facet id="jst.web" version="2.2,2.3,2.4"/>
+            <facet id="jst.ejb" version="1.1,2.0,2.1"/>
+            <facet id="jst.ear" version="1.2,1.3,1.4"/>
+            <facet id="jst.connector" version="1.0,1.5"/>
+            <facet id="jst.appclient" version="1.2,1.3,1.4"/>
+        </supported>
+        
+    </extension>
+    
+    <extension point="org.eclipse.jst.server.core.runtimeFacetMappings">
+        <runtimeFacetMapping
+            runtimeTypeId="org.apache.geronimo.generic.runtime.10"
+            runtime-component="org.apache.geronimo.runtime" version="1.0"/>
+        <runtimeFacetMapping
+            runtimeTypeId="org.apache.geronimo.generic.runtime.11"
+            runtime-component="org.apache.geronimo.runtime" version="1.1"/>
+    </extension>
+
+
 	<extension point="org.eclipse.wst.server.core.runtimeTargetHandlers">
 		<runtimeTargetHandler id="org.eclipse.jst.server.geronimo.runtimeTarget"
 			runtimeTypeIds="org.apache.geronimo.generic.runtime.*"
@@ -12,5 +59,13 @@
 			runtimeTypeIds="org.apache.geronimo.generic.runtime.*"
 			class="org.apache.geronimo.st.core.GeronimoServerRuntimeTargetHandler"/>
     </extension>
+    
+    <extension point="org.eclipse.wst.common.project.facet.core.facets">
+        <project-facet id="org.apache.geronimo.facet">
+            <label>%geronimo-facet-label</label>
+            <description>%geronimo-facet-description</description>
+        </project-facet>
+    </extension>
+    
 
 </plugin>
