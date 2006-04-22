@@ -14,7 +14,7 @@
     </extension>
     
     <extension point="org.eclipse.wst.server.core.serverTypes">
-        <serverType id="org.apache.geronimo.generic.server.10"
+        <serverType id="org.apache.geronimo.generic.server.11"
             name="%serverTypeName" description="%serverTypeDescription"
             runtime="true"
             class="org.apache.geronimo.st.v11.core.GeronimoServer"
