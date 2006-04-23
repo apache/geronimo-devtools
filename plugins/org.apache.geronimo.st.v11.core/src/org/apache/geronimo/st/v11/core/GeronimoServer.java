@@ -16,7 +16,9 @@
 package org.apache.geronimo.st.v11.core;
 
 import javax.enterprise.deploy.spi.DeploymentManager;
+import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 
+import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
 import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
 import org.apache.geronimo.st.core.GenericGeronimoServer;
 import org.apache.geronimo.st.core.IGeronimoVersionHandler;
@@ -91,6 +93,13 @@ public class GeronimoServer extends GenericGeronimoServer {
 	 */
 	public IPath getJSR88DeployerJar() {
 		return getServer().getRuntime().getLocation().append("/lib/geronimo-deploy-jsr88-1.1-SNAPSHOT.jar");
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.IGeronimoServer#getDeploymentFactory()
+	 */
+	public DeploymentFactory getDeploymentFactory() {
+		return new DeploymentFactoryImpl();
 	}
 
 	/*

@@ -32,9 +32,11 @@ import javax.naming.directory.NoSuchAttributeException;
 
 import org.apache.geronimo.gbean.AbstractName;
 import org.apache.geronimo.gbean.AbstractNameQuery;
+import org.apache.geronimo.gbean.GBeanData;
 import org.apache.geronimo.kernel.GBeanNotFoundException;
 import org.apache.geronimo.kernel.Kernel;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
+import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.DeploymentUtils;
 import org.apache.geronimo.st.core.GenericGeronimoServerBehaviour;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
@@ -44,6 +46,7 @@ import org.apache.geronimo.st.core.UpdateServerStateTask;
 import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.core.commands.IDeploymentCommand;
 import org.apache.geronimo.st.core.commands.TargetModuleIdNotFoundException;
+import org.apache.geronimo.st.v11.core.internal.EclipseAwareConfigurationStore;
 import org.apache.geronimo.st.v11.core.internal.Messages;
 import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
@@ -135,6 +138,19 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 
 		return kernel;
 	}
+	
+	public void installRepo() {
+		try {
+			AbstractName abstractName = kernel.getNaming().createRootName(new Artifact("eclipse", "eclipse", "1.0", "car"), "EclipseConfigStore", "ConfigurationStore");
+			GBeanData mockGBean = new GBeanData(abstractName, EclipseAwareConfigurationStore.getGBeanInfo());
+			AbstractNameQuery query = new AbstractNameQuery("geronimo/rmi-naming/1.1-SNAPSHOT/car");
+			mockGBean.addDependency(query);
+			kernel.loadGBean(mockGBean, getKernel().getClass().getClassLoader());
+			kernel.startGBean(mockGBean.getAbstractName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
 
 	public boolean isKernelAlive() {
 		try {
@@ -184,6 +200,8 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 	 */
 	public void publishModule(int kind, int deltaKind, IModule[] module,
 			IProgressMonitor monitor) throws CoreException {
+		
+		//installRepo();
 		
 		Trace.trace(Trace.INFO, ">> publishModule(), deltaKind = " + deltaKind);
 		Trace.trace(Trace.INFO, Arrays.asList(module).toString());

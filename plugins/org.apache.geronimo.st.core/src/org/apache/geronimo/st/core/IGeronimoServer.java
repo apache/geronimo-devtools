@@ -16,6 +16,7 @@
 package org.apache.geronimo.st.core;
 
 import javax.enterprise.deploy.spi.DeploymentManager;
+import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 
 import org.eclipse.core.runtime.IPath;
 
@@ -32,6 +33,8 @@ public interface IGeronimoServer {
 	public String getJMXServiceURL();
 
 	public IPath getJSR88DeployerJar();
+	
+	public DeploymentFactory getDeploymentFactory();
 
 	public void configureDeploymentManager(DeploymentManager dm);
 

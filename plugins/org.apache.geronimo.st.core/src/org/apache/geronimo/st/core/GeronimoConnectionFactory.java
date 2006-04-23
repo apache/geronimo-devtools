@@ -41,7 +41,7 @@ public class GeronimoConnectionFactory {
 
 		if (dm == null) {
 			DeploymentFactoryManager mgr = DeploymentFactoryManager.getInstance();
-			DeploymentFactory factory = discoverDeploymentFactory(server);
+			DeploymentFactory factory = getGeronimoServer(server).getDeploymentFactory();
 			mgr.registerDeploymentFactory(factory);
 			String deployerURL = getGeronimoServer(server).getDeployerURL();
 			Trace.trace(Trace.INFO, "DeployerURL: " + deployerURL);
@@ -52,21 +52,6 @@ public class GeronimoConnectionFactory {
 			connections.put(server.getId(), dm);
 		}
 		return dm;
-	}
-
-	private DeploymentFactory discoverDeploymentFactory(IServer server) {
-		try {
-			IPath path = getGeronimoServer(server).getJSR88DeployerJar();
-			JarFile deployerJar = new JarFile(path.toFile());
-			Manifest manifestFile = deployerJar.getManifest();
-			Attributes attributes = manifestFile.getMainAttributes();
-			String className = attributes.getValue("J2EE-DeploymentFactory-Implementation-Class");
-			Class deploymentFactory = Class.forName(className);
-			return (DeploymentFactory) deploymentFactory.newInstance();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	private IGeronimoServer getGeronimoServer(IServer server) {

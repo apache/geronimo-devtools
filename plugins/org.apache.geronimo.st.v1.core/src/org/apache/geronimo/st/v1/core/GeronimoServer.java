@@ -16,7 +16,9 @@
 package org.apache.geronimo.st.v1.core;
 
 import javax.enterprise.deploy.spi.DeploymentManager;
+import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 
+import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
 import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
 import org.apache.geronimo.st.core.GenericGeronimoServer;
 import org.apache.geronimo.st.core.IGeronimoVersionHandler;
@@ -26,7 +28,6 @@ import org.eclipse.wst.server.core.IModule;
 public class GeronimoServer extends GenericGeronimoServer {
 
 	private static IGeronimoVersionHandler versionHandler = null;
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -100,6 +101,13 @@ public class GeronimoServer extends GenericGeronimoServer {
 	 */
 	public void configureDeploymentManager(DeploymentManager dm) {
 		((JMXDeploymentManager) dm).setLogConfiguration(true, true);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.IGeronimoServer#getDeploymentFactory()
+	 */
+	public DeploymentFactory getDeploymentFactory() {
+		return new DeploymentFactoryImpl();
 	}
 
 	/*

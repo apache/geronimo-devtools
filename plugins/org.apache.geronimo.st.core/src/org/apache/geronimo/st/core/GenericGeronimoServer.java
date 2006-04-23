@@ -15,8 +15,13 @@
  */
 package org.apache.geronimo.st.core;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jst.server.core.IWebModule;
 import org.eclipse.jst.server.generic.core.internal.GenericServer;
 import org.eclipse.jst.server.generic.core.internal.Trace;
@@ -97,6 +102,18 @@ public abstract class GenericGeronimoServer extends GenericServer implements
 
 	public void setHTTPPort(String value) {
 		getServerInstanceProperties().put(PROPERTY_HTTP_PORT, value);
+	}
+	
+	public String discoverDeploymentFactoryClassName(IPath jarPath) {
+		try {
+			JarFile deployerJar = new JarFile(jarPath.toFile());
+			Manifest manifestFile = deployerJar.getManifest();
+			Attributes attributes = manifestFile.getMainAttributes();
+			return attributes.getValue("J2EE-DeploymentFactory-Implementation-Class");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+		return null;
 	}
 
 }

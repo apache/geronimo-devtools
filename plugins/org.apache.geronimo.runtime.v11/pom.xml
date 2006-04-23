@@ -146,6 +146,11 @@
                                     <artifactId>stax-api</artifactId>
                                     <version>${staxApiVersion}</version>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>geronimo</groupId>
+                                    <artifactId>geronimo-system</artifactId>
+                                    <version>${geronimoVersion}</version>
+                                </artifactItem>
                             </artifactItems>
                             <outputDirectory>lib</outputDirectory>
                         </configuration>
@@ -205,6 +210,11 @@
             <groupId>openejb</groupId>
             <artifactId>openejb-builder</artifactId>
             <version>${openejbVersion}</version>
+        </dependency>
+        <dependency>
+       		<groupId>geronimo</groupId>
+        	<artifactId>geronimo-system</artifactId>
+        	<version>${geronimoVersion}</version>
         </dependency>
     </dependencies>
 </project>
