@@ -103,7 +103,7 @@
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
       <artifactId>org.apache.geronimo.st.ui</artifactId>
-      <version>$org.apache.geronimo.st.ui_version}</version>
+      <version>${org.apache.geronimo.st.ui_version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
