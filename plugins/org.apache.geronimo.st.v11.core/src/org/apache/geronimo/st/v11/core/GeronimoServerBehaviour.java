@@ -139,19 +139,6 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 		return kernel;
 	}
 	
-	public void installRepo() {
-		try {
-			AbstractName abstractName = kernel.getNaming().createRootName(new Artifact("eclipse", "eclipse", "1.0", "car"), "EclipseConfigStore", "ConfigurationStore");
-			GBeanData mockGBean = new GBeanData(abstractName, EclipseAwareConfigurationStore.getGBeanInfo());
-			AbstractNameQuery query = new AbstractNameQuery("geronimo/rmi-naming/1.1-SNAPSHOT/car");
-			mockGBean.addDependency(query);
-			kernel.loadGBean(mockGBean, getKernel().getClass().getClassLoader());
-			kernel.startGBean(mockGBean.getAbstractName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-	}
-
 	public boolean isKernelAlive() {
 		try {
 			return getKernel() != null && kernel.isRunning();
@@ -200,8 +187,6 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 	 */
 	public void publishModule(int kind, int deltaKind, IModule[] module,
 			IProgressMonitor monitor) throws CoreException {
-		
-		//installRepo();
 		
 		Trace.trace(Trace.INFO, ">> publishModule(), deltaKind = " + deltaKind);
 		Trace.trace(Trace.INFO, Arrays.asList(module).toString());
