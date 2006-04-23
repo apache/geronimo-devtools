@@ -175,7 +175,7 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.deployment.model</artifactId>
+            <artifactId>org.apache.geronimo.v11.deployment.model</artifactId>
             <version>${org.apache.geronimo.v11.deployment.model_version}</version>
         </dependency>
     </dependencies>   

@@ -11,7 +11,6 @@
     </parent>
     <properties>
         <geronimoVersion>1.0</geronimoVersion>
-        <mx4jVersion>3.0.1</mx4jVersion>
         <commonsLoggingVersion>1.0.4</commonsLoggingVersion>
         <cglibVersion>2.1_3</cglibVersion>
         <xbeanVersion>2.0.0</xbeanVersion>
@@ -62,16 +61,6 @@
                                     <artifactId>
                                         geronimo-deploy-jsr88</artifactId>
                                     <version>${geronimoVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>mx4j</groupId>
-                                    <artifactId>mx4j-remote</artifactId>
-                                    <version>${mx4jVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>mx4j</groupId>
-                                    <artifactId>mx4j</artifactId>
-                                    <version>${mx4jVersion}</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>commons-logging</groupId>

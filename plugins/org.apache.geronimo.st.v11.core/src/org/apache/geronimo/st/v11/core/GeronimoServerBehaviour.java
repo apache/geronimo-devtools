@@ -46,7 +46,6 @@ import org.apache.geronimo.st.core.UpdateServerStateTask;
 import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.core.commands.IDeploymentCommand;
 import org.apache.geronimo.st.core.commands.TargetModuleIdNotFoundException;
-import org.apache.geronimo.st.v11.core.internal.EclipseAwareConfigurationStore;
 import org.apache.geronimo.st.v11.core.internal.Messages;
 import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;

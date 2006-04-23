@@ -9,6 +9,10 @@
         <artifactId>geronimo-eclipse-plugin</artifactId>
         <version>1.0</version>
     </parent>
+    <properties>
+        <mx4jVersion>3.0.1</mx4jVersion>
+        <commonsLoggingVersion>1.0.4</commonsLoggingVersion>
+    </properties>
     <build>
         <resources>
             <resource>
@@ -42,6 +46,16 @@
                                     <groupId>org.apache.geronimo.specs</groupId>
                                     <artifactId>geronimo-j2ee-deployment_1.1_spec</artifactId>
                                     <version>${geronimo_spec_version}</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>mx4j</groupId>
+                                    <artifactId>mx4j-remote</artifactId>
+                                    <version>${mx4jVersion}</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>mx4j</groupId>
+                                    <artifactId>mx4j</artifactId>
+                                    <version>${mx4jVersion}</version>
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>lib</outputDirectory>
@@ -87,4 +101,16 @@
             </plugin>
         </plugins>
     </build>
+    <dependencies>
+        <dependency>
+            <groupId>mx4j</groupId>
+            <artifactId>mx4j-remote</artifactId>
+            <version>${mx4jVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>mx4j</groupId>
+            <artifactId>mx4j</artifactId>
+            <version>${mx4jVersion}</version>
+        </dependency>
+    </dependencies>
 </project>
