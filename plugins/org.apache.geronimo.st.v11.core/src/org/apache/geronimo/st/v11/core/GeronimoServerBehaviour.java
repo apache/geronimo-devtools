@@ -32,11 +32,9 @@ import javax.naming.directory.NoSuchAttributeException;
 
 import org.apache.geronimo.gbean.AbstractName;
 import org.apache.geronimo.gbean.AbstractNameQuery;
-import org.apache.geronimo.gbean.GBeanData;
 import org.apache.geronimo.kernel.GBeanNotFoundException;
 import org.apache.geronimo.kernel.Kernel;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
-import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.DeploymentUtils;
 import org.apache.geronimo.st.core.GenericGeronimoServerBehaviour;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
