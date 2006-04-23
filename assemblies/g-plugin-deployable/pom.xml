@@ -45,7 +45,9 @@
             </goals>
             <configuration>
               <explodedBundles>
+                <explodedBundle>org.apache.geronimo.runtime.common</explodedBundle>
                 <explodedBundle>org.apache.geronimo.runtime.v1</explodedBundle>
+                <explodedBundle>org.apache.geronimo.runtime.v11</explodedBundle>
               </explodedBundles>
             </configuration>
           </execution>
@@ -89,6 +91,11 @@
       <groupId>org.apache.geronimo.devtools</groupId>
       <artifactId>org.apache.geronimo.v11.deployment.model.edit</artifactId>
       <version>${org.apache.geronimo.v11.deployment.model.edit_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.runtime.common</artifactId>
+      <version>${org.apache.geronimo.runtime.common_version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
