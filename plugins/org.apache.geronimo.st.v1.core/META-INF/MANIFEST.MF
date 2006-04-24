@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.common.project.facet.core,
  org.eclipse.wst.common.frameworks,
  org.apache.geronimo.runtime.v1,
- org.apache.geronimo.runtime.common
+ org.apache.geronimo.runtime.common,
+ org.apache.geronimo.st.jmxagent
 Eclipse-AutoStart: true
 Bundle-Vendor: Apache
 Export-Package: org.apache.geronimo.st.v1.core.operations,
