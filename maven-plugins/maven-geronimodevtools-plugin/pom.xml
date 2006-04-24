@@ -7,6 +7,13 @@
     <packaging>maven-plugin</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>Geronimo Devtools Maven Plugin</name>
+    
+    <scm>
+        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/maven-plugins/maven-geronimodevtools-plugin</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/maven-plugins/maven-geronimodevtools-plugin</developerConnection>
+        <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/maven-plugins//maven-geronimodevtools-plugin</url>
+    </scm>    
+    
     <dependencies>
         <dependency>
             <groupId>org.apache.maven</groupId>
