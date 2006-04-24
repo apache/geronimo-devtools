@@ -63,12 +63,6 @@
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>commons-logging</groupId>
-                                    <artifactId>commons-logging</artifactId>
-                                    <version>
-                                        ${commonsLoggingVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
                                     <groupId>cglib</groupId>
                                     <artifactId>cglib-nodep</artifactId>
                                     <version>${cglibVersion}</version>

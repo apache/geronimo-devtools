@@ -67,5 +67,10 @@
             <artifactId>org.apache.geronimo.runtime.common</artifactId>
             <version>${org.apache.geronimo.runtime.common_version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId> org.apache.geronimo.st.jmxagent</artifactId>
+            <version>${org.apache.geronimo.st.jmxagent_version}</version>
+        </dependency>
     </dependencies>
 </project>
