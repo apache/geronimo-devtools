@@ -75,13 +75,9 @@
   </licenses>
 
   <scm>
-    <connection>
-      scm:svn:https://svn.apache.org/repos/asf/geronimo/
-    </connection>
-    <developerConnection>
-      scm:svn:https://${maven.username}@svn.apache.org/repos/asf/geronimo/
-    </developerConnection>
-    <url>https://svn.apache.org/repos/asf/geronimo/</url>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</developerConnection>
+    <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</url>
   </scm>
 
   <organization>
