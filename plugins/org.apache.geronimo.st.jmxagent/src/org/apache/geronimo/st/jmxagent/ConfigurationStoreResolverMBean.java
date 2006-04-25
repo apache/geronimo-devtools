@@ -17,10 +17,8 @@ package org.apache.geronimo.st.jmxagent;
 
 import java.util.Set;
 
-import org.apache.geronimo.kernel.repository.Artifact;
-
 public interface ConfigurationStoreResolverMBean {
 	
-	public Set resolve(Artifact artifact, String module, String path);
+	public Set resolve(String configId, String module, String path);
 
 }

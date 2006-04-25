@@ -38,7 +38,7 @@ public class JMXAgent {
 	private static int DEFAULT_PORT = 8090;
 
 	private JMXAgent() {
-		init();
+		
 	}
 
 	public static JMXAgent getInstance() {
@@ -53,13 +53,14 @@ public class JMXAgent {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		server = MBeanServerFactory.createMBeanServer();
 		loadBean(ConfigurationStoreResolver.class.getName(), "ConfigStoreResolver:name=resolver");
 	}
 
 	public void start() throws IOException {
-		if (connectorServer == null) 
-			connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, null, server);
+		if (connectorServer == null) {
+			init();
+			connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, null, getServer());
+		}
 		
 		if (!connectorServer.isActive())
 			connectorServer.start();
@@ -72,9 +73,15 @@ public class JMXAgent {
 
 	public void loadBean(String className, String objectName) {
 		try {
-			server.createMBean(className, new ObjectName(objectName));
+			getServer().createMBean(className, new ObjectName(objectName));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private MBeanServer getServer() {
+		if(server == null)
+			server = MBeanServerFactory.createMBeanServer();
+		return server;
 	}
 }
