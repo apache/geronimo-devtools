@@ -9,12 +9,16 @@
         <artifactId>eclipse-plugins-parent</artifactId>
         <version>1.0</version>
     </parent>
+    <properties>
+    	<configStoreServiceVersion>1.0-SNAPSHOT</configStoreServiceVersion>
+    </properties>
     <build>
         <resources>
             <resource>
                 <directory>.</directory>
                 <includes>
                     <include>.options</include>
+                    <include>plan.xml</include>
                 </includes>
             </resource>
             <resource>
@@ -73,12 +77,37 @@
             						<artifactId>geronimo-servlet_2.4_spec</artifactId>
             						<version>1.0</version>
                                 </artifactItem>
+                                <artifactItem>
+                           			<groupId>org.apache.geronimo.devtools</groupId>
+            						<artifactId>config-store-service</artifactId>
+            						<version>${configStoreServiceVersion}</version>
+                                </artifactItem>
                             </artifactItems>
                             <outputDirectory>lib</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+			<plugin>
+        		<artifactId>maven-antrun-plugin</artifactId>
+        		<executions>
+          			<execution>
+            			<phase>process-resources</phase>
+            			<configuration>
+		            		<tasks>
+								<unzip src="lib/config-store-service-${configStoreServiceVersion}.jar" dest=".">
+    								<patternset>
+        								<include name="plan.xml"/>
+    								</patternset>
+								</unzip>
+		            		</tasks>
+            			</configuration>
+		            	<goals>
+		              		<goal>run</goal>
+		            	</goals>
+          			</execution>
+        		</executions>
+      		</plugin>
             <plugin>
                 <groupId>org.apache.geronimo.devtools</groupId>
                 <artifactId>maven-geronimodevtools-plugin</artifactId>
