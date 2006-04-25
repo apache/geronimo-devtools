@@ -14,6 +14,6 @@
 #end  
   </runtime>
   <requires>
-     <import plugin="org.apache.geronimo.runtime.common" export="true"/>
+     <import plugin="org.apache.geronimo.st.jmxagent"/>
   </requires>
 </plugin>

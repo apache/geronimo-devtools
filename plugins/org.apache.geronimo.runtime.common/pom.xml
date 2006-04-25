@@ -47,16 +47,6 @@
                                     <artifactId>geronimo-j2ee-deployment_1.1_spec</artifactId>
                                     <version>${geronimo_spec_version}</version>
                                 </artifactItem>
-                                <artifactItem>
-                                    <groupId>mx4j</groupId>
-                                    <artifactId>mx4j-remote</artifactId>
-                                    <version>${mx4jVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>mx4j</groupId>
-                                    <artifactId>mx4j</artifactId>
-                                    <version>${mx4jVersion}</version>
-                                </artifactItem>
                             </artifactItems>
                             <outputDirectory>lib</outputDirectory>
                         </configuration>
@@ -101,16 +91,4 @@
             </plugin>
         </plugins>
     </build>
-    <dependencies>
-        <dependency>
-            <groupId>mx4j</groupId>
-            <artifactId>mx4j-remote</artifactId>
-            <version>${mx4jVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>mx4j</groupId>
-            <artifactId>mx4j</artifactId>
-            <version>${mx4jVersion}</version>
-        </dependency>
-    </dependencies>
 </project>
