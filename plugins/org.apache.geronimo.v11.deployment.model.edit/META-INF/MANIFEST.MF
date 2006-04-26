@@ -4,7 +4,7 @@ Bundle-Name: %pluginName
 Bundle-SymbolicName: org.apache.geronimo.v11.deployment.model.edit; singleton:=true
 Bundle-Version: 1.0.0
 Bundle-ClassPath: .
-Bundle-Activator: org.apache.geronimo.deployment.model.edit.GeronimoEMFEditPlugin$Implementation
+Bundle-Activator: org.apache.geronimo.v11.deployment.model.edit.GeronimoEMFEditPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
