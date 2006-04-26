@@ -13,7 +13,4 @@
     </library>  
 #end  
   </runtime>
-  <requires>
-     <import plugin="org.apache.geronimo.st.jmxagent"/>
-  </requires>
 </plugin>

@@ -68,11 +68,6 @@
                                     <version>3.0.1</version>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>commons-logging</groupId>
-                                    <artifactId>commons-logging</artifactId>
-                                    <version>1.0.4</version>
-                                </artifactItem>
-                                <artifactItem>
                            			<groupId>org.apache.geronimo.specs</groupId>
             						<artifactId>geronimo-servlet_2.4_spec</artifactId>
             						<version>1.0</version>

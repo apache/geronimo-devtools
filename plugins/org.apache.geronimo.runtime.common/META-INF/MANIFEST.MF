@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Geronimo Common Runtime Plug-in
+Bundle-SymbolicName: org.apache.geronimo.runtime.common
+Bundle-Version: 1.0.0
+Bundle-ClassPath: 
+ lib/geronimo-j2ee-deployment_1.1_spec-1.0.jar,
+ lib/commons-logging-1.0.4.jar
+Bundle-Localization: plugin 
+Export-Package: org.apache.commons.logging.impl,
+ org.apache.commons.logging,
+ javax.enterprise.deploy.spi.status,
+ javax.enterprise.deploy.spi.factories,
+ javax.enterprise.deploy.spi.exceptions,
+ javax.enterprise.deploy.spi,
+ javax.enterprise.deploy.shared.factories,
+ javax.enterprise.deploy.shared,
+ javax.enterprise.deploy.model.exceptions,
+ javax.enterprise.deploy.model
