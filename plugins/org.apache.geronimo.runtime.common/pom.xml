@@ -66,22 +66,6 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>generate-plugin-descriptor</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>pluginxml</goal>
-                        </goals>
-                        <configuration>
-                            <templateFile>pluginXmlTemplate.vm</templateFile>
-                            <destFile>plugin.xml</destFile>
-                            <contextMap>
-                                <id>${artifactId}</id>
-                                <name>Apache Geronimo Common Runtime Plug-in</name>
-                                <version>${version}</version>
-                            </contextMap>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>generate-classpath</id>
                         <phase>process-resources</phase>
                         <goals>
