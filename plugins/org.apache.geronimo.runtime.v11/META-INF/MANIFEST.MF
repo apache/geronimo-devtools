@@ -18,7 +18,8 @@ Bundle-ClassPath:
  lib/geronimo-j2ee-builder-1.1-SNAPSHOT.jar,
  lib/geronimo-deploy-jsr88-1.1-SNAPSHOT.jar,
  lib/geronimo-connector-builder-1.1-SNAPSHOT.jar,
- lib/geronimo-common-1.1-SNAPSHOT.jar
+ lib/geronimo-common-1.1-SNAPSHOT.jar,
+ lib/geronimo-deployment-1.1-SNAPSHOT.jar
 Bundle-Localization: plugin
 Export-Package: 
  javax.management.remote,
