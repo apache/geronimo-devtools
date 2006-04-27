@@ -30,6 +30,21 @@
                 <type>car</type>
             </dependency>
             <dependency>
+                <groupId>geronimo</groupId>
+                <artifactId>sharedlib</artifactId>
+                <type>car</type>
+            </dependency>
+            <dependency>
+                <groupId>mx4j</groupId>
+                <artifactId>mx4j</artifactId>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>mx4j</groupId>
+                <artifactId>mx4j-remote</artifactId>
+                <type>jar</type>
+            </dependency>
+            <!--<dependency>
                 <groupId>mx4j</groupId>
                 <artifactId>mx4j-tools</artifactId>
                 <type>jar</type>
@@ -38,7 +53,7 @@
                 <groupId>hessian</groupId>
                 <artifactId>hessian</artifactId>
                 <type>jar</type>
-            </dependency>
+            </dependency>-->
         </dependencies>
   	</environment>
 
