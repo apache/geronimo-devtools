@@ -27,9 +27,12 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IModule;
 
 class DistributeCommand extends AbstractDeploymentCommand {
-
-	public DistributeCommand(IModule module, DeploymentManager dm) {
+	
+	boolean inPlace;
+	
+	public DistributeCommand(IModule module, DeploymentManager dm, boolean inPlace) {
 		super(dm, module);
+		this.inPlace = inPlace;
 	}
 
 	/*
@@ -39,8 +42,15 @@ class DistributeCommand extends AbstractDeploymentCommand {
 	 */
 	public IStatus execute(IProgressMonitor monitor) {
 		Target[] targets = getDeploymentManager().getTargets();
-		File jarFile = DeploymentUtils.createJarFile(getModule());
-		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().distribute(targets, jarFile, null));
+		File file = null;
+		
+		if(inPlace) {
+			file = getModule().getProject().getLocation().toFile();
+		} else {
+			file = DeploymentUtils.createJarFile(getModule());
+		}
+		
+		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().distribute(targets, file, null));
 	}
 
 	/*
@@ -51,5 +61,6 @@ class DistributeCommand extends AbstractDeploymentCommand {
 	public CommandType getCommandType() {
 		return CommandType.DISTRIBUTE;
 	}
+	
 
 }

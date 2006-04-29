@@ -109,6 +109,7 @@ public class GeronimoServer extends GenericGeronimoServer {
 	 */
 	public void configureDeploymentManager(DeploymentManager dm) {
 		((JMXDeploymentManager) dm).setLogConfiguration(true, true);
+		((JMXDeploymentManager) dm).setInPlace(true);
 	}
 
 	/*

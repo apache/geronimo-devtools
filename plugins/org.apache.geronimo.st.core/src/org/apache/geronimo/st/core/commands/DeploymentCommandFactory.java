@@ -46,8 +46,8 @@ public class DeploymentCommandFactory {
 	 * @throws CoreException
 	 */
 	public static IDeploymentCommand createDistributeCommand(IModule module,
-			IServer server) throws CoreException {
-		return new SynchronizedDeploymentOp(new DistributeCommand(module, getDeploymentManager(server)));
+			IServer server, boolean inPlace) throws CoreException {
+		return new SynchronizedDeploymentOp(new DistributeCommand(module, getDeploymentManager(server), inPlace));
 	}
 
 	/**
@@ -80,8 +80,8 @@ public class DeploymentCommandFactory {
 	 * @throws CoreException
 	 */
 	public static IDeploymentCommand createRedeployCommand(IModule module,
-			IServer server) throws CoreException {
-		return new SynchronizedDeploymentOp(new RedeployCommand(module, getDeploymentManager(server)));
+			IServer server, boolean inPlace) throws CoreException {
+		return new SynchronizedDeploymentOp(new RedeployCommand(module, getDeploymentManager(server), inPlace));
 	}
 
 	/**

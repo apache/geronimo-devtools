@@ -28,9 +28,12 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IModule;
 
 class RedeployCommand extends AbstractDeploymentCommand {
+	
+	boolean inPlace;
 
-	public RedeployCommand(IModule module, DeploymentManager dm) {
+	public RedeployCommand(IModule module, DeploymentManager dm, boolean inPlace) {
 		super(dm, module);
+		this.inPlace = inPlace;
 	}
 
 	/*
@@ -40,10 +43,15 @@ class RedeployCommand extends AbstractDeploymentCommand {
 	 */
 	public IStatus execute(IProgressMonitor monitor)
 			throws TargetModuleIdNotFoundException {
-
+		
+		File file = null;
+		if(inPlace) {
+			file = getModule().getProject().getLocation().toFile();
+		} else {
+			file = DeploymentUtils.createJarFile(getModule());
+		}
 		TargetModuleID id = DeploymentUtils.getTargetModuleID(getModule(), getDeploymentManager());
-		File jarFile = DeploymentUtils.createJarFile(getModule());
-		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().redeploy(new TargetModuleID[] { id }, jarFile, null));
+		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().redeploy(new TargetModuleID[] { id }, file, null));
 	}
 
 	/*
@@ -54,5 +62,4 @@ class RedeployCommand extends AbstractDeploymentCommand {
 	public CommandType getCommandType() {
 		return CommandType.REDEPLOY;
 	}
-
 }
