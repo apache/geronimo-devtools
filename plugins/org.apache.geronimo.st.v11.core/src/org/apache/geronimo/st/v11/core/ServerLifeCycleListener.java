@@ -21,12 +21,14 @@ import java.net.URL;
 
 import org.apache.geronimo.kernel.config.IOUtil;
 import org.apache.geronimo.st.jmxagent.Activator;
+import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.server.core.IServer;
 
 import org.eclipse.wst.server.core.IServerLifecycleListener;
+import org.eclipse.wst.server.core.util.SocketUtil;
 
 public class ServerLifeCycleListener implements IServerLifecycleListener {
 
@@ -36,10 +38,8 @@ public class ServerLifeCycleListener implements IServerLifecycleListener {
 	 * @see org.eclipse.wst.server.core.IServerLifecycleListener#serverAdded(org.eclipse.wst.server.core.IServer)
 	 */
 	public void serverAdded(IServer server) {
-		if (isSupportedServer(server)) {
-			copyToSharedLib(server, "hessian-3.0.8.jar");
-			copyToSharedLib(server, "mx4j-tools-3.0.1.jar");
-		}
+		Trace.trace(Trace.INFO, "--> ServerLifeCycleListener.serverAdded()");
+		copyJars(server);
 	}
 
 	/*
@@ -48,7 +48,8 @@ public class ServerLifeCycleListener implements IServerLifecycleListener {
 	 * @see org.eclipse.wst.server.core.IServerLifecycleListener#serverChanged(org.eclipse.wst.server.core.IServer)
 	 */
 	public void serverChanged(IServer server) {
-
+		Trace.trace(Trace.INFO, "--> ServerLifeCycleListener.serverChanged()");
+		copyJars(server);
 	}
 
 	/*
@@ -70,6 +71,7 @@ public class ServerLifeCycleListener implements IServerLifecycleListener {
 			try {
 				URL url = Platform.resolve(Activator.getDefault().getBundle()
 						.getEntry(path));
+				Trace.trace(Trace.INFO, "copying " + path + " to shared lib");
 				IOUtil.copyFile(new File(url.getFile()), destFile.toFile());
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -78,6 +80,15 @@ public class ServerLifeCycleListener implements IServerLifecycleListener {
 	}
 
 	private boolean isSupportedServer(IServer server) {
-		return server.getAdapter(GeronimoServer.class) != null;
+		return "1.1".equals(server.getServerType().getRuntimeType()
+				.getVersion())
+				&& SocketUtil.isLocalhost(server.getHost());
+	}
+
+	private void copyJars(IServer server) {
+		if (isSupportedServer(server)) {
+			copyToSharedLib(server, "lib/hessian-3.0.8.jar");
+			copyToSharedLib(server, "lib/mx4j-tools-3.0.1.jar");
+		}
 	}
 }

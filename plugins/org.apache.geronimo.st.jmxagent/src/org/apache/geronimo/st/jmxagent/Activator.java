@@ -27,6 +27,8 @@ public class Activator extends Plugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.apache.geronimo.st.jmxagent";
+	
+	public static final String SERVICE_ID = "default/eclipse-config-store/1.0/car";
 
 	// The shared instance
 	private static Activator plugin;

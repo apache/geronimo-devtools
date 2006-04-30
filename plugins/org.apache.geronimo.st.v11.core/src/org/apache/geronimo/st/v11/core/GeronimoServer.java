@@ -16,11 +16,13 @@
 package org.apache.geronimo.st.v11.core;
 
 import javax.enterprise.deploy.spi.DeploymentManager;
+import javax.enterprise.deploy.spi.exceptions.DeploymentManagerCreationException;
 import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 
 import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
 import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
 import org.apache.geronimo.st.core.GenericGeronimoServer;
+import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.core.IGeronimoVersionHandler;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.wst.server.core.IModule;
@@ -92,10 +94,13 @@ public class GeronimoServer extends GenericGeronimoServer {
 	 * @see org.apache.geronimo.st.core.IGeronimoServer#getJSR88DeployerJar()
 	 */
 	public IPath getJSR88DeployerJar() {
-		return getServer().getRuntime().getLocation().append("/lib/geronimo-deploy-jsr88-1.1-SNAPSHOT.jar");
+		return getServer().getRuntime().getLocation().append(
+				"/lib/geronimo-deploy-jsr88-1.1-SNAPSHOT.jar");
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.st.core.IGeronimoServer#getDeploymentFactory()
 	 */
 	public DeploymentFactory getDeploymentFactory() {
@@ -109,7 +114,6 @@ public class GeronimoServer extends GenericGeronimoServer {
 	 */
 	public void configureDeploymentManager(DeploymentManager dm) {
 		((JMXDeploymentManager) dm).setLogConfiguration(true, true);
-		((JMXDeploymentManager) dm).setInPlace(true);
 	}
 
 	/*
@@ -121,6 +125,16 @@ public class GeronimoServer extends GenericGeronimoServer {
 		if (versionHandler == null)
 			versionHandler = new GeronimoV11VersionHandler();
 		return versionHandler;
+	}
+
+	public void setInPlaceDeployment(boolean enable) {
+		try {
+			JMXDeploymentManager mgr = (JMXDeploymentManager) GeronimoConnectionFactory
+					.getInstance().getDeploymentManager(getServer());
+			mgr.setInPlace(enable);
+		} catch (DeploymentManagerCreationException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

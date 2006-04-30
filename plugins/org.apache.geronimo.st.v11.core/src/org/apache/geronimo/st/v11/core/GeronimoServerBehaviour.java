@@ -36,9 +36,13 @@ import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.jmxagent.Activator;
 import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.util.SocketUtil;
 
 public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 
@@ -168,5 +172,13 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 	 */
 	public String getConfigId(IModule module) {
 		return GeronimoV11Utils.getConfigId(module);
+	}
+
+	protected void setupLaunch(ILaunch launch, String launchMode,
+			IProgressMonitor monitor) throws CoreException {
+		if (SocketUtil.isLocalhost(getServer().getHost())) {
+			getServer().addServerListener(new ConfigStoreInstaller());
+		}
+		super.setupLaunch(launch, launchMode, monitor);
 	}
 }
