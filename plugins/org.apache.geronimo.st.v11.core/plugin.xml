@@ -4,7 +4,7 @@
 	 <extension point="org.eclipse.wst.server.core.runtimeTypes">
         <runtimeType id="org.apache.geronimo.generic.runtime.11"
             name="%runtimeTypeName" description="%runtimeTypeDescription"
-            vendor="%runtimeTypeVendor" version="1.0"
+            vendor="%runtimeTypeVendor" version="1.1"
             class="org.apache.geronimo.st.core.GenericGeronimoServerRuntime">
             <moduleType types="jst.web" versions="2.2, 2.3, 2.4"/>
             <moduleType types="jst.ejb" versions="1.1, 2.0, 2.1"/>
