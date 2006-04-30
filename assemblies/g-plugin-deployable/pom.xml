@@ -104,7 +104,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
-      <artifactId>org.apache.geronimo.runtime.v1</artifactId>
+      <artifactId>org.apache.geronimo.runtime.v11</artifactId>
       <version>${org.apache.geronimo.runtime.v11_version}</version>
     </dependency>
     <dependency>
