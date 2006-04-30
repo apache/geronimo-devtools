@@ -15,7 +15,7 @@
  */
 package org.apache.geronimo.st.v11.core.internal;
 
-import org.apache.geronimo.st.core.Activator;
+import org.apache.geronimo.st.v11.core.Activator;
 
 /**
  * Helper class to route trace output.

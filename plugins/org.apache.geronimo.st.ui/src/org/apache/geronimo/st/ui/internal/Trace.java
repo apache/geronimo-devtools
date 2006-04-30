@@ -15,7 +15,8 @@
  */
 package org.apache.geronimo.st.ui.internal;
 
-import org.apache.geronimo.st.core.Activator;
+import org.apache.geronimo.st.ui.Activator;
+
 
 /**
  * Helper class to route trace output.
