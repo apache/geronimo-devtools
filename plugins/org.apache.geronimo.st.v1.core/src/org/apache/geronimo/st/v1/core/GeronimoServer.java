@@ -120,5 +120,9 @@ public class GeronimoServer extends GenericGeronimoServer {
 			versionHandler = new GeronimoV1VersionHandler();
 		return versionHandler;
 	}
+	
+	public boolean isTestEnvironment() {
+		return false;
+	}
 
 }

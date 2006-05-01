@@ -39,5 +39,7 @@ public interface IGeronimoServer {
 	public void configureDeploymentManager(DeploymentManager dm);
 
 	public IGeronimoVersionHandler getVersionHandler();
+	
+	public boolean isTestEnvironment();
 
 }

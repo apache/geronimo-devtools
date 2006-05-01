@@ -3,7 +3,7 @@
   <groupId>org.apache.geronimo.devtools</groupId>
   <artifactId>config-store-service</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <name>Eclipse Aware Configuration Store Service</name>
   <dependencies>
     <dependency>

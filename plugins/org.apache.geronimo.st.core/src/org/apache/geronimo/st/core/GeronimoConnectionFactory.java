@@ -44,9 +44,11 @@ public class GeronimoConnectionFactory {
 			String user = getGeronimoServer(server).getAdminID();
 			String pw = getGeronimoServer(server).getAdminPassword();
 			dm = mgr.getDeploymentManager(deployerURL, user, pw);
-			getGeronimoServer(server).configureDeploymentManager(dm);
 			connections.put(server.getId(), dm);
 		}
+		
+		getGeronimoServer(server).configureDeploymentManager(dm);
+		
 		return dm;
 	}
 

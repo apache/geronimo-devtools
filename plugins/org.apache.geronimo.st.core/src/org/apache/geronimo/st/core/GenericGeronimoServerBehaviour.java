@@ -208,7 +208,7 @@ abstract public class GenericGeronimoServerBehaviour extends
 
 	protected IStatus distribute(IModule module) throws Exception {
 		IDeploymentCommand cmd = DeploymentCommandFactory
-				.createDistributeCommand(module, getServer(), true);
+				.createDistributeCommand(module, getServer(), getGeronimoServer().isTestEnvironment());
 		return cmd.execute(_monitor);
 	}
 
@@ -234,7 +234,7 @@ abstract public class GenericGeronimoServerBehaviour extends
 
 	protected IStatus reDeploy(IModule module) throws Exception {
 		IDeploymentCommand cmd = DeploymentCommandFactory
-				.createRedeployCommand(module, getServer(), true);
+				.createRedeployCommand(module, getServer(), getGeronimoServer().isTestEnvironment());
 		return cmd.execute(_monitor);
 	}
 

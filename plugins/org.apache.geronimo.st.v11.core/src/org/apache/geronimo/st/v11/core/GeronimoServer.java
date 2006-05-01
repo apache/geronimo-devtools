@@ -16,16 +16,15 @@
 package org.apache.geronimo.st.v11.core;
 
 import javax.enterprise.deploy.spi.DeploymentManager;
-import javax.enterprise.deploy.spi.exceptions.DeploymentManagerCreationException;
 import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 
 import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
 import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
 import org.apache.geronimo.st.core.GenericGeronimoServer;
-import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.core.IGeronimoVersionHandler;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.wst.server.core.IModule;
+import org.eclipse.wst.server.core.util.SocketUtil;
 
 public class GeronimoServer extends GenericGeronimoServer {
 
@@ -73,8 +72,7 @@ public class GeronimoServer extends GenericGeronimoServer {
 	 * @see org.apache.geronimo.st.core.IGeronimoServer#getDeployerURL()
 	 */
 	public String getDeployerURL() {
-		return "deployer:geronimo:jmx://" + getServer().getHost() + ":"
-				+ getRMINamingPort();
+		return "deployer:geronimo:jmx://" + getServer().getHost() + ":" + getRMINamingPort();
 	}
 
 	/*
@@ -84,8 +82,7 @@ public class GeronimoServer extends GenericGeronimoServer {
 	 */
 	public String getJMXServiceURL() {
 		String host = getServer().getHost();
-		return "service:jmx:rmi://" + host + "/jndi/rmi://" + host + ":"
-				+ getRMINamingPort() + "/JMXConnector";
+		return "service:jmx:rmi://" + host + "/jndi/rmi://" + host + ":" + getRMINamingPort() + "/JMXConnector";
 	}
 
 	/*
@@ -94,8 +91,7 @@ public class GeronimoServer extends GenericGeronimoServer {
 	 * @see org.apache.geronimo.st.core.IGeronimoServer#getJSR88DeployerJar()
 	 */
 	public IPath getJSR88DeployerJar() {
-		return getServer().getRuntime().getLocation().append(
-				"/lib/geronimo-deploy-jsr88-1.1-SNAPSHOT.jar");
+		return getServer().getRuntime().getLocation().append("/lib/geronimo-deploy-jsr88-1.1-SNAPSHOT.jar");
 	}
 
 	/*
@@ -114,6 +110,8 @@ public class GeronimoServer extends GenericGeronimoServer {
 	 */
 	public void configureDeploymentManager(DeploymentManager dm) {
 		((JMXDeploymentManager) dm).setLogConfiguration(true, true);
+		boolean enableInPlace = SocketUtil.isLocalhost(getServer().getHost());
+		setInPlaceDeployment(dm, enableInPlace);
 	}
 
 	/*
@@ -127,14 +125,12 @@ public class GeronimoServer extends GenericGeronimoServer {
 		return versionHandler;
 	}
 
-	public void setInPlaceDeployment(boolean enable) {
-		try {
-			JMXDeploymentManager mgr = (JMXDeploymentManager) GeronimoConnectionFactory
-					.getInstance().getDeploymentManager(getServer());
-			mgr.setInPlace(enable);
-		} catch (DeploymentManagerCreationException e) {
-			e.printStackTrace();
-		}
+	public void setInPlaceDeployment(DeploymentManager dm, boolean enable) {
+		((JMXDeploymentManager) dm).setInPlace(enable);
+	}
+	
+	public boolean isTestEnvironment() {
+		return true;
 	}
 
 }
