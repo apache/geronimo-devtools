@@ -16,6 +16,8 @@
 package org.apache.geronimo.st.v1.core;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -27,19 +29,24 @@ import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 import javax.naming.directory.NoSuchAttributeException;
 
+import org.apache.geronimo.gbean.GBeanData;
 import org.apache.geronimo.gbean.GBeanQuery;
 import org.apache.geronimo.kernel.GBeanNotFoundException;
 import org.apache.geronimo.kernel.Kernel;
+import org.apache.geronimo.kernel.config.Configuration;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.jmx.KernelDelegate;
 import org.apache.geronimo.st.core.GenericGeronimoServerBehaviour;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.v1.core.internal.Trace;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.internal.IModulePublishHelper;
 
-public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
+public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour implements IModulePublishHelper {
 
 	private Kernel kernel = null;
 
@@ -153,5 +160,23 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 	public String getConfigId(IModule module) {
 		return GeronimoV1Utils.getConfigId(module);
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.server.core.internal.IModulePublishHelper#getPublishDirectory(org.eclipse.wst.server.core.IModule[])
+	 */
+	public IPath getPublishDirectory(IModule[] module) {
+		IPath path = null;
+		if (module.length == 1) {
+			try {
+				String configId = getConfigId(module[0]);
+				ObjectName on = Configuration.getConfigurationObjectName(URI.create(configId));
+				GBeanData data = kernel.getGBeanData(on);
+				URL url = (URL) data.getAttribute("baseURL");
+				return new Path(url.getFile());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return path;
+	}
 }

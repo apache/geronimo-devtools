@@ -129,6 +129,9 @@ public class GeronimoServer extends GenericGeronimoServer {
 		((JMXDeploymentManager) dm).setInPlace(enable);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.IGeronimoServer#isTestEnvironment()
+	 */
 	public boolean isTestEnvironment() {
 		return true;
 	}

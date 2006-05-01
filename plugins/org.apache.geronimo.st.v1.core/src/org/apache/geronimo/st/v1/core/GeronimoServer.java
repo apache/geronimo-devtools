@@ -121,6 +121,9 @@ public class GeronimoServer extends GenericGeronimoServer {
 		return versionHandler;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.IGeronimoServer#isTestEnvironment()
+	 */
 	public boolean isTestEnvironment() {
 		return false;
 	}
