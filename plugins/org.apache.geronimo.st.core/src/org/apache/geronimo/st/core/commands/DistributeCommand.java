@@ -20,19 +20,28 @@ import java.io.File;
 import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.Target;
+
 import org.apache.geronimo.st.core.DeploymentUtils;
+import org.apache.geronimo.st.core.internal.Trace;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.wst.common.componentcore.internal.StructureEdit;
+import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
+import org.eclipse.wst.common.componentcore.internal.impl.WorkbenchComponentImpl;
 import org.eclipse.wst.server.core.IModule;
 
 class DistributeCommand extends AbstractDeploymentCommand {
-	
+
 	boolean inPlace;
-	
-	public DistributeCommand(IModule module, DeploymentManager dm, boolean inPlace) {
+
+	Target[] targets;
+
+	public DistributeCommand(IModule module, DeploymentManager dm, Target[] targets, boolean inPlace) {
 		super(dm, module);
 		this.inPlace = inPlace;
+		this.targets = targets;
 	}
 
 	/*
@@ -41,15 +50,25 @@ class DistributeCommand extends AbstractDeploymentCommand {
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public IStatus execute(IProgressMonitor monitor) {
-		Target[] targets = getDeploymentManager().getTargets();
+		if (targets == null)
+			targets = getDeploymentManager().getTargets();
+
 		File file = null;
-		
-		if(inPlace) {
-			file = getModule().getProject().getLocation().toFile();
+
+		if (inPlace) {
+			StructureEdit moduleCore = StructureEdit.getStructureEditForRead(getModule().getProject());
+			try {
+				WorkbenchComponent component = moduleCore.getComponent();
+				IPath loc = ((WorkbenchComponentImpl) component).getDefaultSourceRoot();
+				file = getModule().getProject().findMember(loc).getLocation().toFile();
+			} finally {
+				if (moduleCore != null)
+					moduleCore.dispose();
+			}
 		} else {
 			file = DeploymentUtils.createJarFile(getModule());
 		}
-		
+
 		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().distribute(targets, file, null));
 	}
 
@@ -61,6 +80,5 @@ class DistributeCommand extends AbstractDeploymentCommand {
 	public CommandType getCommandType() {
 		return CommandType.DISTRIBUTE;
 	}
-	
 
 }

@@ -15,6 +15,8 @@
  */
 package org.apache.geronimo.st.core;
 
+import javax.enterprise.deploy.spi.Target;
+
 public interface IGeronimoServerBehavior {
 
 	public boolean isFullyStarted();
@@ -24,5 +26,7 @@ public interface IGeronimoServerBehavior {
 	public void setServerStarted();
 
 	public void setServerStopped();
+	
+	public Target[] getTargets();
 
 }

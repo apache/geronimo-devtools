@@ -15,17 +15,20 @@
  */
 package org.apache.geronimo.st.v11.core;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.enterprise.deploy.spi.Target;
 import javax.management.MBeanServerConnection;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 import javax.naming.directory.NoSuchAttributeException;
 
+import org.apache.geronimo.deployment.plugin.TargetImpl;
 import org.apache.geronimo.gbean.AbstractName;
 import org.apache.geronimo.gbean.AbstractNameQuery;
 import org.apache.geronimo.kernel.GBeanNotFoundException;
@@ -34,6 +37,7 @@ import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.st.core.GenericGeronimoServerBehaviour;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.jmxagent.Activator;
+import org.apache.geronimo.st.jmxagent.JMXAgent;
 import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.runtime.CoreException;
@@ -91,10 +95,8 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 					return null;
 				JMXServiceURL address = new JMXServiceURL(url);
 				try {
-					JMXConnector jmxConnector = JMXConnectorFactory.connect(
-							address, map);
-					MBeanServerConnection mbServerConnection = jmxConnector
-							.getMBeanServerConnection();
+					JMXConnector jmxConnector = JMXConnectorFactory.connect(address, map);
+					MBeanServerConnection mbServerConnection = jmxConnector.getMBeanServerConnection();
 					kernel = new KernelDelegate(mbServerConnection);
 					Trace.trace(Trace.INFO, "Connected to kernel.");
 				} catch (SecurityException e) {
@@ -125,11 +127,7 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 				stop(true);
 			}
 		} catch (Exception e) {
-			Activator
-					.log(
-							Status.WARNING,
-							"Geronimo Server may have been terminated manually outside of workspace.",
-							e);
+			Activator.log(Status.WARNING, "Geronimo Server may have been terminated manually outside of workspace.", e);
 			kernel = null;
 		}
 		return false;
@@ -142,14 +140,12 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 	 */
 	public boolean isFullyStarted() {
 		if (isKernelAlive()) {
-			AbstractNameQuery query = new AbstractNameQuery(
-					PersistentConfigurationList.class.getName());
+			AbstractNameQuery query = new AbstractNameQuery(PersistentConfigurationList.class.getName());
 			Set configLists = kernel.listGBeans(query);
 			if (!configLists.isEmpty()) {
 				AbstractName on = (AbstractName) configLists.toArray()[0];
 				try {
-					Boolean b = (Boolean) kernel.getAttribute(on,
-							"kernelFullyStarted");
+					Boolean b = (Boolean) kernel.getAttribute(on, "kernelFullyStarted");
 					return b.booleanValue();
 				} catch (GBeanNotFoundException e) {
 					// ignore
@@ -174,11 +170,33 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 		return GeronimoV11Utils.getConfigId(module);
 	}
 
-	protected void setupLaunch(ILaunch launch, String launchMode,
-			IProgressMonitor monitor) throws CoreException {
+	protected void setupLaunch(ILaunch launch, String launchMode, IProgressMonitor monitor) throws CoreException {
 		if (SocketUtil.isLocalhost(getServer().getHost())) {
-			getServer().addServerListener(new ConfigStoreInstaller());
+			try {
+				JMXAgent.getInstance().start();
+				getServer().addServerListener(new ConfigStoreInstaller());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		super.setupLaunch(launch, launchMode, monitor);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.st.core.IGeronimoServerBehavior#getTargets()
+	 */
+	public Target[] getTargets() {
+		if (getGeronimoServer().isTestEnvironment()) {
+			AbstractNameQuery query = new AbstractNameQuery("org.apache.geronimo.devtools.EclipseAwareConfigurationStore");
+			Set set = getKernel().listGBeans(query);
+			if (!set.isEmpty()) {
+				AbstractName name = (AbstractName) set.toArray()[0];
+				Target target = new TargetImpl(name, null);
+				return new Target[]{target};
+			}
+		}
+		return null;
 	}
 }

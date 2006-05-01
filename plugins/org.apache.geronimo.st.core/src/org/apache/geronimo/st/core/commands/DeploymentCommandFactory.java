@@ -16,11 +16,13 @@
 package org.apache.geronimo.st.core.commands;
 
 import javax.enterprise.deploy.spi.DeploymentManager;
+import javax.enterprise.deploy.spi.Target;
 import javax.enterprise.deploy.spi.TargetModuleID;
 import javax.enterprise.deploy.spi.exceptions.DeploymentManagerCreationException;
 
 import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
+import org.apache.geronimo.st.core.IGeronimoServerBehavior;
 import org.apache.geronimo.st.core.internal.Messages;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -45,9 +47,10 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static IDeploymentCommand createDistributeCommand(IModule module,
-			IServer server, boolean inPlace) throws CoreException {
-		return new SynchronizedDeploymentOp(new DistributeCommand(module, getDeploymentManager(server), inPlace));
+	public static IDeploymentCommand createDistributeCommand(IModule module, IServer server, boolean inPlace) throws CoreException {
+		IGeronimoServerBehavior gs = (IGeronimoServerBehavior) server.loadAdapter(IGeronimoServerBehavior.class, null);
+		Target[] targets = gs.getTargets();
+		return new SynchronizedDeploymentOp(new DistributeCommand(module, getDeploymentManager(server), targets, inPlace));
 	}
 
 	/**

@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.enterprise.deploy.spi.Target;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
@@ -159,6 +160,14 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour impl
 	 */
 	public String getConfigId(IModule module) {
 		return GeronimoV1Utils.getConfigId(module);
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.IGeronimoServerBehavior#getTargets()
+	 */
+	public Target[] getTargets() {
+		return null;
 	}
 	
 	/* (non-Javadoc)
