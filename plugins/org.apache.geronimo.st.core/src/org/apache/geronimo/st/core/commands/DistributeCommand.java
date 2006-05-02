@@ -68,6 +68,9 @@ class DistributeCommand extends AbstractDeploymentCommand {
 		} else {
 			file = DeploymentUtils.createJarFile(getModule());
 		}
+		
+		Trace.trace(Trace.INFO, "Target: " + targets[0]);
+		Trace.trace(Trace.INFO, "File: " + file.getAbsolutePath());
 
 		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().distribute(targets, file, null));
 	}

@@ -10,7 +10,7 @@
         <version>1.0</version>
     </parent>
     <properties>
-    	<configStoreServiceVersion>1.0-SNAPSHOT</configStoreServiceVersion>
+    	<configStoreServiceVersion>1.0</configStoreServiceVersion>
     </properties>
     <build>
         <resources>

@@ -56,11 +56,25 @@
             </dependency>-->
         </dependencies>
   	</environment>
+  	
+  	<!--<gbean name="ExternalEclipseRepository" class="org.apache.geronimo.devtools.ExternalEclipseRepository">
+    	<attribute name="root">eclipse-repository/</attribute>
+    	<reference name="ServerInfo">
+     		<name>ServerInfo</name>
+    	</reference>
+  	</gbean>-->
+  	
+  	<gbean name="ExternalEclipseRepository" class="org.apache.geronimo.system.repository.Maven2Repository">
+    	<attribute name="root">eclipse-repository/</attribute>
+    	<reference name="ServerInfo">
+     		<name>ServerInfo</name>
+    	</reference>
+  	</gbean>
 
     <!--Configuration Store service-->
     <gbean name="EclipseConfigStore" class="org.apache.geronimo.devtools.EclipseAwareConfigurationStore">
         <reference name="Repository">
-            <name>Repository</name>
+            <name>ExternalEclipseRepository</name>
         </reference>
     </gbean>
 </configuration>

@@ -25,6 +25,8 @@ import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.geronimo.gbean.GBeanInfo;
 import org.apache.geronimo.gbean.GBeanInfoBuilder;
 import org.apache.geronimo.kernel.Kernel;
@@ -32,31 +34,46 @@ import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.kernel.repository.WritableListableRepository;
 import org.apache.geronimo.system.configuration.RepositoryConfigurationStore;
 
-public class EclipseAwareConfigurationStore extends
-		RepositoryConfigurationStore {
+public class EclipseAwareConfigurationStore extends RepositoryConfigurationStore {
+
+	private static final Log log = LogFactory.getLog(EclipseAwareConfigurationStore.class);
 
 	public EclipseAwareConfigurationStore(WritableListableRepository repository) {
+
 		super(repository);
 	}
 
-	public EclipseAwareConfigurationStore(Kernel kernel, String objectName,
-			WritableListableRepository repository) {
+	public EclipseAwareConfigurationStore(Kernel kernel, String objectName, WritableListableRepository repository) {
 		super(kernel, objectName, repository);
+		log.debug("EclipseAwareConfigurationStore()");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.system.configuration.RepositoryConfigurationStore#resolve(org.apache.geronimo.kernel.repository.Artifact,
+	 *      java.lang.String, java.lang.String)
+	 */
 	public Set resolve(Artifact artifact, String module, String path) {
+
+		log.debug("--> EclipseAwareConfigurationStore.resolve()");
+
+		Set result = Collections.EMPTY_SET;
 		JMXConnector connector = null;
+
 		try {
+
 			JMXServiceURL address = new JMXServiceURL("hessian", null, 8090, "/hessian");
 			connector = JMXConnectorFactory.connect(address);
 			MBeanServerConnection connection = connector.getMBeanServerConnection();
-
 			ObjectName on = ObjectName.getInstance("ConfigStoreResolver:name=resolver");
-			Set result = (Set) connection.invoke(on, "resolve", new Object[] {
-					artifact, module, path }, new String[] {
-					Artifact.class.getName(), "java.lang.String",
-					"java.lang.String" });
-			return result;
+
+			log.debug("Resolving: " + artifact + " " + module + " " + path);
+
+			result = (Set) connection.invoke(on, "resolve", new Object[] { artifact, module, path }, new String[] { "java.lang.String", "java.lang.String", "java.lang.String" });
+
+			log.debug("Resolved to: " + result);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -67,8 +84,7 @@ public class EclipseAwareConfigurationStore extends
 					e.printStackTrace();
 				}
 		}
-
-		return Collections.EMPTY_SET;
+		return result;
 	}
 
 	public static final GBeanInfo GBEAN_INFO;
@@ -78,8 +94,7 @@ public class EclipseAwareConfigurationStore extends
 		builder.addAttribute("kernel", Kernel.class, false);
 		builder.addAttribute("objectName", String.class, false);
 		builder.addReference("Repository", WritableListableRepository.class, "Repository");
-		builder.setConstructor(new String[] { "kernel", "objectName",
-				"Repository" });
+		builder.setConstructor(new String[] { "kernel", "objectName", "Repository" });
 		GBEAN_INFO = builder.getBeanInfo();
 	}
 

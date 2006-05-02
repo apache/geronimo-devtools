@@ -32,6 +32,9 @@ public class ConfigStoreInstaller implements IServerListener {
 	private void install(IServer server) {
 		Trace.trace(Trace.INFO, "--> ConfigStoreInstaller.install()");
 		try {
+			
+			//temporary until custom repo is implemented inside workspace metadata
+			server.getRuntime().getLocation().append("eclipse-repository").toFile().mkdir();
 
 			JMXDeploymentManager dm = (JMXDeploymentManager) GeronimoConnectionFactory.getInstance().getDeploymentManager(server);
 			dm.setInPlace(false);
@@ -39,7 +42,7 @@ public class ConfigStoreInstaller implements IServerListener {
 			Target target = dm.getTargets()[0];
 			Trace.trace(Trace.INFO, "target name: " + target.getName());
 
-			File jar = new File(resolveFromBundle("/lib/config-store-service-1.0-SNAPSHOT.jar").getFile());
+			File jar = new File(resolveFromBundle("/lib/config-store-service-1.0.jar").getFile());
 			File plan = new File(resolveFromBundle("/plan.xml").getFile());
 
 			ProgressObject po = dm.distribute(new Target[] { target }, jar, plan);
