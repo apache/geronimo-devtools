@@ -23,10 +23,8 @@ import org.apache.geronimo.kernel.config.IOUtil;
 import org.apache.geronimo.st.jmxagent.Activator;
 import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.server.core.IServer;
-
 import org.eclipse.wst.server.core.IServerLifecycleListener;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
@@ -39,7 +37,7 @@ public class ServerLifeCycleListener implements IServerLifecycleListener {
 	 */
 	public void serverAdded(IServer server) {
 		Trace.trace(Trace.INFO, "--> ServerLifeCycleListener.serverAdded()");
-		copyJars(server);
+		copyToRepository(server);
 	}
 
 	/*
@@ -49,7 +47,7 @@ public class ServerLifeCycleListener implements IServerLifecycleListener {
 	 */
 	public void serverChanged(IServer server) {
 		Trace.trace(Trace.INFO, "--> ServerLifeCycleListener.serverChanged()");
-		copyJars(server);
+		copyToRepository(server);
 	}
 
 	/*
@@ -60,35 +58,41 @@ public class ServerLifeCycleListener implements IServerLifecycleListener {
 	public void serverRemoved(IServer server) {
 
 	}
+	
+	private void copyToRepository(IServer server) {
+		if (isSupportedServer(server)) {
+			IPath repo = server.getRuntime().getLocation().append("repository");
 
-	private void copyToSharedLib(IServer server, String path) {
-		IPath sharedLib = server.getRuntime().getLocation().append(
-				new Path("/var/shared"));
+			IPath path = repo.append("/hessian/hessian/3.0.8/hessian-3.0.8.jar");
+			copyFile(getFileFromBundle("lib/hessian-3.0.8.jar"), path.toFile());
 
-		IPath destFile = sharedLib.append(path);
-
-		if (!destFile.toFile().exists()) {
-			try {
-				URL url = Platform.resolve(Activator.getDefault().getBundle()
-						.getEntry(path));
-				Trace.trace(Trace.INFO, "copying " + path + " to shared lib");
-				IOUtil.copyFile(new File(url.getFile()), destFile.toFile());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			path = repo.append("/mx4j/mx4j-tools/3.0.1/mx4j-tools-3.0.1.jar");
+			copyFile(getFileFromBundle("lib/mx4j-tools-3.0.1.jar"), path.toFile());
 		}
+	}
+
+	private static void copyFile(File src, File dest) {
+		try {
+			if (!dest.exists()) {
+				Trace.trace(Trace.INFO, "adding " + dest);
+				IOUtil.copyFile(src, dest);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private File getFileFromBundle(String path) {
+		try {
+			URL url = Platform.resolve(Activator.getDefault().getBundle().getEntry(path));
+			return new File(url.getFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private boolean isSupportedServer(IServer server) {
-		return "1.1".equals(server.getServerType().getRuntimeType()
-				.getVersion())
-				&& SocketUtil.isLocalhost(server.getHost());
-	}
-
-	private void copyJars(IServer server) {
-		if (isSupportedServer(server)) {
-			copyToSharedLib(server, "lib/hessian-3.0.8.jar");
-			copyToSharedLib(server, "lib/mx4j-tools-3.0.1.jar");
-		}
+		return "1.1".equals(server.getServerType().getRuntimeType().getVersion()) && SocketUtil.isLocalhost(server.getHost());
 	}
 }

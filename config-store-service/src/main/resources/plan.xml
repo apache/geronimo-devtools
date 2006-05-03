@@ -38,38 +38,42 @@
                 <groupId>mx4j</groupId>
                 <artifactId>mx4j</artifactId>
                 <type>jar</type>
+                <import>classes</import>
             </dependency>
             <dependency>
                 <groupId>mx4j</groupId>
                 <artifactId>mx4j-remote</artifactId>
                 <type>jar</type>
+                <import>classes</import>
             </dependency>
-            <!--<dependency>
+            <dependency>
                 <groupId>mx4j</groupId>
                 <artifactId>mx4j-tools</artifactId>
                 <type>jar</type>
+                <import>classes</import>
             </dependency>
             <dependency>
                 <groupId>hessian</groupId>
                 <artifactId>hessian</artifactId>
                 <type>jar</type>
-            </dependency>-->
+                <import>classes</import>
+            </dependency>
         </dependencies>
   	</environment>
   	
-  	<!--<gbean name="ExternalEclipseRepository" class="org.apache.geronimo.devtools.ExternalEclipseRepository">
-    	<attribute name="root">eclipse-repository/</attribute>
-    	<reference name="ServerInfo">
-     		<name>ServerInfo</name>
-    	</reference>
-  	</gbean>-->
-  	
-  	<gbean name="ExternalEclipseRepository" class="org.apache.geronimo.system.repository.Maven2Repository">
+  	<gbean name="ExternalEclipseRepository" class="org.apache.geronimo.devtools.ExternalEclipseRepository">
     	<attribute name="root">eclipse-repository/</attribute>
     	<reference name="ServerInfo">
      		<name>ServerInfo</name>
     	</reference>
   	</gbean>
+  	
+  	<!--<gbean name="ExternalEclipseRepository" class="org.apache.geronimo.system.repository.Maven2Repository">
+    	<attribute name="root">eclipse-repository/</attribute>
+    	<reference name="ServerInfo">
+     		<name>ServerInfo</name>
+    	</reference>
+  	</gbean>-->
 
     <!--Configuration Store service-->
     <gbean name="EclipseConfigStore" class="org.apache.geronimo.devtools.EclipseAwareConfigurationStore">

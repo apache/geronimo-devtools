@@ -17,12 +17,15 @@ package org.apache.geronimo.devtools;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
+import javax.management.remote.JMXConnectorServerFactory;
 import javax.management.remote.JMXServiceURL;
 
 import org.apache.commons.logging.Log;
@@ -62,9 +65,12 @@ public class EclipseAwareConfigurationStore extends RepositoryConfigurationStore
 		JMXConnector connector = null;
 
 		try {
+			
+			Map env = new HashMap();
+			env.put(JMXConnectorServerFactory.PROTOCOL_PROVIDER_CLASS_LOADER, this.getClass().getClassLoader());
 
 			JMXServiceURL address = new JMXServiceURL("hessian", null, 8090, "/hessian");
-			connector = JMXConnectorFactory.connect(address);
+			connector = JMXConnectorFactory.connect(address, env);
 			MBeanServerConnection connection = connector.getMBeanServerConnection();
 			ObjectName on = ObjectName.getInstance("ConfigStoreResolver:name=resolver");
 
