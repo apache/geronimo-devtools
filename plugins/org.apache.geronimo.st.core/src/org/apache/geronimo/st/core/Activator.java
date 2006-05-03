@@ -37,6 +37,7 @@ public class Activator extends Plugin {
 	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
+		ModuleArtifactMapper.getInstance().save();
 		super.stop(context);
 		plugin = null;
 	}

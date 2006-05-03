@@ -19,6 +19,6 @@ import java.util.Set;
 
 public interface ConfigurationStoreResolverMBean {
 	
-	public Set resolve(String configId, String module, String path);
+	public Set resolve(String configId, String module, String path) throws Exception;
 
 }

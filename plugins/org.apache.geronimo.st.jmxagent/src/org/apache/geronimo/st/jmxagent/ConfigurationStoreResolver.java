@@ -20,6 +20,7 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.geronimo.st.core.ModuleArtifactMapper;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
@@ -32,11 +33,14 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualReference;
 
 public class ConfigurationStoreResolver implements ConfigurationStoreResolverMBean {
 
-	public Set resolve(String configId, String module, String path) {
-		IProject project = getProject(configId);
+	public Set resolve(String configId, String module, String path) throws Exception {
+
+		Trace.trace(Trace.INFO, "ConfigStore Resolve Query: " + configId + ":" + module + ":" + path);
+		
+		IProject project = ModuleArtifactMapper.getInstance().resolve("", configId);
 
 		if (project == null) {
-			// error couldn't find project for artifact throw exception
+			throw new Exception("Could not find project in workspace for configId " + configId);
 		}
 
 		if (module != null && J2EEProjectUtilities.isEARProject(project)) {
@@ -86,13 +90,10 @@ public class ConfigurationStoreResolver implements ConfigurationStoreResolverMBe
 				}
 			}
 		}
+		
+		Trace.trace(Trace.INFO, "ConfigStore Resolve Result: " + urls);
 
 		return urls;
 
-	}
-
-	public IProject getProject(String configId) {
-		// get IProject from IModule with persisted configID
-		return null;
 	}
 }

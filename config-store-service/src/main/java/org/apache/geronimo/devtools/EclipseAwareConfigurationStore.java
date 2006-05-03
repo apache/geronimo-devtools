@@ -48,7 +48,6 @@ public class EclipseAwareConfigurationStore extends RepositoryConfigurationStore
 
 	public EclipseAwareConfigurationStore(Kernel kernel, String objectName, WritableListableRepository repository) {
 		super(kernel, objectName, repository);
-		log.debug("EclipseAwareConfigurationStore()");
 	}
 
 	/*
@@ -74,9 +73,10 @@ public class EclipseAwareConfigurationStore extends RepositoryConfigurationStore
 			MBeanServerConnection connection = connector.getMBeanServerConnection();
 			ObjectName on = ObjectName.getInstance("ConfigStoreResolver:name=resolver");
 
-			log.debug("Resolving: " + artifact + " " + module + " " + path);
+			String configId = getConfigId(artifact);
+			log.debug("Resolving: " + configId + " " + module + " " + path);
 
-			result = (Set) connection.invoke(on, "resolve", new Object[] { artifact, module, path }, new String[] { "java.lang.String", "java.lang.String", "java.lang.String" });
+			result = (Set) connection.invoke(on, "resolve", new Object[] { configId, module, path }, new String[] { "java.lang.String", "java.lang.String", "java.lang.String" });
 
 			log.debug("Resolved to: " + result);
 
@@ -91,6 +91,18 @@ public class EclipseAwareConfigurationStore extends RepositoryConfigurationStore
 				}
 		}
 		return result;
+	}
+	
+	private String getConfigId(Artifact artifact) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(artifact.getGroupId());
+		buffer.append("/");
+		buffer.append(artifact.getArtifactId());
+		buffer.append("/");
+		buffer.append(artifact.getVersion());
+		buffer.append("/");
+		buffer.append(artifact.getType());
+		return buffer.toString();
 	}
 
 	public static final GBeanInfo GBEAN_INFO;

@@ -22,6 +22,7 @@ import java.util.Timer;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
+import org.apache.geronimo.st.core.commands.DeploymentCmdStatus;
 import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.core.commands.IDeploymentCommand;
 import org.apache.geronimo.st.core.commands.TargetModuleIdNotFoundException;
@@ -134,6 +135,12 @@ abstract public class GenericGeronimoServerBehaviour extends
 			IStatus status = distribute(module);
 			if (!status.isOK()) {
 				doFail(status, Messages.DISTRIBUTE_FAIL);
+			}
+			
+			TargetModuleID[] ids = ((DeploymentCmdStatus) status).getResultTargetModuleIDs();
+			ModuleArtifactMapper mapper = ModuleArtifactMapper.getInstance();
+			for(int i = 0; i < ids.length; i++) {
+				mapper.addEntry(getServer(), module.getProject(), ids[i].getModuleID());
 			}
 
 			status = start(module);

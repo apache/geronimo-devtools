@@ -63,16 +63,7 @@ public class JMXAgent {
 		}
 
 		if (!connectorServer.isActive()) {
-			Thread thread = new Thread() {
-				public void run() {
-					try {
-						connectorServer.start();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			};
-			thread.start();
+			connectorServer.start();
 		}
 	}
 
