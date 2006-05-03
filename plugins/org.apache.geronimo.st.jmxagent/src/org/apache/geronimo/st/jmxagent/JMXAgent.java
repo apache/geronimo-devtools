@@ -25,12 +25,12 @@ import javax.management.remote.JMXConnectorServer;
 import javax.management.remote.JMXConnectorServerFactory;
 import javax.management.remote.JMXServiceURL;
 
-
 public class JMXAgent {
 
 	private static JMXAgent INSTANCE = null;
 
 	private static MBeanServer server = null;
+
 	private static JMXServiceURL url = null;
 
 	private JMXConnectorServer connectorServer = null;
@@ -38,7 +38,7 @@ public class JMXAgent {
 	private static int DEFAULT_PORT = 8090;
 
 	private JMXAgent() {
-		
+
 	}
 
 	public static JMXAgent getInstance() {
@@ -61,9 +61,19 @@ public class JMXAgent {
 			init();
 			connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, null, getServer());
 		}
-		
-		if (!connectorServer.isActive())
-			connectorServer.start();
+
+		if (!connectorServer.isActive()) {
+			Thread thread = new Thread() {
+				public void run() {
+					try {
+						connectorServer.start();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			};
+			thread.start();
+		}
 	}
 
 	public void stop() throws IOException {
@@ -78,9 +88,9 @@ public class JMXAgent {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private MBeanServer getServer() {
-		if(server == null)
+		if (server == null)
 			server = MBeanServerFactory.createMBeanServer();
 		return server;
 	}

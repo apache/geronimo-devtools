@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.st.v11.core;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +37,7 @@ import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.st.core.GenericGeronimoServerBehaviour;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.jmxagent.Activator;
+import org.apache.geronimo.st.jmxagent.JMXAgent;
 import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.runtime.CoreException;
@@ -47,6 +49,14 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
 public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
+	
+	static {
+		try {
+			JMXAgent.getInstance().start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private Kernel kernel = null;
 

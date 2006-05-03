@@ -77,6 +77,11 @@
             						<artifactId>config-store-service</artifactId>
             						<version>${configStoreServiceVersion}</version>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>commons-logging</groupId>
+                                    <artifactId>commons-logging</artifactId>
+                                    <version>1.0.4</version>
+                                </artifactItem>
                             </artifactItems>
                             <outputDirectory>lib</outputDirectory>
                         </configuration>
