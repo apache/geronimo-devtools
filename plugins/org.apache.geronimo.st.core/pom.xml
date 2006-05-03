@@ -86,5 +86,7 @@
             <artifactId>org.apache.geronimo.runtime.common</artifactId>
             <version>${org.apache.geronimo.runtime.common_version}</version>
         </dependency>
+        <dependency>
+        </dependency>
     </dependencies>
 </project>

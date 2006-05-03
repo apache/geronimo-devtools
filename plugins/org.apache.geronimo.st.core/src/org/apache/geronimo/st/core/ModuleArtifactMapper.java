@@ -35,6 +35,9 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+
 public class ModuleArtifactMapper {
 
 	private static ModuleArtifactMapper instance = new ModuleArtifactMapper();
@@ -42,8 +45,11 @@ public class ModuleArtifactMapper {
 	private static final String FILE_NAME = "servermodule.info";
 
 	HashMap serverEntries;
+	
+	XStream xStream;
 
 	private ModuleArtifactMapper() {
+		xStream = new XStream(new DomDriver());
 		load();
 		if (serverEntries == null)
 			serverEntries = new HashMap();
@@ -84,7 +90,8 @@ public class ModuleArtifactMapper {
 			OutputStream file = new FileOutputStream(dest.toFile());
 			OutputStream buffer = new BufferedOutputStream(file);
 			output = new ObjectOutputStream(buffer);
-			output.writeObject(serverEntries);
+			String xml = xStream.toXML(serverEntries);
+			output.writeObject(xml);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -105,7 +112,8 @@ public class ModuleArtifactMapper {
 				InputStream file = new FileInputStream(dest.toFile());
 				InputStream buffer = new BufferedInputStream(file);
 				input = new ObjectInputStream(buffer);
-				serverEntries = (HashMap) input.readObject();
+				String xml = (String) input.readObject();
+				serverEntries = (HashMap)xStream.fromXML(xml);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

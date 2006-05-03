@@ -139,9 +139,7 @@ abstract public class GenericGeronimoServerBehaviour extends
 			
 			TargetModuleID[] ids = ((DeploymentCmdStatus) status).getResultTargetModuleIDs();
 			ModuleArtifactMapper mapper = ModuleArtifactMapper.getInstance();
-			for(int i = 0; i < ids.length; i++) {
-				mapper.addEntry(getServer(), module.getProject(), ids[i].getModuleID());
-			}
+			mapper.addEntry(getServer(), module.getProject(), ids[0].getModuleID());
 
 			status = start(module);
 			if (!status.isOK()) {
