@@ -16,8 +16,6 @@
 package org.apache.geronimo.st.jmxagent;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -65,39 +63,33 @@ public class ConfigurationStoreResolver implements ConfigurationStoreResolverMBe
 			}
 		}
 
-		Set urls = new HashSet();
+		Set result = new HashSet();
 
 		if (path == null || path.length() == 0) {
 			StructureEdit moduleCore = StructureEdit.getStructureEditForRead(project);
 			try {
 				WorkbenchComponent component = moduleCore.getComponent();
 				IPath loc = ((WorkbenchComponentImpl) component).getDefaultSourceRoot();
-				try {
-					URL url = project.findMember(loc).getLocation().toFile().toURL();
-					urls.add(url);
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				}
-
+				result.add(project.findMember(loc).getLocation().toFile());
 			} finally {
 				if (moduleCore != null)
 					moduleCore.dispose();
 			}
 		} else {
-			// return output containers
-			IContainer[] containers = J2EEProjectUtilities.getOutputContainers(project);
-			for (int i = 0; i < containers.length; i++) {
-				try {
-					urls.add(containers[i].getLocation().toFile().toURL());
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				}
-			}
+			//return output containers
+			addOutputContainers(project, result);
 		}
 		
-		Trace.trace(Trace.INFO, "ConfigStore Resolve Result: " + urls);
+		Trace.trace(Trace.INFO, "ConfigStore Resolve Result: " + result);
 
-		return urls;
+		return result;
 
+	}
+	
+	private void addOutputContainers(IProject project, Set result) {
+		IContainer[] containers = J2EEProjectUtilities.getOutputContainers(project);
+		for (int i = 0; i < containers.length; i++) {
+			result.add(containers[i].getLocation().toFile());
+		}
 	}
 }

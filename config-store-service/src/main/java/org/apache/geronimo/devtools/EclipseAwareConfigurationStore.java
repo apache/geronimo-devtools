@@ -17,8 +17,9 @@ package org.apache.geronimo.devtools;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -60,11 +61,11 @@ public class EclipseAwareConfigurationStore extends RepositoryConfigurationStore
 
 		log.debug("--> EclipseAwareConfigurationStore.resolve()");
 
-		Set result = Collections.EMPTY_SET;
 		JMXConnector connector = null;
+		
+		Set urls = new HashSet();
 
 		try {
-
 			Map env = new HashMap();
 			env.put(JMXConnectorServerFactory.PROTOCOL_PROVIDER_CLASS_LOADER, this.getClass().getClassLoader());
 
@@ -78,11 +79,16 @@ public class EclipseAwareConfigurationStore extends RepositoryConfigurationStore
 
 			String base = System.getProperty("org.apache.geronimo.base.dir");
 			
-			result = (Set) connection.invoke(on, "resolve", 
+			Set result = (Set) connection.invoke(on, "resolve", 
 					new Object[] { new File(base), configId, module, path }, 
 					new String[] { File.class.getName(), String.class.getName(),String.class.getName(), String.class.getName() });
 
-			log.debug("Resolved to: " + result);
+			Iterator i = result.iterator();
+			while(i.hasNext()) {
+				urls.add(((File) i.next()).toURL());
+			}
+			
+			log.debug("Resolved to: " + urls);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -94,7 +100,8 @@ public class EclipseAwareConfigurationStore extends RepositoryConfigurationStore
 					e.printStackTrace();
 				}
 		}
-		return result;
+		
+		return urls;
 	}
 
 	private String getConfigId(Artifact artifact) {
