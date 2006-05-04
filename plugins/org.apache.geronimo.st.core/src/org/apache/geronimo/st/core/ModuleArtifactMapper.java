@@ -17,6 +17,7 @@ package org.apache.geronimo.st.core;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,7 +34,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.server.core.util.SocketUtil;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -41,11 +42,11 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 public class ModuleArtifactMapper {
 
 	private static ModuleArtifactMapper instance = new ModuleArtifactMapper();
-	
+
 	private static final String FILE_NAME = "servermodule.info";
 
 	HashMap serverEntries;
-	
+
 	XStream xStream;
 
 	private ModuleArtifactMapper() {
@@ -60,27 +61,33 @@ public class ModuleArtifactMapper {
 	}
 
 	public IProject resolve(IServer server, String configId) {
-		Map artifactEntries = (Map) serverEntries.get(server.getId());
+		File runtimeLoc = server.getRuntime().getLocation().toFile();
+		return resolve(runtimeLoc, configId);
+	}
+
+	public void addEntry(IServer server, IProject project, String configId) {
+
+		if (!SocketUtil.isLocalhost(server.getHost()))
+			return;
+
+		File runtimeLoc = server.getRuntime().getLocation().toFile();
+		Map artifactEntries = (Map) serverEntries.get(runtimeLoc);
+		if (artifactEntries == null) {
+			artifactEntries = new HashMap();
+			serverEntries.put(runtimeLoc, artifactEntries);
+		}
+
+		artifactEntries.put(configId, project.getName());
+	}
+
+	public IProject resolve(File baseDir, String configId) {
+		Map artifactEntries = (Map) serverEntries.get(baseDir);
 		if (artifactEntries != null) {
 			String projectName = (String) artifactEntries.get(configId);
 			if (projectName != null)
 				return ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		}
 		return null;
-	}
-
-	public void addEntry(IServer server, IProject project, String configId) {
-		Map artifactEntries = (Map) serverEntries.get(server.getId());
-		if (artifactEntries == null) {
-			artifactEntries = new HashMap();
-			serverEntries.put(server.getId(), artifactEntries);
-		}
-		artifactEntries.put(configId, project.getName());
-	}
-	
-	public IProject resolve(String serverId, String configId) {
-		IServer server = ServerCore.findServer(serverId);
-		return resolve(server, configId);
 	}
 
 	public void save() {
@@ -113,7 +120,7 @@ public class ModuleArtifactMapper {
 				InputStream buffer = new BufferedInputStream(file);
 				input = new ObjectInputStream(buffer);
 				String xml = (String) input.readObject();
-				serverEntries = (HashMap)xStream.fromXML(xml);
+				serverEntries = (HashMap) xStream.fromXML(xml);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

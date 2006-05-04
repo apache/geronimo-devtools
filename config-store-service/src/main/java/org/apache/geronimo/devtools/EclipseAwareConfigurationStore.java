@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.devtools;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,7 +43,6 @@ public class EclipseAwareConfigurationStore extends RepositoryConfigurationStore
 	private static final Log log = LogFactory.getLog(EclipseAwareConfigurationStore.class);
 
 	public EclipseAwareConfigurationStore(WritableListableRepository repository) {
-
 		super(repository);
 	}
 
@@ -64,7 +64,7 @@ public class EclipseAwareConfigurationStore extends RepositoryConfigurationStore
 		JMXConnector connector = null;
 
 		try {
-			
+
 			Map env = new HashMap();
 			env.put(JMXConnectorServerFactory.PROTOCOL_PROVIDER_CLASS_LOADER, this.getClass().getClassLoader());
 
@@ -76,7 +76,11 @@ public class EclipseAwareConfigurationStore extends RepositoryConfigurationStore
 			String configId = getConfigId(artifact);
 			log.debug("Resolving: " + configId + " " + module + " " + path);
 
-			result = (Set) connection.invoke(on, "resolve", new Object[] { configId, module, path }, new String[] { "java.lang.String", "java.lang.String", "java.lang.String" });
+			String base = System.getProperty("org.apache.geronimo.base.dir");
+			
+			result = (Set) connection.invoke(on, "resolve", 
+					new Object[] { new File(base), configId, module, path }, 
+					new String[] { File.class.getName(), String.class.getName(),String.class.getName(), String.class.getName() });
 
 			log.debug("Resolved to: " + result);
 
@@ -92,7 +96,7 @@ public class EclipseAwareConfigurationStore extends RepositoryConfigurationStore
 		}
 		return result;
 	}
-	
+
 	private String getConfigId(Artifact artifact) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(artifact.getGroupId());
@@ -112,7 +116,7 @@ public class EclipseAwareConfigurationStore extends RepositoryConfigurationStore
 		builder.addAttribute("kernel", Kernel.class, false);
 		builder.addAttribute("objectName", String.class, false);
 		builder.addReference("Repository", WritableListableRepository.class, "Repository");
-		builder.setConstructor(new String[] { "kernel", "objectName", "Repository" });
+		builder.setConstructor(new String[] { "kernel", "objectName", "Repository"});
 		GBEAN_INFO = builder.getBeanInfo();
 	}
 

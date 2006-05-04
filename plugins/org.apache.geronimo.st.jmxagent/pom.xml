@@ -145,5 +145,10 @@
             <artifactId>mx4j</artifactId>
             <version>3.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.st.core</artifactId>
+            <version>${org.apache.geronimo.st.core_version}</version>
+        </dependency>
     </dependencies>
 </project>

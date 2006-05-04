@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.st.jmxagent;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
@@ -33,15 +34,18 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualReference;
 
 public class ConfigurationStoreResolver implements ConfigurationStoreResolverMBean {
 
-	public Set resolve(String configId, String module, String path) throws Exception {
-
-		Trace.trace(Trace.INFO, "ConfigStore Resolve Query: " + configId + ":" + module + ":" + path);
+	public Set resolve(File repoRoot, String configId, String module, String path) throws Exception {
 		
-		IProject project = ModuleArtifactMapper.getInstance().resolve("", configId);
+		Trace.trace(Trace.INFO, "ConfigStore Resolve Query: " + configId + ":" + module + ":" + path);
+		Trace.trace(Trace.INFO, "BaseDir:" + repoRoot);
+
+		IProject project = ModuleArtifactMapper.getInstance().resolve(repoRoot, configId);
 
 		if (project == null) {
 			throw new Exception("Could not find project in workspace for configId " + configId);
 		}
+		
+		Trace.trace(Trace.INFO, "Found project " + project.getName());
 
 		if (module != null && J2EEProjectUtilities.isEARProject(project)) {
 			EARArtifactEdit edit = EARArtifactEdit.getEARArtifactEditForRead(project);
