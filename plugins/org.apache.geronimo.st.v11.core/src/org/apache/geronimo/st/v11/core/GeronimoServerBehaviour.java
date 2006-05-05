@@ -202,4 +202,11 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 		}
 		return null;
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.GenericGeronimoServerBehaviour#getContextClassLoader()
+	 */
+	protected ClassLoader getContextClassLoader() {
+		return Kernel.class.getClassLoader();
+	}
 }

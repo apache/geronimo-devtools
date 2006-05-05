@@ -67,7 +67,7 @@ public class UpdateServerStateTask extends TimerTask {
 	}
 
 	private void updateFromStopped() {
-		if (delegate.isFullyStarted()) {
+		if (isFullyStarted()) {
 			delegate.setServerStarted();
 		} else {
 			((Server) server).setServerState(IServer.STATE_STARTING);
@@ -75,12 +75,22 @@ public class UpdateServerStateTask extends TimerTask {
 	}
 
 	private void updateFromStarting() {
-		if (delegate.isFullyStarted())
+		if (isFullyStarted())
 			delegate.setServerStopped();
 	}
 
 	private void updateFromStarted() {
-		if (!delegate.isFullyStarted())
+		if (!isFullyStarted())
 			delegate.setServerStopped();
+	}
+	
+	private boolean isFullyStarted() {
+		ClassLoader old = Thread.currentThread().getContextClassLoader();
+		try {
+			Thread.currentThread().setContextClassLoader(((GenericGeronimoServerBehaviour) delegate).getContextClassLoader());
+			return delegate.isFullyStarted();
+		} finally {
+			Thread.currentThread().setContextClassLoader(old);
+		}
 	}
 }

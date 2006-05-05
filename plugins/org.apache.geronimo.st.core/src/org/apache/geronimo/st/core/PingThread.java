@@ -21,11 +21,14 @@ import org.eclipse.wst.server.core.util.SocketUtil;
 
 public class PingThread extends Thread {
 
-	private static final int PING_DELAY = 5000;
+	private static final int PING_DELAY = 10000;
+
 	private static final int PING_INTERVAL = 5000;
+
 	private static final int MAX_PINGS = 40;
 
 	private IGeronimoServerBehavior geronimoServer;
+
 	private IServer server;
 
 	public PingThread(IGeronimoServerBehavior geronimoServer, IServer server) {
@@ -54,13 +57,20 @@ public class PingThread extends Thread {
 
 		for (int tries = MAX_PINGS; tries > 0; tries--) {
 
-			if (geronimoServer.isFullyStarted()) {
-				Trace.trace(Trace.INFO, "Ping: success");
-				geronimoServer.setServerStarted();
-				return;
+			ClassLoader old = Thread.currentThread().getContextClassLoader();
+			try {
+				ClassLoader cl = ((GenericGeronimoServerBehaviour) geronimoServer).getContextClassLoader();
+				Thread.currentThread().setContextClassLoader(cl);
+				if (geronimoServer.isFullyStarted()) {
+					Trace.trace(Trace.INFO, "Ping: success");
+					geronimoServer.setServerStarted();
+					return;
+				}
+			} finally {
+				Thread.currentThread().setContextClassLoader(old);
 			}
 
-			Trace.trace(Trace.INFO, "Ping: failed");
+			Trace.trace(Trace.INFO, "Ping: fail");
 
 			try {
 				sleep(PING_INTERVAL);

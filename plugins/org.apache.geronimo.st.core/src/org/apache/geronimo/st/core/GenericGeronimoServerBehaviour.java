@@ -99,9 +99,12 @@ abstract public class GenericGeronimoServerBehaviour extends
 		Trace.trace(Trace.INFO, "<< publishModule()");
 	}
 
-	protected void invokeCommand(int deltaKind, IModule module)
-			throws CoreException {
+	protected void invokeCommand(int deltaKind, IModule module) throws CoreException {
+		ClassLoader old = Thread.currentThread().getContextClassLoader();
 		try {
+			ClassLoader cl = getContextClassLoader();
+			if(cl != null)
+				Thread.currentThread().setContextClassLoader(cl);
 			switch (deltaKind) {
 			case ADDED: {
 				doDeploy(module);
@@ -122,6 +125,8 @@ abstract public class GenericGeronimoServerBehaviour extends
 			throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			Thread.currentThread().setContextClassLoader(old);
 		}
 	}
 
@@ -358,4 +363,6 @@ abstract public class GenericGeronimoServerBehaviour extends
 	public void dispose() {
 		stopUpdateServerStateTask();
 	}
+	
+	abstract protected ClassLoader getContextClassLoader();
 }
