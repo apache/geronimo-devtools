@@ -74,7 +74,7 @@ public class JMXAgent {
 
 	public void loadBean(String className, String objectName) {
 		try {
-			getServer().createMBean(className, new ObjectName(objectName));
+			getServer().registerMBean(new ConfigurationStoreResolver(), new ObjectName(objectName));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
