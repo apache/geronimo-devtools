@@ -48,6 +48,7 @@
                 <explodedBundle>org.apache.geronimo.runtime.common</explodedBundle>
                 <explodedBundle>org.apache.geronimo.runtime.v1</explodedBundle>
                 <explodedBundle>org.apache.geronimo.runtime.v11</explodedBundle>
+                <explodedBundle>org.apache.geronimo.st.jmxagent</explodedBundle>
               </explodedBundles>
             </configuration>
           </execution>
@@ -121,6 +122,11 @@
       <groupId>org.apache.geronimo.devtools</groupId>
       <artifactId>org.apache.geronimo.feature</artifactId>
       <version>${org.apache.geronimo.feature_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.st.jmxagent</artifactId>
+      <version>${org.apache.geronimo.st.jmxagent_version}</version>
     </dependency>
   </dependencies>  
 </project>

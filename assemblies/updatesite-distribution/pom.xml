@@ -135,5 +135,10 @@
       <artifactId>org.apache.geronimo.jetty.j2ee.server.v1</artifactId>
       <version>${org.apache.geronimo.jetty.j2ee.server.v1_version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.st.jmxagent</artifactId>
+      <version>${org.apache.geronimo.st.jmxagent_version}</version>
+    </dependency>
   </dependencies>
 </project>
