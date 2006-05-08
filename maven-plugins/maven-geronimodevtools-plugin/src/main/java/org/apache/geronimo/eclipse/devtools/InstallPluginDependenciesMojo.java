@@ -110,8 +110,7 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
 		if (!isValid())
-			throw new MojoFailureException("Eclipse home directory is not valid. "
-					+ eclipseHome);
+			throw new MojoFailureException("Eclipse home directory is not valid. " + eclipseHome);
 
 		processDependencies();
 		project.getDependencies().removeAll(removeList);
@@ -124,36 +123,47 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		while (i.hasNext()) {
 			Dependency dependency = (Dependency) i.next();
 			if (GROUP_ID.equals(dependency.getGroupId())) {
-				updateForSWTFragment(dependency);
-				File bundle = findBundleForDependency(dependency);
-				if (bundle != null) {
-					process(bundle, dependency);
-					if (bundle.isDirectory()
-							&& getBundleName(bundle).equals(dependency.getArtifactId())) {
-						getLog().info("Removing bundle directory dependency: "
-								+ dependency.getArtifactId());
-						removeList.add(dependency);
-					}
-				} else {
-					getLog().info("Bundle for dependency not found: "
-							+ dependency.getArtifactId());
+				if ("org.eclipse.swt".equals(dependency.getArtifactId())) {
+					Dependency fragment = getSWTFragmentDependency(dependency);
+					processDependency(fragment);
+					addList.add(fragment);
 				}
+				processDependency(dependency);
 			}
 		}
 	}
 
-	private void updateForSWTFragment(Dependency dependency) {
-		if ("org.eclipse.swt.fragment".equals(dependency.getArtifactId())) {
-			String platform = System.getProperty("os.name");
-			String id = dependency.getArtifactId();
-			if (platform.startsWith("Windows")) {
-				dependency.setArtifactId(id.replaceFirst("fragment", "win32.win32.x86"));
-			} else if (platform.startsWith("Linux")) {
-				dependency.setArtifactId(id.replaceFirst("fragment", "gtk.linux.x86"));
-			} else if (platform.startsWith("Mac")) {
-				dependency.setArtifactId(id.replaceFirst("fragment", "carbon.macosx.ppc"));
+	private void processDependency(Dependency dependency) {
+		File bundle = findBundleForDependency(dependency);
+		if (bundle != null) {
+			process(bundle, dependency);
+			if (bundle.isDirectory()
+					&& getBundleName(bundle).equals(dependency.getArtifactId())) {
+				getLog().info("Removing bundle directory dependency: "
+						+ dependency.getArtifactId());
+				removeList.add(dependency);
 			}
+		} else {
+			getLog().info("Bundle for dependency not found: "
+					+ dependency.getArtifactId());
 		}
+	}
+
+	private Dependency getSWTFragmentDependency(Dependency swtDependency) {
+		Dependency fragment = new Dependency();
+		fragment.setGroupId(swtDependency.getGroupId());
+		fragment.setType(swtDependency.getType());
+		fragment.setVersion(swtDependency.getVersion());
+		String id = swtDependency.getArtifactId();
+		String platform = System.getProperty("os.name");
+		if (platform.startsWith("Windows")) {
+			fragment.setArtifactId(id.concat(".win32.win32.x86"));
+		} else if (platform.startsWith("Linux")) {
+			fragment.setArtifactId(id.concat(".gtk.linux.x86"));
+		} else if (platform.startsWith("Mac")) {
+			fragment.setArtifactId(id.concat(".carbon.macosx.ppc"));
+		}
+		return fragment;
 	}
 
 	protected boolean isValid() {
@@ -262,9 +272,7 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		return artifactId;
 	}
 
-	private void doIt(File file, String groupId, String artifactId,
-			String version, String packaging) throws MojoExecutionException,
-			MojoFailureException {
+	private void doIt(File file, String groupId, String artifactId, String version, String packaging) throws MojoExecutionException, MojoFailureException {
 
 		Artifact artifact = artifactFactory.createArtifact(groupId, artifactId, version, null, packaging);
 		generatePOM(artifact, groupId, artifactId, version);
@@ -274,26 +282,21 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 			File destination = new File(localRepository.getBasedir(), localPath);
 
 			if (destination.exists()) {
-				getLog().info(artifactId + " : " + version
-						+ " already exists in local repository.");
+				getLog().info(artifactId + " : " + version + " already exists in local repository.");
 				return;
 			}
 
 			if (!file.getPath().equals(destination.getPath())) {
 				installer.install(file, artifact, localRepository);
 			} else {
-				throw new MojoFailureException("Cannot install artifact. Artifact is already in the local repository.\n\nFile in question is: "
-						+ file + "\n");
+				throw new MojoFailureException("Cannot install artifact. Artifact is already in the local repository.\n\nFile in question is: " + file + "\n");
 			}
 		} catch (ArtifactInstallationException e) {
-			throw new MojoExecutionException("Error installing artifact '"
-					+ artifact.getDependencyConflictId() + "': "
-					+ e.getMessage(), e);
+			throw new MojoExecutionException("Error installing artifact '" + artifact.getDependencyConflictId() + "': " + e.getMessage(), e);
 		}
 	}
 
-	private void generatePOM(Artifact artifact, String groupId,
-			String artifactId, String version) throws MojoExecutionException {
+	private void generatePOM(Artifact artifact, String groupId, String artifactId, String version) throws MojoExecutionException {
 
 		FileWriter fw = null;
 		try {
@@ -313,8 +316,7 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 			ArtifactMetadata metadata = new ProjectArtifactMetadata(artifact, tempFile);
 			artifact.addMetadata(metadata);
 		} catch (IOException e) {
-			throw new MojoExecutionException("Error writing temporary pom file: "
-					+ e.getMessage(), e);
+			throw new MojoExecutionException("Error writing temporary pom file: " + e.getMessage(), e);
 		} finally {
 			IOUtil.close(fw);
 		}

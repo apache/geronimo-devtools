@@ -121,14 +121,6 @@
     <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/R-1.0.2-200604200208/wtp-sdk-R-1.0.2-200604200208.zip</wtpUrl>
   </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${junitVersion}</version>
-    </dependency>
-  </dependencies>
-
   <distributionManagement>
     <repository>
       <id>apache-repo</id>

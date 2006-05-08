@@ -86,5 +86,10 @@
             <artifactId>org.apache.geronimo.runtime.common</artifactId>
             <version>${org.apache.geronimo.runtime.common_version}</version>
         </dependency>
+        <dependency>
+            <groupId>xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.1.3</version>     
+        </dependency>
     </dependencies>
 </project>
