@@ -5,6 +5,11 @@
   <packaging>jar</packaging>
   <version>1.0</version>
   <name>Eclipse Aware Configuration Store Service</name>
+  <parent>
+    <groupId>org.apache.geronimo.devtools</groupId>
+    <artifactId>eclipse-plugins-parent</artifactId>
+    <version>1.0</version>
+  </parent>
   <dependencies>
     <dependency>
       <groupId>geronimo</groupId>
