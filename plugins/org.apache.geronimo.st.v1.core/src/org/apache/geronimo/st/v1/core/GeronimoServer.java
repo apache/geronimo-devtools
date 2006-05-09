@@ -28,6 +28,13 @@ import org.eclipse.wst.server.core.IModule;
 public class GeronimoServer extends GenericGeronimoServer {
 
 	private static IGeronimoVersionHandler versionHandler = null;
+	
+	private static DeploymentFactory deploymentFactory;
+	
+	static {
+		deploymentFactory = new DeploymentFactoryImpl();
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -107,7 +114,7 @@ public class GeronimoServer extends GenericGeronimoServer {
 	 * @see org.apache.geronimo.st.core.IGeronimoServer#getDeploymentFactory()
 	 */
 	public DeploymentFactory getDeploymentFactory() {
-		return new DeploymentFactoryImpl();
+		return deploymentFactory;
 	}
 
 	/*
