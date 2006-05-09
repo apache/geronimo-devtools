@@ -56,6 +56,9 @@ public class PingThread extends Thread {
 		}
 
 		for (int tries = MAX_PINGS; tries > 0; tries--) {
+			
+			if(server.getServerState() == IServer.STATE_STOPPED) 
+				interrupt();
 
 			ClassLoader old = Thread.currentThread().getContextClassLoader();
 			try {
