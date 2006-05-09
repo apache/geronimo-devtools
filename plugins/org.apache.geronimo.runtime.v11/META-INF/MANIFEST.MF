@@ -6,7 +6,6 @@ Bundle-Version: 1.0.0
 Bundle-ClassPath: 
  lib/xbean-2.0.0.jar,
  lib/openejb-builder-2.1-SNAPSHOT.jar,
- lib/mx4j-remote-3.0.1.jar,
  lib/geronimo-web-builder-1.1-SNAPSHOT.jar,
  lib/geronimo-util-1.1-SNAPSHOT.jar,
  lib/geronimo-system-1.1-SNAPSHOT.jar,
@@ -22,16 +21,8 @@ Bundle-ClassPath:
  lib/geronimo-deployment-1.1-SNAPSHOT.jar
 Bundle-Localization: plugin
 Export-Package: 
- javax.management.remote,
- javax.management.remote.rmi,
  javax.xml.namespace,
  mx4j.log,
- mx4j.remote,
- mx4j.remote.provider.iiop,
- mx4j.remote.provider.rmi,
- mx4j.remote.resolver.iiop,
- mx4j.remote.resolver.rmi,
- mx4j.remote.rmi,
  mx4j.util,
  noNamespace,
  noNamespace.impl,
@@ -162,7 +153,6 @@ Export-Package:
  org.apache.xmlbeans.xml.stream,
  org.apache.xmlbeans.xml.stream.events,
  org.apache.xmlbeans.xml.stream.utils,
- org.omg.stub.javax.management.remote.rmi,
  org.openejb.corba.security.config.css,
  org.openejb.corba.security.config.tss,
  org.openejb.deployment,

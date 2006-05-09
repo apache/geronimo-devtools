@@ -125,11 +125,6 @@
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>mx4j</groupId>
-                                    <artifactId>mx4j-remote</artifactId>
-                                    <version>3.0.1</version>
-                                </artifactItem>
-                                <artifactItem>
                                 	<groupId>geronimo</groupId>
                                 	<artifactId>geronimo-deployment</artifactId>
                                 	<version>${geronimoVersion}</version>
