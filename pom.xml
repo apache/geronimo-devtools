@@ -29,7 +29,7 @@
   <url>http://geronimo.apache.org/devtools</url>
   
   <prerequisites>
-    <maven>2.0.3</maven>
+    <maven>2.0.4</maven>
   </prerequisites>
 
   <issueManagement>
