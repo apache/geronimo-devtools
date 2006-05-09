@@ -98,7 +98,6 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 			map.put("jmx.remote.credentials", new String[] { user, password });
 			try {
 				String url = getGeronimoServer().getJMXServiceURL();
-				Trace.trace(Trace.INFO, "URL = " + url);
 				if (url == null)
 					return null;
 				JMXServiceURL address = new JMXServiceURL(url);
@@ -106,11 +105,11 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 					JMXConnector jmxConnector = JMXConnectorFactory.connect(address, map);
 					MBeanServerConnection mbServerConnection = jmxConnector.getMBeanServerConnection();
 					kernel = new KernelDelegate(mbServerConnection);
-					Trace.trace(Trace.INFO, "Connected to kernel.");
+					Trace.trace(Trace.INFO, "Connected to kernel." + url);
 				} catch (SecurityException e) {
 					throw e;
 				} catch (Exception e) {
-					Trace.trace(Trace.WARNING, "Kernel connection failed.");
+					Trace.trace(Trace.WARNING, "Kernel connection failed." + url);
 				}
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
