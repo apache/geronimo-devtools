@@ -17,6 +17,8 @@ package org.apache.geronimo.st.jmxagent;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
@@ -50,16 +52,18 @@ public class JMXAgent {
 	private void init() {
 		try {
 			url = new JMXServiceURL("hessian", null, DEFAULT_PORT, "/hessian");
+			loadBean(ConfigurationStoreResolver.class.getName(), "ConfigStoreResolver:name=resolver");
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-		}
-		loadBean(ConfigurationStoreResolver.class.getName(), "ConfigStoreResolver:name=resolver");
+		} 
 	}
 
 	public void start() throws IOException {
 		if (connectorServer == null) {
 			init();
-			connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, null, getServer());
+			Map env = new HashMap();
+			env.put(JMXConnectorServerFactory.PROTOCOL_PROVIDER_CLASS_LOADER, this.getClass().getClassLoader());
+			connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, env, getServer());
 		}
 
 		if (!connectorServer.isActive()) {
