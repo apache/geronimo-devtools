@@ -36,7 +36,6 @@ import org.apache.geronimo.kernel.Kernel;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.st.core.GenericGeronimoServerBehaviour;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
-import org.apache.geronimo.st.jmxagent.Activator;
 import org.apache.geronimo.st.jmxagent.JMXAgent;
 import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
