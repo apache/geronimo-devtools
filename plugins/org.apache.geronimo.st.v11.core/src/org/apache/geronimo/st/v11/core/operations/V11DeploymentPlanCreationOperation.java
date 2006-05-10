@@ -180,7 +180,7 @@ public class V11DeploymentPlanCreationOperation extends
 		artifact.setVersion(version);
 		artifact.setType(type);
 		EnvironmentType env = DeploymentFactory.eINSTANCE.createEnvironmentType();
-		env.setConfigId(artifact);
+		env.setModuleId(artifact);
 		return env;
 	}
 

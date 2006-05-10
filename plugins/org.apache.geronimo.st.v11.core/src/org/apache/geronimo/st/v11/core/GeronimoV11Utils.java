@@ -63,8 +63,8 @@ public class GeronimoV11Utils extends GeronimoUtils {
 		}
 
 		if (environment != null
-				&& environment.eIsSet(DeploymentPackage.eINSTANCE.getEnvironmentType_ConfigId())) {
-			return getQualifiedConfigID(environment.getConfigId());
+				&& environment.eIsSet(DeploymentPackage.eINSTANCE.getEnvironmentType_ModuleId())) {
+			return getQualifiedConfigID(environment.getModuleId());
 		}
 
 		return getId(module);
