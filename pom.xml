@@ -153,12 +153,23 @@
     <repository>
       <snapshots>
         <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+        <checksumPolicy>ignore</checksumPolicy>
       </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
       <id>Apache CVS</id>
       <name>Apache CVS of the Central Repository</name>
       <url>http://cvs.apache.org/maven-snapshot-repository</url>
     </repository>
+    
     <repository>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+        <checksumPolicy>ignore</checksumPolicy>
+      </snapshots>
       <releases>
         <enabled>false</enabled>
       </releases>
@@ -166,28 +177,48 @@
       <name>Maven Central Development Repository</name>
       <url>http://snapshots.maven.codehaus.org/maven2</url>
     </repository>
+    
     <repository>
       <id>maven1-ibiblio</id>
       <name>Maven1 Repository on iBiblio</name>
       <url>http://www.ibiblio.org/maven</url>
       <layout>legacy</layout>
       <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-        <checksumPolicy>ignore</checksumPolicy>
+        <enabled>false</enabled>
       </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
     </repository>
+    
     <repository>
       <id>maven2-central</id>
       <name>Maven2 Central Repository</name>
       <url>http://repo1.maven.org/maven2</url>
       <layout>default</layout>
       <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+    
+    <repository>
+      <id>maven1-codehaus</id>
+      <name>Maven1 repository at codehaus</name>
+      <url>http://dist.codehaus.org/</url>
+      <layout>legacy</layout>
+      <snapshots>
         <enabled>true</enabled>
         <updatePolicy>daily</updatePolicy>
         <checksumPolicy>ignore</checksumPolicy>
       </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
     </repository>
+    
     <repository>
       <id>apache-cvs</id>
       <name>Apache CVS Repository</name>
@@ -198,12 +229,22 @@
         <updatePolicy>daily</updatePolicy>
         <checksumPolicy>ignore</checksumPolicy>
       </snapshots>
-    </repository>    
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>  
+      
     <repository>
       <id>maven1-sppatel</id>
       <name>sppatel Repository on Apache</name>
       <url>http://people.apache.org/~sppatel/repository</url>
       <layout>legacy</layout>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
     </repository>
   </repositories>
     
