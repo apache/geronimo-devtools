@@ -55,8 +55,7 @@
                             <goal>download</goal>
                         </goals>
                         <configuration>
-                            <platformUrl>
-                                http://download.eclipse.org/eclipse/downloads/drops/I20060329-0800/eclipse-SDK-I20060329-0800</platformUrl>
+                            <platformUrl>${tempPlatformURL}</platformUrl>
                             <urls>
                                 <url>${emfUrl}</url>
                             </urls>

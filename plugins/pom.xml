@@ -33,6 +33,12 @@
     <artifactId>geronimo-eclipse-plugin</artifactId> 
     <version>1.0</version>
   </parent>
+  
+  <!-- TODO remove following properties after 3.2 migration
+    need for running osgi under 3.2 due to platform bugs -->
+  <properties>
+    <tempPlatformURL>http://download.eclipse.org/eclipse/downloads/drops/S-3.2RC5-200605191206/eclipse-SDK-3.2RC5</tempPlatformURL>
+  </properties>
 
   <build>
     <plugins>
