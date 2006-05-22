@@ -27,8 +27,8 @@
                         <id>install-dependencies</id>
                         <phase>validate</phase>
                         <goals>
-                            <goal>manifestbundles</goal>
                             <goal>download</goal>
+                            <goal>manifestbundles</goal>
                             <goal>install</goal>
                         </goals>
                     </execution>
