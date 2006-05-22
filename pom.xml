@@ -118,7 +118,7 @@
     <emfUrl>http://download.eclipse.org/tools/emf/downloads/drops/2.1.2/R200601191349/emf-sdo-xsd-SDK-2.1.2.zip</emfUrl>
     <jemUrl>http://download.eclipse.org/tools/ve/downloads/drops/R-1.1.0.1-200509071822/JEM-SDK-1.1.0.1.zip</jemUrl>
     <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/R-3.1.1-200509301327/GEF-SDK-3.1.1.zip</gefUrl>
-    <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/R-1.0.2-200604200208/wtp-sdk-R-1.0.2-200604200208.zip</wtpUrl>
+    <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/R-1.0.2-200604280245/wtp-sdk-R-1.0.2-200604280245.zip</wtpUrl>
   </properties>
 
   <distributionManagement>
