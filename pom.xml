@@ -161,7 +161,7 @@
       </releases>
       <id>Apache CVS</id>
       <name>Apache CVS of the Central Repository</name>
-      <url>http://cvs.apache.org/maven-snapshot-repository</url>
+      <url>http://people.apache.org/maven-snapshot-repository</url>
     </repository>
     
     <repository>
