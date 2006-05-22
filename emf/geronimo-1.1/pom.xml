@@ -13,7 +13,7 @@
   <!--TODO remove following properties after 3.2 migration -->
   <properties>
     <installLocation>${settings.localRepository}/eclipse/temp/</installLocation>
-    <platformDriver>S-3.2RC5-200605191206/eclipse-SDK-3.2RC5<</platformDriver>
+    <platformDriver>S-3.2RC5-200605191206/eclipse-SDK-3.2RC5</platformDriver>
     <geronimoVersion>1.1-SNAPSHOT</geronimoVersion>
     <openejbVersion>2.1-SNAPSHOT</openejbVersion>
   </properties>
