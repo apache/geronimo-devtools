@@ -21,10 +21,11 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.geronimo.devtools</groupId>
-  <artifactId>g-plugin-deployable</artifactId>
-  <packaging>jar</packaging>
-  <name>Geronimo Eclipse Plugin :: Assembly :: ${artifactId}</name>
-  <version>1.0</version>
+  <artifactId>assembly</artifactId>
+  <packaging>pom</packaging>
+  <name>Assembly :: ${artifactId}</name>
+  <version>1.1-SNAPSHOT</version>
+  
   <parent>
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>geronimo-eclipse-plugin</artifactId> 
@@ -32,27 +33,17 @@
   </parent>
   
   <build>
+    <defaultGoal>assembly:assembly</defaultGoal>
     <plugins>
       <plugin>
-        <groupId>org.apache.geronimo.devtools</groupId>
-        <artifactId>maven-geronimodevtools-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <executions>
-          <execution>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>createdeployable</goal>
-            </goals>
-            <configuration>
-              <explodedBundles>
-                <explodedBundle>org.apache.geronimo.runtime.common</explodedBundle>
-                <explodedBundle>org.apache.geronimo.runtime.v1</explodedBundle>
-                <explodedBundle>org.apache.geronimo.runtime.v11</explodedBundle>
-                <explodedBundle>org.apache.geronimo.st.jmxagent</explodedBundle>
-              </explodedBundles>
-            </configuration>
-          </execution>
-        </executions>     
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <finalName>g-eclipse-plugin-${version}</finalName>
+          <descriptors>
+            <descriptor>src/main/assembly/deployable.xml</descriptor>
+            <descriptor>src/main/assembly/updatesite.xml</descriptor>
+          </descriptors>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -128,5 +119,5 @@
       <artifactId>org.apache.geronimo.st.jmxagent</artifactId>
       <version>${org.apache.geronimo.st.jmxagent_version}</version>
     </dependency>
-  </dependencies>  
+  </dependencies>
 </project>
