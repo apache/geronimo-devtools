@@ -3,11 +3,11 @@
   <artifactId>org.apache.geronimo.installableruntime.jetty.feature</artifactId>
   <packaging>jar</packaging>
   <version>${org.apache.geronimo.installableruntime.jetty.feature_version}</version>
-  <name>Geronio Eclipse Plugin :: Feature :: ${artifactId}</name>
+  <name>Feature :: ${artifactId}</name>
   <parent>
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>geronimo-eclipse-plugin</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
   </parent>
   <build>
     <resources>

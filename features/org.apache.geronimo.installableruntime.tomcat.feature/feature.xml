@@ -2,7 +2,7 @@
 <feature
       id="org.apache.geronimo.installableruntime.tomcat.feature"
       label="org.apache.geronimo.installableruntime.tomcat.feature"
-      version="1.0.0"
+      version="1.1.0"
       provider-name="Apache.org">
 
    <description url="http://geronimo.apache.org/">
@@ -18,7 +18,7 @@
    </license>
 
    <plugin
-         id="org.apache.geronimo.tomcat.j2ee.server.v1"
+         id="org.apache.geronimo.tomcat.j2ee.server.v11"
          download-size="0"
          install-size="0"
          version="1.0.0"/>
