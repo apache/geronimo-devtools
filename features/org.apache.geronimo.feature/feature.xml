@@ -25,46 +25,42 @@ Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you ma
 
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.debug.core"/>
-      <import plugin="org.eclipse.jdt.core"/>
-      <import plugin="org.eclipse.jdt.launching"/>
-      <import plugin="org.eclipse.wst.server.core"/>
-      <import plugin="org.eclipse.jst.server.core"/>
-      <import plugin="org.eclipse.jst.j2ee"/>
-      <import plugin="org.eclipse.jst.j2ee.core"/>
-      <import plugin="org.eclipse.jst.j2ee.web"/>
-      <import plugin="org.eclipse.jst.j2ee.ejb"/>
-      <import plugin="org.eclipse.jst.server.generic.core"/>
+      <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="org.eclipse.emf.edit"/>
+      <import plugin="com.ibm.etools.emf.event"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.jst.server.generic.core"/>
+      <import plugin="org.eclipse.wst.server.core"/>
+      <import plugin="org.eclipse.debug.core"/>
       <import plugin="org.eclipse.wst.common.modulecore"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.jst.j2ee"/>
+      <import plugin="org.eclipse.wst.rdb.models.sql.edit"/>
+      <import plugin="org.eclipse.wst.rdb.models.sql"/>
+      <import plugin="org.eclipse.wst.rdb.models.dbdefinition"/>
       <import plugin="org.eclipse.wst.common.frameworks"/>
       <import plugin="org.eclipse.core.commands"/>
-      <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.ui.forms"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.emf.common"/>
-      <import plugin="org.eclipse.jst.server.generic.ui"/>
-      <import plugin="org.eclipse.jst.j2ee.jca"/>
-      <import plugin="org.eclipse.jem.util"/>
-      <import plugin="org.eclipse.jst.common.frameworks"/>
       <import plugin="org.eclipse.wst.common.project.facet.core"/>
-      <import plugin="org.eclipse.wst.web"/>
-      <import plugin="org.eclipse.ui.editors"/>
-      <import plugin="org.eclipse.ui.workbench"/>
-      <import plugin="org.eclipse.ui.workbench.texteditor"/>
-      <import plugin="org.eclipse.ui.browser"/>
+      <import plugin="org.apache.ant"/>
+      <import plugin="org.eclipse.jst.server.generic.ui"/>
       <import plugin="org.eclipse.wst.server.ui"/>
-      <import plugin="org.eclipse.emf.edit"/>
+      <import plugin="org.eclipse.jst.server.core"/>
+      <import plugin="org.eclipse.ui.forms"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.emf.mapping.xsd2ecore.editor"/>
+      <import plugin="org.eclipse.wst.web"/>
+      <import plugin="org.eclipse.jdt.launching"/>
+      <import plugin="org.eclipse.emf.edit.ui"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.jem.util"/>
+      <import plugin="org.eclipse.jst.j2ee.web"/>
+      <import plugin="org.eclipse.jst.j2ee.ejb"/>
+      <import plugin="org.eclipse.jst.j2ee.jca"/>
+      <import plugin="org.eclipse.emf.common"/>
    </requires>
-
-   <plugin
-         id="org.apache.geronimo.devtools.eclipse.core"
-         download-size="0"
-         install-size="0"
-         version="1.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.apache.geronimo.deployment.model"
@@ -77,14 +73,7 @@ Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you ma
          id="org.apache.geronimo.runtime.v1"
          download-size="0"
          install-size="0"
-         version="1.0.0"/>
-
-   <plugin
-         id="org.apache.geronimo.ui"
-         download-size="0"
-         install-size="0"
-         version="1.0.0"
-         unpack="false"/>
+         version="1.0.1"/>
 
    <plugin
          id="org.apache.geronimo.deployment.model.edit"
@@ -92,5 +81,79 @@ Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you ma
          install-size="0"
          version="1.0.0"
          unpack="false"/>
+
+   <plugin
+         id="org.apache.geronimo.v11.deployment.model.edit"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.geronimo.v11.deployment.model"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.geronimo.st.v11.ui"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.geronimo.st.v11.core"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.geronimo.st.v1.ui"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.geronimo.st.v1.core"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.geronimo.st.ui"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.geronimo.st.jmxagent"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"/>
+
+   <plugin
+         id="org.apache.geronimo.st.core"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.geronimo.runtime.v11"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"/>
+
+   <plugin
+         id="org.apache.geronimo.runtime.common"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"/>
 
 </feature>

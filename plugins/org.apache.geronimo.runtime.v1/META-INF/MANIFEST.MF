@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo V1 Runtime Plug-in
 Bundle-SymbolicName: org.apache.geronimo.runtime.v1
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.1
 Bundle-ClassPath: 
  lib/xbean-2.0.0.jar,
  lib/openejb-builder-2.0.jar,
