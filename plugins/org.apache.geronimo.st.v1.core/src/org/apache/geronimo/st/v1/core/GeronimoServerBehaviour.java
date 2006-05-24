@@ -24,6 +24,7 @@ import java.util.Set;
 
 import javax.enterprise.deploy.spi.Target;
 import javax.management.MBeanServerConnection;
+import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
@@ -33,6 +34,7 @@ import javax.naming.directory.NoSuchAttributeException;
 import org.apache.geronimo.gbean.GBeanData;
 import org.apache.geronimo.gbean.GBeanQuery;
 import org.apache.geronimo.kernel.GBeanNotFoundException;
+import org.apache.geronimo.kernel.InternalKernelException;
 import org.apache.geronimo.kernel.Kernel;
 import org.apache.geronimo.kernel.config.Configuration;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
@@ -173,19 +175,27 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour impl
 	 * @see org.eclipse.wst.server.core.internal.IModulePublishHelper#getPublishDirectory(org.eclipse.wst.server.core.IModule[])
 	 */
 	public IPath getPublishDirectory(IModule[] module) {
-		IPath path = null;
-		if (module.length == 1) {
-			try {
-				String configId = getConfigId(module[0]);
-				ObjectName on = Configuration.getConfigurationObjectName(URI.create(configId));
-				GBeanData data = kernel.getGBeanData(on);
-				URL url = (URL) data.getAttribute("baseURL");
-				return new Path(url.getFile());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		if(module == null || module.length == 0)
+			return null;
+		
+		try {
+			String configId = getConfigId(module[0]);
+			ObjectName on = Configuration.getConfigurationObjectName(URI.create(configId));
+			GBeanData data = kernel.getGBeanData(on);
+			URL url = (URL) data.getAttribute("baseURL");
+			IPath modulePath = new Path(url.getFile());
+			if(module.length == 2) {
+				modulePath = modulePath.append(module[1].getName());
+			} 
+		} catch (MalformedObjectNameException e) {
+			e.printStackTrace();
+		} catch (GBeanNotFoundException e) {
+			e.printStackTrace();
+		} catch (InternalKernelException e) {
+			e.printStackTrace();
 		}
-		return path;
+		
+		return null;
 	}
 	
 	/* (non-Javadoc)
