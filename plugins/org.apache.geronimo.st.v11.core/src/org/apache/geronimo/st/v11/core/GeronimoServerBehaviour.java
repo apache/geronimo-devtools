@@ -88,7 +88,7 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 		Trace.trace(Trace.INFO, "<-- stop()");
 	}
 
-	private Kernel getKernel() throws SecurityException {
+	protected Kernel getKernel() throws SecurityException {
 
 		if (kernel == null) {
 			Map map = new HashMap();

@@ -116,7 +116,7 @@ public class UpdateServerStateTask extends TimerTask {
 
 	private void updateFromStarting() {
 		if (isFullyStarted())
-			delegate.setServerStopped();
+			delegate.setServerStarted();
 	}
 
 	private void updateFromStarted() {
