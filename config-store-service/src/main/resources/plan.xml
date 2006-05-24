@@ -15,23 +15,18 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<configuration xmlns="http://geronimo.apache.org/xml/ns/deployment-1.1">
+<module xmlns="http://geronimo.apache.org/xml/ns/deployment-1.1">
 	<environment>
-    	<configId>
+    	<moduleId>
       		<groupId>default</groupId>
       		<artifactId>eclipse-config-store</artifactId>
       		<version>1.0</version>
       		<type>car</type>
-    	</configId>
+    	</moduleId>
         <dependencies>
             <dependency>
                 <groupId>geronimo</groupId>
                 <artifactId>rmi-naming</artifactId>
-                <type>car</type>
-            </dependency>
-            <dependency>
-                <groupId>geronimo</groupId>
-                <artifactId>sharedlib</artifactId>
                 <type>car</type>
             </dependency>
             <dependency>
@@ -67,18 +62,10 @@
      		<name>ServerInfo</name>
     	</reference>
   	</gbean>
-  	
-  	<!--<gbean name="ExternalEclipseRepository" class="org.apache.geronimo.system.repository.Maven2Repository">
-    	<attribute name="root">eclipse-repository/</attribute>
-    	<reference name="ServerInfo">
-     		<name>ServerInfo</name>
-    	</reference>
-  	</gbean>-->
 
-    <!--Configuration Store service-->
     <gbean name="EclipseConfigStore" class="org.apache.geronimo.devtools.EclipseAwareConfigurationStore">
         <reference name="Repository">
             <name>ExternalEclipseRepository</name>
         </reference>
     </gbean>
-</configuration>
+</module>
