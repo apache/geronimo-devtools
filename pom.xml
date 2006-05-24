@@ -24,7 +24,7 @@
   <artifactId>geronimo-eclipse-plugin</artifactId>
   <packaging>pom</packaging>
   <name>Geronimo Eclipse Plugin :: Root POM :: ${artifactId}</name>
-  <version>1.0</version>
+  <version>1.1</version>
   <description>Parent POM for Geronimo Eclipse Plugin</description>
   <url>http://geronimo.apache.org/devtools</url>
   
@@ -102,6 +102,8 @@
     <org.apache.geronimo.v11.deployment.model.edit_version>1.0.0</org.apache.geronimo.v11.deployment.model.edit_version>
     <org.apache.geronimo.jetty.j2ee.server.v1_version>1.0.0</org.apache.geronimo.jetty.j2ee.server.v1_version>
     <org.apache.geronimo.tomcat.j2ee.server.v1_version>1.0.0</org.apache.geronimo.tomcat.j2ee.server.v1_version>
+    <org.apache.geronimo.jetty.j2ee.server.v11_version>1.0.0</org.apache.geronimo.jetty.j2ee.server.v11_version>
+    <org.apache.geronimo.tomcat.j2ee.server.v11_version>1.0.0</org.apache.geronimo.tomcat.j2ee.server.v11_version>
     <!-- Feature Versions -->
     <org.apache.geronimo.feature_version>1.0.0</org.apache.geronimo.feature_version>
     <org.apache.geronimo.installableruntime.tomcat.feature_version>1.1.0</org.apache.geronimo.installableruntime.tomcat.feature_version>
@@ -264,8 +266,7 @@
     <module>features/org.apache.geronimo.feature</module>
     <module>features/org.apache.geronimo.installableruntime.jetty.feature</module>
     <module>features/org.apache.geronimo.installableruntime.tomcat.feature</module>
-    <module>assemblies/g-plugin-deployable</module>
-    <module>assemblies/updatesite-distribution</module>
+    <module>assembly</module>
   </modules>
   
 </project>
