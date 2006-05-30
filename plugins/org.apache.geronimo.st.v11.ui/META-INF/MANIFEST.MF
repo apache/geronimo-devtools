@@ -7,5 +7,7 @@ Bundle-Activator: org.apache.geronimo.st.v11.ui.Activator
 Bundle-Vendor: Apache
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.wst.server.ui,
+ org.eclipse.ui.forms
 Eclipse-AutoStart: true
