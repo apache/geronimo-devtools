@@ -28,13 +28,13 @@ import org.eclipse.wst.server.core.IModule;
 public class GeronimoServer extends GenericGeronimoServer {
 
 	private static IGeronimoVersionHandler versionHandler = null;
-	
+
 	private static DeploymentFactory deploymentFactory;
-	
+
 	static {
 		deploymentFactory = new DeploymentFactoryImpl();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -42,33 +42,6 @@ public class GeronimoServer extends GenericGeronimoServer {
 	 */
 	public String getContextRoot(IModule module) {
 		return GeronimoV1Utils.getContextRoot(module);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.core.GenericGeronimoServer#getAdminID()
-	 */
-	public String getAdminID() {
-		return (String) getServerInstanceProperties().get(PROPERTY_ADMIN_ID);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.core.GenericGeronimoServer#getAdminPassword()
-	 */
-	public String getAdminPassword() {
-		return (String) getServerInstanceProperties().get(PROPERTY_ADMIN_PW);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.core.GenericGeronimoServer#getRMINamingPort()
-	 */
-	public String getRMINamingPort() {
-		return (String) getServerInstanceProperties().get(PROPERTY_RMI_PORT);
 	}
 
 	/*
@@ -109,8 +82,10 @@ public class GeronimoServer extends GenericGeronimoServer {
 	public void configureDeploymentManager(DeploymentManager dm) {
 		((JMXDeploymentManager) dm).setLogConfiguration(true, true);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.st.core.IGeronimoServer#getDeploymentFactory()
 	 */
 	public DeploymentFactory getDeploymentFactory() {
@@ -127,8 +102,10 @@ public class GeronimoServer extends GenericGeronimoServer {
 			versionHandler = new GeronimoV1VersionHandler();
 		return versionHandler;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.st.core.IGeronimoServer#isTestEnvironment()
 	 */
 	public boolean isTestEnvironment() {

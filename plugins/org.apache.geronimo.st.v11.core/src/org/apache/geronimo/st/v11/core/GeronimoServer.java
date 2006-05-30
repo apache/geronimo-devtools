@@ -27,6 +27,10 @@ import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
 public class GeronimoServer extends GenericGeronimoServer {
+	
+	public static final String PROPERTY_PERSISTENT = "persistent";
+	public static final String PROPERTY_IN_PLACE = "inPlace";
+	public static final String PROPERTY_RUN_FROM_WORKSPACE = "runFromWorkspace";
 
 	private static IGeronimoVersionHandler versionHandler = null;
 	
@@ -36,40 +40,11 @@ public class GeronimoServer extends GenericGeronimoServer {
 		deploymentFactory = new DeploymentFactoryImpl();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see org.apache.geronimo.st.core.GenericGeronimoServer#getContextRoot(org.eclipse.wst.server.core.IModule)
 	 */
 	public String getContextRoot(IModule module) {
 		return GeronimoV11Utils.getContextRoot(module);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.core.GenericGeronimoServer#getAdminID()
-	 */
-	public String getAdminID() {
-		return (String) getServerInstanceProperties().get(PROPERTY_ADMIN_ID);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.core.GenericGeronimoServer#getAdminPassword()
-	 */
-	public String getAdminPassword() {
-		return (String) getServerInstanceProperties().get(PROPERTY_ADMIN_PW);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.core.GenericGeronimoServer#getRMINamingPort()
-	 */
-	public String getRMINamingPort() {
-		return (String) getServerInstanceProperties().get(PROPERTY_RMI_PORT);
 	}
 
 	/*
@@ -140,6 +115,36 @@ public class GeronimoServer extends GenericGeronimoServer {
 	 */
 	public boolean isTestEnvironment() {
 		return true;
+	}
+	
+	public boolean isPersistant() {
+		return getAttribute(PROPERTY_PERSISTENT, false);
+		//return Boolean.getBoolean((String) getServerInstanceProperties().get(PROPERTY_PERSISTENT));
+	}
+	
+	public boolean isInPlace() {
+		return getAttribute(PROPERTY_IN_PLACE, false);
+		//return Boolean.getBoolean((String) getServerInstanceProperties().get(PROPERTY_IN_PLACE));
+	}
+	
+	public boolean isRunFromWorkspace() {
+		return getAttribute(PROPERTY_RUN_FROM_WORKSPACE, false);
+		//return Boolean.getBoolean((String) getServerInstanceProperties().get(PROPERTY_RUN_FROM_WORKSPACE));
+	}
+	
+	public void setPersistent(boolean enable) {
+		setAttribute(PROPERTY_PERSISTENT, enable);
+		//getServerInstanceProperties().put(PROPERTY_PERSISTENT, Boolean.toString(enable));
+	}
+	
+	public void setInPlace(boolean enable) {
+		setAttribute(PROPERTY_IN_PLACE, enable);
+		//getServerInstanceProperties().put(PROPERTY_IN_PLACE, Boolean.toString(enable));
+	}
+	
+	public void setRunFromWorkspace(boolean enable) {
+		setAttribute(PROPERTY_RUN_FROM_WORKSPACE, enable);
+		//getServerInstanceProperties().put(PROPERTY_RUN_FROM_WORKSPACE, Boolean.toString(enable));
 	}
 
 }

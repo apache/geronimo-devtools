@@ -15,6 +15,10 @@
  */
 package org.apache.geronimo.st.v11.ui.sections;
 
+import org.apache.geronimo.st.v11.core.GeronimoServer;
+import org.apache.geronimo.st.v11.ui.commands.SetInPlaceDeploymentCommand;
+import org.apache.geronimo.st.v11.ui.commands.SetPersistentCommand;
+import org.apache.geronimo.st.v11.ui.commands.SetRunFromWorkspaceCommand;
 import org.apache.geronimo.st.v11.ui.internal.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -30,7 +34,7 @@ import org.eclipse.wst.server.ui.editor.ServerEditorSection;
 
 public class ServerEditorTestEnvSection extends ServerEditorSection {
 
-	private Button runFromProject;
+	private Button runFromWorkspace;
 
 	private Button inPlace;
 
@@ -66,21 +70,24 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		section.setClient(composite);
 
-		persistant = toolkit.createButton(composite, Messages.editorSectionSetPersistant, SWT.CHECK);
+		persistant = toolkit.createButton(composite, Messages.editorSectionSetPersistent, SWT.CHECK);
 		inPlace = toolkit.createButton(composite, Messages.editorSectionEnableInPlace, SWT.CHECK);
-		runFromProject = toolkit.createButton(composite, Messages.editorSectionRunFromProject, SWT.CHECK);
-		
+		runFromWorkspace = toolkit.createButton(composite, Messages.editorSectionRunFromWorkspace, SWT.CHECK);
+
+		GeronimoServer gs = (GeronimoServer) server.getAdapter(GeronimoServer.class);
+		persistant.setSelection(gs.isPersistant());
+		inPlace.setSelection(gs.isInPlace());
+		runFromWorkspace.setSelection(gs.isRunFromWorkspace());
+
 		GridData data = new GridData();
 		data.horizontalIndent = 20;
-		runFromProject.setLayoutData(data);
-		runFromProject.setEnabled(inPlace.getSelection());
+		runFromWorkspace.setLayoutData(data);
+		runFromWorkspace.setEnabled(inPlace.getSelection());
 
 		persistant.addSelectionListener(new SelectionListener() {
 
 			public void widgetSelected(SelectionEvent e) {
-				if (persistant.getSelection()) {
-					// TODO implementMe
-				}
+				execute(new SetPersistentCommand(server, persistant.getSelection()));
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -91,8 +98,12 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 		inPlace.addSelectionListener(new SelectionListener() {
 
 			public void widgetSelected(SelectionEvent e) {
-				runFromProject.setEnabled(inPlace.getSelection());
-				// TODO implementMe
+				execute(new SetInPlaceDeploymentCommand(server, inPlace.getSelection()));
+				runFromWorkspace.setEnabled(inPlace.getSelection());
+				if (!inPlace.getSelection()) {
+					runFromWorkspace.setSelection(false);
+					execute(new SetRunFromWorkspaceCommand(server, runFromWorkspace.getSelection()));
+				}
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -100,12 +111,10 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 
 		});
 
-		runFromProject.addSelectionListener(new SelectionListener() {
+		runFromWorkspace.addSelectionListener(new SelectionListener() {
 
 			public void widgetSelected(SelectionEvent e) {
-				if (runFromProject.getSelection()) {
-					// TODO implementMe
-				}
+				execute(new SetRunFromWorkspaceCommand(server, runFromWorkspace.getSelection()));
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {

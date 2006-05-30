@@ -26,3 +26,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.ant,
  org.apache.geronimo.runtime.common
 Eclipse-AutoStart: true
+Export-Package: org.apache.geronimo.st.v11.core.operations,
+ org.apache.geronimo.st.v11.core.internal,
+ org.apache.geronimo.st.v11.core

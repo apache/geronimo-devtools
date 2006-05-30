@@ -11,8 +11,8 @@ public class Messages extends NLS {
 	
 	public static String editorSectionTestEnvTitle;
 	public static String editorSectionTestEnvDescription;
-	public static String editorSectionRunFromProject;
+	public static String editorSectionRunFromWorkspace;
 	public static String editorSectionEnableInPlace;
-	public static String editorSectionSetPersistant;
+	public static String editorSectionSetPersistent;
 
 }
