@@ -38,6 +38,7 @@ import org.apache.geronimo.kernel.Kernel;
 import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.kernel.repository.WritableListableRepository;
 import org.apache.geronimo.system.configuration.RepositoryConfigurationStore;
+import org.apache.geronimo.system.serverinfo.BasicServerInfo;
 
 public class EclipseAwareConfigurationStore extends RepositoryConfigurationStore {
 
@@ -77,7 +78,7 @@ public class EclipseAwareConfigurationStore extends RepositoryConfigurationStore
 			String configId = getConfigId(artifact);
 			log.debug("Resolving: " + configId + " " + module + " " + path);
 
-			String base = System.getProperty("org.apache.geronimo.base.dir");
+			String base = System.getProperty(BasicServerInfo.HOME_DIR_SYS_PROP);
 			
 			Set result = (Set) connection.invoke(on, "resolve", 
 					new Object[] { new File(base), configId, module, path }, 
