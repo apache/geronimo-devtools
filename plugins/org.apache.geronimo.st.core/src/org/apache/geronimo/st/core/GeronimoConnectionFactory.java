@@ -57,7 +57,7 @@ public class GeronimoConnectionFactory {
 		return gServer;
 	}
 
-	protected IGeronimoServer getGeronimoServer(DeploymentManager dm) {
+	public IGeronimoServer getGeronimoServer(DeploymentManager dm) {
 		if (dm != null && connections.containsValue(dm)) {
 			Iterator i = connections.keySet().iterator();
 			while (i.hasNext()) {

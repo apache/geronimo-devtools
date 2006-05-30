@@ -105,7 +105,7 @@ public class V11DeploymentPlanCreationOperation extends
 
 		root.setEnvironment(getConfigEnvironment("default", getComponentName(), "1.0", "car"));
 		root.setContextRoot("/" + getComponentName());
-		root.setContextPriorityClassloader(false);
+		//root.setContextPriorityClassloader(false); //TODO Replace this with inverse-classloading
 
 		documentRoot.setWebApp(root);
 		resource.getContents().add(documentRoot);

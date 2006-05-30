@@ -17,25 +17,31 @@ package org.apache.geronimo.st.core.commands;
 
 import javax.enterprise.deploy.spi.DeploymentManager;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.wst.server.core.IModule;
+import org.eclipse.wst.server.core.IServer;
 
 abstract class AbstractDeploymentCommand implements IDeploymentCommand {
-
-	private DeploymentManager dm;
+	
+	private IServer server;
 
 	private IModule module;
 
-	public AbstractDeploymentCommand(DeploymentManager dm, IModule module) {
+	public AbstractDeploymentCommand(IServer server, IModule module) {
 		super();
-		this.dm = dm;
+		this.server = server;
 		this.module = module;
 	}
 
-	public DeploymentManager getDeploymentManager() {
-		return dm;
+	public DeploymentManager getDeploymentManager() throws CoreException {
+		return DeploymentCommandFactory.getDeploymentManager(server);
 	}
 
 	public IModule getModule() {
 		return module;
+	}
+
+	public IServer getServer() {
+		return server;
 	}
 }

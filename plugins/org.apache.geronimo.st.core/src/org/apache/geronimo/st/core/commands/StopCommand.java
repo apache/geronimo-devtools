@@ -16,19 +16,20 @@
 package org.apache.geronimo.st.core.commands;
 
 import javax.enterprise.deploy.shared.CommandType;
-import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
 import org.apache.geronimo.st.core.DeploymentUtils;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IModule;
+import org.eclipse.wst.server.core.IServer;
 
 class StopCommand extends AbstractDeploymentCommand {
 
-	public StopCommand(IModule module, DeploymentManager dm) {
-		super(dm, module);
+	public StopCommand(IServer server, IModule module) {
+		super(server, module);
 	}
 
 	/*
@@ -36,9 +37,7 @@ class StopCommand extends AbstractDeploymentCommand {
 	 * 
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	public IStatus execute(IProgressMonitor monitor)
-			throws TargetModuleIdNotFoundException {
-
+	public IStatus execute(IProgressMonitor monitor) throws TargetModuleIdNotFoundException, CoreException {
 		TargetModuleID id = DeploymentUtils.getTargetModuleID(getModule(), getDeploymentManager());
 		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().stop(new TargetModuleID[] { id }));
 	}

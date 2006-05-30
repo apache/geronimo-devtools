@@ -21,26 +21,20 @@ import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.Target;
 
-import org.apache.geronimo.st.core.DeploymentUtils;
 import org.apache.geronimo.st.core.internal.Trace;
-import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.common.componentcore.internal.StructureEdit;
-import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
-import org.eclipse.wst.common.componentcore.internal.impl.WorkbenchComponentImpl;
 import org.eclipse.wst.server.core.IModule;
+import org.eclipse.wst.server.core.IServer;
 
-class DistributeCommand extends AbstractDeploymentCommand {
-
-	boolean inPlace;
+class DistributeCommand extends DeployCommand {
 
 	Target[] targets;
 
-	public DistributeCommand(IModule module, DeploymentManager dm, Target[] targets, boolean inPlace) {
-		super(dm, module);
-		this.inPlace = inPlace;
+	public DistributeCommand(IServer server, IModule module, Target[] targets, boolean inPlace) {
+		super(server, module, inPlace);
 		this.targets = targets;
 	}
 
@@ -49,30 +43,17 @@ class DistributeCommand extends AbstractDeploymentCommand {
 	 * 
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	public IStatus execute(IProgressMonitor monitor) {
+	public IStatus execute(IProgressMonitor monitor) throws CoreException {
+
+		DeploymentManager dm = getDeploymentManager();
+
 		if (targets == null)
-			targets = getDeploymentManager().getTargets();
-
-		File file = null;
-
-		if (inPlace) {
-			StructureEdit moduleCore = StructureEdit.getStructureEditForRead(getModule().getProject());
-			try {
-				WorkbenchComponent component = moduleCore.getComponent();
-				IPath loc = ((WorkbenchComponentImpl) component).getDefaultSourceRoot();
-				file = getModule().getProject().findMember(loc).getLocation().toFile();
-			} finally {
-				if (moduleCore != null)
-					moduleCore.dispose();
-			}
-		} else {
-			file = DeploymentUtils.createJarFile(getModule());
-		}
+			targets = dm.getTargets();
 		
 		Trace.trace(Trace.INFO, "Target: " + targets[0]);
-		Trace.trace(Trace.INFO, "File: " + file.getAbsolutePath());
 
-		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().distribute(targets, file, null));
+		File file = getTargetFile();
+		return new DeploymentCmdStatus(Status.OK_STATUS, dm.distribute(targets, file, null));
 	}
 
 	/*

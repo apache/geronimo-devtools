@@ -22,18 +22,17 @@ import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
 import org.apache.geronimo.st.core.DeploymentUtils;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IModule;
+import org.eclipse.wst.server.core.IServer;
 
-class RedeployCommand extends AbstractDeploymentCommand {
-	
-	boolean inPlace;
+class RedeployCommand extends DeployCommand {
 
-	public RedeployCommand(IModule module, DeploymentManager dm, boolean inPlace) {
-		super(dm, module);
-		this.inPlace = inPlace;
+	public RedeployCommand(IServer server, IModule module, boolean inPlace) {
+		super(server, module, inPlace);
 	}
 
 	/*
@@ -41,17 +40,11 @@ class RedeployCommand extends AbstractDeploymentCommand {
 	 * 
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	public IStatus execute(IProgressMonitor monitor)
-			throws TargetModuleIdNotFoundException {
-		
-		File file = null;
-		if(inPlace) {
-			file = getModule().getProject().getLocation().toFile();
-		} else {
-			file = DeploymentUtils.createJarFile(getModule());
-		}
-		TargetModuleID id = DeploymentUtils.getTargetModuleID(getModule(), getDeploymentManager());
-		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().redeploy(new TargetModuleID[] { id }, file, null));
+	public IStatus execute(IProgressMonitor monitor) throws TargetModuleIdNotFoundException, CoreException {
+		DeploymentManager dm = getDeploymentManager();
+		File file = getTargetFile();
+		TargetModuleID id = DeploymentUtils.getTargetModuleID(getModule(), dm);
+		return new DeploymentCmdStatus(Status.OK_STATUS, dm.redeploy(new TargetModuleID[] { id }, file, null));
 	}
 
 	/*

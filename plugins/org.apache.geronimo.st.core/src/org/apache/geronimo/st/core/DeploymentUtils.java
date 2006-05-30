@@ -24,19 +24,26 @@ import javax.enterprise.deploy.spi.exceptions.TargetException;
 
 import org.apache.geronimo.st.core.commands.TargetModuleIdNotFoundException;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jst.j2ee.application.internal.operations.AppClientComponentExportDataModelProvider;
 import org.eclipse.jst.j2ee.application.internal.operations.EARComponentExportDataModelProvider;
 import org.eclipse.jst.j2ee.application.internal.operations.J2EEComponentExportDataModelProvider;
 import org.eclipse.jst.j2ee.internal.ejb.project.operations.EJBComponentExportDataModelProvider;
 import org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentExportDataModelProvider;
 import org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentExportDataModelProvider;
+import org.eclipse.jst.server.core.IEnterpriseApplication;
+import org.eclipse.jst.server.core.IWebModule;
+import org.eclipse.jst.server.core.PublishUtil;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.server.core.IModule;
+import org.eclipse.wst.server.core.model.IModuleResource;
+import org.eclipse.wst.server.core.util.ProjectModule;
 
 public class DeploymentUtils {
 
@@ -44,8 +51,62 @@ public class DeploymentUtils {
 
 	private DeploymentUtils() {
 	}
+	
+	public static IPath generateExplodedConfiguration(IModule module, IPath outputPath) {
+		
+		IPath output = outputPath.append(module.getName() + getModuleExtension(module));
+		try {
+			IModuleResource[] resources = getModuleResources(module);
+			PublishUtil.smartCopy(resources, output, new NullProgressMonitor());
+			if(GeronimoUtils.isEarModule(module)) {
+				IEnterpriseApplication application = (IEnterpriseApplication) module.loadAdapter(IEnterpriseApplication.class, null);
+				if( application != null ){
+					IModule[] children = application.getModules();
+					 for (int i = 0; i < children.length; i++) {
+						 	IModule child = children[i];
+							IPath childPath = output.append(child.getName() + getModuleExtension(child));
+							IModuleResource[] childResources = getModuleResources(child);
+							PublishUtil.smartCopy(childResources, childPath, new NullProgressMonitor());
+							if(GeronimoUtils.isWebModule(child)) {
+								IWebModule webModule = (IWebModule) module.loadAdapter(IWebModule.class, null);
+								IModule[] libs = webModule.getModules();
+								IPath webLibPath = childPath.append("WEB-INF").append("lib");
+								for(int j = 0; j < libs.length; j++) {
+									IModule lib = libs[j];
+									IModuleResource[] libResources = getModuleResources(lib);
+									PublishUtil.smartCopy(libResources, webLibPath.append(lib.getName() + getModuleExtension(lib)), new NullProgressMonitor());
+								}
+							}
+					 }
+				}
+			}
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+		
+		return output;
+	}
+	
+	public static IModuleResource[] getModuleResources(IModule module) throws CoreException {
+		ProjectModule pm = (ProjectModule)module.loadAdapter(ProjectModule.class, null);
+		if (pm != null) {
+			return pm.members();
+		}
+		return null;
+	}
+	
+	private static String getModuleExtension(IModule module) {
+		if(GeronimoUtils.isEarModule(module)) {
+			return ".ear";
+		}else if(GeronimoUtils.isWebModule(module)) {
+			return ".war";
+		}else if(GeronimoUtils.isRARModule(module)) {
+			return ".rar";
+		}
+		return ".jar";
+	}
 
-	public static File createJarFile(IModule module) {
+	public static File createJarFile(IModule module, IPath outputPath) {
 		IDataModel model = getExportDataModel(module);
 
 		if (model != null) {
@@ -53,10 +114,11 @@ public class DeploymentUtils {
 			IVirtualComponent comp = ComponentCore.createComponent(module.getProject());
 
 			model.setProperty(J2EEComponentExportDataModelProvider.PROJECT_NAME, module.getProject());
-			model.setProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION, STATE_LOC.append(module.getName())
+			model.setProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION, outputPath.append(module.getName())
 					+ ".zip");
 			model.setProperty(J2EEComponentExportDataModelProvider.COMPONENT, comp);
 			model.setBooleanProperty(J2EEComponentExportDataModelProvider.OVERWRITE_EXISTING, true);
+			model.setBooleanProperty(J2EEComponentExportDataModelProvider.RUN_BUILD, false);
 
 			if (model != null) {
 				try {

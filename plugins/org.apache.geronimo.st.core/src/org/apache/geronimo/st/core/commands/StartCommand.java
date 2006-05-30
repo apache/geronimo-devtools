@@ -16,21 +16,21 @@
 package org.apache.geronimo.st.core.commands;
 
 import javax.enterprise.deploy.shared.CommandType;
-import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IModule;
+import org.eclipse.wst.server.core.IServer;
 
 class StartCommand extends AbstractDeploymentCommand {
 
 	TargetModuleID[] ids;
 
-	public StartCommand(TargetModuleID[] ids, IModule module,
-			DeploymentManager dm) {
-		super(dm, module);
+	public StartCommand(IServer server, TargetModuleID[] ids, IModule module) {
+		super(server, module);
 		this.ids = ids;
 	}
 
@@ -39,7 +39,7 @@ class StartCommand extends AbstractDeploymentCommand {
 	 * 
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	public IStatus execute(IProgressMonitor monitor) {
+	public IStatus execute(IProgressMonitor monitor) throws CoreException {
 		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().start(ids));
 	}
 

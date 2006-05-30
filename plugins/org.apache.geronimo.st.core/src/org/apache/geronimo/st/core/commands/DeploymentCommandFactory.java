@@ -50,7 +50,7 @@ public class DeploymentCommandFactory {
 	public static IDeploymentCommand createDistributeCommand(IModule module, IServer server, boolean inPlace) throws CoreException {
 		IGeronimoServerBehavior gs = (IGeronimoServerBehavior) server.loadAdapter(IGeronimoServerBehavior.class, null);
 		Target[] targets = gs.getTargets();
-		return new SynchronizedDeploymentOp(new DistributeCommand(module, getDeploymentManager(server), targets, inPlace));
+		return new SynchronizedDeploymentOp(new DistributeCommand(server, module, targets, inPlace));
 	}
 
 	/**
@@ -60,9 +60,8 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static IDeploymentCommand createStartCommand(TargetModuleID[] ids,
-			IModule module, IServer server) throws CoreException {
-		return new SynchronizedDeploymentOp(new StartCommand(ids, module, getDeploymentManager(server)));
+	public static IDeploymentCommand createStartCommand(TargetModuleID[] ids, IModule module, IServer server) throws CoreException {
+		return new SynchronizedDeploymentOp(new StartCommand(server, ids, module));
 	}
 
 	/**
@@ -71,9 +70,8 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static IDeploymentCommand createStopCommand(IModule module,
-			IServer server) throws CoreException {
-		return new SynchronizedDeploymentOp(new StopCommand(module, getDeploymentManager(server)));
+	public static IDeploymentCommand createStopCommand(IModule module, IServer server) throws CoreException {
+		return new SynchronizedDeploymentOp(new StopCommand(server, module));
 	}
 
 	/**
@@ -82,9 +80,8 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static IDeploymentCommand createRedeployCommand(IModule module,
-			IServer server, boolean inPlace) throws CoreException {
-		return new SynchronizedDeploymentOp(new RedeployCommand(module, getDeploymentManager(server), inPlace));
+	public static IDeploymentCommand createRedeployCommand(IModule module, IServer server, boolean inPlace) throws CoreException {
+		return new SynchronizedDeploymentOp(new RedeployCommand(server, module, inPlace));
 	}
 
 	/**
@@ -93,9 +90,8 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static IDeploymentCommand createUndeployCommand(IModule module,
-			IServer server) throws CoreException {
-		return new SynchronizedDeploymentOp(new UndeployCommand(module, getDeploymentManager(server)));
+	public static IDeploymentCommand createUndeployCommand(IModule module, IServer server) throws CoreException {
+		return new SynchronizedDeploymentOp(new UndeployCommand(server, module));
 	}
 
 	/**
@@ -103,10 +99,13 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static DeploymentManager getDeploymentManager(IServer server)
-			throws CoreException {
+	public static DeploymentManager getDeploymentManager(IServer server) throws CoreException {
 		try {
-			return GeronimoConnectionFactory.getInstance().getDeploymentManager(server);
+			DeploymentManager dm = GeronimoConnectionFactory.getInstance().getDeploymentManager(server);
+			if (dm == null) {
+				throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, Messages.DM_CONNECTION_FAIL, null));
+			}
+			return dm;
 		} catch (DeploymentManagerCreationException e) {
 			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, Messages.DM_CONNECTION_FAIL, e));
 		}
