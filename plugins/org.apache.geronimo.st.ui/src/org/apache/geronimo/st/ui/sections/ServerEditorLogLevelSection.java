@@ -15,9 +15,9 @@
  */
 package org.apache.geronimo.st.ui.sections;
 
+import org.apache.geronimo.st.core.GenericGeronimoServer;
 import org.apache.geronimo.st.ui.commands.SetConsoleLogLevelCommand;
 import org.apache.geronimo.st.ui.internal.Messages;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -45,10 +45,10 @@ public class ServerEditorLogLevelSection extends ServerEditorSection {
 
 		FormToolkit toolkit = getFormToolkit(parent.getDisplay());
 
-		Section section = toolkit.createSection(parent,
-				ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
-						| ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
-						| ExpandableComposite.FOCUS_TITLE);
+		Section section = toolkit.createSection(parent, ExpandableComposite.TWISTIE
+				| ExpandableComposite.EXPANDED
+				| ExpandableComposite.TITLE_BAR
+				| Section.DESCRIPTION | ExpandableComposite.FOCUS_TITLE);
 
 		section.setText(Messages.editorSectionLogLevelTitle);
 		section.setDescription(Messages.editorSectionLogLevelDescription);
@@ -67,27 +67,19 @@ public class ServerEditorLogLevelSection extends ServerEditorSection {
 
 		info = toolkit.createButton(composite, Messages.info, SWT.RADIO);
 		debug = toolkit.createButton(composite, Messages.debug, SWT.RADIO);
-
-		SetConsoleLogLevelCommand cmd = new SetConsoleLogLevelCommand(server,
-				null);
-		try {
-			String value = cmd.getCurrentValue();
-			if (value.indexOf("-vv") != -1) {
-				debug.setSelection(true);
-			} else {
-				info.setSelection(true);
-			}
-		} catch (CoreException e1) {
-			e1.printStackTrace();
+		
+		String currentValue = ((GenericGeronimoServer)server.getAdapter(GenericGeronimoServer.class)).getConsoleLogLevel();
+		if(GenericGeronimoServer.CONSOLE_DEBUG.equals(currentValue)) {
+			debug.setSelection(true);
+		} else {
+			info.setSelection(true);
 		}
 
 		info.addSelectionListener(new SelectionListener() {
 
 			public void widgetSelected(SelectionEvent e) {
 				if (info.getSelection()) {
-					SetConsoleLogLevelCommand cmd = new SetConsoleLogLevelCommand(
-							server, SetConsoleLogLevelCommand.INFO);
-					cmd.execute();
+					execute(new SetConsoleLogLevelCommand(server, GenericGeronimoServer.CONSOLE_INFO));
 				}
 			}
 
@@ -100,9 +92,7 @@ public class ServerEditorLogLevelSection extends ServerEditorSection {
 
 			public void widgetSelected(SelectionEvent e) {
 				if (debug.getSelection()) {
-					SetConsoleLogLevelCommand cmd = new SetConsoleLogLevelCommand(
-							server, SetConsoleLogLevelCommand.DEBUG);
-					cmd.execute();
+					execute(new SetConsoleLogLevelCommand(server, GenericGeronimoServer.CONSOLE_DEBUG));
 				}
 			}
 

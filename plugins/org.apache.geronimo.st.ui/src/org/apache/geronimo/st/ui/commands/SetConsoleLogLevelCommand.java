@@ -15,33 +15,22 @@
  */
 package org.apache.geronimo.st.ui.commands;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.apache.geronimo.st.core.GenericGeronimoServer;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
-import org.eclipse.wst.server.core.internal.Server;
 
 public class SetConsoleLogLevelCommand extends ServerCommand {
 
-	public static final String NONE = "--long";
+	String value;
 
-	public static final String INFO = "-v";
-
-	public static final String DEBUG = "-vv";
-
-	protected String value;
-
-	protected String oldValue;
-
-	private ILaunchConfigurationWorkingCopy wc = null;
+	String oldValue;
 
 	/**
 	 * @param server
 	 * @param name
 	 */
 	public SetConsoleLogLevelCommand(IServerWorkingCopy server, String value) {
-		super(server, value);
+		super(server, "SetConsoleLogLevelCommand");
 		this.value = value;
 	}
 
@@ -51,19 +40,9 @@ public class SetConsoleLogLevelCommand extends ServerCommand {
 	 * @see org.eclipse.wst.server.ui.internal.command.ServerCommand#execute()
 	 */
 	public void execute() {
-		try {
-			oldValue = getCurrentValue();
-			if (oldValue != value) {
-				getLaunchConfiguration().setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, value);
-				getLaunchConfiguration().doSave();
-			}
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public String getCurrentValue() throws CoreException {
-		return getLaunchConfiguration().getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, NONE);
+		GenericGeronimoServer gs = getGeronimoServer();
+		oldValue = gs.getConsoleLogLevel();
+		gs.setConsoleLogLevel(value);
 	}
 
 	/*
@@ -72,21 +51,14 @@ public class SetConsoleLogLevelCommand extends ServerCommand {
 	 * @see org.eclipse.wst.server.ui.internal.command.ServerCommand#undo()
 	 */
 	public void undo() {
-		try {
-			getLaunchConfiguration().setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, oldValue);
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+		getGeronimoServer().setConsoleLogLevel(oldValue);
 	}
 
-	private ILaunchConfigurationWorkingCopy getLaunchConfiguration()
-			throws CoreException {
-		if (wc == null) {
-			Server s = (Server) server.getAdapter(Server.class);
-			ILaunchConfiguration launchConfig = s.getLaunchConfiguration(true, null);
-			wc = launchConfig.getWorkingCopy();
+	private GenericGeronimoServer getGeronimoServer() {
+		GenericGeronimoServer gs = (GenericGeronimoServer) server.getAdapter(GenericGeronimoServer.class);
+		if (gs == null) {
+			gs = (GenericGeronimoServer) server.loadAdapter(GenericGeronimoServer.class, new NullProgressMonitor());
 		}
-		return wc;
+		return gs;
 	}
-
 }

@@ -22,6 +22,7 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jst.server.core.IWebModule;
 import org.eclipse.jst.server.generic.core.internal.GenericServer;
 import org.eclipse.jst.server.generic.core.internal.Trace;
@@ -38,6 +39,12 @@ public abstract class GenericGeronimoServer extends GenericServer implements
 	public static final String PROPERTY_RMI_PORT = "rmiport";
 
 	public static final String PROPERTY_HTTP_PORT = "port";
+
+	public static final String PROPERTY_LOG_LEVEL = "logLevel";
+
+	public static final String CONSOLE_INFO = "-v";
+
+	public static final String CONSOLE_DEBUG = "-vv";
 
 	public abstract String getContextRoot(IModule module);
 
@@ -88,6 +95,10 @@ public abstract class GenericGeronimoServer extends GenericServer implements
 		return (String) getServerInstanceProperties().get(PROPERTY_HTTP_PORT);
 	}
 
+	public String getConsoleLogLevel() {
+		return (String) getServerInstanceProperties().get(PROPERTY_LOG_LEVEL);
+	}
+
 	public void setAdminID(String value) {
 		getServerInstanceProperties().put(PROPERTY_ADMIN_ID, value);
 	}
@@ -103,7 +114,11 @@ public abstract class GenericGeronimoServer extends GenericServer implements
 	public void setHTTPPort(String value) {
 		getServerInstanceProperties().put(PROPERTY_HTTP_PORT, value);
 	}
-	
+
+	public void setConsoleLogLevel(String value) {
+		getServerInstanceProperties().put(PROPERTY_LOG_LEVEL, value);
+	}
+
 	public String discoverDeploymentFactoryClassName(IPath jarPath) {
 		try {
 			JarFile deployerJar = new JarFile(jarPath.toFile());
@@ -112,8 +127,15 @@ public abstract class GenericGeronimoServer extends GenericServer implements
 			return attributes.getValue("J2EE-DeploymentFactory-Implementation-Class");
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		}
 		return null;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jst.server.generic.core.internal.GenericServer#setDefaults(org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void setDefaults(IProgressMonitor monitor) {
+		setConsoleLogLevel(CONSOLE_INFO);
 	}
 
 }

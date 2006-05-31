@@ -258,21 +258,12 @@ abstract public class GenericGeronimoServerBehaviour extends
 	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#setupLaunchConfiguration(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy,
 	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	public void setupLaunchConfiguration(
-			ILaunchConfigurationWorkingCopy workingCopy,
-			IProgressMonitor monitor) throws CoreException {
-		String defaultArgs = getServerDefinition().getResolver()
-				.resolveProperties(
-						getServerDefinition().getStart()
-								.getProgramArgumentsAsString());
-		String existingPrgArgs = workingCopy.getAttribute(
-				IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,
-				defaultArgs);
+	public void setupLaunchConfiguration(ILaunchConfigurationWorkingCopy workingCopy, IProgressMonitor monitor) throws CoreException {
 		super.setupLaunchConfiguration(workingCopy, monitor);
-		if (existingPrgArgs != null) {
-			workingCopy.setAttribute(
-					IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,
-					existingPrgArgs);
+		String args = workingCopy.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "");
+		if(args.length() == 0) {
+			GenericGeronimoServer gs = (GenericGeronimoServer) getServer().getAdapter(GenericGeronimoServer.class);
+			workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, args.concat(" ").concat(gs.getConsoleLogLevel()));
 		}
 	}
 

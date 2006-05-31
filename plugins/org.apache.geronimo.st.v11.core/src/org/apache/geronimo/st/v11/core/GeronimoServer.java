@@ -23,6 +23,7 @@ import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
 import org.apache.geronimo.st.core.GenericGeronimoServer;
 import org.apache.geronimo.st.core.IGeronimoVersionHandler;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
@@ -145,6 +146,16 @@ public class GeronimoServer extends GenericGeronimoServer {
 	public void setRunFromWorkspace(boolean enable) {
 		setAttribute(PROPERTY_RUN_FROM_WORKSPACE, enable);
 		//getServerInstanceProperties().put(PROPERTY_RUN_FROM_WORKSPACE, Boolean.toString(enable));
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jst.server.generic.core.internal.GenericServer#setDefaults(org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	public void setDefaults(IProgressMonitor monitor) {
+		super.setDefaults(monitor);
+		setPersistent(true);
+		setInPlace(false);
+		setRunFromWorkspace(false);
 	}
 
 }
