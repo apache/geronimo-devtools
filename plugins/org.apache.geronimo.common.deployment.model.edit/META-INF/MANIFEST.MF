@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName:  org.apache.geronimo.common.deployment.model.edit; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-ClassPath: .
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime,
+ org.apache.geronimo.common.deployment.model;visibility:=reexport,
+ org.eclipse.emf.edit;visibility:=reexport
+Eclipse-AutoStart: true
+Export-Package: org.apache.geronimo.common.deployment.edit,
+ org.apache.geronimo.xml.ns.security.provider,
+ org.openejb.xml.ns.pkgen.provider
+ 
