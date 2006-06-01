@@ -25,8 +25,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class ImportSection extends DependencySection {
 
-	public ImportSection(EObject plan, EReference dependenciesERef,
-			Composite parent, FormToolkit toolkit, int style) {
+	public ImportSection(EObject plan, EReference dependenciesERef, Composite parent, FormToolkit toolkit, int style) {
 		super(plan, dependenciesERef, parent, toolkit, style);
 	}
 

@@ -26,20 +26,10 @@ public class AppGeneralSection extends CommonGeneralSection {
 
 	ApplicationType plan;
 
-	public AppGeneralSection(Composite parent, FormToolkit toolkit, int style,
-			EObject plan) {
+	public AppGeneralSection(Composite parent, FormToolkit toolkit, int style, EObject plan) {
 		super(parent, toolkit, style, plan);
 		this.plan = (ApplicationType) plan;
 		createClient();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.CommonGeneralSection#createClient()
-	 */
-	protected void createClient() {
-		super.createClient();
 	}
 
 	/*

@@ -34,8 +34,7 @@ public class BeansSection extends AbstractTableSection {
 	 * @param toolkit
 	 * @param style
 	 */
-	public BeansSection(EObject plan, Composite parent, FormToolkit toolkit,
-			int style) {
+	public BeansSection(EObject plan, Composite parent, FormToolkit toolkit, int style) {
 		super(plan, parent, toolkit, style);
 		createClient();
 	}

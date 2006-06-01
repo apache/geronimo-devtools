@@ -27,10 +27,6 @@ public class WebGeneralPage extends AbstractGeronimoFormPage {
 		super(editor, id, title);
 	}
 
-	public WebGeneralPage(String id, String title) {
-		super(id, title);
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 

@@ -37,8 +37,7 @@ public class EjbLocalRefSection extends AbstractTableSection {
 	private static final String[] COLUMN_NAMES = new String[] {
 			Messages.editorEjbRefTargetName, Messages.editorEjbRefEjbLink };
 
-	public EjbLocalRefSection(EObject plan, Composite parent,
-			FormToolkit toolkit, int style, EReference ejbLocalRefERef) {
+	public EjbLocalRefSection(EObject plan, Composite parent, FormToolkit toolkit, int style, EReference ejbLocalRefERef) {
 		super(plan, parent, toolkit, style);
 		this.ejbLocalRefERef = ejbLocalRefERef;
 		createClient();

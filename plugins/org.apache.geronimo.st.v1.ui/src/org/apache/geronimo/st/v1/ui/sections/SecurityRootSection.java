@@ -59,8 +59,7 @@ public class SecurityRootSection extends AbstractSectionPart {
 	 * @param toolkit
 	 * @param style
 	 */
-	public SecurityRootSection(Composite parent, FormToolkit toolkit,
-			int style, EObject plan, EReference secERef) {
+	public SecurityRootSection(Composite parent, FormToolkit toolkit, int style, EObject plan, EReference secERef) {
 		super(parent, toolkit, style, plan);
 		this.secERef = secERef;
 		createClient();
@@ -128,8 +127,7 @@ public class SecurityRootSection extends AbstractSectionPart {
 		return gd;
 	}
 
-	protected Label createLabel(Composite parent, String text,
-			FormToolkit toolkit) {
+	protected Label createLabel(Composite parent, String text, FormToolkit toolkit) {
 		Label label = toolkit.createLabel(parent, text);
 		label.setForeground(toolkit.getColors().getColor(FormColors.TITLE));
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));

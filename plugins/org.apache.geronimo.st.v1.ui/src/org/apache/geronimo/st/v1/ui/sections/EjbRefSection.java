@@ -43,8 +43,7 @@ public class EjbRefSection extends AbstractTableSection {
 	 * @param toolkit
 	 * @param style
 	 */
-	public EjbRefSection(EObject plan, Composite parent, FormToolkit toolkit,
-			int style, EReference ejbRefERef) {
+	public EjbRefSection(EObject plan, Composite parent, FormToolkit toolkit, int style, EReference ejbRefERef) {
 		super(plan, parent, toolkit, style);
 		this.ejbRefERef = ejbRefERef;
 		createClient();

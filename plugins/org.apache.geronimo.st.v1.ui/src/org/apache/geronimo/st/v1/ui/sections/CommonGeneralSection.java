@@ -37,8 +37,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 
 	protected Text parentId;
 
-	public CommonGeneralSection(Composite parent, FormToolkit toolkit,
-			int style, EObject plan) {
+	public CommonGeneralSection(Composite parent, FormToolkit toolkit, int style, EObject plan) {
 		super(parent, toolkit, style, plan);
 	}
 
@@ -86,8 +85,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 		});
 	}
 
-	protected Label createLabel(Composite parent, String text,
-			FormToolkit toolkit) {
+	protected Label createLabel(Composite parent, String text, FormToolkit toolkit) {
 		Label label = toolkit.createLabel(parent, text);
 		label.setForeground(toolkit.getColors().getColor(FormColors.TITLE));
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));

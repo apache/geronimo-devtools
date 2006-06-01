@@ -13,16 +13,26 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.apache.geronimo.st.v1.ui.pages;
+package org.apache.geronimo.st.v11.ui.pages;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
-import org.apache.geronimo.st.v1.ui.sections.OpenEjbJarGeneralSection;
+import org.apache.geronimo.st.v11.ui.sections.DependencySection;
+import org.apache.geronimo.st.v11.ui.sections.GBeanSection;
+import org.apache.geronimo.st.v11.ui.sections.ImportSection;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
-public class EjbOverviewPage extends AbstractGeronimoFormPage {
+public class DeploymentPage extends AbstractGeronimoFormPage {
 
-	public EjbOverviewPage(FormEditor editor, String id, String title) {
+	public EReference dependencies;
+
+	public EReference imports;
+
+	public EReference gbeans;
+
+	public DeploymentPage(FormEditor editor, String id, String title) {
 		super(editor, id, title);
 	}
 
@@ -32,7 +42,18 @@ public class EjbOverviewPage extends AbstractGeronimoFormPage {
 	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
 	 */
 	protected void fillBody(IManagedForm managedForm) {
-		managedForm.addPart(new OpenEjbJarGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
+		managedForm.addPart(new DependencySection(getDeploymentPlan(), dependencies, body, toolkit, getStyle()));
+		managedForm.addPart(new ImportSection(getDeploymentPlan(), imports, body, toolkit, getStyle()));
+		managedForm.addPart(new GBeanSection(getDeploymentPlan(), gbeans, body, toolkit, getStyle()));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getFormTitle()
+	 */
+	public String getFormTitle() {
+		return CommonMessages.deploymentPageTitle;
 	}
 
 }

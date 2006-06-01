@@ -26,15 +26,10 @@ public class ConnectorGeneralSection extends CommonGeneralSection {
 
 	ConnectorType plan;
 
-	public ConnectorGeneralSection(Composite parent, FormToolkit toolkit,
-			int style, EObject plan) {
+	public ConnectorGeneralSection(Composite parent, FormToolkit toolkit, int style, EObject plan) {
 		super(parent, toolkit, style, plan);
 		this.plan = (ConnectorType) plan;
 		createClient();
-	}
-
-	protected void createClient() {
-		super.createClient();
 	}
 
 	/*

@@ -34,8 +34,7 @@ public class ServiceRefSection extends AbstractTableSection {
 
 	private static final String[] COLUMN_NAMES = new String[] { Messages.editorServiceRefName };
 
-	public ServiceRefSection(EObject plan, Composite parent,
-			FormToolkit toolkit, int style, EReference serviceRefERef) {
+	public ServiceRefSection(EObject plan, Composite parent, FormToolkit toolkit, int style, EReference serviceRefERef) {
 		super(plan, parent, toolkit, style);
 		this.serviceRefERef = serviceRefERef;
 		createClient();

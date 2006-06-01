@@ -23,21 +23,8 @@ import org.eclipse.ui.forms.editor.FormEditor;
 
 public class ConnectorOverviewPage extends AbstractGeronimoFormPage {
 
-	/**
-	 * @param editor
-	 * @param id
-	 * @param title
-	 */
 	public ConnectorOverviewPage(FormEditor editor, String id, String title) {
 		super(editor, id, title);
-	}
-
-	/**
-	 * @param id
-	 * @param title
-	 */
-	public ConnectorOverviewPage(String id, String title) {
-		super(id, title);
 	}
 
 	/*

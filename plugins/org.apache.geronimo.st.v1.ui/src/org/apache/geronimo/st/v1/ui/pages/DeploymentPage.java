@@ -41,14 +41,6 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
 		super(editor, id, title);
 	}
 
-	/**
-	 * @param id
-	 * @param title
-	 */
-	public DeploymentPage(String id, String title) {
-		super(id, title);
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 

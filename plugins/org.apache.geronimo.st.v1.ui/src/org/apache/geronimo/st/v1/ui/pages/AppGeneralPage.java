@@ -23,21 +23,8 @@ import org.eclipse.ui.forms.editor.FormEditor;
 
 public class AppGeneralPage extends AbstractGeronimoFormPage {
 
-	/**
-	 * @param editor
-	 * @param id
-	 * @param title
-	 */
 	public AppGeneralPage(FormEditor editor, String id, String title) {
 		super(editor, id, title);
-	}
-
-	/**
-	 * @param id
-	 * @param title
-	 */
-	public AppGeneralPage(String id, String title) {
-		super(id, title);
 	}
 
 	/*

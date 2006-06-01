@@ -13,10 +13,10 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.apache.geronimo.st.v1.ui.pages;
+package org.apache.geronimo.st.v11.ui.pages;
 
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
-import org.apache.geronimo.st.v1.ui.sections.OpenEjbJarGeneralSection;
+import org.apache.geronimo.st.v11.ui.sections.OpenEjbJarGeneralSection;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
@@ -29,7 +29,7 @@ public class EjbOverviewPage extends AbstractGeronimoFormPage {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
+	 * @see org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
 	 */
 	protected void fillBody(IManagedForm managedForm) {
 		managedForm.addPart(new OpenEjbJarGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));

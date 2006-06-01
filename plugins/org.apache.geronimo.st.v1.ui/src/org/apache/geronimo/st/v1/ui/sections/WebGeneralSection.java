@@ -44,8 +44,7 @@ public class WebGeneralSection extends CommonGeneralSection {
 
 	WebAppType plan;
 
-	public WebGeneralSection(Composite parent, FormToolkit toolkit, int style,
-			EObject plan) {
+	public WebGeneralSection(Composite parent, FormToolkit toolkit, int style, EObject plan) {
 		super(parent, toolkit, style, plan);
 		this.plan = (WebAppType) plan;
 		createClient();

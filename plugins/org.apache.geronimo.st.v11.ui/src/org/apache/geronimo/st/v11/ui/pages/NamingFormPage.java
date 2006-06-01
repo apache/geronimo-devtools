@@ -13,16 +13,16 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.apache.geronimo.st.v1.ui.pages;
+package org.apache.geronimo.st.v11.ui.pages;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
-import org.apache.geronimo.st.v1.ui.internal.Messages;
-import org.apache.geronimo.st.v1.ui.sections.EjbLocalRefSection;
-import org.apache.geronimo.st.v1.ui.sections.EjbRefSection;
-import org.apache.geronimo.st.v1.ui.sections.GBeanRefSection;
-import org.apache.geronimo.st.v1.ui.sections.ResourceEnvRefSection;
-import org.apache.geronimo.st.v1.ui.sections.ResourceRefSection;
-import org.apache.geronimo.st.v1.ui.sections.ServiceRefSection;
+import org.apache.geronimo.st.v11.ui.sections.EjbLocalRefSection;
+import org.apache.geronimo.st.v11.ui.sections.EjbRefSection;
+import org.apache.geronimo.st.v11.ui.sections.GBeanRefSection;
+import org.apache.geronimo.st.v11.ui.sections.ResourceEnvRefSection;
+import org.apache.geronimo.st.v11.ui.sections.ResourceRefSection;
+import org.apache.geronimo.st.v11.ui.sections.ServiceRefSection;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
@@ -65,7 +65,7 @@ public class NamingFormPage extends AbstractGeronimoFormPage {
 	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getFormTitle()
 	 */
 	public String getFormTitle() {
-		return Messages.namingFormPageTitle;
+		return CommonMessages.namingFormPageTitle;
 	}
 
 }

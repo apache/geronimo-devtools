@@ -58,8 +58,7 @@ public class SecuritySection extends AbstractTableSection {
 	 * @param toolkit
 	 * @param style
 	 */
-	public SecuritySection(EObject plan, Composite parent, FormToolkit toolkit,
-			int style, EReference securityERef) {
+	public SecuritySection(EObject plan, Composite parent, FormToolkit toolkit, int style, EReference securityERef) {
 		super(plan, parent, toolkit, style);
 		this.securityERef = securityERef;
 		createClient();

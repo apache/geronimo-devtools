@@ -41,8 +41,7 @@ public class GBeanSection extends AbstractTableSection {
 	 * @param toolkit
 	 * @param style
 	 */
-	public GBeanSection(EObject plan, EReference gBeanERef, Composite parent,
-			FormToolkit toolkit, int style) {
+	public GBeanSection(EObject plan, EReference gBeanERef, Composite parent, FormToolkit toolkit, int style) {
 		super(plan, parent, toolkit, style);
 		this.gBeanERef = gBeanERef;
 		createClient();

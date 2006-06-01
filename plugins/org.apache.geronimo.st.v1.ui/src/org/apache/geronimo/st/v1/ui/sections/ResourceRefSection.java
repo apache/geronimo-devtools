@@ -38,8 +38,7 @@ public class ResourceRefSection extends AbstractTableSection {
 			Messages.editorResRefNameTitle, Messages.editorResRefLinkTitle,
 			Messages.editorResRefTargetNameTitle };
 
-	public ResourceRefSection(EObject plan, Composite parent,
-			FormToolkit toolkit, int style, EReference resourceRefERef) {
+	public ResourceRefSection(EObject plan, Composite parent, FormToolkit toolkit, int style, EReference resourceRefERef) {
 		super(plan, parent, toolkit, style);
 		this.resourceRefERef = resourceRefERef;
 		createClient();

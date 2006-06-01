@@ -45,8 +45,7 @@ public class DependencySection extends AbstractTableSection {
 	 * @param toolkit
 	 * @param style
 	 */
-	public DependencySection(EObject plan, EReference dependenciesERef,
-			Composite parent, FormToolkit toolkit, int style) {
+	public DependencySection(EObject plan, EReference dependenciesERef, Composite parent, FormToolkit toolkit, int style) {
 		super(plan, parent, toolkit, style);
 		this.dependenciesERef = dependenciesERef;
 		createClient();

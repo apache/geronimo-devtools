@@ -8,4 +8,8 @@
             class="org.apache.geronimo.st.v11.ui.sections.ServerEditorTestEnvSection">
         </section>
     </extension>
+    
+    <extension point="org.apache.geronimo.st.ui.loader">
+    	<loader class="org.apache.geronimo.st.v11.ui.editors.GeronimoFormContentLoader" version="1.1"/>
+    </extension>
 </plugin>

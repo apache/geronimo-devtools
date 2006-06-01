@@ -13,16 +13,17 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.apache.geronimo.st.v1.ui.pages;
+package org.apache.geronimo.st.v11.ui.pages;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
-import org.apache.geronimo.st.v1.ui.sections.OpenEjbJarGeneralSection;
+import org.apache.geronimo.st.v11.ui.sections.WebGeneralSection;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
-public class EjbOverviewPage extends AbstractGeronimoFormPage {
+public class WebGeneralPage extends AbstractGeronimoFormPage {
 
-	public EjbOverviewPage(FormEditor editor, String id, String title) {
+	public WebGeneralPage(FormEditor editor, String id, String title) {
 		super(editor, id, title);
 	}
 
@@ -32,7 +33,15 @@ public class EjbOverviewPage extends AbstractGeronimoFormPage {
 	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
 	 */
 	protected void fillBody(IManagedForm managedForm) {
-		managedForm.addPart(new OpenEjbJarGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
+		managedForm.addPart(new WebGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getFormTitle()
+	 */
+	public String getFormTitle() {
+		return CommonMessages.webGeneralPageTitle;
+	}
 }

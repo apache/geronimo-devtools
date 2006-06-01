@@ -2,6 +2,8 @@
 <?eclipse version="3.0"?>
 <plugin>
 
+ 	<extension-point id="loader" name="Geronimo Deployment Plan Loader" schema="schema/loader.exsd"/>
+
     <extension point="org.eclipse.wst.server.ui.wizardFragments">
         <fragment id="org.eclipse.jst.server.generic.runtime"
             typeIds="org.apache.geronimo.generic.runtime.10"
@@ -50,6 +52,16 @@
             typeIds="org.apache.geronimo.generic.server.*"
             class="org.apache.geronimo.st.ui.sections.ServerEditorLogLevelSection">
         </section>
+    </extension>
+    
+    <extension point="org.eclipse.ui.editors">
+        <editor class="org.apache.geronimo.st.ui.editors.SharedDeploymentPlanEditor"
+            default="true" 
+            filenames="geronimo-web.xml,geronimo-application.xml,openejb-jar.xml,geronimo-connector.xml"
+            icon="icons/obj16/littleG.gif"
+            id="org.apache.geronimo.ui.editors.WebEditor" 
+            name="%deploymentPlanEditorName">
+        </editor>
     </extension>
     
 </plugin>

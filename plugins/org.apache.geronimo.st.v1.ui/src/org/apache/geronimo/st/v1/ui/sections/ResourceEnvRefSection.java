@@ -38,8 +38,7 @@ public class ResourceEnvRefSection extends AbstractTableSection {
 			Messages.editorResEnvRefNameTitle,
 			Messages.editorResEnvRefMsgDestTitle };
 
-	public ResourceEnvRefSection(EObject plan, Composite parent,
-			FormToolkit toolkit, int style, EReference resourceEnvRefERef) {
+	public ResourceEnvRefSection(EObject plan, Composite parent, FormToolkit toolkit, int style, EReference resourceEnvRefERef) {
 		super(plan, parent, toolkit, style);
 		this.resourceEnvRefERef = resourceEnvRefERef;
 		createClient();

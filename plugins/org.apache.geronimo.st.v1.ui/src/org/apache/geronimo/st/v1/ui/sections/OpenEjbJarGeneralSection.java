@@ -26,15 +26,10 @@ public class OpenEjbJarGeneralSection extends CommonGeneralSection {
 
 	OpenejbJarType plan;
 
-	public OpenEjbJarGeneralSection(Composite parent, FormToolkit toolkit,
-			int style, EObject plan) {
+	public OpenEjbJarGeneralSection(Composite parent, FormToolkit toolkit, int style, EObject plan) {
 		super(parent, toolkit, style, plan);
 		this.plan = (OpenejbJarType) plan;
 		createClient();
-	}
-
-	protected void createClient() {
-		super.createClient();
 	}
 
 	/*

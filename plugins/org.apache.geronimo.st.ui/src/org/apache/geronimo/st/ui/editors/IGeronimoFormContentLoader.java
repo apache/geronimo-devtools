@@ -13,26 +13,17 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.apache.geronimo.st.v1.ui.pages;
+package org.apache.geronimo.st.ui.editors;
 
-import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
-import org.apache.geronimo.st.v1.ui.sections.OpenEjbJarGeneralSection;
-import org.eclipse.ui.forms.IManagedForm;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.FormEditor;
 
-public class EjbOverviewPage extends AbstractGeronimoFormPage {
-
-	public EjbOverviewPage(FormEditor editor, String id, String title) {
-		super(editor, id, title);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
-	 */
-	protected void fillBody(IManagedForm managedForm) {
-		managedForm.addPart(new OpenEjbJarGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
-	}
+public interface IGeronimoFormContentLoader {
+	
+	public EObject loadDeploymentPlan(IFile file);
+	
+	public void doAddPages(FormEditor editor) throws PartInitException;
 
 }

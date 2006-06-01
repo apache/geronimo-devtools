@@ -36,8 +36,7 @@ public class GBeanRefSection extends AbstractTableSection {
 			Messages.editorGBeanRefName, Messages.editorGBeanRefType,
 			Messages.editorGBeanRefProxyType };
 
-	public GBeanRefSection(EObject plan, Composite parent, FormToolkit toolkit,
-			int style, EReference gbeanERef) {
+	public GBeanRefSection(EObject plan, Composite parent, FormToolkit toolkit, int style, EReference gbeanERef) {
 		super(plan, parent, toolkit, style);
 		this.gbeanERef = gbeanERef;
 		createClient();
