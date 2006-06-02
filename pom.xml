@@ -23,7 +23,7 @@
   <groupId>org.apache.geronimo.devtools</groupId>
   <artifactId>geronimo-eclipse-plugin</artifactId>
   <packaging>pom</packaging>
-  <name>Geronimo Eclipse Plugin :: Root POM :: ${artifactId}</name>
+  <name>Root POM :: ${artifactId}</name>
   <version>1.1</version>
   <description>Parent POM for Geronimo Eclipse Plugin</description>
   <url>http://geronimo.apache.org/devtools</url>

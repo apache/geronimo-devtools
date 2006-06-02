@@ -3,7 +3,7 @@
   <artifactId>org.apache.geronimo.installableruntime.jetty.feature</artifactId>
   <packaging>jar</packaging>
   <version>${org.apache.geronimo.installableruntime.jetty.feature_version}</version>
-  <name>Feature :: ${artifactId}</name>
+  <name>${artifactId}</name>
   <parent>
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>geronimo-eclipse-plugin</artifactId>
