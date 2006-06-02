@@ -15,18 +15,15 @@
                 <directory>.</directory>
                 <includes>
                     <include>plugin.xml</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>.</directory>
-                <includes>
                     <include>plugin.properties</include>
+                    <include>.options</include>
                 </includes>
             </resource>
             <resource>
-                <directory>.</directory>
+                <targetPath>icons/</targetPath>
+                <directory>icons/</directory>
                 <includes>
-                    <include>.options</include>
+                    <include>**/*</include>
                 </includes>
             </resource>
             <resource>
