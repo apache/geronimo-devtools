@@ -14,7 +14,16 @@
             <resource>
                 <directory>.</directory>
                 <includes>
+                    <include>plugin.xml</include>
+                    <include>plugin.properties</include>
                     <include>.options</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>serverdef/</targetPath>
+                <directory>serverdef</directory>
+                <includes>
+                    <include>geronimo11.serverdef</include>
                 </includes>
             </resource>
         </resources>

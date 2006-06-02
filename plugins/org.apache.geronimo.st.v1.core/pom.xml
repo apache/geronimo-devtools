@@ -15,12 +15,8 @@
                 <directory>.</directory>
                 <includes>
                     <include>plugin.xml</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>.</directory>
-                <includes>
                     <include>plugin.properties</include>
+                    <include>.options</include>
                 </includes>
             </resource>
             <resource>
@@ -28,12 +24,6 @@
                 <directory>serverdef</directory>
                 <includes>
                     <include>geronimo10.serverdef</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>.</directory>
-                <includes>
-                    <include>.options</include>
                 </includes>
             </resource>
         </resources>

@@ -56,13 +56,7 @@
             runtime-component="org.apache.geronimo.runtime" version="1.1"/>
     </extension>
     
-    <extension point="org.eclipse.wst.common.project.facet.core.facets">
-        
-        <!--<project-facet id="org.apache.geronimo.facet">
-            <label>%geronimo-facet-label</label>
-            <description>%geronimo-facet-description</description>
-        </project-facet>-->
-        
+    <extension point="org.eclipse.wst.common.project.facet.core.facets">        
         <project-facet-version facet="org.apache.geronimo.facet" version="1.1">
             <action type="install">
                 <delegate class="org.apache.geronimo.st.v11.core.operations.GeronimoV11FacetInstallDelegate"/>

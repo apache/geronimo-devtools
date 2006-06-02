@@ -52,12 +52,6 @@
     </extension>
     
     <extension point="org.eclipse.wst.common.project.facet.core.facets">
-        
-        <!--<project-facet id="org.apache.geronimo.facet">
-            <label>%geronimo-facet-label</label>
-            <description>%geronimo-facet-description</description>
-        </project-facet>-->
-        
         <project-facet-version facet="org.apache.geronimo.facet" version="1.0">
             <action type="install">
                 <delegate class="org.apache.geronimo.st.v1.core.operations.GeronimoV1FacetInstallDelegate"/>
