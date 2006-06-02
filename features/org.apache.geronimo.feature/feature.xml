@@ -88,9 +88,23 @@ Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you ma
          install-size="0"
          version="1.0.0"
          unpack="false"/>
+         
+   <plugin
+         id="org.apache.geronimo.common.deployment.model.edit"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.apache.geronimo.v11.deployment.model"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"
+         unpack="false"/>
+         
+   <plugin
+         id="org.apache.geronimo.common.deployment.model"
          download-size="0"
          install-size="0"
          version="1.0.0"
