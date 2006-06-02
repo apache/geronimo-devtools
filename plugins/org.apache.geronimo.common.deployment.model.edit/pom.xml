@@ -22,6 +22,13 @@
                     <include>plugin.properties</include>
                 </includes>
             </resource>
+            <resource>
+                <targetPath>icons/</targetPath>
+                <directory>icons/</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
         </resources>
         
         <plugins>
