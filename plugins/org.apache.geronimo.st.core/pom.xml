@@ -15,6 +15,15 @@
                 <directory>.</directory>
                 <includes>
                     <include>.options</include>
+                    <include>plugin.xml</include>
+                    <include>plugin.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>lib</targetPath>
+                <directory>lib</directory>
+                <includes>
+                    <include>*.jar</include>
                 </includes>
             </resource>
             <resource>
