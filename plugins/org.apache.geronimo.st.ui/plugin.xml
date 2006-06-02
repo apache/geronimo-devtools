@@ -3,6 +3,28 @@
 <plugin>
 
  	<extension-point id="loader" name="Geronimo Deployment Plan Loader" schema="schema/loader.exsd"/>
+ 	
+ 	<extension point="org.eclipse.wst.common.project.facet.ui.images">
+        <image facet="org.apache.geronimo.facet"
+            path="icons/obj16/littleG.gif"/>
+        <image runtime-component-type="org.apache.geronimo.runtime"
+            path="icons/obj16/littleG.gif"/>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.serverImages">
+    	<image id="org.apache.geronimo.generic.runtime.image"
+            icon="icons/obj16/littleG.gif"
+            typeIds="org.apache.geronimo.generic.runtime.10"/>
+        <image id="org.apache.geronimo.generic.server.image"
+            icon="icons/obj16/littleG.gif"
+            typeIds="org.apache.geronimo.generic.server.10"/>
+        <image id="org.apache.geronimo.generic.runtime.image"
+            icon="icons/obj16/littleG.gif"
+            typeIds="org.apache.geronimo.generic.runtime.11"/>
+        <image id="org.apache.geronimo.generic.server.image"
+            icon="icons/obj16/littleG.gif"
+            typeIds="org.apache.geronimo.generic.server.11"/>
+    </extension>
 
     <extension point="org.eclipse.wst.server.ui.wizardFragments">
         <fragment id="org.eclipse.jst.server.generic.runtime"
