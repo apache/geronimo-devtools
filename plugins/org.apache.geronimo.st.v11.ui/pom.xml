@@ -15,22 +15,12 @@
                 <directory>.</directory>
                 <includes>
                     <include>plugin.xml</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>.</directory>
-                <includes>
                     <include>plugin.properties</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>.</directory>
-                <includes>
                     <include>.options</include>
                 </includes>
             </resource>
             <resource>
-                <targetPath>org/apache/geronimo/st/v1/uiinternal</targetPath>
+                <targetPath>org/apache/geronimo/st/v1/ui/internal</targetPath>
                 <directory>src/org/apache/geronimo/st/v1/ui/internal</directory>
                 <includes>
                     <include>Messages.properties</include>
