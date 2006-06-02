@@ -18,7 +18,7 @@ package org.apache.geronimo.xml.ns.security.provider;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.geronimo.deployment.model.edit.GeronimoEMFEditPlugin;
+import org.apache.geronimo.common.deployment.model.edit.GeronimoEMFEditPlugin;
 import org.apache.geronimo.xml.ns.security.RoleType;
 import org.apache.geronimo.xml.ns.security.SecurityFactory;
 import org.apache.geronimo.xml.ns.security.SecurityPackage;

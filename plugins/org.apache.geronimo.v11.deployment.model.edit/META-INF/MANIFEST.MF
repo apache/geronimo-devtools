@@ -10,7 +10,8 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.edit;visibility:=reexport,
  com.ibm.etools.emf.event,
- org.apache.geronimo.v11.deployment.model
+ org.apache.geronimo.v11.deployment.model,
+ org.apache.geronimo.common.deployment.model.edit;visibility:=reexport
 Eclipse-AutoStart: true
 Export-Package: org.apache.geronimo.v11.deployment.model.edit,
  org.apache.geronimo.xml.ns.deployment.provider,
@@ -19,6 +20,4 @@ Export-Package: org.apache.geronimo.v11.deployment.model.edit,
  org.apache.geronimo.xml.ns.j2ee.connector.provider,
  org.apache.geronimo.xml.ns.j2ee.web.provider,
  org.apache.geronimo.xml.ns.naming.provider,
- org.apache.geronimo.xml.ns.security.provider,
- org.openejb.xml.ns.openejb.jar.provider,
- org.openejb.xml.ns.pkgen.provider
+ org.openejb.xml.ns.openejb.jar.provider

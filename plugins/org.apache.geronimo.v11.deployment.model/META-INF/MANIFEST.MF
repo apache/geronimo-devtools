@@ -8,7 +8,8 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- org.eclipse.emf.ecore.xmi
+ org.eclipse.emf.ecore.xmi,
+ org.apache.geronimo.common.deployment.model;visibility:=reexport
 Eclipse-AutoStart: true
 Export-Package: org.apache.geronimo.v11.deployment.model,
  org.apache.geronimo.xml.ns.deployment,
@@ -29,12 +30,6 @@ Export-Package: org.apache.geronimo.v11.deployment.model,
  org.apache.geronimo.xml.ns.naming,
  org.apache.geronimo.xml.ns.naming.impl,
  org.apache.geronimo.xml.ns.naming.util,
- org.apache.geronimo.xml.ns.security,
- org.apache.geronimo.xml.ns.security.impl,
- org.apache.geronimo.xml.ns.security.util,
  org.openejb.xml.ns.openejb.jar,
  org.openejb.xml.ns.openejb.jar.impl,
- org.openejb.xml.ns.openejb.jar.util,
- org.openejb.xml.ns.pkgen,
- org.openejb.xml.ns.pkgen.impl,
- org.openejb.xml.ns.pkgen.util
+ org.openejb.xml.ns.openejb.jar.util

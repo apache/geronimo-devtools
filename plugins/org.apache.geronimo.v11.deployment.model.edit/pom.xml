@@ -177,5 +177,10 @@
             <artifactId>org.apache.geronimo.v11.deployment.model</artifactId>
             <version>${org.apache.geronimo.v11.deployment.model_version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.common.deployment.model.edit</artifactId>
+            <version>${org.apache.geronimo.common.deployment.model.edit_version}</version>
+        </dependency>
     </dependencies>   
 </project>

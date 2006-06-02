@@ -147,7 +147,7 @@
               <genmodel>${project.build.outputDirectory}/emf/geronimo-web-1.1.genmodel</genmodel>
               <packages>
                 <package>http://geronimo.apache.org/xml/ns/naming-1.1</package>
-                <package>http://geronimo.apache.org/xml/ns/security-1.1</package>
+                <!--<package>http://geronimo.apache.org/xml/ns/security-1.1</package>-->
                 <package>http://geronimo.apache.org/xml/ns/deployment-1.1</package>
                 <package>http://geronimo.apache.org/xml/ns/j2ee/web-1.1</package>
               </packages>
@@ -184,7 +184,7 @@
               <genmodel>${project.build.outputDirectory}/emf/openejb-jar-2.1.genmodel</genmodel>
               <packages>
                 <package>http://www.openejb.org/xml/ns/openejb-jar-2.1</package>
-                <package>http://www.openejb.org/xml/ns/pkgen-2.0</package>
+                <!--<package>http://www.openejb.org/xml/ns/pkgen-2.0</package>-->
               </packages>
             </configuration>
           </execution>
