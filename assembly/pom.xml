@@ -66,8 +66,18 @@
     </dependency>
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.common.deployment.model</artifactId>
+      <version>${org.apache.geronimo.common.deployment.model_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
       <artifactId>org.apache.geronimo.deployment.model</artifactId>
       <version>${org.apache.geronimo.deployment.model_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.common.deployment.model.edit</artifactId>
+      <version>${org.apache.geronimo.common.deployment.model.edit_version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
