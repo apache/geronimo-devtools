@@ -53,6 +53,7 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEd
 		if (getDeploymentPlan() != null && getLoader() != null) {
 			currentLoader.doAddPages(this);
 		}
+		addSourcePage();
 	}
 
 	private static synchronized void loadExtensionPoints() {
