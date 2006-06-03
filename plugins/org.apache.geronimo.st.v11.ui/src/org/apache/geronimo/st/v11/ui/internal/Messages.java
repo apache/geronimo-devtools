@@ -14,5 +14,12 @@ public class Messages extends NLS {
 	public static String editorSectionRunFromWorkspace;
 	public static String editorSectionEnableInPlace;
 	public static String editorSectionSetPersistent;
+	
+	public static String groupId;
+	public static String artifactId;
+	public static String version;
+	public static String artifactType;
+	public static String inverseClassloading;
+	public static String supressDefaultEnv;
 
 }

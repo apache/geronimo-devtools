@@ -44,7 +44,7 @@ public class WebGeneralSection extends CommonGeneralSection {
 		super.createClient();
 		Composite composite = (Composite) getSection().getClient();
 
-		createLabel(composite, CommonMessages.editorContextRoot, toolkit);
+		createLabel(composite, CommonMessages.editorContextRoot);
 
 		contextRoot = toolkit.createText(composite, plan.getContextRoot(), SWT.BORDER);
 		contextRoot.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));

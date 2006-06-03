@@ -1,5 +1,5 @@
 /**
- * Copyright 2004, 2005 The Apache Software Foundation or its licensors, as applicable
+ *  Copyright 2006 The Apache Software Foundation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,11 +17,21 @@ package org.apache.geronimo.st.v11.ui.sections;
 
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractSectionPart;
+import org.apache.geronimo.st.v11.ui.internal.Messages;
+import org.apache.geronimo.xml.ns.deployment.ArtifactType;
+import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
+import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
+import org.apache.geronimo.xml.ns.deployment.EnvironmentType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -31,9 +41,17 @@ import org.eclipse.ui.forms.widgets.Section;
 
 public abstract class CommonGeneralSection extends AbstractSectionPart {
 
-	protected Text configId;
+	protected Text artifactId;
 
-	protected Text parentId;
+	protected Text groupId;
+
+	protected Text version;
+
+	protected Text type;
+
+	protected Button inverseClassLoading;
+
+	protected Button suppressDefaultEnv;
 
 	public CommonGeneralSection(Composite parent, FormToolkit toolkit, int style, EObject plan) {
 		super(parent, toolkit, style, plan);
@@ -58,9 +76,84 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		section.setClient(composite);
 
+		createLabel(composite, Messages.groupId);
+
+		groupId = toolkit.createText(composite, getGroupId(), SWT.BORDER);
+		groupId.setLayoutData(createTextFieldGridData());
+		groupId.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				getModuleId(true).setGroupId(groupId.getText());
+				markDirty();
+			}
+		});
+
+		createLabel(composite, Messages.artifactId);
+
+		artifactId = toolkit.createText(composite, getArtifactId(), SWT.BORDER);
+		artifactId.setLayoutData(createTextFieldGridData());
+		artifactId.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				getModuleId(true).setArtifactId(artifactId.getText());
+				markDirty();
+			}
+		});
+
+		createLabel(composite, Messages.version);
+
+		version = toolkit.createText(composite, getVersion(), SWT.BORDER);
+		version.setLayoutData(createTextFieldGridData());
+		version.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				getModuleId(true).setVersion(version.getText());
+				markDirty();
+			}
+		});
+
+		createLabel(composite, Messages.artifactType);
+
+		type = toolkit.createText(composite, getArtifactType(), SWT.BORDER);
+		type.setLayoutData(createTextFieldGridData());
+		type.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				getModuleId(true).setType(type.getText());
+				markDirty();
+			}
+		});
+
+		inverseClassLoading = toolkit.createButton(composite, Messages.inverseClassloading, SWT.CHECK);
+		inverseClassLoading.setSelection(isInverseClassloading());
+		GridData data = new GridData();
+		data.horizontalSpan = 2;
+		inverseClassLoading.setLayoutData(data);
+
+		inverseClassLoading.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				setInverseClassloading(inverseClassLoading.getSelection());
+				markDirty();
+			}
+		});
+
+		suppressDefaultEnv = toolkit.createButton(composite, Messages.supressDefaultEnv, SWT.CHECK);
+		suppressDefaultEnv.setSelection(isSuppressDefaultEnvironment());
+		data = new GridData();
+		data.horizontalSpan = 2;
+		suppressDefaultEnv.setLayoutData(data);
+
+		suppressDefaultEnv.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				setSuppressDefaultEnvironment(suppressDefaultEnv.getSelection());
+				markDirty();
+			}
+		});
 	}
 
-	protected Label createLabel(Composite parent, String text, FormToolkit toolkit) {
+	protected Label createLabel(Composite parent, String text) {
 		Label label = toolkit.createLabel(parent, text);
 		label.setForeground(toolkit.getColors().getColor(FormColors.TITLE));
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
@@ -71,6 +164,94 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 		GridData data = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		data.widthHint = 150;
 		return data;
+	}
+
+	protected String getGroupId() {
+		ArtifactType moduleId = getModuleId(false);
+		if (moduleId != null
+				&& moduleId.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_GroupId()))
+			return moduleId.getGroupId();
+		return "";
+	}
+
+	protected String getArtifactId() {
+		ArtifactType moduleId = getModuleId(false);
+		if (moduleId != null
+				&& moduleId.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_ArtifactId()))
+			return moduleId.getArtifactId();
+		return "";
+	}
+
+	protected String getVersion() {
+		ArtifactType moduleId = getModuleId(false);
+		if (moduleId != null
+				&& moduleId.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_Version()))
+			return moduleId.getVersion();
+		return "";
+	}
+
+	protected String getArtifactType() {
+		ArtifactType moduleId = getModuleId(false);
+		if (moduleId != null
+				&& moduleId.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_Type()))
+			return moduleId.getType();
+		return "";
+	}
+
+	protected boolean isInverseClassloading() {
+		EnvironmentType type = getEnvironmentType(false);
+		return type != null && type.getInverseClassloading() != null;
+	}
+
+	protected boolean isSuppressDefaultEnvironment() {
+		EnvironmentType type = getEnvironmentType(false);
+		return type != null && type.getSuppressDefaultEnvironment() != null;
+	}
+
+	protected void setInverseClassloading(boolean enable) {
+		if (enable) {
+			EnvironmentType type = getEnvironmentType(true);
+			type.setInverseClassloading(DeploymentFactory.eINSTANCE.createEmptyType());
+		} else {
+			EnvironmentType type = getEnvironmentType(false);
+			if (type != null) {
+				type.eUnset(DeploymentPackage.eINSTANCE.getEnvironmentType_InverseClassloading());
+			}
+		}
+	}
+
+	protected void setSuppressDefaultEnvironment(boolean enable) {
+		if (enable) {
+			EnvironmentType type = getEnvironmentType(true);
+			type.setSuppressDefaultEnvironment(DeploymentFactory.eINSTANCE.createEmptyType());
+		} else {
+			EnvironmentType type = getEnvironmentType(false);
+			if (type != null) {
+				type.eUnset(DeploymentPackage.eINSTANCE.getEnvironmentType_SuppressDefaultEnvironment());
+			}
+		}
+	}
+
+	private EnvironmentType getEnvironmentType(boolean create) {
+		EnvironmentType type = (EnvironmentType) getPlan().eGet(getEnvironmentEReference());
+		if (type == null && create) {
+			type = DeploymentFactory.eINSTANCE.createEnvironmentType();
+			getPlan().eSet(getEnvironmentEReference(), type);
+		}
+		return type;
+	}
+
+	private ArtifactType getModuleId(boolean create) {
+		EnvironmentType type = getEnvironmentType(create);
+		if (type != null) {
+			ArtifactType moduleId = type.getModuleId();
+			if (moduleId == null && create) {
+				moduleId = DeploymentFactory.eINSTANCE.createArtifactType();
+				type.setModuleId(moduleId);
+			}
+			return moduleId;
+		}
+		return null;
 	}
 
 	protected abstract EReference getEnvironmentEReference();
