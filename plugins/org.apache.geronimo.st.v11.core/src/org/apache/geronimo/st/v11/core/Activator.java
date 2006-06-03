@@ -5,8 +5,6 @@ import java.io.IOException;
 import org.apache.geronimo.st.jmxagent.JMXAgent;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.server.core.IServerLifecycleListener;
-import org.eclipse.wst.server.core.ServerCore;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -19,8 +17,6 @@ public class Activator extends Plugin {
 
 	// The shared instance
 	private static Activator plugin;
-	
-	private IServerLifecycleListener listener = new ServerLifeCycleListener();
 
 	/**
 	 * The constructor
@@ -36,7 +32,6 @@ public class Activator extends Plugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		ServerCore.addServerLifecycleListener(listener);
 	}
 
 	/*
@@ -50,7 +45,6 @@ public class Activator extends Plugin {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
-		ServerCore.removeServerLifecycleListener(listener);
 		plugin = null;
 		super.stop(context);
 	}
