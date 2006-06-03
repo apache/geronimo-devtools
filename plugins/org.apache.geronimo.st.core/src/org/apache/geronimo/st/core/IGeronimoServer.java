@@ -40,6 +40,10 @@ public interface IGeronimoServer {
 
 	public IGeronimoVersionHandler getVersionHandler();
 	
-	public boolean isTestEnvironment();
+	public boolean isPersistant();
+	
+	public boolean isInPlace();
+	
+	public boolean isRunFromWorkspace();
 
 }

@@ -31,8 +31,8 @@ import org.eclipse.wst.server.core.IServer;
 
 class RedeployCommand extends DeployCommand {
 
-	public RedeployCommand(IServer server, IModule module, boolean inPlace) {
-		super(server, module, inPlace);
+	public RedeployCommand(IServer server, IModule module) {
+		super(server, module);
 	}
 
 	/*

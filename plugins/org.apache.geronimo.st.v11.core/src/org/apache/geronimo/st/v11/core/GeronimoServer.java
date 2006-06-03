@@ -92,7 +92,7 @@ public class GeronimoServer extends GenericGeronimoServer {
 	 */
 	public void configureDeploymentManager(DeploymentManager dm) {
 		((JMXDeploymentManager) dm).setLogConfiguration(true, true);
-		boolean enableInPlace = SocketUtil.isLocalhost(getServer().getHost());
+		boolean enableInPlace = SocketUtil.isLocalhost(getServer().getHost()) && isInPlace();
 		setInPlaceDeployment(dm, enableInPlace);
 	}
 
@@ -112,40 +112,36 @@ public class GeronimoServer extends GenericGeronimoServer {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.apache.geronimo.st.core.IGeronimoServer#isTestEnvironment()
+	 * @see org.apache.geronimo.st.core.IGeronimoServer#isPersistant()
 	 */
-	public boolean isTestEnvironment() {
-		return true;
-	}
-	
 	public boolean isPersistant() {
 		return getAttribute(PROPERTY_PERSISTENT, false);
-		//return Boolean.getBoolean((String) getServerInstanceProperties().get(PROPERTY_PERSISTENT));
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.IGeronimoServer#isInPlace()
+	 */
 	public boolean isInPlace() {
 		return getAttribute(PROPERTY_IN_PLACE, false);
-		//return Boolean.getBoolean((String) getServerInstanceProperties().get(PROPERTY_IN_PLACE));
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.IGeronimoServer#isRunFromWorkspace()
+	 */
 	public boolean isRunFromWorkspace() {
 		return getAttribute(PROPERTY_RUN_FROM_WORKSPACE, false);
-		//return Boolean.getBoolean((String) getServerInstanceProperties().get(PROPERTY_RUN_FROM_WORKSPACE));
 	}
 	
 	public void setPersistent(boolean enable) {
 		setAttribute(PROPERTY_PERSISTENT, enable);
-		//getServerInstanceProperties().put(PROPERTY_PERSISTENT, Boolean.toString(enable));
 	}
 	
 	public void setInPlace(boolean enable) {
 		setAttribute(PROPERTY_IN_PLACE, enable);
-		//getServerInstanceProperties().put(PROPERTY_IN_PLACE, Boolean.toString(enable));
 	}
 	
 	public void setRunFromWorkspace(boolean enable) {
 		setAttribute(PROPERTY_RUN_FROM_WORKSPACE, enable);
-		//getServerInstanceProperties().put(PROPERTY_RUN_FROM_WORKSPACE, Boolean.toString(enable));
 	}
 	
 	/* (non-Javadoc)

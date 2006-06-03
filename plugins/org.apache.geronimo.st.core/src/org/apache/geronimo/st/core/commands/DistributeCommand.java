@@ -33,8 +33,8 @@ class DistributeCommand extends DeployCommand {
 
 	Target[] targets;
 
-	public DistributeCommand(IServer server, IModule module, Target[] targets, boolean inPlace) {
-		super(server, module, inPlace);
+	public DistributeCommand(IServer server, IModule module, Target[] targets) {
+		super(server, module);
 		this.targets = targets;
 	}
 

@@ -47,10 +47,10 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static IDeploymentCommand createDistributeCommand(IModule module, IServer server, boolean inPlace) throws CoreException {
+	public static IDeploymentCommand createDistributeCommand(IModule module, IServer server) throws CoreException {
 		IGeronimoServerBehavior gs = (IGeronimoServerBehavior) server.loadAdapter(IGeronimoServerBehavior.class, null);
 		Target[] targets = gs.getTargets();
-		return new SynchronizedDeploymentOp(new DistributeCommand(server, module, targets, inPlace));
+		return new SynchronizedDeploymentOp(new DistributeCommand(server, module, targets));
 	}
 
 	/**
@@ -80,8 +80,8 @@ public class DeploymentCommandFactory {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static IDeploymentCommand createRedeployCommand(IModule module, IServer server, boolean inPlace) throws CoreException {
-		return new SynchronizedDeploymentOp(new RedeployCommand(server, module, inPlace));
+	public static IDeploymentCommand createRedeployCommand(IModule module, IServer server) throws CoreException {
+		return new SynchronizedDeploymentOp(new RedeployCommand(server, module));
 	}
 
 	/**

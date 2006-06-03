@@ -17,6 +17,7 @@ package org.apache.geronimo.st.core.commands;
 
 import javax.enterprise.deploy.spi.DeploymentManager;
 
+import org.apache.geronimo.st.core.IGeronimoServer;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
@@ -43,5 +44,9 @@ abstract class AbstractDeploymentCommand implements IDeploymentCommand {
 
 	public IServer getServer() {
 		return server;
+	}
+	
+	public IGeronimoServer getGeronimoServer() {
+		return (IGeronimoServer) getServer().getAdapter(IGeronimoServer.class);
 	}
 }

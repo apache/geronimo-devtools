@@ -102,13 +102,25 @@ public class GeronimoServer extends GenericGeronimoServer {
 			versionHandler = new GeronimoV1VersionHandler();
 		return versionHandler;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.core.IGeronimoServer#isTestEnvironment()
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.IGeronimoServer#isPersistant()
 	 */
-	public boolean isTestEnvironment() {
+	public boolean isPersistant() {
+		return true;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.IGeronimoServer#isInPlace()
+	 */
+	public boolean isInPlace() {
+		return false;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.IGeronimoServer#isRunFromWorkspace()
+	 */
+	public boolean isRunFromWorkspace() {
 		return false;
 	}
 

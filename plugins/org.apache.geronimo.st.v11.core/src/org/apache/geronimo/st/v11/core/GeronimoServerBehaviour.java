@@ -177,7 +177,7 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 	}
 
 	protected void setupLaunch(ILaunch launch, String launchMode, IProgressMonitor monitor) throws CoreException {
-		if (SocketUtil.isLocalhost(getServer().getHost())) {
+		if (SocketUtil.isLocalhost(getServer().getHost()) && getGeronimoServer().isRunFromWorkspace()) {
 			getServer().addServerListener(new ConfigStoreInstaller());
 		}
 		super.setupLaunch(launch, launchMode, monitor);
@@ -189,7 +189,7 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 	 * @see org.apache.geronimo.st.core.IGeronimoServerBehavior#getTargets()
 	 */
 	public Target[] getTargets() {
-		if (getGeronimoServer().isTestEnvironment()) {
+		if (getGeronimoServer().isRunFromWorkspace()) {
 			AbstractNameQuery query = new AbstractNameQuery("org.apache.geronimo.devtools.EclipseAwareConfigurationStore");
 			Set set = getKernel().listGBeans(query);
 			if (!set.isEmpty()) {

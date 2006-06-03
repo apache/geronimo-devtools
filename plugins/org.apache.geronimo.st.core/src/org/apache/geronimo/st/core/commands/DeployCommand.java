@@ -19,6 +19,7 @@ import java.io.File;
 
 import org.apache.geronimo.st.core.DeploymentUtils;
 import org.apache.geronimo.st.core.GeronimoUtils;
+import org.apache.geronimo.st.core.IGeronimoServer;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.wst.common.componentcore.internal.StructureEdit;
@@ -29,19 +30,18 @@ import org.eclipse.wst.server.core.IServer;
 
 abstract public class DeployCommand extends AbstractDeploymentCommand {
 
-	boolean inPlace;
-
 	/**
 	 * @param server
 	 * @param module
 	 */
-	public DeployCommand(IServer server, IModule module, boolean inPlace) {
+	public DeployCommand(IServer server, IModule module) {
 		super(server, module);
 	}
 
 	public File getTargetFile() {
 		File file = null;
-		if (inPlace && !GeronimoUtils.isEarModule(getModule())) {
+		IGeronimoServer gs = getGeronimoServer();
+		if (gs.isRunFromWorkspace() && !GeronimoUtils.isEarModule(getModule())) {
 			StructureEdit moduleCore = StructureEdit.getStructureEditForRead(getModule().getProject());
 			try {
 				WorkbenchComponent component = moduleCore.getComponent();
@@ -52,14 +52,12 @@ abstract public class DeployCommand extends AbstractDeploymentCommand {
 					moduleCore.dispose();
 			}
 		} else {
-			String version = getServer().getRuntime().getRuntimeType().getVersion();
-			IPath outputDir = DeploymentUtils.STATE_LOC.append("server_"
-					+ getServer().getId());
+			IPath outputDir = DeploymentUtils.STATE_LOC.append("server_" + getServer().getId());
 			outputDir.toFile().mkdirs();
-			if ("1.0".equals(version)) {
-				file = DeploymentUtils.createJarFile(getModule(), outputDir);
-			} else {
+			if(gs.isInPlace()) {
 				file = DeploymentUtils.generateExplodedConfiguration(getModule(), outputDir).toFile();
+			} else {
+				file = DeploymentUtils.createJarFile(getModule(), outputDir);
 			}
 		}
 		
