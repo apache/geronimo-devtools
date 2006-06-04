@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2006 The Apache Software Foundation
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>geronimo-emf-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0</version>
+    <name>${artifactId}</name>
+    <parent>
+        <groupId>org.apache.geronimo.devtools</groupId>
+        <artifactId>geronimo-eclipse-plugin</artifactId>
+        <version>1.1</version>
+    </parent>
+    <!-- TODO remove following properties after 3.2 migration -->
+    <properties>
+        <installLocation>${settings.localRepository}/eclipse/temp/</installLocation>
+        <platformDriver>S-3.2RC5-200605191206/eclipse-SDK-3.2RC5</platformDriver>
+    </properties>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.geronimo.devtools</groupId>
+                    <artifactId>maven-geronimodevtools-plugin</artifactId>
+                    <configuration>
+                        <target>${project.build.outputDirectory}/schemas</target>
+                        <includes>
+                            <include>**/*.xsd</include>
+                        </includes>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>import-resources</id>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>importresources</goal>
+                            </goals>
+                        </execution>
+                        <!--
+                             TODO remove following execution after 3.2 migration
+                             need for running osgi under 3.2 due to platform bugs
+                        -->
+                        <execution>
+                            <id>create-eclipse-image</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>download</goal>
+                            </goals>
+                            <configuration>
+                                <platformUrl>${platformUrl}</platformUrl>
+                                <urls>
+                                    <url>${emfUrl}</url>
+                                </urls>
+                                <installLocation>${installLocation}</installLocation>
+                                <propsFile>${installLocation}/install.props</propsFile>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <dependencies>
+                        <dependency>
+                            <groupId>oro</groupId>
+                            <artifactId>oro</artifactId>
+                            <version>2.0.8</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>ant</groupId>
+                            <artifactId>ant-apache-oro</artifactId>
+                            <version>1.6.4</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>ant</groupId>
+                            <artifactId>ant-optional</artifactId>
+                            <version>1.5.3-1</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <phase>process-classes</phase>
+                            <configuration>
+                                <tasks>
+                                    <taskdef name="replaceregexp" classname="org.apache.tools.ant.taskdefs.optional.ReplaceRegExp" classpathref="maven.plugin.classpath"/>
+                                    <property name="ant.regexp.regexpimpl" value="org.apache.tools.ant.util.regexp.JakartaOroRegexp"/>
+                                    <replaceregexp match="schemaLocation=&quot;http://www.w3.org/2001/xml.xsd&quot;" replace="schemaLocation=&quot;http://www.w3.org/2001/03/xml.xsd&quot;" byline="true">
+                                        <fileset dir="${project.build.outputDirectory}/schemas/" includes="**/*.xsd"/>
+                                    </replaceregexp>
+                                </tasks>
+                            </configuration>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    <modules>
+        <module>common</module>
+        <module>geronimo-1.0</module>
+        <module>geronimo-1.1</module>
+    </modules>
+</project>

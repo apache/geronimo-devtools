@@ -262,9 +262,7 @@
     <module>config-store-service</module>
     <module>maven-plugins/maven-emf-plugin</module>
     <module>maven-plugins/maven-geronimodevtools-plugin</module>
-    <module>emf/common</module>
-    <module>emf/geronimo-1.0</module>
-    <module>emf/geronimo-1.1</module>
+    <module>emf</module>
     <module>plugins</module>
     <module>features/org.apache.geronimo.feature</module>
     <module>features/org.apache.geronimo.installableruntime.jetty.feature</module>
