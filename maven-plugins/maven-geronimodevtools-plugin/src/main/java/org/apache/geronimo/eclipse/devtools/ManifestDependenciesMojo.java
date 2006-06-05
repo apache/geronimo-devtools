@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
@@ -35,6 +34,9 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.eclipse.osgi.util.ManifestElement;
+import org.osgi.framework.BundleException;
+import org.osgi.framework.Constants;
 
 /**
  * @goal manifestbundles
@@ -84,6 +86,7 @@ public class ManifestDependenciesMojo extends AbstractMojo {
 	private File eclipseHome;
 
 	private Set bundleEntries = new HashSet();
+
 	private Set exportedEntries = new HashSet();
 
 	/*
@@ -99,10 +102,10 @@ public class ManifestDependenciesMojo extends AbstractMojo {
 		while (i.hasNext()) {
 			addExportedBundles((String) i.next());
 		}
-		
+
 		getLog().debug("Bundle Entries: " + bundleEntries.toString());
 		getLog().debug("Exported Entries: " + exportedEntries.toString());
-		
+
 		bundleEntries.addAll(exportedEntries);
 
 		List excludeList = new ArrayList();
@@ -121,27 +124,31 @@ public class ManifestDependenciesMojo extends AbstractMojo {
 		}
 	}
 
-	private void addRequiredBundles(Manifest manifest,
-			boolean exportedEntriesOnly) {
+	private void addRequiredBundles(Manifest manifest, boolean exportedEntriesOnly) {
 		String requiredBundles = getRequiredBundles(manifest);
-		if (requiredBundles != null) {
-			StringTokenizer st = new StringTokenizer(requiredBundles);
-			while (st.hasMoreTokens()) {
-				String nextToken = st.nextToken(",");
-				String bundleId = getBundleId(nextToken);
-				if (exportedEntriesOnly) {
-					if (export(nextToken)) {
-						exportedEntries.add(bundleId);
+		try {
+			ManifestElement[] elements = ManifestElement.parseHeader(Constants.REQUIRE_BUNDLE, requiredBundles);
+			if (elements != null) {
+				for (int i = 0; i < elements.length; i++) {
+					ManifestElement element = elements[i];
+					String bundleId = element.getValue();
+					if (exportedEntriesOnly) {
+						String visibility = element.getDirective(Constants.VISIBILITY_DIRECTIVE);
+						if (Constants.VISIBILITY_REEXPORT.equals(visibility)) {
+							exportedEntries.add(bundleId);
+						}
+					} else {
+						bundleEntries.add(bundleId);
 					}
-				} else {
-					bundleEntries.add(bundleId);
 				}
 			}
+		} catch (BundleException e) {
+			e.printStackTrace();
 		}
 	}
 
 	private String getRequiredBundles(Manifest manifest) {
-		return manifest.getMainAttributes().getValue("Require-Bundle");
+		return manifest.getMainAttributes().getValue(Constants.REQUIRE_BUNDLE);
 	}
 
 	private Manifest getManifestFromFile(File file) {
@@ -154,17 +161,6 @@ public class ManifestDependenciesMojo extends AbstractMojo {
 			e.printStackTrace();
 		}
 		return manifest;
-	}
-
-	private String getBundleId(String element) {
-		String[] entry = element.split(";");
-		return entry[0].trim();
-	}
-
-	private boolean export(String element) {
-		String[] entry = element.split(";");
-		return entry.length > 1
-				&& entry[1].trim().equals(MANIFEST_REXPORT_DEPENDENCY);
 	}
 
 	private void addExportedBundles(String bundleId) {
