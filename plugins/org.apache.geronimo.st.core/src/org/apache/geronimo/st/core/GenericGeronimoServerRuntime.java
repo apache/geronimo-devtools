@@ -34,9 +34,9 @@ public class GenericGeronimoServerRuntime extends GenericServerRuntime
 	 * @see org.eclipse.wst.server.core.model.RuntimeDelegate#validate()
 	 */
 	public IStatus validate() {
-		String version = detectVersion();
+		/*String version = detectVersion();
 		if (!getRuntime().getRuntimeType().getVersion().equals(version))
-			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, null, null);
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, null, null);*/
 		return super.validate();
 	}
 
