@@ -121,6 +121,11 @@
     </dependency>
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
+      <artifactId>org.apache.geronimo.st.v11.ui</artifactId>
+      <version>${org.apache.geronimo.st.v11.ui_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.devtools</groupId>
       <artifactId>org.apache.geronimo.feature</artifactId>
       <version>${org.apache.geronimo.feature_version}</version>
     </dependency>
