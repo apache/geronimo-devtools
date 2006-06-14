@@ -245,7 +245,7 @@
         <checksumPolicy>ignore</checksumPolicy>
       </snapshots>
       <releases>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
       </releases>
     </repository>
     
