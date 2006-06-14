@@ -116,12 +116,12 @@
     <stax-api_version>1.0</stax-api_version>
     <junitVersion>3.8.1</junitVersion>
     <!-- Eclipse Distribution URLs -->
-    <platformDriver>R-3.1.2-200601181600/eclipse-SDK-3.1.2</platformDriver>
+    <platformDriver>S-3.2RC7-200606021317/eclipse-SDK-3.2RC7</platformDriver>
     <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/${platformDriver}</platformUrl>
-    <emfUrl>http://download.eclipse.org/tools/emf/downloads/drops/2.1.2/R200601191349/emf-sdo-xsd-SDK-2.1.2.zip</emfUrl>
-    <jemUrl>http://download.eclipse.org/tools/ve/downloads/drops/R-1.1.0.1-200509071822/JEM-SDK-1.1.0.1.zip</jemUrl>
-    <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/R-3.1.1-200509301327/GEF-SDK-3.1.1.zip</gefUrl>
-    <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/R-1.0.2-200604280245/wtp-sdk-R-1.0.2-200604280245.zip</wtpUrl>
+    <emfUrl>http://download.eclipse.org/tools/emf/downloads/drops/2.2.0/S200605300949/emf-sdo-xsd-SDK-2.2.0RC6a.zip</emfUrl>
+    <jemUrl>http://download.eclipse.org/tools/ve/downloads/drops/S-1.2RC2-200605301123/JEM-SDK-1.2RC2.zip</jemUrl>
+    <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/S-3.2RC4-200605291641/GEF-SDK-3.2RC4.zip</gefUrl>
+    <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/S-1.5RC4-200605310507/wtp-sdk-S-1.5RC4-200605310507.zip</wtpUrl>
   </properties>
 
   <distributionManagement>
@@ -150,6 +150,33 @@
   <build>
     <defaultGoal>install</defaultGoal>
     <sourceDirectory>src/</sourceDirectory>
+    <pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.geronimo.devtools</groupId>
+                <artifactId>maven-geronimodevtools-plugin</artifactId>
+                <configuration>
+                    <platformUrl>${platformUrl}</platformUrl>
+                    <urls>
+                        <url>${emfUrl}</url>
+                        <url>${jemUrl}</url>
+                        <url>${gefUrl}</url>
+                        <url>${wtpUrl}</url>
+                    </urls>
+                    <eclipseHome>${settings.localRepository}/eclipse/eclipse/</eclipseHome>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>create-eclipse-image</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>download</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </pluginManagement>
   </build>
   
   <repositories>

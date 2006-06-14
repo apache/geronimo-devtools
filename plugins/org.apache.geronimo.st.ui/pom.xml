@@ -38,17 +38,6 @@
             <plugin>
                 <groupId>org.apache.geronimo.devtools</groupId>
                 <artifactId>maven-geronimodevtools-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>install-dependencies</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>download</goal>
-                            <goal>manifestbundles</goal>
-                            <goal>install</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

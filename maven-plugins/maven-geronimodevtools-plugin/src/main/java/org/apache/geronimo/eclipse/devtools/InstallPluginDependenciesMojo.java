@@ -161,7 +161,7 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		} else if (platform.startsWith("Linux")) {
 			fragment.setArtifactId(id.concat(".gtk.linux.x86"));
 		} else if (platform.startsWith("Mac")) {
-			fragment.setArtifactId(id.concat(".carbon.macosx.ppc"));
+			fragment.setArtifactId(id.concat(".carbon.macosx"));
 		}
 		return fragment;
 	}

@@ -35,36 +35,6 @@
             <plugin>
                 <groupId>org.apache.geronimo.devtools</groupId>
                 <artifactId>maven-geronimodevtools-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>install-dependencies</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>download</goal>
-                            <goal>manifestbundles</goal>
-                            <goal>install</goal>
-                        </goals>
-                    </execution>
-                    <!-- TODO remove following execution after 3.2 migration
-                    need for running osgi under 3.2 due to platform bugs -->
-                    <execution>
-                        <id>create-emf-image</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>download</goal>
-                        </goals>
-                        <configuration>
-                            <platformUrl>${tempPlatformURL}</platformUrl>
-                            <urls>
-                                <url>${emfUrl}</url>
-                            </urls>
-                            <installLocation>
-                                ${settings.localRepository}/eclipse/temp/</installLocation>
-                            <propsFile>
-                                ${settings.localRepository}/eclipse/temp/install.props</propsFile>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             
             <plugin>
@@ -105,9 +75,6 @@
                 <groupId>org.apache.geronimo.devtools</groupId>
                 <artifactId>maven-emf-plugin</artifactId>
                 <configuration>
-                    <!-- TODO remove <eclipseHome> after 3.2 migration -->
-                    <eclipseHome>
-                        ${settings.localRepository}/eclipse/temp/eclipse</eclipseHome>
                     <workspace>${project.basedir}/..</workspace>
                     <type>edit</type>
                 </configuration>

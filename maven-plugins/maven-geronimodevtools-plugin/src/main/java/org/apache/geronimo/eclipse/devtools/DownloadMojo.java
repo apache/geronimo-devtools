@@ -72,11 +72,11 @@ public class DownloadMojo extends AbstractMojo {
 	 * @parameter expression="${settings.localRepository}/eclipse/install.props"
 	 */
 	private File propsFile;
-
+	
 	/**
-	 * @parameter expression="${forceInstall}"
+	 * @parameter expression="${overwrite}";
 	 */
-	private boolean forceInstall = false;
+	private String overwrite = null;
 
 	/**
 	 * @parameter expression="${checkModified}"
@@ -133,7 +133,18 @@ public class DownloadMojo extends AbstractMojo {
 
 		load();
 		int identifier = generateInstallIdentifier(images);
-		if (forceInstall || shouldExtract(identifier)) {
+		
+	
+		boolean extract = false;
+		if("false".equals(overwrite)) {
+			extract = false;
+		} else if("true".equals(overwrite)) {
+			extract = true;
+		} else {
+			extract = shouldExtract(identifier);
+		}
+		
+		if (extract) {
 			clean();
 			Iterator i = images.iterator();
 			while (i.hasNext())

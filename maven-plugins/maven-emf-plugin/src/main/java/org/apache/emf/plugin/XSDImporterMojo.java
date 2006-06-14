@@ -137,6 +137,10 @@ public class XSDImporterMojo extends LaunchOSGIMojo {
 				buffer.append(pkg).append(SPACE).append(mapping).append(SPACE);
 			}
 		}
+		
+		buffer.append("-refGenModel").append(SPACE);
+		buffer.append("platform:/plugin/org.eclipse.emf.ecore/model/XMLNamespace.genmodel").append(SPACE).append("http://www.w3.org/XML/1998/namespace");
+		
 		return buffer;
 	}
 }

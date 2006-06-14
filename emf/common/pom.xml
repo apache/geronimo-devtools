@@ -52,8 +52,6 @@
                 <groupId>org.apache.geronimo.devtools</groupId>
                 <artifactId>maven-emf-plugin</artifactId>
                 <configuration>
-                    <!-- TODO remove <eclipseHome> after 3.2 migration -->
-                    <eclipseHome>${installLocation}/eclipse</eclipseHome>
                     <workspace>${project.build.directory}/workspace</workspace>
                     <modelProject>${project.build.directory}/org.apache.geronimo.common.deployment.model</modelProject>
                     <editProject>${project.build.directory}/org.apache.geronimo.common.deployment.model.edit</editProject>

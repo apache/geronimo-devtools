@@ -33,29 +33,27 @@
     <artifactId>geronimo-eclipse-plugin</artifactId> 
     <version>1.1</version>
   </parent>
-  
-  <!-- TODO remove following properties after 3.2 migration
-    need for running osgi under 3.2 due to platform bugs -->
-  <properties>
-    <tempPlatformURL>http://download.eclipse.org/eclipse/downloads/drops/S-3.2RC5-200605191206/eclipse-SDK-3.2RC5</tempPlatformURL>
-  </properties>
-
   <build>
+    <pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.geronimo.devtools</groupId>
+                <artifactId>maven-geronimodevtools-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>install-dependencies</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>download</goal>
+                            <goal>manifestbundles</goal>
+                            <goal>install</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </pluginManagement>
     <plugins>
-      <plugin>
-        <groupId>org.apache.geronimo.devtools</groupId>
-        <artifactId>maven-geronimodevtools-plugin</artifactId>
-        <configuration>
-          <platformUrl>${platformUrl}</platformUrl>
-          <urls>
-            <url>${emfUrl}</url>
-            <url>${jemUrl}</url>
-            <url>${gefUrl}</url>
-            <url>${wtpUrl}</url>
-          </urls>
-          <eclipseHome>${settings.localRepository}/eclipse/eclipse/</eclipseHome>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>

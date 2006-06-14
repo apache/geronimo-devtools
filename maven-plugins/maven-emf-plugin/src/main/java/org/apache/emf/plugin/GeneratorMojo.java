@@ -17,7 +17,6 @@ package org.apache.emf.plugin;
 
 import java.io.File;
 
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 /**
@@ -45,17 +44,6 @@ public class GeneratorMojo extends LaunchOSGIMojo {
 	 * @required
 	 */
 	private String type;
-	
-	/* (non-Javadoc)
-	 * @see org.apache.emf.plugin.LaunchOSGIMojo#execute()
-	 */
-	public void execute() throws MojoExecutionException, MojoFailureException {
-		super.execute();
-		
-		//workaround to prevent eclipse-compiler interference with maven
-		File file = new File(mavenProject.getBasedir() + File.separator + ".classpath");
-		file.delete();
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -86,7 +74,8 @@ public class GeneratorMojo extends LaunchOSGIMojo {
 		}
 
 		buffer.append("-").append(type).append(SPACE);
-		buffer.append(genmodel.getAbsolutePath());
+        buffer.append("-autoBuild").append(SPACE).append("false").append(SPACE);
+		buffer.append(genmodel.getAbsolutePath()).append(SPACE);
 
 		return buffer;
 	}
