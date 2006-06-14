@@ -84,6 +84,7 @@
     <module>org.apache.geronimo.st.v11.core</module>
     <module>org.apache.geronimo.st.ui</module>
     <module>org.apache.geronimo.st.v1.ui</module>
+    <module>org.apache.geronimo.st.v11.ui</module>
     <module>org.apache.geronimo.common.deployment.model</module>
     <module>org.apache.geronimo.common.deployment.model.edit</module>
     <module>org.apache.geronimo.deployment.model</module>
