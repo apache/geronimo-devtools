@@ -14,7 +14,7 @@
         <commonsLoggingVersion>1.0.4</commonsLoggingVersion>
         <cglibVersion>2.1_3</cglibVersion>
         <xbeanVersion>2.0.0</xbeanVersion>
-        <openejbVersion>2.1-SNAPSHOT</openejbVersion>
+        <openejbVersion>2.1</openejbVersion>
         <staxApiVersion>1.0</staxApiVersion>
     </properties>
     <build>

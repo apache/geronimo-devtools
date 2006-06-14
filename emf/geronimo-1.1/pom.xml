@@ -28,7 +28,7 @@
     </parent>
     <properties>
         <geronimoVersion>1.1-SNAPSHOT</geronimoVersion>
-        <openejbVersion>2.1-SNAPSHOT</openejbVersion>
+        <openejbVersion>2.1</openejbVersion>
     </properties>
     <build>
         <resources>
