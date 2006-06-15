@@ -80,15 +80,11 @@ public class GeronimoServerRuntimeTargetHandler extends
 
 		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see ClasspathRuntimeTargetHandler#resolveClasspathContainer(IRuntime,
-	 *      java.lang.String)
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jst.server.generic.core.internal.GenericServerRuntimeTargetHandler#resolveClasspathContainer(org.eclipse.wst.server.core.IRuntime)
 	 */
-	public IClasspathEntry[] resolveClasspathContainer(IRuntime runtime,
-			String id) {
+	public IClasspathEntry[] resolveClasspathContainer(IRuntime runtime) {
 		this.runtimeTypeId = runtime.getRuntimeType().getId();
 		return getServerClassPathEntry(runtime);
 	}
