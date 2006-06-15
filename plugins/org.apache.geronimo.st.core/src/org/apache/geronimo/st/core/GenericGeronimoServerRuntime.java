@@ -21,12 +21,20 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import org.apache.geronimo.st.core.internal.Messages;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.server.generic.core.internal.GenericServerRuntime;
+import org.eclipse.osgi.util.NLS;
 
-public class GenericGeronimoServerRuntime extends GenericServerRuntime
-		implements IGeronimoRuntime {
+public class GenericGeronimoServerRuntime extends GenericServerRuntime implements IGeronimoRuntime {
+
+	public static final int NO_IMAGE = 0;
+
+	public static final int INCORRECT_VERSION = 1;
+
+	public static final int PARTIAL_IMAGE = 2;
 
 	/*
 	 * (non-Javadoc)
@@ -34,13 +42,45 @@ public class GenericGeronimoServerRuntime extends GenericServerRuntime
 	 * @see org.eclipse.wst.server.core.model.RuntimeDelegate#validate()
 	 */
 	public IStatus validate() {
-		/*String version = detectVersion();
-		if (!getRuntime().getRuntimeType().getVersion().equals(version))
-			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, null, null);*/
-		return super.validate();
+		IStatus status = super.validate();
+
+		if (!status.isOK()) {
+			return status;
+		}
+
+		IPath runtimeLoc = getRuntime().getLocation();
+
+		// check for server file structure
+		int count = 0;
+		count = runtimeLoc.append("bin/server.jar").toFile().exists() ? ++count : count;
+		count = runtimeLoc.append("bin/deployer.jar").toFile().exists() ? ++count : count;
+		count = runtimeLoc.append("lib").toFile().exists() ? ++count : ++count;
+		count = runtimeLoc.append("repository").toFile().exists() ? ++count : count;
+
+		if (count == 0)
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, NO_IMAGE, null, null);
+
+		if (count < 4) {
+			// part of a server image was found, don't let install happen
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, PARTIAL_IMAGE, Messages.missingContent, null);
+		}
+
+		String detectedVersion = detectVersion();
+		if (detectedVersion == null)
+			return new Status(IStatus.WARNING, Activator.PLUGIN_ID, INCORRECT_VERSION, Messages.noVersion, null);
+
+		if (!detectedVersion.startsWith(getRuntime().getRuntimeType().getVersion())) {
+			String message = NLS.bind(Messages.incorrectVersion, new String[] {
+					getRuntime().getRuntimeType().getVersion(),
+					detectedVersion });
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, INCORRECT_VERSION, message, null);
+		}
+
+		return Status.OK_STATUS;
 	}
 
 	public String detectVersion() {
+		
 		File libDir = getRuntime().getLocation().append("lib").toFile();
 		if (libDir.exists()) {
 			File[] libs = libDir.listFiles();
@@ -55,13 +95,15 @@ public class GenericGeronimoServerRuntime extends GenericServerRuntime
 					}
 				}
 			}
-			URLClassLoader cl = new URLClassLoader(new URL[] { systemjarURL });
-			try {
-				Class clazz = cl.loadClass("org.apache.geronimo.system.serverinfo.ServerConstants");
-				Method method = clazz.getMethod("getVersion", new Class[] {});
-				return (String) method.invoke(null, null);
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (systemjarURL != null) {
+				URLClassLoader cl = new URLClassLoader(new URL[] { systemjarURL });
+				try {
+					Class clazz = cl.loadClass("org.apache.geronimo.system.serverinfo.ServerConstants");
+					Method method = clazz.getMethod("getVersion", new Class[] {});
+					return (String) method.invoke(null, null);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		return null;

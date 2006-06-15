@@ -77,17 +77,9 @@
 		<classpathReference>geronimo.server</classpathReference>
 	</start>
 
-	<classpath id="geronimo.server">
-		<archive path="${serverRootDirectory}/bin/server.jar" />
-	</classpath>
-
-	<classpath id="geronimo.deploy">
-		<archive path="${serverRootDirectory}/bin/deployer.jar" />
-	</classpath>
-
 	<classpath id="geronimo.project">
-		<archive path="${serverRootDirectory}/repository/org/apache/geronimo/specs/geronimo-j2ee_1.4_spec/1.1" />
-		<archive path="${serverRootDirectory}/lib" />
+		<archive path="${serverRootDirectory}/repository"/>
+		<archive path="${serverRootDirectory}/lib"/>
 	</classpath>
 	
 	<jndiConnection>

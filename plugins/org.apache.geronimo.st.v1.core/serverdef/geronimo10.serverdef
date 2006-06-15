@@ -85,16 +85,8 @@
 		<classpathReference>geronimo.server</classpathReference>
 	</start>
 
-	<classpath id="geronimo.server">
-		<archive path="${serverRootDirectory}/bin/server.jar" />
-	</classpath>
-
-	<classpath id="geronimo.deploy">
-		<archive path="${serverRootDirectory}/bin/deployer.jar" />
-	</classpath>
-
 	<classpath id="geronimo.project">
-		<archive path="${serverRootDirectory}/repository/org.apache.geronimo.specs/jars" />
+		<archive path="${serverRootDirectory}/repository" />
 		<archive path="${serverRootDirectory}/lib" />
 	</classpath>
 	

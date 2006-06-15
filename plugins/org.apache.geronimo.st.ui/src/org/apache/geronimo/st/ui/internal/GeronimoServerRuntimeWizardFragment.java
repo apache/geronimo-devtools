@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.geronimo.st.core.GenericGeronimoServerRuntime;
 import org.apache.geronimo.st.ui.Activator;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -65,16 +66,18 @@ import org.eclipse.wst.server.core.internal.ServerPlugin;
 import org.eclipse.wst.server.core.model.RuntimeDelegate;
 import org.eclipse.wst.server.ui.wizard.IWizardHandle;
 
-public class GeronimoServerRuntimeWizardFragment extends
-		ServerDefinitionTypeAwareWizardFragment {
+public class GeronimoServerRuntimeWizardFragment extends ServerDefinitionTypeAwareWizardFragment {
 
 	private static final String G_WITH_TOMCAT_ID = "org.apache.geronimo.runtime.tomcat.10";
+
 	private static final String G_WITH_JETTY_ID = "org.apache.geronimo.runtime.jetty.10";
 
 	private GenericServerCompositeDecorator[] fDecorators;
+
 	protected Text installDir;
 
 	private Button tomcat;
+
 	private Button jetty;
 
 	private Group group;
@@ -205,9 +208,7 @@ public class GeronimoServerRuntimeWizardFragment extends
 									: gWithJetty;
 							final Path installPath = new Path(installDir.getText());
 							IRunnableWithProgress runnable = new IRunnableWithProgress() {
-								public void run(IProgressMonitor monitor)
-										throws InvocationTargetException,
-										InterruptedException {
+								public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 									try {
 										installable.install(installPath, monitor);
 									} catch (CoreException e) {
@@ -253,15 +254,17 @@ public class GeronimoServerRuntimeWizardFragment extends
 	public boolean isComplete() {
 		IRuntimeWorkingCopy runtimeWC = getRuntimeDelegate().getRuntimeWorkingCopy();
 		IStatus status = runtimeWC.validate(null);
-		return status == null || status.isOK();
+		return status == null || status.getSeverity() != IStatus.ERROR;
 	}
 
 	protected void validate() {
 
 		IRuntime runtime = getRuntimeDelegate().getRuntime();
-
+		
+		IWizardHandle wizard = getWizard();
+		
 		if (runtime == null) {
-			getWizard().setMessage("", IMessageProvider.ERROR);
+			wizard.setMessage("", IMessageProvider.ERROR);
 			return;
 		}
 
@@ -271,47 +274,52 @@ public class GeronimoServerRuntimeWizardFragment extends
 
 		if (installDir.getText() == null || installDir.getText().length() == 0) {
 			// installDir field has not been entered
-			getWizard().setMessage(Messages.installDirInfo, IMessageProvider.ERROR);
+			wizard.setMessage(Messages.installDirInfo, IMessageProvider.NONE);
 		} else {
 			IStatus status = runtimeWC.validate(null);
 			if (status == null || status.isOK()) {
-				getWizard().setMessage(null, IMessageProvider.NONE);
+				//a valid install found
+				wizard.setMessage(null, IMessageProvider.NONE);
 				group.setEnabled(false);
+			} else if(status.getCode() == GenericGeronimoServerRuntime.INCORRECT_VERSION) {
+				group.setEnabled(false);
+				if(status.getSeverity() == IStatus.ERROR) {
+					wizard.setMessage(status.getMessage(), IMessageProvider.ERROR);
+					return;
+				} 
+				wizard.setMessage(status.getMessage(), IMessageProvider.WARNING);
+			} else if(status.getCode() == GenericGeronimoServerRuntime.PARTIAL_IMAGE) {
+				wizard.setMessage(status.getMessage(), IMessageProvider.ERROR);
+				return;
 			} else {
 				File file = new Path(installDir.getText()).toFile();
+				boolean enableGroup = file.isDirectory() && file.canWrite() ? true : false;
+				group.setEnabled(enableGroup);
 				if (file.isDirectory()) {
-					boolean canWrite = file.canWrite();
-					String message = canWrite ? Messages.noImageFound
-							: Messages.cannotInstallAtLocation;
-					if (canWrite)
-						group.setEnabled(true);
-					getWizard().setMessage(message, IMessageProvider.ERROR);
+					String message = file.canWrite() ? Messages.noImageFound : Messages.cannotInstallAtLocation;
+					wizard.setMessage(message, IMessageProvider.ERROR);
 				} else {
-					group.setEnabled(false);
-					getWizard().setMessage(Messages.noSuchDir, IMessageProvider.ERROR);
+					wizard.setMessage(Messages.noSuchDir, IMessageProvider.ERROR);
 				}
 				return;
 			}
+			
+			//wizard.setMessage(null, IMessageProvider.NONE);
 
-			if (!isValidVM()) {
-				getWizard().setMessage(Messages.jvmWarning, IMessageProvider.WARNING);
-				return;
-			}
-
-			getWizard().setMessage(null, IMessageProvider.NONE);
+			if (!isValidVM()) 
+				wizard.setMessage(Messages.jvmWarning, IMessageProvider.WARNING);
 		}
-
-		// validateDecorators();
 	}
 
 	private boolean isValidVM() {
 		String javaVersion = null;
 		IVMInstall vmInstall = getRuntimeDelegate().getVMInstall();
-		if (vmInstall instanceof IVMInstall2) 
+		if (vmInstall instanceof IVMInstall2)
 			javaVersion = ((IVMInstall2) vmInstall).getJavaVersion();
 		return javaVersion != null && javaVersion.startsWith("1.4");
-		//This returns false on MacOSX due to do no IVMInstall2.getJavaVersion() implementation
-		//on Mac, fixed in Eclipse 3.2
+		// This returns false on MacOSX due to do no
+		// IVMInstall2.getJavaVersion() implementation
+		// on Mac, fixed in Eclipse 3.2
 	}
 
 	private void validateDecorators() {
