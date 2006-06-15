@@ -19,4 +19,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.geronimo.deployment.model;visibility:=reexport,
  org.eclipse.emf.edit;visibility:=reexport,
  org.apache.geronimo.common.deployment.model.edit;visibility:=reexport
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true

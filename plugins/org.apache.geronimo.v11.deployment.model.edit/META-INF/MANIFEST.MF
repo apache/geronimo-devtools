@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.ibm.etools.emf.event,
  org.apache.geronimo.v11.deployment.model,
  org.apache.geronimo.common.deployment.model.edit;visibility:=reexport
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true
 Export-Package: org.apache.geronimo.v11.deployment.model.edit,
  org.apache.geronimo.xml.ns.deployment.provider,
  org.apache.geronimo.xml.ns.j2ee.application.client.provider,

@@ -28,8 +28,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jem.util,
  org.eclipse.jdt.core,
  org.apache.geronimo.runtime.common,
- org.eclipse.debug.core
-Eclipse-AutoStart: true
+ org.eclipse.debug.core,
+ org.eclipse.jst.common.project.facet.core
+Eclipse-LazyStart: true
 Export-Package: org.apache.geronimo.st.core,
  org.apache.geronimo.st.core.commands,
  org.apache.geronimo.st.core.internal,

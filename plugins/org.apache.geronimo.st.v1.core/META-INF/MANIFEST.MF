@@ -21,7 +21,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.common.frameworks,
  org.apache.geronimo.runtime.v1,
  org.apache.geronimo.st.jmxagent
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true
 Bundle-Vendor: Apache
 Export-Package: org.apache.geronimo.st.v1.core.operations,
  org.apache.geronimo.st.v1.core.internal,

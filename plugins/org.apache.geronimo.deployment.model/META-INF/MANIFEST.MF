@@ -10,7 +10,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.xmi,
  org.apache.geronimo.common.deployment.model;visibility:=reexport
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true
 Export-Package: org.apache.geronimo.deployment.model,
  org.apache.geronimo.xml.ns.deployment,
  org.apache.geronimo.xml.ns.deployment.impl,

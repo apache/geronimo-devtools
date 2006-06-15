@@ -10,7 +10,7 @@ Bundle-Activator: org.apache.geronimo.common.deployment.model.edit.GeronimoEMFEd
 Require-Bundle: org.eclipse.core.runtime,
  org.apache.geronimo.common.deployment.model;visibility:=reexport,
  org.eclipse.emf.edit;visibility:=reexport
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true
 Export-Package: org.apache.geronimo.common.deployment.model.edit,
  org.apache.geronimo.xml.ns.security.provider,
  org.openejb.xml.ns.pkgen.provider
