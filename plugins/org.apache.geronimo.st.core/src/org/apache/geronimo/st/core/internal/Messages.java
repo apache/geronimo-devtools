@@ -32,5 +32,8 @@ public class Messages extends NLS {
 	public static String UNDEPLOY_FAIL;
 	public static String REDEPLOY_FAIL;
 	public static String DM_CONNECTION_FAIL;
+	
+	public static String target10runtime;
+	public static String target11runtime;
 
 }
