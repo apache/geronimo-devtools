@@ -86,7 +86,7 @@
 	</classpath>
 
 	<classpath id="geronimo.project">
-		<archive path="${serverRootDirectory}/repository/org/apache/geronimo/specs/geronimo-j2ee_1.4_spec/1.1-SNAPSHOT" />
+		<archive path="${serverRootDirectory}/repository/org/apache/geronimo/specs/geronimo-j2ee_1.4_spec/1.1" />
 		<archive path="${serverRootDirectory}/lib" />
 	</classpath>
 	
