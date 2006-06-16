@@ -145,6 +145,8 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 			} catch (Exception e) {
 				e.printStackTrace();
 			} 
+			clazz = null;
+			getPluginContext().remove(STARTER);
 		} else {
 			getPluginContext().put(CURRENT_EXECUTION, new Integer(getCurrentExecution() + 1));
 		}

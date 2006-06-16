@@ -76,6 +76,10 @@
 		<vmParameters></vmParameters>
 		<classpathReference>geronimo.server</classpathReference>
 	</start>
+	
+    <classpath id="geronimo.server">
+		<archive path="${serverRootDirectory}/bin/server.jar" />
+	</classpath>
 
 	<classpath id="geronimo.project">
 		<archive path="${serverRootDirectory}/repository"/>
