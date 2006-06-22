@@ -38,7 +38,7 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 
 	private Button inPlace;
 
-	private Button persistant;
+	//private Button persistant;
 
 	/*
 	 * (non-Javadoc)
@@ -70,12 +70,12 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		section.setClient(composite);
 
-		persistant = toolkit.createButton(composite, Messages.editorSectionSetPersistent, SWT.CHECK);
+		//persistant = toolkit.createButton(composite, Messages.editorSectionSetPersistent, SWT.CHECK);
 		inPlace = toolkit.createButton(composite, Messages.editorSectionEnableInPlace, SWT.CHECK);
 		runFromWorkspace = toolkit.createButton(composite, Messages.editorSectionRunFromWorkspace, SWT.CHECK);
 
 		GeronimoServer gs = (GeronimoServer) server.getAdapter(GeronimoServer.class);
-		persistant.setSelection(gs.isPersistant());
+		//persistant.setSelection(gs.isPersistant());
 		inPlace.setSelection(gs.isInPlace());
 		runFromWorkspace.setSelection(gs.isRunFromWorkspace());
 
@@ -84,7 +84,7 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 		runFromWorkspace.setLayoutData(data);
 		runFromWorkspace.setEnabled(inPlace.getSelection());
 
-		persistant.addSelectionListener(new SelectionListener() {
+		/*persistant.addSelectionListener(new SelectionListener() {
 
 			public void widgetSelected(SelectionEvent e) {
 				execute(new SetPersistentCommand(server, persistant.getSelection()));
@@ -93,7 +93,7 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 
-		});
+		});*/
 
 		inPlace.addSelectionListener(new SelectionListener() {
 
