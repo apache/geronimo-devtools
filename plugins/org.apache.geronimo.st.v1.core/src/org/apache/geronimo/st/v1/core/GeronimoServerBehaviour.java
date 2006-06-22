@@ -41,6 +41,7 @@ import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.jmx.KernelDelegate;
 import org.apache.geronimo.st.core.GenericGeronimoServerBehaviour;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
+import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.v1.core.internal.Trace;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -179,14 +180,27 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour impl
 			return null;
 		
 		try {
-			String configId = getConfigId(module[0]);
+			IModule workingModule = module[0];
+			String configId = getConfigId(workingModule);
 			ObjectName on = Configuration.getConfigurationObjectName(URI.create(configId));
 			GBeanData data = kernel.getGBeanData(on);
 			URL url = (URL) data.getAttribute("baseURL");
 			IPath modulePath = new Path(url.getFile());
 			if(module.length == 2) {
-				modulePath = modulePath.append(module[1].getName());
+				workingModule = module[1];
+				modulePath = modulePath.append(workingModule.getName());
 			} 
+			
+			if(GeronimoUtils.isWebModule(workingModule)) {
+				modulePath = modulePath.addFileExtension(".war");
+			} else if(GeronimoUtils.isEjbJarModule(workingModule)) {
+				modulePath = modulePath.addFileExtension(".jar");
+			} else if(GeronimoUtils.isRARModule(workingModule)) {
+				modulePath = modulePath.addFileExtension(".rar");
+			} else if(GeronimoUtils.isEarModule(workingModule)) {
+				modulePath = modulePath.addFileExtension(".ear");
+			}
+			
 		} catch (MalformedObjectNameException e) {
 			e.printStackTrace();
 		} catch (GBeanNotFoundException e) {
