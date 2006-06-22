@@ -17,6 +17,7 @@ package org.apache.geronimo.st.v11.core;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -31,24 +32,32 @@ import javax.naming.directory.NoSuchAttributeException;
 import org.apache.geronimo.deployment.plugin.TargetImpl;
 import org.apache.geronimo.gbean.AbstractName;
 import org.apache.geronimo.gbean.AbstractNameQuery;
+import org.apache.geronimo.gbean.GBeanData;
 import org.apache.geronimo.kernel.GBeanNotFoundException;
+import org.apache.geronimo.kernel.InternalKernelException;
 import org.apache.geronimo.kernel.Kernel;
+import org.apache.geronimo.kernel.config.Configuration;
+import org.apache.geronimo.kernel.config.InvalidConfigException;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
+import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.GenericGeronimoServerBehaviour;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
+import org.apache.geronimo.st.jmxagent.Activator;
 import org.apache.geronimo.st.jmxagent.JMXAgent;
 import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.internal.IModulePublishHelper;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
-public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
-	
+public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour implements IModulePublishHelper {
+
 	static {
 		try {
 			JMXAgent.getInstance().start();
@@ -108,7 +117,8 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 				} catch (SecurityException e) {
 					throw e;
 				} catch (Exception e) {
-					Trace.trace(Trace.WARNING, "Kernel connection failed." + url);
+					Trace.trace(Trace.WARNING, "Kernel connection failed."
+							+ url);
 				}
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
@@ -177,7 +187,8 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 	}
 
 	protected void setupLaunch(ILaunch launch, String launchMode, IProgressMonitor monitor) throws CoreException {
-		if (SocketUtil.isLocalhost(getServer().getHost()) && getGeronimoServer().isRunFromWorkspace()) {
+		if (SocketUtil.isLocalhost(getServer().getHost())
+				&& getGeronimoServer().isRunFromWorkspace()) {
 			getServer().addServerListener(new ConfigStoreInstaller());
 		}
 		super.setupLaunch(launch, launchMode, monitor);
@@ -195,13 +206,42 @@ public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour {
 			if (!set.isEmpty()) {
 				AbstractName name = (AbstractName) set.toArray()[0];
 				Target target = new TargetImpl(name, null);
-				return new Target[]{target};
+				return new Target[] { target };
 			}
 		}
 		return null;
 	}
-	
-	/* (non-Javadoc)
+
+	public IPath getPublishDirectory(IModule[] module) {
+		if (module == null || module.length == 0)
+			return null;
+		
+		if(getGeronimoServer().isRunFromWorkspace()) {
+			//TODO fix me, see if project root, component root, or output container should be returned
+			return module[module.length - 1].getProject().getLocation();
+		} else {
+			try {
+				String configId = getConfigId(module[0]);
+				Artifact artifact = Artifact.create(configId);
+				AbstractName name = Configuration.getConfigurationAbstractName(artifact);
+				GBeanData data = kernel.getGBeanData(name);
+				URL url = (URL) data.getAttribute("baseURL");
+				return getModulePath(module, url);
+			} catch (InvalidConfigException e) {
+				e.printStackTrace();
+			} catch (GBeanNotFoundException e) {
+				e.printStackTrace();
+			} catch (InternalKernelException e) {
+				e.printStackTrace();
+			}			
+		}
+
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.st.core.GenericGeronimoServerBehaviour#getContextClassLoader()
 	 */
 	protected ClassLoader getContextClassLoader() {

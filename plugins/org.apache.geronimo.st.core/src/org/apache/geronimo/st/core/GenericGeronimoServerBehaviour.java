@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.st.core;
 
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Timer;
@@ -29,8 +30,10 @@ import org.apache.geronimo.st.core.commands.TargetModuleIdNotFoundException;
 import org.apache.geronimo.st.core.internal.Messages;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -342,6 +345,26 @@ abstract public class GenericGeronimoServerBehaviour extends
 	protected void initialize(IProgressMonitor monitor) {
 		Trace.trace(Trace.INFO, "GeronimoServerBehavior.initialize()");
 		startUpdateServerStateTask();
+	}
+	
+	protected IPath getModulePath(IModule[] module, URL baseURL) {
+		IPath modulePath = new Path(baseURL.getFile());
+
+		if (module.length == 2) {
+			IModule workingModule = module[module.length -1];
+			modulePath = modulePath.append(workingModule.getName());
+			if (GeronimoUtils.isWebModule(workingModule)) {
+				modulePath = modulePath.addFileExtension(".war");
+			} else if (GeronimoUtils.isEjbJarModule(workingModule)) {
+				modulePath = modulePath.addFileExtension(".jar");
+			} else if (GeronimoUtils.isRARModule(workingModule)) {
+				modulePath = modulePath.addFileExtension(".rar");
+			} else if (GeronimoUtils.isEarModule(workingModule)) {
+				modulePath = modulePath.addFileExtension(".ear");
+			}
+		}
+
+		return modulePath;
 	}
 
 	/*
