@@ -305,7 +305,6 @@ abstract public class GenericGeronimoServerBehaviour extends
 				int eventKind = event.getKind();
 				if ((eventKind & ServerEvent.STATE_CHANGE) != 0) {
 					int state = event.getServer().getServerState();
-					System.out.println(state);
 					if (state == IServer.STATE_STARTED || state == IServer.STATE_STOPPED) {
 						GenericGeronimoServerBehaviour.this.getServer().removeServerListener(this);
 						startUpdateServerStateTask();
