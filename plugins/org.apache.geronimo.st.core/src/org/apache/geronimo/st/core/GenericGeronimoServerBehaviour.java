@@ -64,7 +64,7 @@ abstract public class GenericGeronimoServerBehaviour extends
 	public void setServerStarted() {
 		setServerState(IServer.STATE_STARTED);
 	}
-
+	
 	public void setServerStopped() {
 		setServerState(IServer.STATE_STOPPED);
 	}
@@ -303,13 +303,11 @@ abstract public class GenericGeronimoServerBehaviour extends
 		IServerListener listener = new IServerListener() {
 			public void serverChanged(ServerEvent event) {
 				int eventKind = event.getKind();
-				if (eventKind == (ServerEvent.SERVER_CHANGE | ServerEvent.STATE_CHANGE)) {
-					IServer server = event.getServer();
-					int state = server.getServerState();
-					if (state == IServer.STATE_STARTED
-							|| state == IServer.STATE_STOPPED) {
-						GenericGeronimoServerBehaviour.this.getServer()
-								.removeServerListener(this);
+				if ((eventKind & ServerEvent.STATE_CHANGE) != 0) {
+					int state = event.getServer().getServerState();
+					System.out.println(state);
+					if (state == IServer.STATE_STARTED || state == IServer.STATE_STOPPED) {
+						GenericGeronimoServerBehaviour.this.getServer().removeServerListener(this);
 						startUpdateServerStateTask();
 					}
 				}
@@ -317,9 +315,15 @@ abstract public class GenericGeronimoServerBehaviour extends
 		};
 
 		getServer().addServerListener(listener);
+		Trace.trace(Trace.INFO, "<-- GeronimoServerBehavior.setupLaunch()");
+	}
+	
+	 /* (non-Javadoc)
+	 * @see org.eclipse.jst.server.generic.core.internal.GenericServerBehaviour#startPingThread()
+	 */
+	protected void startPingThread() {
 		pingThread = new PingThread(this, getServer());
 		pingThread.start();
-		Trace.trace(Trace.INFO, "<-- GeronimoServerBehavior.setupLaunch()");
 	}
 
 	protected void startUpdateServerStateTask() {
