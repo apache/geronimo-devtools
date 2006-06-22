@@ -25,9 +25,12 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jst.j2ee.componentcore.util.EARArtifactEdit;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
+import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.StructureEdit;
 import org.eclipse.wst.common.componentcore.internal.WorkbenchComponent;
 import org.eclipse.wst.common.componentcore.internal.impl.WorkbenchComponentImpl;
+import org.eclipse.wst.common.componentcore.internal.resources.VirtualArchiveComponent;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualReference;
 
 public class ConfigurationStoreResolver implements ConfigurationStoreResolverMBean {
@@ -78,6 +81,17 @@ public class ConfigurationStoreResolver implements ConfigurationStoreResolverMBe
 		} else {
 			//return output containers
 			addOutputContainers(project, result);
+			
+			//add output of referenced projects and jars
+			IVirtualReference refs[] = ComponentCore.createComponent(project).getReferences();
+			for(int i = 0; i < refs.length; i++) {
+				IVirtualComponent vc = refs[i].getReferencedComponent();
+				if(vc instanceof VirtualArchiveComponent) {
+					result.add(((VirtualArchiveComponent) vc).getUnderlyingDiskFile());
+				} else {
+					addOutputContainers(vc.getProject(), result);
+				}
+			}
 		}
 		
 		Trace.trace(Trace.INFO, "ConfigStore Resolve Result: " + result);
