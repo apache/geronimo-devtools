@@ -36,8 +36,7 @@ public class ResourceRefSection extends AbstractTableSection {
 
 	private static final String[] COLUMN_NAMES = new String[] {
 			CommonMessages.editorResRefNameTitle,
-			CommonMessages.editorResRefLinkTitle,
-			CommonMessages.editorResRefTargetNameTitle };
+			CommonMessages.editorResRefLinkTitle};
 
 	public ResourceRefSection(EObject plan, Composite parent, FormToolkit toolkit, int style, EReference resourceRefERef) {
 		super(plan, parent, toolkit, style);
