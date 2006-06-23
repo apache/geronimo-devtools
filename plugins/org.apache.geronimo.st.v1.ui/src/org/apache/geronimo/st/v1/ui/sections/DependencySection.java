@@ -15,10 +15,10 @@
  */
 package org.apache.geronimo.st.v1.ui.sections;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v1.ui.Activator;
 import org.apache.geronimo.st.v1.ui.internal.EMFEditorContext;
-import org.apache.geronimo.st.v1.ui.internal.Messages;
 import org.apache.geronimo.st.v1.ui.wizards.DependencyWizard;
 import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -57,7 +57,7 @@ public class DependencySection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
 	 */
 	public String getTitle() {
-		return Messages.editorSectionDependenciesTitle;
+		return CommonMessages.editorSectionDependenciesTitle;
 	}
 
 	/*
@@ -66,7 +66,7 @@ public class DependencySection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
 	 */
 	public String getDescription() {
-		return Messages.editorSectionDependenciesDescription;
+		return CommonMessages.editorSectionDependenciesDescription;
 	}
 
 	/*

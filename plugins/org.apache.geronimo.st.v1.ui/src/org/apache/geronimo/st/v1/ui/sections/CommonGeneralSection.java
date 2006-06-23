@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.st.v1.ui.sections;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractSectionPart;
 import org.apache.geronimo.st.v1.ui.internal.Messages;
 import org.eclipse.emf.ecore.EAttribute;
@@ -45,8 +46,8 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 
 		Section section = getSection();
 
-		section.setText(Messages.editorSectionGeneralTitle);
-		section.setDescription(Messages.editorSectionGeneralDescription);
+		section.setText(CommonMessages.editorSectionGeneralTitle);
+		section.setDescription(CommonMessages.editorSectionGeneralDescription);
 		section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
 		Composite composite = toolkit.createComposite(section);

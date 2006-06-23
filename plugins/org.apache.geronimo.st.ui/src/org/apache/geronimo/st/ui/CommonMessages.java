@@ -18,5 +18,5 @@ package org.apache.geronimo.st.ui;
 import org.apache.geronimo.st.ui.internal.Messages;
 
 public class CommonMessages extends Messages {
-
+	
 }

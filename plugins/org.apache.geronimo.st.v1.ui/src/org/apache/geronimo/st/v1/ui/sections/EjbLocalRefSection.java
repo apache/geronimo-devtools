@@ -15,10 +15,10 @@
  */
 package org.apache.geronimo.st.v1.ui.sections;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v1.ui.Activator;
 import org.apache.geronimo.st.v1.ui.internal.EMFEditorContext;
-import org.apache.geronimo.st.v1.ui.internal.Messages;
 import org.apache.geronimo.st.v1.ui.wizards.EjbLocalRefWizard;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -35,7 +35,7 @@ public class EjbLocalRefSection extends AbstractTableSection {
 	EReference ejbLocalRefERef;
 
 	private static final String[] COLUMN_NAMES = new String[] {
-			Messages.editorEjbRefTargetName, Messages.editorEjbRefEjbLink };
+		CommonMessages.editorEjbRefTargetName, CommonMessages.editorEjbRefEjbLink };
 
 	public EjbLocalRefSection(EObject plan, Composite parent, FormToolkit toolkit, int style, EReference ejbLocalRefERef) {
 		super(plan, parent, toolkit, style);
@@ -49,7 +49,7 @@ public class EjbLocalRefSection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
 	 */
 	public String getTitle() {
-		return Messages.editorEjbLocalRefTitle;
+		return CommonMessages.editorEjbLocalRefTitle;
 	}
 
 	/*
@@ -58,7 +58,7 @@ public class EjbLocalRefSection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
 	 */
 	public String getDescription() {
-		return Messages.editorEjbLocalRefDescription;
+		return CommonMessages.editorEjbLocalRefDescription;
 	}
 
 	/*

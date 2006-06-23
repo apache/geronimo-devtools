@@ -15,8 +15,8 @@
  */
 package org.apache.geronimo.st.v1.ui.pages;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
-import org.apache.geronimo.st.v1.ui.internal.Messages;
 import org.apache.geronimo.st.v1.ui.sections.ConnectorGeneralSection;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
@@ -42,7 +42,7 @@ public class ConnectorOverviewPage extends AbstractGeronimoFormPage {
 	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getFormTitle()
 	 */
 	public String getFormTitle() {
-		return Messages.connectorOverViewPageTitle;
+		return CommonMessages.connectorOverViewPageTitle;
 	}
 
 }

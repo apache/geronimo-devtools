@@ -15,8 +15,8 @@
  */
 package org.apache.geronimo.st.v1.ui.wizards;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
-import org.apache.geronimo.st.v1.ui.internal.Messages;
 
 public class ImportWizard extends DependencyWizard {
 
@@ -33,7 +33,7 @@ public class ImportWizard extends DependencyWizard {
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getAddWizardWindowTitle()
 	 */
 	public String getAddWizardWindowTitle() {
-		return Messages.wizardNewTitle_Import;
+		return CommonMessages.wizardNewTitle_Import;
 	}
 
 	/*
@@ -42,7 +42,7 @@ public class ImportWizard extends DependencyWizard {
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEditWizardWindowTitle()
 	 */
 	public String getEditWizardWindowTitle() {
-		return Messages.wizardEditTitle_Import;
+		return CommonMessages.wizardEditTitle_Import;
 	}
 
 	/*
@@ -51,7 +51,7 @@ public class ImportWizard extends DependencyWizard {
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
 	 */
 	public String getWizardFirstPageTitle() {
-		return Messages.wizardPageTitle_Import;
+		return CommonMessages.wizardPageTitle_Import;
 	}
 
 	/*
@@ -60,7 +60,7 @@ public class ImportWizard extends DependencyWizard {
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
 	 */
 	public String getWizardFirstPageDescription() {
-		return Messages.wizardPageDescription_Import;
+		return CommonMessages.wizardPageDescription_Import;
 	}
 
 }

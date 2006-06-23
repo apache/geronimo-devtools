@@ -15,9 +15,9 @@
  */
 package org.apache.geronimo.st.v1.ui.sections;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v1.ui.internal.EMFEditorContext;
-import org.apache.geronimo.st.v1.ui.internal.Messages;
 import org.apache.geronimo.st.v1.ui.wizards.ServiceRefWizard;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -32,7 +32,7 @@ public class ServiceRefSection extends AbstractTableSection {
 
 	EReference serviceRefERef;
 
-	private static final String[] COLUMN_NAMES = new String[] { Messages.editorServiceRefName };
+	private static final String[] COLUMN_NAMES = new String[] { CommonMessages.editorServiceRefName };
 
 	public ServiceRefSection(EObject plan, Composite parent, FormToolkit toolkit, int style, EReference serviceRefERef) {
 		super(plan, parent, toolkit, style);
@@ -46,7 +46,7 @@ public class ServiceRefSection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
 	 */
 	public String getTitle() {
-		return Messages.editorServiceRefTitle;
+		return CommonMessages.editorServiceRefTitle;
 	}
 
 	/*
@@ -55,7 +55,7 @@ public class ServiceRefSection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
 	 */
 	public String getDescription() {
-		return Messages.editorServiceRefDescription;
+		return CommonMessages.editorServiceRefDescription;
 	}
 
 	/*

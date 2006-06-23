@@ -15,9 +15,9 @@
  */
 package org.apache.geronimo.st.v1.ui.wizards;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.apache.geronimo.st.v1.ui.internal.Messages;
 import org.apache.geronimo.xml.ns.naming.NamingFactory;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
 import org.eclipse.emf.ecore.EAttribute;
@@ -46,7 +46,7 @@ public class ServiceRefWizard extends AbstractTableWizard {
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getAddWizardWindowTitle()
 	 */
 	public String getAddWizardWindowTitle() {
-		return Messages.wizardNewTitle_ServiceRef;
+		return CommonMessages.wizardNewTitle_ServiceRef;
 	}
 
 	/*
@@ -55,7 +55,7 @@ public class ServiceRefWizard extends AbstractTableWizard {
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEditWizardWindowTitle()
 	 */
 	public String getEditWizardWindowTitle() {
-		return Messages.wizardEditTitle_ServiceRef;
+		return CommonMessages.wizardEditTitle_ServiceRef;
 	}
 
 	/*
@@ -64,7 +64,7 @@ public class ServiceRefWizard extends AbstractTableWizard {
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
 	 */
 	public String getWizardFirstPageTitle() {
-		return Messages.wizardPageTitle_ServiceRef;
+		return CommonMessages.wizardPageTitle_ServiceRef;
 	}
 
 	/*
@@ -73,7 +73,7 @@ public class ServiceRefWizard extends AbstractTableWizard {
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
 	 */
 	public String getWizardFirstPageDescription() {
-		return Messages.wizardPageDescription_ServiceRef;
+		return CommonMessages.wizardPageDescription_ServiceRef;
 	}
 
 }

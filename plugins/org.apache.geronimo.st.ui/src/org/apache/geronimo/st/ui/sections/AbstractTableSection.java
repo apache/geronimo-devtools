@@ -1,6 +1,6 @@
 package org.apache.geronimo.st.ui.sections;
 
-import org.apache.geronimo.st.ui.internal.Messages;
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EClass;
@@ -170,7 +170,7 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 	}
 
 	protected void createRemoveButton(FormToolkit toolkit, Composite buttonComp) {
-		removeButton = toolkit.createButton(buttonComp, Messages.remove, SWT.NONE);
+		removeButton = toolkit.createButton(buttonComp, CommonMessages.remove, SWT.NONE);
 		removeButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				int[] selectedIndices = table.getSelectionIndices();
@@ -187,7 +187,7 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 	}
 
 	protected void createAddButton(FormToolkit toolkit, Composite buttonComp) {
-		addButton = toolkit.createButton(buttonComp, Messages.add, SWT.NONE);
+		addButton = toolkit.createButton(buttonComp, CommonMessages.add, SWT.NONE);
 
 		addButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -208,7 +208,7 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 	}
 
 	protected void createEditButton(FormToolkit toolkit, Composite buttonComp) {
-		editButton = toolkit.createButton(buttonComp, Messages.edit, SWT.NONE);
+		editButton = toolkit.createButton(buttonComp, CommonMessages.edit, SWT.NONE);
 
 		editButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {

@@ -15,10 +15,10 @@
  */
 package org.apache.geronimo.st.v1.ui.sections;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v1.ui.Activator;
 import org.apache.geronimo.st.v1.ui.internal.EMFEditorContext;
-import org.apache.geronimo.st.v1.ui.internal.Messages;
 import org.apache.geronimo.st.v1.ui.wizards.SecurityRoleWizard;
 import org.apache.geronimo.xml.ns.security.DescriptionType;
 import org.apache.geronimo.xml.ns.security.RoleType;
@@ -50,7 +50,7 @@ public class SecuritySection extends AbstractTableSection {
 
 	Text roleDescriptionText;
 
-	private static final String[] COLUMN_NAMES = new String[] { Messages.name };
+	private static final String[] COLUMN_NAMES = new String[] { CommonMessages.name };
 
 	/**
 	 * @param plan
@@ -70,7 +70,7 @@ public class SecuritySection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
 	 */
 	public String getTitle() {
-		return Messages.editorSectionSecurityRolesTitle;
+		return CommonMessages.editorSectionSecurityRolesTitle;
 	}
 
 	/*
@@ -79,7 +79,7 @@ public class SecuritySection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
 	 */
 	public String getDescription() {
-		return Messages.editorSectionSecurityRolesDescription;
+		return CommonMessages.editorSectionSecurityRolesDescription;
 	}
 
 	/*
@@ -144,7 +144,7 @@ public class SecuritySection extends AbstractTableSection {
 		detail.setLayout(gl);
 		detail.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-		Label roleNameLabel = toolkit.createLabel(detail, Messages.name + ":");
+		Label roleNameLabel = toolkit.createLabel(detail, CommonMessages.name + ":");
 		roleNameLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 		roleNameLabel.setEnabled(true);
 
@@ -152,7 +152,7 @@ public class SecuritySection extends AbstractTableSection {
 		roleNameText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		roleNameText.setEnabled(true);
 
-		Label roleDescriptionLabel = toolkit.createLabel(detail, Messages.description
+		Label roleDescriptionLabel = toolkit.createLabel(detail, CommonMessages.description
 				+ ":");
 		roleDescriptionLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 		roleDescriptionLabel.setEnabled(true);

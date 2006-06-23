@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.st.v1.ui.wizards;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
 import org.apache.geronimo.st.v1.ui.internal.Messages;
@@ -98,7 +99,7 @@ public class DependencyWizard extends AbstractTableWizard {
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getAddWizardWindowTitle()
 	 */
 	public String getAddWizardWindowTitle() {
-		return Messages.wizardNewTitle_Dependency;
+		return CommonMessages.wizardNewTitle_Dependency;
 	}
 
 	/*
@@ -107,7 +108,7 @@ public class DependencyWizard extends AbstractTableWizard {
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEditWizardWindowTitle()
 	 */
 	public String getEditWizardWindowTitle() {
-		return Messages.wizardEditTitle_Dependency;
+		return CommonMessages.wizardEditTitle_Dependency;
 	}
 
 	/*
@@ -116,7 +117,7 @@ public class DependencyWizard extends AbstractTableWizard {
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
 	 */
 	public String getWizardFirstPageTitle() {
-		return Messages.wizardPageTitle_Dependency;
+		return CommonMessages.wizardPageTitle_Dependency;
 	}
 
 	/*
@@ -125,7 +126,7 @@ public class DependencyWizard extends AbstractTableWizard {
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
 	 */
 	public String getWizardFirstPageDescription() {
-		return Messages.wizardPageDescription_Dependency;
+		return CommonMessages.wizardPageDescription_Dependency;
 	}
 
 	/*
@@ -206,21 +207,21 @@ public class DependencyWizard extends AbstractTableWizard {
 			mavenButton.setLayoutData(data);
 
 			groupIdLabel = new Label(group, SWT.LEFT);
-			groupIdLabel.setText(Messages.groupId);
+			groupIdLabel.setText(CommonMessages.groupId);
 			groupIdLabel.setLayoutData(createLabelGridData());
 
 			groupIdText = new Text(group, SWT.SINGLE | SWT.BORDER);
 			groupIdText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 			artifactIdLabel = new Label(group, SWT.LEFT);
-			artifactIdLabel.setText(Messages.artifactId);
+			artifactIdLabel.setText(CommonMessages.artifactId);
 			artifactIdLabel.setLayoutData(createLabelGridData());
 
 			artifactIdText = new Text(group, SWT.SINGLE | SWT.BORDER);
 			artifactIdText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 			versionLabel = new Label(group, SWT.LEFT);
-			versionLabel.setText(Messages.version);
+			versionLabel.setText(CommonMessages.version);
 			versionLabel.setLayoutData(createLabelGridData());
 
 			versionText = new Text(group, SWT.SINGLE | SWT.BORDER);

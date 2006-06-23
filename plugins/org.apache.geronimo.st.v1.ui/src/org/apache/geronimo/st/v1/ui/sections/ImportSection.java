@@ -15,7 +15,7 @@
  */
 package org.apache.geronimo.st.v1.ui.sections;
 
-import org.apache.geronimo.st.v1.ui.internal.Messages;
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.v1.ui.wizards.ImportWizard;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -35,7 +35,7 @@ public class ImportSection extends DependencySection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
 	 */
 	public String getTitle() {
-		return Messages.editorSectionImportTitle;
+		return CommonMessages.editorSectionImportTitle;
 	}
 
 	/*
@@ -44,7 +44,7 @@ public class ImportSection extends DependencySection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
 	 */
 	public String getDescription() {
-		return Messages.editorSectionImportDescription;
+		return CommonMessages.editorSectionImportDescription;
 	}
 
 	/*

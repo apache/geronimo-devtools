@@ -15,9 +15,9 @@
  */
 package org.apache.geronimo.st.v1.ui.editors;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader;
 import org.apache.geronimo.st.v1.core.GeronimoV1Utils;
-import org.apache.geronimo.st.v1.ui.internal.Messages;
 import org.apache.geronimo.st.v1.ui.pages.AppGeneralPage;
 import org.apache.geronimo.st.v1.ui.pages.ConnectorOverviewPage;
 import org.apache.geronimo.st.v1.ui.pages.DeploymentPage;
@@ -48,8 +48,8 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
 	 * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader#addApplicationPlanPages(org.eclipse.ui.forms.editor.FormEditor)
 	 */
 	public void addApplicationPlanPages(FormEditor editor) throws PartInitException {
-		editor.addPage(new AppGeneralPage(editor, "appgeneralpage", Messages.editorTabGeneral));
-		editor.addPage(new SecurityPage(editor, "securitypage", Messages.editorTabSecurity, ApplicationPackage.eINSTANCE.getApplicationType_Security()));
+		editor.addPage(new AppGeneralPage(editor, "appgeneralpage", CommonMessages.editorTabGeneral));
+		editor.addPage(new SecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity, ApplicationPackage.eINSTANCE.getApplicationType_Security()));
 		editor.addPage(getApplicationDeploymentPage(editor));
 	}
 
@@ -57,7 +57,7 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
 	 * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader#addConnectorPlanPages(org.eclipse.ui.forms.editor.FormEditor)
 	 */
 	public void addConnectorPlanPages(FormEditor editor) throws PartInitException {
-		editor.addPage(new ConnectorOverviewPage(editor, "connectoroverview", Messages.editorTabGeneral));
+		editor.addPage(new ConnectorOverviewPage(editor, "connectoroverview", CommonMessages.editorTabGeneral));
 		editor.addPage(getConnectorDeploymentPage(editor));
 	}
 
@@ -67,9 +67,9 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
 	 * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader#addOpenEjbPlanPages()
 	 */
 	public void addOpenEjbPlanPages(FormEditor editor) throws PartInitException {
-		editor.addPage(new EjbOverviewPage(editor, "ejboverview", Messages.editorTabGeneral));
+		editor.addPage(new EjbOverviewPage(editor, "ejboverview", CommonMessages.editorTabGeneral));
 		// TODO Add naming page but broken down for each bean type
-		editor.addPage(new SecurityPage(editor, "securitypage", Messages.editorTabSecurity, JarPackage.eINSTANCE.getOpenejbJarType_Security()));
+		editor.addPage(new SecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity, JarPackage.eINSTANCE.getOpenejbJarType_Security()));
 		editor.addPage(getEjbJarDeploymentPage(editor));
 	}
 
@@ -79,9 +79,9 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
 	 * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader#addWebPlanPages()
 	 */
 	public void addWebPlanPages(FormEditor editor) throws PartInitException {
-		editor.addPage(new WebGeneralPage(editor, "generalpage", Messages.editorTabGeneral));
+		editor.addPage(new WebGeneralPage(editor, "generalpage", CommonMessages.editorTabGeneral));
 		editor.addPage(getWebNamingPage(editor));
-		editor.addPage(new SecurityPage(editor, "securitypage", Messages.editorTabSecurity, WebPackageImpl.eINSTANCE.getWebAppType_Security()));
+		editor.addPage(new SecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity, WebPackageImpl.eINSTANCE.getWebAppType_Security()));
 		editor.addPage(getWebDeploymentPage(editor));
 	}
 
@@ -144,11 +144,11 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
 	
 	//TODO push to superclass
 	private NamingFormPage createNamingFormPage(FormEditor editor) {
-		return new NamingFormPage(editor, "namingpage", Messages.editorTabNaming);
+		return new NamingFormPage(editor, "namingpage", CommonMessages.editorTabNaming);
 	}
 	
 	//TODO Push to superclass
 	private DeploymentPage createDeploymentFormPage(FormEditor editor) {
-		return new DeploymentPage(editor, "deploymentpage", Messages.editorTabDeployment);
+		return new DeploymentPage(editor, "deploymentpage", CommonMessages.editorTabDeployment);
 	}
 }

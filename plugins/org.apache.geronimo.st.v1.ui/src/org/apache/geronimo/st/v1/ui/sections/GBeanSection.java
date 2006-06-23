@@ -15,9 +15,9 @@
  */
 package org.apache.geronimo.st.v1.ui.sections;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v1.ui.internal.EMFEditorContext;
-import org.apache.geronimo.st.v1.ui.internal.Messages;
 import org.apache.geronimo.st.v1.ui.wizards.GBeanWizard;
 import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -32,8 +32,8 @@ public class GBeanSection extends AbstractTableSection {
 
 	private EReference gBeanERef;
 
-	private static final String[] COLUMN_NAMES = new String[] { Messages.name,
-			Messages.GbeanName, Messages.className };
+	private static final String[] COLUMN_NAMES = new String[] { CommonMessages.name,
+		CommonMessages.GbeanName, CommonMessages.className };
 
 	/**
 	 * @param plan
@@ -53,7 +53,7 @@ public class GBeanSection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
 	 */
 	public String getTitle() {
-		return Messages.editorSectionGBeanTitle;
+		return CommonMessages.editorSectionGBeanTitle;
 	}
 
 	/*
@@ -62,7 +62,7 @@ public class GBeanSection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
 	 */
 	public String getDescription() {
-		return Messages.editorSectionGBeanDescription;
+		return CommonMessages.editorSectionGBeanDescription;
 	}
 
 	/*

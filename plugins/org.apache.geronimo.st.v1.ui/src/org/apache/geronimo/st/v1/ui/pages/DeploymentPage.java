@@ -15,8 +15,8 @@
  */
 package org.apache.geronimo.st.v1.ui.pages;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
-import org.apache.geronimo.st.v1.ui.internal.Messages;
 import org.apache.geronimo.st.v1.ui.sections.DependencySection;
 import org.apache.geronimo.st.v1.ui.sections.GBeanSection;
 import org.apache.geronimo.st.v1.ui.sections.ImportSection;
@@ -58,7 +58,7 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
 	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getFormTitle()
 	 */
 	public String getFormTitle() {
-		return Messages.deploymentPageTitle;
+		return CommonMessages.deploymentPageTitle;
 	}
 
 }

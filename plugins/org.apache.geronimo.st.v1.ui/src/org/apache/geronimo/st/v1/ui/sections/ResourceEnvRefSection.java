@@ -15,10 +15,10 @@
  */
 package org.apache.geronimo.st.v1.ui.sections;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v1.ui.Activator;
 import org.apache.geronimo.st.v1.ui.internal.EMFEditorContext;
-import org.apache.geronimo.st.v1.ui.internal.Messages;
 import org.apache.geronimo.st.v1.ui.wizards.ResourceEnvRefWizard;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -35,8 +35,8 @@ public class ResourceEnvRefSection extends AbstractTableSection {
 	EReference resourceEnvRefERef;
 
 	private static final String[] COLUMN_NAMES = new String[] {
-			Messages.editorResEnvRefNameTitle,
-			Messages.editorResEnvRefMsgDestTitle };
+		CommonMessages.editorResEnvRefNameTitle,
+		CommonMessages.editorResEnvRefMsgDestTitle };
 
 	public ResourceEnvRefSection(EObject plan, Composite parent, FormToolkit toolkit, int style, EReference resourceEnvRefERef) {
 		super(plan, parent, toolkit, style);
@@ -50,7 +50,7 @@ public class ResourceEnvRefSection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
 	 */
 	public String getTitle() {
-		return Messages.editorResourceEnvRefTitle;
+		return CommonMessages.editorResourceEnvRefTitle;
 	}
 
 	/*
@@ -59,7 +59,7 @@ public class ResourceEnvRefSection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
 	 */
 	public String getDescription() {
-		return Messages.editorResourceEnvRefDescription;
+		return CommonMessages.editorResourceEnvRefDescription;
 	}
 
 	/*

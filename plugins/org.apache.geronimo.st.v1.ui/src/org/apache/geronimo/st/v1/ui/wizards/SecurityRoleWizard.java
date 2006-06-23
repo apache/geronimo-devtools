@@ -15,9 +15,9 @@
  */
 package org.apache.geronimo.st.v1.ui.wizards;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.apache.geronimo.st.v1.ui.internal.Messages;
 import org.apache.geronimo.st.v1.ui.sections.SecuritySection;
 import org.apache.geronimo.xml.ns.security.DescriptionType;
 import org.apache.geronimo.xml.ns.security.RoleMappingsType;
@@ -49,19 +49,19 @@ public class SecurityRoleWizard extends AbstractTableWizard {
 	}
 
 	public String getAddWizardWindowTitle() {
-		return Messages.wizardNewTitle_SecurityRole;
+		return CommonMessages.wizardNewTitle_SecurityRole;
 	}
 
 	public String getEditWizardWindowTitle() {
-		return Messages.wizardEditTitle_SecurityRole;
+		return CommonMessages.wizardEditTitle_SecurityRole;
 	}
 
 	public String getWizardFirstPageTitle() {
-		return Messages.wizardPageTitle_SecurityRole;
+		return CommonMessages.wizardPageTitle_SecurityRole;
 	}
 
 	public String getWizardFirstPageDescription() {
-		return Messages.wizardPageDescription_SecurityRole;
+		return CommonMessages.wizardPageDescription_SecurityRole;
 	}
 
 	/*
@@ -90,7 +90,7 @@ public class SecurityRoleWizard extends AbstractTableWizard {
 		 */
 		public void doCustom(Composite parent) {
 			Label label = new Label(parent, SWT.LEFT);
-			String columnName = Messages.description;
+			String columnName = CommonMessages.description;
 			if (!columnName.endsWith(":"))
 				columnName = columnName.concat(":");
 			label.setText(columnName);

@@ -15,9 +15,9 @@
  */
 package org.apache.geronimo.st.v1.ui.wizards;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.apache.geronimo.st.v1.ui.internal.Messages;
 import org.apache.geronimo.xml.ns.naming.NamingFactory;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
 import org.eclipse.emf.ecore.EAttribute;
@@ -35,7 +35,7 @@ public class EjbLocalRefWizard extends AbstractTableWizard {
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getAddWizardWindowTitle()
 	 */
 	public String getAddWizardWindowTitle() {
-		return Messages.wizardNewTitle_EjbLocalRef;
+		return CommonMessages.wizardNewTitle_EjbLocalRef;
 	}
 
 	public EFactory getEFactory() {
@@ -54,7 +54,7 @@ public class EjbLocalRefWizard extends AbstractTableWizard {
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEditWizardWindowTitle()
 	 */
 	public String getEditWizardWindowTitle() {
-		return Messages.wizardEditTitle_EjbLocalRef;
+		return CommonMessages.wizardEditTitle_EjbLocalRef;
 	}
 
 	/*
@@ -63,7 +63,7 @@ public class EjbLocalRefWizard extends AbstractTableWizard {
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
 	 */
 	public String getWizardFirstPageTitle() {
-		return Messages.wizardPageTitle_EjbLocalRef;
+		return CommonMessages.wizardPageTitle_EjbLocalRef;
 	}
 
 	/*
@@ -72,7 +72,7 @@ public class EjbLocalRefWizard extends AbstractTableWizard {
 	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
 	 */
 	public String getWizardFirstPageDescription() {
-		return Messages.wizardPageDescription_EjbLocalRef;
+		return CommonMessages.wizardPageDescription_EjbLocalRef;
 	}
 
 }

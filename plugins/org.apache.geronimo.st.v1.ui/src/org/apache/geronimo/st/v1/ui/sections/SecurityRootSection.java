@@ -15,8 +15,8 @@
  */
 package org.apache.geronimo.st.v1.ui.sections;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractSectionPart;
-import org.apache.geronimo.st.v1.ui.internal.Messages;
 import org.apache.geronimo.xml.ns.security.SecurityFactory;
 import org.apache.geronimo.xml.ns.security.SecurityPackage;
 import org.apache.geronimo.xml.ns.security.SecurityType;
@@ -68,8 +68,8 @@ public class SecurityRootSection extends AbstractSectionPart {
 	protected void createClient() {
 		Section section = getSection();
 
-		section.setText(Messages.editorSectionGeneralTitle);
-		section.setDescription(Messages.editorSectionGeneralDescription);
+		section.setText(CommonMessages.editorSectionGeneralTitle);
+		section.setDescription(CommonMessages.editorSectionGeneralDescription);
 		section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
 		Composite composite = toolkit.createComposite(section);
@@ -83,7 +83,7 @@ public class SecurityRootSection extends AbstractSectionPart {
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 		section.setClient(composite);
 
-		createLabel(composite, Messages.defaultRole, toolkit);
+		createLabel(composite, CommonMessages.defaultRole, toolkit);
 		defaultRole = toolkit.createText(composite, getDefaultRole(), SWT.BORDER);
 		GridData gd = new GridData();
 		gd.widthHint = 150;
@@ -95,7 +95,7 @@ public class SecurityRootSection extends AbstractSectionPart {
 			}
 		});
 
-		doas = toolkit.createButton(composite, Messages.doasCurrentCaller, SWT.CHECK);
+		doas = toolkit.createButton(composite, CommonMessages.doasCurrentCaller, SWT.CHECK);
 		doas.setLayoutData(createGridData());
 		doas.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -107,7 +107,7 @@ public class SecurityRootSection extends AbstractSectionPart {
 			}
 		});
 
-		useCtxHdl = toolkit.createButton(composite, Messages.useContextHandler, SWT.CHECK);
+		useCtxHdl = toolkit.createButton(composite, CommonMessages.useContextHandler, SWT.CHECK);
 		useCtxHdl.setLayoutData(createGridData());
 		useCtxHdl.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {

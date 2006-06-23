@@ -15,10 +15,10 @@
  */
 package org.apache.geronimo.st.v1.ui.sections;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v1.ui.Activator;
 import org.apache.geronimo.st.v1.ui.internal.EMFEditorContext;
-import org.apache.geronimo.st.v1.ui.internal.Messages;
 import org.apache.geronimo.st.v1.ui.wizards.EjbRefWizard;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -35,7 +35,7 @@ public class EjbRefSection extends AbstractTableSection {
 	EReference ejbRefERef;
 
 	private static final String[] COLUMN_NAMES = new String[] {
-			Messages.editorEjbRefTargetName, Messages.editorEjbRefEjbLink };
+		CommonMessages.editorEjbRefTargetName, CommonMessages.editorEjbRefEjbLink };
 
 	/**
 	 * @param plan
@@ -55,7 +55,7 @@ public class EjbRefSection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
 	 */
 	public String getTitle() {
-		return Messages.editorEjbRefTitle;
+		return CommonMessages.editorEjbRefTitle;
 	}
 
 	/*
@@ -64,7 +64,7 @@ public class EjbRefSection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
 	 */
 	public String getDescription() {
-		return Messages.editorEjbRefDescription;
+		return CommonMessages.editorEjbRefDescription;
 	}
 
 	/*
