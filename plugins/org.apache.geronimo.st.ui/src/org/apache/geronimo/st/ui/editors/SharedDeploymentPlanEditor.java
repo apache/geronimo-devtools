@@ -90,7 +90,7 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEd
 				IProject project = ((IFileEditorInput) input).getFile().getProject();
 				try {
 					IFacetedProject fp = ProjectFacetsManager.create(project);
-					IRuntime runtime = FacetUtil.getRuntime(fp.getRuntime());
+					IRuntime runtime = FacetUtil.getRuntime(fp.getPrimaryRuntime());
 					String version = runtime.getRuntimeType().getVersion();
 					currentLoader = (IGeronimoFormContentLoader) loaders.get(version);
 				} catch (CoreException e) {
