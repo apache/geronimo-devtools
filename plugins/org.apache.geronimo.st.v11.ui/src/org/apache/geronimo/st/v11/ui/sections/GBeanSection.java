@@ -33,8 +33,7 @@ public class GBeanSection extends AbstractTableSection {
 	private EReference gBeanERef;
 
 	private static final String[] COLUMN_NAMES = new String[] {
-			CommonMessages.name, CommonMessages.GbeanName,
-			CommonMessages.className };
+			CommonMessages.name, CommonMessages.className };
 
 	/**
 	 * @param plan

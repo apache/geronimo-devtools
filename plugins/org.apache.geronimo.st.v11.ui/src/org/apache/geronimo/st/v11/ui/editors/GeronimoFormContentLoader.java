@@ -110,33 +110,35 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
 	protected FormPage getWebDeploymentPage(FormEditor editor) {
 		DeploymentPage formPage = createDeploymentFormPage(editor);
 		formPage.environment = WebFactory.eINSTANCE.getWebPackage().getWebAppType_Environment();
+		formPage.gbeanERef = WebFactory.eINSTANCE.getWebPackage().getWebAppType_Gbean();
 		return formPage;
 	}
 
 	private FormPage getEjbJarDeploymentPage(FormEditor editor) {
 		DeploymentPage formPage = createDeploymentFormPage(editor);
 		formPage.environment = JarFactory.eINSTANCE.getJarPackage().getOpenejbJarType_Environment();
+		formPage.gbeanERef = JarFactory.eINSTANCE.getJarPackage().getOpenejbJarType_Gbean();
 		return formPage;
 	}
 
 	protected FormPage getApplicationDeploymentPage(FormEditor editor) {
 		DeploymentPage formPage = createDeploymentFormPage(editor);
 		formPage.environment = ApplicationFactory.eINSTANCE.getApplicationPackage().getApplicationType_Environment();
+		formPage.gbeanERef = ApplicationFactory.eINSTANCE.getApplicationPackage().getApplicationType_Gbean();
 		return formPage;
 	}
 
 	private FormPage getConnectorDeploymentPage(FormEditor editor) {
 		DeploymentPage formPage = createDeploymentFormPage(editor);
 		formPage.environment = ConnectorFactory.eINSTANCE.getConnectorPackage().getConnectorType_Environment();
+		formPage.gbeanERef = ConnectorFactory.eINSTANCE.getConnectorPackage().getConnectorType_Gbean();
 		return formPage;
 	}
 
-	// TODO push to superclass
 	private NamingFormPage createNamingFormPage(FormEditor editor) {
 		return new NamingFormPage(editor, "namingpage", CommonMessages.editorTabNaming);
 	}
 
-	// TODO Push to superclass
 	private DeploymentPage createDeploymentFormPage(FormEditor editor) {
 		return new DeploymentPage(editor, "deploymentpage", CommonMessages.editorTabDeployment);
 	}

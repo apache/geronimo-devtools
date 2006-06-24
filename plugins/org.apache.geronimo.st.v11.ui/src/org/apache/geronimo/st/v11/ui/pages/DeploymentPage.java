@@ -26,6 +26,8 @@ import org.eclipse.ui.forms.editor.FormEditor;
 public class DeploymentPage extends AbstractGeronimoFormPage {
 	
 	public EReference environment;
+	
+	public EReference gbeanERef;
 
 	public DeploymentPage(FormEditor editor, String id, String title) {
 		super(editor, id, title);
@@ -38,7 +40,7 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
 	 */
 	protected void fillBody(IManagedForm managedForm) {
 		managedForm.addPart(new DependencySection(getDeploymentPlan(), environment, body, toolkit, getStyle()));
-		managedForm.addPart(new GBeanSection(getDeploymentPlan(), environment, body, toolkit, getStyle()));
+		managedForm.addPart(new GBeanSection(getDeploymentPlan(), gbeanERef, body, toolkit, getStyle()));
 	}
 
 	/*
