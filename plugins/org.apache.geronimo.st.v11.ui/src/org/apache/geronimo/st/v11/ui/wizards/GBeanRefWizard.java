@@ -36,8 +36,7 @@ public class GBeanRefWizard extends AbstractTableWizard {
 	public EAttribute[] getTableColumnEAttributes() {
 		return new EAttribute[] {
 				NamingPackage.eINSTANCE.getGbeanRefType_RefName(),
-				NamingPackage.eINSTANCE.getGbeanRefType_RefType(),
-				NamingPackage.eINSTANCE.getGbeanRefType_ProxyType() };
+				NamingPackage.eINSTANCE.getGbeanRefType_RefType()};
 	}
 
 	/*

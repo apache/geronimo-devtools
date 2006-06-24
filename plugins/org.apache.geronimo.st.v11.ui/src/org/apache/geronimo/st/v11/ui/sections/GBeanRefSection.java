@@ -34,8 +34,7 @@ public class GBeanRefSection extends AbstractTableSection {
 
 	private static final String[] COLUMN_NAMES = new String[] {
 			CommonMessages.editorGBeanRefName,
-			CommonMessages.editorGBeanRefType,
-			CommonMessages.editorGBeanRefProxyType };
+			CommonMessages.editorGBeanRefType};
 
 	public GBeanRefSection(EObject plan, Composite parent, FormToolkit toolkit, int style, EReference gbeanERef) {
 		super(plan, parent, toolkit, style);

@@ -35,7 +35,7 @@ public class EjbLocalRefSection extends AbstractTableSection {
 	EReference ejbLocalRefERef;
 
 	private static final String[] COLUMN_NAMES = new String[] {
-			CommonMessages.editorEjbRefTargetName,
+			CommonMessages.name,
 			CommonMessages.editorEjbRefEjbLink };
 
 	public EjbLocalRefSection(EObject plan, Composite parent, FormToolkit toolkit, int style, EReference ejbLocalRefERef) {

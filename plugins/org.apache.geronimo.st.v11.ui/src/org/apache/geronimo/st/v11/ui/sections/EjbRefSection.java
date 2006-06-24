@@ -35,7 +35,7 @@ public class EjbRefSection extends AbstractTableSection {
 	EReference ejbRefERef;
 
 	private static final String[] COLUMN_NAMES = new String[] {
-			CommonMessages.editorEjbRefTargetName,
+			CommonMessages.name,
 			CommonMessages.editorEjbRefEjbLink };
 
 	/**

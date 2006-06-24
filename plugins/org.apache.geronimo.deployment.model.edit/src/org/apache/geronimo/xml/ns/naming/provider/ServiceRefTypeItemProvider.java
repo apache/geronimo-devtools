@@ -19,19 +19,13 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.geronimo.deployment.model.edit.GeronimoEMFEditPlugin;
-
 import org.apache.geronimo.xml.ns.naming.NamingFactory;
 import org.apache.geronimo.xml.ns.naming.NamingPackage;
-import org.apache.geronimo.xml.ns.naming.ResourceRefType;
 import org.apache.geronimo.xml.ns.naming.ServiceRefType;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.ResourceLocator;
-
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
