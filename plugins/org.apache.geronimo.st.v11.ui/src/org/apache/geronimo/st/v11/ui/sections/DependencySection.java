@@ -21,23 +21,19 @@ import org.apache.geronimo.st.v11.ui.Activator;
 import org.apache.geronimo.st.v11.ui.internal.EMFEditorContext;
 import org.apache.geronimo.st.v11.ui.wizards.DependencyWizard;
 import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
+import org.apache.geronimo.xml.ns.deployment.EnvironmentType;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class DependencySection extends AbstractTableSection {
 
-	/**
-	 * Must be a set to a ERef type of XPackage.eINSTANCE.getXType_Dependency();
-	 */
-	private EReference dependenciesERef;
+	private EReference environmentERef;
 
 	/**
 	 * @param plan
@@ -45,9 +41,9 @@ public class DependencySection extends AbstractTableSection {
 	 * @param toolkit
 	 * @param style
 	 */
-	public DependencySection(EObject plan, EReference dependenciesERef, Composite parent, FormToolkit toolkit, int style) {
+	public DependencySection(EObject plan, EReference environment, Composite parent, FormToolkit toolkit, int style) {
 		super(plan, parent, toolkit, style);
-		this.dependenciesERef = dependenciesERef;
+		this.environmentERef = environment;
 		createClient();
 	}
 
@@ -75,7 +71,7 @@ public class DependencySection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
 	 */
 	public EReference getEReference() {
-		return dependenciesERef;
+		return environmentERef;
 	}
 
 	/*
@@ -112,22 +108,17 @@ public class DependencySection extends AbstractTableSection {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#filter(org.eclipse.jface.viewers.Viewer,
-	 *      java.lang.Object, java.lang.Object)
-	 */
-	protected boolean filter(Viewer viewer, Object parentElement, Object element) {
-		if (super.filter(viewer, parentElement, element)) {
-			return ((EList) getPlan().eGet(getEReference())).contains(element);
-		}
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
 	 */
 	public AdapterFactory getAdapterFactory() {
 		return EMFEditorContext.getFactory();
+	}
+	
+	public Object getInput() {
+		EnvironmentType envType = (EnvironmentType) getPlan().eGet(getEReference());
+		if (envType != null) {
+			return envType.getDependencies();
+		}
+		return super.getInput();
 	}
 }

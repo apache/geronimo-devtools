@@ -19,18 +19,13 @@ import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v11.ui.sections.DependencySection;
 import org.apache.geronimo.st.v11.ui.sections.GBeanSection;
-import org.apache.geronimo.st.v11.ui.sections.ImportSection;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
 public class DeploymentPage extends AbstractGeronimoFormPage {
-
-	public EReference dependencies;
-
-	public EReference imports;
-
-	public EReference gbeans;
+	
+	public EReference environment;
 
 	public DeploymentPage(FormEditor editor, String id, String title) {
 		super(editor, id, title);
@@ -42,9 +37,8 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
 	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
 	 */
 	protected void fillBody(IManagedForm managedForm) {
-		managedForm.addPart(new DependencySection(getDeploymentPlan(), dependencies, body, toolkit, getStyle()));
-		managedForm.addPart(new ImportSection(getDeploymentPlan(), imports, body, toolkit, getStyle()));
-		managedForm.addPart(new GBeanSection(getDeploymentPlan(), gbeans, body, toolkit, getStyle()));
+		managedForm.addPart(new DependencySection(getDeploymentPlan(), environment, body, toolkit, getStyle()));
+		managedForm.addPart(new GBeanSection(getDeploymentPlan(), environment, body, toolkit, getStyle()));
 	}
 
 	/*

@@ -25,8 +25,6 @@ import org.apache.geronimo.st.v11.ui.pages.EjbOverviewPage;
 import org.apache.geronimo.st.v11.ui.pages.NamingFormPage;
 import org.apache.geronimo.st.v11.ui.pages.SecurityPage;
 import org.apache.geronimo.st.v11.ui.pages.WebGeneralPage;
-import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
-import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
 import org.apache.geronimo.xml.ns.j2ee.application.ApplicationFactory;
 import org.apache.geronimo.xml.ns.j2ee.application.ApplicationPackage;
 import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorFactory;
@@ -111,25 +109,25 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
 
 	protected FormPage getWebDeploymentPage(FormEditor editor) {
 		DeploymentPage formPage = createDeploymentFormPage(editor);
-		formPage.gbeans = WebFactory.eINSTANCE.getWebPackage().getWebAppType_Gbean();
+		formPage.environment = WebFactory.eINSTANCE.getWebPackage().getWebAppType_Environment();
 		return formPage;
 	}
 
 	private FormPage getEjbJarDeploymentPage(FormEditor editor) {
 		DeploymentPage formPage = createDeploymentFormPage(editor);
-		formPage.gbeans = JarFactory.eINSTANCE.getJarPackage().getOpenejbJarType_Gbean();
+		formPage.environment = JarFactory.eINSTANCE.getJarPackage().getOpenejbJarType_Environment();
 		return formPage;
 	}
 
 	protected FormPage getApplicationDeploymentPage(FormEditor editor) {
 		DeploymentPage formPage = createDeploymentFormPage(editor);
-		formPage.gbeans = ApplicationFactory.eINSTANCE.getApplicationPackage().getApplicationType_Gbean();
+		formPage.environment = ApplicationFactory.eINSTANCE.getApplicationPackage().getApplicationType_Environment();
 		return formPage;
 	}
 
 	private FormPage getConnectorDeploymentPage(FormEditor editor) {
 		DeploymentPage formPage = createDeploymentFormPage(editor);
-		formPage.gbeans = ConnectorFactory.eINSTANCE.getConnectorPackage().getConnectorType_Gbean();
+		formPage.environment = ConnectorFactory.eINSTANCE.getConnectorPackage().getConnectorType_Environment();
 		return formPage;
 	}
 
@@ -140,9 +138,6 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
 
 	// TODO Push to superclass
 	private DeploymentPage createDeploymentFormPage(FormEditor editor) {
-		DeploymentPage formPage = new DeploymentPage(editor, "deploymentpage", CommonMessages.editorTabDeployment);
-		DeploymentPackage pkg = DeploymentFactory.eINSTANCE.getDeploymentPackage();
-		formPage.dependencies = pkg.getEnvironmentType_Dependencies();
-		return formPage;
+		return new DeploymentPage(editor, "deploymentpage", CommonMessages.editorTabDeployment);
 	}
 }

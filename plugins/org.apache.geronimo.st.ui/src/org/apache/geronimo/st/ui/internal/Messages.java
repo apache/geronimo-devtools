@@ -155,6 +155,7 @@ public class Messages extends NLS {
 	public static String groupId;
 	public static String artifactId;
 	public static String version;
+	public static String type;
 	//
 	public static String wizardNewTitle_Import;
 	public static String wizardEditTitle_Import;

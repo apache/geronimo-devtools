@@ -19,10 +19,13 @@ import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
 import org.apache.geronimo.xml.ns.deployment.ArtifactType;
+import org.apache.geronimo.xml.ns.deployment.DependenciesType;
 import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
 import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
+import org.apache.geronimo.xml.ns.deployment.EnvironmentType;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
@@ -30,7 +33,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
@@ -49,12 +51,16 @@ public class DependencyWizard extends AbstractTableWizard {
 	protected Label artifactIdLabel;
 
 	protected Label versionLabel;
+	
+	protected Label typeLabel;
 
 	protected Text groupIdText;
 
 	protected Text artifactIdText;
 
 	protected Text versionText;
+	
+	protected Text typeText;
 
 	/**
 	 * @param section
@@ -127,6 +133,7 @@ public class DependencyWizard extends AbstractTableWizard {
 		dt.setArtifactId(artifactIdText.getText());
 		dt.setGroupId(groupIdText.getText());
 		dt.setVersion(versionText.getText());
+		dt.setType(typeText.getText());
 	}
 
 	/*
@@ -164,40 +171,47 @@ public class DependencyWizard extends AbstractTableWizard {
 			data = new GridData(GridData.FILL_HORIZONTAL);
 			data.horizontalSpan = 2;
 
-			Group group = new Group(composite, SWT.NONE);
-			group.setText(CommonMessages.dependencyGroupLabel);
-			group.setLayoutData(data);
-			group.setLayout(layout);
-
-			groupIdLabel = new Label(group, SWT.LEFT);
+			groupIdLabel = new Label(composite, SWT.LEFT);
 			groupIdLabel.setText(CommonMessages.groupId);
 			groupIdLabel.setLayoutData(createLabelGridData());
 
-			groupIdText = new Text(group, SWT.SINGLE | SWT.BORDER);
+			groupIdText = new Text(composite, SWT.SINGLE | SWT.BORDER);
 			groupIdText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-			artifactIdLabel = new Label(group, SWT.LEFT);
+			artifactIdLabel = new Label(composite, SWT.LEFT);
 			artifactIdLabel.setText(CommonMessages.artifactId);
 			artifactIdLabel.setLayoutData(createLabelGridData());
 
-			artifactIdText = new Text(group, SWT.SINGLE | SWT.BORDER);
+			artifactIdText = new Text(composite, SWT.SINGLE | SWT.BORDER);
 			artifactIdText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-			versionLabel = new Label(group, SWT.LEFT);
+			versionLabel = new Label(composite, SWT.LEFT);
 			versionLabel.setText(CommonMessages.version);
 			versionLabel.setLayoutData(createLabelGridData());
 
-			versionText = new Text(group, SWT.SINGLE | SWT.BORDER);
+			versionText = new Text(composite, SWT.SINGLE | SWT.BORDER);
 			versionText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			
+			typeLabel = new Label(composite, SWT.LEFT);
+			typeLabel.setText(CommonMessages.type);
+			typeLabel.setLayoutData(createLabelGridData());
 
-			if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_ArtifactId())) {
-				artifactIdText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_ArtifactId()).toString());
-			}
-			if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_GroupId())) {
-				groupIdText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_GroupId()).toString());
-			}
-			if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_Version())) {
-				versionText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_Version()).toString());
+			typeText = new Text(composite, SWT.SINGLE | SWT.BORDER);
+			typeText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+			if (eObject != null) {
+				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_ArtifactId())) {
+					artifactIdText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_ArtifactId()).toString());
+				}
+				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_GroupId())) {
+					groupIdText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_GroupId()).toString());
+				}
+				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_Version())) {
+					versionText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_Version()).toString());
+				}
+				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_Type())) {
+					typeText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_Type()).toString());
+				}
 			}
 
 			setControl(composite);
@@ -206,8 +220,28 @@ public class DependencyWizard extends AbstractTableWizard {
 	}
 
 	public GridData createLabelGridData() {
-		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-		gd.horizontalIndent = 20;
-		return gd;
+		return new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.ui.wizards.AbstractTableWizard#performFinish()
+	 */
+	public boolean performFinish() {
+
+		if (eObject == null) {
+			eObject = getEFactory().create(section.getTableEntryObjectType());
+			EObject plan = section.getPlan();
+			DependenciesType dependenciesType = ((EnvironmentType) plan.eGet(section.getEReference())).getDependencies();
+			if(dependenciesType == null) {
+				dependenciesType = DeploymentFactory.eINSTANCE.createDependenciesType();
+				((EnvironmentType) plan.eGet(section.getEReference())).setDependencies(dependenciesType);
+			}
+			dependenciesType.getDependency().add(eObject);
+		}
+
+		processEAttributes(getPages()[0]);
+
+		return true;
 	}
 }
