@@ -38,8 +38,8 @@ import org.openejb.xml.ns.openejb.jar.OpenejbJarType;
 public class V1DeploymentPlanCreationOperation extends
 		DeploymentPlanCreationOperation {
 
-	public V1DeploymentPlanCreationOperation(IDataModel model) {
-		super(model);
+	public V1DeploymentPlanCreationOperation(IDataModel model, Object config) {
+		super(model, config);
 	}
 
 	/* (non-Javadoc)

@@ -25,14 +25,13 @@ import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 
-public class GeronimoV1FacetInstallDelegate extends
-		GeronimoFacetInstallDelegate {
+public class GeronimoV1FacetInstallDelegate extends GeronimoFacetInstallDelegate {
 
-	public IDataModelOperation createDeploymentPlanCreationOp(IProject project) {
+	public IDataModelOperation createDeploymentPlanCreationOp(IProject project, Object config) {
 		IVirtualComponent comp = ComponentCore.createComponent(project);
 		IDataModel model = DataModelFactory.createDataModel(new JavaComponentCreationDataModelProvider());
 		model.setStringProperty(IComponentCreationDataModelProperties.COMPONENT_NAME, comp.getName());
 		model.setStringProperty(IComponentCreationDataModelProperties.PROJECT_NAME, project.getName());
-		return new V1DeploymentPlanCreationOperation(model);
+		return new V1DeploymentPlanCreationOperation(model, config);
 	}
 }

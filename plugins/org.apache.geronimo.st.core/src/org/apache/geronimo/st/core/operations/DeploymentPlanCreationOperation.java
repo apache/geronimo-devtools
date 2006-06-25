@@ -35,9 +35,12 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 public abstract class DeploymentPlanCreationOperation extends
 		AbstractGeronimoJ2EEComponentOperation implements
 		IDeploymentPlanCreationOp {
+	
+	protected Object config;
 
-	public DeploymentPlanCreationOperation(IDataModel model) {
+	public DeploymentPlanCreationOperation(IDataModel model, Object config) {
 		super(model);
+		this.config = config;
 	}
 
 	/*

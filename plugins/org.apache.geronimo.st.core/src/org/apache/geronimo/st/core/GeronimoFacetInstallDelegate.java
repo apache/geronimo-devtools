@@ -38,11 +38,10 @@ abstract public class GeronimoFacetInstallDelegate implements IDelegate {
 	 *      org.eclipse.wst.common.project.facet.core.IProjectFacetVersion,
 	 *      java.lang.Object, org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	public void execute(IProject project, IProjectFacetVersion fv,
-			Object config, IProgressMonitor monitor) throws CoreException {
+	public void execute(IProject project, IProjectFacetVersion fv, Object config, IProgressMonitor monitor) throws CoreException {
 
 		try {
-			createDeploymentPlanCreationOp(project).execute(monitor, null);
+			createDeploymentPlanCreationOp(project, config).execute(monitor, null);
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
@@ -53,7 +52,7 @@ abstract public class GeronimoFacetInstallDelegate implements IDelegate {
 			IFacetedProject fp = ProjectFacetsManager.create(ears[i]);
 			if (!fp.hasProjectFacet(facet)) {
 				try {
-					createDeploymentPlanCreationOp(ears[i]).execute(monitor, null);
+					createDeploymentPlanCreationOp(ears[i], config).execute(monitor, null);
 				} catch (ExecutionException e) {
 					e.printStackTrace();
 				}
@@ -61,7 +60,6 @@ abstract public class GeronimoFacetInstallDelegate implements IDelegate {
 		}
 	}
 
-	public abstract IDataModelOperation createDeploymentPlanCreationOp(
-			IProject project);
+	public abstract IDataModelOperation createDeploymentPlanCreationOp(IProject project, Object config);
 
 }

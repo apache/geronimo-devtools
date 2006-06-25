@@ -17,8 +17,10 @@ package org.apache.geronimo.st.v11.core.operations;
 
 import org.apache.geronimo.st.core.GeronimoSchemaNS;
 import org.apache.geronimo.st.core.operations.DeploymentPlanCreationOperation;
+import org.apache.geronimo.st.v11.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.v11.core.GeronimoV11Utils;
 import org.apache.geronimo.xml.ns.deployment.ArtifactType;
+import org.apache.geronimo.xml.ns.deployment.DependenciesType;
 import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
 import org.apache.geronimo.xml.ns.deployment.EnvironmentType;
 import org.apache.geronimo.xml.ns.j2ee.application.ApplicationFactory;
@@ -46,11 +48,12 @@ import org.openejb.xml.ns.openejb.jar.JarPackage;
 import org.openejb.xml.ns.openejb.jar.OpenejbJarType;
 import org.openejb.xml.ns.openejb.jar.util.JarResourceFactoryImpl;
 
-public class V11DeploymentPlanCreationOperation extends
-		DeploymentPlanCreationOperation {
+public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOperation {
+	
+	DeploymentPlanInstallConfig cfg;
 
-	public V11DeploymentPlanCreationOperation(IDataModel model) {
-		super(model);
+	public V11DeploymentPlanCreationOperation(IDataModel model, Object config) {
+		super(model, config);
 	}
 
 	/* (non-Javadoc)
@@ -72,7 +75,7 @@ public class V11DeploymentPlanCreationOperation extends
 		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS_1_1);
 
 		root.setApplicationName(getComponentName());
-		root.setEnvironment(getConfigEnvironment("default", getComponentName(), "1.0", "car"));
+		root.setEnvironment(getConfigEnvironment());
 
 		documentRoot.setApplication(root);
 		resource.getContents().add(documentRoot);
@@ -103,7 +106,7 @@ public class V11DeploymentPlanCreationOperation extends
 
 		WebAppType root = WebFactory.eINSTANCE.createWebAppType();
 
-		root.setEnvironment(getConfigEnvironment("default", getComponentName(), "1.0", "car"));
+		root.setEnvironment(getConfigEnvironment());
 		root.setContextRoot("/" + getComponentName());
 		//root.setContextPriorityClassloader(false); //TODO Replace this with inverse-classloading
 
@@ -135,7 +138,7 @@ public class V11DeploymentPlanCreationOperation extends
 		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS_1_1);
 		map.put("pkgen", GeronimoSchemaNS.GERONIMO_PKGEN_NS_2_0);
 
-		root.setEnvironment(getConfigEnvironment("default", getComponentName(), "1.0", "car"));
+		root.setEnvironment(getConfigEnvironment());
 		root.setEnterpriseBeans(JarFactory.eINSTANCE.createEnterpriseBeansType());
 
 		documentRoot.setOpenejbJar(root);
@@ -164,7 +167,7 @@ public class V11DeploymentPlanCreationOperation extends
 		map.put("nam", GeronimoSchemaNS.GERONIMO_NAMING_NS_1_1);
 		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS_1_1);
 
-		root.setEnvironment(getConfigEnvironment("default", getComponentName(), "1.0", "car"));
+		root.setEnvironment(getConfigEnvironment());
 		documentRoot.setConnector(root);
 		resource.getContents().add(documentRoot);
 
@@ -173,15 +176,41 @@ public class V11DeploymentPlanCreationOperation extends
 		return root;
 	}
 	
-	public EnvironmentType getConfigEnvironment(String groupId, String artifactId, String version, String type) {
+	public EnvironmentType getConfigEnvironment() {
+		if(config != null && config instanceof DeploymentPlanInstallConfig) {
+			cfg = (DeploymentPlanInstallConfig) config;
+		}
+		
+        String groupId = cfg != null && hasValue(cfg.getGroupId()) ? cfg.getGroupId() : "default";
+		String artifactId = cfg != null && hasValue(cfg.getArtifactId()) ? cfg.getArtifactId() : getComponentName();
+		String version = cfg != null && hasValue(cfg.getVersion()) ? cfg.getVersion() : "1.0";
+		String type = cfg != null && hasValue(cfg.getType()) ? cfg.getType() : "car";
+		
+		ArtifactType artifact = createArtifactType(groupId, artifactId, version, type);
+		EnvironmentType env = DeploymentFactory.eINSTANCE.createEnvironmentType();
+		env.setModuleId(artifact);
+		
+		if(cfg != null && cfg.isSharedLib()) {
+			DependenciesType dt = DeploymentFactory.eINSTANCE.createDependenciesType();
+			ArtifactType sharedLib = createArtifactType("geronimo", "sharedLib", "1.1", "car");
+			dt.getDependency().add(sharedLib);
+			env.setDependencies(dt);
+		}
+		
+		return env;
+	}
+	
+	private ArtifactType createArtifactType(String groupId, String artifactId, String version, String type) {
 		ArtifactType artifact = DeploymentFactory.eINSTANCE.createArtifactType();
 		artifact.setGroupId(groupId);
 		artifact.setArtifactId(artifactId);
 		artifact.setVersion(version);
 		artifact.setType(type);
-		EnvironmentType env = DeploymentFactory.eINSTANCE.createEnvironmentType();
-		env.setModuleId(artifact);
-		return env;
+		return artifact;
+	}
+	
+	private static boolean hasValue(String attribute) {
+		return attribute != null && attribute.trim().length() != 0;
 	}
 
 }

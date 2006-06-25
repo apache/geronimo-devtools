@@ -16,7 +16,10 @@
 package org.apache.geronimo.st.v11.core.operations;
 
 import org.apache.geronimo.st.core.GeronimoFacetInstallDelegate;
+import org.apache.geronimo.st.v11.core.DeploymentPlanInstallConfig;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jst.j2ee.internal.archive.operations.JavaComponentCreationDataModelProvider;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IComponentCreationDataModelProperties;
@@ -24,15 +27,15 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
-public class GeronimoV11FacetInstallDelegate extends
-		GeronimoFacetInstallDelegate {
+public class GeronimoV11FacetInstallDelegate extends GeronimoFacetInstallDelegate {
 
-	public IDataModelOperation createDeploymentPlanCreationOp(IProject project) {
+	public IDataModelOperation createDeploymentPlanCreationOp(IProject project, Object config) {
 		IVirtualComponent comp = ComponentCore.createComponent(project);
 		IDataModel model = DataModelFactory.createDataModel(new JavaComponentCreationDataModelProvider());
 		model.setStringProperty(IComponentCreationDataModelProperties.COMPONENT_NAME, comp.getName());
 		model.setStringProperty(IComponentCreationDataModelProperties.PROJECT_NAME, project.getName());
-		return new V11DeploymentPlanCreationOperation(model);
+		return new V11DeploymentPlanCreationOperation(model, config);
 	}
 }
