@@ -91,9 +91,8 @@
     <module>org.apache.geronimo.v11.deployment.model.edit</module>
     <module>org.apache.geronimo.jetty.j2ee.server.v1</module>
     <module>org.apache.geronimo.tomcat.j2ee.server.v1</module>
-    <!-- Enable after 1.1 release -->
-    <!--<module>org.apache.geronimo.jetty.j2ee.server.v11</module>
-    <module>org.apache.geronimo.tomcat.j2ee.server.v11</module>-->
+    <module>org.apache.geronimo.jetty.j2ee.server.v11</module>
+    <module>org.apache.geronimo.tomcat.j2ee.server.v11</module>
     <module>org.apache.geronimo.runtime.common</module>
     <module>org.apache.geronimo.runtime.v1</module>
     <module>org.apache.geronimo.runtime.v11</module>
