@@ -357,13 +357,13 @@ abstract public class GenericGeronimoServerBehaviour extends
 			IModule workingModule = module[module.length -1];
 			modulePath = modulePath.append(workingModule.getName());
 			if (GeronimoUtils.isWebModule(workingModule)) {
-				modulePath = modulePath.addFileExtension(".war");
+				modulePath = modulePath.addFileExtension("war");
 			} else if (GeronimoUtils.isEjbJarModule(workingModule)) {
-				modulePath = modulePath.addFileExtension(".jar");
+				modulePath = modulePath.addFileExtension("jar");
 			} else if (GeronimoUtils.isRARModule(workingModule)) {
-				modulePath = modulePath.addFileExtension(".rar");
+				modulePath = modulePath.addFileExtension("rar");
 			} else if (GeronimoUtils.isEarModule(workingModule)) {
-				modulePath = modulePath.addFileExtension(".ear");
+				modulePath = modulePath.addFileExtension("ear");
 			}
 		}
 
