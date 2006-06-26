@@ -19,8 +19,8 @@ import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.jmxagent.Activator;
 import org.apache.geronimo.st.v11.core.internal.Trace;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerListener;
 import org.eclipse.wst.server.core.ServerEvent;
@@ -85,7 +85,7 @@ public class ConfigStoreInstaller implements IServerListener {
 
 	private URL resolveFromBundle(String path) {
 		try {
-			return Platform.resolve(Activator.getDefault().getBundle().getEntry(path));
+			return FileLocator.resolve(Activator.getDefault().getBundle().getEntry(path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -127,7 +127,7 @@ public class ConfigStoreInstaller implements IServerListener {
 
 	private File getFileFromBundle(String path) {
 		try {
-			URL url = Platform.resolve(Activator.getDefault().getBundle().getEntry(path));
+			URL url = FileLocator.resolve(Activator.getDefault().getBundle().getEntry(path));
 			return new File(url.getFile());
 		} catch (IOException e) {
 			e.printStackTrace();

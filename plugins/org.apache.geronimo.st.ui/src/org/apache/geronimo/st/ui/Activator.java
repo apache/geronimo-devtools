@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.geronimo.st.ui.internal.Trace;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -69,7 +70,7 @@ public class Activator extends AbstractUIPlugin {
 	public static String getIconLocation() {
 		if (iconLocation == null) {
 			try {
-				iconLocation = Platform.resolve(plugin.getBundle().getEntry("/")).getPath()
+				iconLocation = FileLocator.resolve(plugin.getBundle().getEntry("/")).getPath()
 						+ ICONS_DIRECTORY;
 			} catch (IOException e) {
 				e.printStackTrace();

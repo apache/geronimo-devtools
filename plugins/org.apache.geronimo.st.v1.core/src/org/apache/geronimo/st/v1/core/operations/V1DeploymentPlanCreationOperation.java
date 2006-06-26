@@ -60,8 +60,9 @@ public class V1DeploymentPlanCreationOperation extends
 		map.put("sec", GeronimoSchemaNS.GERONIMO_SECURITY_NS_1_1);
 		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS_1_0);
 
-		root.setApplicationName(getComponentName());
-		root.setConfigId(getProject().getName() + "/" + getComponentName());
+		String projectName = getProject().getName();
+		root.setApplicationName(getProject().getName());
+		root.setConfigId(projectName + "/" + projectName);
 
 		documentRoot.setApplication(root);
 		resource.getContents().add(documentRoot);
@@ -92,8 +93,9 @@ public class V1DeploymentPlanCreationOperation extends
 
 		WebAppType root = WebFactory.eINSTANCE.createWebAppType();
 
-		root.setConfigId(getProject().getName() + "/" + getComponentName());
-		root.setContextRoot("/" + getComponentName());
+		String projectName = getProject().getName();
+		root.setConfigId(projectName + "/" + projectName);
+		root.setContextRoot("/" + projectName);
 		root.setContextPriorityClassloader(false);
 
 		documentRoot.setWebApp(root);
@@ -124,7 +126,8 @@ public class V1DeploymentPlanCreationOperation extends
 		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS_1_0);
 		map.put("pkgen", GeronimoSchemaNS.GERONIMO_PKGEN_NS_2_0);
 
-		root.setConfigId(getProject().getName() + "/" + getComponentName());
+		String projectName = getProject().getName();
+		root.setConfigId(projectName + "/" + projectName);
 
 		root.setEnterpriseBeans(JarFactory.eINSTANCE.createEnterpriseBeansType());
 
@@ -154,7 +157,8 @@ public class V1DeploymentPlanCreationOperation extends
 		map.put("nam", GeronimoSchemaNS.GERONIMO_NAMING_NS_1_0);
 		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS_1_0);
 
-		root.setConfigId(getProject().getName() + "/" + getComponentName());
+		String projectName = getProject().getName();
+		root.setConfigId(projectName + "/" + projectName);
 
 		documentRoot.setConnector(root);
 		resource.getContents().add(documentRoot);

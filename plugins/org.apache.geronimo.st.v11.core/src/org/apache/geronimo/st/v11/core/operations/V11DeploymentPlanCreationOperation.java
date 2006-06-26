@@ -78,7 +78,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		map.put("sec", GeronimoSchemaNS.GERONIMO_SECURITY_NS_1_1);
 		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS_1_1);
 
-		root.setApplicationName(getComponentName());
+		root.setApplicationName(getProject().getName());
 		root.setEnvironment(getConfigEnvironment());
 
 		documentRoot.setApplication(root);
@@ -111,7 +111,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		WebAppType root = WebFactory.eINSTANCE.createWebAppType();
 
 		root.setEnvironment(getConfigEnvironment());
-		root.setContextRoot("/" + getComponentName());
+		root.setContextRoot("/" + getProject().getName());
 		//root.setContextPriorityClassloader(false); //TODO Replace this with inverse-classloading
 
 		documentRoot.setWebApp(root);
@@ -208,7 +208,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		}
 		
         String groupId = cfg != null && hasValue(cfg.getGroupId()) ? cfg.getGroupId() : "default";
-		String artifactId = cfg != null && hasValue(cfg.getArtifactId()) ? cfg.getArtifactId() : getComponentName();
+		String artifactId = cfg != null && hasValue(cfg.getArtifactId()) ? cfg.getArtifactId() : getProject().getName();
 		String version = cfg != null && hasValue(cfg.getVersion()) ? cfg.getVersion() : "1.0";
 		String type = cfg != null && hasValue(cfg.getType()) ? cfg.getType() : "car";
 		

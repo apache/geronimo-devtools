@@ -21,8 +21,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jst.j2ee.application.internal.operations.J2EEComponentCreationDataModelProvider;
-import org.eclipse.wst.common.componentcore.datamodel.properties.IComponentCreationDataModelProperties;
+import org.eclipse.jst.j2ee.project.facet.IJ2EEFacetInstallDataModelProperties;
+import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
@@ -63,16 +63,12 @@ public abstract class AbstractGeronimoJ2EEComponentOperation extends
 	}
 
 	public boolean isGeronimoRuntimeTarget() {
-		String runtimeID = model.getStringProperty(J2EEComponentCreationDataModelProvider.RUNTIME_TARGET_ID);
+		String runtimeID = model.getStringProperty(IJ2EEFacetInstallDataModelProperties.RUNTIME_TARGET_ID);
 		return runtimeID != null && runtimeID.startsWith("Apache Geronimo");
 	}
 
-	public String getComponentName() {
-		return model.getProperty(IComponentCreationDataModelProperties.COMPONENT_NAME).toString();
-	}
-
 	public IProject getProject() {
-		String projectName = model.getProperty(IComponentCreationDataModelProperties.PROJECT_NAME).toString();
+		String projectName = model.getProperty(IFacetDataModelProperties.FACET_PROJECT_NAME).toString();
 		if (projectName != null) {
 			return ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		}
