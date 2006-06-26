@@ -20,10 +20,12 @@ import java.util.Collections;
 
 import org.apache.geronimo.st.core.GeronimoUtils;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
@@ -68,6 +70,8 @@ public abstract class DeploymentPlanCreationOperation extends
 			createGeronimoApplicationDeploymentPlan(GeronimoUtils.getApplicationDeploymentPlanFile(comp));
 		} else if (IModuleConstants.JST_CONNECTOR_MODULE.equals(type)) {
 			createConnectorDeploymentPlan(GeronimoUtils.getConnectorDeploymentPlanFile(comp));
+		} else if (IModuleConstants.JST_UTILITY_MODULE.equals(type)) {
+			createServiceDeploymentPlan(GeronimoUtils.getServiceDeploymentPlanFile(comp));
 		}
 	}
 
@@ -82,5 +86,25 @@ public abstract class DeploymentPlanCreationOperation extends
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public EObject createOpenEjbDeploymentPlan(IFile file) {
+		return null;
+	}
+
+	public EObject createGeronimoWebDeploymentPlan(IFile file) {
+		return null;
+	}
+
+	public EObject createGeronimoApplicationDeploymentPlan(IFile file) {
+		return null;
+	}
+
+	public EObject createConnectorDeploymentPlan(IFile file) {
+		return null;
+	}
+	
+	public EObject createServiceDeploymentPlan(IFile file) {
+		return null;
 	}
 }

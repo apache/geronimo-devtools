@@ -27,5 +27,7 @@ public interface IDeploymentPlanCreationOp {
 	public EObject createGeronimoApplicationDeploymentPlan(IFile file);
 
 	public EObject createConnectorDeploymentPlan(IFile file);
+	
+	public EObject createServiceDeploymentPlan(IFile file);
 
 }

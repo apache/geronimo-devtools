@@ -22,7 +22,11 @@ import org.apache.geronimo.st.v11.core.GeronimoV11Utils;
 import org.apache.geronimo.xml.ns.deployment.ArtifactType;
 import org.apache.geronimo.xml.ns.deployment.DependenciesType;
 import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
+import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
+import org.apache.geronimo.xml.ns.deployment.DocumentRoot;
 import org.apache.geronimo.xml.ns.deployment.EnvironmentType;
+import org.apache.geronimo.xml.ns.deployment.ModuleType;
+import org.apache.geronimo.xml.ns.deployment.util.DeploymentResourceFactoryImpl;
 import org.apache.geronimo.xml.ns.j2ee.application.ApplicationFactory;
 import org.apache.geronimo.xml.ns.j2ee.application.ApplicationPackage;
 import org.apache.geronimo.xml.ns.j2ee.application.ApplicationType;
@@ -169,6 +173,28 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 		root.setEnvironment(getConfigEnvironment());
 		documentRoot.setConnector(root);
+		resource.getContents().add(documentRoot);
+
+		save(resource);
+
+		return root;
+	}
+	
+	public EObject createServiceDeploymentPlan(IFile dpFile) {
+		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString());
+
+		ResourceSet resourceSet = new ResourceSetImpl();
+		GeronimoV11Utils.register(resourceSet, new DeploymentResourceFactoryImpl(), DeploymentPackage.eINSTANCE, DeploymentPackage.eNS_URI);
+
+		Resource resource = resourceSet.createResource(uri);
+		DocumentRoot documentRoot = DeploymentFactory.eINSTANCE.createDocumentRoot();
+		ModuleType root = DeploymentFactory.eINSTANCE.createModuleType();
+
+		EMap map = documentRoot.getXMLNSPrefixMap();
+		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS_1_1);
+
+		root.setEnvironment(getConfigEnvironment());
+		documentRoot.setModule(root);
 		resource.getContents().add(documentRoot);
 
 		save(resource);

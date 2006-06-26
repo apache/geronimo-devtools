@@ -64,6 +64,9 @@
     <module>
 		<type>jst.ear</type>
 	</module>
+	<module>
+		<type>jst.utility</type>
+	</module>
 
 	<project>
 		<classpathReference>geronimo.project</classpathReference>
