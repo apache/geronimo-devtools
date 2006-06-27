@@ -209,6 +209,19 @@
     </repository>
     
     <repository>
+      <id>temp-remove-me</id>
+      <name>Maven1 java-repo on Apache</name>
+      <url>http://www.apache.org/dist/java-repository/</url>
+      <layout>legacy</layout>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+    
+    <repository>
       <id>maven1-ibiblio</id>
       <name>Maven1 Repository on iBiblio</name>
       <url>http://www.ibiblio.org/maven</url>
