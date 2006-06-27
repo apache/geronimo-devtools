@@ -176,6 +176,30 @@ public class DeploymentItemProviderAdapterFactory extends DeploymentAdapterFacto
   }
 
   /**
+   * This keeps track of the one adapter used for all {@link org.apache.geronimo.xml.ns.deployment.DependencyType} instances.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  protected DependencyTypeItemProvider dependencyTypeItemProvider;
+
+  /**
+   * This creates an adapter for a {@link org.apache.geronimo.xml.ns.deployment.DependencyType}.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Adapter createDependencyTypeAdapter()
+  {
+    if (dependencyTypeItemProvider == null)
+    {
+      dependencyTypeItemProvider = new DependencyTypeItemProvider(this);
+    }
+
+    return dependencyTypeItemProvider;
+  }
+
+  /**
    * This keeps track of the one adapter used for all {@link org.apache.geronimo.xml.ns.deployment.DocumentRoot} instances.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -527,6 +551,7 @@ public class DeploymentItemProviderAdapterFactory extends DeploymentAdapterFacto
     if (attributeTypeItemProvider != null) attributeTypeItemProvider.dispose();
     if (classFilterTypeItemProvider != null) classFilterTypeItemProvider.dispose();
     if (dependenciesTypeItemProvider != null) dependenciesTypeItemProvider.dispose();
+    if (dependencyTypeItemProvider != null) dependencyTypeItemProvider.dispose();
     if (documentRootItemProvider != null) documentRootItemProvider.dispose();
     if (emptyTypeItemProvider != null) emptyTypeItemProvider.dispose();
     if (environmentTypeItemProvider != null) environmentTypeItemProvider.dispose();
