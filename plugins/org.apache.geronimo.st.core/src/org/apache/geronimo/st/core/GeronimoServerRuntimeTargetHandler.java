@@ -60,7 +60,15 @@ public class GeronimoServerRuntimeTargetHandler extends RuntimeClasspathProvider
 			addLibraryEntries(list, specPath.toFile(), false);
 		} else if(version.equals("1.1")) {
 			IPath specPath = runtime.getLocation().append("repository/org/apache/geronimo/specs/geronimo-j2ee_1.4_spec/1.1/geronimo-j2ee_1.4_spec-1.1.jar");
-			list.add(JavaCore.newLibraryEntry(specPath, null, null));
+			//hack to add servlet/jsp spec jars to little G
+			if(!specPath.toFile().exists()) {
+				IPath servletSpec =runtime.getLocation().append("repository/org/apache/geronimo/specs/geronimo-servlet_2.4_spec/1.0.1/geronimo-servlet_2.4_spec-1.0.1.jar");
+				IPath jspSpec = runtime.getLocation().append("repository/org/apache/geronimo/specs/geronimo-jsp_2.0_spec/1.0.1/geronimo-jsp_2.0_spec-1.0.1.jar");
+				list.add(JavaCore.newLibraryEntry(servletSpec, null, null));
+				list.add(JavaCore.newLibraryEntry(jspSpec, null, null));
+			} else {
+				list.add(JavaCore.newLibraryEntry(specPath, null, null));
+			}
 		}
 		
 		return (IClasspathEntry[])list.toArray(new IClasspathEntry[list.size()]);
