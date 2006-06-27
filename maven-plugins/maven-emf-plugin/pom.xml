@@ -3,7 +3,7 @@
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>maven-emf-plugin</artifactId>
     <packaging>maven-plugin</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <name>Maven EMF Plugin</name>
     
     <scm>

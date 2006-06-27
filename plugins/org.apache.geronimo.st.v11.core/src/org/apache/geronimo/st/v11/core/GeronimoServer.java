@@ -73,7 +73,7 @@ public class GeronimoServer extends GenericGeronimoServer {
 	 * @see org.apache.geronimo.st.core.IGeronimoServer#getJSR88DeployerJar()
 	 */
 	public IPath getJSR88DeployerJar() {
-		return getServer().getRuntime().getLocation().append("/lib/geronimo-deploy-jsr88-1.1-SNAPSHOT.jar");
+		return getServer().getRuntime().getLocation().append("/lib/geronimo-deploy-jsr88-1.1.jar");
 	}
 
 	/*
