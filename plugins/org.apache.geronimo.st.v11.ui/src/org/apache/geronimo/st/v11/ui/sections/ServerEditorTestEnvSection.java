@@ -73,6 +73,7 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 		//persistant = toolkit.createButton(composite, Messages.editorSectionSetPersistent, SWT.CHECK);
 		inPlace = toolkit.createButton(composite, Messages.editorSectionEnableInPlace, SWT.CHECK);
 		runFromWorkspace = toolkit.createButton(composite, Messages.editorSectionRunFromWorkspace, SWT.CHECK);
+		runFromWorkspace.setToolTipText(Messages.seeRestritions);
 
 		GeronimoServer gs = (GeronimoServer) server.getAdapter(GeronimoServer.class);
 		//persistant.setSelection(gs.isPersistant());
