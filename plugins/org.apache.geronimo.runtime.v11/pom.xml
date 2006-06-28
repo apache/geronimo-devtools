@@ -58,8 +58,7 @@
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>geronimo</groupId>
-                                    <artifactId>
-                                        geronimo-deploy-jsr88</artifactId>
+                                    <artifactId>geronimo-deploy-jsr88</artifactId>
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
                                 <artifactItem>
@@ -69,8 +68,7 @@
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>geronimo</groupId>
-                                    <artifactId>
-                                        geronimo-j2ee-schema</artifactId>
+                                    <artifactId>geronimo-j2ee-schema</artifactId>
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
                                 <artifactItem>
@@ -80,32 +78,27 @@
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>geronimo</groupId>
-                                    <artifactId>
-                                        geronimo-service-builder</artifactId>
+                                    <artifactId>geronimo-service-builder</artifactId>
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>geronimo</groupId>
-                                    <artifactId>
-                                        geronimo-connector-builder</artifactId>
+                                    <artifactId>geronimo-connector-builder</artifactId>
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>geronimo</groupId>
-                                    <artifactId>
-                                        geronimo-web-builder</artifactId>
+                                    <artifactId>geronimo-web-builder</artifactId>
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>geronimo</groupId>
-                                    <artifactId>
-                                        geronimo-naming-builder</artifactId>
+                                    <artifactId>geronimo-naming-builder</artifactId>
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>geronimo</groupId>
-                                    <artifactId>
-                                        geronimo-j2ee-builder</artifactId>
+                                    <artifactId>geronimo-j2ee-builder</artifactId>
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
                                 <artifactItem>
@@ -115,8 +108,7 @@
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>geronimo</groupId>
-                                    <artifactId>
-                                        geronimo-security-builder</artifactId>
+                                    <artifactId>geronimo-security-builder</artifactId>
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
                                 <artifactItem>
@@ -125,9 +117,9 @@
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
                                 <artifactItem>
-                                	<groupId>geronimo</groupId>
-                                	<artifactId>geronimo-deployment</artifactId>
-                                	<version>${geronimoVersion}</version>
+                                    <groupId>geronimo</groupId>
+                                    <artifactId>geronimo-deployment</artifactId>
+                                    <version>${geronimoVersion}</version>
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>lib</outputDirectory>
@@ -174,7 +166,52 @@
         </dependency>
         <dependency>
             <groupId>geronimo</groupId>
+            <artifactId>geronimo-util</artifactId>
+            <version>${geronimoVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>geronimo</groupId>
             <artifactId>geronimo-deploy-jsr88</artifactId>
+            <version>${geronimoVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>geronimo</groupId>
+            <artifactId>geronimo-common</artifactId>
+            <version>${geronimoVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>geronimo</groupId>
+            <artifactId>geronimo-j2ee-schema</artifactId>
+            <version>${geronimoVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>xmlbeans</groupId>
+            <artifactId>xbean</artifactId>
+            <version>${xbeanVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>geronimo</groupId>
+            <artifactId>geronimo-service-builder</artifactId>
+            <version>${geronimoVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>geronimo</groupId>
+            <artifactId>geronimo-connector-builder</artifactId>
+            <version>${geronimoVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>geronimo</groupId>
+            <artifactId>geronimo-web-builder</artifactId>
+            <version>${geronimoVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>geronimo</groupId>
+            <artifactId>geronimo-naming-builder</artifactId>
+            <version>${geronimoVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>geronimo</groupId>
+            <artifactId>geronimo-j2ee-builder</artifactId>
             <version>${geronimoVersion}</version>
         </dependency>
         <dependency>
@@ -183,9 +220,19 @@
             <version>${openejbVersion}</version>
         </dependency>
         <dependency>
-       		<groupId>geronimo</groupId>
-        	<artifactId>geronimo-system</artifactId>
-        	<version>${geronimoVersion}</version>
+            <groupId>geronimo</groupId>
+            <artifactId>geronimo-security-builder</artifactId>
+            <version>${geronimoVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>geronimo</groupId>
+            <artifactId>geronimo-system</artifactId>
+            <version>${geronimoVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>geronimo</groupId>
+            <artifactId>geronimo-deployment</artifactId>
+            <version>${geronimoVersion}</version>
         </dependency>
     </dependencies>
 </project>
