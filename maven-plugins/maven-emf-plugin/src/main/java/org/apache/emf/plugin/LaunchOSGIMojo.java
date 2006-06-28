@@ -147,6 +147,7 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 			} 
 			clazz = null;
 			getPluginContext().remove(STARTER);
+			cleanup();
 		} else {
 			getPluginContext().put(CURRENT_EXECUTION, new Integer(getCurrentExecution() + 1));
 		}
@@ -221,5 +222,9 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 			getPluginContext().put(TOTAL_EXECUTIONS, new Integer(totalExecutions));
 		}
 		return ((Integer) getPluginContext().get(TOTAL_EXECUTIONS)).intValue();
+	}
+	
+	protected void cleanup() {
+		
 	}
 }

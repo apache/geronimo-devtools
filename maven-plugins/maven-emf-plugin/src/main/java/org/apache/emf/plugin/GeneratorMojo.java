@@ -90,4 +90,12 @@ public class GeneratorMojo extends LaunchOSGIMojo {
 			throw new MojoFailureException("<type> must be set to either 'model', 'edit', or 'editor'");
 		}
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.emf.plugin.LaunchOSGIMojo#cleanup()
+	 */
+	protected void cleanup() {
+		//FIXME workaround for bugzilla 147936
+		new File(mavenProject.getBasedir().getAbsolutePath() + File.separator + ".classpath").delete();
+	}
 }
