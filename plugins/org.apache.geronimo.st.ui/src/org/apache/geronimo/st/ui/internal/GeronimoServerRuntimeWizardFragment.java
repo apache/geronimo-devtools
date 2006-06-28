@@ -68,10 +68,6 @@ import org.eclipse.wst.server.ui.wizard.IWizardHandle;
 
 public class GeronimoServerRuntimeWizardFragment extends ServerDefinitionTypeAwareWizardFragment {
 
-	private static final String G_WITH_TOMCAT_ID = "org.apache.geronimo.runtime.tomcat.10";
-
-	private static final String G_WITH_JETTY_ID = "org.apache.geronimo.runtime.jetty.10";
-
 	private GenericServerCompositeDecorator[] fDecorators;
 
 	protected Text installDir;
@@ -159,9 +155,11 @@ public class GeronimoServerRuntimeWizardFragment extends ServerDefinitionTypeAwa
 		data = new GridData();
 		data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 3;
+		
+		GenericGeronimoServerRuntime gRuntime = (GenericGeronimoServerRuntime) getRuntimeDelegate().getRuntime().loadAdapter(GenericGeronimoServerRuntime.class, null);
 
-		final IInstallableRuntime gWithTomcat = ServerPlugin.findInstallableRuntime(G_WITH_TOMCAT_ID);
-		final IInstallableRuntime gWithJetty = ServerPlugin.findInstallableRuntime(G_WITH_JETTY_ID);
+		final IInstallableRuntime gWithTomcat = ServerPlugin.findInstallableRuntime(gRuntime.getInstallableJettyTomcatId());
+		final IInstallableRuntime gWithJetty = ServerPlugin.findInstallableRuntime(gRuntime.getInstallableJettyTomcatId());
 
 		if (gWithTomcat != null && gWithJetty != null) {
 			group = new Group(composite, SWT.NONE);

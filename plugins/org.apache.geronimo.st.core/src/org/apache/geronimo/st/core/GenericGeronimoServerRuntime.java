@@ -108,4 +108,24 @@ public class GenericGeronimoServerRuntime extends GenericServerRuntime implement
 		}
 		return null;
 	}
+	
+	public String getInstallableTomcatRuntimeId() {
+		String version = getRuntime().getRuntimeType().getVersion();
+		if("1.0".equals(version)) {
+			return "org.apache.geronimo.runtime.tomcat.10";
+		} else if("1.1".equals(version)) {
+			return "org.apache.geronimo.runtime.tomcat.11";
+		}
+		return null;
+	}
+	
+	public String getInstallableJettyTomcatId() {
+		String version = getRuntime().getRuntimeType().getVersion();
+		if("1.0".equals(version)) {
+			return "org.apache.geronimo.runtime.jetty.10";
+		} else if("1.1".equals(version)) {
+			return "org.apache.geronimo.runtime.jetty.11";
+		}
+		return null;
+	}
 }
