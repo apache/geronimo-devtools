@@ -11,11 +11,7 @@
     </parent>
     <properties>
         <geronimoVersion>1.0</geronimoVersion>
-        <commonsLoggingVersion>1.0.4</commonsLoggingVersion>
-        <cglibVersion>2.1_3</cglibVersion>
-        <xbeanVersion>2.0.0</xbeanVersion>
         <openejbVersion>2.0</openejbVersion>
-        <staxApiVersion>1.0</staxApiVersion>
     </properties>
     <build>
         <resources>
@@ -70,11 +66,6 @@
                                     <groupId>geronimo</groupId>
                                     <artifactId>geronimo-j2ee-schema</artifactId>
                                     <version>${geronimoVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>xmlbeans</groupId>
-                                    <artifactId>xbean</artifactId>
-                                    <version>${xbeanVersion}</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>geronimo</groupId>
@@ -173,11 +164,6 @@
             <groupId>geronimo</groupId>
             <artifactId>geronimo-j2ee-schema</artifactId>
             <version>${geronimoVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>xmlbeans</groupId>
-            <artifactId>xbean</artifactId>
-            <version>${xbeanVersion}</version>
         </dependency>
         <dependency>
             <groupId>geronimo</groupId>
