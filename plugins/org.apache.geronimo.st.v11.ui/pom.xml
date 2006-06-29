@@ -20,8 +20,8 @@
                 </includes>
             </resource>
             <resource>
-                <targetPath>org/apache/geronimo/st/v1/ui/internal</targetPath>
-                <directory>src/org/apache/geronimo/st/v1/ui/internal</directory>
+                <targetPath>org/apache/geronimo/st/v11/ui/internal</targetPath>
+                <directory>src/org/apache/geronimo/st/v11/ui/internal</directory>
                 <includes>
                     <include>Messages.properties</include>
                 </includes>
