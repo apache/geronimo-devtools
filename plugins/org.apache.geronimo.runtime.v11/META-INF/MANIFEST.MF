@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo V11 Runtime Plug-in
-Bundle-SymbolicName: org.apache.geronimo.runtime.v11
+Bundle-SymbolicName: org.apache.geronimo.runtime.v11;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-ClassPath: 
  lib/xbean-2.0.0.jar,
@@ -31,6 +31,7 @@ Export-Package:
  org.apache.geronimo.connector.deployment,
  org.apache.geronimo.connector.deployment.dconfigbean,
  org.apache.geronimo.connector.deployment.jsr88,
+ org.apache.geronimo.deployment,
  org.apache.geronimo.deployment.javabean.xbeans,
  org.apache.geronimo.deployment.javabean.xbeans.impl,
  org.apache.geronimo.deployment.plugin,
@@ -42,8 +43,10 @@ Export-Package:
  org.apache.geronimo.deployment.plugin.remote,
  org.apache.geronimo.deployment.service,
  org.apache.geronimo.deployment.service.jsr88,
+ org.apache.geronimo.deployment.util,
  org.apache.geronimo.deployment.xbeans,
  org.apache.geronimo.deployment.xbeans.impl,
+ org.apache.geronimo.deployment.xml,
  org.apache.geronimo.deployment.xmlbeans,
  org.apache.geronimo.gbean,
  org.apache.geronimo.gbean.runtime,
@@ -51,6 +54,7 @@ Export-Package:
  org.apache.geronimo.j2ee.deployment,
  org.apache.geronimo.kernel,
  org.apache.geronimo.kernel.basic,
+ org.apache.geronimo.kernel.classloader,
  org.apache.geronimo.kernel.config,
  org.apache.geronimo.kernel.config.xstream,
  org.apache.geronimo.kernel.lifecycle,
@@ -58,6 +62,7 @@ Export-Package:
  org.apache.geronimo.kernel.management,
  org.apache.geronimo.kernel.proxy,
  org.apache.geronimo.kernel.repository,
+ org.apache.geronimo.kernel.util,
  org.apache.geronimo.naming.deployment,
  org.apache.geronimo.naming.deployment.jsr88,
  org.apache.geronimo.schema,
@@ -68,6 +73,7 @@ Export-Package:
  org.apache.geronimo.system.logging,
  org.apache.geronimo.system.logging.log4j,
  org.apache.geronimo.system.main,
+ org.apache.geronimo.system.plugin,
  org.apache.geronimo.system.properties,
  org.apache.geronimo.system.repository,
  org.apache.geronimo.system.resolver,
@@ -172,13 +178,21 @@ Export-Package:
  schemaorg_apache_xmlbeans.system.s015473B941DBE038A67B4160316A4281,
  schemaorg_apache_xmlbeans.system.s1E8852FF91504A740599F6ED0DB39234,
  schemaorg_apache_xmlbeans.system.s2749A33DAE6E44DF757AACA37D4188E5,
+ schemaorg_apache_xmlbeans.system.s4D40C126E2600FE5B259DE2282B26A60,
  schemaorg_apache_xmlbeans.system.s5275447815D468E56A7564AC4DF51D0E,
+ schemaorg_apache_xmlbeans.system.s624ECD384556376FBF6D19CFF950A0F4,
  schemaorg_apache_xmlbeans.system.s8ED3A14014AD03D68DFFC73397DFAE3D,
+ schemaorg_apache_xmlbeans.system.sAAEA14A23435703F9AAA63738CCC6108,
  schemaorg_apache_xmlbeans.system.sB0EA3F7553B8E28D1D7928FB04306EA5,
+ schemaorg_apache_xmlbeans.system.sC0CFD54C10B8C0292B30704501EF82FF,
  schemaorg_apache_xmlbeans.system.sC2392314C658711074E40F16CEC1299D,
  schemaorg_apache_xmlbeans.system.sCF8BD666BC9305AA7C2ADFD28E7D467F,
+ schemaorg_apache_xmlbeans.system.sD110B3BA6E7C77F9DEDB8E0BF29A3FA7,
+ schemaorg_apache_xmlbeans.system.sD54265BC20BB40986932114D35E4E1A4,
+ schemaorg_apache_xmlbeans.system.sD81E1984D3B5AFD019AC1E421CD645AD,
  schemaorg_apache_xmlbeans.system.sXMLCONFIG,
  schemaorg_apache_xmlbeans.system.sXMLLANG,
  schemaorg_apache_xmlbeans.system.sXMLSCHEMA,
  schemaorg_apache_xmlbeans.system.sXMLTOOLS
 Require-Bundle: org.apache.geronimo.runtime.common;visibility:=reexport
+Eclipse-LazyStart: true

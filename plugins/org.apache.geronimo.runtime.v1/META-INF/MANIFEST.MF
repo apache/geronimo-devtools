@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo V1 Runtime Plug-in
-Bundle-SymbolicName: org.apache.geronimo.runtime.v1
+Bundle-SymbolicName: org.apache.geronimo.runtime.v1;singleton:=true
 Bundle-Version: 1.0.1
 Bundle-ClassPath: 
  lib/xbean-2.0.0.jar,
@@ -164,3 +164,4 @@ Export-Package:
  schemaorg_apache_xmlbeans.system.sXMLSCHEMA,
  schemaorg_apache_xmlbeans.system.sXMLTOOLS
 Require-Bundle: org.apache.geronimo.runtime.common;visibility:=reexport
+Eclipse-LazyStart: true
