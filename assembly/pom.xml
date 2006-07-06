@@ -22,7 +22,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.geronimo.devtools</groupId>
   <artifactId>assembly</artifactId>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
   <name>Assembly :: ${artifactId}</name>
   <version>1.1</version>
   
@@ -48,7 +48,7 @@
                 <id>assembly</id>
                 <phase>package</phase>
                 <goals>
-                    <goal>assembly</goal>
+                    <goal>attached</goal>
                 </goals>
             </execution>
         </executions>
