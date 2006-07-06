@@ -33,7 +33,6 @@
   </parent>
   
   <build>
-    <defaultGoal>assembly:assembly</defaultGoal>
     <plugins>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -44,6 +43,15 @@
             <descriptor>src/main/assembly/updatesite.xml</descriptor>
           </descriptors>
         </configuration>
+        <executions>
+            <execution>
+                <id>assembly</id>
+                <phase>package</phase>
+                <goals>
+                    <goal>assembly</goal>
+                </goals>
+            </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
