@@ -32,7 +32,7 @@ import org.eclipse.wst.server.core.IServer;
 
 public class LaunchGeronimoConsoleAction implements IActionDelegate {
 
-	public static final String serverID = "org.apache.geronimo.generic.server.10";
+	public static final String G_SERVER_PREFIX = "org.apache.geronimo";
 
 	private IServer server;
 
@@ -82,7 +82,7 @@ public class LaunchGeronimoConsoleAction implements IActionDelegate {
 		server = (IServer) ((StructuredSelection) selection).getFirstElement();
 
 		boolean enable = server != null
-				&& serverID.equals(server.getServerType().getId())
+				&& server.getServerType().getId().startsWith(G_SERVER_PREFIX)
 				&& server.getServerState() == IServer.STATE_STARTED;
 
 		action.setEnabled(enable);
