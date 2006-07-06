@@ -35,7 +35,9 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.1</version>
         <configuration>
           <finalName>g-eclipse-plugin-${version}</finalName>
           <descriptors>
@@ -45,7 +47,6 @@
         </configuration>
         <executions>
             <execution>
-                <id>assembly</id>
                 <phase>package</phase>
                 <goals>
                     <goal>attached</goal>
