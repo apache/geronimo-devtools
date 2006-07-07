@@ -108,7 +108,7 @@
     <org.apache.geronimo.jetty.j2ee.server.v11_version>1.0.0</org.apache.geronimo.jetty.j2ee.server.v11_version>
     <org.apache.geronimo.tomcat.j2ee.server.v11_version>1.0.0</org.apache.geronimo.tomcat.j2ee.server.v11_version>
     <!-- Feature Versions -->
-    <org.apache.geronimo.feature_version>1.0.0</org.apache.geronimo.feature_version>
+    <org.apache.geronimo.feature_version>1.1.0</org.apache.geronimo.feature_version>
     <org.apache.geronimo.installableruntime.tomcat.feature_version>1.1.0</org.apache.geronimo.installableruntime.tomcat.feature_version>
     <org.apache.geronimo.installableruntime.jetty.feature_version>1.1.0</org.apache.geronimo.installableruntime.jetty.feature_version>
     <!-- Ext. Jar Dependency Versions -->
