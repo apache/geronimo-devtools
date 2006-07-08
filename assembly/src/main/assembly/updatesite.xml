@@ -31,7 +31,7 @@
         </dependencySet>
         <!-- Features -->
         <dependencySet>
-            <outputFileNameMapping>>${artifactId}_${version}.${extension}</outputFileNameMapping>
+            <outputFileNameMapping>${artifactId}_${version}.${extension}</outputFileNameMapping>
             <outputDirectory>features/</outputDirectory>
             <includes>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.feature</include>
