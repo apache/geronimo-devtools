@@ -62,6 +62,7 @@ import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.TaskModel;
 import org.eclipse.wst.server.core.internal.IInstallableRuntime;
+import org.eclipse.wst.server.core.internal.InstallableRuntime;
 import org.eclipse.wst.server.core.internal.ServerPlugin;
 import org.eclipse.wst.server.core.model.RuntimeDelegate;
 import org.eclipse.wst.server.ui.wizard.IWizardHandle;
@@ -160,7 +161,7 @@ public class GeronimoServerRuntimeWizardFragment extends ServerDefinitionTypeAwa
 
 		final IInstallableRuntime gWithTomcat = ServerPlugin.findInstallableRuntime(gRuntime.getInstallableJettyTomcatId());
 		final IInstallableRuntime gWithJetty = ServerPlugin.findInstallableRuntime(gRuntime.getInstallableJettyTomcatId());
-
+		
 		if (gWithTomcat != null && gWithJetty != null) {
 			group = new Group(composite, SWT.NONE);
 			group.setText(Messages.downloadOptions);
@@ -236,7 +237,11 @@ public class GeronimoServerRuntimeWizardFragment extends ServerDefinitionTypeAwa
 				}
 
 				void updateInstallDir(IPath installPath) {
-					installPath = installPath.append("geronimo-1.0");
+					InstallableRuntime installable = (InstallableRuntime) (tomcat.getSelection() ? gWithTomcat : gWithJetty);
+					String version = installable.getFeatureVersion();
+					if(version.endsWith(".0"))
+						version = version.substring(0, version.lastIndexOf(".0"));
+					installPath = installPath.append("geronimo-" + version);
 					installDir.setText(installPath.toOSString());
 				}
 			});
