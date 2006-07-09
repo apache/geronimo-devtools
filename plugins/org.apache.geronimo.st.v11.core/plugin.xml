@@ -30,14 +30,14 @@
     
     <extension point="org.eclipse.wst.server.core.installableRuntimes">
         <installableRuntime id="org.apache.geronimo.runtime.tomcat.11"
-            featureVersion="1.0.0"
+            featureVersion="1.1.0"
             featureId="org.apache.geronimo.installableruntime.tomcat.feature"
             featureSite="http://www.apache.org/dist/geronimo/eclipse/updates/"
             bundleId="org.apache.geronimo.tomcat.j2ee.server.v11"
             path="zips/geronimo-tomcat-j2ee-1.1.zip">
         </installableRuntime>
         <installableRuntime id="org.apache.geronimo.runtime.jetty.11"
-            featureVersion="1.0.0"
+            featureVersion="1.1.0"
             featureId="org.apache.geronimo.installableruntime.jetty.feature"
             featureSite="http://www.apache.org/dist/geronimo/eclipse/updates/"
             bundleId="org.apache.geronimo.jetty.j2ee.server.v11"
