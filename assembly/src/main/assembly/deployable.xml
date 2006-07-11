@@ -9,7 +9,7 @@
             <directory>..</directory>
             <outputDirectory>META-INF</outputDirectory>
             <includes>
-                <include>LICENSE.txt</include>
+                <include>LICENSE</include>
                 <include>NOTICE</include>
             </includes>
         </fileSet>
