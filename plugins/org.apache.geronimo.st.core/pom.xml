@@ -37,7 +37,7 @@
                 <targetPath>META-INF</targetPath>
                 <directory>../../</directory>
                 <includes>
-                    <include>LICENSE.txt</include>
+                    <include>LICENSE</include>
                     <include>NOTICE</include>
                 </includes>
             </resource>
