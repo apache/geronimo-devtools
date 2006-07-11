@@ -18,6 +18,14 @@
         </includes>
       </resource>
     </resources>
+      <resource>
+        <targetPath>META-INF</targetPath>
+        <directory>../../</directory>
+        <includes>
+          <include>LICENSE.txt</include>
+          <include>NOTICE</include>
+        </includes>
+      </resource>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

@@ -26,6 +26,14 @@
                     <include>geronimo10.serverdef</include>
                 </includes>
             </resource>
+            <resource>
+                <targetPath>META-INF</targetPath>
+                <directory>../../</directory>
+                <includes>
+                    <include>LICENSE.txt</include>
+                    <include>NOTICE</include>
+                </includes>
+            </resource>
         </resources>
         <plugins>
             <plugin>
