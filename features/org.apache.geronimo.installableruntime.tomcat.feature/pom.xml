@@ -17,7 +17,6 @@
           <include>feature.xml</include>
         </includes>
       </resource>
-    </resources>
       <resource>
         <targetPath>META-INF</targetPath>
         <directory>../../</directory>
@@ -26,6 +25,7 @@
           <include>NOTICE</include>
         </includes>
       </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
