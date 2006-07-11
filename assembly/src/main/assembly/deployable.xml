@@ -4,6 +4,16 @@
         <format>zip</format>
     </formats>
     <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>..</directory>
+            <outputDirectory>META-INF</outputDirectory>
+            <includes>
+                <include>LICENSE.txt</include>
+                <include>NOTICE</include>
+            </includes>
+        </fileSet>
+    </fileSets>
     <dependencySets>
         <!-- Jar'd Bundles -->
         <dependencySet>
