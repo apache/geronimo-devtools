@@ -14,7 +14,7 @@
         <resources>
             <resource>
                 <targetPath>META-INF</targetPath>
-                <directory>../../</directory>
+                <directory>.</directory>
                 <includes>
                     <include>LICENSE</include>
                     <include>NOTICE</include>
