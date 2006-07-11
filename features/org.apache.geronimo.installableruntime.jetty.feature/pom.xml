@@ -15,6 +15,7 @@
         <directory>.</directory>
         <includes>
           <include>feature.xml</include>
+          <include>feature.properties</include>
         </includes>
       </resource>
       <resource>
