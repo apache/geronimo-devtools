@@ -68,7 +68,7 @@
         </dependencySet>
         <!-- Features -->
         <dependencySet>
-            <outputDirectory>features/org.apache.geronimo.feature_1.0.1</outputDirectory>
+            <outputDirectory>features/org.apache.geronimo.feature_1.1.0</outputDirectory>
             <unpack>true</unpack>
             <includes>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.feature</include>
