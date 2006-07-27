@@ -119,7 +119,7 @@ public class GenericGeronimoServerRuntime extends GenericServerRuntime implement
 		return null;
 	}
 	
-	public String getInstallableJettyTomcatId() {
+	public String getInstallableJettyRuntimeId() {
 		String version = getRuntime().getRuntimeType().getVersion();
 		if("1.0".equals(version)) {
 			return "org.apache.geronimo.runtime.jetty.10";

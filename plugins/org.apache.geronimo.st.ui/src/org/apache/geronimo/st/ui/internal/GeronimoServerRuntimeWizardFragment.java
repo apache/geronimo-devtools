@@ -159,8 +159,8 @@ public class GeronimoServerRuntimeWizardFragment extends ServerDefinitionTypeAwa
 		
 		GenericGeronimoServerRuntime gRuntime = (GenericGeronimoServerRuntime) getRuntimeDelegate().getRuntime().loadAdapter(GenericGeronimoServerRuntime.class, null);
 
-		final IInstallableRuntime gWithTomcat = ServerPlugin.findInstallableRuntime(gRuntime.getInstallableJettyTomcatId());
-		final IInstallableRuntime gWithJetty = ServerPlugin.findInstallableRuntime(gRuntime.getInstallableJettyTomcatId());
+		final IInstallableRuntime gWithTomcat = ServerPlugin.findInstallableRuntime(gRuntime.getInstallableTomcatRuntimeId());
+		final IInstallableRuntime gWithJetty = ServerPlugin.findInstallableRuntime(gRuntime.getInstallableJettyRuntimeId());
 		
 		if (gWithTomcat != null && gWithJetty != null) {
 			group = new Group(composite, SWT.NONE);
