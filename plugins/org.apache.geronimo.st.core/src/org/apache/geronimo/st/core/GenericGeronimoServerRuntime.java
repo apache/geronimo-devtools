@@ -28,7 +28,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.server.generic.core.internal.GenericServerRuntime;
 import org.eclipse.osgi.util.NLS;
 
-public class GenericGeronimoServerRuntime extends GenericServerRuntime implements IGeronimoRuntime {
+abstract public class GenericGeronimoServerRuntime extends GenericServerRuntime implements IGeronimoRuntime {
 
 	public static final int NO_IMAGE = 0;
 

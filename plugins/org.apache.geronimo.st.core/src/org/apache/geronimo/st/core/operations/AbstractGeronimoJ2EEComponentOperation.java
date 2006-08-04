@@ -21,13 +21,14 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jst.j2ee.project.facet.IJ2EEFacetInstallDataModelProperties;
+import org.eclipse.jst.server.core.FacetUtil;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
+import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetProjectCreationDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
 
-public abstract class AbstractGeronimoJ2EEComponentOperation extends
-		AbstractDataModelOperation {
+public abstract class AbstractGeronimoJ2EEComponentOperation extends AbstractDataModelOperation {
 
 	public AbstractGeronimoJ2EEComponentOperation() {
 		super();
@@ -46,8 +47,7 @@ public abstract class AbstractGeronimoJ2EEComponentOperation extends
 	 * @see org.eclipse.core.commands.operations.AbstractOperation#redo(org.eclipse.core.runtime.IProgressMonitor,
 	 *      org.eclipse.core.runtime.IAdaptable)
 	 */
-	public IStatus redo(IProgressMonitor monitor, IAdaptable info)
-			throws ExecutionException {
+	public IStatus redo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		return null;
 	}
 
@@ -57,14 +57,24 @@ public abstract class AbstractGeronimoJ2EEComponentOperation extends
 	 * @see org.eclipse.core.commands.operations.AbstractOperation#undo(org.eclipse.core.runtime.IProgressMonitor,
 	 *      org.eclipse.core.runtime.IAdaptable)
 	 */
-	public IStatus undo(IProgressMonitor monitor, IAdaptable info)
-			throws ExecutionException {
+	public IStatus undo(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		return null;
 	}
 
 	public boolean isGeronimoRuntimeTarget() {
-		String runtimeID = model.getStringProperty(IJ2EEFacetInstallDataModelProperties.RUNTIME_TARGET_ID);
-		return runtimeID != null && runtimeID.startsWith("Apache Geronimo");
+		org.eclipse.wst.server.core.IRuntime runtime = getRuntime();
+		if (runtime != null) {
+			return runtime.getRuntimeType().getId().startsWith("org.apache.geronimo");
+		}
+		return false;
+	}
+
+	public org.eclipse.wst.server.core.IRuntime getRuntime() {
+		IRuntime runtime = (IRuntime) model.getProperty(IFacetProjectCreationDataModelProperties.FACET_RUNTIME);
+		if (runtime != null) {
+			return FacetUtil.getRuntime(runtime);
+		}
+		return null;
 	}
 
 	public IProject getProject() {

@@ -60,5 +60,24 @@
             <description>%geronimo-facet-description</description>
         </project-facet>
     </extension>
+
+    <extension id="GeronimoOpExtensions" name="GeronimoOpExtensions" point="org.eclipse.wst.common.frameworks.OperationExtension">
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentImportOperation"
+            postOperationClass="org.apache.geronimo.st.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EJBComponentImportOperation"
+            postOperationClass="org.apache.geronimo.st.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.archive.operations.EARComponentImportOperation"
+            postOperationClass="org.apache.geronimo.st.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentImportOperation"
+            postOperationClass="org.apache.geronimo.st.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+    </extension>
  
 </plugin>

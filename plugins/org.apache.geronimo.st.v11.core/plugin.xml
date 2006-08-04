@@ -5,7 +5,7 @@
         <runtimeType id="org.apache.geronimo.generic.runtime.11"
             name="%runtimeTypeName" description="%runtimeTypeDescription"
             vendor="%runtimeTypeVendor" version="1.1"
-            class="org.apache.geronimo.st.core.GenericGeronimoServerRuntime">
+            class="org.apache.geronimo.st.v11.core.GeronimoRuntime">
             <moduleType types="jst.web" versions="2.2, 2.3, 2.4"/>
             <moduleType types="jst.ejb" versions="1.1, 2.0, 2.1"/>
             <moduleType types="jst.connector" versions="1.0, 1.5"/>

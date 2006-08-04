@@ -15,6 +15,18 @@
  */
 package org.apache.geronimo.st.core;
 
+import org.apache.xmlbeans.XmlException;
+import org.apache.xmlbeans.XmlObject;
+import org.eclipse.core.resources.IFile;
+
 public interface IGeronimoRuntime {
+	
+	public XmlObject fixGeronimoEarSchema(IFile plan) throws XmlException;
+	
+	public XmlObject fixGeronimoWebSchema(IFile plan) throws XmlException;
+	
+	public XmlObject fixGeronimoEjbSchema(IFile plan) throws XmlException;
+	
+	public XmlObject fixGeronimoConnectorSchema(IFile plan) throws XmlException;
 
 }
