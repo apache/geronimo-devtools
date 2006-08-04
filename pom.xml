@@ -105,8 +105,8 @@
     <org.apache.geronimo.v11.deployment.model.edit_version>1.0.0</org.apache.geronimo.v11.deployment.model.edit_version>
     <!-- Feature Versions -->
     <org.apache.geronimo.feature_version>1.1.0</org.apache.geronimo.feature_version>
-    <org.apache.geronimo.installableruntime.tomcat.feature_version>1.1.0</org.apache.geronimo.installableruntime.tomcat.feature_version>
-    <org.apache.geronimo.installableruntime.jetty.feature_version>1.1.0</org.apache.geronimo.installableruntime.jetty.feature_version>
+    <org.apache.geronimo.installableruntime.tomcat.feature_version>1.1.1</org.apache.geronimo.installableruntime.tomcat.feature_version>
+    <org.apache.geronimo.installableruntime.jetty.feature_version>1.1.1</org.apache.geronimo.installableruntime.jetty.feature_version>
     <!-- Ext. Jar Dependency Versions -->
     <geronimo_spec_version>1.0</geronimo_spec_version>
     <stax-api_version>1.0</stax-api_version>
