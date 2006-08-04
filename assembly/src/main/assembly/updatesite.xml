@@ -27,8 +27,6 @@
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v1</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v11</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.jmxagent</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.tomcat.j2ee.server.v11</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.jetty.j2ee.server.v11</include>
             </includes>
         </dependencySet>
         <!-- Features -->

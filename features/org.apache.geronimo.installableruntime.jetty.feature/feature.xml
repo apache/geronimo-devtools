@@ -16,11 +16,12 @@
    <license url="http://www.apache.org/licenses/LICENSE-2.0.html">
         %license
    </license>
+   
+   <data
+    id="geronimo-jetty-j2ee-1.1.zip"
+    download-size="0"
+    install-size="0"/>
 
-   <plugin
-         id="org.apache.geronimo.jetty.j2ee.server.v11"
-         download-size="0"
-         install-size="0"
-         version="1.0.0"/>
+    <install-handler handler="org.eclipse.update.core.DefaultInstallHandler"/>
 
 </feature>
