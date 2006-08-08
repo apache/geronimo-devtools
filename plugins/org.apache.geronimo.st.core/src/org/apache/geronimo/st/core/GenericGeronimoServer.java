@@ -17,6 +17,7 @@ package org.apache.geronimo.st.core;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
@@ -100,23 +101,23 @@ public abstract class GenericGeronimoServer extends GenericServer implements
 	}
 
 	public void setAdminID(String value) {
-		getServerInstanceProperties().put(PROPERTY_ADMIN_ID, value);
+		setInstanceProperty(PROPERTY_ADMIN_ID, value);
 	}
 
 	public void setAdminPassword(String value) {
-		getServerInstanceProperties().put(PROPERTY_ADMIN_PW, value);
+		setInstanceProperty(PROPERTY_ADMIN_PW, value);
 	}
 
 	public void setRMINamingPort(String value) {
-		getServerInstanceProperties().put(PROPERTY_RMI_PORT, value);
+		setInstanceProperty(PROPERTY_RMI_PORT, value);
 	}
 
 	public void setHTTPPort(String value) {
-		getServerInstanceProperties().put(PROPERTY_HTTP_PORT, value);
+		setInstanceProperty(PROPERTY_HTTP_PORT, value);
 	}
 
 	public void setConsoleLogLevel(String value) {
-		getServerInstanceProperties().put(PROPERTY_LOG_LEVEL, value);
+		setInstanceProperty(PROPERTY_LOG_LEVEL, value);
 	}
 
 	public String discoverDeploymentFactoryClassName(IPath jarPath) {
@@ -136,6 +137,12 @@ public abstract class GenericGeronimoServer extends GenericServer implements
 	 */
 	public void setDefaults(IProgressMonitor monitor) {
 		setConsoleLogLevel(CONSOLE_INFO);
+	}
+	
+	private void setInstanceProperty(String name, String value) {
+		Map map = getServerInstanceProperties();
+		map.put(name, value);
+		setServerInstanceProperties(map);
 	}
 
 }
