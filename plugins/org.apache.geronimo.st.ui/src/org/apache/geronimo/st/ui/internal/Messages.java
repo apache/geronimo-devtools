@@ -45,6 +45,13 @@ public class Messages extends NLS {
 	public static String tooltipInstall;
 	public static String tooltipJetty;
 	public static String tooltipTomcat;
+	
+	public static String hostName;
+	public static String adminId;
+	public static String adminPassword;
+	public static String specifyPorts;
+	public static String portName;
+	public static String portValue;
 
 	static {
 		NLS.initializeMessages(Activator.PLUGIN_ID + ".internal.Messages", Messages.class);

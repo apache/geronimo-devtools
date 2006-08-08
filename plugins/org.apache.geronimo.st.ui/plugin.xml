@@ -32,13 +32,13 @@
             class="org.apache.geronimo.st.ui.internal.GeronimoServerRuntimeWizardFragment"/>
         <fragment id="org.eclipse.jst.server.generic.server"
             typeIds="org.apache.geronimo.generic.server.10"
-            class="org.eclipse.jst.server.generic.ui.internal.GenericServerWizardFragment"/>
+            class="org.apache.geronimo.st.ui.internal.GeronimoServerWizardFragment"/>
         <fragment id="org.eclipse.jst.server.generic.runtime"
             typeIds="org.apache.geronimo.generic.runtime.11"
             class="org.apache.geronimo.st.ui.internal.GeronimoServerRuntimeWizardFragment"/>
         <fragment id="org.eclipse.jst.server.generic.server"
             typeIds="org.apache.geronimo.generic.server.11"
-            class="org.eclipse.jst.server.generic.ui.internal.GenericServerWizardFragment"/>
+            class="org.apache.geronimo.st.ui.internal.GeronimoServerWizardFragment"/>
     </extension>
 
 	<extension point="org.eclipse.ui.popupMenus">

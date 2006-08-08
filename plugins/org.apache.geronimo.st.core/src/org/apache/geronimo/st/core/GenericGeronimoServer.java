@@ -17,29 +17,31 @@ package org.apache.geronimo.st.core;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
+import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jst.server.core.IWebModule;
 import org.eclipse.jst.server.generic.core.internal.GenericServer;
-import org.eclipse.jst.server.generic.core.internal.Trace;
 import org.eclipse.wst.server.core.IModule;
+import org.eclipse.wst.server.core.ServerPort;
 import org.eclipse.wst.server.core.internal.ServerMonitorManager;
 
-public abstract class GenericGeronimoServer extends GenericServer implements
-		IGeronimoServer {
+public abstract class GenericGeronimoServer extends GenericServer implements IGeronimoServer {
 
 	public static final String PROPERTY_ADMIN_ID = "adminID";
 
 	public static final String PROPERTY_ADMIN_PW = "adminPassword";
 
-	public static final String PROPERTY_RMI_PORT = "rmiport";
+	public static final String PROPERTY_RMI_PORT = "RMIRegistry";
 
-	public static final String PROPERTY_HTTP_PORT = "port";
+	public static final String PROPERTY_HTTP_PORT = "WebConnector";
 
 	public static final String PROPERTY_LOG_LEVEL = "logLevel";
 
@@ -48,6 +50,13 @@ public abstract class GenericGeronimoServer extends GenericServer implements
 	public static final String CONSOLE_DEBUG = "-vv";
 
 	public abstract String getContextRoot(IModule module);
+
+	public ServerPort[] getServerPorts() {
+		List ports = new ArrayList();
+		ports.add(new ServerPort(PROPERTY_HTTP_PORT, "Web Connector",  Integer.parseInt(getHTTPPort()), "http"));
+		ports.add(new ServerPort(PROPERTY_RMI_PORT, "RMI Naming", Integer.parseInt(getRMINamingPort()), "rmi"));
+		return (ServerPort[]) ports.toArray(new ServerPort[ports.size()]);
+	}
 
 	public URL getModuleRootURL(IModule module) {
 		try {
@@ -74,30 +83,30 @@ public abstract class GenericGeronimoServer extends GenericServer implements
 
 			return new URL(url);
 		} catch (Exception e) {
-			Trace.trace("Could not get root URL", e);
+			Trace.trace(Trace.SEVERE, "Could not get root URL", e);
 			return null;
 		}
 
 	}
 
 	public String getAdminID() {
-		return (String) getServerInstanceProperties().get(PROPERTY_ADMIN_ID);
+		return getInstanceProperty(PROPERTY_ADMIN_ID);
 	}
 
 	public String getAdminPassword() {
-		return (String) getServerInstanceProperties().get(PROPERTY_ADMIN_PW);
+		return getInstanceProperty(PROPERTY_ADMIN_PW);
 	}
 
 	public String getRMINamingPort() {
-		return (String) getServerInstanceProperties().get(PROPERTY_RMI_PORT);
+		return getInstanceProperty(PROPERTY_RMI_PORT);
 	}
 
 	public String getHTTPPort() {
-		return (String) getServerInstanceProperties().get(PROPERTY_HTTP_PORT);
+		return getInstanceProperty(PROPERTY_HTTP_PORT);
 	}
 
 	public String getConsoleLogLevel() {
-		return (String) getServerInstanceProperties().get(PROPERTY_LOG_LEVEL);
+		return getInstanceProperty(PROPERTY_LOG_LEVEL);
 	}
 
 	public void setAdminID(String value) {
@@ -131,15 +140,25 @@ public abstract class GenericGeronimoServer extends GenericServer implements
 		}
 		return null;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jst.server.generic.core.internal.GenericServer#setDefaults(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void setDefaults(IProgressMonitor monitor) {
+		setAdminID("system");
+		setAdminPassword("manager");
+		setHTTPPort("8080");
+		setRMINamingPort("1099");
 		setConsoleLogLevel(CONSOLE_INFO);
 	}
-	
-	private void setInstanceProperty(String name, String value) {
+
+	public String getInstanceProperty(String name) {
+		return (String) getServerInstanceProperties().get(name);
+	}
+
+	public void setInstanceProperty(String name, String value) {
 		Map map = getServerInstanceProperties();
 		map.put(name, value);
 		setServerInstanceProperties(map);

@@ -31,6 +31,7 @@ public class Activator extends AbstractUIPlugin {
 
 	public static final String ICONS_DIRECTORY = "icons/";
 	public static final String IMG_WIZ_GERONIMO = "gServer";
+	public static final String IMG_PORT = "port";
 
 	/**
 	 * The constructor
@@ -113,6 +114,7 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	protected void initializeImageRegistry(ImageRegistry reg) {
 		registerImage(reg, IMG_WIZ_GERONIMO, "g_server.gif");
+		registerImage(reg, IMG_PORT, "obj16/port.gif");
 	}
 
 	private void registerImage(ImageRegistry registry, String key,
