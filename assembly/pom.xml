@@ -140,16 +140,6 @@
     </dependency>
     <dependency>
       <groupId>org.apache.geronimo.devtools</groupId>
-      <artifactId>org.apache.geronimo.tomcat.j2ee.server.v11</artifactId>
-      <version>${org.apache.geronimo.tomcat.j2ee.server.v11_version}</version>
-    </dependency>
-     <dependency>
-      <groupId>org.apache.geronimo.devtools</groupId>
-      <artifactId>org.apache.geronimo.jetty.j2ee.server.v11</artifactId>
-      <version>${org.apache.geronimo.jetty.j2ee.server.v11_version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.geronimo.devtools</groupId>
       <artifactId>org.apache.geronimo.installableruntime.jetty.feature</artifactId>
       <version>${org.apache.geronimo.installableruntime.jetty.feature_version}</version>
     </dependency>
