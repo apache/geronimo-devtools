@@ -22,7 +22,7 @@
             initialState="stopped" supportsRemoteHosts="true"
             startTimeout="240000" stopTimeout="30000" startBeforePublish="true"
             runtimeTypeId="org.apache.geronimo.generic.runtime.10"
-            launchConfigId="org.eclipse.jst.server.generic.core.launchConfigurationType"
+            launchConfigId="org.apache.geronimo.st.core.launchConfigurationType"
             behaviourClass="org.apache.geronimo.st.v1.core.GeronimoServerBehaviour"
             hasConfiguration="false" launchModes="run,debug">
         </serverType>

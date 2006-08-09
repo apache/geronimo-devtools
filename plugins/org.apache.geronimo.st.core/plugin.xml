@@ -2,6 +2,22 @@
 <?eclipse version="3.0"?>
 <plugin>
 
+	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+		<launchConfigurationType
+	        id="org.apache.geronimo.st.core.launchConfigurationType"
+	        name="%geronimoLaunchConfigurationType"
+	        delegate="org.apache.geronimo.st.core.GeronimoLaunchConfigurationDelegate"
+	        modes="run, debug, profile"
+	        sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+	        sourcePathComputerId="org.eclipse.jst.server.generic.core.sourcePathComputer"/>
+	</extension>
+	  
+	<extension point="org.eclipse.wst.server.core.launchableAdapters">
+      	<launchableAdapter
+        	class="org.apache.geronimo.st.core.GeronimoLaunchableAdapterDelegate"
+         	id="org.eclipse.jst.server.generic.web"/>
+ 	</extension>
+
 	<extension point="org.eclipse.wst.common.project.facet.core.runtimes">
         <runtime-component-type id="org.apache.geronimo.runtime"/>
         

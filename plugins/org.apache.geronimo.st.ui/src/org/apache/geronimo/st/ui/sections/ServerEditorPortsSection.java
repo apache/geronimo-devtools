@@ -15,7 +15,7 @@
  */
 package org.apache.geronimo.st.ui.sections;
 
-import org.apache.geronimo.st.core.GenericGeronimoServer;
+import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.ui.commands.SetHTTPPortCommand;
 import org.apache.geronimo.st.ui.commands.SetRMIPortCommand;
 import org.apache.geronimo.st.ui.internal.Messages;
@@ -46,7 +46,7 @@ public class ServerEditorPortsSection extends ServerEditorSection {
 
 	Text rmiPort;
 
-	GenericGeronimoServer gs;
+	GeronimoServerDelegate gs;
 
 	public ServerEditorPortsSection() {
 		super();
@@ -116,9 +116,9 @@ public class ServerEditorPortsSection extends ServerEditorSection {
 	 */
 	public void init(IEditorSite site, IEditorInput input) {
 		super.init(site, input);
-		gs = (GenericGeronimoServer) server.getAdapter(GenericGeronimoServer.class);
+		gs = (GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class);
 		if (gs == null) {
-			gs = (GenericGeronimoServer) server.loadAdapter(GenericGeronimoServer.class,
+			gs = (GeronimoServerDelegate) server.loadAdapter(GeronimoServerDelegate.class,
 					new NullProgressMonitor());
 		}
 	}

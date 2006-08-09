@@ -33,11 +33,14 @@ public class Messages extends NLS {
 	public static String REDEPLOY_FAIL;
 	public static String DM_CONNECTION_FAIL;
 	
+	public static String errorJRE;
+	
 	public static String target10runtime;
 	public static String target11runtime;
 	
 	public static String incorrectVersion;
 	public static String noVersion;
 	public static String missingContent;
+	public static String errorPortInUse;
 
 }

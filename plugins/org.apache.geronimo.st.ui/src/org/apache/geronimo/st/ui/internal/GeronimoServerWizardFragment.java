@@ -15,10 +15,8 @@
  */
 package org.apache.geronimo.st.ui.internal;
 
-import org.apache.geronimo.st.core.GenericGeronimoServer;
+import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.ui.Activator;
-import org.apache.geronimo.st.ui.commands.SetUsernameCommand;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -178,7 +176,7 @@ public class GeronimoServerWizardFragment extends WizardFragment {
 			public void modify(Object element, String property, Object value) {
 				Item item = (Item) element;
 				ServerPort sp = (ServerPort) item.getData();
-				GenericGeronimoServer gs = getGeronimoServer();
+				GeronimoServerDelegate gs = getGeronimoServer();
 				gs.setInstanceProperty(sp.getId(), (String) value);
 				changePortNumber(sp.getId(), Integer.parseInt((String) value));
 			}
@@ -231,15 +229,14 @@ public class GeronimoServerWizardFragment extends WizardFragment {
 	 * @see org.eclipse.wst.server.ui.wizard.WizardFragment#isComplete()
 	 */
 	public boolean isComplete() {
-		GenericGeronimoServer gs = getGeronimoServer();
-		IStatus status = gs.validate();
-		return (status != null && status.isOK());
+		//TODO
+		return true;
 	}
 
-	private GenericGeronimoServer getGeronimoServer() {
-		GenericGeronimoServer gs = (GenericGeronimoServer) getServer().getAdapter(GenericGeronimoServer.class);
+	private GeronimoServerDelegate getGeronimoServer() {
+		GeronimoServerDelegate gs = (GeronimoServerDelegate) getServer().getAdapter(GeronimoServerDelegate.class);
 		if (gs == null)
-			gs = (GenericGeronimoServer) getServer().loadAdapter(GenericGeronimoServer.class, null);
+			gs = (GeronimoServerDelegate) getServer().loadAdapter(GeronimoServerDelegate.class, null);
 		return gs;
 	}
 

@@ -15,7 +15,7 @@
  */
 package org.apache.geronimo.st.ui.sections;
 
-import org.apache.geronimo.st.core.GenericGeronimoServer;
+import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.ui.commands.SetConsoleLogLevelCommand;
 import org.apache.geronimo.st.ui.internal.Messages;
 import org.eclipse.swt.SWT;
@@ -68,8 +68,8 @@ public class ServerEditorLogLevelSection extends ServerEditorSection {
 		info = toolkit.createButton(composite, Messages.info, SWT.RADIO);
 		debug = toolkit.createButton(composite, Messages.debug, SWT.RADIO);
 		
-		String currentValue = ((GenericGeronimoServer)server.getAdapter(GenericGeronimoServer.class)).getConsoleLogLevel();
-		if(GenericGeronimoServer.CONSOLE_DEBUG.equals(currentValue)) {
+		String currentValue = ((GeronimoServerDelegate)server.getAdapter(GeronimoServerDelegate.class)).getConsoleLogLevel();
+		if(GeronimoServerDelegate.CONSOLE_DEBUG.equals(currentValue)) {
 			debug.setSelection(true);
 		} else {
 			info.setSelection(true);
@@ -79,7 +79,7 @@ public class ServerEditorLogLevelSection extends ServerEditorSection {
 
 			public void widgetSelected(SelectionEvent e) {
 				if (info.getSelection()) {
-					execute(new SetConsoleLogLevelCommand(server, GenericGeronimoServer.CONSOLE_INFO));
+					execute(new SetConsoleLogLevelCommand(server, GeronimoServerDelegate.CONSOLE_INFO));
 				}
 			}
 
@@ -92,7 +92,7 @@ public class ServerEditorLogLevelSection extends ServerEditorSection {
 
 			public void widgetSelected(SelectionEvent e) {
 				if (debug.getSelection()) {
-					execute(new SetConsoleLogLevelCommand(server, GenericGeronimoServer.CONSOLE_DEBUG));
+					execute(new SetConsoleLogLevelCommand(server, GeronimoServerDelegate.CONSOLE_DEBUG));
 				}
 			}
 

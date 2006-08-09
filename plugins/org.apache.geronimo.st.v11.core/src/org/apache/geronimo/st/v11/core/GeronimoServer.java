@@ -20,14 +20,14 @@ import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 
 import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
 import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
-import org.apache.geronimo.st.core.GenericGeronimoServer;
+import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.core.IGeronimoVersionHandler;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
-public class GeronimoServer extends GenericGeronimoServer {
+public class GeronimoServer extends GeronimoServerDelegate {
 	
 	public static final String PROPERTY_PERSISTENT = "persistent";
 	public static final String PROPERTY_IN_PLACE = "inPlace";

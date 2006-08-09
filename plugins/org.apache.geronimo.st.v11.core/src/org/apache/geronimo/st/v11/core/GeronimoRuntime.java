@@ -20,7 +20,7 @@ import java.net.MalformedURLException;
 
 import org.apache.geronimo.deployment.xmlbeans.XmlBeansUtil;
 import org.apache.geronimo.schema.SchemaConversionUtils;
-import org.apache.geronimo.st.core.GenericGeronimoServerRuntime;
+import org.apache.geronimo.st.core.GeronimoRuntimeDelegate;
 import org.apache.geronimo.xbeans.geronimo.GerConnectorDocument;
 import org.apache.geronimo.xbeans.geronimo.GerConnectorType;
 import org.apache.geronimo.xbeans.geronimo.j2ee.GerApplicationDocument;
@@ -33,7 +33,7 @@ import org.eclipse.core.resources.IFile;
 import org.openejb.xbeans.ejbjar.OpenejbOpenejbJarDocument;
 import org.openejb.xbeans.ejbjar.OpenejbOpenejbJarType;
 
-public class GeronimoRuntime extends GenericGeronimoServerRuntime {
+public class GeronimoRuntime extends GeronimoRuntimeDelegate {
 
 	/*
 	 * (non-Javadoc)

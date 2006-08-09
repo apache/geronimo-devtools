@@ -15,7 +15,7 @@
  */
 package org.apache.geronimo.st.ui.commands;
 
-import org.apache.geronimo.st.core.GenericGeronimoServer;
+import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 
@@ -25,7 +25,7 @@ public class SetRMIPortCommand extends ServerCommand {
 
 	protected String oldName;
 
-	GenericGeronimoServer gs;
+	GeronimoServerDelegate gs;
 
 	/**
 	 * @param server
@@ -42,9 +42,9 @@ public class SetRMIPortCommand extends ServerCommand {
 	 * @see org.eclipse.wst.server.ui.internal.command.ServerCommand#execute()
 	 */
 	public void execute() {
-		gs = (GenericGeronimoServer) server.getAdapter(GenericGeronimoServer.class);
+		gs = (GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class);
 		if (gs == null) {
-			gs = (GenericGeronimoServer) server.loadAdapter(GenericGeronimoServer.class, new NullProgressMonitor());
+			gs = (GeronimoServerDelegate) server.loadAdapter(GeronimoServerDelegate.class, new NullProgressMonitor());
 		}
 		oldName = gs.getRMINamingPort();
 		gs.setRMINamingPort(name);

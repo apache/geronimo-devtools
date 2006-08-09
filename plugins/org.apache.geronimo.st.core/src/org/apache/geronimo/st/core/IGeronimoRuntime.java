@@ -18,8 +18,9 @@ package org.apache.geronimo.st.core;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jst.server.core.IJavaRuntime;
 
-public interface IGeronimoRuntime {
+public interface IGeronimoRuntime extends IJavaRuntime {
 	
 	public XmlObject fixGeronimoEarSchema(IFile plan) throws XmlException;
 	

@@ -62,7 +62,7 @@ public class PingThread extends Thread {
 
 			ClassLoader old = Thread.currentThread().getContextClassLoader();
 			try {
-				ClassLoader cl = ((GenericGeronimoServerBehaviour) geronimoServer).getContextClassLoader();
+				ClassLoader cl = ((GeronimoServerBehaviourDelegate) geronimoServer).getContextClassLoader();
 				Thread.currentThread().setContextClassLoader(cl);
 				if (geronimoServer.isFullyStarted()) {
 					Trace.trace(Trace.INFO, "Ping: success");

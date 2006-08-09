@@ -18,7 +18,7 @@ package org.apache.geronimo.st.ui.actions;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.geronimo.st.core.GenericGeronimoServer;
+import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.ui.internal.Messages;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -42,7 +42,7 @@ public class LaunchGeronimoConsoleAction implements IActionDelegate {
 
 	public URL getConsoleUrl() throws MalformedURLException {
 		if (server != null) {
-			GenericGeronimoServer gs = (GenericGeronimoServer) server.getAdapter(GenericGeronimoServer.class);
+			GeronimoServerDelegate gs = (GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class);
 			return new URL("http://" + server.getHost() + ":"
 					+ gs.getHTTPPort() + "/console/");
 		}

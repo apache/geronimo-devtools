@@ -40,7 +40,7 @@ import org.apache.geronimo.kernel.config.Configuration;
 import org.apache.geronimo.kernel.config.InvalidConfigException;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
-import org.apache.geronimo.st.core.GenericGeronimoServerBehaviour;
+import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.jmxagent.Activator;
 import org.apache.geronimo.st.jmxagent.JMXAgent;
@@ -56,7 +56,7 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.internal.IModulePublishHelper;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
-public class GeronimoServerBehaviour extends GenericGeronimoServerBehaviour implements IModulePublishHelper {
+public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate implements IModulePublishHelper {
 
 	static {
 		try {

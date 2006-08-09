@@ -20,12 +20,12 @@ import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 
 import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
 import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
-import org.apache.geronimo.st.core.GenericGeronimoServer;
+import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.core.IGeronimoVersionHandler;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.wst.server.core.IModule;
 
-public class GeronimoServer extends GenericGeronimoServer {
+public class GeronimoServer extends GeronimoServerDelegate {
 
 	private static IGeronimoVersionHandler versionHandler = null;
 

@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.geronimo.st.core.GenericGeronimoServerRuntime;
+import org.apache.geronimo.st.core.GeronimoRuntimeDelegate;
 import org.apache.geronimo.st.ui.Activator;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -157,7 +157,7 @@ public class GeronimoServerRuntimeWizardFragment extends ServerDefinitionTypeAwa
 		data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 3;
 		
-		GenericGeronimoServerRuntime gRuntime = (GenericGeronimoServerRuntime) getRuntimeDelegate().getRuntime().loadAdapter(GenericGeronimoServerRuntime.class, null);
+		GeronimoRuntimeDelegate gRuntime = (GeronimoRuntimeDelegate) getRuntimeDelegate().getRuntime().loadAdapter(GeronimoRuntimeDelegate.class, null);
 
 		final IInstallableRuntime gWithTomcat = ServerPlugin.findInstallableRuntime(gRuntime.getInstallableTomcatRuntimeId());
 		final IInstallableRuntime gWithJetty = ServerPlugin.findInstallableRuntime(gRuntime.getInstallableJettyRuntimeId());
@@ -284,14 +284,14 @@ public class GeronimoServerRuntimeWizardFragment extends ServerDefinitionTypeAwa
 				//a valid install found
 				wizard.setMessage(null, IMessageProvider.NONE);
 				group.setEnabled(false);
-			} else if(status.getCode() == GenericGeronimoServerRuntime.INCORRECT_VERSION) {
+			} else if(status.getCode() == GeronimoRuntimeDelegate.INCORRECT_VERSION) {
 				group.setEnabled(false);
 				if(status.getSeverity() == IStatus.ERROR) {
 					wizard.setMessage(status.getMessage(), IMessageProvider.ERROR);
 					return;
 				} 
 				wizard.setMessage(status.getMessage(), IMessageProvider.WARNING);
-			} else if(status.getCode() == GenericGeronimoServerRuntime.PARTIAL_IMAGE) {
+			} else if(status.getCode() == GeronimoRuntimeDelegate.PARTIAL_IMAGE) {
 				wizard.setMessage(status.getMessage(), IMessageProvider.ERROR);
 				return;
 			} else {

@@ -128,7 +128,7 @@ public class UpdateServerStateTask extends TimerTask {
 		ClassLoader old = Thread.currentThread().getContextClassLoader();
 		try {
 			Thread.currentThread().setContextClassLoader(
-					((GenericGeronimoServerBehaviour) delegate)
+					((GeronimoServerBehaviourDelegate) delegate)
 							.getContextClassLoader());
 			return delegate.isFullyStarted();
 		} finally {

@@ -1,5 +1,5 @@
 /**
- * Copyright 2004, 2005 The Apache Software Foundation or its licensors, as applicable
+ *  Copyright 2006 The Apache Software Foundation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,21 +15,22 @@
  */
 package org.apache.geronimo.st.core;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.wst.server.core.IModuleArtifact;
 import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.model.ServerBehaviourDelegate;
+import org.eclipse.wst.server.core.model.LaunchableAdapterDelegate;
 
-abstract public class GeronimoServerBehaviour extends ServerBehaviourDelegate
-		implements IGeronimoServerBehavior {
+public class GeronimoLaunchableAdapterDelegate extends LaunchableAdapterDelegate {
 
-	public void setServerStarted() {
-		setServerState(IServer.STATE_STARTED);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.wst.server.core.model.LaunchableAdapterDelegate#getLaunchable(org.eclipse.wst.server.core.IServer,
+	 *      org.eclipse.wst.server.core.IModuleArtifact)
+	 */
+	public Object getLaunchable(IServer server, IModuleArtifact moduleArtifact) throws CoreException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public void setServerStopped() {
-		setServerState(IServer.STATE_STOPPED);
-	}
-
-	public IGeronimoServer getGeronimoServer() {
-		return (IGeronimoServer) getServer().loadAdapter(IGeronimoServer.class, null);
-	}
 }

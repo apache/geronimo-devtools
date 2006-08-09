@@ -15,7 +15,7 @@
  */
 package org.apache.geronimo.st.ui.commands;
 
-import org.apache.geronimo.st.core.GenericGeronimoServer;
+import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 
@@ -40,7 +40,7 @@ public class SetConsoleLogLevelCommand extends ServerCommand {
 	 * @see org.eclipse.wst.server.ui.internal.command.ServerCommand#execute()
 	 */
 	public void execute() {
-		GenericGeronimoServer gs = getGeronimoServer();
+		GeronimoServerDelegate gs = getGeronimoServer();
 		oldValue = gs.getConsoleLogLevel();
 		gs.setConsoleLogLevel(value);
 	}
@@ -54,10 +54,10 @@ public class SetConsoleLogLevelCommand extends ServerCommand {
 		getGeronimoServer().setConsoleLogLevel(oldValue);
 	}
 
-	private GenericGeronimoServer getGeronimoServer() {
-		GenericGeronimoServer gs = (GenericGeronimoServer) server.getAdapter(GenericGeronimoServer.class);
+	private GeronimoServerDelegate getGeronimoServer() {
+		GeronimoServerDelegate gs = (GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class);
 		if (gs == null) {
-			gs = (GenericGeronimoServer) server.loadAdapter(GenericGeronimoServer.class, new NullProgressMonitor());
+			gs = (GeronimoServerDelegate) server.loadAdapter(GeronimoServerDelegate.class, new NullProgressMonitor());
 		}
 		return gs;
 	}
