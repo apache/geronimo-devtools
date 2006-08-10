@@ -2,7 +2,7 @@
 <?eclipse version="3.0"?>
 <plugin>
 	 <extension point="org.eclipse.wst.server.core.runtimeTypes">
-        <runtimeType id="org.apache.geronimo.generic.runtime.11"
+        <runtimeType id="org.apache.geronimo.runtime.11"
             name="%runtimeTypeName" description="%runtimeTypeDescription"
             vendor="%runtimeTypeVendor" version="1.1"
             class="org.apache.geronimo.st.v11.core.GeronimoRuntime">
@@ -15,13 +15,13 @@
     </extension>
     
     <extension point="org.eclipse.wst.server.core.serverTypes">
-        <serverType id="org.apache.geronimo.generic.server.11"
+        <serverType id="org.apache.geronimo.server.11"
             name="%serverTypeName" description="%serverTypeDescription"
             runtime="true"
             class="org.apache.geronimo.st.v11.core.GeronimoServer"
             initialState="stopped" supportsRemoteHosts="true"
             startTimeout="240000" stopTimeout="30000" startBeforePublish="true"
-            runtimeTypeId="org.apache.geronimo.generic.runtime.11"
+            runtimeTypeId="org.apache.geronimo.runtime.11"
             launchConfigId="org.apache.geronimo.st.core.launchConfigurationType"
             behaviourClass="org.apache.geronimo.st.v11.core.GeronimoServerBehaviour"
             hasConfiguration="false" launchModes="run,debug">
@@ -45,7 +45,7 @@
     
     <extension point="org.eclipse.jst.server.core.runtimeFacetMappings">
         <runtimeFacetMapping
-            runtimeTypeId="org.apache.geronimo.generic.runtime.11"
+            runtimeTypeId="org.apache.geronimo.runtime.11"
             runtime-component="org.apache.geronimo.runtime" version="1.1"/>
     </extension>
     

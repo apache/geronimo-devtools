@@ -53,10 +53,8 @@ public class GeronimoServerWizardFragment extends WizardFragment {
 
 	protected TableViewer viewer;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jst.server.generic.ui.internal.ServerDefinitionTypeAwareWizardFragment#hasComposite()
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.server.ui.wizard.WizardFragment#hasComposite()
 	 */
 	public boolean hasComposite() {
 		return true;

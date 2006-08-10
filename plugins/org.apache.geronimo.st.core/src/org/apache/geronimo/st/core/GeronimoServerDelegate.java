@@ -268,10 +268,8 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jst.server.generic.core.internal.GenericServer#setDefaults(org.eclipse.core.runtime.IProgressMonitor)
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.server.core.model.ServerDelegate#setDefaults(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void setDefaults(IProgressMonitor monitor) {
 		setAdminID("system");

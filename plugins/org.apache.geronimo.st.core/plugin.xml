@@ -57,16 +57,16 @@
     
     <extension point="org.eclipse.jst.server.core.runtimeFacetMappings">
         <runtimeFacetMapping
-            runtimeTypeId="org.apache.geronimo.generic.runtime.10"
+            runtimeTypeId="org.apache.geronimo.runtime.10"
             runtime-component="org.apache.geronimo.runtime" version="1.0"/>
         <runtimeFacetMapping
-            runtimeTypeId="org.apache.geronimo.generic.runtime.11"
+            runtimeTypeId="org.apache.geronimo.runtime.11"
             runtime-component="org.apache.geronimo.runtime" version="1.1"/>
     </extension>
     
 	<extension point="org.eclipse.jst.server.core.runtimeClasspathProviders">
-		<runtimeClasspathProvider id="org.apache.geronimo.generic.runtimeClasspathProvider"
-			runtimeTypeIds="org.apache.geronimo.generic.runtime.*"
+		<runtimeClasspathProvider id="org.apache.geronimo.runtimeClasspathProvider"
+			runtimeTypeIds="org.apache.geronimo.runtime.*"
 			class="org.apache.geronimo.st.core.GeronimoServerRuntimeTargetHandler"/>
     </extension>
     

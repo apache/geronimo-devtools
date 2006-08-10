@@ -104,11 +104,11 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jst.server.generic.core.internal.GenericServerBehaviour#setupLaunch(org.eclipse.debug.core.ILaunch,
-	 *      java.lang.String, org.eclipse.core.runtime.IProgressMonitor)
+	/**
+	 * @param launch
+	 * @param launchMode
+	 * @param monitor
+	 * @throws CoreException
 	 */
 	protected void setupLaunch(ILaunch launch, String launchMode, IProgressMonitor monitor) throws CoreException {
 		Trace.trace(Trace.INFO, "--> GeronimoServerBehavior.setupLaunch()");

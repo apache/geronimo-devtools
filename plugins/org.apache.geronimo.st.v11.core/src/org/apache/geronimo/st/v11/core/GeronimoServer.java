@@ -145,7 +145,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.eclipse.jst.server.generic.core.internal.GenericServer#setDefaults(org.eclipse.core.runtime.IProgressMonitor)
+	 * @see org.apache.geronimo.st.core.GeronimoServerDelegate#setDefaults(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void setDefaults(IProgressMonitor monitor) {
 		super.setDefaults(monitor);

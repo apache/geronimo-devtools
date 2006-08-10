@@ -12,32 +12,32 @@
     </extension>
     
     <extension point="org.eclipse.wst.server.ui.serverImages">
-    	<image id="org.apache.geronimo.generic.runtime.image"
+    	<image id="org.apache.geronimo.runtime.image"
             icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.generic.runtime.10"/>
-        <image id="org.apache.geronimo.generic.server.image"
+            typeIds="org.apache.geronimo.runtime.10"/>
+        <image id="org.apache.geronimo.server.image"
             icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.generic.server.10"/>
-        <image id="org.apache.geronimo.generic.runtime.image"
+            typeIds="org.apache.geronimo.server.10"/>
+        <image id="org.apache.geronimo.runtime.image"
             icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.generic.runtime.11"/>
-        <image id="org.apache.geronimo.generic.server.image"
+            typeIds="org.apache.geronimo.runtime.11"/>
+        <image id="org.apache.geronimo.server.image"
             icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.generic.server.11"/>
+            typeIds="org.apache.geronimo.server.11"/>
     </extension>
 
     <extension point="org.eclipse.wst.server.ui.wizardFragments">
-        <fragment id="org.eclipse.jst.server.generic.runtime"
-            typeIds="org.apache.geronimo.generic.runtime.10"
+        <fragment id="org.apache.geronimo.runtime.10"
+            typeIds="org.apache.geronimo.runtime.10"
             class="org.apache.geronimo.st.ui.internal.GeronimoRuntimeWizardFragment"/>
-        <fragment id="org.eclipse.jst.server.generic.server"
-            typeIds="org.apache.geronimo.generic.server.10"
+        <fragment id="org.apache.geronimo.server.10"
+            typeIds="org.apache.geronimo.server.10"
             class="org.apache.geronimo.st.ui.internal.GeronimoServerWizardFragment"/>
-        <fragment id="org.eclipse.jst.server.generic.runtime"
-            typeIds="org.apache.geronimo.generic.runtime.11"
+        <fragment id="org.apache.geronimo.runtime.11"
+            typeIds="org.apache.geronimo.runtime.11"
             class="org.apache.geronimo.st.ui.internal.GeronimoRuntimeWizardFragment"/>
-        <fragment id="org.eclipse.jst.server.generic.server"
-            typeIds="org.apache.geronimo.generic.server.11"
+        <fragment id="org.apache.geronimo.server.11"
+            typeIds="org.apache.geronimo.server.11"
             class="org.apache.geronimo.st.ui.internal.GeronimoServerWizardFragment"/>
     </extension>
 
@@ -55,7 +55,7 @@
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.security" order="10"
             insertionId="org.eclipse.wst.server.editor.overview.left"
-            typeIds="org.apache.geronimo.generic.server.*"
+            typeIds="org.apache.geronimo.server.*"
             class="org.apache.geronimo.st.ui.sections.ServerEditorSecuritySection">
         </section>
     </extension>
@@ -63,7 +63,7 @@
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.port" order="10"
             insertionId="org.eclipse.wst.server.editor.overview.right"
-            typeIds="org.apache.geronimo.generic.server.*"
+            typeIds="org.apache.geronimo.server.*"
             class="org.apache.geronimo.st.ui.sections.ServerEditorPortsSection">
         </section>
     </extension>
@@ -71,7 +71,7 @@
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.loglevel" order="20"
             insertionId="org.eclipse.wst.server.editor.overview.right"
-            typeIds="org.apache.geronimo.generic.server.*"
+            typeIds="org.apache.geronimo.server.*"
             class="org.apache.geronimo.st.ui.sections.ServerEditorLogLevelSection">
         </section>
     </extension>

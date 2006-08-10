@@ -3,7 +3,7 @@
 <plugin>
     
     <extension point="org.eclipse.wst.server.core.runtimeTypes">
-        <runtimeType id="org.apache.geronimo.generic.runtime.10"
+        <runtimeType id="org.apache.geronimo.runtime.10"
             name="%runtimeTypeName" description="%runtimeTypeDescription"
             vendor="%runtimeTypeVendor" version="1.0"
             class="org.apache.geronimo.st.v1.core.GeronimoRuntime">
@@ -15,13 +15,13 @@
     </extension>
     
     <extension point="org.eclipse.wst.server.core.serverTypes">
-        <serverType id="org.apache.geronimo.generic.server.10"
+        <serverType id="org.apache.geronimo.server.10"
             name="%serverTypeName" description="%serverTypeDescription"
             runtime="true"
             class="org.apache.geronimo.st.v1.core.GeronimoServer"
             initialState="stopped" supportsRemoteHosts="true"
             startTimeout="240000" stopTimeout="30000" startBeforePublish="true"
-            runtimeTypeId="org.apache.geronimo.generic.runtime.10"
+            runtimeTypeId="org.apache.geronimo.runtime.10"
             launchConfigId="org.apache.geronimo.st.core.launchConfigurationType"
             behaviourClass="org.apache.geronimo.st.v1.core.GeronimoServerBehaviour"
             hasConfiguration="false" launchModes="run,debug">
