@@ -9,7 +9,6 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.apache.geronimo.st.v1.core,
- org.eclipse.jst.server.generic.ui,
  org.eclipse.wst.server.ui,
  org.eclipse.jst.server.generic.core,
  org.eclipse.wst.server.core,

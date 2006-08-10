@@ -20,13 +20,6 @@
                 </includes>
             </resource>
             <resource>
-                <targetPath>serverdef/</targetPath>
-                <directory>serverdef</directory>
-                <includes>
-                    <include>geronimo11.serverdef</include>
-                </includes>
-            </resource>
-            <resource>
                 <targetPath>META-INF</targetPath>
                 <directory>..</directory>
                 <includes>

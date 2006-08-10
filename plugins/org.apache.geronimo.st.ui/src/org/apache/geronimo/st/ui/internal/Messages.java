@@ -25,8 +25,14 @@ public class Messages extends NLS {
 	public static String console;
 	public static String consoleTooltip;
 	
-	//
-	public static String serverWizardDescription;
+	public static String newServerWizardTitle;
+	public static String newServerWizardDescription;
+	
+	public static String installedJRE;
+	public static String installedJREs;
+	public static String runtimeDefaultJRE;
+	public static String runtimeWizardTitle;	
+	public static String runtimeWizardDescription;
 	public static String browse;
 	public static String installDir;
 	public static String installDirInfo;

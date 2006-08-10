@@ -201,6 +201,24 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
 	public void setServerInstanceProperties(Map map) {
 		setAttribute(SERVER_INSTANCE_PROPERTIES, map);
 	}
+	
+	/**
+	 * @param name
+	 * @return
+	 */
+	public String getInstanceProperty(String name) {
+		return (String) getServerInstanceProperties().get(name);
+	}
+
+	/**
+	 * @param name
+	 * @param value
+	 */
+	public void setInstanceProperty(String name, String value) {
+		Map map = getServerInstanceProperties();
+		map.put(name, value);
+		setServerInstanceProperties(map);
+	}
 
 	/**
 	 * @param vmInstall

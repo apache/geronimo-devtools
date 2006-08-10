@@ -23,7 +23,6 @@ import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.jst.server.generic.ui.internal.GenericServerUIMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -70,8 +69,8 @@ public class GeronimoServerWizardFragment extends WizardFragment {
 		container.setLayout(grid);
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 		handle.setImageDescriptor(Activator.getImageDescriptor(Activator.IMG_WIZ_GERONIMO));
-		handle.setTitle(GenericServerUIMessages.bind(GenericServerUIMessages.serverWizardTitle, getServerName()));
-		handle.setDescription(GenericServerUIMessages.bind(GenericServerUIMessages.serverWizardDescription, getServerName()));
+		handle.setTitle(Messages.bind(Messages.newServerWizardTitle, getServerName()));
+		handle.setDescription(Messages.bind(Messages.newServerWizardTitle, getServerName()));
 		createContent(container, handle);
 		return container;
 	}
