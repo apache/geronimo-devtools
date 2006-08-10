@@ -84,7 +84,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		if (isRemote())// No launch for remote servers.
 			return;
 
-		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, "org.apache.geronimo.system.main.Daemon");
+		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, getRuntimeClass());
 
 		GeronimoRuntimeDelegate runtime = getRuntimeDelegate();
 
@@ -220,6 +220,10 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	 */
 	public void dispose() {
 		stopUpdateServerStateTask();
+	}
+	
+	public String getRuntimeClass() {
+		return "org.apache.geronimo.system.main.Daemon";
 	}
 
 	public void setServerStarted() {
