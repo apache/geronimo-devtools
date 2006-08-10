@@ -74,6 +74,7 @@ public class GeronimoConnectionFactory {
 	}
 
 	public void destroy(IServer server) {
+		Trace.trace(Trace.INFO, "deploymentManager destroy");
 		connections.remove(server.getId());
 	}
 }
