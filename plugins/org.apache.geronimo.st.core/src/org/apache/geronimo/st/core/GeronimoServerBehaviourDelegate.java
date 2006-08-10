@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugEvent;
@@ -95,9 +96,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		setupLaunchClasspath(wc, vmInstall);
 
 		String existingProgArgs = wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, (String) null);
-		GeronimoServerDelegate gs = (GeronimoServerDelegate) getServer().getAdapter(GeronimoServerDelegate.class);
-
-		String serverProgArgs = existingProgArgs.concat(" ").concat(gs.getConsoleLogLevel());
+		String serverProgArgs = getServerDelegate().getConsoleLogLevel();
 		if (existingProgArgs == null
 				|| existingProgArgs.indexOf(serverProgArgs) < 0) {
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, serverProgArgs);
@@ -221,7 +220,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	public void dispose() {
 		stopUpdateServerStateTask();
 	}
-	
+
 	public String getRuntimeClass() {
 		return "org.apache.geronimo.system.main.Daemon";
 	}
@@ -412,7 +411,17 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	}
 
 	protected GeronimoRuntimeDelegate getRuntimeDelegate() {
-		return (GeronimoRuntimeDelegate) getServer().getRuntime().loadAdapter(GeronimoRuntimeDelegate.class, null);
+		GeronimoRuntimeDelegate rd = (GeronimoRuntimeDelegate) getServer().getRuntime().getAdapter(GeronimoRuntimeDelegate.class);
+		if (rd == null)
+			rd = (GeronimoRuntimeDelegate) getServer().getRuntime().loadAdapter(GeronimoRuntimeDelegate.class, new NullProgressMonitor());
+		return rd;
+	}
+
+	protected GeronimoServerDelegate getServerDelegate() {
+		GeronimoServerDelegate sd = (GeronimoServerDelegate) getServer().getAdapter(GeronimoServerDelegate.class);
+		if (sd == null)
+			sd = (GeronimoServerDelegate) getServer().loadAdapter(GeronimoServerDelegate.class, new NullProgressMonitor());
+		return sd;
 	}
 
 	protected boolean isRemote() {
