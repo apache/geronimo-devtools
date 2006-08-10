@@ -15,10 +15,19 @@
  */
 package org.apache.geronimo.st.core;
 
+import java.net.URL;
+
+import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jst.server.core.Servlet;
 import org.eclipse.wst.server.core.IModuleArtifact;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.model.IURLProvider;
 import org.eclipse.wst.server.core.model.LaunchableAdapterDelegate;
+import org.eclipse.wst.server.core.model.ServerDelegate;
+import org.eclipse.wst.server.core.util.HttpLaunchable;
+import org.eclipse.wst.server.core.util.WebResource;
 
 public class GeronimoLaunchableAdapterDelegate extends LaunchableAdapterDelegate {
 
@@ -29,7 +38,45 @@ public class GeronimoLaunchableAdapterDelegate extends LaunchableAdapterDelegate
 	 *      org.eclipse.wst.server.core.IModuleArtifact)
 	 */
 	public Object getLaunchable(IServer server, IModuleArtifact moduleArtifact) throws CoreException {
-		// TODO Auto-generated method stub
+
+		GeronimoServerDelegate delegate = (GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class);
+		if (delegate == null)
+			delegate = (GeronimoServerDelegate) server.loadAdapter(GeronimoServerDelegate.class, new NullProgressMonitor());
+		if (delegate == null)
+			return null;
+
+		if ((moduleArtifact instanceof Servlet)
+				|| (moduleArtifact instanceof WebResource))
+			return getHttpLaunchable(moduleArtifact, delegate);
+
+		return null;
+	}
+
+	private Object getHttpLaunchable(IModuleArtifact moduleObject, ServerDelegate delegate) {
+		URL url = ((IURLProvider) delegate).getModuleRootURL(moduleObject.getModule());
+		try {
+			if (moduleObject instanceof Servlet) {
+				Servlet servlet = (Servlet) moduleObject;
+				if (servlet.getAlias() != null) {
+					String path = servlet.getAlias();
+					if (path.startsWith("/"))
+						path = path.substring(1);
+					url = new URL(url, path);
+				} else
+					url = new URL(url, "servlet/"
+							+ servlet.getServletClassName());
+			} else if (moduleObject instanceof WebResource) {
+				WebResource resource = (WebResource) moduleObject;
+				String path = resource.getPath().toString();
+				if (path != null && path.startsWith("/") && path.length() > 0)
+					path = path.substring(1);
+				if (path != null && path.length() > 0)
+					url = new URL(url, path);
+			}
+			return new HttpLaunchable(url);
+		} catch (Exception e) {
+			Trace.trace(Trace.SEVERE, "Error getting URL for " + moduleObject, e);
+		}
 		return null;
 	}
 
