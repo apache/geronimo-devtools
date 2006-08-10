@@ -9,8 +9,16 @@
 	        delegate="org.apache.geronimo.st.core.GeronimoLaunchConfigurationDelegate"
 	        modes="run, debug, profile"
 	        sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
-	        sourcePathComputerId="org.eclipse.jst.server.generic.core.sourcePathComputer"/>
+	        sourcePathComputerId="org.apache.geronimo.st.core.sourcePathComputer"/>
 	</extension>
+	
+	<!--org.eclipse.jst.server.generic.core.sourcePathComputer-->
+	
+	<extension point="org.eclipse.debug.core.sourcePathComputers">
+    	<sourcePathComputer
+        	id="org.apache.geronimo.st.core.sourcePathComputer"
+        	class="org.apache.geronimo.st.core.GeronimoSourcePathComputerDelegate"/>
+  	</extension>
 	  
 	<extension point="org.eclipse.wst.server.core.launchableAdapters">
       	<launchableAdapter
