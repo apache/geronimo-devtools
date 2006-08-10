@@ -283,13 +283,11 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 
 		Label label = new Label(composite, SWT.NONE);
 		label.setText(Messages.installedJRE);
-		GridData data = new GridData();
-		data.horizontalSpan = 2;
-		label.setLayoutData(data);
+		label.setLayoutData(new GridData());
 
 		combo = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
 		combo.setItems(jreNames);
-		data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		combo.setLayoutData(data);
 
 		combo.addSelectionListener(new SelectionListener() {
