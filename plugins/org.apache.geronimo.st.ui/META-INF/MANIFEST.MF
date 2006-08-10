@@ -23,7 +23,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.server.ui,
  org.eclipse.core.commands,
  org.eclipse.jst.server.core,
- org.eclipse.wst.common.project.facet.core
+ org.eclipse.wst.common.project.facet.core,
+ org.eclipse.debug.ui,
+ org.eclipse.jdt.debug.ui
 Eclipse-LazyStart: true
 Export-Package: org.apache.geronimo.st.ui,
  org.apache.geronimo.st.ui.actions,

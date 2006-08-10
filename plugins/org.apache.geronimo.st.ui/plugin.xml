@@ -86,5 +86,21 @@
         </editor>
     </extension>
     
+  	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+    	<launchConfigurationTypeImage
+      		id="org.apache.geronimo.st.ui.launchConfigurationTypeImage"
+      		configTypeID="org.apache.geronimo.st.core.launchConfigurationType"
+      		icon="icons/obj16/littleG.gif">
+    	</launchConfigurationTypeImage>
+  	</extension>
+  	
+  	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+    	<launchConfigurationTabGroup
+      		id="org.apache.geronimo.st.ui.launchConfigurationTabGroup"
+      		type="org.apache.geronimo.st.core.launchConfigurationType"
+      		class="org.apache.geronimo.st.ui.internal.GeronimoLaunchConfigurationTabGroup">
+    	</launchConfigurationTabGroup>
+  	</extension>
+    
 </plugin>
  
