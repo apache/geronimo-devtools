@@ -104,8 +104,7 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 			} catch (SecurityException e) {
 				throw e;
 			} catch (Exception e) {
-				Trace.trace(Trace.WARNING, "Kernel connection failed.");
-				e.printStackTrace();
+				Trace.trace(Trace.WARNING, "Kernel connection failed. " + e.getMessage());
 			}
 		}
 		return kernel;
