@@ -15,9 +15,11 @@
  */
 package org.apache.geronimo.st.core;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,10 @@ import java.util.Timer;
 
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
+import javax.management.MBeanServerConnection;
+import javax.management.remote.JMXConnector;
+import javax.management.remote.JMXConnectorFactory;
+import javax.management.remote.JMXServiceURL;
 
 import org.apache.geronimo.st.core.commands.DeploymentCmdStatus;
 import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
@@ -200,6 +206,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		}
 		if (allpublished)
 			setServerPublishState(IServer.PUBLISH_STATE_NONE);
+
+		GeronimoConnectionFactory.getInstance().destroy(getServer());
 	}
 
 	/*
@@ -524,5 +532,31 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		}
 
 		return modulePath;
+	}
+
+	protected MBeanServerConnection getServerConnection() throws Exception {
+		Map map = new HashMap();
+		String user = getGeronimoServer().getAdminID();
+		String password = getGeronimoServer().getAdminPassword();
+		map.put("jmx.remote.credentials", new String[] { user, password });
+		map.put("java.naming.factory.initial", "com.sun.jndi.rmi.registry.RegistryContextFactory");
+		map.put("java.naming.factory.url.pkgs", "org.apache.geronimo.naming");
+		map.put("java.naming.provider.url", "rmi://" + getServer().getHost()
+				+ ":1099");
+
+		String url = getGeronimoServer().getJMXServiceURL();
+		if (url != null) {
+			try {
+				JMXServiceURL address = new JMXServiceURL(url);
+				JMXConnector jmxConnector = JMXConnectorFactory.connect(address, map);
+				MBeanServerConnection connection = jmxConnector.getMBeanServerConnection();
+				Trace.trace(Trace.INFO, "Connected to kernel. " + url);
+				return connection;
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return null;
 	}
 }

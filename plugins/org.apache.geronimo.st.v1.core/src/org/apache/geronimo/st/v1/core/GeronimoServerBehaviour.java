@@ -83,37 +83,29 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 		Trace.trace(Trace.INFO, "<-- stop()");
 	}
 
-	private Kernel getKernel() throws SecurityException {
-
+	/**
+	 * @return
+	 * @throws SecurityException
+	 */
+	protected Kernel getKernel() throws SecurityException {
 		if (kernel == null) {
-			Map map = new HashMap();
-			String user = getGeronimoServer().getAdminID();
-			String password = getGeronimoServer().getAdminPassword();
-			map.put("jmx.remote.credentials", new String[] { user, password });
 			try {
-				String url = getGeronimoServer().getJMXServiceURL();
-				if (url == null)
-					return null;
-				JMXServiceURL address = new JMXServiceURL(url);
-				try {
-					JMXConnector jmxConnector = JMXConnectorFactory.connect(address, map);
-					MBeanServerConnection mbServerConnection = jmxConnector.getMBeanServerConnection();
-					kernel = new KernelDelegate(mbServerConnection);
-					Trace.trace(Trace.INFO, "Connected to kernel: " + url);
-				} catch (SecurityException e) {
-					throw e;
-				} catch (Exception e) {
-					Trace.trace(Trace.WARNING, "Kernel connection failed." + url);
-				}
-			} catch (MalformedURLException e) {
+				MBeanServerConnection connection = getServerConnection();
+				if (connection != null)
+					kernel = new KernelDelegate(connection);
+			} catch (SecurityException e) {
+				throw e;
+			} catch (Exception e) {
+				Trace.trace(Trace.WARNING, "Kernel connection failed.");
 				e.printStackTrace();
 			}
 		}
-
 		return kernel;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.st.core.IGeronimoServerBehavior#isKernelAlive()
 	 */
 	public boolean isKernelAlive() {
@@ -132,7 +124,9 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.st.core.IGeronimoServerBehavior#isFullyStarted()
 	 */
 	public boolean isFullyStarted() {
@@ -157,33 +151,38 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.st.core.GenericGeronimoServerBehaviour#getConfigId(org.eclipse.wst.server.core.IModule)
 	 */
 	public String getConfigId(IModule module) {
 		return GeronimoV1Utils.getConfigId(module);
 	}
-	
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.st.core.IGeronimoServerBehavior#getTargets()
 	 */
 	public Target[] getTargets() {
 		return null;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.wst.server.core.internal.IModulePublishHelper#getPublishDirectory(org.eclipse.wst.server.core.IModule[])
 	 */
 	public IPath getPublishDirectory(IModule[] module) {
-		if(module == null || module.length == 0)
+		if (module == null || module.length == 0)
 			return null;
-		
+
 		try {
 			String configId = getConfigId(module[0]);
 			ObjectName on = Configuration.getConfigurationObjectName(URI.create(configId));
 			GBeanData data = kernel.getGBeanData(on);
-			URL url = (URL) data.getAttribute("baseURL");	
+			URL url = (URL) data.getAttribute("baseURL");
 			return getModulePath(module, url);
 		} catch (MalformedObjectNameException e) {
 			e.printStackTrace();
@@ -192,11 +191,13 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 		} catch (InternalKernelException e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.st.core.GenericGeronimoServerBehaviour#getContextClassLoader()
 	 */
 	protected ClassLoader getContextClassLoader() {

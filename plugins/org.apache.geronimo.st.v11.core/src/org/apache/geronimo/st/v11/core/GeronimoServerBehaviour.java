@@ -16,17 +16,11 @@
 package org.apache.geronimo.st.v11.core;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import javax.enterprise.deploy.spi.Target;
 import javax.management.MBeanServerConnection;
-import javax.management.remote.JMXConnector;
-import javax.management.remote.JMXConnectorFactory;
-import javax.management.remote.JMXServiceURL;
 import javax.naming.directory.NoSuchAttributeException;
 
 import org.apache.geronimo.deployment.plugin.TargetImpl;
@@ -40,8 +34,8 @@ import org.apache.geronimo.kernel.config.Configuration;
 import org.apache.geronimo.kernel.config.InvalidConfigException;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
-import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
+import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.jmxagent.Activator;
 import org.apache.geronimo.st.jmxagent.JMXAgent;
 import org.apache.geronimo.st.v11.core.internal.Trace;
@@ -97,34 +91,23 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 		Trace.trace(Trace.INFO, "<-- stop()");
 	}
 
+	/**
+	 * @return
+	 * @throws SecurityException
+	 */
 	protected Kernel getKernel() throws SecurityException {
-
 		if (kernel == null) {
-			Map map = new HashMap();
-			String user = getGeronimoServer().getAdminID();
-			String password = getGeronimoServer().getAdminPassword();
-			map.put("jmx.remote.credentials", new String[] { user, password });
 			try {
-				String url = getGeronimoServer().getJMXServiceURL();
-				if (url == null)
-					return null;
-				JMXServiceURL address = new JMXServiceURL(url);
-				try {
-					JMXConnector jmxConnector = JMXConnectorFactory.connect(address, map);
-					MBeanServerConnection mbServerConnection = jmxConnector.getMBeanServerConnection();
-					kernel = new KernelDelegate(mbServerConnection);
-					Trace.trace(Trace.INFO, "Connected to kernel." + url);
-				} catch (SecurityException e) {
-					throw e;
-				} catch (Exception e) {
-					Trace.trace(Trace.WARNING, "Kernel connection failed."
-							+ url);
-				}
-			} catch (MalformedURLException e) {
+				MBeanServerConnection connection = getServerConnection();
+				if (connection != null)
+					kernel = new KernelDelegate(connection);
+			} catch (SecurityException e) {
+				throw e;
+			} catch (Exception e) {
+				Trace.trace(Trace.WARNING, "Kernel connection failed.");
 				e.printStackTrace();
 			}
 		}
-
 		return kernel;
 	}
 
@@ -215,9 +198,10 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 	public IPath getPublishDirectory(IModule[] module) {
 		if (module == null || module.length == 0)
 			return null;
-		
-		if(getGeronimoServer().isRunFromWorkspace()) {
-			//TODO fix me, see if project root, component root, or output container should be returned
+
+		if (getGeronimoServer().isRunFromWorkspace()) {
+			// TODO fix me, see if project root, component root, or output
+			// container should be returned
 			return module[module.length - 1].getProject().getLocation();
 		} else {
 			try {
@@ -233,7 +217,7 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 				e.printStackTrace();
 			} catch (InternalKernelException e) {
 				e.printStackTrace();
-			}			
+			}
 		}
 
 		return null;
