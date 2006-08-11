@@ -6,6 +6,7 @@ import java.util.Iterator;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.exceptions.DeploymentManagerCreationException;
 import javax.enterprise.deploy.spi.factories.DeploymentFactory;
+import javax.naming.Context;
 
 import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -32,6 +33,7 @@ public class GeronimoConnectionFactory {
 	public DeploymentManager getDeploymentManager(IServer server)
 			throws DeploymentManagerCreationException {
 
+		System.setProperty(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
 		DeploymentManager dm = (DeploymentManager) connections.get(server.getId());
 
 		if (dm == null) {
