@@ -171,43 +171,48 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>dependency-maven-plugin</artifactId>
+                <version>1.0</version>
+            </plugin>
         </plugins>
     </pluginManagement>
   </build>
   
   <repositories>
     <repository>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-        <checksumPolicy>ignore</checksumPolicy>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <id>Apache CVS</id>
-      <name>Apache CVS of the Central Repository</name>
-      <url>http://people.apache.org/maven-snapshot-repository</url>
+        <id>maven2-snapshot-apache</id>
+        <name>Maven Snapshot Repository @ Apache</name>
+        <url>http://people.apache.org/maven-snapshot-repository</url>
+        <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>daily</updatePolicy>
+            <checksumPolicy>ignore</checksumPolicy>
+        </snapshots>
+        <releases>
+            <enabled>false</enabled>
+        </releases>
     </repository>
     
     <repository>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-        <checksumPolicy>ignore</checksumPolicy>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <id>snapshots</id>
-      <name>Maven Central Development Repository</name>
-      <url>http://snapshots.maven.codehaus.org/maven2</url>
+        <id>maven2-snapshot-codehaus</id>
+        <name>Maven Central Development Repository</name>
+        <url>http://snapshots.maven.codehaus.org/maven2</url>
+        <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>daily</updatePolicy>
+            <checksumPolicy>ignore</checksumPolicy>
+        </snapshots>
+        <releases>
+            <enabled>false</enabled>
+        </releases>
     </repository>
     
     <repository>
       <id>maven1-ibiblio</id>
       <name>Maven1 Repository on iBiblio</name>
-      <url>http://www.ibiblio.org/maven</url>
+      <url>http://people.apache.org/repo/m1-ibiblio-rsync-repository/</url>
       <layout>legacy</layout>
       <snapshots>
         <enabled>false</enabled>
@@ -218,9 +223,9 @@
     </repository>
     
     <repository>
-      <id>maven2-central</id>
+      <id>maven2-ibiblio</id>
       <name>Maven2 Central Repository</name>
-      <url>http://repo1.maven.org/maven2</url>
+      <url>http://people.apache.org/repo/m2-ibiblio-rsync-repository</url>
       <layout>default</layout>
       <snapshots>
         <enabled>false</enabled>
@@ -232,7 +237,7 @@
     
     <repository>
       <id>maven1-codehaus</id>
-      <name>Maven1 repository at codehaus</name>
+      <name>Maven1 Repository @ Codehaus</name>
       <url>http://dist.codehaus.org/</url>
       <layout>legacy</layout>
       <snapshots>
@@ -246,7 +251,7 @@
     </repository>
     
     <repository>
-      <id>apache-cvs</id>
+      <id>maven1-apache</id>
       <name>Apache CVS Repository</name>
       <url>http://people.apache.org/repository</url>
       <layout>legacy</layout>
@@ -276,9 +281,9 @@
     
   <pluginRepositories>
     <pluginRepository>
-      <id>snapshots</id>
-      <name>Maven Central Plugins Development Repository</name>
-      <url>http://snapshots.maven.codehaus.org/maven2</url>
+      <id>maven2-ibiblio-rsync-apache</id>
+      <name>Maven 2 iBiblio rsync repository @ Apache</name>
+      <url>http://people.apache.org/repo/m2-ibiblio-rsync-repository</url>
     </pluginRepository>
   </pluginRepositories>
 

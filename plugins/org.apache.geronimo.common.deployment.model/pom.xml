@@ -65,7 +65,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>dependency-maven-plugin</artifactId>
-                <version>1.1-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <phase>validate</phase>
