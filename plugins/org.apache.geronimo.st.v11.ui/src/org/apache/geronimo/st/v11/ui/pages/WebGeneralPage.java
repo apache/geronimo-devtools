@@ -17,6 +17,7 @@ package org.apache.geronimo.st.v11.ui.pages;
 
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
+import org.apache.geronimo.st.v11.ui.sections.WebContainerSection;
 import org.apache.geronimo.st.v11.ui.sections.WebGeneralSection;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
@@ -34,6 +35,7 @@ public class WebGeneralPage extends AbstractGeronimoFormPage {
 	 */
 	protected void fillBody(IManagedForm managedForm) {
 		managedForm.addPart(new WebGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
+		managedForm.addPart(new WebContainerSection(body, toolkit, getStyle(), getDeploymentPlan()));
 	}
 
 	/*
