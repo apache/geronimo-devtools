@@ -288,7 +288,6 @@
   </pluginRepositories>
 
   <modules>
-    <module>config-store-service</module>
     <module>maven-plugins/maven-emf-plugin</module>
     <module>maven-plugins/maven-geronimodevtools-plugin</module>
     <module>emf</module>

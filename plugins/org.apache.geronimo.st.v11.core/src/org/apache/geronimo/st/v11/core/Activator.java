@@ -1,8 +1,5 @@
 package org.apache.geronimo.st.v11.core;
 
-import java.io.IOException;
-
-import org.apache.geronimo.st.jmxagent.JMXAgent;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
@@ -40,11 +37,6 @@ public class Activator extends Plugin {
 	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		try {
-			JMXAgent.getInstance().stop();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} 
 		plugin = null;
 		super.stop(context);
 	}

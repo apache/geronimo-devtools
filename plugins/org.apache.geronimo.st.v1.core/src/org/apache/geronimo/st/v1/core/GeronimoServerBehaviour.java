@@ -162,15 +162,6 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.st.core.IGeronimoServerBehavior#getTargets()
-	 */
-	public Target[] getTargets() {
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.wst.server.core.internal.IModulePublishHelper#getPublishDirectory(org.eclipse.wst.server.core.IModule[])
 	 */
 	public IPath getPublishDirectory(IModule[] module) {

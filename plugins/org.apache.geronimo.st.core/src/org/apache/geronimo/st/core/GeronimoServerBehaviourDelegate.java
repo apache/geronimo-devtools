@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Timer;
 
 import javax.enterprise.deploy.spi.DeploymentManager;
+import javax.enterprise.deploy.spi.Target;
 import javax.enterprise.deploy.spi.TargetModuleID;
 import javax.management.MBeanServerConnection;
 import javax.management.remote.JMXConnector;
@@ -557,6 +558,10 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 			}
 		}
 
+		return null;
+	}
+	
+	public Target[] getTargets() {
 		return null;
 	}
 }

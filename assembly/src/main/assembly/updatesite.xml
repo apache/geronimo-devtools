@@ -26,7 +26,6 @@
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.common</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v1</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v11</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.jmxagent</include>
             </includes>
         </dependencySet>
         <!-- Features -->

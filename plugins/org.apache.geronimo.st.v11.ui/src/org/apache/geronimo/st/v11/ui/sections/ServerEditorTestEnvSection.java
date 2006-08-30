@@ -17,7 +17,6 @@ package org.apache.geronimo.st.v11.ui.sections;
 
 import org.apache.geronimo.st.v11.core.GeronimoServer;
 import org.apache.geronimo.st.v11.ui.commands.SetInPlaceDeploymentCommand;
-import org.apache.geronimo.st.v11.ui.commands.SetPersistentCommand;
 import org.apache.geronimo.st.v11.ui.commands.SetRunFromWorkspaceCommand;
 import org.apache.geronimo.st.v11.ui.internal.Messages;
 import org.eclipse.swt.SWT;
@@ -37,8 +36,6 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 	private Button runFromWorkspace;
 
 	private Button inPlace;
-
-	//private Button persistant;
 
 	/*
 	 * (non-Javadoc)
@@ -70,31 +67,22 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		section.setClient(composite);
 
-		//persistant = toolkit.createButton(composite, Messages.editorSectionSetPersistent, SWT.CHECK);
 		inPlace = toolkit.createButton(composite, Messages.editorSectionEnableInPlace, SWT.CHECK);
 		runFromWorkspace = toolkit.createButton(composite, Messages.editorSectionRunFromWorkspace, SWT.CHECK);
 		runFromWorkspace.setToolTipText(Messages.seeRestrictions);
 
 		GeronimoServer gs = (GeronimoServer) server.getAdapter(GeronimoServer.class);
-		//persistant.setSelection(gs.isPersistant());
 		inPlace.setSelection(gs.isInPlace());
 		runFromWorkspace.setSelection(gs.isRunFromWorkspace());
+		
+		//TODO temporarily disable support until new implementation
+		inPlace.setEnabled(false);
+		runFromWorkspace.setEnabled(false);
 
 		GridData data = new GridData();
 		data.horizontalIndent = 20;
 		runFromWorkspace.setLayoutData(data);
 		runFromWorkspace.setEnabled(inPlace.getSelection());
-
-		/*persistant.addSelectionListener(new SelectionListener() {
-
-			public void widgetSelected(SelectionEvent e) {
-				execute(new SetPersistentCommand(server, persistant.getSelection()));
-			}
-
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
-
-		});*/
 
 		inPlace.addSelectionListener(new SelectionListener() {
 

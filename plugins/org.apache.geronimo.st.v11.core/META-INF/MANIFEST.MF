@@ -7,7 +7,6 @@ Bundle-Activator: org.apache.geronimo.st.v11.core.Activator
 Bundle-Vendor: Apache
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
- org.apache.geronimo.st.jmxagent,
  org.apache.geronimo.st.core,
  org.apache.geronimo.runtime.v11,
  org.apache.geronimo.v11.deployment.model,

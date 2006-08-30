@@ -15,7 +15,6 @@
  */
 package org.apache.geronimo.st.v11.core;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Set;
 
@@ -36,29 +35,15 @@ import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
-import org.apache.geronimo.st.jmxagent.Activator;
-import org.apache.geronimo.st.jmxagent.JMXAgent;
 import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.debug.core.ILaunch;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.internal.IModulePublishHelper;
-import org.eclipse.wst.server.core.util.SocketUtil;
 
 public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate implements IModulePublishHelper {
-
-	static {
-		try {
-			JMXAgent.getInstance().start();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 
 	private Kernel kernel = null;
 
@@ -166,32 +151,6 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 	 */
 	public String getConfigId(IModule module) {
 		return GeronimoV11Utils.getConfigId(module);
-	}
-
-	protected void setupLaunch(ILaunch launch, String launchMode, IProgressMonitor monitor) throws CoreException {
-		if (SocketUtil.isLocalhost(getServer().getHost())
-				&& getGeronimoServer().isRunFromWorkspace()) {
-			getServer().addServerListener(new ConfigStoreInstaller());
-		}
-		super.setupLaunch(launch, launchMode, monitor);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.core.IGeronimoServerBehavior#getTargets()
-	 */
-	public Target[] getTargets() {
-		if (getGeronimoServer().isRunFromWorkspace()) {
-			AbstractNameQuery query = new AbstractNameQuery("org.apache.geronimo.devtools.EclipseAwareConfigurationStore");
-			Set set = getKernel().listGBeans(query);
-			if (!set.isEmpty()) {
-				AbstractName name = (AbstractName) set.toArray()[0];
-				Target target = new TargetImpl(name, null);
-				return new Target[] { target };
-			}
-		}
-		return null;
 	}
 
 	public IPath getPublishDirectory(IModule[] module) {

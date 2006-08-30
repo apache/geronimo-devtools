@@ -92,7 +92,6 @@
     <module>org.apache.geronimo.runtime.common</module>
     <module>org.apache.geronimo.runtime.v1</module>
     <module>org.apache.geronimo.runtime.v11</module>
-    <module>org.apache.geronimo.st.jmxagent</module>
   </modules>
   
 </project>
