@@ -41,7 +41,6 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.server.core.IModule;
-import org.eclipse.wst.server.core.IModuleType;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
@@ -77,7 +76,7 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 			IFacetedProject fp = ProjectFacetsManager.create(project);
 			IRuntime runtime = FacetUtil.getRuntime(fp.getPrimaryRuntime());
 			String dummyJarName = project.getName() + ".eclipse.jar";
-			File dummyJarFile = runtime.getLocation().append("var/shared/lib").append((dummyJarName)).toFile();
+			File dummyJarFile = runtime.getLocation().append("var/shared/lib").append(dummyJarName).toFile();
 
 			// delete the dummy jar and return if module no longer associated
 			// with server with the same runtime
@@ -116,7 +115,6 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 				}
 			}
 
-			// Set entries = (Set) model.getProperty(CP_ENTRIES);
 			// regen the jar only if required
 			if (regenerate(dummyJarFile, entries)) {
 				dummyJarFile.delete();
