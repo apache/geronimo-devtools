@@ -18,11 +18,17 @@ package org.apache.geronimo.st.v11.core;
 import java.net.URL;
 import java.util.Set;
 
-import javax.enterprise.deploy.spi.Target;
+import javax.enterprise.deploy.spi.DeploymentManager;
+import javax.enterprise.deploy.spi.TargetModuleID;
+import javax.enterprise.deploy.spi.exceptions.TargetException;
+import javax.enterprise.deploy.spi.status.ProgressEvent;
+import javax.enterprise.deploy.spi.status.ProgressListener;
+import javax.enterprise.deploy.spi.status.ProgressObject;
 import javax.management.MBeanServerConnection;
 import javax.naming.directory.NoSuchAttributeException;
 
-import org.apache.geronimo.deployment.plugin.TargetImpl;
+import org.apache.geronimo.deployment.plugin.TargetModuleIDImpl;
+import org.apache.geronimo.deployment.util.DeploymentUtil;
 import org.apache.geronimo.gbean.AbstractName;
 import org.apache.geronimo.gbean.AbstractNameQuery;
 import org.apache.geronimo.gbean.GBeanData;
@@ -33,12 +39,25 @@ import org.apache.geronimo.kernel.config.Configuration;
 import org.apache.geronimo.kernel.config.InvalidConfigException;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
+import org.apache.geronimo.st.core.Activator;
+import org.apache.geronimo.st.core.DeploymentUtils;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
+import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
+import org.apache.geronimo.st.core.operations.ISharedLibEntryCreationDataModelProperties;
+import org.apache.geronimo.st.core.operations.SharedLibEntryCreationOperation;
+import org.apache.geronimo.st.core.operations.SharedLibEntryDataModelProvider;
 import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.internal.IModulePublishHelper;
@@ -89,7 +108,8 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 			} catch (SecurityException e) {
 				throw e;
 			} catch (Exception e) {
-				Trace.trace(Trace.WARNING, "Kernel connection failed. " + e.getMessage());
+				Trace.trace(Trace.WARNING, "Kernel connection failed. "
+						+ e.getMessage());
 			}
 		}
 		return kernel;
@@ -189,4 +209,90 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 	protected ClassLoader getContextClassLoader() {
 		return Kernel.class.getClassLoader();
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate#doDeploy(org.eclipse.wst.server.core.IModule)
+	 */
+	protected void doDeploy(IModule module) throws Exception {
+		updateSharedLib(module);
+		super.doDeploy(module);
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate#doRedeploy(org.eclipse.wst.server.core.IModule)
+	 */
+	protected void doRedeploy(IModule module) throws Exception {
+		super.unDeploy(module);
+		updateSharedLib(module);
+		super.doDeploy((module));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate#doUndeploy(org.eclipse.wst.server.core.IModule)
+	 */
+	protected void doUndeploy(IModule module) throws Exception {
+		super.doUndeploy(module);
+		updateSharedLib(module);
+	}
+
+	private void updateSharedLib(IModule module) throws CoreException {
+		IDataModel model = DataModelFactory.createDataModel(new SharedLibEntryDataModelProvider());
+		model.setProperty(ISharedLibEntryCreationDataModelProperties.MODULE, module);
+		IDataModelOperation op = new SharedLibEntryCreationOperation(model);
+		try {
+			IStatus status = op.execute(new NullProgressMonitor(), null);
+			if (status.isOK()) {
+				DeploymentManager dm = DeploymentCommandFactory.getDeploymentManager(getServer());
+				TargetModuleID id = null;
+				try {
+					TargetModuleID[] ids = dm.getAvailableModules(null, dm.getTargets());
+					for(int i = 0; i < ids.length; i++) {
+						if(ids[i].getModuleID().indexOf("sharedlib") > 0) {
+							id = ids[i];
+							break;
+						}
+					}	
+				} catch (Exception e) {
+					e.printStackTrace();
+				} 
+				
+				if(id != null) {
+					TargetModuleID[] ids = new TargetModuleID[]{id};
+					ProgressObject po = dm.stop(ids);
+					waitForProgress(po);
+					if(po.getDeploymentStatus().isCompleted()) {
+						Trace.trace(Trace.INFO, id.getModuleID() + " stopped.");
+					}
+					
+					po = dm.start(ids);
+					waitForProgress(po);
+					
+					if(po.getDeploymentStatus().isCompleted()) {
+						Trace.trace(Trace.INFO, id.getModuleID() + " started.");
+					}
+				}
+			}
+		} catch (ExecutionException e) {
+			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "Error updating shared lib configuration.", e));
+		}
+	}
+
+	protected void waitForProgress(ProgressObject po) throws CoreException {
+		while (po.getDeploymentStatus().isRunning()) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		return;
+	}
+
 }
