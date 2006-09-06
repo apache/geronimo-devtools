@@ -21,6 +21,7 @@ import org.apache.geronimo.st.v11.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.v11.core.GeronimoV11Utils;
 import org.apache.geronimo.xml.ns.deployment.ArtifactType;
 import org.apache.geronimo.xml.ns.deployment.DependenciesType;
+import org.apache.geronimo.xml.ns.deployment.DependencyType;
 import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
 import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
 import org.apache.geronimo.xml.ns.deployment.DocumentRoot;
@@ -218,7 +219,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		
 		if(cfg != null && cfg.isSharedLib()) {
 			DependenciesType dt = DeploymentFactory.eINSTANCE.createDependenciesType();
-			ArtifactType sharedLib = createArtifactType("geronimo", "sharedLib", "1.1", "car");
+			ArtifactType sharedLib = createDependencyType("geronimo", "sharedLib", "1.1", "car");
 			dt.getDependency().add(sharedLib);
 			env.setDependencies(dt);
 		}
@@ -228,6 +229,15 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	
 	private ArtifactType createArtifactType(String groupId, String artifactId, String version, String type) {
 		ArtifactType artifact = DeploymentFactory.eINSTANCE.createArtifactType();
+		artifact.setGroupId(groupId);
+		artifact.setArtifactId(artifactId);
+		artifact.setVersion(version);
+		artifact.setType(type);
+		return artifact;
+	}
+	
+	private ArtifactType createDependencyType(String groupId, String artifactId, String version, String type) {
+		DependencyType artifact = DeploymentFactory.eINSTANCE.createDependencyType();
 		artifact.setGroupId(groupId);
 		artifact.setArtifactId(artifactId);
 		artifact.setVersion(version);
