@@ -24,7 +24,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.ant,
  org.apache.geronimo.runtime.common,
  org.eclipse.jst.common.frameworks,
- org.eclipse.jst.server.core
+ org.eclipse.jst.server.core,
+ org.eclipse.jdt.launching
 Eclipse-LazyStart: true
 Export-Package: org.apache.geronimo.st.v11.core.operations,
  org.apache.geronimo.st.v11.core.internal,
