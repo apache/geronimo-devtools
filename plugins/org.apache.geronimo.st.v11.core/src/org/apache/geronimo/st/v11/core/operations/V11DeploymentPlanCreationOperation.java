@@ -54,14 +54,16 @@ import org.openejb.xml.ns.openejb.jar.OpenejbJarType;
 import org.openejb.xml.ns.openejb.jar.util.JarResourceFactoryImpl;
 
 public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOperation {
-	
+
 	DeploymentPlanInstallConfig cfg;
 
 	public V11DeploymentPlanCreationOperation(IDataModel model, Object config) {
 		super(model, config);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createGeronimoApplicationDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public EObject createGeronimoApplicationDeploymentPlan(IFile dpFile) {
@@ -90,7 +92,9 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		return root;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createGeronimoWebDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public EObject createGeronimoWebDeploymentPlan(IFile dpFile) {
@@ -113,7 +117,8 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 		root.setEnvironment(getConfigEnvironment());
 		root.setContextRoot("/" + getProject().getName());
-		//root.setContextPriorityClassloader(false); //TODO Replace this with inverse-classloading
+		// root.setContextPriorityClassloader(false); //TODO Replace this with
+		// inverse-classloading
 
 		documentRoot.setWebApp(root);
 		resource.getContents().add(documentRoot);
@@ -123,7 +128,9 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		return root;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createOpenEjbDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public EObject createOpenEjbDeploymentPlan(IFile dpFile) {
@@ -154,7 +161,9 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		return root;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createConnectorDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public EObject createConnectorDeploymentPlan(IFile dpFile) {
@@ -180,7 +189,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 		return root;
 	}
-	
+
 	public EObject createServiceDeploymentPlan(IFile dpFile) {
 		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString());
 
@@ -202,49 +211,58 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 		return root;
 	}
-	
+
 	public EnvironmentType getConfigEnvironment() {
-		if(config != null && config instanceof DeploymentPlanInstallConfig) {
+		if (config != null && config instanceof DeploymentPlanInstallConfig) {
 			cfg = (DeploymentPlanInstallConfig) config;
 		}
-		
-        String groupId = cfg != null && hasValue(cfg.getGroupId()) ? cfg.getGroupId() : "default";
-		String artifactId = cfg != null && hasValue(cfg.getArtifactId()) ? cfg.getArtifactId() : getProject().getName();
-		String version = cfg != null && hasValue(cfg.getVersion()) ? cfg.getVersion() : "1.0";
-		String type = cfg != null && hasValue(cfg.getType()) ? cfg.getType() : "car";
-		
+
+		String groupId = cfg != null && hasValue(cfg.getGroupId()) ? cfg.getGroupId()
+				: "default";
+		String artifactId = cfg != null && hasValue(cfg.getArtifactId()) ? cfg.getArtifactId()
+				: getProject().getName();
+		String version = cfg != null && hasValue(cfg.getVersion()) ? cfg.getVersion()
+				: "1.0";
+		String type = cfg != null && hasValue(cfg.getType()) ? cfg.getType()
+				: "car";
+
 		ArtifactType artifact = createArtifactType(groupId, artifactId, version, type);
 		EnvironmentType env = DeploymentFactory.eINSTANCE.createEnvironmentType();
 		env.setModuleId(artifact);
-		
-		if(cfg != null && cfg.isSharedLib()) {
+
+		if (cfg != null && cfg.isSharedLib()) {
 			DependenciesType dt = DeploymentFactory.eINSTANCE.createDependenciesType();
-			ArtifactType sharedLib = createDependencyType("geronimo", "sharedLib", "1.1", "car");
+			ArtifactType sharedLib = createDependencyType("geronimo", "sharedlib", null, "car");
 			dt.getDependency().add(sharedLib);
 			env.setDependencies(dt);
 		}
-		
+
 		return env;
 	}
-	
+
 	private ArtifactType createArtifactType(String groupId, String artifactId, String version, String type) {
 		ArtifactType artifact = DeploymentFactory.eINSTANCE.createArtifactType();
-		artifact.setGroupId(groupId);
-		artifact.setArtifactId(artifactId);
-		artifact.setVersion(version);
-		artifact.setType(type);
+		if (groupId != null)
+			artifact.setGroupId(groupId);
+		if (artifactId != null)
+			artifact.setArtifactId(artifactId);
+		if (version != null)
+			artifact.setVersion(version);
 		return artifact;
 	}
-	
+
 	private ArtifactType createDependencyType(String groupId, String artifactId, String version, String type) {
 		DependencyType artifact = DeploymentFactory.eINSTANCE.createDependencyType();
-		artifact.setGroupId(groupId);
-		artifact.setArtifactId(artifactId);
-		artifact.setVersion(version);
+		if (groupId != null)
+			artifact.setGroupId(groupId);
+		if (artifactId != null)
+			artifact.setArtifactId(artifactId);
+		if (version != null)
+			artifact.setVersion(version);
 		artifact.setType(type);
 		return artifact;
 	}
-	
+
 	private static boolean hasValue(String attribute) {
 		return attribute != null && attribute.trim().length() != 0;
 	}
