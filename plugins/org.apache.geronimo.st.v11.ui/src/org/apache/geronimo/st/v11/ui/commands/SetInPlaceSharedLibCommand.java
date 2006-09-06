@@ -19,7 +19,7 @@ import org.apache.geronimo.st.ui.commands.ServerCommand;
 import org.apache.geronimo.st.v11.core.GeronimoServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 
-public class SetPersistentCommand extends ServerCommand {
+public class SetInPlaceSharedLibCommand extends ServerCommand {
 
 	boolean value;
 
@@ -29,8 +29,8 @@ public class SetPersistentCommand extends ServerCommand {
 	 * @param server
 	 * @param name
 	 */
-	public SetPersistentCommand(IServerWorkingCopy server, boolean value) {
-		super(server, "SetPersistentCommand");
+	public SetInPlaceSharedLibCommand(IServerWorkingCopy server, boolean value) {
+		super(server, "SetInPlaceSharedLibCommand");
 		this.value = value;
 	}
 
@@ -41,8 +41,8 @@ public class SetPersistentCommand extends ServerCommand {
 	 */
 	public void execute() {
 		GeronimoServer gs = (GeronimoServer) server.getAdapter(GeronimoServer.class);
-		oldValue = gs.isPersistant();
-		gs.setPersistent(value);
+		oldValue = gs.isInPlaceSharedLib();
+		gs.setInPlaceSharedLib(value);
 	}
 
 	/*
@@ -52,6 +52,7 @@ public class SetPersistentCommand extends ServerCommand {
 	 */
 	public void undo() {
 		GeronimoServer gs = (GeronimoServer) server.getAdapter(GeronimoServer.class);
-		gs.setPersistent(oldValue);
+		gs.setInPlaceSharedLib(oldValue);
 	}
+
 }

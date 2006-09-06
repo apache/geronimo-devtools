@@ -20,15 +20,10 @@ import java.util.Set;
 
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
-import javax.enterprise.deploy.spi.exceptions.TargetException;
-import javax.enterprise.deploy.spi.status.ProgressEvent;
-import javax.enterprise.deploy.spi.status.ProgressListener;
 import javax.enterprise.deploy.spi.status.ProgressObject;
 import javax.management.MBeanServerConnection;
 import javax.naming.directory.NoSuchAttributeException;
 
-import org.apache.geronimo.deployment.plugin.TargetModuleIDImpl;
-import org.apache.geronimo.deployment.util.DeploymentUtil;
 import org.apache.geronimo.gbean.AbstractName;
 import org.apache.geronimo.gbean.AbstractNameQuery;
 import org.apache.geronimo.gbean.GBeanData;
@@ -40,7 +35,6 @@ import org.apache.geronimo.kernel.config.InvalidConfigException;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.Activator;
-import org.apache.geronimo.st.core.DeploymentUtils;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
@@ -243,6 +237,11 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 	}
 
 	private void updateSharedLib(IModule module) throws CoreException {
+		
+		if(isRemote() || !getGeronimoServer().isInPlaceSharedLib()) {
+			return;
+		}
+		
 		IDataModel model = DataModelFactory.createDataModel(new SharedLibEntryDataModelProvider());
 		model.setProperty(ISharedLibEntryCreationDataModelProperties.MODULE, module);
 		IDataModelOperation op = new SharedLibEntryCreationOperation(model);

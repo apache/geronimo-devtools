@@ -16,7 +16,7 @@
 package org.apache.geronimo.st.v11.ui.sections;
 
 import org.apache.geronimo.st.v11.core.GeronimoServer;
-import org.apache.geronimo.st.v11.ui.commands.SetInPlaceDeploymentCommand;
+import org.apache.geronimo.st.v11.ui.commands.SetInPlaceSharedLibCommand;
 import org.apache.geronimo.st.v11.ui.commands.SetRunFromWorkspaceCommand;
 import org.apache.geronimo.st.v11.ui.internal.Messages;
 import org.eclipse.swt.SWT;
@@ -35,7 +35,7 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 
 	private Button runFromWorkspace;
 
-	private Button inPlace;
+	private Button inPlaceSharedLib;
 
 	/*
 	 * (non-Javadoc)
@@ -67,32 +67,23 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		section.setClient(composite);
 
-		inPlace = toolkit.createButton(composite, Messages.editorSectionEnableInPlace, SWT.CHECK);
+		inPlaceSharedLib = toolkit.createButton(composite, Messages.editorSectionSharedLibrariesInPlace, SWT.CHECK);
 		runFromWorkspace = toolkit.createButton(composite, Messages.editorSectionRunFromWorkspace, SWT.CHECK);
 		runFromWorkspace.setToolTipText(Messages.seeRestrictions);
 
 		GeronimoServer gs = (GeronimoServer) server.getAdapter(GeronimoServer.class);
-		inPlace.setSelection(gs.isInPlace());
+		inPlaceSharedLib.setSelection(gs.isInPlaceSharedLib());
 		runFromWorkspace.setSelection(gs.isRunFromWorkspace());
-		
-		//TODO temporarily disable support until new implementation
-		inPlace.setEnabled(false);
-		runFromWorkspace.setEnabled(false);
 
 		GridData data = new GridData();
-		data.horizontalIndent = 20;
 		runFromWorkspace.setLayoutData(data);
-		runFromWorkspace.setEnabled(inPlace.getSelection());
+		// TODO temporarily disable support until new implementation
+		runFromWorkspace.setEnabled(false);
 
-		inPlace.addSelectionListener(new SelectionListener() {
-
+		inPlaceSharedLib.addSelectionListener(new SelectionListener() {
+			
 			public void widgetSelected(SelectionEvent e) {
-				execute(new SetInPlaceDeploymentCommand(server, inPlace.getSelection()));
-				runFromWorkspace.setEnabled(inPlace.getSelection());
-				if (!inPlace.getSelection()) {
-					runFromWorkspace.setSelection(false);
-					execute(new SetRunFromWorkspaceCommand(server, runFromWorkspace.getSelection()));
-				}
+				execute(new SetInPlaceSharedLibCommand(server, inPlaceSharedLib.getSelection()));
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {

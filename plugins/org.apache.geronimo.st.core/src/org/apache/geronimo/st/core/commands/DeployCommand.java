@@ -54,7 +54,7 @@ abstract public class DeployCommand extends AbstractDeploymentCommand {
 		} else {
 			IPath outputDir = DeploymentUtils.STATE_LOC.append("server_" + getServer().getId());
 			outputDir.toFile().mkdirs();
-			if(gs.isInPlace()) {
+			if(gs.isInPlaceSharedLib()) {
 				file = DeploymentUtils.generateExplodedConfiguration(getModule(), outputDir).toFile();
 			} else {
 				file = DeploymentUtils.createJarFile(getModule(), outputDir);

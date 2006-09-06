@@ -41,9 +41,7 @@ public interface IGeronimoServer extends IURLProvider {
 
 	public IGeronimoVersionHandler getVersionHandler();
 	
-	public boolean isPersistant();
-	
-	public boolean isInPlace();
+	public boolean isInPlaceSharedLib();
 	
 	public boolean isRunFromWorkspace();
 

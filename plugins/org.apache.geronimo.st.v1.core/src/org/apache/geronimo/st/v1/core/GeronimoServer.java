@@ -104,16 +104,9 @@ public class GeronimoServer extends GeronimoServerDelegate {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.apache.geronimo.st.core.IGeronimoServer#isPersistant()
-	 */
-	public boolean isPersistant() {
-		return true;
-	}
-	
-	/* (non-Javadoc)
 	 * @see org.apache.geronimo.st.core.IGeronimoServer#isInPlace()
 	 */
-	public boolean isInPlace() {
+	public boolean isInPlaceSharedLib() {
 		return false;
 	}
 	

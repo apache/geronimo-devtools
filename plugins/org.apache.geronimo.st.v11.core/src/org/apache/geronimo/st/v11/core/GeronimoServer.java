@@ -30,7 +30,7 @@ import org.eclipse.wst.server.core.util.SocketUtil;
 public class GeronimoServer extends GeronimoServerDelegate {
 	
 	public static final String PROPERTY_PERSISTENT = "persistent";
-	public static final String PROPERTY_IN_PLACE = "inPlace";
+	public static final String PROPERTY_IN_PLACE_SHARED_LIB = "inPlace";
 	public static final String PROPERTY_RUN_FROM_WORKSPACE = "runFromWorkspace";
 
 	private static IGeronimoVersionHandler versionHandler = null;
@@ -92,7 +92,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
 	 */
 	public void configureDeploymentManager(DeploymentManager dm) {
 		((JMXDeploymentManager) dm).setLogConfiguration(true, true);
-		boolean enableInPlace = SocketUtil.isLocalhost(getServer().getHost()) && isInPlace();
+		boolean enableInPlace = SocketUtil.isLocalhost(getServer().getHost()) && isInPlaceSharedLib();
 		setInPlaceDeployment(dm, enableInPlace);
 	}
 
@@ -121,8 +121,8 @@ public class GeronimoServer extends GeronimoServerDelegate {
 	/* (non-Javadoc)
 	 * @see org.apache.geronimo.st.core.IGeronimoServer#isInPlace()
 	 */
-	public boolean isInPlace() {
-		return getAttribute(PROPERTY_IN_PLACE, false);
+	public boolean isInPlaceSharedLib() {
+		return getAttribute(PROPERTY_IN_PLACE_SHARED_LIB, false);
 	}
 	
 	/* (non-Javadoc)
@@ -132,12 +132,8 @@ public class GeronimoServer extends GeronimoServerDelegate {
 		return getAttribute(PROPERTY_RUN_FROM_WORKSPACE, false);
 	}
 	
-	public void setPersistent(boolean enable) {
-		setAttribute(PROPERTY_PERSISTENT, enable);
-	}
-	
-	public void setInPlace(boolean enable) {
-		setAttribute(PROPERTY_IN_PLACE, enable);
+	public void setInPlaceSharedLib(boolean enable) {
+		setAttribute(PROPERTY_IN_PLACE_SHARED_LIB, enable);
 	}
 	
 	public void setRunFromWorkspace(boolean enable) {
@@ -149,8 +145,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
 	 */
 	public void setDefaults(IProgressMonitor monitor) {
 		super.setDefaults(monitor);
-		setPersistent(true);
-		setInPlace(false);
+		setInPlaceSharedLib(false);
 		setRunFromWorkspace(false);
 	}
 
