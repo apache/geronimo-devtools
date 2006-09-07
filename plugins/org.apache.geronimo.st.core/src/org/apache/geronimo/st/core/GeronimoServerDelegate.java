@@ -55,7 +55,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 
 	public static final String PROPERTY_LOG_LEVEL = "logLevel";
 
-	public static final String CONSOLE_INFO = "-v";
+	public static final String CONSOLE_INFO = "--long";
 
 	public static final String CONSOLE_DEBUG = "-vv";
 
