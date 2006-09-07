@@ -44,7 +44,7 @@ public class GeronimoUtils {
 
 	public static final String APP_PLAN_NAME = "geronimo-application.xml";
 
-	public static final String CONNECTOR_PLAN_NAME = "geronimo-connector.xml";
+	public static final String CONNECTOR_PLAN_NAME = "geronimo-ra.xml";
 	
 	public static final String SERVICE_PLAN_NAME = "geronimo-service.xml";
 
