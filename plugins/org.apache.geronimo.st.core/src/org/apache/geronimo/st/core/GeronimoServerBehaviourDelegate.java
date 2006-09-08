@@ -15,6 +15,8 @@
  */
 package org.apache.geronimo.st.core;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -39,6 +41,11 @@ import org.apache.geronimo.st.core.commands.IDeploymentCommand;
 import org.apache.geronimo.st.core.commands.TargetModuleIdNotFoundException;
 import org.apache.geronimo.st.core.internal.Messages;
 import org.apache.geronimo.st.core.internal.Trace;
+import org.apache.geronimo.xbeans.eclipse.deployment.ModuleDocument;
+import org.apache.geronimo.xbeans.eclipse.deployment.ChildrenDocument.Children;
+import org.apache.geronimo.xbeans.eclipse.deployment.ModuleDocument.Module;
+import org.apache.xmlbeans.XmlOptions;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -56,6 +63,11 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jst.j2ee.internal.deployables.J2EEFlexProjDeployable;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.internal.resources.VirtualArchiveComponent;
+import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
+import org.eclipse.wst.common.componentcore.resources.IVirtualReference;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerListener;
@@ -277,6 +289,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	}
 
 	protected void invokeCommand(int deltaKind, IModule module) throws CoreException {
+		generateRunFromWorkspaceConfig(module);
+		
 		ClassLoader old = Thread.currentThread().getContextClassLoader();
 		try {
 			ClassLoader cl = getContextClassLoader();
@@ -304,6 +318,73 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 			e.printStackTrace();
 		} finally {
 			Thread.currentThread().setContextClassLoader(old);
+		}
+	}
+	
+	private void generateRunFromWorkspaceConfig(IModule module) {
+		//if (getGeronimoServer().isRunFromWorkspace()) {
+			IPath configDir = Activator.getDefault().getStateLocation().append(
+				"looseconfig").append("server_" + getServer().getId());
+		configDir.toFile().mkdirs();
+
+		ModuleDocument doc = ModuleDocument.Factory.newInstance();
+		Module deployable = doc.addNewModule();
+		processModuleConfig(deployable, module);
+
+		XmlOptions options = new XmlOptions();
+		options.setSavePrettyPrint();
+		File file = configDir.append(module.getName()).addFileExtension("xml")
+				.toFile();
+		System.out.println(doc.xmlText(options));
+		try {
+			doc.save(file, options);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		//}
+	}
+
+	private void processModuleConfig(Module deployable, IModule serverModule) {
+		
+		deployable.setName(serverModule.getName());
+		
+		J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) serverModule.loadAdapter(J2EEFlexProjDeployable.class, null);
+		if (j2eeModule != null) {
+			
+			if(j2eeModule.isBinary()) {
+				deployable.setPath(serverModule.getName());
+				return;
+			}
+			
+			IContainer[] containers = j2eeModule.getResourceFolders();
+			for (int i = 0; i < containers.length; i++) {
+				deployable.addNewResources().setPath(containers[i].getLocation().toOSString());
+			}
+			containers = j2eeModule.getJavaOutputFolders();
+			for (int i = 0; i < containers.length; i++) {
+				deployable.addNewClasses().setPath(containers[i].getLocation().toOSString());
+			}
+		}
+
+		IModule[] children = j2eeModule.getChildModules();		
+		if (children.length > 0) {
+			Children modChild = deployable.addNewChildren();
+			for (int i = 0; i < children.length; i++) {
+				processModuleConfig(modChild.addNewModule(), children[i]);
+			}
+		}
+		
+		IVirtualComponent vc = ComponentCore.createComponent(serverModule.getProject());
+		IVirtualReference[] refs = vc.getReferences();
+		for(int i = 0; i< refs.length; i++) {
+			IVirtualComponent refComp = refs[i].getReferencedComponent();
+			if(refComp.isBinary()) {
+				Children modChild = deployable.getChildren() == null ? deployable.addNewChildren() : deployable.getChildren();
+				Module binaryModule = modChild.addNewModule();
+				VirtualArchiveComponent archiveComp = (VirtualArchiveComponent) refComp;
+				binaryModule.setName(archiveComp.getUnderlyingDiskFile().getName());
+				binaryModule.setPath(archiveComp.getUnderlyingDiskFile().getAbsolutePath());
+			}
 		}
 	}
 

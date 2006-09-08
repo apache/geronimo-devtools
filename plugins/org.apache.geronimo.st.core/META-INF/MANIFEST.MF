@@ -35,3 +35,5 @@ Export-Package: org.apache.geronimo.st.core,
  org.apache.geronimo.st.core.commands,
  org.apache.geronimo.st.core.internal,
  org.apache.geronimo.st.core.operations
+Bundle-ClassPath: lib/eclipse-support-1.0-SNAPSHOT.jar,
+ .

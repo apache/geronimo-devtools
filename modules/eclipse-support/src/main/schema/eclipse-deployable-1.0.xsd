@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="module">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="resources" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="classes" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="children" minOccurs="0" />
+            </xs:sequence>
+            <xs:attribute name="path" type="xs:string" use="required" />
+            <xs:attribute name="name" type="xs:string" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="resources">
+        <xs:complexType>
+            <xs:attribute name="path" type="xs:string" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="classes">
+        <xs:complexType>
+            <xs:attribute name="path" type="xs:string" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="children">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="module" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
