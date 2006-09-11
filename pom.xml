@@ -87,7 +87,6 @@
 
   <properties>
     <!-- Plugin Versions -->
-    <org.apache.geronimo.st.jmxagent_version>1.0.0</org.apache.geronimo.st.jmxagent_version>
     <org.apache.geronimo.st.core_version>1.0.0</org.apache.geronimo.st.core_version>
     <org.apache.geronimo.st.v1.core_version>1.0.0</org.apache.geronimo.st.v1.core_version>
     <org.apache.geronimo.st.v11.core_version>1.0.0</org.apache.geronimo.st.v11.core_version>
