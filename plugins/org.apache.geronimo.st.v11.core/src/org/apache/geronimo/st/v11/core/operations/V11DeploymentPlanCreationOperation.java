@@ -248,6 +248,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 			artifact.setArtifactId(artifactId);
 		if (version != null)
 			artifact.setVersion(version);
+		artifact.setType(type);
 		return artifact;
 	}
 
