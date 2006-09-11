@@ -30,6 +30,7 @@ import org.apache.geronimo.xml.ns.j2ee.web.WebAppType;
 import org.apache.geronimo.xml.ns.j2ee.web.WebPackage;
 import org.apache.geronimo.xml.ns.j2ee.web.util.WebResourceFactoryImpl;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -40,6 +41,22 @@ import org.openejb.xml.ns.openejb.jar.OpenejbJarType;
 import org.openejb.xml.ns.openejb.jar.util.JarResourceFactoryImpl;
 
 public class GeronimoV11Utils extends GeronimoUtils {
+	
+	public static EObject getDeploymentPlan(IFile file) {
+		if (!file.exists())
+			return null;
+
+		if (file.getName().equals(GeronimoUtils.APP_PLAN_NAME))
+			return getApplicationDeploymentPlan(file);
+		else if (file.getName().equals(GeronimoUtils.OPENEJB_PLAN_NAME))
+			return getOpenEjbDeploymentPlan(file);
+		else if (file.getName().equals(GeronimoUtils.WEB_PLAN_NAME))
+			return getWebDeploymentPlan(file);
+		else if (file.getName().equals(GeronimoUtils.CONNECTOR_PLAN_NAME))
+			return getConnectorDeploymentPlan(file);
+
+		return null;
+	}
 
 	public static String getConfigId(IModule module) {
 

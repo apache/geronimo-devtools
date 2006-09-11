@@ -92,7 +92,7 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
 	 * @see org.apache.geronimo.st.ui.editors.IGeronimoFormContentLoader#loadDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public EObject loadDeploymentPlan(IFile file) {
-		return GeronimoV11Utils.getWebDeploymentPlan(file);
+		return GeronimoV11Utils.getDeploymentPlan(file);
 	}
 
 	protected FormPage getWebNamingPage(FormEditor editor) {
