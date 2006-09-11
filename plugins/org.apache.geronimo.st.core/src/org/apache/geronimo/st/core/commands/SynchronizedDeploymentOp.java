@@ -47,7 +47,7 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 
 	private IDeploymentCommand command;
 
-	private IStatus status = null;
+	private MultiStatus status = null;
 
 	private IProgressMonitor _monitor = null;
 
@@ -121,12 +121,10 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 			_monitor.subTask(dsm.toString());
 			if (command.getCommandType() == deploymentStatus.getCommand()) {
 				if (deploymentStatus.isCompleted()) {
-					status = new MultiStatus(Activator.PLUGIN_ID, 0, "", null);
-					messageToStatus((MultiStatus)status, dsm.getMessage());
+					messageToStatus(IStatus.OK, dsm.getMessage(), false);
 					sendNotification();
 				} else if (deploymentStatus.isFailed()) {
-					status = new MultiStatus(Activator.PLUGIN_ID, 0, "", null);
-					messageToStatus((MultiStatus) status, dsm.getMessage());
+					messageToStatus(IStatus.ERROR, dsm.getMessage(), true);
 					sendNotification();
 				}
 			}
@@ -151,12 +149,13 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 		return command.getModule();
 	}
 	
-    public static void messageToStatus(MultiStatus status, String source) {
+    public void messageToStatus(int severity, String source, boolean error) {
+    	status = new MultiStatus(Activator.PLUGIN_ID, 0, "", null);
 		try {
 			BufferedReader in = new BufferedReader(new StringReader(source));
 			String line;
 			while ((line = in.readLine()) != null) {
-				status.add(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,line, null));
+				status.add(new Status(severity, Activator.PLUGIN_ID, 0,line, null));
 			}
 		} catch (IOException e) {
 
