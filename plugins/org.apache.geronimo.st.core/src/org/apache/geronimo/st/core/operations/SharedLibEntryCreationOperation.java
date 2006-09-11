@@ -115,7 +115,7 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 					if(kind == IClasspathEntry.CPE_PROJECT) {
 						IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(entry.getPath().segment(0));
 						IJavaProject ref = JavaCore.create(p);
-						path = p.getLocation().removeLastSegments(1).append(ref.getOutputLocation());
+						path = p.getLocation().removeLastSegments(1).append(ref.getOutputLocation()).addTrailingSeparator();
 					} else {
 						IClasspathEntry resolved = JavaCore.getResolvedClasspathEntry(entry);
 						path = resolved.getPath().makeAbsolute();
