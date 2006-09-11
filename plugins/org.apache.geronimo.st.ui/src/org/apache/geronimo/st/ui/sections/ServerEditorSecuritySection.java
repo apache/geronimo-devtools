@@ -92,9 +92,8 @@ public class ServerEditorSecuritySection extends ServerEditorSection {
 		// ------- Label and text field for the password -------
 		createLabel(composite, Messages.password, toolkit);
 
-		password = toolkit.createText(composite, getPassword(), SWT.BORDER);
-		password
-				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+		password = toolkit.createText(composite, getPassword(), SWT.BORDER | SWT.PASSWORD);
+		password.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 		password.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				execute(new SetPasswordCommand(server, password.getText()));
