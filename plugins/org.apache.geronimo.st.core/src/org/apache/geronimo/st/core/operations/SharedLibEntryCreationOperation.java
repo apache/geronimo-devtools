@@ -26,9 +26,12 @@ import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 
+import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -44,6 +47,8 @@ import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
+
+import sun.java2d.loops.GraphicsPrimitive.TraceReporter;
 
 public class SharedLibEntryCreationOperation extends AbstractDataModelOperation implements ISharedLibEntryCreationDataModelProperties {
 
@@ -105,13 +110,19 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 			for (int i = 0; i < cp.length; i++) {
 				IClasspathEntry entry = cp[i];
 				int kind = entry.getEntryKind();
-				if (kind == IClasspathEntry.CPE_LIBRARY
-						|| kind == IClasspathEntry.CPE_VARIABLE) {
-					if (kind == IClasspathEntry.CPE_VARIABLE) {
-						// TODO exclude and return if web-inf/lib entries
+				if (kind == IClasspathEntry.CPE_LIBRARY || kind == IClasspathEntry.CPE_VARIABLE || kind == IClasspathEntry.CPE_PROJECT) {
+					IPath path = null;
+					if(kind == IClasspathEntry.CPE_PROJECT) {
+						IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(entry.getPath().segment(0));
+						IJavaProject ref = JavaCore.create(p);
+						path = p.getLocation().removeLastSegments(1).append(ref.getOutputLocation());
+					} else {
+						IClasspathEntry resolved = JavaCore.getResolvedClasspathEntry(entry);
+						path = resolved.getPath().makeAbsolute();
 					}
-					IClasspathEntry resolved = JavaCore.getResolvedClasspathEntry(entry);
-					entries.add(resolved.getPath().makeAbsolute().toOSString());
+					
+					Trace.trace(Trace.INFO, "Adding " + path.toOSString());
+					entries.add(path.toOSString());
 				}
 			}
 
