@@ -8,6 +8,7 @@
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
         <version>1.1</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <properties>
         <xbeanVersion>2.0.0</xbeanVersion>

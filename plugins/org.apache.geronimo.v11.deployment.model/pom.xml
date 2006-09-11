@@ -9,6 +9,7 @@
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>eclipse-plugins-parent</artifactId>
         <version>1.0</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     
     <properties>

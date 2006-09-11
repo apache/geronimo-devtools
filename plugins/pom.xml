@@ -15,83 +15,77 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-
 <!-- $Rev$ $Date$ -->
-
 <project>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.geronimo.devtools</groupId>
-  <artifactId>eclipse-plugins-parent</artifactId>
-  <packaging>pom</packaging>
-  <name>Parent POM :: ${artifactId}</name>
-  <version>1.0</version>
-  <description>Parent POM for Geronimo Eclipse Plugin</description>
-  <url>http://geronimo.apache.org/devtools</url>
-  
-  <parent>
+    <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.geronimo.devtools</groupId>
-    <artifactId>geronimo-eclipse-plugin</artifactId> 
-    <version>1.1</version>
-  </parent>
-  <build>
-    <pluginManagement>
+    <artifactId>eclipse-plugins-parent</artifactId>
+    <packaging>pom</packaging>
+    <name>Parent POM :: ${artifactId}</name>
+    <version>1.0</version>
+    <parent>
+        <groupId>org.apache.geronimo.devtools</groupId>
+        <artifactId>geronimo-eclipse-plugin</artifactId>
+        <version>1.1</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.geronimo.devtools</groupId>
+                    <artifactId>maven-geronimodevtools-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>install-dependencies</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>download</goal>
+                                <goal>manifestbundles</goal>
+                                <goal>install</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
-                <groupId>org.apache.geronimo.devtools</groupId>
-                <artifactId>maven-geronimodevtools-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>install-dependencies</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>download</goal>
-                            <goal>manifestbundles</goal>
-                            <goal>install</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <configuration>
+                    <projectnatures>
+                        <projectnature>org.eclipse.pde.PluginNature</projectnature>
+                        <projectnature>org.eclipse.jdt.core.javanature</projectnature>
+                    </projectnatures>
+                    <buildcommands>
+                        <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
+                        <buildcommand>org.eclipse.pde.ManifestBuilder</buildcommand>
+                        <buildcommand>org.eclipse.pde.SchemaBuilder</buildcommand>
+                    </buildcommands>
+                    <classpathContainers>
+                        <java.lang.String>org.eclipse.jdt.launching.JRE_CONTAINER</java.lang.String>
+                        <java.lang.String>org.eclipse.pde.core.requiredPlugins</java.lang.String>
+                    </classpathContainers>
+                </configuration>
             </plugin>
         </plugins>
-    </pluginManagement>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <configuration>
-          <projectnatures>
-            <projectnature>org.eclipse.pde.PluginNature</projectnature>
-            <projectnature>org.eclipse.jdt.core.javanature</projectnature>
-          </projectnatures>
-          <buildcommands>
-            <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
-            <buildcommand>org.eclipse.pde.ManifestBuilder</buildcommand>
-            <buildcommand>org.eclipse.pde.SchemaBuilder</buildcommand>
-          </buildcommands>
-          <classpathContainers>
-            <java.lang.String>org.eclipse.jdt.launching.JRE_CONTAINER</java.lang.String>
-            <java.lang.String>org.eclipse.pde.core.requiredPlugins</java.lang.String>
-          </classpathContainers>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-  
-  <modules>
-    <module>org.apache.geronimo.st.core</module>
-    <module>org.apache.geronimo.st.v1.core</module>
-    <module>org.apache.geronimo.st.v11.core</module>
-    <module>org.apache.geronimo.st.ui</module>
-    <module>org.apache.geronimo.st.v1.ui</module>
-    <module>org.apache.geronimo.st.v11.ui</module>
-    <module>org.apache.geronimo.common.deployment.model</module>
-    <module>org.apache.geronimo.common.deployment.model.edit</module>
-    <module>org.apache.geronimo.deployment.model</module>
-    <module>org.apache.geronimo.deployment.model.edit</module>
-    <module>org.apache.geronimo.v11.deployment.model</module>
-    <module>org.apache.geronimo.v11.deployment.model.edit</module>
-    <module>org.apache.geronimo.runtime.common</module>
-    <module>org.apache.geronimo.runtime.v1</module>
-    <module>org.apache.geronimo.runtime.v11</module>
-  </modules>
-  
+    </build>
+    <modules>
+        <module>org.apache.geronimo.st.core</module>
+        <module>org.apache.geronimo.st.v1.core</module>
+        <module>org.apache.geronimo.st.v11.core</module>
+        <module>org.apache.geronimo.st.ui</module>
+        <module>org.apache.geronimo.st.v1.ui</module>
+        <module>org.apache.geronimo.st.v11.ui</module>
+        <module>org.apache.geronimo.common.deployment.model</module>
+        <module>org.apache.geronimo.common.deployment.model.edit</module>
+        <module>org.apache.geronimo.deployment.model</module>
+        <module>org.apache.geronimo.deployment.model.edit</module>
+        <module>org.apache.geronimo.v11.deployment.model</module>
+        <module>org.apache.geronimo.v11.deployment.model.edit</module>
+        <module>org.apache.geronimo.runtime.common</module>
+        <module>org.apache.geronimo.runtime.v1</module>
+        <module>org.apache.geronimo.runtime.v11</module>
+    </modules>
 </project>
