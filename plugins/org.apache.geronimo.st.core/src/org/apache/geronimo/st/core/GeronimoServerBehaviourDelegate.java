@@ -50,6 +50,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -467,7 +468,9 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	}
 
 	protected void doFail(IStatus status, String message) throws CoreException {
-		throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, message, new Exception(status.getMessage())));
+		MultiStatus ms = new MultiStatus(Activator.PLUGIN_ID, 0, message, null);
+		ms.addAll(status);
+		throw new CoreException(ms);
 	}
 
 	protected IStatus distribute(IModule module) throws Exception {

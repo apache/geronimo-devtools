@@ -15,6 +15,10 @@
  */
 package org.apache.geronimo.st.core.commands;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
+
 import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.status.DeploymentStatus;
 import javax.enterprise.deploy.spi.status.ProgressEvent;
@@ -26,6 +30,7 @@ import org.apache.geronimo.st.core.DeploymentStatusMessage;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IModule;
@@ -73,7 +78,7 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 
 	private synchronized ProgressObject run() throws Exception {
 		Trace.trace(Trace.INFO, "--> run()");
-
+		
 		IStatus ds = command.execute(_monitor);
 
 		ProgressObject po = null;
@@ -116,10 +121,12 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 			_monitor.subTask(dsm.toString());
 			if (command.getCommandType() == deploymentStatus.getCommand()) {
 				if (deploymentStatus.isCompleted()) {
-					status = new Status(IStatus.OK, Activator.PLUGIN_ID, 0, dsm.getMessage(), null);
+					status = new MultiStatus(Activator.PLUGIN_ID, 0, "", null);
+					messageToStatus((MultiStatus)status, dsm.getMessage());
 					sendNotification();
 				} else if (deploymentStatus.isFailed()) {
-					status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, dsm.getMessage(), null);
+					status = new MultiStatus(Activator.PLUGIN_ID, 0, "", null);
+					messageToStatus((MultiStatus) status, dsm.getMessage());
 					sendNotification();
 				}
 			}
@@ -143,5 +150,16 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 	public IModule getModule() {
 		return command.getModule();
 	}
+	
+    public static void messageToStatus(MultiStatus status, String source) {
+		try {
+			BufferedReader in = new BufferedReader(new StringReader(source));
+			String line;
+			while ((line = in.readLine()) != null) {
+				status.add(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,line, null));
+			}
+		} catch (IOException e) {
 
+		}
+    }
 }
