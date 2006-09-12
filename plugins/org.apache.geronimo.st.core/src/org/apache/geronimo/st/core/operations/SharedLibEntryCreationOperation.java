@@ -161,9 +161,10 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 					path = resolved.getPath().makeAbsolute().toOSString();
 				}
 				
-				Trace.trace(Trace.INFO, "Adding " + path);
-				if (!entries.contains(path))
+				if (!entries.contains(path)) {
+					Trace.trace(Trace.INFO, "Adding " + path);
 					entries.add(path);
+				}
 			}
 		}
 	}
