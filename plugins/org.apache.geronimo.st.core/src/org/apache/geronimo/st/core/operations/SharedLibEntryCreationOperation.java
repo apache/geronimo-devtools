@@ -31,13 +31,13 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.server.core.FacetUtil;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -47,8 +47,7 @@ import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
-
-import sun.java2d.loops.GraphicsPrimitive.TraceReporter;
+import org.eclipse.wst.server.core.model.ModuleDelegate;
 
 public class SharedLibEntryCreationOperation extends AbstractDataModelOperation implements ISharedLibEntryCreationDataModelProperties {
 
@@ -102,27 +101,26 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 				}
 			}
 
-			// filter the cp entries needed to be added to the dummy shared lib
-			// jar
+			// filter the cp entries needed to be added to the dummy shared lib jar
 			HashSet entries = new HashSet();
-			IJavaProject jp = JavaCore.create(project);
-			IClasspathEntry[] cp = jp.getRawClasspath();
-			for (int i = 0; i < cp.length; i++) {
-				IClasspathEntry entry = cp[i];
-				int kind = entry.getEntryKind();
-				if (kind == IClasspathEntry.CPE_LIBRARY || kind == IClasspathEntry.CPE_VARIABLE || kind == IClasspathEntry.CPE_PROJECT) {
-					IPath path = null;
-					if(kind == IClasspathEntry.CPE_PROJECT) {
-						IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(entry.getPath().segment(0));
-						IJavaProject ref = JavaCore.create(p);
-						path = p.getLocation().removeLastSegments(1).append(ref.getOutputLocation()).addTrailingSeparator();
-					} else {
-						IClasspathEntry resolved = JavaCore.getResolvedClasspathEntry(entry);
-						path = resolved.getPath().makeAbsolute();
+			processJavaProject(project, entries);
+			
+			//add output locations of non-child java projects
+			ModuleDelegate delegate = (ModuleDelegate) module.loadAdapter(ModuleDelegate.class, null);
+			if(delegate != null) {
+				IProject[] refs = project.getReferencedProjects();
+				for(int i = 0; i < refs.length; i++) {
+					boolean found = false;
+					IModule[] children = delegate.getChildModules();
+					for(int j = 0; j < children.length; j++) {
+						if(children[j].getProject().equals(refs[i])) {
+							found = true;
+							break;
+						}
 					}
-					
-					Trace.trace(Trace.INFO, "Adding " + path.toOSString());
-					entries.add(path.toOSString());
+					if(!found) {
+						processJavaProject(refs[i], entries);
+					}
 				}
 			}
 
@@ -144,6 +142,30 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 		}
 
 		return Status.OK_STATUS;
+	}
+
+	private void processJavaProject(IProject project, HashSet entries) throws JavaModelException {
+		IJavaProject jp = JavaCore.create(project);
+		IClasspathEntry[] cp = jp.getRawClasspath();
+		for (int i = 0; i < cp.length; i++) {
+			IClasspathEntry entry = cp[i];
+			int kind = entry.getEntryKind();
+			if (kind == IClasspathEntry.CPE_LIBRARY || kind == IClasspathEntry.CPE_VARIABLE || kind == IClasspathEntry.CPE_PROJECT) {
+				String path = null;
+				if(kind == IClasspathEntry.CPE_PROJECT) {
+					IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(entry.getPath().segment(0));
+					IJavaProject ref = JavaCore.create(p);
+					path = p.getLocation().removeLastSegments(1).append(ref.getOutputLocation()).addTrailingSeparator().toOSString();
+				} else {
+					IClasspathEntry resolved = JavaCore.getResolvedClasspathEntry(entry);
+					path = resolved.getPath().makeAbsolute().toOSString();
+				}
+				
+				Trace.trace(Trace.INFO, "Adding " + path);
+				if (!entries.contains(path))
+					entries.add(path);
+			}
+		}
 	}
 
 	/**
