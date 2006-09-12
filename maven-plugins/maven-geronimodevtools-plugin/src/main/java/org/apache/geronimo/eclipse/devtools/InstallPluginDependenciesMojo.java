@@ -1,13 +1,13 @@
 /**
  * Copyright 2004, 2005 The Apache Software Foundation or its licensors, as
  * applicable
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -42,14 +42,14 @@ import org.codehaus.plexus.util.IOUtil;
 /**
  * This maven plugin installs to the local maven repository eclipse plugin
  * dependencies for a pom from an eclipse distribution.
- * 
+ *
  * Plugins dependencies are defined with the "org.eclipse.plugins" groupId.
- * 
+ *
  * The artifactId is the bundle id. If the bundle is a directory, then all jars
  * inside the bundle will be installed. The bundle id can be appendend with "." +
  * the name of the jar inside the bundle, excluding the ".jar" extension in
  * order to explicitly define a jar dependency.
- * 
+ *
  * @goal install
  */
 public class InstallPluginDependenciesMojo extends AbstractMojo {
@@ -104,7 +104,7 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.apache.maven.plugin.Mojo#execute()
 	 */
 	public void execute() throws MojoExecutionException, MojoFailureException {
@@ -156,13 +156,27 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		fragment.setVersion(swtDependency.getVersion());
 		String id = swtDependency.getArtifactId();
 		String platform = System.getProperty("os.name");
+		String arch = System.getProperty("os.arch");
 		if (platform.startsWith("Windows")) {
-			fragment.setArtifactId(id.concat(".win32.win32.x86"));
+         fragment.setArtifactId(id.concat(".win32.win32.x86"));
 		} else if (platform.startsWith("Linux")) {
-			fragment.setArtifactId(id.concat(".gtk.linux.x86"));
+         if (arch.equalsIgnoreCase("x86_64") || arch.equalsIgnoreCase("amd64"))
+            fragment.setArtifactId(id.concat(".gtk.linux.x86_64"));
+         else if (arch.startsWith("ppc"))
+            fragment.setArtifactId(id.concat(".gtk.linux.ppc"));
+         else
+			   fragment.setArtifactId(id.concat(".gtk.linux.x86"));
 		} else if (platform.startsWith("Mac")) {
 			fragment.setArtifactId(id.concat(".carbon.macosx"));
+		} else if (platform.startsWith("SunOS")) {
+         if (arch.startsWith("x86") || arch.startsWith("amd"))
+            fragment.setArtifactId(id.concat(".gtk.solaris.x86"));
+         else
+            fragment.setArtifactId(id.concat(".gtk.solaris.sparc"));
+		} else if (platform.startsWith("AIX")) {
+			fragment.setArtifactId(id.concat(".motif.aix.ppc"));
 		}
+		getLog().info("SWTFragment:  " + fragment.toString());
 		return fragment;
 	}
 
@@ -225,11 +239,11 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 
 	/**
 	 * Converts eclipse qualifier convention to maven convention.
-	 * 
+	 *
 	 * major.minor.revision.qualifier is converted to major.minor.revision-build
 	 * where build is the eclipse qualifier with all non-numeric characters
 	 * removed.
-	 * 
+	 *
 	 * @param version
 	 * @return
 	 */

@@ -72,7 +72,7 @@ public class DownloadMojo extends AbstractMojo {
 	 * @parameter expression="${settings.localRepository}/eclipse/install.props"
 	 */
 	private File propsFile;
-	
+
 	/**
 	 * @parameter expression="${overwrite}";
 	 */
@@ -92,7 +92,7 @@ public class DownloadMojo extends AbstractMojo {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.apache.maven.plugin.Mojo#execute()
 	 */
 	public void execute() throws MojoExecutionException, MojoFailureException {
@@ -133,8 +133,8 @@ public class DownloadMojo extends AbstractMojo {
 
 		load();
 		int identifier = generateInstallIdentifier(images);
-		
-	
+
+
 		boolean extract = false;
 		if("false".equals(overwrite)) {
 			extract = false;
@@ -143,7 +143,7 @@ public class DownloadMojo extends AbstractMojo {
 		} else {
 			extract = shouldExtract(identifier);
 		}
-		
+
 		if (extract) {
 			clean();
 			Iterator i = images.iterator();
@@ -176,14 +176,31 @@ public class DownloadMojo extends AbstractMojo {
 
 	private String getPlatformUrlSuffix() {
 		String os = System.getProperty("os.name");
+		String arch = System.getProperty("os.arch");
+		getLog().info("SDKPlatform:  os.name=" + os + ", os.arch=" + arch);
 		if (os.startsWith("Windows")) {
-			return "win32.zip";
+         if (arch.equalsIgnoreCase("x86_64") || arch.equalsIgnoreCase("amd64"))
+            return "win32-x86_64.zip";
+         else
+			   return "win32.zip";
 		} else if (os.startsWith("Linux")) {
-			return "linux-gtk.tar.gz";
+         if (arch.equalsIgnoreCase("x86_64") || arch.equalsIgnoreCase("amd64"))
+            return "linux-gtk-x86_64.tar.gz";
+         else if (arch.startsWith("ppc"))
+            return "linux-gtk-ppc.tar.gz";
+         else
+			   return "linux-gtk.tar.gz";
 		} else if (os.startsWith("Mac")) {
 			return "macosx-carbon.tar.gz";
-		}
-		return "win32.zip";
+		} else if (os.startsWith("SunOS")) {
+         if (arch.startsWith("x86") || arch.startsWith("amd"))
+            return "solaris-gtk-x86.zip";
+         else
+             return "solaris-gtk.zip";
+		} else if (os.startsWith("AIX")) {
+         return "aix-motif.zip";
+      } else  // flag that we don't know which Eclipse SDK to use
+		   return "unknown.zip";
 	}
 
 	private File getRepositoryDestination(URL url) {
