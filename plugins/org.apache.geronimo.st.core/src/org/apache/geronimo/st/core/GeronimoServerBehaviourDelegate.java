@@ -190,16 +190,17 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	 */
 	public void publishModule(int kind, int deltaKind, IModule[] module, IProgressMonitor monitor) throws CoreException {
 
-		Trace.trace(Trace.INFO, ">> publishModule(), deltaKind = " + deltaKind);
+		Trace.trace(Trace.INFO, ">> publishModule(), deltaKind = " + deltaKindToString(deltaKind));
 		Trace.trace(Trace.INFO, Arrays.asList(module).toString());
 		_monitor = monitor;
 
-		if (module.length == 1 && (deltaKind == ADDED || deltaKind == REMOVED)) {
+		//NO_CHANGE need if app is associated but not started and no delta
+		if (module.length == 1 && (deltaKind == ADDED || deltaKind == REMOVED || deltaKind == NO_CHANGE)) {
 			invokeCommand(deltaKind, module[0]);
 		} else if (deltaKind == CHANGED) {
 			// TODO This case is flawed due to WTP Bugzilla 123676
 			invokeCommand(deltaKind, module[0]);
-		}
+		} 
 
 		setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
 
@@ -308,6 +309,10 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 			}
 			case REMOVED: {
 				doUndeploy(module);
+				break;
+			}
+			case NO_CHANGE: {
+				doNoChange(module);
 				break;
 			}
 			default:
@@ -449,6 +454,27 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		}
 
 		Trace.trace(Trace.INFO, "<< doUndeploy()" + module.toString());
+	}
+	
+	protected void doNoChange(IModule module) throws Exception {
+		
+		Trace.trace(Trace.INFO, ">> doNoChange() " + module.toString());
+		
+		boolean found = false;
+		try {
+			TargetModuleID id = DeploymentUtils.getTargetModuleID(module, DeploymentCommandFactory.getDeploymentManager(getServer()));
+			found = id != null;
+		} catch (TargetModuleIdNotFoundException e) {
+			Trace.trace(Trace.INFO, "TargetModuleId not found.");
+		}
+
+		if(found) {
+			start(module);
+		} else {
+			doDeploy(module);
+		}
+
+		Trace.trace(Trace.INFO, "<< doNoChange()" + module.toString());
 	}
 
 	protected void doRestart(IModule module) throws Exception {
@@ -648,4 +674,19 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	public Target[] getTargets() {
 		return null;
 	}
+	
+	public static String deltaKindToString(int kind) {
+		switch(kind) {
+		case NO_CHANGE:
+			return "NO_CHANGE";
+		case ADDED:
+			return "ADDED";
+		case CHANGED:
+			return "CHANGED";
+		case REMOVED:
+			return "REMOVED";
+		}
+		return Integer.toString(kind);
+	}
+	
 }
