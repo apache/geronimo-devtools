@@ -645,7 +645,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		return modulePath;
 	}
 
-	protected MBeanServerConnection getServerConnection() throws Exception {
+	public MBeanServerConnection getServerConnection() throws Exception {
 		Map map = new HashMap();
 		String user = getGeronimoServer().getAdminID();
 		String password = getGeronimoServer().getAdminPassword();

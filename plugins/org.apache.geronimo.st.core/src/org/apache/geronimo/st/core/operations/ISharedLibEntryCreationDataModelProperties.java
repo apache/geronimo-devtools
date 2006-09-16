@@ -20,5 +20,6 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModelProperties;
 public interface ISharedLibEntryCreationDataModelProperties extends IDataModelProperties {
 
 	public static final String MODULE = "ISharedLibEntryCreationDataModelProperties.MODULE";
+	public static final String SERVER = "ISharedLibEntryCreationDataModelProperties.SERVER";
 	
 }

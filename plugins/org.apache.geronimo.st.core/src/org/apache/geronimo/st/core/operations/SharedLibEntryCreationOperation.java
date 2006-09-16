@@ -26,11 +26,18 @@ import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 
+import javax.management.MBeanInfo;
+import javax.management.MBeanServerConnection;
+import javax.management.ObjectInstance;
+import javax.management.ObjectName;
+
+import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -38,13 +45,10 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jst.server.core.FacetUtil;
+import org.eclipse.jdt.internal.core.ClasspathEntry;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
-import org.eclipse.wst.common.project.facet.core.IFacetedProject;
-import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.server.core.IModule;
-import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.server.core.model.ModuleDelegate;
@@ -69,30 +73,35 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 	 */
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		IModule module = (IModule) model.getProperty(MODULE);
+		IServer server = (IServer) model.getProperty(SERVER);
 		
 		//TODO process child modules if ear project
 		
 		IProject project = module.getProject();
 		try {
-
-			// determine the dummy jar path from project name and runtime
-			// location
-			IFacetedProject fp = ProjectFacetsManager.create(project);
-			IRuntime runtime = FacetUtil.getRuntime(fp.getPrimaryRuntime());
-			String dummyJarName = project.getName() + ".eclipse.jar";
-			File dummyJarFile = runtime.getLocation().append("var/shared/lib").append(dummyJarName).toFile();
-
-			// delete the dummy jar and return if module no longer associated
-			// with server with the same runtime
-			boolean delete = true;
-			IServer[] servers = ServerUtil.getServersByModule(module, monitor);
-			for (int i = 0; i < servers.length; i++) {
-				if (runtime.equals(servers[i].getRuntime())) {
-					delete = false;
-					break;
+			
+			//locate the path of the first sharedlib library folder
+			String sharedLibPath = null;
+			GeronimoServerBehaviourDelegate gsDelegate = (GeronimoServerBehaviourDelegate) server.getAdapter(GeronimoServerBehaviourDelegate.class);
+			MBeanServerConnection connection = gsDelegate.getServerConnection();
+			Set result = connection.queryMBeans(new ObjectName("*:j2eeType=GBean,name=SharedLib,*"), null);
+			if (!result.isEmpty()) {
+				ObjectInstance instance = (ObjectInstance) result.toArray()[0];
+				String[] libDirs = (String[]) connection.getAttribute(instance.getObjectName(),"libDirs");
+				if (libDirs != null && libDirs.length > 0) {
+					sharedLibPath = libDirs[0];
 				}
 			}
-			if (delete) {
+			
+			if(sharedLibPath == null) 
+				return Status.CANCEL_STATUS;
+			
+			// determine the absolute path of the dummy jar
+			String dummyJarName = project.getName() + ".eclipse.jar";
+			File dummyJarFile = server.getRuntime().getLocation().append(sharedLibPath).append(dummyJarName).toFile();
+
+			// delete the dummy jar and return if module no longer associated with server 
+			if (!ServerUtil.containsModule(server, module, monitor)) {
 				if (dummyJarFile.delete()) {
 					return Status.OK_STATUS;
 				} else {
@@ -103,9 +112,9 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 
 			// filter the cp entries needed to be added to the dummy shared lib jar
 			HashSet entries = new HashSet();
-			processJavaProject(project, entries);
+			processJavaProject(project, entries, false);
 			
-			//add output locations of non-child java projects
+			//add output locations of referenced projects excluding non-child projects
 			ModuleDelegate delegate = (ModuleDelegate) module.loadAdapter(ModuleDelegate.class, null);
 			if(delegate != null) {
 				IProject[] refs = project.getReferencedProjects();
@@ -119,13 +128,14 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 						}
 					}
 					if(!found) {
-						processJavaProject(refs[i], entries);
+						processJavaProject(refs[i], entries, true);
 					}
 				}
 			}
 
 			// regen the jar only if required
 			if (regenerate(dummyJarFile, entries)) {
+				Trace.trace(Trace.INFO, "Updating external sharedlib entries for " + module.getName());
 				dummyJarFile.delete();
 				Manifest manifest = new Manifest();
 				Attributes attributes = manifest.getMainAttributes();
@@ -144,28 +154,38 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 		return Status.OK_STATUS;
 	}
 
-	private void processJavaProject(IProject project, HashSet entries) throws JavaModelException {
+	private void processJavaProject(IProject project, HashSet entries, boolean includeOutputLocations) throws JavaModelException {
 		IJavaProject jp = JavaCore.create(project);
 		IClasspathEntry[] cp = jp.getRawClasspath();
 		for (int i = 0; i < cp.length; i++) {
 			IClasspathEntry entry = cp[i];
 			int kind = entry.getEntryKind();
-			if (kind == IClasspathEntry.CPE_LIBRARY || kind == IClasspathEntry.CPE_VARIABLE || kind == IClasspathEntry.CPE_PROJECT) {
+			if (kind != IClasspathEntry.CPE_CONTAINER) {
 				String path = null;
-				if(kind == IClasspathEntry.CPE_PROJECT) {
+				if (kind == IClasspathEntry.CPE_PROJECT) {
 					IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(entry.getPath().segment(0));
 					IJavaProject ref = JavaCore.create(p);
 					path = p.getLocation().removeLastSegments(1).append(ref.getOutputLocation()).addTrailingSeparator().toOSString();
+				} else if (kind == IClasspathEntry.CPE_SOURCE && includeOutputLocations) {
+					path = project.getLocation().append(entry.getOutputLocation()).addTrailingSeparator().toOSString();
 				} else {
 					IClasspathEntry resolved = JavaCore.getResolvedClasspathEntry(entry);
 					path = resolved.getPath().makeAbsolute().toOSString();
 				}
-				
-				if (!entries.contains(path)) {
-					Trace.trace(Trace.INFO, "Adding " + path);
-					entries.add(path);
-				}
+				addEntry(entries, path);
 			}
+		}
+		
+		if(includeOutputLocations) {
+			String path = project.getLocation().removeLastSegments(1).append(jp.getOutputLocation()).addTrailingSeparator().toOSString();
+			addEntry(entries, path);
+		}
+	}
+
+	private void addEntry(HashSet entries, String path) {
+		if (!entries.contains(path)) {
+			Trace.trace(Trace.INFO, "Adding " + path);
+			entries.add(path);
 		}
 	}
 
