@@ -34,6 +34,7 @@ import javax.management.ObjectName;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
@@ -166,11 +167,21 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 					IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(entry.getPath().segment(0));
 					IJavaProject ref = JavaCore.create(p);
 					path = p.getLocation().removeLastSegments(1).append(ref.getOutputLocation()).addTrailingSeparator().toOSString();
-				} else if (kind == IClasspathEntry.CPE_SOURCE && includeOutputLocations) {
-					path = project.getLocation().append(entry.getOutputLocation()).addTrailingSeparator().toOSString();
+				} else if (kind == IClasspathEntry.CPE_SOURCE) {
+					//this if not combined with parent statement to filter out CPE_SOURCE entries from following else statement
+					if(includeOutputLocations) {
+						path = project.getLocation().append(entry.getOutputLocation()).addTrailingSeparator().toOSString();
+					}
 				} else {
 					IClasspathEntry resolved = JavaCore.getResolvedClasspathEntry(entry);
-					path = resolved.getPath().makeAbsolute().toOSString();
+					IPath resolvedPath = resolved.getPath().makeAbsolute();
+					IProject candiate = ResourcesPlugin.getWorkspace().getRoot().getProject(resolvedPath.segment(0));
+					//check if resolvedPath is a project resource
+					if(candiate.exists(resolvedPath.removeFirstSegments(1))) {
+						path = candiate.getLocation().append(resolvedPath.removeFirstSegments(1)).toOSString();
+					} else {
+						path = resolvedPath.toOSString();
+					}
 				}
 				addEntry(entries, path);
 			}
@@ -183,7 +194,7 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 	}
 
 	private void addEntry(HashSet entries, String path) {
-		if (!entries.contains(path)) {
+		if (path != null && !entries.contains(path)) {
 			Trace.trace(Trace.INFO, "Adding " + path);
 			entries.add(path);
 		}
