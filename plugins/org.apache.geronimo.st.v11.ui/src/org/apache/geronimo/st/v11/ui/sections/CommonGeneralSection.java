@@ -15,10 +15,15 @@
  */
 package org.apache.geronimo.st.v11.ui.sections;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractSectionPart;
+import org.apache.geronimo.st.v11.core.operations.V11DeploymentPlanCreationOperation;
 import org.apache.geronimo.st.v11.ui.internal.Messages;
 import org.apache.geronimo.xml.ns.deployment.ArtifactType;
+import org.apache.geronimo.xml.ns.deployment.DependenciesType;
 import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
 import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
 import org.apache.geronimo.xml.ns.deployment.EnvironmentType;
@@ -52,6 +57,8 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 	protected Button inverseClassLoading;
 
 	protected Button suppressDefaultEnv;
+	
+	protected Button sharedLibDepends;
 
 	public CommonGeneralSection(Composite parent, FormToolkit toolkit, int style, EObject plan) {
 		super(parent, toolkit, style, plan);
@@ -151,6 +158,22 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 				markDirty();
 			}
 		});
+		
+		sharedLibDepends = toolkit.createButton(composite, Messages.sharedLibDepends, SWT.CHECK);
+		sharedLibDepends.setSelection(isSharedLibDependency());
+		data = new GridData();
+		data.horizontalSpan = 2;
+		sharedLibDepends.setLayoutData(data);
+
+		sharedLibDepends.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				setSharedLibDependency(sharedLibDepends.getSelection());
+				markDirty();
+			}
+		});
 	}
 
 	protected Label createLabel(Composite parent, String text) {
@@ -207,6 +230,14 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 		EnvironmentType type = getEnvironmentType(false);
 		return type != null && type.getSuppressDefaultEnvironment() != null;
 	}
+	
+	protected boolean isSharedLibDependency() {
+		DependenciesType depType = getDependenciesType(false);
+		if(depType != null) {
+			return getSharedLibDependency(depType) != null;
+		}
+		return false;
+	}
 
 	protected void setInverseClassloading(boolean enable) {
 		if (enable) {
@@ -231,6 +262,35 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 			}
 		}
 	}
+	
+	protected void setSharedLibDependency(boolean enable) {
+		if (enable) {
+			DependenciesType deptype = getDependenciesType(true);
+			ArtifactType sharedLib = V11DeploymentPlanCreationOperation.createDependencyType("geronimo", "sharedlib", null, "car");
+			deptype.getDependency().add(sharedLib);
+		} else {
+			DependenciesType deptype = getDependenciesType(false);
+			if (deptype != null) {
+				ArtifactType artifact = getSharedLibDependency(deptype);
+				if(artifact != null) {
+					deptype.getDependency().remove(artifact);
+				}
+			}
+		}
+	}
+	
+	private ArtifactType getSharedLibDependency(DependenciesType dependenciesType) {
+		DependenciesType depType = getDependenciesType(false);
+		List dependencies = depType.getDependency();
+		Iterator i = dependencies.iterator();
+		while(i.hasNext()) {
+			ArtifactType artifact = (ArtifactType) i.next();
+			if("geronimo".equals(artifact.getGroupId()) && "sharedlib".equals(artifact.getArtifactId()) && "car".equals(artifact.getType())) {
+				return artifact;
+			}
+		}
+		return null;
+	}
 
 	private EnvironmentType getEnvironmentType(boolean create) {
 		EnvironmentType type = (EnvironmentType) getPlan().eGet(getEnvironmentEReference());
@@ -239,6 +299,19 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 			getPlan().eSet(getEnvironmentEReference(), type);
 		}
 		return type;
+	}
+	
+	private DependenciesType getDependenciesType(boolean create) {
+		EnvironmentType env = getEnvironmentType(create);
+		if(env != null) {
+			DependenciesType dep = env.getDependencies();
+			if (dep == null && create) {
+				dep = DeploymentFactory.eINSTANCE.createDependenciesType();
+				env.setDependencies(dep);
+			}
+			return dep;
+		}
+		return null;
 	}
 
 	private ArtifactType getModuleId(boolean create) {

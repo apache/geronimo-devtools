@@ -240,7 +240,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		return env;
 	}
 
-	private ArtifactType createArtifactType(String groupId, String artifactId, String version, String type) {
+	public static ArtifactType createArtifactType(String groupId, String artifactId, String version, String type) {
 		ArtifactType artifact = DeploymentFactory.eINSTANCE.createArtifactType();
 		if (groupId != null)
 			artifact.setGroupId(groupId);
@@ -252,7 +252,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		return artifact;
 	}
 
-	private ArtifactType createDependencyType(String groupId, String artifactId, String version, String type) {
+	public static ArtifactType createDependencyType(String groupId, String artifactId, String version, String type) {
 		DependencyType artifact = DeploymentFactory.eINSTANCE.createDependencyType();
 		if (groupId != null)
 			artifact.setGroupId(groupId);

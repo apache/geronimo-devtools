@@ -25,6 +25,7 @@ public class Messages extends NLS {
 	public static String artifactType;
 	public static String inverseClassloading;
 	public static String supressDefaultEnv;
+	public static String sharedLibDepends;
 	
 	public static String addSharedLib;
 	public static String version;
