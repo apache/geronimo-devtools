@@ -28,7 +28,7 @@ import org.apache.xmlbeans.XmlException;
 /**
  * @version
  */
-public class EclipseDeployableModule implements DeployableModule {
+public class EclipseDeployableModule /*implements DeployableModule*/ {
 
 	private Module module = null;
 
@@ -40,7 +40,7 @@ public class EclipseDeployableModule implements DeployableModule {
 
 	private File[] resourcesFolders = null;
 
-	private DeployableModule[] children = null;
+	//private DeployableModule[] children = null;
 	
 	private boolean archived = false;
 	
@@ -124,7 +124,7 @@ public class EclipseDeployableModule implements DeployableModule {
 	 * 
 	 * @see org.apache.geronimo.deployment.DeployableModule#getModules()
 	 */
-	public DeployableModule[] getModules() {
+	/*public DeployableModule[] getModules() {
 		if (children != null) {
 			return children;
 		}
@@ -137,7 +137,7 @@ public class EclipseDeployableModule implements DeployableModule {
 		}
 
 		return children;
-	}
+	}*/
 
 	/*
 	 * (non-Javadoc)
@@ -195,7 +195,7 @@ public class EclipseDeployableModule implements DeployableModule {
 	 * 
 	 * @see org.apache.geronimo.deployment.DeployableModule#resolveModule(java.lang.String)
 	 */
-	public DeployableModule resolveModule(String uri) throws IOException {
+/*	public DeployableModule resolveModule(String uri) throws IOException {
 		DeployableModule[] children = getModules();
 		for(int i = 0; i < children.length; i++) {
 			if(children[i].getURI().equals(uri)) {
@@ -203,7 +203,7 @@ public class EclipseDeployableModule implements DeployableModule {
 			}
 		}
 		return null;
-	}
+	}*/
 	
 	private void init() {
 		archived = getRoot().isFile();
