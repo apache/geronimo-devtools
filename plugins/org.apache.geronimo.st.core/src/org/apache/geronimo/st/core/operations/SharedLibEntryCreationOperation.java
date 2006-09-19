@@ -27,11 +27,16 @@ import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 
+import javax.enterprise.deploy.spi.DeploymentManager;
+import javax.enterprise.deploy.spi.TargetModuleID;
+import javax.enterprise.deploy.spi.status.DeploymentStatus;
+import javax.enterprise.deploy.spi.status.ProgressObject;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectInstance;
 import javax.management.ObjectName;
 
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
+import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
@@ -53,6 +58,9 @@ import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.server.core.model.ModuleDelegate;
 
 public class SharedLibEntryCreationOperation extends AbstractDataModelOperation implements ISharedLibEntryCreationDataModelProperties {
+	
+	private TargetModuleID sharedLibTarget;
+	private IServer server;
 
 	public SharedLibEntryCreationOperation() {
 	}
@@ -72,7 +80,7 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 	 */
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		IModule module = (IModule) model.getProperty(MODULE);
-		IServer server = (IServer) model.getProperty(SERVER);
+		this.server = (IServer) model.getProperty(SERVER);
 		
 		//TODO process child modules if ear project
 		
@@ -101,7 +109,10 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 
 			// delete the dummy jar and return if module no longer associated with server 
 			if (!ServerUtil.containsModule(server, module, monitor)) {
-				if (dummyJarFile.delete()) {
+				if (dummyJarFile.exists()) {
+					stopSharedLib();
+					delete(dummyJarFile);
+					startSharedLib();
 					return Status.OK_STATUS;
 				} else {
 					// don't need to recycle shared lib
@@ -134,8 +145,10 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 
 			// regen the jar only if required
 			if (regenerate(dummyJarFile, entries)) {
+				stopSharedLib();
 				Trace.trace(Trace.INFO, "Updating external sharedlib entries for " + module.getName());
-				dummyJarFile.delete();
+				if(dummyJarFile.exists())
+					delete(dummyJarFile);
 				Manifest manifest = new Manifest();
 				Attributes attributes = manifest.getMainAttributes();
 				attributes.put(Attributes.Name.MANIFEST_VERSION, "1.0");
@@ -143,6 +156,7 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 				JarOutputStream os = new JarOutputStream(new FileOutputStream(dummyJarFile), manifest);
 				os.flush();
 				os.close();
+				startSharedLib();
 			} else {
 				return Status.CANCEL_STATUS;
 			}
@@ -151,6 +165,14 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 		}
 
 		return Status.OK_STATUS;
+	}
+
+	private void delete(File dummyJarFile) {
+		if(dummyJarFile.delete()) {
+			Trace.trace(Trace.INFO, dummyJarFile.getAbsolutePath() + " deleted sucessfully.");
+		} else {
+			Trace.trace(Trace.SEVERE, "Failed to delete " + dummyJarFile.getAbsolutePath(), null);
+		}
 	}
 
 	private void processJavaProject(IProject project, HashSet entries, boolean includeOutputLocations) throws JavaModelException {
@@ -257,5 +279,59 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 		}
 
 		return !entries.isEmpty();
+	}
+	
+	private void stopSharedLib() throws Exception {
+		DeploymentManager dm = DeploymentCommandFactory.getDeploymentManager(server);
+		TargetModuleID id = getSharedLibTargetModuleID();
+		TargetModuleID[] ids = new TargetModuleID[]{id};
+		ProgressObject po = dm.stop(ids);
+		waitForProgress(po);
+		if(po.getDeploymentStatus().isFailed()) {
+			throw new Exception(po.getDeploymentStatus().getMessage());
+		} 
+	}
+	
+	private void startSharedLib() throws Exception {
+		DeploymentManager dm = DeploymentCommandFactory.getDeploymentManager(server);
+		TargetModuleID id = getSharedLibTargetModuleID();
+		ProgressObject po = dm.start(new TargetModuleID[]{id});
+		waitForProgress(po);
+		if(po.getDeploymentStatus().isFailed()) {
+			throw new Exception(po.getDeploymentStatus().getMessage());
+		} 
+	}
+	
+	private TargetModuleID getSharedLibTargetModuleID() throws Exception {
+		if(sharedLibTarget == null) {
+			DeploymentManager dm = DeploymentCommandFactory.getDeploymentManager(server);
+			TargetModuleID[] ids = dm.getAvailableModules(null, dm.getTargets());
+			for(int i = 0; i < ids.length; i++) {
+				if(ids[i].getModuleID().indexOf("sharedlib") > 0) {
+					sharedLibTarget = ids[i];
+					break;
+				}
+			}	
+		}
+		
+		if(sharedLibTarget == null) {
+			throw new Exception("Could not determine SharedLib TargetModuleID.");
+		}
+		
+		return sharedLibTarget;
+	}
+
+	private void waitForProgress(ProgressObject po) {
+		while (po.getDeploymentStatus().isRunning()) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		DeploymentStatus status = po.getDeploymentStatus();
+		String command = status.getCommand().toString();
+		String state = status.getState().toString();
+		Trace.trace(Trace.INFO, "SharedLib " + " " + command + " " + state);
 	}
 }

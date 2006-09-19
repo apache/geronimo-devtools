@@ -18,9 +18,7 @@ package org.apache.geronimo.st.v11.core;
 import java.net.URL;
 import java.util.Set;
 
-import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
-import javax.enterprise.deploy.spi.status.ProgressObject;
 import javax.management.MBeanServerConnection;
 import javax.naming.directory.NoSuchAttributeException;
 
@@ -35,9 +33,11 @@ import org.apache.geronimo.kernel.config.InvalidConfigException;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.Activator;
+import org.apache.geronimo.st.core.DeploymentUtils;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
+import org.apache.geronimo.st.core.commands.TargetModuleIdNotFoundException;
 import org.apache.geronimo.st.core.operations.ISharedLibEntryCreationDataModelProperties;
 import org.apache.geronimo.st.core.operations.SharedLibEntryCreationOperation;
 import org.apache.geronimo.st.core.operations.SharedLibEntryDataModelProvider;
@@ -235,9 +235,16 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 		super.doUndeploy(module);
 		updateSharedLib(module);
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate#doNoChange(org.eclipse.wst.server.core.IModule)
+	 */
+	protected void doNoChange(IModule module) throws Exception {
+		updateSharedLib(module);
+		super.doNoChange(module);
+	}
 
 	private void updateSharedLib(IModule module) throws CoreException {
-		
 		if(isRemote() || !getGeronimoServer().isInPlaceSharedLib()) {
 			return;
 		}
@@ -247,52 +254,9 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 		model.setProperty(ISharedLibEntryCreationDataModelProperties.SERVER, getServer());
 		IDataModelOperation op = new SharedLibEntryCreationOperation(model);
 		try {
-			IStatus status = op.execute(new NullProgressMonitor(), null);
-			if (status.isOK()) {
-				DeploymentManager dm = DeploymentCommandFactory.getDeploymentManager(getServer());
-				TargetModuleID id = null;
-				try {
-					TargetModuleID[] ids = dm.getAvailableModules(null, dm.getTargets());
-					for(int i = 0; i < ids.length; i++) {
-						if(ids[i].getModuleID().indexOf("sharedlib") > 0) {
-							id = ids[i];
-							break;
-						}
-					}	
-				} catch (Exception e) {
-					e.printStackTrace();
-				} 
-				
-				if(id != null) {
-					TargetModuleID[] ids = new TargetModuleID[]{id};
-					ProgressObject po = dm.stop(ids);
-					waitForProgress(po);
-					if(po.getDeploymentStatus().isCompleted()) {
-						Trace.trace(Trace.INFO, id.getModuleID() + " stopped.");
-					}
-					
-					po = dm.start(ids);
-					waitForProgress(po);
-					
-					if(po.getDeploymentStatus().isCompleted()) {
-						Trace.trace(Trace.INFO, id.getModuleID() + " started.");
-					}
-				}
-			}
+			op.execute(new NullProgressMonitor(), null);
 		} catch (ExecutionException e) {
-			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "Error updating shared lib configuration.", e));
+			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, e.getMessage(), e.getCause()));
 		}
 	}
-
-	protected void waitForProgress(ProgressObject po) throws CoreException {
-		while (po.getDeploymentStatus().isRunning()) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		return;
-	}
-
 }
