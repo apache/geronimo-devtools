@@ -17,6 +17,8 @@ package org.apache.geronimo.st.core.operations;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -26,6 +28,7 @@ import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 
+import javax.management.Attribute;
 import javax.management.MBeanInfo;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectInstance;
@@ -169,7 +172,8 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 					path = p.getLocation().removeLastSegments(1).append(ref.getOutputLocation()).addTrailingSeparator().toOSString();
 				} else if (kind == IClasspathEntry.CPE_SOURCE) {
 					//this if not combined with parent statement to filter out CPE_SOURCE entries from following else statement
-					if(includeOutputLocations) {
+					//if no outputlocation, output path will get picked up by default output path
+					if(includeOutputLocations && entry.getOutputLocation() != null) {
 						path = project.getLocation().append(entry.getOutputLocation()).addTrailingSeparator().toOSString();
 					}
 				} else {
@@ -194,9 +198,18 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 	}
 
 	private void addEntry(HashSet entries, String path) {
-		if (path != null && !entries.contains(path)) {
-			Trace.trace(Trace.INFO, "Adding " + path);
-			entries.add(path);
+		if(path != null) {
+			File f = new File(path);
+			try {
+				String url = f.toURL().toExternalForm();
+				if (!entries.contains(url)) {
+					Trace.trace(Trace.INFO, "Adding " + url);
+					entries.add(url);
+				}
+			} catch (MalformedURLException e1) {
+				Trace.trace(Trace.INFO, "Failed to add " + path);
+				e1.printStackTrace();
+			}
 		}
 	}
 
