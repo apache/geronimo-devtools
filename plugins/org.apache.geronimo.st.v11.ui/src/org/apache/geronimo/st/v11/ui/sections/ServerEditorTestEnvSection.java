@@ -66,24 +66,16 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 		composite.setLayout(layout);
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		section.setClient(composite);
+		
+		GeronimoServer gs = (GeronimoServer) server.getAdapter(GeronimoServer.class);
 
 		inPlaceSharedLib = toolkit.createButton(composite, Messages.editorSectionSharedLibrariesInPlace, SWT.CHECK);
-		runFromWorkspace = toolkit.createButton(composite, Messages.editorSectionRunFromWorkspace, SWT.CHECK);
-		runFromWorkspace.setToolTipText(Messages.seeRestrictions);
-
-		GeronimoServer gs = (GeronimoServer) server.getAdapter(GeronimoServer.class);
 		inPlaceSharedLib.setSelection(gs.isInPlaceSharedLib());
-		runFromWorkspace.setSelection(gs.isRunFromWorkspace());
-
-		GridData data = new GridData();
-		runFromWorkspace.setLayoutData(data);
-		// TODO temporarily disable support until new implementation
-		runFromWorkspace.setEnabled(false);
-
 		inPlaceSharedLib.addSelectionListener(new SelectionListener() {
-			
+
 			public void widgetSelected(SelectionEvent e) {
-				execute(new SetInPlaceSharedLibCommand(server, inPlaceSharedLib.getSelection()));
+				execute(new SetInPlaceSharedLibCommand(server, inPlaceSharedLib
+						.getSelection()));
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -91,10 +83,15 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 
 		});
 
+		runFromWorkspace = toolkit.createButton(composite, Messages.editorSectionRunFromWorkspace, SWT.CHECK);
+		runFromWorkspace.setSelection(gs.isRunFromWorkspace());
+		// TODO temporarily disable support until new implementation
+		runFromWorkspace.setEnabled(false);
 		runFromWorkspace.addSelectionListener(new SelectionListener() {
 
 			public void widgetSelected(SelectionEvent e) {
-				execute(new SetRunFromWorkspaceCommand(server, runFromWorkspace.getSelection()));
+				execute(new SetRunFromWorkspaceCommand(server, runFromWorkspace
+						.getSelection()));
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {

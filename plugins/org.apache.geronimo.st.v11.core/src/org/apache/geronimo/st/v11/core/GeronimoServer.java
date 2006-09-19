@@ -29,8 +29,7 @@ import org.eclipse.wst.server.core.util.SocketUtil;
 
 public class GeronimoServer extends GeronimoServerDelegate {
 	
-	public static final String PROPERTY_PERSISTENT = "persistent";
-	public static final String PROPERTY_IN_PLACE_SHARED_LIB = "inPlace";
+	public static final String PROPERTY_IN_PLACE_SHARED_LIB = "inPlaceSharedLib";
 	public static final String PROPERTY_RUN_FROM_WORKSPACE = "runFromWorkspace";
 
 	private static IGeronimoVersionHandler versionHandler = null;
@@ -109,13 +108,6 @@ public class GeronimoServer extends GeronimoServerDelegate {
 
 	public void setInPlaceDeployment(DeploymentManager dm, boolean enable) {
 		((JMXDeploymentManager) dm).setInPlace(enable);
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.st.core.IGeronimoServer#isPersistant()
-	 */
-	public boolean isPersistant() {
-		return getAttribute(PROPERTY_PERSISTENT, false);
 	}
 	
 	/* (non-Javadoc)
