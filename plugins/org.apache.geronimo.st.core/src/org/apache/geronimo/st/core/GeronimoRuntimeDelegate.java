@@ -90,16 +90,13 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
 
 		// check for server file structure
 		int count = 0;
-		count = runtimeLoc.append("bin/server.jar").toFile().exists() ? ++count
-				: count;
-		count = runtimeLoc.append("bin/deployer.jar").toFile().exists() ? ++count
-				: count;
-		count = runtimeLoc.append("lib").toFile().exists() ? ++count : ++count;
-		count = runtimeLoc.append("repository").toFile().exists() ? ++count
-				: count;
+		count = runtimeLoc.append("bin/server.jar").toFile().exists() ? ++count : count;
+		count = runtimeLoc.append("bin/deployer.jar").toFile().exists() ? ++count : count;
+		count = runtimeLoc.append("lib").toFile().exists() ? ++count : count;
+		count = runtimeLoc.append("repository").toFile().exists() ? ++count : count;
 
 		if (count == 0)
-			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, NO_IMAGE, null, null);
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, NO_IMAGE, "", null);
 
 		if (count < 4) {
 			// part of a server image was found, don't let install happen

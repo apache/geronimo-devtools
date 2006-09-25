@@ -392,20 +392,16 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 				return;
 			} else {
 				File file = new Path(installDir.getText()).toFile();
-				boolean enableGroup = file.isDirectory() && file.canWrite() ? true
-						: false;
+				boolean enableGroup = file.isDirectory() && file.canWrite() ? true : false;
 				group.setEnabled(enableGroup);
 				if (file.isDirectory()) {
-					String message = file.canWrite() ? Messages.noImageFound
-							: Messages.cannotInstallAtLocation;
+					String message = file.canWrite() ? Messages.noImageFound : Messages.cannotInstallAtLocation;
 					wizard.setMessage(message, IMessageProvider.ERROR);
 				} else {
 					wizard.setMessage(Messages.noSuchDir, IMessageProvider.ERROR);
 				}
 				return;
 			}
-
-			// wizard.setMessage(null, IMessageProvider.NONE);
 
 			if (!isValidVM())
 				wizard.setMessage(Messages.jvmWarning, IMessageProvider.WARNING);
