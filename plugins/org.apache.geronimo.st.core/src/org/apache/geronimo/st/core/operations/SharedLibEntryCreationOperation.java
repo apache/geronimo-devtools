@@ -46,6 +46,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -181,36 +182,46 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 		for (int i = 0; i < cp.length; i++) {
 			IClasspathEntry entry = cp[i];
 			int kind = entry.getEntryKind();
-			if (kind != IClasspathEntry.CPE_CONTAINER) {
-				String path = null;
-				if (kind == IClasspathEntry.CPE_PROJECT) {
-					IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(entry.getPath().segment(0));
-					IJavaProject ref = JavaCore.create(p);
-					path = p.getLocation().removeLastSegments(1).append(ref.getOutputLocation()).addTrailingSeparator().toOSString();
-				} else if (kind == IClasspathEntry.CPE_SOURCE) {
-					//this if not combined with parent statement to filter out CPE_SOURCE entries from following else statement
-					//if no outputlocation, output path will get picked up by default output path
-					if(includeOutputLocations && entry.getOutputLocation() != null) {
-						path = project.getLocation().append(entry.getOutputLocation()).addTrailingSeparator().toOSString();
-					}
-				} else {
-					IClasspathEntry resolved = JavaCore.getResolvedClasspathEntry(entry);
-					IPath resolvedPath = resolved.getPath().makeAbsolute();
-					IProject candiate = ResourcesPlugin.getWorkspace().getRoot().getProject(resolvedPath.segment(0));
-					//check if resolvedPath is a project resource
-					if(candiate.exists(resolvedPath.removeFirstSegments(1))) {
-						path = candiate.getLocation().append(resolvedPath.removeFirstSegments(1)).toOSString();
-					} else {
-						path = resolvedPath.toOSString();
+			String path = null;
+			if(kind == IClasspathEntry.CPE_CONTAINER) {
+				if("org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER".equals(entry.getPath().toString())) {
+					IClasspathContainer container = JavaCore.getClasspathContainer(entry.getPath(), jp);
+					IClasspathEntry[] containerEntries = container.getClasspathEntries();
+					for(int j = 0; j  < containerEntries.length; j++) {
+						addEntry(entries, resolveVarOrLibEntry(containerEntries[j]));
 					}
 				}
-				addEntry(entries, path);
+			} else if (kind == IClasspathEntry.CPE_PROJECT) {
+				IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(entry.getPath().segment(0));
+				IJavaProject ref = JavaCore.create(p);
+				path = p.getLocation().removeLastSegments(1).append(ref.getOutputLocation()).addTrailingSeparator().toOSString();
+			} else if (kind == IClasspathEntry.CPE_SOURCE) {
+				//this if not combined with parent statement to filter out CPE_SOURCE entries from following else statement
+				//if no outputlocation, output path will get picked up by default output path
+				if(includeOutputLocations && entry.getOutputLocation() != null) {
+					path = project.getLocation().append(entry.getOutputLocation()).addTrailingSeparator().toOSString();
+				}
+			} else {
+				path = resolveVarOrLibEntry(entry);
 			}
+			addEntry(entries, path);
 		}
 		
 		if(includeOutputLocations) {
 			String path = project.getLocation().removeLastSegments(1).append(jp.getOutputLocation()).addTrailingSeparator().toOSString();
 			addEntry(entries, path);
+		}
+	}
+
+	private String resolveVarOrLibEntry(IClasspathEntry entry) {
+		IClasspathEntry resolved = JavaCore.getResolvedClasspathEntry(entry);
+		IPath resolvedPath = resolved.getPath().makeAbsolute();
+		IProject candiate = ResourcesPlugin.getWorkspace().getRoot().getProject(resolvedPath.segment(0));
+		//check if resolvedPath is a project resource
+		if(candiate.exists(resolvedPath.removeFirstSegments(1))) {
+			return candiate.getLocation().append(resolvedPath.removeFirstSegments(1)).toOSString();
+		} else {
+			return resolvedPath.toOSString();
 		}
 	}
 
