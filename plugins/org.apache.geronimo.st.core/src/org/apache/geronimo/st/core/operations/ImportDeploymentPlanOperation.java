@@ -16,7 +16,6 @@
 package org.apache.geronimo.st.core.operations;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.core.IGeronimoRuntime;

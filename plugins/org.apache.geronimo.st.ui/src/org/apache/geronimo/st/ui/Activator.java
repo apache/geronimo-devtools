@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.apache.geronimo.st.ui.internal.Trace;
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;

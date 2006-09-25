@@ -15,20 +15,13 @@
  */
 package org.apache.geronimo.st.v1.core;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
-import javax.enterprise.deploy.spi.Target;
 import javax.management.MBeanServerConnection;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
-import javax.management.remote.JMXConnector;
-import javax.management.remote.JMXConnectorFactory;
-import javax.management.remote.JMXServiceURL;
 import javax.naming.directory.NoSuchAttributeException;
 
 import org.apache.geronimo.gbean.GBeanData;
@@ -39,12 +32,10 @@ import org.apache.geronimo.kernel.Kernel;
 import org.apache.geronimo.kernel.config.Configuration;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.jmx.KernelDelegate;
-import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
-import org.apache.geronimo.st.core.GeronimoUtils;
+import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.v1.core.internal.Trace;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;

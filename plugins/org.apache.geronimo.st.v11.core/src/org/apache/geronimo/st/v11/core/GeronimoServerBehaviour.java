@@ -18,7 +18,6 @@ package org.apache.geronimo.st.v11.core;
 import java.net.URL;
 import java.util.Set;
 
-import javax.enterprise.deploy.spi.TargetModuleID;
 import javax.management.MBeanServerConnection;
 import javax.naming.directory.NoSuchAttributeException;
 
@@ -33,11 +32,8 @@ import org.apache.geronimo.kernel.config.InvalidConfigException;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.Activator;
-import org.apache.geronimo.st.core.DeploymentUtils;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
-import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
-import org.apache.geronimo.st.core.commands.TargetModuleIdNotFoundException;
 import org.apache.geronimo.st.core.operations.ISharedLibEntryCreationDataModelProperties;
 import org.apache.geronimo.st.core.operations.SharedLibEntryCreationOperation;
 import org.apache.geronimo.st.core.operations.SharedLibEntryDataModelProvider;
