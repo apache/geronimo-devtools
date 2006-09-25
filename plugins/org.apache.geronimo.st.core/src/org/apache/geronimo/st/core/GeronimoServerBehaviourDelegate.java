@@ -443,12 +443,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	protected void doUndeploy(IModule module) throws Exception {
 		Trace.trace(Trace.INFO, ">> doUndeploy() " + module.toString());
 
-		IStatus status = stop(module);
-		if (!status.isOK()) {
-			doFail(status, Messages.STOP_FAIL);
-		}
-
-		status = unDeploy(module);
+		IStatus status = unDeploy(module);
 		if (!status.isOK()) {
 			doFail(status, Messages.UNDEPLOY_FAIL);
 		}
