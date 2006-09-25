@@ -118,7 +118,8 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 		handle.setImageDescriptor(Activator.getImageDescriptor((Activator.IMG_WIZ_GERONIMO)));
 		handle.setTitle(Messages.bind(Messages.runtimeWizardTitle, getRuntimeName()));
-		handle.setDescription(Messages.runtimeWizardDescription);
+		String version = getRuntimeDelegate().getRuntime().getRuntimeType().getVersion();
+		handle.setDescription(Messages.bind(Messages.runtimeWizardDescription, version));
 		createContent(container, handle);
 		return container;
 	}

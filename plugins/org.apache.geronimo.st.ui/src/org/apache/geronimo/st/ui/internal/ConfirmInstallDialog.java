@@ -50,10 +50,8 @@ public class ConfirmInstallDialog extends Dialog {
 	 * 
 	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
 	 */
-	protected Control createDialogArea(Composite parent) { // create a
-															// composite with
-															// standard margins
-															// and spacing
+	protected Control createDialogArea(Composite parent) { 
+		// create a composite with standard margins and spacing
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
 		layout.marginHeight = convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_MARGIN);
