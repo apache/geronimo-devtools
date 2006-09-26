@@ -2,6 +2,8 @@
 <?eclipse version="3.0"?>
 <plugin>
 
+	<extension-point id="sourcePathComputerMapping" name="Geronimo Deployment Plan Loader" schema="schema/sourcePathComputerMapping.exsd"/>
+
 	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 		<launchConfigurationType
 	        id="org.apache.geronimo.st.core.launchConfigurationType"

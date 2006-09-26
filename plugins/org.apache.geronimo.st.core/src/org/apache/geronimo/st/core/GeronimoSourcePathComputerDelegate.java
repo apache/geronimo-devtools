@@ -16,13 +16,22 @@
 package org.apache.geronimo.st.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.sourcelookup.ISourceContainer;
+import org.eclipse.debug.core.sourcelookup.ISourcePathComputer;
 import org.eclipse.debug.core.sourcelookup.ISourcePathComputerDelegate;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -33,6 +42,8 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
 
 public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDelegate {
+	
+	private HashSet additionalSrcPathComputerIds = null;
 
 	/*
 	 * (non-Javadoc)
@@ -41,7 +52,7 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
 	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public ISourceContainer[] computeSourceContainers(ILaunchConfiguration configuration, IProgressMonitor monitor) throws CoreException {
-
+		
 		IServer server = ServerUtil.getServer(configuration);
 		IModule[] modules = server.getModules();
 
@@ -62,11 +73,19 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
 		System.arraycopy(projectEntries, 0, entries, unresolvedEntries.length, projectEntries.length);
 
 		IRuntimeClasspathEntry[] resolved = JavaRuntime.resolveSourceLookupPath(entries, configuration);
-		ISourceContainer[] javaSourceContainers = JavaRuntime.getSourceContainers(resolved);
-
+		ISourceContainer[] defaultContainers = JavaRuntime.getSourceContainers(resolved);
+		HashSet allContainers = new HashSet(Arrays.asList(defaultContainers));
+		Iterator i = getAdditionalSrcPathComputers().iterator();
+		ILaunchManager mgr = DebugPlugin.getDefault().getLaunchManager();
+		while(i.hasNext()) {
+			ISourcePathComputer computer = mgr.getSourcePathComputer((String) i.next());
+			ISourceContainer[] jsc = computer.computeSourceContainers(configuration, monitor);
+			allContainers.addAll(Arrays.asList(jsc));
+		}
+		
 		// TODO support resolving from geronimo source distribution
 
-		return javaSourceContainers;
+		return (ISourceContainer[])allContainers.toArray(new ISourceContainer[allContainers.size()]);
 	}
 
 	private void processModules(IModule[] modules, List javaProjectList, IServer server, IProgressMonitor monitor) {
@@ -91,6 +110,22 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
 				}
 			}
 		}
+	}
+	
+	private synchronized void init() {
+		if(additionalSrcPathComputerIds == null) {
+			additionalSrcPathComputerIds = new HashSet();
+			IExtensionPoint extensionPoint= Platform.getExtensionRegistry().getExtensionPoint(Activator.PLUGIN_ID, "sourcePathComputerMapping");
+			IConfigurationElement[] extensions = extensionPoint.getConfigurationElements();
+			for (int i = 0; i < extensions.length; i++) {
+				additionalSrcPathComputerIds.add(extensions[i].getAttribute("id"));
+			}
+		}
+	}
+
+	public HashSet getAdditionalSrcPathComputers() {
+		init();
+		return additionalSrcPathComputerIds;
 	}
 
 }

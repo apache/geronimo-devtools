@@ -21,6 +21,13 @@
                 </includes>
             </resource>
             <resource>
+                <targetPath>schema/</targetPath>
+                <directory>schema/</directory>
+                <includes>
+                    <include>*.exsd</include>
+                </includes>
+            </resource>
+            <resource>
                 <targetPath>icons/</targetPath>
                 <directory>icons/</directory>
                 <includes>
