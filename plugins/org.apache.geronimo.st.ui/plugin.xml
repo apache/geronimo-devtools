@@ -2,7 +2,7 @@
 <?eclipse version="3.0"?>
 <plugin>
 
- 	<extension-point id="sourcePathComputerMapping" name="Source Path Computer Mapping" schema="schema/loader.exsd"/>
+ 	<extension-point id="loader" name="Source Path Computer Mapping" schema="schema/loader.exsd"/>
  	
  	<extension point="org.eclipse.wst.common.project.facet.ui.images">
         <image facet="org.apache.geronimo.facet"
