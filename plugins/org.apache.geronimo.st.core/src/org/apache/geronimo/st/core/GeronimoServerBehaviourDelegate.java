@@ -117,10 +117,11 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
 		String existingProgArgs = wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, (String) null);
 		String serverProgArgs = getServerDelegate().getConsoleLogLevel();
-		if (existingProgArgs == null
-				|| existingProgArgs.indexOf(serverProgArgs) < 0) {
+		if (existingProgArgs == null || existingProgArgs.indexOf(serverProgArgs) < 0) {
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, serverProgArgs);
 		}
+		
+		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, getServerDelegate().getVMArgs());
 	}
 
 	/**

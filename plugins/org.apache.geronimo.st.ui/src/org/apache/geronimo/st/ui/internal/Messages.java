@@ -16,6 +16,8 @@ public class Messages extends NLS {
 	public static String editorSectionPortsDescription;
 	public static String editorSectionLogLevelTitle;
 	public static String editorSectionLogLevelDescription;
+	public static String editorSectionVMArgsTitle;
+	public static String editorSectionVMArgsDescription;
 	public static String info;
 	public static String debug;
 	public static String httpPort;

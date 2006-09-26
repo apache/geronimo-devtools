@@ -54,6 +54,8 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	public static final String PROPERTY_HTTP_PORT = "WebConnector";
 
 	public static final String PROPERTY_LOG_LEVEL = "logLevel";
+	
+	public static final String PROPERTY_VM_ARGS = "VMArgs";
 
 	public static final String CONSOLE_INFO = "--long";
 
@@ -235,6 +237,10 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	public String getConsoleLogLevel() {
 		return getInstanceProperty(PROPERTY_LOG_LEVEL);
 	}
+	
+	public String getVMArgs() {
+		return getInstanceProperty(PROPERTY_VM_ARGS);
+	}
 
 	public void setAdminID(String value) {
 		setInstanceProperty(PROPERTY_ADMIN_ID, value);
@@ -254,6 +260,10 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 
 	public void setConsoleLogLevel(String value) {
 		setInstanceProperty(PROPERTY_LOG_LEVEL, value);
+	}
+	
+	public void setVMArgs(String value) {
+		setInstanceProperty(PROPERTY_VM_ARGS, value);
 	}
 
 	public String discoverDeploymentFactoryClassName(IPath jarPath) {

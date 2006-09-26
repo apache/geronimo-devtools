@@ -76,6 +76,14 @@
         </section>
     </extension>
     
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.vmargs" order="30"
+            insertionId="org.eclipse.wst.server.editor.overview.right"
+            typeIds="org.apache.geronimo.server.*"
+            class="org.apache.geronimo.st.ui.sections.ServerVMArgsSection">
+        </section>
+    </extension>
+    
     <extension point="org.eclipse.ui.editors">
         <editor class="org.apache.geronimo.st.ui.editors.SharedDeploymentPlanEditor"
             default="true" 
