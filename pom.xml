@@ -292,9 +292,7 @@
     <module>maven-plugins/maven-geronimodevtools-plugin</module>
     <module>emf</module>
     <module>plugins</module>
-    <module>features/org.apache.geronimo.feature</module>
-    <module>features/org.apache.geronimo.installableruntime.jetty.feature</module>
-    <module>features/org.apache.geronimo.installableruntime.tomcat.feature</module>
+    <module>features</module>
     <module>assembly</module>
   </modules>
   

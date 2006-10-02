@@ -19,7 +19,7 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.geronimo.devtools</groupId>
-    <artifactId>eclipse-plugins-parent</artifactId>
+    <artifactId>eclipse-features-parent</artifactId>
     <packaging>pom</packaging>
     <name>Parent POM :: ${artifactId}</name>
     <version>1.0</version>
@@ -37,43 +37,20 @@
                     <artifactId>maven-geronimodevtools-plugin</artifactId>
                     <executions>
                         <execution>
-                            <id>install-dependencies</id>
+                            <id>generate-qualifier</id>
                             <phase>validate</phase>
                             <goals>
                                 <goal>qualifier</goal>
-                                <goal>manifestbundles</goal>
-                                <goal>install</goal>
                             </goals>
                         </execution>
                     </executions>
                 </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <configuration>
-                        <archive>
-                            <manifestFile>target/classes/META-INF/MANIFEST.MF</manifestFile>
-                        </archive>
-                    </configuration>
-            </plugin>
             </plugins>
         </pluginManagement>
     </build>
     <modules>
-        <module>org.apache.geronimo.st.core</module>
-        <module>org.apache.geronimo.st.v1.core</module>
-        <module>org.apache.geronimo.st.v11.core</module>
-        <module>org.apache.geronimo.st.ui</module>
-        <module>org.apache.geronimo.st.v1.ui</module>
-        <module>org.apache.geronimo.st.v11.ui</module>
-        <module>org.apache.geronimo.common.deployment.model</module>
-        <module>org.apache.geronimo.common.deployment.model.edit</module>
-        <module>org.apache.geronimo.deployment.model</module>
-        <module>org.apache.geronimo.deployment.model.edit</module>
-        <module>org.apache.geronimo.v11.deployment.model</module>
-        <module>org.apache.geronimo.v11.deployment.model.edit</module>
-        <module>org.apache.geronimo.runtime.common</module>
-        <module>org.apache.geronimo.runtime.v1</module>
-        <module>org.apache.geronimo.runtime.v11</module>
+        <module>org.apache.geronimo.feature</module>
+        <module>org.apache.geronimo.installableruntime.jetty.feature</module>
+        <module>org.apache.geronimo.installableruntime.tomcat.feature</module>
     </modules>
 </project>

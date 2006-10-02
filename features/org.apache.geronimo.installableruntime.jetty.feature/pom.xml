@@ -6,14 +6,15 @@
   <name>${artifactId}</name>
   <parent>
     <groupId>org.apache.geronimo.devtools</groupId>
-    <artifactId>geronimo-eclipse-plugin</artifactId>
-    <version>1.1</version>
+    <artifactId>eclipse-features-parent</artifactId>
+    <version>1.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <build>
     <resources>
       <resource>
         <directory>.</directory>
+        <filtering>true</filtering>
         <includes>
           <include>feature.xml</include>
           <include>feature.properties</include>
@@ -29,18 +30,10 @@
       </resource>
     </resources>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <configuration>
-          <projectnatures>
-            <projectnature>org.eclipse.pde.FeatureNature</projectnature>
-          </projectnatures>
-          <buildcommands>
-            <buildcommand>org.eclipse.pde.FeatureBuilder</buildcommand>
-          </buildcommands>
-        </configuration>
-      </plugin>
+        <plugin>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>maven-geronimodevtools-plugin</artifactId>
+        </plugin>
     </plugins>
   </build>
 </project>
