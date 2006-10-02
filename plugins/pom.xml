@@ -40,36 +40,23 @@
                             <id>install-dependencies</id>
                             <phase>validate</phase>
                             <goals>
-                                <goal>download</goal>
                                 <goal>manifestbundles</goal>
                                 <goal>install</goal>
                             </goals>
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <configuration>
+                        <archive>
+                            <manifestFile>target/classes/META-INF/MANIFEST.MF</manifestFile>
+                        </archive>
+                    </configuration>
+            </plugin>
             </plugins>
         </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <configuration>
-                    <projectnatures>
-                        <projectnature>org.eclipse.pde.PluginNature</projectnature>
-                        <projectnature>org.eclipse.jdt.core.javanature</projectnature>
-                    </projectnatures>
-                    <buildcommands>
-                        <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
-                        <buildcommand>org.eclipse.pde.ManifestBuilder</buildcommand>
-                        <buildcommand>org.eclipse.pde.SchemaBuilder</buildcommand>
-                    </buildcommands>
-                    <classpathContainers>
-                        <java.lang.String>org.eclipse.jdt.launching.JRE_CONTAINER</java.lang.String>
-                        <java.lang.String>org.eclipse.pde.core.requiredPlugins</java.lang.String>
-                    </classpathContainers>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
     <modules>
         <module>org.apache.geronimo.st.core</module>

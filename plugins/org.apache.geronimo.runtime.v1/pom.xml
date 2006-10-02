@@ -17,6 +17,11 @@
     <build>
         <resources>
             <resource>
+                <targetPath>META-INF</targetPath>
+                <directory>META-INF</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
                 <directory>.</directory>
                 <includes>
                     <include>plugin.xml</include>
@@ -140,11 +145,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifestFile>META-INF/MANIFEST.MF</manifestFile>
-                    </archive>
-                </configuration>
             </plugin>
         </plugins>
     </build>
