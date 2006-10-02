@@ -25,6 +25,7 @@
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-emf-parent</artifactId>
         <version>1.0</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <properties>
         <geronimoVersion>1.0</geronimoVersion>
