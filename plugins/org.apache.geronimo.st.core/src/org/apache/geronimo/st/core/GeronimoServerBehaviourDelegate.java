@@ -410,7 +410,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 			ModuleArtifactMapper mapper = ModuleArtifactMapper.getInstance();
 			mapper.addEntry(getServer(), module.getProject(), ids[0].getModuleID());
 
-			status = start(module);
+			status = start(ids);
 			if (!status.isOK()) {
 				doFail(status, Messages.START_FAIL);
 			}
@@ -503,6 +503,11 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	protected IStatus start(IModule module) throws Exception {
 		TargetModuleID id = DeploymentUtils.getTargetModuleID(module, DeploymentCommandFactory.getDeploymentManager(getServer()));
 		IDeploymentCommand cmd = DeploymentCommandFactory.createStartCommand(new TargetModuleID[] { id }, module, getServer());
+		return cmd.execute(_monitor);
+	}
+	
+	protected IStatus start(TargetModuleID[] ids) throws Exception {
+		IDeploymentCommand cmd = DeploymentCommandFactory.createStartCommand(ids, null, getServer());
 		return cmd.execute(_monitor);
 	}
 
