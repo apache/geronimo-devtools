@@ -15,10 +15,14 @@
  */
 package org.apache.geronimo.st.core;
 
+import javax.enterprise.deploy.spi.TargetModuleID;
+
 import org.eclipse.wst.server.core.IModule;
 
 public interface IGeronimoVersionHandler {
 
 	public String getConfigID(IModule module);
+	
+	public TargetModuleID createTargetModuleId(String configId);
 
 }

@@ -43,7 +43,7 @@ class RedeployCommand extends DeployCommand {
 	public IStatus execute(IProgressMonitor monitor) throws TargetModuleIdNotFoundException, CoreException {
 		DeploymentManager dm = getDeploymentManager();
 		File file = getTargetFile();
-		TargetModuleID id = DeploymentUtils.getTargetModuleID(getModule(), dm);
+		TargetModuleID id = DeploymentUtils.getTargetModuleID(getServer(), getModule());
 		return new DeploymentCmdStatus(Status.OK_STATUS, dm.redeploy(new TargetModuleID[] { id }, file, null));
 	}
 

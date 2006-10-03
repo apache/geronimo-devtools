@@ -15,6 +15,9 @@
  */
 package org.apache.geronimo.st.v1.core;
 
+import javax.enterprise.deploy.spi.TargetModuleID;
+
+import org.apache.geronimo.deployment.plugin.TargetModuleIDImpl;
 import org.apache.geronimo.st.core.IGeronimoVersionHandler;
 import org.eclipse.wst.server.core.IModule;
 
@@ -27,5 +30,12 @@ public class GeronimoV1VersionHandler implements IGeronimoVersionHandler {
 	 */
 	public String getConfigID(IModule module) {
 		return GeronimoV1Utils.getConfigId(module);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.IGeronimoVersionHandler#createTargetModuleId(java.lang.String)
+	 */
+	public TargetModuleID createTargetModuleId(String configId) {
+		return new TargetModuleIDImpl(null, configId);
 	}
 }

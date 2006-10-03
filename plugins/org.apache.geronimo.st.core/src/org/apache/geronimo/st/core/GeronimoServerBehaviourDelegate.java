@@ -195,15 +195,17 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		Trace.trace(Trace.INFO, Arrays.asList(module).toString());
 		_monitor = monitor;
 
-		//NO_CHANGE need if app is associated but not started and no delta
-		if (module.length == 1 && (deltaKind == ADDED || deltaKind == REMOVED || deltaKind == NO_CHANGE)) {
-			invokeCommand(deltaKind, module[0]);
-		} else if (deltaKind == CHANGED) {
-			// TODO This case is flawed due to WTP Bugzilla 123676
-			invokeCommand(deltaKind, module[0]);
-		} 
-
-		setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
+		try {
+			//NO_CHANGE need if app is associated but not started and no delta
+			if (module.length == 1 && (deltaKind == ADDED || deltaKind == REMOVED || deltaKind == NO_CHANGE)) {
+				invokeCommand(deltaKind, module[0]);
+			} else if (deltaKind == CHANGED) {
+				// TODO This case is flawed due to WTP Bugzilla 123676
+				invokeCommand(deltaKind, module[0]);
+			} 
+		} finally {
+			setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
+		}
 
 		Trace.trace(Trace.INFO, "<< publishModule()");
 	}
@@ -456,20 +458,12 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		
 		Trace.trace(Trace.INFO, ">> doNoChange() " + module.toString());
 		
-		boolean found = false;
-		try {
-			TargetModuleID id = DeploymentUtils.getTargetModuleID(module, DeploymentCommandFactory.getDeploymentManager(getServer()));
-			found = id != null;
-		} catch (TargetModuleIdNotFoundException e) {
-			Trace.trace(Trace.INFO, "TargetModuleId not found.");
-		}
-
-		if(found) {
+		if(DeploymentUtils.configurationExists(module, DeploymentCommandFactory.getDeploymentManager(getServer()))) {
 			start(module);
 		} else {
 			doDeploy(module);
 		}
-
+		
 		Trace.trace(Trace.INFO, "<< doNoChange()" + module.toString());
 	}
 
@@ -501,7 +495,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	}
 
 	protected IStatus start(IModule module) throws Exception {
-		TargetModuleID id = DeploymentUtils.getTargetModuleID(module, DeploymentCommandFactory.getDeploymentManager(getServer()));
+		TargetModuleID id = DeploymentUtils.getTargetModuleID(getServer(), module);
 		IDeploymentCommand cmd = DeploymentCommandFactory.createStartCommand(new TargetModuleID[] { id }, module, getServer());
 		return cmd.execute(_monitor);
 	}

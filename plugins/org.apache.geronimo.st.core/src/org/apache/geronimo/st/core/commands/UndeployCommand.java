@@ -38,7 +38,7 @@ class UndeployCommand extends AbstractDeploymentCommand {
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public IStatus execute(IProgressMonitor monitor) throws TargetModuleIdNotFoundException, CoreException {
-		TargetModuleID id = DeploymentUtils.getTargetModuleID(getModule(), getDeploymentManager());
+		TargetModuleID id = DeploymentUtils.getTargetModuleID(getServer(), getModule());
 		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().undeploy(new TargetModuleID[] { id }));
 	}
 

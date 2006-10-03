@@ -28,11 +28,13 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
@@ -86,6 +88,23 @@ public class ModuleArtifactMapper {
 			String projectName = (String) artifactEntries.get(configId);
 			if (projectName != null)
 				return ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+		}
+		return null;
+	}
+	
+	public String resolve(IServer server, IModule module) {
+		Map artifactEntries = (Map) serverEntries.get(server.getRuntime().getLocation().toFile());
+		if (artifactEntries != null) {
+			String projectName = module.getProject().getName();
+			if(artifactEntries.containsValue(projectName)) {
+				Iterator i = artifactEntries.keySet().iterator();
+				while(i.hasNext()) {
+					String configId = (String) i.next();
+					if(artifactEntries.get(configId).equals(projectName)) {
+						return configId;
+					}
+				}
+			}
 		}
 		return null;
 	}

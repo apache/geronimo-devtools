@@ -42,6 +42,7 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.server.core.IModule;
+import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.model.IModuleResource;
 import org.eclipse.wst.server.core.util.ProjectModule;
 
@@ -149,20 +150,26 @@ public class DeploymentUtils {
 		return null;
 	}
 
-	public static TargetModuleID getTargetModuleID(IModule module,
-			DeploymentManager dm) throws TargetModuleIdNotFoundException {
+	public static TargetModuleID getTargetModuleID(IModule module, DeploymentManager dm) throws TargetModuleIdNotFoundException {
 		IGeronimoServer server = GeronimoConnectionFactory.getInstance().getGeronimoServer(dm);
-		ModuleType moduleType = GeronimoUtils.getJSR88ModuleType(module);
 		String configId = server.getVersionHandler().getConfigID(module);
-		return getTargetModuleID(moduleType, dm, configId);
+		return getTargetModuleID(dm, configId);
+	}
+	
+	public static TargetModuleID getTargetModuleID(IServer server, IModule module) throws TargetModuleIdNotFoundException {
+		String configId = ModuleArtifactMapper.getInstance().resolve(server, module);
+		if(configId == null) {
+			throw new TargetModuleIdNotFoundException("Could not do a local TargetModuleID lookup for module " + module.getName());
+		}
+		
+		IGeronimoServer gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
+		return gs.getVersionHandler().createTargetModuleId(configId);
 	}
 
-	private static TargetModuleID getTargetModuleID(ModuleType moduleType,
-			DeploymentManager dm, String configId)
-			throws TargetModuleIdNotFoundException {
+	private static TargetModuleID getTargetModuleID(DeploymentManager dm, String configId) throws TargetModuleIdNotFoundException {
 
 		try {
-			TargetModuleID ids[] = dm.getAvailableModules(moduleType, dm.getTargets());
+			TargetModuleID ids[] = dm.getAvailableModules(null, dm.getTargets());
 			if (ids != null) {
 				for (int i = 0; i < ids.length; i++) {
 					if (ids[i].getModuleID().equals(configId)) {
@@ -176,12 +183,10 @@ public class DeploymentUtils {
 			e.printStackTrace();
 		}
 
-		throw new TargetModuleIdNotFoundException("Could not find TargetModuleID for module with configId "
-				+ configId);
+		throw new TargetModuleIdNotFoundException("Could not find TargetModuleID for module with configId " + configId);
 	}
 
-	public static boolean configurationExists(IModule module,
-			DeploymentManager dm) {
+	public static boolean configurationExists(IModule module, DeploymentManager dm) {
 		try {
 			return getTargetModuleID(module, dm) != null;
 		} catch (TargetModuleIdNotFoundException e) {
