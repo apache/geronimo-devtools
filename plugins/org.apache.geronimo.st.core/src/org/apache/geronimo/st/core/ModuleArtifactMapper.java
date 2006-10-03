@@ -62,11 +62,6 @@ public class ModuleArtifactMapper {
 		return instance;
 	}
 
-	public IProject resolve(IServer server, String configId) {
-		File runtimeLoc = server.getRuntime().getLocation().toFile();
-		return resolve(runtimeLoc, configId);
-	}
-
 	public void addEntry(IServer server, IProject project, String configId) {
 
 		if (!SocketUtil.isLocalhost(server.getHost()))
@@ -79,32 +74,13 @@ public class ModuleArtifactMapper {
 			serverEntries.put(runtimeLoc, artifactEntries);
 		}
 
-		artifactEntries.put(configId, project.getName());
-	}
-
-	public IProject resolve(File baseDir, String configId) {
-		Map artifactEntries = (Map) serverEntries.get(baseDir);
-		if (artifactEntries != null) {
-			String projectName = (String) artifactEntries.get(configId);
-			if (projectName != null)
-				return ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		}
-		return null;
+		artifactEntries.put(project.getName(), configId);
 	}
 	
 	public String resolve(IServer server, IModule module) {
 		Map artifactEntries = (Map) serverEntries.get(server.getRuntime().getLocation().toFile());
 		if (artifactEntries != null) {
-			String projectName = module.getProject().getName();
-			if(artifactEntries.containsValue(projectName)) {
-				Iterator i = artifactEntries.keySet().iterator();
-				while(i.hasNext()) {
-					String configId = (String) i.next();
-					if(artifactEntries.get(configId).equals(projectName)) {
-						return configId;
-					}
-				}
-			}
+			return (String) artifactEntries.get(module.getProject().getName());
 		}
 		return null;
 	}

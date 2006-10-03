@@ -408,9 +408,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 				doFail(status, Messages.DISTRIBUTE_FAIL);
 			}
 
-			TargetModuleID[] ids = ((DeploymentCmdStatus) status).getResultTargetModuleIDs();
-			ModuleArtifactMapper mapper = ModuleArtifactMapper.getInstance();
-			mapper.addEntry(getServer(), module.getProject(), ids[0].getModuleID());
+			TargetModuleID[] ids = updateServerModuleConfigIDMap(module, status);
 
 			status = start(ids);
 			if (!status.isOK()) {
@@ -427,6 +425,13 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		Trace.trace(Trace.INFO, "<< doDeploy() " + module.toString());
 	}
 
+	private TargetModuleID[] updateServerModuleConfigIDMap(IModule module, IStatus status) {
+		TargetModuleID[] ids = ((DeploymentCmdStatus) status).getResultTargetModuleIDs();
+		ModuleArtifactMapper mapper = ModuleArtifactMapper.getInstance();
+		mapper.addEntry(getServer(), module.getProject(), ids[0].getModuleID());
+		return ids;
+	}
+
 	protected void doRedeploy(IModule module) throws Exception {
 		Trace.trace(Trace.INFO, ">> doRedeploy() " + module.toString());
 
@@ -435,6 +440,9 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 			if (!status.isOK()) {
 				doFail(status, Messages.REDEPLOY_FAIL);
 			}
+			
+			updateServerModuleConfigIDMap(module, status);
+			
 		} catch (TargetModuleIdNotFoundException e) {
 			Activator.log(Status.WARNING, "Module may have been uninstalled outside the workspace.", e);
 			doDeploy(module);
