@@ -51,6 +51,8 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jst.j2ee.internal.deployables.J2EEFlexProjDeployable;
+import org.eclipse.jst.server.core.IEnterpriseApplication;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.server.core.IModule;
@@ -83,8 +85,26 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 		IModule module = (IModule) model.getProperty(MODULE);
 		this.server = (IServer) model.getProperty(SERVER);
 		
-		//TODO process child modules if ear project
+		boolean recycle = false;
 		
+		J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) module.loadAdapter(J2EEFlexProjDeployable.class, null);
+		if(j2eeModule instanceof IEnterpriseApplication) {
+			IModule[] modules = j2eeModule.getChildModules();
+			for(int i = 0; i < modules.length; i++) {
+				IStatus status = process(modules[i], monitor);
+				if(status.isOK()) {
+					recycle = true;
+				}
+			}
+		} else {
+			return process(module, monitor);
+		}
+		
+		return recycle ? Status.OK_STATUS : Status.CANCEL_STATUS;
+	}
+	
+	private IStatus process(IModule module, IProgressMonitor monitor) throws ExecutionException {
+		Trace.trace(Trace.INFO, "SharedLibEntryCreationOperation.process() " + module.getName());
 		IProject project = module.getProject();
 		try {
 			
@@ -164,7 +184,7 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 		} catch (Exception e) {
 			throw new ExecutionException("Failed to update shared lib.", e);
 		}
-
+		
 		return Status.OK_STATUS;
 	}
 
