@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
-import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.Target;
 import javax.enterprise.deploy.spi.TargetModuleID;
 import javax.management.MBeanServerConnection;
@@ -38,7 +37,6 @@ import javax.management.remote.JMXServiceURL;
 import org.apache.geronimo.st.core.commands.DeploymentCmdStatus;
 import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.core.commands.IDeploymentCommand;
-import org.apache.geronimo.st.core.commands.TargetModuleIdNotFoundException;
 import org.apache.geronimo.st.core.internal.Messages;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.apache.geronimo.xbeans.eclipse.deployment.ModuleDocument;
@@ -90,8 +88,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	protected transient IProcess process;
 
 	protected transient IDebugEventSetListener processListener;
-
-	abstract public String getConfigId(IModule module);
 
 	abstract protected ClassLoader getContextClassLoader();
 
@@ -303,15 +299,15 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 				Thread.currentThread().setContextClassLoader(cl);
 			switch (deltaKind) {
 			case ADDED: {
-				doDeploy(module);
+				doAdded(module, null);
 				break;
 			}
 			case CHANGED: {
-				doRedeploy(module);
+				doChanged(module, null);
 				break;
 			}
 			case REMOVED: {
-				doUndeploy(module);
+				doRemoved(module);
 				break;
 			}
 			case NO_CHANGE: {
@@ -331,26 +327,24 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	}
 	
 	private void generateRunFromWorkspaceConfig(IModule module) {
-		//if (getGeronimoServer().isRunFromWorkspace()) {
-			IPath configDir = Activator.getDefault().getStateLocation().append(
-				"looseconfig").append("server_" + getServer().getId());
-		configDir.toFile().mkdirs();
+		if (getGeronimoServer().isRunFromWorkspace()) {
+			IPath configDir = Activator.getDefault().getStateLocation().append("looseconfig").append("server_" + getServer().getId());
+			configDir.toFile().mkdirs();
 
-		ModuleDocument doc = ModuleDocument.Factory.newInstance();
-		Module deployable = doc.addNewModule();
-		processModuleConfig(deployable, module);
+			ModuleDocument doc = ModuleDocument.Factory.newInstance();
+			Module deployable = doc.addNewModule();
+			processModuleConfig(deployable, module);
 
-		XmlOptions options = new XmlOptions();
-		options.setSavePrettyPrint();
-		File file = configDir.append(module.getName()).addFileExtension("xml")
-				.toFile();
-		System.out.println(doc.xmlText(options));
-		try {
-			doc.save(file, options);
-		} catch (IOException e) {
-			e.printStackTrace();
+			XmlOptions options = new XmlOptions();
+			options.setSavePrettyPrint();
+			File file = configDir.append(module.getName()).addFileExtension("xml").toFile();
+			Trace.trace(Trace.INFO,doc.xmlText(options));
+			try {
+				doc.save(file, options);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		//}
 	}
 
 	private void processModuleConfig(Module deployable, IModule serverModule) {
@@ -397,12 +391,17 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		}
 	}
 
-	protected void doDeploy(IModule module) throws Exception {
-		Trace.trace(Trace.INFO, ">> doDeploy() " + module.toString());
-
-		DeploymentManager dm = DeploymentCommandFactory.getDeploymentManager(getServer());
-
-		if (!DeploymentUtils.configurationExists(module, dm)) {
+	/**
+	 * @param module
+	 * @param configId the forced configId to process this method, passed in when this method is invoked from doChanged()
+	 * @throws Exception
+	 */
+	protected void doAdded(IModule module, String configId) throws Exception {
+		Trace.trace(Trace.INFO, ">> doAdded() " + module.toString());
+		
+		//use the correct configId, second from the .metadata, then from the plan
+		configId = configId != null ? configId : DeploymentUtils.getLastKnownConfigurationId(module, getServer());
+		if (configId == null) {
 			IStatus status = distribute(module);
 			if (!status.isOK()) {
 				doFail(status, Messages.DISTRIBUTE_FAIL);
@@ -415,61 +414,65 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 				doFail(status, Messages.START_FAIL);
 			}
 		} else {
-			String id = getConfigId(module);
-			String message = id
-					+ "already exists.  Existing configuration will be overwritten.";
-			Activator.log(Status.ERROR, message, null);
-			doRedeploy(module);
+			//either (1) a configuration with the same module id exists already on the server
+			//or (2) the module now has a different configId and the configuration on the server using
+			//the old id as specified in the project-configId map should be uninstalled.
+			doChanged(module, configId);
 		}
 
-		Trace.trace(Trace.INFO, "<< doDeploy() " + module.toString());
+		Trace.trace(Trace.INFO, "<< doAdded() " + module.toString());
 	}
 
-	private TargetModuleID[] updateServerModuleConfigIDMap(IModule module, IStatus status) {
-		TargetModuleID[] ids = ((DeploymentCmdStatus) status).getResultTargetModuleIDs();
-		ModuleArtifactMapper mapper = ModuleArtifactMapper.getInstance();
-		mapper.addEntry(getServer(), module.getProject(), ids[0].getModuleID());
-		return ids;
-	}
-
-	protected void doRedeploy(IModule module) throws Exception {
-		Trace.trace(Trace.INFO, ">> doRedeploy() " + module.toString());
-
-		try {
-			IStatus status = reDeploy(module);
-			if (!status.isOK()) {
-				doFail(status, Messages.REDEPLOY_FAIL);
+	/**
+	 * @param module
+	 * @param configId the forced configId to process this method, passed in when invoked from doAdded()
+	 * @throws Exception
+	 */
+	protected void doChanged(IModule module, String configId) throws Exception {
+		Trace.trace(Trace.INFO, ">> doChanged() " + module.toString());
+		
+		//use the correct configId, second from the .metadata, then from the plan
+		configId = configId != null ? configId : DeploymentUtils.getLastKnownConfigurationId(module, getServer());
+		if(configId != null) {
+			String moduleConfigId = getConfigId(module);
+			if(moduleConfigId.equals(configId)) {
+				IStatus status = reDeploy(module);
+				if (!status.isOK()) {
+					doFail(status, Messages.REDEPLOY_FAIL);
+				}
+			} else {
+				//different configIds from what needs to be undeployed to what will be deployed
+				doRemoved(module);
+				doAdded(module, null);
 			}
-			
-			updateServerModuleConfigIDMap(module, status);
-			
-		} catch (TargetModuleIdNotFoundException e) {
-			Activator.log(Status.WARNING, "Module may have been uninstalled outside the workspace.", e);
-			doDeploy(module);
+		} else {
+			//The checked configuration no longer exists on the server
+			doAdded(module, configId);
 		}
 
-		Trace.trace(Trace.INFO, "<< doRedeploy() " + module.toString());
+		Trace.trace(Trace.INFO, "<< doChanged() " + module.toString());
 	}
 
-	protected void doUndeploy(IModule module) throws Exception {
-		Trace.trace(Trace.INFO, ">> doUndeploy() " + module.toString());
+	protected void doRemoved(IModule module) throws Exception {
+		Trace.trace(Trace.INFO, ">> doRemoved() " + module.toString());
 
 		IStatus status = unDeploy(module);
 		if (!status.isOK()) {
 			doFail(status, Messages.UNDEPLOY_FAIL);
 		}
+		
+		ModuleArtifactMapper.getInstance().removeEntry(getServer(), module.getProject());
 
-		Trace.trace(Trace.INFO, "<< doUndeploy()" + module.toString());
+		Trace.trace(Trace.INFO, "<< doRemoved()" + module.toString());
 	}
 	
 	protected void doNoChange(IModule module) throws Exception {
-		
 		Trace.trace(Trace.INFO, ">> doNoChange() " + module.toString());
 		
-		if(DeploymentUtils.configurationExists(module, DeploymentCommandFactory.getDeploymentManager(getServer()))) {
+		if(DeploymentUtils.getLastKnownConfigurationId(module, getServer()) != null) {
 			start(module);
 		} else {
-			doDeploy(module);
+			doAdded(module, null);
 		}
 		
 		Trace.trace(Trace.INFO, "<< doNoChange()" + module.toString());
@@ -489,6 +492,13 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		}
 
 		Trace.trace(Trace.INFO, ">> doRestart() " + module.toString());
+	}
+	
+	private TargetModuleID[] updateServerModuleConfigIDMap(IModule module, IStatus status) {
+		TargetModuleID[] ids = ((DeploymentCmdStatus) status).getResultTargetModuleIDs();
+		ModuleArtifactMapper mapper = ModuleArtifactMapper.getInstance();
+		mapper.addEntry(getServer(), module.getProject(), ids[0].getModuleID());
+		return ids;
 	}
 
 	protected void doFail(IStatus status, String message) throws CoreException {
@@ -690,6 +700,10 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 			return "REMOVED";
 		}
 		return Integer.toString(kind);
+	}
+	
+	public String getConfigId(IModule module) {
+		return getGeronimoServer().getVersionHandler().getConfigID(module);
 	}
 	
 }

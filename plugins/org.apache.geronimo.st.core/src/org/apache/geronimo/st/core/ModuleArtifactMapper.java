@@ -28,11 +28,9 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
@@ -75,6 +73,18 @@ public class ModuleArtifactMapper {
 		}
 
 		artifactEntries.put(project.getName(), configId);
+	}
+	
+	public void removeEntry(IServer server, IProject project) {
+
+		if (!SocketUtil.isLocalhost(server.getHost()))
+			return;
+
+		File runtimeLoc = server.getRuntime().getLocation().toFile();
+		Map artifactEntries = (Map) serverEntries.get(runtimeLoc);
+		if (artifactEntries != null) {
+			artifactEntries.remove(project.getName());
+		}
 	}
 	
 	public String resolve(IServer server, IModule module) {

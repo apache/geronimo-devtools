@@ -15,13 +15,11 @@
  */
 package org.apache.geronimo.st.core.commands;
 
-import java.io.File;
-
 import javax.enterprise.deploy.shared.CommandType;
-import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
 import org.apache.geronimo.st.core.DeploymentUtils;
+import org.apache.geronimo.st.core.ModuleArtifactMapper;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -41,10 +39,9 @@ class RedeployCommand extends DeployCommand {
 	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public IStatus execute(IProgressMonitor monitor) throws TargetModuleIdNotFoundException, CoreException {
-		DeploymentManager dm = getDeploymentManager();
-		File file = getTargetFile();
-		TargetModuleID id = DeploymentUtils.getTargetModuleID(getServer(), getModule());
-		return new DeploymentCmdStatus(Status.OK_STATUS, dm.redeploy(new TargetModuleID[] { id }, file, null));
+		String configId = ModuleArtifactMapper.getInstance().resolve(getServer(), getModule());
+		TargetModuleID id = DeploymentUtils.getTargetModuleID(getDeploymentManager(), configId);
+		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().redeploy(new TargetModuleID[] { id }, getTargetFile(), null));
 	}
 
 	/*

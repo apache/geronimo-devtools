@@ -42,8 +42,7 @@ public class UpdateServerStateTask extends TimerTask {
 	 */
 	public void run() {
 		synchronized (delegate) {
-			Trace.trace(Trace.INFO, "--> UpdateServerStateTask.run() "
-					+ server.getName());
+			//Trace.trace(Trace.INFO, "--> UpdateServerStateTask.run() " + server.getName());
 
 			// Only start the task if the connection URL is unqiue for all
 			// g-servers or if other servers that are different instances but do
@@ -71,16 +70,14 @@ public class UpdateServerStateTask extends TimerTask {
 				}
 			}
 
-			Trace.trace(Trace.INFO, "allUnique = " + allUnique
-					+ ", allNonUniqueStopped = " + allNonUniqueStopped);
+			//Trace.trace(Trace.INFO, "allUnique = " + allUnique + ", allNonUniqueStopped = " + allNonUniqueStopped);
 
 			if (allUnique || allNonUniqueStopped) {
-				Trace.trace(Trace.INFO, "updating state...");
+				//Trace.trace(Trace.INFO, "updating state...");
 				updateServerState();
 			}
 
-			Trace.trace(Trace.INFO, "<-- UpdateServerStateTask.run() "
-					+ server.getName());
+			//Trace.trace(Trace.INFO, "<-- UpdateServerStateTask.run() " + server.getName());
 		}
 	}
 

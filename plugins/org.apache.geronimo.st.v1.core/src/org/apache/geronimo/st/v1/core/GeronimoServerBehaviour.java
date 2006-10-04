@@ -144,15 +144,6 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.st.core.GenericGeronimoServerBehaviour#getConfigId(org.eclipse.wst.server.core.IModule)
-	 */
-	public String getConfigId(IModule module) {
-		return GeronimoV1Utils.getConfigId(module);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.eclipse.wst.server.core.internal.IModulePublishHelper#getPublishDirectory(org.eclipse.wst.server.core.IModule[])
 	 */
 	public IPath getPublishDirectory(IModule[] module) {

@@ -17,12 +17,13 @@ package org.apache.geronimo.st.core;
 
 import java.io.File;
 
-import javax.enterprise.deploy.shared.ModuleType;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
 import javax.enterprise.deploy.spi.exceptions.TargetException;
 
+import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.core.commands.TargetModuleIdNotFoundException;
+import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -149,12 +150,6 @@ public class DeploymentUtils {
 		}
 		return null;
 	}
-
-	public static TargetModuleID getTargetModuleID(IModule module, DeploymentManager dm) throws TargetModuleIdNotFoundException {
-		IGeronimoServer server = GeronimoConnectionFactory.getInstance().getGeronimoServer(dm);
-		String configId = server.getVersionHandler().getConfigID(module);
-		return getTargetModuleID(dm, configId);
-	}
 	
 	public static TargetModuleID getTargetModuleID(IServer server, IModule module) throws TargetModuleIdNotFoundException {
 		String configId = ModuleArtifactMapper.getInstance().resolve(server, module);
@@ -166,7 +161,7 @@ public class DeploymentUtils {
 		return gs.getVersionHandler().createTargetModuleId(configId);
 	}
 
-	private static TargetModuleID getTargetModuleID(DeploymentManager dm, String configId) throws TargetModuleIdNotFoundException {
+	public static TargetModuleID getTargetModuleID(DeploymentManager dm, String configId) throws TargetModuleIdNotFoundException {
 
 		try {
 			TargetModuleID ids[] = dm.getAvailableModules(null, dm.getTargets());
@@ -183,15 +178,47 @@ public class DeploymentUtils {
 			e.printStackTrace();
 		}
 
-		throw new TargetModuleIdNotFoundException("Could not find TargetModuleID for module with configId " + configId);
+		throw new TargetModuleIdNotFoundException("Could not find TargetModuleID with configId " + configId);
 	}
 
-	public static boolean configurationExists(IModule module, DeploymentManager dm) {
+	/**
+	 * This method determines the last known config id for an IModule that has been deployed to the server.  The
+	 * configId from the plan cannot be used as the project may have been previously deployed with a different
+	 * configId.  In which case the lookup is done through the ModuleArtifactMapper first.
+	 * 
+	 * @param module
+	 * @param server
+	 * @return For a given module associated with a given server, this method returns the last known configuration id.
+	 * @throws CoreException
+	 */
+	public static String getLastKnownConfigurationId(IModule module, IServer server) throws CoreException {
+		
+		IGeronimoServer gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
+		String currentId = gs.getVersionHandler().getConfigID(module);
+		String publishedId = ModuleArtifactMapper.getInstance().resolve(server, module);
+		String query = publishedId != null ? publishedId : currentId;
+		
+		Trace.trace(Trace.INFO, "currentConfigId = " + currentId + " previousConfigId = " + publishedId);
+		
+		DeploymentManager dm = DeploymentCommandFactory.getDeploymentManager(server);
+		
 		try {
-			return getTargetModuleID(module, dm) != null;
+			getTargetModuleID(dm, query);
+			return query;
 		} catch (TargetModuleIdNotFoundException e) {
-			return false;
+			Trace.trace(Trace.INFO, e.getMessage());
 		}
+		
+		if(query != currentId) {
+			try {
+				getTargetModuleID(dm, currentId);
+				return currentId;
+			} catch (TargetModuleIdNotFoundException e) {
+				Trace.trace(Trace.INFO, e.getMessage());
+			}
+		}
+		
+		return null;
 	}
 
 }

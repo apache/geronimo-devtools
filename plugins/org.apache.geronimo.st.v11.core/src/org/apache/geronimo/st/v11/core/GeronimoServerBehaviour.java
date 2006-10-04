@@ -34,6 +34,7 @@ import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
+import org.apache.geronimo.st.core.IGeronimoServer;
 import org.apache.geronimo.st.core.operations.ISharedLibEntryCreationDataModelProperties;
 import org.apache.geronimo.st.core.operations.SharedLibEntryCreationOperation;
 import org.apache.geronimo.st.core.operations.SharedLibEntryDataModelProvider;
@@ -154,15 +155,6 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.core.GenericGeronimoServerBehaviour#getConfigId(org.eclipse.wst.server.core.IModule)
-	 */
-	public String getConfigId(IModule module) {
-		return GeronimoV11Utils.getConfigId(module);
-	}
-
 	public IPath getPublishDirectory(IModule[] module) {
 		if (module == null || module.length == 0)
 			return null;
@@ -200,26 +192,21 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 		return Kernel.class.getClassLoader();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate#doDeploy(org.eclipse.wst.server.core.IModule)
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate#doAdded(org.eclipse.wst.server.core.IModule, java.lang.String)
 	 */
-	protected void doDeploy(IModule module) throws Exception {
+	protected void doAdded(IModule module, String configId) throws Exception {
 		updateSharedLib(module);
-		super.doDeploy(module);
+		super.doAdded(module, configId);
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate#doRedeploy(org.eclipse.wst.server.core.IModule)
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate#doChanged(org.eclipse.wst.server.core.IModule, java.lang.String)
 	 */
-	protected void doRedeploy(IModule module) throws Exception {
-		super.unDeploy(module);
+	protected void doChanged(IModule module, String configId) throws Exception {
 		updateSharedLib(module);
-		super.doDeploy((module));
+		super.doChanged(module, configId);
 	}
 
 	/*
@@ -227,8 +214,8 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 	 * 
 	 * @see org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate#doUndeploy(org.eclipse.wst.server.core.IModule)
 	 */
-	protected void doUndeploy(IModule module) throws Exception {
-		super.doUndeploy(module);
+	protected void doRemoved(IModule module) throws Exception {
+		super.doRemoved(module);
 		updateSharedLib(module);
 	}
 	
