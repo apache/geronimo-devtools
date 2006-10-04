@@ -190,4 +190,8 @@ public class Messages extends NLS {
 	public static String doasCurrentCaller;
 	public static String useContextHandler;
 	public static String defaultRole;
+	
+	public static String editorCorrect;
+	public static String editorDefault;
+	public static String errorOpenDialog;
 }

@@ -5,10 +5,16 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.apache.geronimo.st.core.operations.ImportDeploymentPlanDataModelProvider;
+import org.apache.geronimo.st.core.operations.ImportDeploymentPlanOperation;
 import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.internal.Trace;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
@@ -20,6 +26,13 @@ import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.IFormPage;
+import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
+import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetProjectCreationDataModelProperties;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
+import org.eclipse.wst.common.project.facet.core.IFacetedProject;
+import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 
@@ -144,14 +157,35 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 	 * @see org.eclipse.ui.IEditorPart#init(org.eclipse.ui.IEditorSite,
 	 *      org.eclipse.ui.IEditorInput)
 	 */
-	public void init(IEditorSite site, IEditorInput input)
-			throws PartInitException {
+	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		super.init(site, input);
 		if (input instanceof IFileEditorInput) {
 			IFileEditorInput fei = (IFileEditorInput) input;
 			deploymentPlan = loadDeploymentPlan(fei.getFile());
-			if (deploymentPlan == null) {
-				MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Error Opening Editor", "Could not open the deployment plan editor.  Opening the default text editor.");
+			
+			boolean fix = false;
+			if(deploymentPlan == null) {
+				fix = MessageDialog.openQuestion(Display.getDefault().getActiveShell(), Messages.errorOpenDialog, Messages.editorCorrect);
+			}
+			
+			if(fix) {
+				IProject project = fei.getFile().getProject();
+				IDataModel model = DataModelFactory.createDataModel(new ImportDeploymentPlanDataModelProvider());
+				model.setProperty(IFacetDataModelProperties.FACET_PROJECT_NAME, project.getName());
+				try {
+					IFacetedProject facetedProject = ProjectFacetsManager.create(project);
+					model.setProperty(IFacetProjectCreationDataModelProperties.FACET_RUNTIME, facetedProject.getPrimaryRuntime());
+					IDataModelOperation op = new ImportDeploymentPlanOperation(model);
+					op.execute(new NullProgressMonitor(), null);
+				} catch (Exception e) {
+					//ingnore
+				}
+				
+				deploymentPlan = loadDeploymentPlan(fei.getFile());
+				
+				if (deploymentPlan == null) {	
+					MessageDialog.openInformation(Display.getDefault().getActiveShell(), Messages.errorOpenDialog, Messages.editorDefault);
+				}
 			}
 		}
 	}
