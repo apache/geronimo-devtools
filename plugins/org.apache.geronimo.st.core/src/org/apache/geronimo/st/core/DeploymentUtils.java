@@ -168,6 +168,7 @@ public class DeploymentUtils {
 			if (ids != null) {
 				for (int i = 0; i < ids.length; i++) {
 					if (ids[i].getModuleID().equals(configId)) {
+						Trace.trace(Trace.INFO, "Found configuration " + configId +  " on server.");
 						return ids[i];
 					}
 				}
