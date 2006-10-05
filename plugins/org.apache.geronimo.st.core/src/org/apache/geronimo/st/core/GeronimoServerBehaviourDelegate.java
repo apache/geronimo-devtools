@@ -399,8 +399,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	protected void doAdded(IModule module, String configId) throws Exception {
 		Trace.trace(Trace.INFO, ">> doAdded() " + module.toString());
 		
-		//use the correct configId, second from the .metadata, then from the plan
-		configId = configId != null ? configId : DeploymentUtils.getLastKnownConfigurationId(module, getServer());
+		configId = getLastKnowConfigurationId(module, configId);
 		if (configId == null) {
 			IStatus status = distribute(module);
 			if (!status.isOK()) {
@@ -431,8 +430,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	protected void doChanged(IModule module, String configId) throws Exception {
 		Trace.trace(Trace.INFO, ">> doChanged() " + module.toString());
 		
-		//use the correct configId, second from the .metadata, then from the plan
-		configId = configId != null ? configId : DeploymentUtils.getLastKnownConfigurationId(module, getServer());
+		configId = getLastKnowConfigurationId(module, configId);
 		if(configId != null) {
 			String moduleConfigId = getConfigId(module);
 			if(moduleConfigId.equals(configId)) {
@@ -451,6 +449,13 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		}
 
 		Trace.trace(Trace.INFO, "<< doChanged() " + module.toString());
+	}
+
+	private String getLastKnowConfigurationId(IModule module, String configId) throws CoreException {
+		//use the correct configId, second from the .metadata, then from the plan
+		configId = configId != null ? configId : DeploymentUtils.getLastKnownConfigurationId(module, getServer());
+		Trace.trace(Trace.INFO, "Config ID to be processed: " + configId);
+		return configId;
 	}
 
 	protected void doRemoved(IModule module) throws Exception {
