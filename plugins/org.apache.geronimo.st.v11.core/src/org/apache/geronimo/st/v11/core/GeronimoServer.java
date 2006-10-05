@@ -91,7 +91,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
 	 */
 	public void configureDeploymentManager(DeploymentManager dm) {
 		((JMXDeploymentManager) dm).setLogConfiguration(true, true);
-		boolean enableInPlace = SocketUtil.isLocalhost(getServer().getHost()) && isInPlaceSharedLib();
+		boolean enableInPlace = SocketUtil.isLocalhost(getServer().getHost()) && isRunFromWorkspace();
 		setInPlaceDeployment(dm, enableInPlace);
 	}
 
