@@ -43,7 +43,7 @@ import org.eclipse.wst.server.core.IModule;
 public class SynchronizedDeploymentOp implements ProgressListener,
 		IDeploymentCommand {
 
-	private static final long TIMEOUT = 10000;
+	private static final long TIMEOUT = 600000;
 
 	private IDeploymentCommand command;
 
@@ -95,6 +95,8 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 			po.removeProgressListener(this);
 			if (timedOut) {
 				Trace.trace(Trace.SEVERE, "Command Timed Out!");
+				status = new MultiStatus(Activator.PLUGIN_ID, 0, "", null);
+				status.add(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, command.getCommandType() + " timed out.", null));
 			}
 		}
 
