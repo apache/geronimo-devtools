@@ -43,7 +43,7 @@ import org.eclipse.wst.server.core.IModule;
 public class SynchronizedDeploymentOp implements ProgressListener,
 		IDeploymentCommand {
 
-	private static final long TIMEOUT = 600000;
+	private static final long TIMEOUT = 900000;
 
 	private IDeploymentCommand command;
 
