@@ -35,6 +35,7 @@ import javax.management.MBeanServerConnection;
 import javax.management.ObjectInstance;
 import javax.management.ObjectName;
 
+import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.core.internal.Trace;
@@ -182,6 +183,7 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 				return Status.CANCEL_STATUS;
 			}
 		} catch (Exception e) {
+			Activator.log(Status.ERROR, "Failed to update shared lib.", e);
 			throw new ExecutionException("Failed to update shared lib.", e);
 		}
 		
