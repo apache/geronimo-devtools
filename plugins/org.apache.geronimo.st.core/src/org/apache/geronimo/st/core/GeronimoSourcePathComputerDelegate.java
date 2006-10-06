@@ -53,6 +53,7 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
 	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public ISourceContainer[] computeSourceContainers(ILaunchConfiguration configuration, IProgressMonitor monitor) throws CoreException {
+		Trace.trace(Trace.INFO, ">> GeronimoSourcePathComputerDelegate.computeSourceContainers()");
 		
 		IServer server = ServerUtil.getServer(configuration);
 		IModule[] modules = server.getModules();
