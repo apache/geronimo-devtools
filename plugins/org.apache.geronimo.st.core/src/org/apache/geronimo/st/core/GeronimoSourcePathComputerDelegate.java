@@ -76,14 +76,23 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
 
 		IRuntimeClasspathEntry[] resolved = JavaRuntime.resolveSourceLookupPath(entries, configuration);
 		ISourceContainer[] defaultContainers = JavaRuntime.getSourceContainers(resolved);
+		
 		HashSet allContainers = new HashSet(Arrays.asList(defaultContainers));
 		Iterator i = getAdditionalSrcPathComputers().iterator();
 		ILaunchManager mgr = DebugPlugin.getDefault().getLaunchManager();
+		Trace.trace(Trace.INFO, "Total # of unique source containers: " + allContainers.size());
 		while(i.hasNext()) {
 			ISourcePathComputer computer = mgr.getSourcePathComputer((String) i.next());
-			Trace.trace(Trace.INFO, "Invoking Source Path Computer" +  computer.getId());
+			Trace.trace(Trace.INFO, "Invoking Source Path Computer " +  computer.getId());
 			ISourceContainer[] jsc = computer.computeSourceContainers(configuration, monitor);
+			if(jsc != null) {
+				Trace.trace(Trace.INFO, "Additional Source Containers returned ...");
+				for(int j = 0; j < jsc.length; j++) {
+					Trace.trace(Trace.INFO, jsc[j].getName());
+				}
+			}
 			allContainers.addAll(Arrays.asList(jsc));
+			Trace.trace(Trace.INFO, "Number # of unique source containers: " + allContainers.size());
 		}
 		
 		// TODO support resolving from geronimo source distribution
