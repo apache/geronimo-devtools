@@ -19,6 +19,7 @@ import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
 import org.apache.geronimo.st.core.DeploymentUtils;
+import org.apache.geronimo.st.core.IGeronimoServer;
 import org.apache.geronimo.st.core.ModuleArtifactMapper;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -40,8 +41,19 @@ class RedeployCommand extends DeployCommand {
 	 */
 	public IStatus execute(IProgressMonitor monitor) throws TargetModuleIdNotFoundException, CoreException {
 		String configId = ModuleArtifactMapper.getInstance().resolve(getServer(), getModule());
-		TargetModuleID id = DeploymentUtils.getTargetModuleID(getDeploymentManager(), configId);
-		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().redeploy(new TargetModuleID[] { id }, getTargetFile(), null));
+		
+		if(configId == null) {
+			IGeronimoServer gs = (IGeronimoServer) getServer().getAdapter(IGeronimoServer.class);
+			configId = gs.getVersionHandler().getConfigID(getModule());
+		}
+		
+		TargetModuleID[] ids = null;
+		if(configId != null) {
+			TargetModuleID id = DeploymentUtils.getTargetModuleID(getDeploymentManager(), configId);
+			ids = new TargetModuleID[] {id};
+		}
+		
+		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().redeploy(ids, getTargetFile(), null));
 	}
 
 	/*
