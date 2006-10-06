@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -79,6 +80,7 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
 		ILaunchManager mgr = DebugPlugin.getDefault().getLaunchManager();
 		while(i.hasNext()) {
 			ISourcePathComputer computer = mgr.getSourcePathComputer((String) i.next());
+			Trace.trace(Trace.INFO, "Invoking Source Path Computer" +  computer.getId());
 			ISourceContainer[] jsc = computer.computeSourceContainers(configuration, monitor);
 			allContainers.addAll(Arrays.asList(jsc));
 		}
@@ -118,7 +120,9 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
 			IExtensionPoint extensionPoint= Platform.getExtensionRegistry().getExtensionPoint(Activator.PLUGIN_ID, "sourcePathComputerMapping");
 			IConfigurationElement[] extensions = extensionPoint.getConfigurationElements();
 			for (int i = 0; i < extensions.length; i++) {
-				additionalSrcPathComputerIds.add(extensions[i].getAttribute("id"));
+				String id = extensions[i].getAttribute("id");
+				Trace.trace(Trace.INFO, "Found extension point " +  id);
+				additionalSrcPathComputerIds.add(id);
 			}
 		}
 	}
