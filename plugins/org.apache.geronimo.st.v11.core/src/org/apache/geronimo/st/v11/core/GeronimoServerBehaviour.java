@@ -237,7 +237,7 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 		model.setProperty(ISharedLibEntryCreationDataModelProperties.SERVER, getServer());
 		IDataModelOperation op = new SharedLibEntryCreationOperation(model);
 		try {
-			op.execute(new NullProgressMonitor(), null);
+			op.execute(_monitor, null);
 		} catch (ExecutionException e) {
 			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, e.getMessage(), e.getCause()));
 		}

@@ -65,6 +65,7 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 	
 	private TargetModuleID sharedLibTarget;
 	private IServer server;
+	private IProgressMonitor monitor;
 
 	public SharedLibEntryCreationOperation() {
 	}
@@ -83,6 +84,7 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 	 *      org.eclipse.core.runtime.IAdaptable)
 	 */
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+		this.monitor = monitor;
 		IModule module = (IModule) model.getProperty(MODULE);
 		this.server = (IServer) model.getProperty(SERVER);
 		
@@ -92,19 +94,19 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 		if(j2eeModule instanceof IEnterpriseApplication) {
 			IModule[] modules = j2eeModule.getChildModules();
 			for(int i = 0; i < modules.length; i++) {
-				IStatus status = process(modules[i], monitor);
+				IStatus status = process(modules[i]);
 				if(status.isOK()) {
 					recycle = true;
 				}
 			}
 		} else {
-			return process(module, monitor);
+			return process(module);
 		}
 		
 		return recycle ? Status.OK_STATUS : Status.CANCEL_STATUS;
 	}
 	
-	private IStatus process(IModule module, IProgressMonitor monitor) throws ExecutionException {
+	private IStatus process(IModule module) throws ExecutionException {
 		Trace.trace(Trace.INFO, "SharedLibEntryCreationOperation.process() " + module.getName());
 		IProject project = module.getProject();
 		try {
@@ -254,6 +256,7 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 				String url = f.toURL().toExternalForm();
 				if (!entries.contains(url)) {
 					Trace.trace(Trace.INFO, "Adding " + url);
+					monitor.subTask("Linking " + url + " to shared lib.");
 					entries.add(url);
 				}
 			} catch (MalformedURLException e1) {
