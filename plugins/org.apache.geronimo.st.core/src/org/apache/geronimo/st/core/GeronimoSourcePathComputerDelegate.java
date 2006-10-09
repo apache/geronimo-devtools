@@ -88,7 +88,8 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
 			if(jsc != null) {
 				Trace.trace(Trace.INFO, "Additional Source Containers returned ...");
 				for(int j = 0; j < jsc.length; j++) {
-					Trace.trace(Trace.INFO, jsc[j].getName());
+					String name = jsc[j].getName();
+					Trace.trace(Trace.INFO, "name = " + name);
 				}
 			}
 			allContainers.addAll(Arrays.asList(jsc));
