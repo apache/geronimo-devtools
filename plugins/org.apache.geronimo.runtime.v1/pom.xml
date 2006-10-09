@@ -17,11 +17,6 @@
     <build>
         <resources>
             <resource>
-                <targetPath>META-INF</targetPath>
-                <directory>META-INF</directory>
-                <filtering>true</filtering>
-            </resource>
-            <resource>
                 <directory>.</directory>
                 <includes>
                     <include>plugin.xml</include>
@@ -44,6 +39,9 @@
             </resource>
         </resources>
         <plugins>
+        	<plugin>
+            	<artifactId>maven-antrun-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>dependency-maven-plugin</artifactId>

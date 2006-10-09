@@ -17,11 +17,6 @@
     <build>
         <resources>
             <resource>
-                <targetPath>META-INF</targetPath>
-                <directory>META-INF</directory>
-                <filtering>true</filtering>
-            </resource>
-            <resource>
                 <directory>.</directory>
                 <includes>
                     <include>plugin.xml</include>
@@ -49,6 +44,9 @@
             <plugin>
                 <groupId>org.apache.geronimo.devtools</groupId>
                 <artifactId>maven-geronimodevtools-plugin</artifactId>
+            </plugin>
+            <plugin>
+            	<artifactId>maven-antrun-plugin</artifactId>
             </plugin>
             <!-- workaround for bugzilla 147936 -->
             <plugin>

@@ -20,11 +20,6 @@
     <build>
         <resources>
             <resource>
-                <targetPath>META-INF</targetPath>
-                <directory>META-INF</directory>
-                <filtering>true</filtering>
-            </resource>
-            <resource>
                 <directory>.</directory>
                 <includes>
                     <include>plugin.xml</include>
@@ -49,6 +44,9 @@
         </resources>
         
         <plugins>
+        	<plugin>
+            	<artifactId>maven-antrun-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.apache.geronimo.devtools</groupId>
                 <artifactId>maven-geronimodevtools-plugin</artifactId>
