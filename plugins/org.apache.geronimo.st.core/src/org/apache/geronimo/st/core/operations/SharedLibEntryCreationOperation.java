@@ -153,7 +153,8 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 				startSharedLib();
 			}
 		} catch (Exception e) {
-			Trace.trace(Trace.SEVERE, "Error updating shared lib", e);
+			Trace.trace(Trace.SEVERE, "Failure in updating shared library.", e);
+			throw new ExecutionException("Failure in updating shared library", e);
 		} 
 		
 		Trace.trace(Trace.INFO, "<< SharedLibEntryCreationOperation.execute()");
