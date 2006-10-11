@@ -35,8 +35,8 @@ import javax.management.MBeanServerConnection;
 import javax.management.ObjectInstance;
 import javax.management.ObjectName;
 
-import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
+import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.commands.ExecutionException;
@@ -53,7 +53,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jst.j2ee.internal.deployables.J2EEFlexProjDeployable;
-import org.eclipse.jst.server.core.IEnterpriseApplication;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.server.core.IModule;
@@ -84,34 +83,16 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 	 *      org.eclipse.core.runtime.IAdaptable)
 	 */
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+		Trace.trace(Trace.INFO, ">> SharedLibEntryCreationOperation.execute()");
+		
 		this.monitor = monitor;
 		IModule module = (IModule) model.getProperty(MODULE);
 		this.server = (IServer) model.getProperty(SERVER);
 		
-		boolean recycle = false;
-		
-		J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) module.loadAdapter(J2EEFlexProjDeployable.class, null);
-		if(j2eeModule instanceof IEnterpriseApplication) {
-			IModule[] modules = j2eeModule.getChildModules();
-			for(int i = 0; i < modules.length; i++) {
-				IStatus status = process(modules[i]);
-				if(status.isOK()) {
-					recycle = true;
-				}
-			}
-		} else {
-			return process(module);
-		}
-		
-		return recycle ? Status.OK_STATUS : Status.CANCEL_STATUS;
-	}
-	
-	private IStatus process(IModule module) throws ExecutionException {
-		Trace.trace(Trace.INFO, "SharedLibEntryCreationOperation.process() " + module.getName());
 		IProject project = module.getProject();
+		
 		try {
-			
-			//locate the path of the first sharedlib library folder
+			// locate the path of the first sharedlib library folder
 			String sharedLibPath = null;
 			GeronimoServerBehaviourDelegate gsDelegate = (GeronimoServerBehaviourDelegate) server.getAdapter(GeronimoServerBehaviourDelegate.class);
 			MBeanServerConnection connection = gsDelegate.getServerConnection();
@@ -131,7 +112,8 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 			String dummyJarName = project.getName() + ".eclipse.jar";
 			File dummyJarFile = server.getRuntime().getLocation().append(sharedLibPath).append(dummyJarName).toFile();
 
-			// delete the dummy jar and return if module no longer associated with server 
+			// delete the dummy jar and return if module no longer associated
+			// with server
 			if (!ServerUtil.containsModule(server, module, monitor)) {
 				if (dummyJarFile.exists()) {
 					stopSharedLib();
@@ -143,30 +125,18 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 					return Status.CANCEL_STATUS;
 				}
 			}
-
-			// filter the cp entries needed to be added to the dummy shared lib jar
-			HashSet entries = new HashSet();
-			processJavaProject(project, entries, false);
 			
-			//add output locations of referenced projects excluding non-child projects
-			ModuleDelegate delegate = (ModuleDelegate) module.loadAdapter(ModuleDelegate.class, null);
-			if(delegate != null) {
-				IProject[] refs = project.getReferencedProjects();
-				for(int i = 0; i < refs.length; i++) {
-					boolean found = false;
-					IModule[] children = delegate.getChildModules();
-					for(int j = 0; j < children.length; j++) {
-						if(children[j].getProject().equals(refs[i])) {
-							found = true;
-							break;
-						}
-					}
-					if(!found) {
-						processJavaProject(refs[i], entries, true);
-					}
+			HashSet entries = new HashSet();
+			J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) module.loadAdapter(J2EEFlexProjDeployable.class, null);
+			if(GeronimoUtils.isEarModule(module)) {
+				IModule[] modules = j2eeModule.getChildModules();
+				for(int i = 0; i < modules.length; i++) {
+					entries.addAll(processModule(modules[i]));
 				}
+			} else {
+				entries.addAll(processModule(module));
 			}
-
+			
 			// regen the jar only if required
 			if (regenerate(dummyJarFile, entries)) {
 				stopSharedLib();
@@ -181,15 +151,45 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 				os.flush();
 				os.close();
 				startSharedLib();
-			} else {
-				return Status.CANCEL_STATUS;
 			}
 		} catch (Exception e) {
-			Activator.log(Status.ERROR, "Failed to update shared lib.", e);
-			throw new ExecutionException("Failed to update shared lib.", e);
-		}
+			Trace.trace(Trace.SEVERE, "Error updating shared lib", e);
+		} 
+		
+		Trace.trace(Trace.INFO, "<< SharedLibEntryCreationOperation.execute()");
 		
 		return Status.OK_STATUS;
+	}
+	
+	private HashSet processModule(IModule module) throws Exception {
+		Trace.trace(Trace.INFO, "SharedLibEntryCreationOperation.process() " + module.getName());
+
+		IProject project = module.getProject();
+		// filter the cp entries needed to be added to the dummy shared lib
+		// jar
+		HashSet entries = new HashSet();
+		processJavaProject(project, entries, false);
+
+		// add output locations of referenced projects excluding non-child
+		// projects
+		ModuleDelegate delegate = (ModuleDelegate) module.loadAdapter(ModuleDelegate.class, null);
+		if(delegate != null) {
+			IProject[] refs = project.getReferencedProjects();
+			for(int i = 0; i < refs.length; i++) {
+				boolean found = false;
+				IModule[] children = delegate.getChildModules();
+				for(int j = 0; j < children.length; j++) {
+					if(children[j].getProject().equals(refs[i])) {
+						found = true;
+						break;
+					}
+				}
+				if(!found) {
+					processJavaProject(refs[i], entries, true);
+				}
+			}
+		}
+		return entries;
 	}
 
 	private void delete(File dummyJarFile) {
@@ -220,8 +220,10 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 				IJavaProject ref = JavaCore.create(p);
 				path = p.getLocation().removeLastSegments(1).append(ref.getOutputLocation()).addTrailingSeparator().toOSString();
 			} else if (kind == IClasspathEntry.CPE_SOURCE) {
-				//this if not combined with parent statement to filter out CPE_SOURCE entries from following else statement
-				//if no outputlocation, output path will get picked up by default output path
+				// this if not combined with parent statement to filter out
+				// CPE_SOURCE entries from following else statement
+				// if no outputlocation, output path will get picked up by
+				// default output path
 				if(includeOutputLocations && entry.getOutputLocation() != null) {
 					path = project.getLocation().append(entry.getOutputLocation()).addTrailingSeparator().toOSString();
 				}
@@ -241,7 +243,7 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 		IClasspathEntry resolved = JavaCore.getResolvedClasspathEntry(entry);
 		IPath resolvedPath = resolved.getPath().makeAbsolute();
 		IProject candiate = ResourcesPlugin.getWorkspace().getRoot().getProject(resolvedPath.segment(0));
-		//check if resolvedPath is a project resource
+		// check if resolvedPath is a project resource
 		if(candiate.exists(resolvedPath.removeFirstSegments(1))) {
 			return candiate.getLocation().append(resolvedPath.removeFirstSegments(1)).toOSString();
 		} else {
