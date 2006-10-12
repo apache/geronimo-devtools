@@ -205,7 +205,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 				}
 			}
 			IModule[] toProcess = (IModule[])rootModules.toArray(new IModule[rootModules.size()]);
-			status = updateSharedLib(toProcess, monitor);
+			status = updateSharedLib(toProcess, ProgressUtil.getSubMonitorFor(monitor, 1000));
 		}
 		if(status.isOK()) {
 			super.publishModules(kind, modules, deltaKind, multi, monitor);

@@ -18,7 +18,6 @@ package org.apache.geronimo.st.core.operations;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
@@ -66,6 +65,7 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
+import org.eclipse.wst.server.core.internal.ProgressUtil;
 import org.eclipse.wst.server.core.model.ModuleDelegate;
 
 public class SharedLibEntryCreationOperation extends AbstractDataModelOperation implements ISharedLibEntryCreationDataModelProperties {
@@ -95,7 +95,9 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		Trace.trace(Trace.INFO, ">> SharedLibEntryCreationOperation.execute()");
 		
-		this.monitor = monitor;
+		this.monitor = ProgressUtil.getMonitorFor(monitor);
+		this.monitor.beginTask("Processing in-place shared libraries.", 100);
+		
 		IModule[] modules = (IModule[]) model.getProperty(MODULES);
 		this.server = (IServer) model.getProperty(SERVER);
 		
@@ -153,7 +155,9 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 		} catch (Exception e) {
 			Trace.trace(Trace.SEVERE, "Failure in updating shared library.", e);
 			throw new ExecutionException("Failure in updating shared library", e);
-		} 
+		} finally {
+			monitor.done();
+		}
 		
 		Trace.trace(Trace.INFO, "<< SharedLibEntryCreationOperation.execute()");
 		return Status.OK_STATUS;
