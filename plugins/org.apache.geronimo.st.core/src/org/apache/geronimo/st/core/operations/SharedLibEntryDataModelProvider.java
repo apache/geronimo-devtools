@@ -29,7 +29,7 @@ public class SharedLibEntryDataModelProvider extends AbstractDataModelProvider i
 	 */
 	public Set getPropertyNames() {
 		Set names = super.getPropertyNames();
-		names.add(MODULE);
+		names.add(MODULES);
 		names.add(SERVER);
 		return names;
 	}

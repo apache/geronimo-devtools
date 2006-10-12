@@ -39,10 +39,14 @@ import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.core.commands.IDeploymentCommand;
 import org.apache.geronimo.st.core.internal.Messages;
 import org.apache.geronimo.st.core.internal.Trace;
+import org.apache.geronimo.st.core.operations.ISharedLibEntryCreationDataModelProperties;
+import org.apache.geronimo.st.core.operations.SharedLibEntryCreationOperation;
+import org.apache.geronimo.st.core.operations.SharedLibEntryDataModelProvider;
 import org.apache.geronimo.xbeans.eclipse.deployment.ModuleDocument;
 import org.apache.geronimo.xbeans.eclipse.deployment.ChildrenDocument.Children;
 import org.apache.geronimo.xbeans.eclipse.deployment.ModuleDocument.Module;
 import org.apache.xmlbeans.XmlOptions;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -58,6 +62,7 @@ import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
@@ -67,11 +72,15 @@ import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.resources.VirtualArchiveComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualReference;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerListener;
 import org.eclipse.wst.server.core.ServerEvent;
 import org.eclipse.wst.server.core.ServerPort;
+import org.eclipse.wst.server.core.internal.ProgressUtil;
 import org.eclipse.wst.server.core.model.ServerBehaviourDelegate;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
@@ -176,6 +185,33 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 			return;
 		if (state == IServer.STATE_STARTING || state == IServer.STATE_STOPPING)
 			terminate();
+	}
+	
+	/* 
+	 * Override this method to be able to process in-place shared lib entries and restart the shared lib configuration for all projects prior
+	 * to publishing each IModule.
+	 * 
+	 * (non-Javadoc)
+	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#publishModules(int, java.util.List, java.util.List, org.eclipse.core.runtime.MultiStatus, org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	protected void publishModules(int kind, List modules, List deltaKind, MultiStatus multi, IProgressMonitor monitor) {
+		IStatus status = Status.OK_STATUS;
+		if (modules != null && modules.size() > 0 && getGeronimoServer().isInPlaceSharedLib()) {
+			List rootModules = new ArrayList();
+			for(int i = 0; i < modules.size(); i++) {
+				IModule[] module = (IModule[]) modules.get(i);
+				if(!rootModules.contains(module[0])) {
+					rootModules.add(module[0]);
+				}
+			}
+			IModule[] toProcess = (IModule[])rootModules.toArray(new IModule[rootModules.size()]);
+			status = updateSharedLib(toProcess, monitor);
+		}
+		if(status.isOK()) {
+			super.publishModules(kind, modules, deltaKind, multi, monitor);
+		} else {
+			multi.add(status);
+		}
 	}
 
 	/*
@@ -709,6 +745,19 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	
 	public String getConfigId(IModule module) {
 		return getGeronimoServer().getVersionHandler().getConfigID(module);
+	}
+	
+	private IStatus updateSharedLib(IModule[] module, IProgressMonitor monitor) {
+		IDataModel model = DataModelFactory.createDataModel(new SharedLibEntryDataModelProvider());
+		model.setProperty(ISharedLibEntryCreationDataModelProperties.MODULES, module);
+		model.setProperty(ISharedLibEntryCreationDataModelProperties.SERVER, getServer());
+		IDataModelOperation op = new SharedLibEntryCreationOperation(model);
+		try {
+			op.execute(monitor, null);
+		} catch (ExecutionException e) {
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, e.getMessage(), e.getCause());
+		}
+		return Status.OK_STATUS;
 	}
 	
 }

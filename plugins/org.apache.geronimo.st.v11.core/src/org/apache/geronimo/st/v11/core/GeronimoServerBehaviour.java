@@ -34,21 +34,10 @@ import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
-import org.apache.geronimo.st.core.IGeronimoServer;
-import org.apache.geronimo.st.core.operations.ISharedLibEntryCreationDataModelProperties;
-import org.apache.geronimo.st.core.operations.SharedLibEntryCreationOperation;
-import org.apache.geronimo.st.core.operations.SharedLibEntryDataModelProvider;
 import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.internal.IModulePublishHelper;
@@ -190,56 +179,5 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 	 */
 	protected ClassLoader getContextClassLoader() {
 		return Kernel.class.getClassLoader();
-	}
-
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate#doAdded(org.eclipse.wst.server.core.IModule, java.lang.String)
-	 */
-	protected void doAdded(IModule module, String configId) throws Exception {
-		updateSharedLib(module);
-		super.doAdded(module, configId);
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate#doChanged(org.eclipse.wst.server.core.IModule, java.lang.String)
-	 */
-	protected void doChanged(IModule module, String configId) throws Exception {
-		updateSharedLib(module);
-		super.doChanged(module, configId);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate#doUndeploy(org.eclipse.wst.server.core.IModule)
-	 */
-	protected void doRemoved(IModule module) throws Exception {
-		super.doRemoved(module);
-		updateSharedLib(module);
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate#doNoChange(org.eclipse.wst.server.core.IModule)
-	 */
-	protected void doNoChange(IModule module) throws Exception {
-		updateSharedLib(module);
-		super.doNoChange(module);
-	}
-
-	private void updateSharedLib(IModule module) throws CoreException {
-		if(isRemote() || !getGeronimoServer().isInPlaceSharedLib()) {
-			return;
-		}
-		
-		IDataModel model = DataModelFactory.createDataModel(new SharedLibEntryDataModelProvider());
-		model.setProperty(ISharedLibEntryCreationDataModelProperties.MODULE, module);
-		model.setProperty(ISharedLibEntryCreationDataModelProperties.SERVER, getServer());
-		IDataModelOperation op = new SharedLibEntryCreationOperation(model);
-		try {
-			op.execute(_monitor, null);
-		} catch (ExecutionException e) {
-			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, e.getMessage(), e.getCause()));
-		}
 	}
 }

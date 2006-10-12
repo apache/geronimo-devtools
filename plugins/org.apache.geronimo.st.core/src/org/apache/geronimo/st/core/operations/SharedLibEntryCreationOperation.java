@@ -16,10 +16,17 @@
 package org.apache.geronimo.st.core.operations;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.jar.Attributes;
@@ -35,6 +42,7 @@ import javax.management.MBeanServerConnection;
 import javax.management.ObjectInstance;
 import javax.management.ObjectName;
 
+import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
@@ -65,6 +73,8 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 	private TargetModuleID sharedLibTarget;
 	private IServer server;
 	private IProgressMonitor monitor;
+	private IPath sharedLibLocation;
+	private static final IPath TEMP_LOCATION = Activator.getDefault().getStateLocation().append("shared-lib-temp");
 
 	public SharedLibEntryCreationOperation() {
 	}
@@ -86,80 +96,119 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 		Trace.trace(Trace.INFO, ">> SharedLibEntryCreationOperation.execute()");
 		
 		this.monitor = monitor;
-		IModule module = (IModule) model.getProperty(MODULE);
+		IModule[] modules = (IModule[]) model.getProperty(MODULES);
 		this.server = (IServer) model.getProperty(SERVER);
 		
-		IProject project = module.getProject();
+		HashMap addList = new HashMap();
+		List deleteList = new ArrayList();
 		
 		try {
-			// locate the path of the first sharedlib library folder
-			String sharedLibPath = null;
-			GeronimoServerBehaviourDelegate gsDelegate = (GeronimoServerBehaviourDelegate) server.getAdapter(GeronimoServerBehaviourDelegate.class);
-			MBeanServerConnection connection = gsDelegate.getServerConnection();
-			Set result = connection.queryMBeans(new ObjectName("*:j2eeType=GBean,name=SharedLib,*"), null);
-			if (!result.isEmpty()) {
-				ObjectInstance instance = (ObjectInstance) result.toArray()[0];
-				String[] libDirs = (String[]) connection.getAttribute(instance.getObjectName(),"libDirs");
-				if (libDirs != null && libDirs.length > 0) {
-					sharedLibPath = libDirs[0];
-				}
-			}
-			
+			String sharedLibPath = getSharedLibPath();
 			if(sharedLibPath == null) 
 				return Status.CANCEL_STATUS;
 			
-			// determine the absolute path of the dummy jar
-			String dummyJarName = project.getName() + ".eclipse.jar";
-			File dummyJarFile = server.getRuntime().getLocation().append(sharedLibPath).append(dummyJarName).toFile();
-
-			// delete the dummy jar and return if module no longer associated
-			// with server
-			if (!ServerUtil.containsModule(server, module, monitor)) {
-				if (dummyJarFile.exists()) {
-					stopSharedLib();
-					delete(dummyJarFile);
-					startSharedLib();
-					return Status.OK_STATUS;
+			sharedLibLocation = server.getRuntime().getLocation().append(sharedLibPath);
+			
+			for(int i = 0; i < modules.length; i++) {
+				IModule module = modules[i];
+				IProject project = module.getProject();
+				
+				File dummyJarFile = sharedLibLocation.append(project.getName() + ".eclipse.jar").toFile();
+				// delete the dummy jar if module no longer associated with server
+				if (!ServerUtil.containsModule(server, module, monitor) && dummyJarFile.exists()) {
+					deleteList.add(dummyJarFile);
 				} else {
-					// don't need to recycle shared lib
-					return Status.CANCEL_STATUS;
+					HashSet entries = new HashSet();
+					J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) module.loadAdapter(J2EEFlexProjDeployable.class, null);
+					if(GeronimoUtils.isEarModule(module)) {
+						IModule[] childModules = j2eeModule.getChildModules();
+						for(int j = 0; j < modules.length; j++) {
+							entries.addAll(processModule(childModules[i]));
+						}
+					} else {
+						entries.addAll(processModule(module));
+					}
+
+					// regen the jar only if required
+					if (regenerate(dummyJarFile, entries)) {
+						TEMP_LOCATION.toFile().mkdirs();
+						File temp = TEMP_LOCATION.append(project.getName() + ".eclipse.jar").toFile();
+						Trace.trace(Trace.INFO, "Updating external sharedlib entries for " + module.getName());
+						if(temp.exists())
+							delete(temp);
+						Manifest manifest = new Manifest();
+						Attributes attributes = manifest.getMainAttributes();
+						attributes.put(Attributes.Name.MANIFEST_VERSION, "1.0");
+						attributes.put(Attributes.Name.CLASS_PATH, getCPEntriesAsString(entries));
+						JarOutputStream os = new JarOutputStream(new FileOutputStream(temp), manifest);
+						os.flush();
+						os.close();
+						addList.put(temp, dummyJarFile);
+					}
 				}
 			}
 			
-			HashSet entries = new HashSet();
-			J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) module.loadAdapter(J2EEFlexProjDeployable.class, null);
-			if(GeronimoUtils.isEarModule(module)) {
-				IModule[] modules = j2eeModule.getChildModules();
-				for(int i = 0; i < modules.length; i++) {
-					entries.addAll(processModule(modules[i]));
-				}
-			} else {
-				entries.addAll(processModule(module));
-			}
+			updateAndRecycleSharedLib(addList, deleteList);
 			
-			// regen the jar only if required
-			if (regenerate(dummyJarFile, entries)) {
-				stopSharedLib();
-				Trace.trace(Trace.INFO, "Updating external sharedlib entries for " + module.getName());
-				if(dummyJarFile.exists())
-					delete(dummyJarFile);
-				Manifest manifest = new Manifest();
-				Attributes attributes = manifest.getMainAttributes();
-				attributes.put(Attributes.Name.MANIFEST_VERSION, "1.0");
-				attributes.put(Attributes.Name.CLASS_PATH, getCPEntriesAsString(entries));
-				JarOutputStream os = new JarOutputStream(new FileOutputStream(dummyJarFile), manifest);
-				os.flush();
-				os.close();
-				startSharedLib();
-			}
 		} catch (Exception e) {
 			Trace.trace(Trace.SEVERE, "Failure in updating shared library.", e);
 			throw new ExecutionException("Failure in updating shared library", e);
 		} 
 		
 		Trace.trace(Trace.INFO, "<< SharedLibEntryCreationOperation.execute()");
-		
 		return Status.OK_STATUS;
+	}
+	
+	private void updateAndRecycleSharedLib(HashMap addList, List deleteList) throws Exception {
+		if(addList.size() > 0 || deleteList.size() > 0) {
+			stopSharedLib();
+			for(int i = 0; i < deleteList.size(); i++) {
+				File file = (File) deleteList.get(i);
+				delete(file);
+			}
+			Iterator i = addList.keySet().iterator();
+			while(i.hasNext()) {
+				File src = (File) i.next();
+				File dest = (File) addList.get(src);
+				if(dest.exists()) {
+					delete(dest);
+				}
+				copy(src, dest);
+			}
+			startSharedLib();
+		}
+	}
+	
+	private void copy(File src, File dest) throws Exception {
+		try {
+			InputStream in = new FileInputStream(src);
+			OutputStream out = new FileOutputStream(dest);
+			byte[] buf = new byte[1024];
+			int len;
+			while ((len = in.read(buf)) > 0) {
+				out.write(buf, 0, len);
+			}
+			in.close();
+			out.close();
+		} catch (Exception e) {
+			throw e;
+		}
+		Trace.trace(Trace.INFO, "Created " + dest.getAbsolutePath());
+	}
+
+	private String getSharedLibPath() throws Exception {
+		// locate the path of the first sharedlib library folder
+		GeronimoServerBehaviourDelegate gsDelegate = (GeronimoServerBehaviourDelegate) server.getAdapter(GeronimoServerBehaviourDelegate.class);
+		MBeanServerConnection connection = gsDelegate.getServerConnection();
+		Set result = connection.queryMBeans(new ObjectName("*:j2eeType=GBean,name=SharedLib,*"), null);
+		if (!result.isEmpty()) {
+			ObjectInstance instance = (ObjectInstance) result.toArray()[0];
+			String[] libDirs = (String[]) connection.getAttribute(instance.getObjectName(),"libDirs");
+			if (libDirs != null && libDirs.length > 0) {
+				return libDirs[0];
+			}
+		}
+		return null;
 	}
 	
 	private HashSet processModule(IModule module) throws Exception {
