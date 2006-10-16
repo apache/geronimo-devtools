@@ -149,8 +149,10 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 	public IPath getPublishDirectory(IModule[] module) {
 		if (module == null || module.length == 0)
 			return null;
-
+		
+		ClassLoader old = Thread.currentThread().getContextClassLoader();
 		try {
+			Thread.currentThread().setContextClassLoader(getContextClassLoader());
 			String configId = getConfigId(module[0]);
 			ObjectName on = Configuration.getConfigurationObjectName(URI.create(configId));
 			GBeanData data = kernel.getGBeanData(on);
@@ -162,6 +164,8 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 			e.printStackTrace();
 		} catch (InternalKernelException e) {
 			e.printStackTrace();
+		} finally {
+			Thread.currentThread().setContextClassLoader(old);
 		}
 
 		return null;

@@ -153,7 +153,9 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 			// container should be returned
 			return module[module.length - 1].getProject().getLocation();
 		} else {
+			ClassLoader old = Thread.currentThread().getContextClassLoader();
 			try {
+				Thread.currentThread().setContextClassLoader(getContextClassLoader());
 				String configId = getConfigId(module[0]);
 				Artifact artifact = Artifact.create(configId);
 				AbstractName name = Configuration.getConfigurationAbstractName(artifact);
@@ -166,6 +168,8 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 				e.printStackTrace();
 			} catch (InternalKernelException e) {
 				e.printStackTrace();
+			} finally {
+				Thread.currentThread().setContextClassLoader(old);
 			}
 		}
 
