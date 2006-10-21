@@ -11,8 +11,8 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <properties>
-        <geronimoVersion>1.1</geronimoVersion>
-        <openejbVersion>2.1</openejbVersion>
+        <geronimoVersion>1.1.1</geronimoVersion>
+        <openejbVersion>2.1.1</openejbVersion>
     </properties>
     <build>
         <resources>
