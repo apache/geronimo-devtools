@@ -29,25 +29,6 @@
         <version>1.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.geronimo.devtools</groupId>
-                    <artifactId>maven-geronimodevtools-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <id>generate-qualifier</id>
-                            <phase>validate</phase>
-                            <goals>
-                                <goal>qualifier</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
     <modules>
         <module>org.apache.geronimo.feature</module>
         <module>org.apache.geronimo.installableruntime.jetty.feature</module>

@@ -2,15 +2,15 @@
 <feature
       id="org.apache.geronimo.installableruntime.jetty.feature"
       label="org.apache.geronimo.installableruntime.jetty.feature"
-      version="1.1.0"
+      version="${org.apache.geronimo.installableruntime.jetty.feature_version}"
       provider-name="Apache.org">
 
    <description url="http://geronimo.apache.org/">
-      This features provides the Jetty distribution of the Apache Geronimo J2EE Server.
+        %description
    </description>
 
    <copyright url="http://www.apache.org/licenses/LICENSE-2.0.html">
-      Copyright 2004 The Apache Software Foundation.
+        %copyright
    </copyright>
 
    <license url="http://www.apache.org/licenses/LICENSE-2.0.html">
