@@ -18,15 +18,8 @@ package org.apache.geronimo.st.v11.core;
 import java.io.IOException;
 
 import org.apache.geronimo.deployment.xbeans.EnvironmentDocument;
-import org.apache.geronimo.deployment.xbeans.ModuleDocument;
 import org.apache.geronimo.deployment.xmlbeans.XmlBeansUtil;
-import org.apache.geronimo.j2ee.deployment.EARConfigBuilder;
 import org.apache.geronimo.st.core.GeronimoUtils;
-import org.apache.geronimo.xbeans.j2ee.ApplicationDocument;
-import org.apache.geronimo.xbeans.j2ee.EjbJarDocument;
-import org.apache.geronimo.xbeans.j2ee.WebAppDocument;
-import org.apache.geronimo.xbeans.j2ee.WebservicesDocument;
-import org.apache.geronimo.xbeans.j2ee.impl.ConnectorDocumentImpl;
 import org.apache.geronimo.xml.ns.deployment.ArtifactType;
 import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
 import org.apache.geronimo.xml.ns.deployment.EnvironmentType;
