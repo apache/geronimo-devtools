@@ -17,7 +17,6 @@ package org.apache.geronimo.st.core;
 
 import java.util.TimerTask;
 
-import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.internal.Server;
