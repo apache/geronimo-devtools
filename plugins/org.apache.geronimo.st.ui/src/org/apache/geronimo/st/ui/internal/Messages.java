@@ -54,6 +54,11 @@ public class Messages extends NLS {
 	public static String tooltipJetty;
 	public static String tooltipTomcat;
 	
+	public static String sourceLocWizTitle;
+	public static String sourceLocWizDescription;
+	public static String sourceZipFile;
+	public static String browseSrcDialog;
+	
 	public static String hostName;
 	public static String adminId;
 	public static String adminPassword;

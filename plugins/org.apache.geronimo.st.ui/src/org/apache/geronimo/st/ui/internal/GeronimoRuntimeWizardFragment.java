@@ -493,4 +493,11 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 	public IWizardHandle getWizard() {
 		return fWizard;
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.wst.server.ui.wizard.WizardFragment#createChildFragments(java.util.List)
+	 */
+	protected void createChildFragments(List list) {
+		list.add(new GeronimoRuntimeSourceWizardFragment());
+	}
 }

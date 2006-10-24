@@ -27,6 +27,7 @@ import org.apache.geronimo.st.core.internal.Messages;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMInstallType;
@@ -41,6 +42,8 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
 	private static final String PROP_VM_INSTALL_ID = "vm-install-id";
 
 	public static final String SERVER_INSTANCE_PROPERTIES = "geronimo_server_instance_properties";
+	
+	public static final String RUNTIME_SOURCE= "runtime.source";
 
 	public static final int NO_IMAGE = 0;
 
@@ -124,6 +127,21 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
 	public void setDefaults(IProgressMonitor monitor) {
 		IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
 		setVMInstall(vmInstall.getVMInstallType().getId(), vmInstall.getId());
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.IGeronimoRuntime#getRuntimeSourceLocation()
+	 */
+	public IPath getRuntimeSourceLocation() {
+		String source = (String) getServerInstanceProperties().get(RUNTIME_SOURCE);
+		if(source != null) {
+			return new Path(source);
+		}
+		return null;
+	}
+	
+	public void setRuntimeSourceLocation(String path) {
+		setInstanceProperty(RUNTIME_SOURCE, path);
 	}
 
 	/**

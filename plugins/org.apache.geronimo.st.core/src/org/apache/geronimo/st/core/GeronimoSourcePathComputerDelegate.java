@@ -15,6 +15,7 @@
  */
 package org.apache.geronimo.st.core;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -26,6 +27,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.DebugPlugin;
@@ -34,11 +36,13 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.sourcelookup.ISourceContainer;
 import org.eclipse.debug.core.sourcelookup.ISourcePathComputer;
 import org.eclipse.debug.core.sourcelookup.ISourcePathComputerDelegate;
+import org.eclipse.debug.core.sourcelookup.containers.ExternalArchiveSourceContainer;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.wst.server.core.IModule;
+import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
 
@@ -96,9 +100,29 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
 			Trace.trace(Trace.INFO, "Number # of unique source containers: " + allContainers.size());
 		}
 		
-		// TODO support resolving from geronimo source distribution
+		//add source container for Geroniom Runtime
+		ISourceContainer[] runtimeContainers = processServer(server);
+		allContainers.addAll(Arrays.asList(runtimeContainers));
 
 		return (ISourceContainer[])allContainers.toArray(new ISourceContainer[allContainers.size()]);
+	}
+	
+	private ISourceContainer[] processServer(IServer server) {
+		IRuntime runtime = server.getRuntime();
+		IGeronimoRuntime gRuntime = (IGeronimoRuntime) runtime.getAdapter(IGeronimoRuntime.class);
+		if (gRuntime != null) {
+			IPath sourcePath = gRuntime.getRuntimeSourceLocation();
+			if (sourcePath != null) {
+				File file = sourcePath.toFile();
+				if (file.isFile()) {
+					ExternalArchiveSourceContainer sourceContainer = new ExternalArchiveSourceContainer(file.getAbsolutePath(), true);
+					return new ISourceContainer[] { sourceContainer };
+				} else if (file.isDirectory()) {
+					// TODO implement me using DirectorySourceContainer
+				}
+			}
+		}
+		return new ISourceContainer[] {};
 	}
 
 	private void processModules(IModule[] modules, List javaProjectList, IServer server, IProgressMonitor monitor) {
