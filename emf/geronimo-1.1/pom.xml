@@ -209,6 +209,7 @@
             <groupId>geronimo</groupId>
             <artifactId>geronimo-connector-builder</artifactId>
             <version>${geronimoVersion}</version>
+            <!-- Needed to fix and bypass 1.1.1 bad transitive dependencies -->
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.geronimo.specs</groupId>
