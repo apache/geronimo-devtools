@@ -30,6 +30,22 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <inherited>false</inherited>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>.</directory>
+                            <includes>
+                                <include>.metadata</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+        </plugins>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -72,7 +88,7 @@
                             </goals>
                         </execution>
                     </executions>
-			 </plugin>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
