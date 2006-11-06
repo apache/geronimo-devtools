@@ -46,8 +46,6 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
- *
- * $Rev$ $Date$
  */
 public class DeploymentItemProviderAdapterFactory extends DeploymentAdapterFactory implements ComposeableAdapterFactory, IChangeNotifier, IDisposable
 {

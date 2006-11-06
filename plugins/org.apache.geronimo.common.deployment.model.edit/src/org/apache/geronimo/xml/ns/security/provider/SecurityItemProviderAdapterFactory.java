@@ -46,8 +46,6 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
- *
- * @version $Rev$ $Date$
  */
 public class SecurityItemProviderAdapterFactory extends SecurityAdapterFactory implements ComposeableAdapterFactory, IChangeNotifier, IDisposable
 {
