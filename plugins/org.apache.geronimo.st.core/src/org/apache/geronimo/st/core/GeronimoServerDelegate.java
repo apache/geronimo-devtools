@@ -60,6 +60,12 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	public static final String PROPERTY_LOG_LEVEL = "logLevel";
 	
 	public static final String PROPERTY_VM_ARGS = "VMArgs";
+	
+	public static final String PROPERTY_PING_DELAY = "pingDelay";
+	
+	public static final String PROPERTY_PING_INTERVAL = "pingInterval";
+	
+	public static final String PROPERTY_MAX_PINGS = "maxPings";
 
 	public static final String CONSOLE_INFO = "--long";
 
@@ -269,6 +275,33 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	public void setVMArgs(String value) {
 		setInstanceProperty(PROPERTY_VM_ARGS, value);
 	}
+	
+	public int getPingDelay() {
+		String pingDelay = getInstanceProperty(PROPERTY_PING_DELAY);
+		return Integer.parseInt(pingDelay);
+	}
+	
+	public int getPingInterval() {
+		String pingInterval = getInstanceProperty(PROPERTY_PING_INTERVAL);
+		return Integer.parseInt(pingInterval);
+	}
+	
+	public int getMaxPings() {
+		String maxPings = getInstanceProperty(PROPERTY_MAX_PINGS);
+		return Integer.parseInt(maxPings);
+	}
+	
+	public void setPingDelay(Integer delay) {
+		setInstanceProperty(PROPERTY_PING_DELAY, delay.toString());
+	}
+	
+	public void setPingInterval(Integer interval) {
+		setInstanceProperty(PROPERTY_PING_INTERVAL, interval.toString());
+	}
+	
+	public void setMaxPings(Integer maxPings) {
+		setInstanceProperty(PROPERTY_MAX_PINGS, maxPings.toString());
+	}
 
 	public String discoverDeploymentFactoryClassName(IPath jarPath) {
 		try {
@@ -291,6 +324,9 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 		setHTTPPort("8080");
 		setRMINamingPort("1099");
 		setConsoleLogLevel(CONSOLE_INFO);
+		setPingDelay(new Integer(10000));
+		setMaxPings(new Integer(40));
+		setPingInterval(new Integer(5000));
 	}
 
 	public String getInstanceProperty(String name) {

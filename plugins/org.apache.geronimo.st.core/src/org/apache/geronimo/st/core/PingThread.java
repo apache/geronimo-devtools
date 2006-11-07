@@ -25,11 +25,11 @@ import org.eclipse.wst.server.core.util.SocketUtil;
  */
 public class PingThread extends Thread {
 
-	private static final int PING_DELAY = 10000;
+	private int pingDelay;
 
-	private static final int PING_INTERVAL = 5000;
+	private int pingInterval;
 
-	private static final int MAX_PINGS = 40;
+	private int maxPings;
 
 	private IGeronimoServerBehavior geronimoServer;
 
@@ -40,6 +40,9 @@ public class PingThread extends Thread {
 		this.geronimoServer = geronimoServer;
 		this.server = server;
 		this.setDaemon(true);
+		loadPingDelay();
+		loadPingInterval();
+		loadMaxPings();
 	}
 
 	/*
@@ -54,12 +57,12 @@ public class PingThread extends Thread {
 		}
 
 		try {
-			sleep(PING_DELAY);
+			sleep(pingDelay);
 		} catch (InterruptedException e) {
 			// ignore
 		}
 
-		for (int tries = MAX_PINGS; tries > 0; tries--) {
+		for (int tries = maxPings; tries > 0; tries--) {
 			
 			if(server.getServerState() == IServer.STATE_STOPPED) 
 				interrupt();
@@ -80,7 +83,7 @@ public class PingThread extends Thread {
 			Trace.trace(Trace.INFO, "Ping: fail");
 
 			try {
-				sleep(PING_INTERVAL);
+				sleep(pingInterval);
 			} catch (InterruptedException e) {
 				// ignore
 			}
@@ -88,5 +91,25 @@ public class PingThread extends Thread {
 
 		Trace.trace(Trace.SEVERE, "Ping: Can't ping for server startup.");
 		server.stop(false);
+	}
+	
+	public void loadPingDelay() {
+		pingDelay = getGeronimoServer().getPingDelay();
+	}
+	
+	public void loadPingInterval() {
+		pingInterval = getGeronimoServer().getPingInterval();
+	}
+	
+	public void loadMaxPings() {
+		maxPings = getGeronimoServer().getMaxPings();
+	}
+	
+	private IGeronimoServer getGeronimoServer() {
+		IGeronimoServer gServer = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
+		if(gServer == null) {
+			gServer = (IGeronimoServer) server.loadAdapter(IGeronimoServer.class, null);
+		}
+		return gServer;
 	}
 }

@@ -36,6 +36,9 @@ public class Messages extends NLS {
 	public static String editorSectionLogLevelDescription;
 	public static String editorSectionVMArgsTitle;
 	public static String editorSectionVMArgsDescription;
+	public static String editorSectionStartupTitle;
+	public static String editorSectionStartupDescription;
+	
 	public static String info;
 	public static String debug;
 	public static String httpPort;
@@ -44,6 +47,12 @@ public class Messages extends NLS {
 	public static String password;
 	public static String console;
 	public static String consoleTooltip;
+	public static String pingDelay;
+	public static String pingInterval;
+	public static String maxPings;
+	public static String pingDelayTooltip;
+	public static String pingIntervalTooltip;
+	public static String maxPingsTooltip;
 	
 	public static String newServerWizardTitle;
 	public static String newServerWizardDescription;

@@ -96,7 +96,15 @@
     </extension>
     
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
-        <section id="org.apache.server.geronimo.vmargs" order="30"
+        <section id="org.apache.server.geronimo.security" order="30"
+            insertionId="org.eclipse.wst.server.editor.overview.right"
+            typeIds="org.apache.geronimo.server.*"
+            class="org.apache.geronimo.st.ui.sections.ServerEditorStartupSection">
+        </section>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.vmargs" order="40"
             insertionId="org.eclipse.wst.server.editor.overview.right"
             typeIds="org.apache.geronimo.server.*"
             class="org.apache.geronimo.st.ui.sections.ServerVMArgsSection">

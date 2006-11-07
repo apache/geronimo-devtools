@@ -48,5 +48,11 @@ public interface IGeronimoServer extends IURLProvider {
 	public boolean isInPlaceSharedLib();
 	
 	public boolean isRunFromWorkspace();
+	
+	public int getPingDelay();
+	
+	public int getPingInterval();
+	
+	public int getMaxPings();
 
 }
