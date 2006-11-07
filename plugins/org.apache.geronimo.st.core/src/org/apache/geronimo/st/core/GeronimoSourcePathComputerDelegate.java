@@ -139,17 +139,31 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
 			}
 
 			if (project != null) {
+				//process referenced projects for shared lib
 				try {
-					if (project.hasNature(JavaCore.NATURE_ID)) {
-						IJavaProject javaProject = (IJavaProject) project.getNature(JavaCore.NATURE_ID);
-						if (!javaProjectList.contains(javaProject)) {
-							javaProjectList.add(javaProject);
-						}
+					IProject[] referencedProjects = project.getReferencedProjects();
+					for(int j = 0; j < referencedProjects.length; j++) {
+						processJavaProject(javaProjectList, referencedProjects[j]);
 					}
-				} catch (Exception e) {
-					// ignore
+				} catch (CoreException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				processJavaProject(javaProjectList, project);
+			}
+		}
+	}
+
+	private void processJavaProject(List javaProjectList, IProject project) {
+		try {
+			if (project.hasNature(JavaCore.NATURE_ID)) {
+				IJavaProject javaProject = (IJavaProject) project.getNature(JavaCore.NATURE_ID);
+				if (!javaProjectList.contains(javaProject)) {
+					javaProjectList.add(javaProject);
 				}
 			}
+		} catch (Exception e) {
+			// ignore
 		}
 	}
 	
