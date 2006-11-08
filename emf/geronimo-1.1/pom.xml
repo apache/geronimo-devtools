@@ -263,6 +263,13 @@
             <groupId>geronimo</groupId>
             <artifactId>geronimo-client-builder</artifactId>
             <version>${geronimoVersion}</version>
+            <!-- Needed to fix and bypass 1.1.1 bad transitive dependencies -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.geronimo.schema</groupId>
+                    <artifactId>geronimo-schema-j2ee_1.4</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>
