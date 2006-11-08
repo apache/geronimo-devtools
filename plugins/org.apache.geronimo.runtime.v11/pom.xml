@@ -197,6 +197,21 @@
             <groupId>geronimo</groupId>
             <artifactId>geronimo-deploy-jsr88</artifactId>
             <version>${geronimoVersion}</version>
+            <!-- Needed to fix and bypass 1.1.1 bad transitive dependencies -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-j2ee-jacc_1.0_spec</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.geronimo.schema</groupId>
+                    <artifactId>geronimo-schema-j2ee_1.4</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-qname_1.1_spec</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>geronimo</groupId>
@@ -270,6 +285,13 @@
             <groupId>openejb</groupId>
             <artifactId>openejb-builder</artifactId>
             <version>${openejbVersion}</version>
+            <!-- Needed to fix and bypass 1.1.1 bad transitive dependencies -->
+            <exclusions>
+                <exclusion>
+                    <groupId>geronimo-spec</groupId>
+                    <artifactId>geronimo-spec-corba</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>geronimo</groupId>
