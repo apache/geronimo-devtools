@@ -138,8 +138,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	 * @param monitor
 	 * @throws CoreException
 	 */
-	protected void setupLaunch(ILaunch launch, String launchMode, IProgressMonitor monitor) throws CoreException {
-		Trace.trace(Trace.INFO, "--> GeronimoServerBehavior.setupLaunch()");
+	synchronized protected void setupLaunch(ILaunch launch, String launchMode, IProgressMonitor monitor) throws CoreException {
+		Trace.trace(Trace.INFO, "--> GeronimoServerBehaviorDelegate.setupLaunch()");
 
 		if (!SocketUtil.isLocalhost(getServer().getHost()))
 			return;
@@ -170,7 +170,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		};
 
 		getServer().addServerListener(listener);
-		Trace.trace(Trace.INFO, "<-- GeronimoServerBehavior.setupLaunch()");
+		Trace.trace(Trace.INFO, "<-- GeronimoServerBehaviorDelegate.setupLaunch()");
 	}
 
 	/*
@@ -178,7 +178,14 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	 * 
 	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#stop(boolean)
 	 */
-	public void stop(boolean force) {
+	synchronized public void stop(boolean force) {
+		Trace.trace(Trace.INFO, "--> stop()");
+		stopPingThread();
+		if (getServer().getServerState() != IServer.STATE_STOPPED) {
+			setServerState(IServer.STATE_STOPPING);
+			stopKernel();
+		}
+		GeronimoConnectionFactory.getInstance().destroy(getServer());
 		if (force) {
 			terminate();
 			return;
@@ -188,6 +195,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 			return;
 		if (state == IServer.STATE_STARTING || state == IServer.STATE_STOPPING)
 			terminate();
+		Trace.trace(Trace.INFO, "<-- stop()");
 	}
 	
 	/* 
@@ -327,6 +335,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	}
 
 	protected void terminate() {
+		Trace.trace(Trace.INFO,"terminate()");
 		if (getServer().getServerState() == IServer.STATE_STOPPED)
 			return;
 
@@ -344,10 +353,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	}
 
 	protected void stopImpl() {
-		if (pingThread != null) {
-			pingThread.interrupt();
-			pingThread = null;
-		}
 		if (process != null) {
 			process = null;
 			DebugPlugin.getDefault().removeDebugEventListener(processListener);
@@ -692,20 +697,29 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	}
 
 	protected void startPingThread() {
+		Trace.trace(Trace.INFO, "startPingThread()");
 		pingThread = new PingThread(this, getServer());
 		pingThread.start();
 	}
+	
+	protected void stopPingThread() {
+		Trace.trace(Trace.INFO, "stopPingThread()");
+		if (pingThread != null) {
+			pingThread.interrupt();
+			pingThread = null;
+		}
+	}
+	
+	protected abstract void stopKernel();
 
 	protected void startUpdateServerStateTask() {
-		Trace.trace(Trace.INFO, "startUpdateServerStateTask() "
-				+ getServer().getName());
+		Trace.trace(Trace.INFO, "startUpdateServerStateTask() " + getServer().getName());
 		timer = new Timer(true);
 		timer.schedule(new UpdateServerStateTask(this, getServer()), 10000, TIMER_TASK_INTERVAL * 1000);
 	}
 
 	protected void stopUpdateServerStateTask() {
-		Trace.trace(Trace.INFO, "stopUpdateServerStateTask() "
-				+ getServer().getName());
+		Trace.trace(Trace.INFO, "stopUpdateServerStateTask() " + getServer().getName());
 		if (timer != null)
 			timer.cancel();
 	}

@@ -53,30 +53,15 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 	public GeronimoServerBehaviour() {
 		super();
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#stop(boolean)
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate#stopKernel()
 	 */
-	public synchronized void stop(boolean force) {
-
-		Trace.trace(Trace.INFO, "--> stop()");
-
-		if (getServer().getServerState() != IServer.STATE_STOPPED) {
-			setServerState(IServer.STATE_STOPPING);
-			if (kernel != null) {
-				kernel.shutdown();
-			}
+	protected void stopKernel() {
+		if (kernel != null) {
+			kernel.shutdown();
+			kernel = null;
 		}
-
-		GeronimoConnectionFactory.getInstance().destroy(getServer());
-		kernel = null;
-
-		// kill the process
-		super.stop(true);
-
-		Trace.trace(Trace.INFO, "<-- stop()");
 	}
 
 	/**
