@@ -18,6 +18,9 @@ package org.apache.geronimo.st.core;
 
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.server.core.ServerUtil;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -55,7 +58,13 @@ public class Activator extends Plugin {
 	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		//TODO Stop all update server state tasks
+		IServer[] servers = ServerCore.getServers();
+		for(int i = 0; i < servers.length; i++) {
+			GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) servers[i].getAdapter(GeronimoServerBehaviourDelegate.class);
+			if(delegate != null) {
+				delegate.stopUpdateServerStateTask();
+			}
+		}
 		ModuleArtifactMapper.getInstance().save();
 		super.stop(context);
 		plugin = null;
