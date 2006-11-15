@@ -194,6 +194,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	 * Override this method to be able to process in-place shared lib entries and restart the shared lib configuration for all projects prior
 	 * to publishing each IModule.
 	 * 
+	 * This overridden method also fixes WTP Bugzilla 123676 to prevent duplicate repdeloys if both parent and child modules have deltas.
+	 * 
 	 * (non-Javadoc)
 	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#publishModules(int, java.util.List, java.util.List, org.eclipse.core.runtime.MultiStatus, org.eclipse.core.runtime.IProgressMonitor)
 	 */
@@ -211,7 +213,34 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 			status = updateSharedLib(toProcess, ProgressUtil.getSubMonitorFor(monitor, 1000));
 		}
 		if(status.isOK()) {
-			super.publishModules(kind, modules, deltaKind, multi, monitor);
+			if (modules == null)
+				return;
+			
+			int size = modules.size();
+			if (size == 0)
+				return;
+			
+			if (monitor.isCanceled())
+				return;
+			
+			List rootModulesPublished = new ArrayList();
+			for (int i = 0; i < size; i++) {
+				IModule[] module = (IModule[]) modules.get(i);
+				int moduleDeltaKind = ((Integer)deltaKind.get(i)).intValue();
+				//has this root of this module been published already?
+				if(!rootModulesPublished.contains(module[0])) {
+					status = publishModule(kind, module, moduleDeltaKind, ProgressUtil.getSubMonitorFor(monitor, 3000));
+					if (status != null && !status.isOK())
+						multi.add(status);
+					//cache published root modules to comapre against to prevent dup redeploys
+					if(moduleDeltaKind != NO_CHANGE) {
+						rootModulesPublished.add(module[0]);
+					}
+				} else {
+					setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
+					Trace.trace(Trace.INFO, "root module for " + Arrays.asList(module).toString() + " already published.  Skipping.");
+				}	
+			}
 		} else {
 			multi.add(status);
 		}
@@ -226,7 +255,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	 */
 	public void publishModule(int kind, int deltaKind, IModule[] module, IProgressMonitor monitor) throws CoreException {
 
-		Trace.trace(Trace.INFO, ">> publishModule(), deltaKind = " + deltaKindToString(deltaKind));
+		Trace.trace(Trace.INFO, ">> publishModule(), deltaKind = " + deltaKindToString(deltaKind), true);
 		Trace.trace(Trace.INFO, Arrays.asList(module).toString());
 		_monitor = monitor;
 
@@ -235,7 +264,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 			if (module.length == 1 && (deltaKind == ADDED || deltaKind == REMOVED || deltaKind == NO_CHANGE)) {
 				invokeCommand(deltaKind, module[0]);
 			} else if (deltaKind == CHANGED) {
-				// TODO This case is flawed due to WTP Bugzilla 123676
 				invokeCommand(deltaKind, module[0]);
 			} 
 		} finally {
@@ -519,7 +547,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 			doAdded(module, null);
 		}
 		
-		Trace.trace(Trace.INFO, "<< doNoChange()" + module.toString());
+		Trace.trace(Trace.INFO, "<< doNoChange() " + module.toString());
 	}
 
 	protected void doRestart(IModule module) throws Exception {

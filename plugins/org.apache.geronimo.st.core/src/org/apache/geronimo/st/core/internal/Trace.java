@@ -56,23 +56,25 @@ public class Trace {
 	 *            a message
 	 */
 	public static void trace(byte level, String s) {
-		trace(level, s, null);
+		trace(level, s, null, false);
+	}
+	
+	public static void trace(byte level, String s, boolean newLine) {
+		trace(level, s, null, newLine);
+	}
+	
+	public static void trace(byte level, String s, Throwable t) {
+		trace(level, s, null, false);
 	}
 
-	/**
-	 * Trace the given message and exception.
-	 * 
-	 * @param level
-	 *            the trace level
-	 * @param s
-	 *            a message
-	 * @param t
-	 *            a throwable
-	 */
-	public static void trace(byte level, String s, Throwable t) {
+	public static void trace(byte level, String s, Throwable t, boolean newLine) {
 		if (Activator.getDefault() == null || !Activator.getDefault().isDebugging())
 			return;
-
+		
+		if(newLine) {
+			System.out.println();
+		}
+		
 		System.out.println(Activator.PLUGIN_ID + ":  " + s);
 		if (t != null)
 			t.printStackTrace();
