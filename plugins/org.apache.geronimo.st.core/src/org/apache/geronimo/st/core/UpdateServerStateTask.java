@@ -18,6 +18,7 @@ package org.apache.geronimo.st.core;
 
 import java.util.TimerTask;
 
+import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.internal.Server;
@@ -31,8 +32,7 @@ public class UpdateServerStateTask extends TimerTask {
 
 	private IServer server;
 
-	public UpdateServerStateTask(IGeronimoServerBehavior delegate,
-			IServer server) {
+	public UpdateServerStateTask(IGeronimoServerBehavior delegate, IServer server) {
 		super();
 		this.delegate = delegate;
 		this.server = server;
@@ -44,47 +44,47 @@ public class UpdateServerStateTask extends TimerTask {
 	 * @see java.util.TimerTask#run()
 	 */
 	public void run() {
-		synchronized (delegate) {
-			//Trace.trace(Trace.INFO, "--> UpdateServerStateTask.run() " + server.getName());
-
-			// Only start the task if the connection URL is unqiue for all
-			// g-servers or if other servers that are different instances but do
-			// share the same connection URL's are stopped
-			IGeronimoServer thisServer = (IGeronimoServer) this.server
-					.loadAdapter(IGeronimoServer.class, null);
-
-			IServer[] allServers = ServerCore.getServers();
-			boolean allUnique = true;
-			boolean allNonUniqueStopped = true;
-			for (int i = 0; i < allServers.length; i++) {
-				IServer server = allServers[i];
-				IGeronimoServer gs = (IGeronimoServer) server.loadAdapter(
-						IGeronimoServer.class, null);
-				if (gs != null && !this.server.getId().equals(server.getId())) {
-					if (gs.getJMXServiceURL().equals(
-							thisServer.getJMXServiceURL())) {
-						allUnique = false;
-						if (!server.getRuntime().getLocation().equals(
-								this.server.getRuntime().getLocation())
-								&& server.getServerState() != IServer.STATE_STOPPED) {
-							allNonUniqueStopped = false;
-						}
-					}
-				}
-			}
-
-			//Trace.trace(Trace.INFO, "allUnique = " + allUnique + ", allNonUniqueStopped = " + allNonUniqueStopped);
-
-			if (allUnique || allNonUniqueStopped) {
-				//Trace.trace(Trace.INFO, "updating state...");
-				updateServerState();
-			}
-
-			//Trace.trace(Trace.INFO, "<-- UpdateServerStateTask.run() " + server.getName());
+		if (canUpdateState()) {
+			updateServerState();
 		}
 	}
 
+	/**
+	 * Returns true if either the connection URL is unique for all g-servers or
+	 * if all other servers that share the same connection URL but have
+	 * different runtime locations are stopped.
+	 * 
+	 * @return true if ok to update state
+	 */
+	private boolean canUpdateState() {
+		IGeronimoServer thisServer = (IGeronimoServer) this.server.loadAdapter(IGeronimoServer.class, null);
+		IServer[] allServers = ServerCore.getServers();
+		for (int i = 0; i < allServers.length; i++) {
+			IServer server = allServers[i];
+			IGeronimoServer gs = (IGeronimoServer) server.loadAdapter(IGeronimoServer.class, null);
+			if (gs != null && !this.server.getId().equals(server.getId())) {
+				if (isSameConnectionURL(gs, thisServer)) {
+					if (!isSameRuntimeLocation(server) && server.getServerState() != IServer.STATE_STOPPED) {
+						Trace.trace(Trace.WARNING, server.getId() + " Cannot update server state.  URL conflict between multiple servers.");
+						return false;
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
+	private boolean isSameRuntimeLocation(IServer server) {
+		return server.getRuntime().getLocation().equals(this.server.getRuntime().getLocation());
+	}
+
+	private boolean isSameConnectionURL(IGeronimoServer server, IGeronimoServer thisServer) {
+		return server.getJMXServiceURL().equals(thisServer.getJMXServiceURL());
+	}
+
 	private void updateServerState() {
+		Trace.trace(Trace.INFO, ">> " + server.getId() + " Updating Server State.");
 		try {
 			switch (server.getServerState()) {
 			case IServer.STATE_STOPPED:
@@ -104,6 +104,7 @@ public class UpdateServerStateTask extends TimerTask {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		Trace.trace(Trace.INFO, "<< " + server.getId() + " Updating Server State.");
 	}
 
 	private void updateFromStopped() {
@@ -127,9 +128,7 @@ public class UpdateServerStateTask extends TimerTask {
 	private boolean isFullyStarted() {
 		ClassLoader old = Thread.currentThread().getContextClassLoader();
 		try {
-			Thread.currentThread().setContextClassLoader(
-					((GeronimoServerBehaviourDelegate) delegate)
-							.getContextClassLoader());
+			Thread.currentThread().setContextClassLoader(((GeronimoServerBehaviourDelegate) delegate).getContextClassLoader());
 			return delegate.isFullyStarted();
 		} finally {
 			Thread.currentThread().setContextClassLoader(old);

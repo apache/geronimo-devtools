@@ -89,7 +89,9 @@ import org.eclipse.wst.server.core.util.SocketUtil;
  */
 abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate implements IGeronimoServerBehavior {
 
-	public static final int TIMER_TASK_INTERVAL = 10;
+	public static final int TIMER_TASK_INTERVAL = 20;
+	
+	public static final int TIMER_TASK_DELAY = 20;
 
 	protected IProgressMonitor _monitor;
 
@@ -715,7 +717,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	protected void startUpdateServerStateTask() {
 		Trace.trace(Trace.INFO, "startUpdateServerStateTask() " + getServer().getName());
 		timer = new Timer(true);
-		timer.schedule(new UpdateServerStateTask(this, getServer()), 10000, TIMER_TASK_INTERVAL * 1000);
+		timer.schedule(new UpdateServerStateTask(this, getServer()), TIMER_TASK_DELAY * 1000, TIMER_TASK_INTERVAL * 1000);
 	}
 
 	protected void stopUpdateServerStateTask() {
