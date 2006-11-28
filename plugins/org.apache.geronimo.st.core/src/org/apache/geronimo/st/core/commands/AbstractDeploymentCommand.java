@@ -31,17 +31,23 @@ abstract class AbstractDeploymentCommand implements IDeploymentCommand {
 	private IServer server;
 
 	private IModule module;
+	
+	private long timeout;
 
 	public AbstractDeploymentCommand(IServer server, IModule module) {
 		super();
 		this.server = server;
 		this.module = module;
+		timeout = getGeronimoServer().getPublishTimeout();
 	}
 
 	public DeploymentManager getDeploymentManager() throws CoreException {
 		return DeploymentCommandFactory.getDeploymentManager(server);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.commands.IDeploymentCommand#getModule()
+	 */
 	public IModule getModule() {
 		return module;
 	}
@@ -52,5 +58,12 @@ abstract class AbstractDeploymentCommand implements IDeploymentCommand {
 	
 	public IGeronimoServer getGeronimoServer() {
 		return (IGeronimoServer) getServer().getAdapter(IGeronimoServer.class);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.commands.IDeploymentCommand#getTimeout()
+	 */
+	public long getTimeout() {
+		return timeout;
 	}
 }

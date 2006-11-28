@@ -66,6 +66,8 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	public static final String PROPERTY_PING_INTERVAL = "pingInterval";
 	
 	public static final String PROPERTY_MAX_PINGS = "maxPings";
+	
+	public static final String PROPERTY_PUBLISH_TIMEOUT = "publishTimeout";
 
 	public static final String CONSOLE_INFO = "--long";
 
@@ -291,6 +293,11 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 		return Integer.parseInt(maxPings);
 	}
 	
+	public long getPublishTimeout() {
+		String timeout = getInstanceProperty(PROPERTY_PUBLISH_TIMEOUT);
+		return Long.parseLong(timeout);
+	}
+	
 	public void setPingDelay(Integer delay) {
 		setInstanceProperty(PROPERTY_PING_DELAY, delay.toString());
 	}
@@ -301,6 +308,10 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	
 	public void setMaxPings(Integer maxPings) {
 		setInstanceProperty(PROPERTY_MAX_PINGS, maxPings.toString());
+	}
+	
+	public void setPublishTimeout(long timeout) {
+		setInstanceProperty(PROPERTY_PUBLISH_TIMEOUT, Long.toString(timeout));
 	}
 
 	public String discoverDeploymentFactoryClassName(IPath jarPath) {
@@ -327,6 +338,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 		setPingDelay(new Integer(10000));
 		setMaxPings(new Integer(40));
 		setPingInterval(new Integer(5000));
+		setPublishTimeout(900000);
 	}
 
 	public String getInstanceProperty(String name) {

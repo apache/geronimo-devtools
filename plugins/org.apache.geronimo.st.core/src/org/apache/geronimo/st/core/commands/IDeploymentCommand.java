@@ -47,5 +47,7 @@ public interface IDeploymentCommand {
 	public CommandType getCommandType();
 
 	public IModule getModule();
+	
+	public long getTimeout();
 
 }

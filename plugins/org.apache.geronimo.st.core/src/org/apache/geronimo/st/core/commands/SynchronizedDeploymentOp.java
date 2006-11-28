@@ -62,8 +62,6 @@ import org.eclipse.wst.server.core.IModule;
 public class SynchronizedDeploymentOp implements ProgressListener,
 		IDeploymentCommand {
 
-	private static final long TIMEOUT = 900000;
-
 	private IDeploymentCommand command;
 
 	private MultiStatus status = null;
@@ -107,7 +105,7 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 			po.addProgressListener(this);
 
 			try {
-				wait(TIMEOUT);
+				wait(getTimeout());
 			} catch (InterruptedException e) {
 			}
 
@@ -168,6 +166,10 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 	 */
 	public IModule getModule() {
 		return command.getModule();
+	}
+	
+	public long getTimeout() {
+		return command.getTimeout();
 	}
 	
     public void messageToStatus(int severity, String source, boolean error) {

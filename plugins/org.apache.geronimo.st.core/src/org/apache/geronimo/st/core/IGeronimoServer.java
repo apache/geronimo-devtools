@@ -54,5 +54,7 @@ public interface IGeronimoServer extends IURLProvider {
 	public int getPingInterval();
 	
 	public int getMaxPings();
+	
+	public long getPublishTimeout();
 
 }
