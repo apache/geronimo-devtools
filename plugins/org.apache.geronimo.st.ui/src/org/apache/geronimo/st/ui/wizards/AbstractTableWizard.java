@@ -76,7 +76,6 @@ public abstract class AbstractTableWizard extends Wizard implements TableWizard 
 			for (int i = 0; i < getTableColumnEAttributes().length; i++) {
 				String value = ((DynamicWizardPage) page).textEntries[i].getText();
 				EAttribute attribute = getTableColumnEAttributes()[i];
-				System.out.println(attribute.isMany());
 				if (attribute.getEContainingClass().equals(eObject.eClass())) {
 					if (value != null && value.trim().length() != 0) {
 						if(attribute.isMany()) {
