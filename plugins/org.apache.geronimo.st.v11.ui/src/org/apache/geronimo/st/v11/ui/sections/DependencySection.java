@@ -103,7 +103,7 @@ public class DependencySection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
 	 */
 	public EClass getTableEntryObjectType() {
-		return DeploymentPackage.eINSTANCE.getArtifactType();
+		return DeploymentPackage.eINSTANCE.getDependencyType();
 	}
 
 	/*
