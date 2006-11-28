@@ -17,6 +17,7 @@
 package org.apache.geronimo.st.ui.wizards;
 
 import org.apache.geronimo.st.ui.Activator;
+import org.apache.geronimo.st.ui.internal.Trace;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
@@ -75,9 +76,15 @@ public abstract class AbstractTableWizard extends Wizard implements TableWizard 
 			for (int i = 0; i < getTableColumnEAttributes().length; i++) {
 				String value = ((DynamicWizardPage) page).textEntries[i].getText();
 				EAttribute attribute = getTableColumnEAttributes()[i];
+				System.out.println(attribute.isMany());
 				if (attribute.getEContainingClass().equals(eObject.eClass())) {
-					if (value != null && value.trim().length() != 0)
-						eObject.eSet(attribute, value);
+					if (value != null && value.trim().length() != 0) {
+						if(attribute.isMany()) {
+							((EList) eObject.eGet(attribute)).add(value);
+						} else {
+							eObject.eSet(attribute, value);
+						}
+					}
 				} else {
 					// TODO
 				}
