@@ -23,6 +23,7 @@ import javax.enterprise.deploy.shared.ModuleType;
 
 import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
@@ -31,9 +32,11 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.jst.j2ee.internal.deployables.J2EEFlexProjDeployable;
+import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.server.core.IWebModule;
 import org.eclipse.wst.common.componentcore.ArtifactEdit;
 import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IModule;
 
@@ -85,6 +88,24 @@ public class GeronimoUtils {
 			Trace.trace(Trace.SEVERE, "getJSR88ModuleType = null");
 			return null;
 		}
+	}
+	
+	public static IFile getDeploymentPlanFile(IModule module) {
+		IProject project = module.getProject();
+		IVirtualComponent comp = ComponentCore.createComponent(project);
+		String type = J2EEProjectUtilities.getJ2EEProjectType(project);
+		if (IModuleConstants.JST_WEB_MODULE.equals(type)) {
+			return getWebDeploymentPlanFile(comp);
+		} else if (IModuleConstants.JST_EJB_MODULE.equals(type)) {
+			return getOpenEjbDeploymentPlanFile(comp);
+		} else if (IModuleConstants.JST_EAR_MODULE.equals(type)) {
+			return getApplicationDeploymentPlanFile(comp);
+		} else if (IModuleConstants.JST_CONNECTOR_MODULE.equals(type)) {
+			return getConnectorDeploymentPlanFile(comp);
+		} else if (IModuleConstants.JST_UTILITY_MODULE.equals(type)) {
+			return getServiceDeploymentPlanFile(comp);
+		}
+		return null;
 	}
 
 	public static IFile getWebDeploymentPlanFile(IVirtualComponent comp) {

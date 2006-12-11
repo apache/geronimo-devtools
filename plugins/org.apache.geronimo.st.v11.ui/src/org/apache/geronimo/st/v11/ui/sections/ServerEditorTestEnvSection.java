@@ -87,12 +87,11 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 		runFromWorkspace = toolkit.createButton(composite, Messages.editorSectionRunFromWorkspace, SWT.CHECK);
 		runFromWorkspace.setSelection(gs.isRunFromWorkspace());
 		// TODO temporarily disable support until new implementation
-		runFromWorkspace.setEnabled(false);
+		//runFromWorkspace.setEnabled(false);
 		runFromWorkspace.addSelectionListener(new SelectionListener() {
 
 			public void widgetSelected(SelectionEvent e) {
-				execute(new SetRunFromWorkspaceCommand(server, runFromWorkspace
-						.getSelection()));
+				execute(new SetRunFromWorkspaceCommand(server, runFromWorkspace.getSelection()));
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {

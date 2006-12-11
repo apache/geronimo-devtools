@@ -20,6 +20,7 @@ import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
 import org.apache.geronimo.st.core.DeploymentUtils;
+import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.core.IGeronimoServer;
 import org.apache.geronimo.st.core.ModuleArtifactMapper;
 import org.eclipse.core.runtime.CoreException;
@@ -57,7 +58,7 @@ class RedeployCommand extends DeployCommand {
 			ids = new TargetModuleID[] {id};
 		}
 		
-		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().redeploy(ids, getTargetFile(), null));
+		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().redeploy(ids, getTargetFile(), GeronimoUtils.getDeploymentPlanFile(getModule()).getLocation().toFile()));
 	}
 
 	/*
