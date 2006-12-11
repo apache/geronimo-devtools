@@ -14,62 +14,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.apache.geronimo.deployment;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.jar.JarFile;
 
+import org.apache.geronimo.common.DeploymentException;
+import org.apache.geronimo.gbean.GBeanInfo;
+import org.apache.geronimo.gbean.GBeanInfoBuilder;
 import org.apache.geronimo.xbeans.eclipse.deployment.ModuleDocument;
 import org.apache.geronimo.xbeans.eclipse.deployment.ClassesDocument.Classes;
 import org.apache.geronimo.xbeans.eclipse.deployment.ModuleDocument.Module;
 import org.apache.geronimo.xbeans.eclipse.deployment.ResourcesDocument.Resources;
-import org.apache.xmlbeans.XmlException;
 
 /**
  * @version $Rev$ $Date$
  */
-public class EclipseDeployableModule /*implements DeployableModule*/ {
+public class EclipseDeployableModule implements DeployableModule {
 
 	private Module module = null;
 
 	private File root;
-	
+
 	private String uri;
 
 	private File[] classesFolders = null;
 
 	private File[] resourcesFolders = null;
 
-	//private DeployableModule[] children = null;
-	
+	private DeployableModule[] children = null;
+
 	private boolean archived = false;
-	
-	public EclipseDeployableModule(File config) {
+
+	public EclipseDeployableModule() {
+	}
+
+	public EclipseDeployableModule(File config) throws DeploymentException {
 		try {
 			module = ModuleDocument.Factory.parse(config).getModule();
 			init();
-		} catch (XmlException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new DeploymentException(e);
 		}
 	}
 
@@ -125,13 +112,9 @@ public class EclipseDeployableModule /*implements DeployableModule*/ {
 
 		Resources[] resources = module.getResourcesArray();
 		resourcesFolders = new File[resources.length];
-		for (int i = 0; i < classesFolders.length; i++) {
+		for (int i = 0; i < resourcesFolders.length; i++) {
 			File file = new File(resources[i].getPath());
-			if (file.exists()) {
-				resourcesFolders[i] = file;
-			} else {
-
-			}
+			resourcesFolders[i] = file;
 		}
 
 		return resourcesFolders;
@@ -142,20 +125,24 @@ public class EclipseDeployableModule /*implements DeployableModule*/ {
 	 * 
 	 * @see org.apache.geronimo.deployment.DeployableModule#getModules()
 	 */
-	/*public DeployableModule[] getModules() {
+	public DeployableModule[] getModules() {
 		if (children != null) {
 			return children;
 		}
 
-		Module[] childModules = module.getChildren().getModuleArray();
-		children = new DeployableModule[childModules.length];
-		for (int i = 0; i < childModules.length; i++) {
-			Module child = childModules[i];
-			children[i] = new EclipseDeployableModule(child);
+		if (module.getChildren() != null) {
+			Module[] childModules = module.getChildren().getModuleArray();
+			children = new DeployableModule[childModules.length];
+			for (int i = 0; i < childModules.length; i++) {
+				Module child = childModules[i];
+				children[i] = new EclipseDeployableModule(child);
+			}
+		} else {
+			children = new EclipseDeployableModule[]{};
 		}
 
 		return children;
-	}*/
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -166,7 +153,11 @@ public class EclipseDeployableModule /*implements DeployableModule*/ {
 		if (root != null) {
 			return root;
 		}
-		root = new File(module.getPath());
+		if (module.getPath() != null) {
+			root = new File(module.getPath());
+		} else {
+			root = new File(module.getResourcesArray(0).getPath());
+		}
 		return root;
 	}
 
@@ -176,7 +167,7 @@ public class EclipseDeployableModule /*implements DeployableModule*/ {
 	 * @see org.apache.geronimo.deployment.DeployableModule#getURI()
 	 */
 	public String getURI() {
-		if(uri != null) {
+		if (uri != null) {
 			return uri;
 		}
 		uri = module.getName();
@@ -198,12 +189,14 @@ public class EclipseDeployableModule /*implements DeployableModule*/ {
 	 * @see org.apache.geronimo.deployment.DeployableModule#resolve(java.lang.String)
 	 */
 	public URL resolve(String path) throws IOException {
+		System.out.println("Resolving: " + path);
 		File[] search = getModuleContextResources();
-		for(int i = 0; i <  search.length; i++) {
-			String findPath = search[i].getAbsolutePath().concat(path);
-			File file = new File(findPath);
-			if(file.exists()) 
+		for (int i = 0; i < search.length; i++) {
+			File file = new File(search[i].getAbsolutePath(), path);
+			if (file.exists()) {
+				System.out.println("Resolved to: " + file);
 				return file.toURL();
+			}
 		}
 		return null;
 	}
@@ -213,17 +206,40 @@ public class EclipseDeployableModule /*implements DeployableModule*/ {
 	 * 
 	 * @see org.apache.geronimo.deployment.DeployableModule#resolveModule(java.lang.String)
 	 */
-/*	public DeployableModule resolveModule(String uri) throws IOException {
+	public DeployableModule resolveModule(String uri) throws IOException {
 		DeployableModule[] children = getModules();
-		for(int i = 0; i < children.length; i++) {
-			if(children[i].getURI().equals(uri)) {
+		for (int i = 0; i < children.length; i++) {
+			if (children[i].getURI().equals(uri)) {
 				return children[i];
 			}
 		}
 		return null;
-	}*/
-	
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.deployment.DeployableModule#getArchive()
+	 */
+	public JarFile getArchive() {
+		return null;
+	}
+
 	private void init() {
 		archived = getRoot().isFile();
 	}
+
+	public static final GBeanInfo GBEAN_INFO;
+
+	static {
+		GBeanInfoBuilder infoBuilder = GBeanInfoBuilder.createStatic(
+				EclipseDeployableModule.class, "DeployableModule");
+		infoBuilder.addInterface(DeployableModule.class);
+		GBEAN_INFO = infoBuilder.getBeanInfo();
+	}
+
+	public static GBeanInfo getGBeanInfo() {
+		return GBEAN_INFO;
+	}
+
 }
