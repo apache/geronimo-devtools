@@ -77,7 +77,7 @@
             <plugin>
             	<artifactId>maven-antrun-plugin</artifactId>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>dependency-maven-plugin</artifactId>
                 <executions>
@@ -99,7 +99,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -122,10 +122,10 @@
             <artifactId>xbean</artifactId>
             <version>2.0.0</version>     
         </dependency>
-        <dependency>
+        <!--<dependency>
         	<groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>eclipse-support</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
 </project>
