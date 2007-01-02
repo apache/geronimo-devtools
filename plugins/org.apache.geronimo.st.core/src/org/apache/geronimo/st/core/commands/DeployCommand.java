@@ -23,10 +23,6 @@ import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.DeploymentUtils;
 import org.apache.geronimo.st.core.IGeronimoServer;
 import org.apache.geronimo.st.core.internal.Trace;
-import org.apache.geronimo.xbeans.eclipse.deployment.ModuleDocument;
-import org.apache.geronimo.xbeans.eclipse.deployment.ChildrenDocument.Children;
-import org.apache.geronimo.xbeans.eclipse.deployment.ModuleDocument.Module;
-import org.apache.xmlbeans.XmlOptions;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jst.j2ee.internal.deployables.J2EEFlexProjDeployable;
@@ -54,7 +50,8 @@ abstract public class DeployCommand extends AbstractDeploymentCommand {
 		File file = null;
 		IGeronimoServer gs = getGeronimoServer();
 		if (gs.isRunFromWorkspace()) {
-			file = generateRunFromWorkspaceConfig(getModule());
+		    //TODO Re-enable after DeployableModule supported in G
+			//file = generateRunFromWorkspaceConfig(getModule());
 		} else {
 			IPath outputDir = DeploymentUtils.STATE_LOC.append("server_" + getServer().getId());
 			outputDir.toFile().mkdirs();
@@ -64,7 +61,7 @@ abstract public class DeployCommand extends AbstractDeploymentCommand {
 		return file;
 	}
 
-	protected File generateRunFromWorkspaceConfig(IModule module) {
+	/*protected File generateRunFromWorkspaceConfig(IModule module) {
 		IPath configDir = Activator.getDefault().getStateLocation().append("looseconfig").append("server_" + getServer().getId());
 		configDir.toFile().mkdirs();
 
@@ -125,6 +122,6 @@ abstract public class DeployCommand extends AbstractDeploymentCommand {
 				binaryModule.setPath(archiveComp.getUnderlyingDiskFile().getAbsolutePath());
 			}
 		}
-	}
+	}*/
 
 }
