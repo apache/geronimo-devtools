@@ -74,20 +74,16 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
 		try {
 			if (type.equals(IModuleConstants.JST_WEB_MODULE)) {
 				planFile = GeronimoUtils.getWebDeploymentPlanFile(comp);
-				plan = runtime.fixGeronimoWebSchema(planFile);
+				runtime.fixGeronimoWebSchema(planFile);	
 			} else if (type.equals(IModuleConstants.JST_EJB_MODULE)) {
 				planFile = GeronimoUtils.getOpenEjbDeploymentPlanFile(comp);
 				runtime.fixGeronimoEjbSchema(planFile);
 			} else if (type.equals(IModuleConstants.JST_EAR_MODULE)) {
 				planFile = GeronimoUtils.getApplicationDeploymentPlanFile(comp);
-				plan = runtime.fixGeronimoEarSchema(planFile);
+				runtime.fixGeronimoEarSchema(planFile);
 			} else if (type.equals(IModuleConstants.JST_CONNECTOR_MODULE)) {
 				planFile = GeronimoUtils.getConnectorDeploymentPlanFile(comp);
-				plan = runtime.fixGeronimoConnectorSchema(planFile);
-			}
-			
-			if (planFile != null && plan != null) {
-				save(plan, planFile);
+				runtime.fixGeronimoConnectorSchema(planFile);
 			}
 		} catch (XmlException e) {
 			throw new ExecutionException("Error fixing plan., e");
