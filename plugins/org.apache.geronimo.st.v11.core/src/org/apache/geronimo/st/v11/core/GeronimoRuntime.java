@@ -62,13 +62,13 @@ public class GeronimoRuntime extends GeronimoRuntimeDelegate {
 	 */
 	public XmlObject fixGeronimoEarSchema(IFile plan) throws XmlException {
             XmlObject xmlplan = getXmlObject(plan);
-            XmlObject xmlplan = getXmlObject(plan);
             if (plan != null) {
                 SchemaConversionUtils.fixGeronimoSchema(xmlplan, GerApplicationDocument.type.getDocumentElementName(),
                     GerApplicationType.type);
                 save(xmlplan, plan);
             }
             return xmlplan;
+    }
 
 	/*
 	 * (non-Javadoc)
@@ -116,13 +116,13 @@ public class GeronimoRuntime extends GeronimoRuntimeDelegate {
 	}
 
  	private void save(XmlObject object, IFile file) {
-            try {
+        try {
  	        object.save(file.getLocation().toFile());
- 		file.refreshLocal(IFile.DEPTH_ONE, null);
+ 	        file.refreshLocal(IFile.DEPTH_ONE, null);
  	    } catch (IOException e) {
- 	        e.printStackTrace();
+ 	          e.printStackTrace();
  	    } catch (CoreException e) {
- 		e.printStackTrace();
+ 		     e.printStackTrace();
  	    }
  	}
 }
