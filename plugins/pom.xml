@@ -62,6 +62,7 @@
                                 <goal>qualifier</goal>
                                 <goal>manifestbundles</goal>
                                 <goal>install</goal>
+                                <goal>validatemanifest</goal>
                             </goals>
                         </execution>
                     </executions>
