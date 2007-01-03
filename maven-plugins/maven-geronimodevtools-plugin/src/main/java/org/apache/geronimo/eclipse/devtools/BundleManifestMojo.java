@@ -84,8 +84,9 @@ public class BundleManifestMojo extends AbstractMojo {
 	}
 	
 	private void validate(String attribute, String correctValue) throws MojoFailureException {
-		String currentValue = attributes.getValue(attribute);
-		if(!correctValue.trim().equals(currentValue)) {
+		String currentValue = attributes.getValue(attribute).replaceAll(" ", "");
+		correctValue = attributes.getValue(attribute).replaceAll(" ", "");
+		if(!correctValue.equals(currentValue)) {
 			throw new MojoFailureException("Attribute value for " + attribute + " in bundle manifest is incorrect. [Found: " + currentValue + "] [Expected: " + correctValue + "]");
 		}
 	}
