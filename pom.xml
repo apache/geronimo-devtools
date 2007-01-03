@@ -15,285 +15,201 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <!-- $Rev$ $Date$ -->
-
 <project>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.geronimo.devtools</groupId>
-  <artifactId>geronimo-eclipse-plugin</artifactId>
-  <packaging>pom</packaging>
-  <name>Root POM :: ${artifactId}</name>
-  <version>1.1</version>
-  <description>Parent POM for Geronimo Eclipse Plugin</description>
-  <url>http://geronimo.apache.org/devtools</url>
-  
-  <prerequisites>
-    <maven>2.0.4</maven>
-  </prerequisites>
-
-  <issueManagement>
-    <system>jira</system>
-    <url>
-      http://issues.apache.org/jira/browse/GERONIMODEVTOOLS
-    </url>
-  </issueManagement>
-
-  <mailingLists>
-    <mailingList>
-      <name>Geronimo User List</name>
-      <subscribe>users-subscribe@geronimo.apache.org</subscribe>
-      <unsubscribe>users-unsubscribe@geronimo.apache.org</unsubscribe>
-      <archive>
-        http://mail-archives.apache.org/mod_mbox/geronimo-user/
-      </archive>
-    </mailingList>
-    <mailingList>
-      <name>Geronimo Developer List</name>
-      <subscribe>dev-subscribe@geronimo.apache.org</subscribe>
-      <unsubscribe>dev-unsubscribe@geronimo.apache.org</unsubscribe>
-      <archive>
-        http://mail-archives.apache.org/mod_mbox/geronimo-dev/
-      </archive>
-    </mailingList>
-    <mailingList>
-      <name>Source Control List</name>
-      <subscribe>scm-subscribe@geronimo.apache.org</subscribe>
-      <unsubscribe>scm-unsubscribe@geronimo.apache.org</unsubscribe>
-      <archive>
-        http://mail-archives.apache.org/mod_mbox/geronimo-scm/
-      </archive>
-    </mailingList>
-  </mailingLists>
-
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <scm>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</developerConnection>
-    <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</url>
-  </scm>
-
-  <organization>
-    <name>Geronimo</name>
-    <url>http://geronimo.apache.org/</url>
-  </organization>
-
-  <properties>
-    <!-- Plugin Versions -->
-    <org.apache.geronimo.st.core_version>1.1.0</org.apache.geronimo.st.core_version>
-    <org.apache.geronimo.st.v1.core_version>1.1.0</org.apache.geronimo.st.v1.core_version>
-    <org.apache.geronimo.st.v11.core_version>1.1.0</org.apache.geronimo.st.v11.core_version>
-    <org.apache.geronimo.st.ui_version>1.1.0</org.apache.geronimo.st.ui_version>
-    <org.apache.geronimo.st.v1.ui_version>1.1.0</org.apache.geronimo.st.v1.ui_version>
-    <org.apache.geronimo.st.v11.ui_version>1.1.0</org.apache.geronimo.st.v11.ui_version>
-    <org.apache.geronimo.runtime.common_version>1.1.0</org.apache.geronimo.runtime.common_version>
-    <org.apache.geronimo.runtime.v1_version>1.1.0</org.apache.geronimo.runtime.v1_version>
-    <org.apache.geronimo.runtime.v11_version>1.1.0</org.apache.geronimo.runtime.v11_version>
-    <org.apache.geronimo.common.deployment.model_version>1.1.0</org.apache.geronimo.common.deployment.model_version>
-    <org.apache.geronimo.common.deployment.model.edit_version>1.1.0</org.apache.geronimo.common.deployment.model.edit_version>
-    <org.apache.geronimo.deployment.model_version>1.1.0</org.apache.geronimo.deployment.model_version>
-    <org.apache.geronimo.deployment.model.edit_version>1.1.0</org.apache.geronimo.deployment.model.edit_version>
-    <org.apache.geronimo.v11.deployment.model_version>1.1.0</org.apache.geronimo.v11.deployment.model_version>
-    <org.apache.geronimo.v11.deployment.model.edit_version>1.1.0</org.apache.geronimo.v11.deployment.model.edit_version>
-    <!-- Feature Versions -->
-    <org.apache.geronimo.feature_version>1.2.0</org.apache.geronimo.feature_version>
-    <org.apache.geronimo.installableruntime.tomcat.feature_version>1.1.1</org.apache.geronimo.installableruntime.tomcat.feature_version>
-    <org.apache.geronimo.installableruntime.jetty.feature_version>1.1.1</org.apache.geronimo.installableruntime.jetty.feature_version>
-    <!-- Ext. Jar Dependency Versions -->
-    <geronimo_spec_version>1.0</geronimo_spec_version>
-    <stax-api_version>1.0</stax-api_version>
-    <junitVersion>3.8.1</junitVersion>
-    <!-- Eclipse Distribution URLs -->
-    <platformDriver>R-3.2.1-200609210945/eclipse-SDK-3.2.1</platformDriver>
-    <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/${platformDriver}</platformUrl>
-    <emfUrl>http://download.eclipse.org/tools/emf/downloads/drops/2.2.1/R200609210005/emf-sdo-xsd-SDK-2.2.1.zip</emfUrl>
-    <jemUrl>http://download.eclipse.org/tools/ve/downloads/drops/R-1.2.1-200609261748/JEM-SDK-1.2.1.zip</jemUrl>
-    <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/R-3.2.1-200609211617/GEF-SDK-3.2.1.zip</gefUrl>
-    <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/R1.5/R-1.5.2-200610261841/wtp-sdk-R-1.5.2-200610261841.zip</wtpUrl>
-  </properties>
-
-  <distributionManagement>
-    <repository>
-      <id>apache-repo</id>
-      <name>Apache CVS Repository</name>
-      <url>
-        scpexe://cvs.apache.org/www/cvs.apache.org/maven-snapshot-repository
-      </url>
-    </repository>
-    <snapshotRepository>
-      <id>apache-snapshots</id>
-      <name>Apache CVS Development Repository</name>
-      <url>
-        scpexe://cvs.apache.org/www/cvs.apache.org/maven-snapshot-repository
-      </url>
-    </snapshotRepository>
-    <site>
-      <id>geronimo-website</id>
-      <url>
-        scpexe://minotaur.apache.org/www/geronimo.apache.org/maven/
-      </url>
-    </site>
-  </distributionManagement>
-
-  <build>
-    <defaultGoal>install</defaultGoal>
-    <sourceDirectory>src/</sourceDirectory>
-    <pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.geronimo.devtools</groupId>
-                <artifactId>maven-geronimodevtools-plugin</artifactId>
-                <configuration>
-                    <platformUrl>${platformUrl}</platformUrl>
-                    <urls>
-                        <url>${emfUrl}</url>
-                        <url>${jemUrl}</url>
-                        <url>${gefUrl}</url>
-                        <url>${wtpUrl}</url>
-                    </urls>
-                    <eclipseHome>${settings.localRepository}/eclipse/eclipse/</eclipseHome>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>create-eclipse-image</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>download</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>dependency-maven-plugin</artifactId>
-                <version>1.0</version>
-            </plugin>
-        </plugins>
-    </pluginManagement>
-  </build>
-  
-  <repositories>
-    <repository>
-        <id>maven2-snapshot-apache</id>
-        <name>Maven Snapshot Repository @ Apache</name>
-        <url>http://people.apache.org/maven-snapshot-repository</url>
-        <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>daily</updatePolicy>
-            <checksumPolicy>ignore</checksumPolicy>
-        </snapshots>
-        <releases>
-            <enabled>false</enabled>
-        </releases>
-    </repository>
-    
-    <repository>
-        <id>maven2-snapshot-codehaus</id>
-        <name>Maven Central Development Repository</name>
-        <url>http://snapshots.maven.codehaus.org/maven2</url>
-        <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>daily</updatePolicy>
-            <checksumPolicy>ignore</checksumPolicy>
-        </snapshots>
-        <releases>
-            <enabled>false</enabled>
-        </releases>
-    </repository>
-    
-    <repository>
-      <id>maven1-ibiblio</id>
-      <name>Maven1 Repository on iBiblio</name>
-      <url>http://people.apache.org/repo/m1-ibiblio-rsync-repository/</url>
-      <layout>legacy</layout>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-    
-    <repository>
-      <id>maven2-ibiblio</id>
-      <name>Maven2 Central Repository</name>
-      <url>http://people.apache.org/repo/m2-ibiblio-rsync-repository</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-    
-    <repository>
-      <id>maven1-codehaus</id>
-      <name>Maven1 Repository @ Codehaus</name>
-      <url>http://dist.codehaus.org/</url>
-      <layout>legacy</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-        <checksumPolicy>ignore</checksumPolicy>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-    
-    <repository>
-      <id>maven1-apache</id>
-      <name>Apache CVS Repository</name>
-      <url>http://people.apache.org/repository</url>
-      <layout>legacy</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-        <checksumPolicy>ignore</checksumPolicy>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>  
-      
-    <repository>
-      <id>maven1-sppatel</id>
-      <name>sppatel Repository on Apache</name>
-      <url>http://people.apache.org/~sppatel/repository</url>
-      <layout>legacy</layout>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-  </repositories>
-    
-  <pluginRepositories>
-    <pluginRepository>
-      <id>maven2-ibiblio-rsync-apache</id>
-      <name>Maven 2 iBiblio rsync repository @ Apache</name>
-      <url>http://people.apache.org/repo/m2-ibiblio-rsync-repository</url>
-    </pluginRepository>
-  </pluginRepositories>
-
-  <modules>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.geronimo.devtools</groupId>
+    <artifactId>geronimo-eclipse-plugin</artifactId>
+    <packaging>pom</packaging>
+    <name>Root POM :: ${artifactId}</name>
+    <version>1.1</version>
+    <description>Parent POM for Geronimo Eclipse Plugin</description>
+    <url>http://geronimo.apache.org/devtools</url>
+    <prerequisites>
+        <maven>2.0.4</maven>
+    </prerequisites>
+    <issueManagement>
+        <system>jira</system>
+        <url>http://issues.apache.org/jira/browse/GERONIMODEVTOOLS</url>
+    </issueManagement>
+    <mailingLists>
+        <mailingList>
+            <name>Geronimo User List</name>
+            <subscribe>users-subscribe@geronimo.apache.org</subscribe>
+            <unsubscribe>users-unsubscribe@geronimo.apache.org</unsubscribe>
+            <archive>http://mail-archives.apache.org/mod_mbox/geronimo-user/</archive>
+        </mailingList>
+        <mailingList>
+            <name>Geronimo Developer List</name>
+            <subscribe>dev-subscribe@geronimo.apache.org</subscribe>
+            <unsubscribe>dev-unsubscribe@geronimo.apache.org</unsubscribe>
+            <archive>http://mail-archives.apache.org/mod_mbox/geronimo-dev/</archive>
+        </mailingList>
+        <mailingList>
+            <name>Source Control List</name>
+            <subscribe>scm-subscribe@geronimo.apache.org</subscribe>
+            <unsubscribe>scm-unsubscribe@geronimo.apache.org</unsubscribe>
+            <archive>http://mail-archives.apache.org/mod_mbox/geronimo-scm/</archive>
+        </mailingList>
+    </mailingLists>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</developerConnection>
+        <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</url>
+    </scm>
+    <organization>
+        <name>Geronimo</name>
+        <url>http://geronimo.apache.org/</url>
+    </organization>
+    <properties>
+        <!-- Plugin Versions -->
+        <org.apache.geronimo.st.core_version>1.1.0</org.apache.geronimo.st.core_version>
+        <org.apache.geronimo.st.v1.core_version>1.1.0</org.apache.geronimo.st.v1.core_version>
+        <org.apache.geronimo.st.v11.core_version>1.1.0</org.apache.geronimo.st.v11.core_version>
+        <org.apache.geronimo.st.ui_version>1.1.0</org.apache.geronimo.st.ui_version>
+        <org.apache.geronimo.st.v1.ui_version>1.1.0</org.apache.geronimo.st.v1.ui_version>
+        <org.apache.geronimo.st.v11.ui_version>1.1.0</org.apache.geronimo.st.v11.ui_version>
+        <org.apache.geronimo.runtime.common_version>1.1.0</org.apache.geronimo.runtime.common_version>
+        <org.apache.geronimo.runtime.v1_version>1.1.0</org.apache.geronimo.runtime.v1_version>
+        <org.apache.geronimo.runtime.v11_version>1.1.0</org.apache.geronimo.runtime.v11_version>
+        <org.apache.geronimo.runtime.v12_version>1.0.0</org.apache.geronimo.runtime.v12_version>
+        <org.apache.geronimo.common.deployment.model_version>1.1.0</org.apache.geronimo.common.deployment.model_version>
+        <org.apache.geronimo.common.deployment.model.edit_version>1.1.0</org.apache.geronimo.common.deployment.model.edit_version>
+        <org.apache.geronimo.deployment.model_version>1.1.0</org.apache.geronimo.deployment.model_version>
+        <org.apache.geronimo.deployment.model.edit_version>1.1.0</org.apache.geronimo.deployment.model.edit_version>
+        <org.apache.geronimo.v11.deployment.model_version>1.1.0</org.apache.geronimo.v11.deployment.model_version>
+        <org.apache.geronimo.v11.deployment.model.edit_version>1.1.0</org.apache.geronimo.v11.deployment.model.edit_version>
+        <!-- Feature Versions -->
+        <org.apache.geronimo.feature_version>1.2.0</org.apache.geronimo.feature_version>
+        <org.apache.geronimo.installableruntime.tomcat.feature_version>1.1.1</org.apache.geronimo.installableruntime.tomcat.feature_version>
+        <org.apache.geronimo.installableruntime.jetty.feature_version>1.1.1</org.apache.geronimo.installableruntime.jetty.feature_version>
+        <!-- Ext. Jar Dependency Versions -->
+        <geronimo_spec_version>1.0</geronimo_spec_version>
+        <stax-api_version>1.0</stax-api_version>
+        <junitVersion>3.8.1</junitVersion>
+        <!-- Eclipse Distribution URLs -->
+        <platformDriver>R-3.2.1-200609210945/eclipse-SDK-3.2.1</platformDriver>
+        <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/${platformDriver}</platformUrl>
+        <emfUrl>http://download.eclipse.org/tools/emf/downloads/drops/2.2.1/R200609210005/emf-sdo-xsd-SDK-2.2.1.zip</emfUrl>
+        <jemUrl>http://download.eclipse.org/tools/ve/downloads/drops/R-1.2.1-200609261748/JEM-SDK-1.2.1.zip</jemUrl>
+        <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/R-3.2.1-200609211617/GEF-SDK-3.2.1.zip</gefUrl>
+        <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/R1.5/R-1.5.2-200610261841/wtp-sdk-R-1.5.2-200610261841.zip</wtpUrl>
+    </properties>
+    <distributionManagement>
+        <repository>
+            <id>apache-repo</id>
+            <name>Apache CVS Repository</name>
+            <url>scpexe://cvs.apache.org/www/cvs.apache.org/maven-snapshot-repository</url>
+        </repository>
+        <snapshotRepository>
+            <id>apache-snapshots</id>
+            <name>Apache CVS Development Repository</name>
+            <url>scpexe://cvs.apache.org/www/cvs.apache.org/maven-snapshot-repository</url>
+        </snapshotRepository>
+        <site>
+            <id>geronimo-website</id>
+            <url>scpexe://minotaur.apache.org/www/geronimo.apache.org/maven/</url>
+        </site>
+    </distributionManagement>
+    <build>
+        <defaultGoal>install</defaultGoal>
+        <sourceDirectory>src/</sourceDirectory>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.geronimo.devtools</groupId>
+                    <artifactId>maven-geronimodevtools-plugin</artifactId>
+                    <configuration>
+                        <platformUrl>${platformUrl}</platformUrl>
+                        <urls>
+                            <url>${emfUrl}</url>
+                            <url>${jemUrl}</url>
+                            <url>${gefUrl}</url>
+                            <url>${wtpUrl}</url>
+                        </urls>
+                        <eclipseHome>${settings.localRepository}/eclipse/eclipse/</eclipseHome>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>create-eclipse-image</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>download</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>dependency-maven-plugin</artifactId>
+                    <version>1.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    <repositories>
+        <repository>
+            <id>apache-snapshots</id>
+            <name>Apache Snapshots Repository</name>
+            <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>apache.incubator</id>
+            <name>Apache Incubator Repository</name>
+            <url>http://people.apache.org/repo/m2-incubating-repository/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>maven1-sppatel</id>
+            <name>sppatel Repository on Apache</name>
+            <url>http://people.apache.org/~sppatel/repository</url>
+            <layout>legacy</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>maven2-ibiblio-rsync-apache</id>
+            <name>Maven 2 iBiblio rsync repository @ Apache</name>
+            <url>http://people.apache.org/repo/m2-ibiblio-rsync-repository</url>
+        </pluginRepository>
+    </pluginRepositories>
+    <modules>
     <!--<module>modules/eclipse-support</module>-->
-    <module>maven-plugins/maven-emf-plugin</module>
-    <module>maven-plugins/maven-geronimodevtools-plugin</module>
-    <module>emf</module>
-    <module>plugins</module>
-    <module>features</module>
-    <module>assembly</module>
-  </modules>
-  
+        <module>maven-plugins/maven-emf-plugin</module>
+        <module>maven-plugins/maven-geronimodevtools-plugin</module>
+        <module>emf</module>
+        <module>plugins</module>
+        <module>features</module>
+        <module>assembly</module>
+    </modules>
 </project>
