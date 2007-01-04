@@ -179,6 +179,12 @@
             <groupId>openejb</groupId>
             <artifactId>openejb-builder</artifactId>
             <version>${openejbVersion}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>geronimo-spec</groupId>
+                    <artifactId>geronimo-spec-corba</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>geronimo</groupId>
