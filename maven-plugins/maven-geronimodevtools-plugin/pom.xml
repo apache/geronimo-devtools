@@ -40,10 +40,6 @@
         <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/maven-plugins//maven-geronimodevtools-plugin</url>
     </scm>   
     
-    <build>
-    	<sourceDirectory>src/main/java</sourceDirectory>
-  	</build> 
-    
     <dependencies>
         <dependency>
             <groupId>org.apache.maven</groupId>

@@ -69,6 +69,11 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 	 * @parameter expression="${project}"
 	 */
 	protected MavenProject mavenProject;
+	
+	/**
+	 * @parameter expression="${noemf}";
+	 */
+	private boolean noemf = false;
 
 	protected static final String SPACE = " ";
 
@@ -78,6 +83,11 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 	 * @see org.apache.maven.plugin.Mojo#execute()
 	 */
 	public void execute() throws MojoExecutionException, MojoFailureException {
+		
+		if(noemf) {
+			getLog().warn("EMF CodeGen Disabled.");
+			return;
+		}
 
 		if (!eclipseHome.exists())
 			throw new MojoFailureException("Eclipse installation not available");
