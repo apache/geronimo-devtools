@@ -67,6 +67,7 @@ public class BundleManifestMojo extends AbstractMojo {
 			validate(Constants.BUNDLE_SYMBOLICNAME, project.getName() + ";singleton:=true");
 			validate(Constants.BUNDLE_VERSION, project.getVersion());
 			validateBundleClasspath();
+			fis.close();
 		} catch (Exception e) {
 			throw new MojoExecutionException(e.getMessage(), e);
 		}
