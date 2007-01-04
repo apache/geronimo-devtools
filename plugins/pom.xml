@@ -56,7 +56,7 @@
                     <artifactId>maven-geronimodevtools-plugin</artifactId>
                     <executions>
                         <execution>
-                            <id>install-dependencies</id>
+                            <id>initialize</id>
                             <phase>validate</phase>
                             <goals>
                                 <goal>qualifier</goal>
@@ -64,6 +64,16 @@
                                 <goal>install</goal>
                                 <goal>validatemanifest</goal>
                             </goals>
+                        </execution>
+                        <execution>
+                            <id>validate-bundle-classpath</id>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>validatemanifest</goal>
+                            </goals>
+                            <configuration>
+                                <classpathEntriesDir>lib</classpathEntriesDir>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
@@ -125,5 +135,6 @@
         <module>org.apache.geronimo.runtime.common</module>
         <module>org.apache.geronimo.runtime.v1</module>
         <module>org.apache.geronimo.runtime.v11</module>
+        <!--<module>org.apache.geronimo.runtime.v12</module>-->
     </modules>
 </project>
