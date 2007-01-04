@@ -83,8 +83,9 @@ public class BundleManifestMojo extends AbstractMojo {
 		StringTokenizer tokenizer = new StringTokenizer(classpath, ",");
 		List cpEntries = new ArrayList();
 		while (tokenizer.hasMoreTokens()) {
-			cpEntries.add(tokenizer.nextToken());
+			cpEntries.add(tokenizer.nextToken().trim());
 		}
+		System.out.println(cpEntries);
 		List missingEntries = new ArrayList();
 		for (int i = 0; i < libs.length; i++) {
 			File lib = libs[i];
