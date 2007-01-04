@@ -43,6 +43,12 @@
         <image id="org.apache.geronimo.server.image"
             icon="icons/obj16/littleG.gif"
             typeIds="org.apache.geronimo.server.11"/>
+        <image id="org.apache.geronimo.runtime.image"
+            icon="icons/obj16/littleG.gif"
+            typeIds="org.apache.geronimo.runtime.12"/>
+        <image id="org.apache.geronimo.server.image"
+            icon="icons/obj16/littleG.gif"
+            typeIds="org.apache.geronimo.server.12"/>
     </extension>
 
     <extension point="org.eclipse.wst.server.ui.wizardFragments">
@@ -57,6 +63,12 @@
             class="org.apache.geronimo.st.ui.internal.GeronimoRuntimeWizardFragment"/>
         <fragment id="org.apache.geronimo.server.11"
             typeIds="org.apache.geronimo.server.11"
+            class="org.apache.geronimo.st.ui.internal.GeronimoServerWizardFragment"/>
+        <fragment id="org.apache.geronimo.runtime.12"
+            typeIds="org.apache.geronimo.runtime.12"
+            class="org.apache.geronimo.st.ui.internal.GeronimoRuntimeWizardFragment"/>
+        <fragment id="org.apache.geronimo.server.12"
+            typeIds="org.apache.geronimo.server.12"
             class="org.apache.geronimo.st.ui.internal.GeronimoServerWizardFragment"/>
     </extension>
 

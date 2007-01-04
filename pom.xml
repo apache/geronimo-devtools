@@ -73,6 +73,7 @@
         <org.apache.geronimo.st.core_version>1.1.0</org.apache.geronimo.st.core_version>
         <org.apache.geronimo.st.v1.core_version>1.1.0</org.apache.geronimo.st.v1.core_version>
         <org.apache.geronimo.st.v11.core_version>1.1.0</org.apache.geronimo.st.v11.core_version>
+        <org.apache.geronimo.st.v12.core_version>1.0.0</org.apache.geronimo.st.v12.core_version>
         <org.apache.geronimo.st.ui_version>1.1.0</org.apache.geronimo.st.ui_version>
         <org.apache.geronimo.st.v1.ui_version>1.1.0</org.apache.geronimo.st.v1.ui_version>
         <org.apache.geronimo.st.v11.ui_version>1.1.0</org.apache.geronimo.st.v11.ui_version>

@@ -40,6 +40,7 @@ public class Messages extends NLS {
 	
 	public static String target10runtime;
 	public static String target11runtime;
+	public static String target12runtime;
 	
 	public static String incorrectVersion;
 	public static String noVersion;

@@ -40,8 +40,10 @@ public class GeronimoServerRuntimeTargetHandler extends RuntimeClasspathProvider
 			return Messages.target10runtime;
 		} else if(version.equals("1.1")) {
 			return Messages.target11runtime;
+		} else if(version.equals("1.2")) {
+			return Messages.target12runtime;
 		}
-		return Messages.target11runtime;
+		return Messages.target12runtime;
 	}
 	
 	/* (non-Javadoc)
@@ -73,6 +75,8 @@ public class GeronimoServerRuntimeTargetHandler extends RuntimeClasspathProvider
 			} else {
 				list.add(JavaCore.newLibraryEntry(specPath, null, null));
 			}
+		} else if(version.equals("1.2")) {
+			//TODO Geronimo 1.2 Support
 		}
 		
 		return (IClasspathEntry[])list.toArray(new IClasspathEntry[list.size()]);
