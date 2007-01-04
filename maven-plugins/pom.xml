@@ -29,6 +29,9 @@
         <version>1.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+    <build>
+    	<sourceDirectory>src/main/java</sourceDirectory>
+  	</build> 
     <modules>
         <module>maven-emf-plugin</module>
         <module>maven-geronimodevtools-plugin</module>
