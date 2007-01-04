@@ -205,8 +205,7 @@
     </pluginRepositories>
     <modules>
     <!--<module>modules/eclipse-support</module>-->
-        <module>maven-plugins/maven-emf-plugin</module>
-        <module>maven-plugins/maven-geronimodevtools-plugin</module>
+        <module>maven-plugins</module>
         <module>emf</module>
         <module>plugins</module>
         <module>features</module>
