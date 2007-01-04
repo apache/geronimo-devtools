@@ -166,7 +166,7 @@
                 <checksumPolicy>ignore</checksumPolicy>
             </snapshots>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </releases>
         </repository>
         <repository>
@@ -184,6 +184,20 @@
             </releases>
         </repository>
         <repository>
+            <id>codehaus-snapshots</id>
+            <name>Codehaus Snapshots Repository</name>
+            <url>http://snapshots.repository.codehaus.org</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            <checksumPolicy>ignore</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
             <id>maven1-sppatel</id>
             <name>sppatel Repository on Apache</name>
             <url>http://people.apache.org/~sppatel/repository</url>
@@ -196,13 +210,6 @@
             </releases>
         </repository>
     </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven2-ibiblio-rsync-apache</id>
-            <name>Maven 2 iBiblio rsync repository @ Apache</name>
-            <url>http://people.apache.org/repo/m2-ibiblio-rsync-repository</url>
-        </pluginRepository>
-    </pluginRepositories>
     <modules>
     <!--<module>modules/eclipse-support</module>-->
         <module>maven-plugins</module>
