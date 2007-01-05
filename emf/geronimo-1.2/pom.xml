@@ -59,15 +59,15 @@
                     <src>src</src>
                     <reload>true</reload>
                     <packagemap>
-                        <org.apache.geronimo.xml.ns.naming>http://geronimo.apache.org/xml/ns/naming-1.2</org.apache.geronimo.xml.ns.naming>
-                        <org.apache.geronimo.xml.ns.security>http://geronimo.apache.org/xml/ns/security-1.2</org.apache.geronimo.xml.ns.security>
-                        <org.apache.geronimo.xml.ns.deployment>http://geronimo.apache.org/xml/ns/deployment-1.2</org.apache.geronimo.xml.ns.deployment>
-                        <org.apache.geronimo.xml.ns.j2ee.application>http://geronimo.apache.org/xml/ns/j2ee/application-1.2</org.apache.geronimo.xml.ns.j2ee.application>
-                        <org.apache.geronimo.xml.ns.j2ee.web>http://geronimo.apache.org/xml/ns/j2ee/web-1.2</org.apache.geronimo.xml.ns.j2ee.web>
-                        <org.apache.geronimo.xml.ns.j2ee.connector>http://geronimo.apache.org/xml/ns/j2ee/connector-1.2</org.apache.geronimo.xml.ns.j2ee.connector>
-                        <org.openejb.xml.ns.openejb.jar>http://www.openejb.org/xml/ns/openejb-jar-2.2</org.openejb.xml.ns.openejb.jar>
-                        <org.openejb.xml.ns.pkgen>http://www.openejb.org/xml/ns/pkgen-2.1</org.openejb.xml.ns.pkgen>
-                        <org.apache.geronimo.xml.ns.j2ee.application.client>http://geronimo.apache.org/xml/ns/j2ee/application-client-1.2</org.apache.geronimo.xml.ns.j2ee.application.client>
+                        <org.apache.geronimo.naming>http://geronimo.apache.org/xml/ns/naming-1.2</org.apache.geronimo.naming>
+                        <org.apache.geronimo.security>http://geronimo.apache.org/xml/ns/security-1.2</org.apache.geronimo.security>
+                        <org.apache.geronimo.deployment>http://geronimo.apache.org/xml/ns/deployment-1.2</org.apache.geronimo.deployment>
+                        <org.apache.geronimo.j2ee.application>http://geronimo.apache.org/xml/ns/j2ee/application-1.2</org.apache.geronimo.j2ee.application>
+                        <org.apache.geronimo.j2ee.web>http://geronimo.apache.org/xml/ns/j2ee/web-1.2</org.apache.geronimo.j2ee.web>
+                        <org.apache.geronimo.j2ee.connector>http://geronimo.apache.org/xml/ns/j2ee/connector-1.2</org.apache.geronimo.j2ee.connector>
+                        <org.apache.geronimo.j2ee.application.client>http://geronimo.apache.org/xml/ns/j2ee/application-client-1.2</org.apache.geronimo.j2ee.application.client>
+                        <org.apache.openejb.openejb>http://openejb.apache.org/xml/ns/openejb-jar-2.2</org.apache.openejb.openejb>
+                        <org.apache.openejb.pkgen>http://openejb.apache.org/xml/ns/pkgen-2.1</org.apache.openejb.pkgen>
                     </packagemap>
                     <attributes>
                         <modelDirectory>/org.apache.geronimo.v12.deployment.model/src</modelDirectory>
