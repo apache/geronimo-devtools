@@ -36,6 +36,8 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.server.core.model.RuntimeDelegate;
 
+import sun.security.action.GetLongAction;
+
 /**
  * @version $Rev$ $Date$
  */
@@ -190,6 +192,8 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
 			return "org.apache.geronimo.runtime.tomcat.10";
 		} else if ("1.1".equals(version)) {
 			return "org.apache.geronimo.runtime.tomcat.11";
+		} else if ("1.2".equals(version)) {
+			return "org.apache.geronimo.runtime.tomcat.12";
 		}
 		return null;
 	}
@@ -203,6 +207,8 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
 			return "org.apache.geronimo.runtime.jetty.10";
 		} else if ("1.1".equals(version)) {
 			return "org.apache.geronimo.runtime.jetty.11";
+		} else if ("1.2".equals(version)) {
+			return "org.apache.geronimo.runtime.jetty.12";
 		}
 		return null;
 	}

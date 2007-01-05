@@ -14,38 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.core.internal;
+package org.apache.geronimo.st.v12.core;
 
-import org.eclipse.osgi.util.NLS;
+import javax.enterprise.deploy.spi.TargetModuleID;
+
+import org.apache.geronimo.deployment.plugin.TargetModuleIDImpl;
+import org.apache.geronimo.st.core.IGeronimoVersionHandler;
+import org.eclipse.wst.server.core.IModule;
 
 /**
- * Translated messages.
- *
  * @version $Rev$ $Date$
  */
-public class Messages extends NLS {
+public class GeronimoV12VersionHandler implements IGeronimoVersionHandler {
 
-	static {
-		NLS.initializeMessages("org.apache.geronimo.st.core.internal.Messages", Messages.class);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.st.core.IGeronimoVersionHandler#getConfigID(org.eclipse.wst.server.core.IModule)
+	 */
+	public String getConfigID(IModule module) {
+		return GeronimoV12Utils.getConfigId2(module);
 	}
-
-	public static String DISTRIBUTE_FAIL;
-	public static String START_FAIL;
-	public static String STOP_FAIL;
-	public static String UNDEPLOY_FAIL;
-	public static String REDEPLOY_FAIL;
-	public static String DM_CONNECTION_FAIL;
 	
-	public static String errorJRE;
-	
-	public static String target10runtime;
-	public static String target11runtime;
-	public static String target12runtime;
-	
-	public static String incorrectVersion;
-	public static String noVersion;
-	public static String missingContent;
-	public static String errorPortInUse;
-	public static String missingServer;
-
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.IGeronimoVersionHandler#createTargetModuleId(java.lang.String)
+	 */
+	public TargetModuleID createTargetModuleId(String configId) {
+		return new TargetModuleIDImpl(null, configId);
+	}
 }
