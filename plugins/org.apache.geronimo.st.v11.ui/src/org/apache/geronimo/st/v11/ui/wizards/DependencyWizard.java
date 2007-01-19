@@ -242,6 +242,10 @@ public class DependencyWizard extends AbstractTableWizard {
 		}
 
 		processEAttributes(getPages()[0]);
+		
+		if (section.getTableViewer().getInput() == null) {
+			section.getTableViewer().setInput(section.getInput());
+		}
 
 		return true;
 	}
