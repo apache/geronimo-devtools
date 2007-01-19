@@ -98,7 +98,7 @@
         <!-- Eclipse Distribution URLs -->
         <platformDriver>R-3.2.1-200609210945/eclipse-SDK-3.2.1</platformDriver>
         <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/${platformDriver}</platformUrl>
-        <emfUrl>http://download.eclipse.org/tools/emf/downloads/drops/2.2.1/R200609210005/emf-sdo-xsd-SDK-2.2.1.zip</emfUrl>
+        <emfUrl>http://download.eclipse.org/modeling/emf/emf/downloads/drops/2.2.1/R200609210005/emf-sdo-xsd-SDK-2.2.1.zip</emfUrl>
         <jemUrl>http://download.eclipse.org/tools/ve/downloads/drops/R-1.2.1-200609261748/JEM-SDK-1.2.1.zip</jemUrl>
         <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/R-3.2.1-200609211617/GEF-SDK-3.2.1.zip</gefUrl>
         <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/R1.5/R-1.5.2-200610261841/wtp-sdk-R-1.5.2-200610261841.zip</wtpUrl>

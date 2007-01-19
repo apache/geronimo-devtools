@@ -14,9 +14,10 @@ Export-Package: org.apache.geronimo.deployment.model.edit,
  org.apache.geronimo.xml.ns.j2ee.connector.provider,
  org.apache.geronimo.xml.ns.j2ee.web.provider,
  org.apache.geronimo.xml.ns.naming.provider,
- org.openejb.xml.ns.openejb.jar.provider
+ org.apache.geronimo.xml.ns.security.provider,
+ org.openejb.xml.ns.openejb.jar.provider,
+ org.openejb.xml.ns.pkgen.provider
 Require-Bundle: org.eclipse.core.runtime,
  org.apache.geronimo.deployment.model;visibility:=reexport,
- org.eclipse.emf.edit;visibility:=reexport,
- org.apache.geronimo.common.deployment.model.edit;visibility:=reexport
+ org.eclipse.emf.edit;visibility:=reexport
 Eclipse-LazyStart: true

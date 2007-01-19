@@ -43,44 +43,25 @@
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.core</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v1.core</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v11.core</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v12.core</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.ui</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v1.ui</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v11.ui</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.common.deployment.model</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.deployment.model</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.common.deployment.model.edit</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.deployment.model.edit</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.v11.deployment.model</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.v11.deployment.model.edit</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.common</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v1</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v11</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v12</include>
             </includes>
         </dependencySet>
         <!-- TODO, this is a hack... need to open a defect against assembly plugin to support property names (artifactID,version),
         for <outputDirectory> or to treat <outputFileNameMapping> as a target folder -->
-        <!-- Exploded Bundles -->
-        <dependencySet>
-            <outputDirectory>plugins/org.apache.geronimo.runtime.common_1.0.0</outputDirectory>
-            <unpack>true</unpack>
-            <includes>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.common</include>
-            </includes>
-        </dependencySet>
-        <dependencySet>
-            <outputDirectory>plugins/org.apache.geronimo.runtime.v1_1.0.0</outputDirectory>
-            <unpack>true</unpack>
-            <includes>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v1</include>
-            </includes>
-        </dependencySet>
-        <dependencySet>
-            <outputDirectory>plugins/org.apache.geronimo.runtime.v11_1.0.0</outputDirectory>
-            <unpack>true</unpack>
-            <includes>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v11</include>
-            </includes>
-        </dependencySet>
         <!-- Features -->
         <dependencySet>
-            <outputDirectory>features/org.apache.geronimo.feature_1.1.0</outputDirectory>
+            <outputDirectory>features/org.apache.geronimo.feature_${version}</outputDirectory>
             <unpack>true</unpack>
             <includes>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.feature</include>
