@@ -85,7 +85,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.st.v11.core</artifactId>
+            <artifactId>org.apache.geronimo.st.v12.core</artifactId>
             <version>${org.apache.geronimo.st.v12.core_version}</version>
         </dependency>
         <dependency>
