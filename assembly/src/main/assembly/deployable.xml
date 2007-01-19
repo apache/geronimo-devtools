@@ -61,7 +61,7 @@
         for <outputDirectory> or to treat <outputFileNameMapping> as a target folder -->
         <!-- Features -->
         <dependencySet>
-            <outputDirectory>features/org.apache.geronimo.feature_1.1.0</outputDirectory>
+            <outputDirectory>features/org.apache.geronimo.feature_${version}</outputDirectory>
             <unpack>true</unpack>
             <includes>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.feature</include>
