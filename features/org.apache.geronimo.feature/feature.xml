@@ -140,6 +140,13 @@
          unpack="false"/>
 
    <plugin
+         id="org.apache.geronimo.st.v12.core"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.geronimo.st.v12.core_version}"
+         unpack="false"/>
+
+   <plugin
          id="org.apache.geronimo.st.v1.ui"
          download-size="0"
          install-size="0"
@@ -172,6 +179,12 @@
          download-size="0"
          install-size="0"
          version="${org.apache.geronimo.runtime.v11_version}"/>
+         
+   <plugin
+         id="org.apache.geronimo.runtime.v12"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.geronimo.runtime.v12_version}"/>
 
    <plugin
          id="org.apache.geronimo.runtime.common"

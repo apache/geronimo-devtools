@@ -76,11 +76,6 @@
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.common.deployment.model</artifactId>
-            <version>${org.apache.geronimo.common.deployment.model_version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.v12</artifactId>
             <version>${org.apache.geronimo.runtime.v12_version}</version>
         </dependency>

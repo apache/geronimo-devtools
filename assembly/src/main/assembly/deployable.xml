@@ -46,9 +46,7 @@
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.ui</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v1.ui</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v11.ui</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.common.deployment.model</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.deployment.model</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.common.deployment.model.edit</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.deployment.model.edit</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.v11.deployment.model</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.v11.deployment.model.edit</include>
