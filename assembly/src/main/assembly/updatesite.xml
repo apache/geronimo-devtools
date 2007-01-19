@@ -33,6 +33,7 @@
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.core</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v1.core</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v11.core</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v12.core</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.ui</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v1.ui</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v11.ui</include>
@@ -43,6 +44,7 @@
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.common</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v1</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v11</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v12</include>
             </includes>
         </dependencySet>
         <!-- Features -->
