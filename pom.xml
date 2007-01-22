@@ -96,12 +96,12 @@
         <stax-api_version>1.0</stax-api_version>
         <junitVersion>3.8.1</junitVersion>
         <!-- Eclipse Distribution URLs -->
-        <platformDriver>R-3.2.1-200609210945/eclipse-SDK-3.2.1</platformDriver>
+        <platformDriver>S-3.3M4-200612141445/eclipse-SDK-3.3M4</platformDriver>
         <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/${platformDriver}</platformUrl>
-        <emfUrl>http://download.eclipse.org/modeling/emf/emf/downloads/drops/2.2.1/R200609210005/emf-sdo-xsd-SDK-2.2.1.zip</emfUrl>
-        <jemUrl>http://download.eclipse.org/tools/ve/downloads/drops/R-1.2.1-200609261748/JEM-SDK-1.2.1.zip</jemUrl>
-        <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/R-3.2.1-200609211617/GEF-SDK-3.2.1.zip</gefUrl>
-        <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/R1.5/R-1.5.2-200610261841/wtp-sdk-R-1.5.2-200610261841.zip</wtpUrl>
+        <emfUrl>http://download.eclipse.org/modeling/emf/emf/downloads/drops/2.3.0/S200612211251/emf-sdo-xsd-SDK-2.3.0M4.zip</emfUrl>
+        <dptUrl>http://download.eclipse.org/datatools/downloads/1.0/dtp-sdk_1.0_200612211.zip</dptUrl>
+        <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/S-3.3M4-200612191422/GEF-SDK-3.3M4.zip</gefUrl>
+        <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/2.0/S-2.0M4-200701050358/wtp-sdk-S-2.0M4-200701050358.zip</wtpUrl>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -143,7 +143,7 @@
             <dependency>
                 <groupId>org.eclipse</groupId>
                 <artifactId>osgi</artifactId>
-                <version>3.2.1.R32x_v20060919</version>
+                <version>3.3.0.v20061213</version>
             </dependency>
             <!-- Dependencies for Crimson DOM Bug Workaround -->
             <dependency>
@@ -196,7 +196,7 @@
                         <platformUrl>${platformUrl}</platformUrl>
                         <urls>
                             <url>${emfUrl}</url>
-                            <url>${jemUrl}</url>
+                            <url>${dptUrl}</url>
                             <url>${gefUrl}</url>
                             <url>${wtpUrl}</url>
                         </urls>
