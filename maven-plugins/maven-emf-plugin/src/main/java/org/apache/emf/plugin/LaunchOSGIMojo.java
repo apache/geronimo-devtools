@@ -48,7 +48,7 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 	public static final String PROP_INSTANCE_AREA = "osgi.instance.area";
 	public static final String PROP_APPLICATION_ID = "eclipse.application";
 	public static final String PROP_USE_SYS_PROPS = "osgi.framework.useSystemProperties";
-	public static final String PROP_NOSHUTDOWN = "osgi.noShutdown";
+	//public static final String PROP_NOSHUTDOWN = "osgi.noShutdown";
 	public static final String STARTER = "org.eclipse.core.runtime.adaptor.EclipseStarter";
 
 	public static final String TOTAL_EXECUTIONS = "plugin.total.executions";
@@ -99,7 +99,7 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 
 		validate();
 
-		boolean keepFrameworkAlive = keepFrameworkAlive();
+		//boolean keepFrameworkAlive = keepFrameworkAlive();
 
 		String[] args = getArguments();
 		if (args == null)
@@ -120,38 +120,38 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 			initalPropertyMap.put(PROP_FRAMEWORK, osgi.toExternalForm());
 			initalPropertyMap.put(PROP_INSTANCE_AREA, workspace.toURL().toExternalForm());
 			initalPropertyMap.put(PROP_APPLICATION_ID, getApplicationID());
-			initalPropertyMap.put(PROP_NOSHUTDOWN, Boolean.toString(keepFrameworkAlive));
+			//initalPropertyMap.put(PROP_NOSHUTDOWN, Boolean.toString(keepFrameworkAlive));
 			initalPropertyMap.put("eclipse.vmargs","-Xmx512M");
 
 			URL[] osgiURLArray = { new URL((String) initalPropertyMap.get(PROP_FRAMEWORK)) };
 			
-			if(getPluginContext().containsKey(STARTER)) {
-				clazz = (Class) getPluginContext().get(STARTER);
-			} else  {
+			//if(getPluginContext().containsKey(STARTER)) {
+			//	clazz = (Class) getPluginContext().get(STARTER);
+			//} else  {
 				URLClassLoader frameworkClassLoader = new URLClassLoader(osgiURLArray);
 				clazz = frameworkClassLoader.loadClass(STARTER);
-				getPluginContext().put(STARTER, clazz);
-			}
+				//getPluginContext().put(STARTER, clazz);
+			//}
 
 			Method setInitialProperties = clazz.getMethod("setInitialProperties", new Class[] { Map.class });
 			setInitialProperties.invoke(null, new Object[] { initalPropertyMap });
 
 			getLog().debug("Framework Execution " + getCurrentExecution() + "/" + getTotalExecutions());
 			
-			if (getCurrentExecution() == 1) {
+			//if (getCurrentExecution() == 1) {
 				Method runMethod = clazz.getMethod("run", new Class[] {
 						String[].class, Runnable.class });
 				runMethod.invoke(null, new Object[] { args, null });			
-			} else {				
+			/*} else {				
 				Method runMethod = clazz.getMethod("run", new Class[] { Object.class });
 				runMethod.invoke(null, new Object[] { args });
-			}
+			}*/
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new MojoFailureException(e.getMessage());
 		}
 		
-		if(getCurrentExecution() == getTotalExecutions()) {
+		//if(getCurrentExecution() == getTotalExecutions()) {
 			getPluginContext().remove(CURRENT_EXECUTION);
 			try {
 				Method shutdownMethod = clazz.getMethod("shutdown", new Class[] {});
@@ -162,9 +162,9 @@ abstract public class LaunchOSGIMojo extends AbstractMojo {
 			clazz = null;
 			getPluginContext().remove(STARTER);
 			cleanup();
-		} else {
+		/*} else {
 			getPluginContext().put(CURRENT_EXECUTION, new Integer(getCurrentExecution() + 1));
-		}
+		}*/
 	}
 
 	protected abstract String getApplicationID();
