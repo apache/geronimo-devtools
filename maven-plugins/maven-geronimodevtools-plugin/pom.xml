@@ -77,9 +77,9 @@
             <version>1.0-alpha-3</version>
         </dependency>
         <dependency>
-            <groupId>eclipse</groupId>
-            <artifactId>org.eclipse.osgi</artifactId>
-            <version>3.2.0</version>
+            <groupId>org.eclipse</groupId>
+            <artifactId>osgi</artifactId>
+            <version>3.2.1.R32x_v20060919</version>
         </dependency>
     </dependencies>
 </project>

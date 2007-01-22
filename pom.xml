@@ -199,10 +199,9 @@
             </releases>
         </repository>
         <repository>
-            <id>maven1-sppatel</id>
+            <id>sppatel</id>
             <name>sppatel Repository on Apache</name>
-            <url>http://people.apache.org/~sppatel/repository</url>
-            <layout>legacy</layout>
+            <url>http://people.apache.org/~sppatel/maven/repository/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
