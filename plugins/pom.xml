@@ -135,5 +135,6 @@
         <module>org.apache.geronimo.runtime.v1</module>
         <module>org.apache.geronimo.runtime.v11</module>
         <module>org.apache.geronimo.runtime.v12</module>
+        <module>org.apache.geronimo.runtime.v20</module>
     </modules>
 </project>
