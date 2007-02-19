@@ -97,12 +97,12 @@
         <stax-api_version>1.0</stax-api_version>
         <junitVersion>3.8.1</junitVersion>
         <!-- Eclipse Distribution URLs -->
-        <platformDriver>S-3.3M4-200612141445/eclipse-SDK-3.3M4</platformDriver>
+        <platformDriver>S-3.3M5-200702091006/eclipse-SDK-3.3M5</platformDriver>
         <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/${platformDriver}</platformUrl>
         <emfUrl>http://download.eclipse.org/modeling/emf/emf/downloads/drops/2.3.0/S200612211251/emf-sdo-xsd-SDK-2.3.0M4.zip</emfUrl>
         <dptUrl>http://download.eclipse.org/datatools/downloads/1.0/dtp-sdk_1.0_200612211.zip</dptUrl>
         <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/S-3.3M4-200612191422/GEF-SDK-3.3M4.zip</gefUrl>
-        <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/2.0/S-2.0M4-200701050358/wtp-sdk-S-2.0M4-200701050358.zip</wtpUrl>
+        <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/R2.0/S-2.0M4-200701050358/wtp-sdk-S-2.0M4-200701050358.zip</wtpUrl>
     </properties>
     <dependencyManagement>
         <dependencies>

@@ -175,12 +175,13 @@
             </plugin>
         </plugins>
     </build>
+    <!-- The exclusions in the depenencies below are needed due to incorrect published poms that cannot be fixed and -->
+    <!-- thus exclusions are needed to avoid attempt to pull in these missing transative dependencies -->
     <dependencies>
         <dependency>
             <groupId>geronimo</groupId>
             <artifactId>geronimo-kernel</artifactId>
             <version>${geronimoVersion}</version>
-            <!-- Needed to fix and bypass 1.1.1 bad transitive dependencies -->
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.geronimo.specs</groupId>
@@ -197,7 +198,6 @@
             <groupId>geronimo</groupId>
             <artifactId>geronimo-deploy-jsr88</artifactId>
             <version>${geronimoVersion}</version>
-            <!-- Needed to fix and bypass 1.1.1 bad transitive dependencies -->
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.geronimo.specs</groupId>
@@ -219,9 +219,9 @@
             <version>${geronimoVersion}</version>
         </dependency>
         <dependency>
-            <groupId>geronimo</groupId>
-            <artifactId>geronimo-j2ee-schema</artifactId>
-            <version>${geronimoVersion}</version>
+            <groupId>org.apache.geronimo.schema</groupId>
+            <artifactId>geronimo-schema-j2ee_1.4</artifactId>
+            <version>1.1</version>
         </dependency>
         <dependency>
             <groupId>geronimo</groupId>
@@ -232,7 +232,6 @@
             <groupId>geronimo</groupId>
             <artifactId>geronimo-connector-builder</artifactId>
             <version>${geronimoVersion}</version>
-            <!-- Needed to fix and bypass 1.1.1 bad transitive dependencies -->
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.geronimo.specs</groupId>
@@ -252,7 +251,6 @@
             <groupId>geronimo</groupId>
             <artifactId>geronimo-web-builder</artifactId>
             <version>${geronimoVersion}</version>
-            <!-- Needed to fix and bypass 1.1.1 bad transitive dependencies -->
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.geronimo.specs</groupId>
@@ -268,12 +266,21 @@
             <groupId>geronimo</groupId>
             <artifactId>geronimo-naming-builder</artifactId>
             <version>${geronimoVersion}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.geronimo.schema</groupId>
+                    <artifactId>geronimo-schema</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.geronimo.schema</groupId>
+                    <artifactId>geronimo-schema-j2ee_1.4</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>geronimo</groupId>
             <artifactId>geronimo-j2ee-builder</artifactId>
             <version>${geronimoVersion}</version>
-            <!-- Needed to fix and bypass 1.1.1 bad transitive dependencies -->
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.geronimo.schema</groupId>
@@ -285,11 +292,22 @@
             <groupId>openejb</groupId>
             <artifactId>openejb-builder</artifactId>
             <version>${openejbVersion}</version>
-            <!-- Needed to fix and bypass 1.1.1 bad transitive dependencies -->
             <exclusions>
                 <exclusion>
                     <groupId>geronimo-spec</groupId>
                     <artifactId>geronimo-spec-corba</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-j2ee-jacc_1.0_spec</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.geronimo.schema</groupId>
+                    <artifactId>geronimo-schema</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.geronimo.schema</groupId>
+                    <artifactId>geronimo-schema-j2ee_1.4</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
