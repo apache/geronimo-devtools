@@ -96,12 +96,12 @@
         <stax-api_version>1.0</stax-api_version>
         <junitVersion>3.8.1</junitVersion>
         <!-- Eclipse Distribution URLs -->
-        <platformDriver>R-3.2.1-200609210945/eclipse-SDK-3.2.1</platformDriver>
+        <platformDriver>R-3.2.2-200702121330/eclipse-SDK-3.2.2</platformDriver>
         <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/${platformDriver}</platformUrl>
-        <emfUrl>http://download.eclipse.org/modeling/emf/emf/downloads/drops/2.2.1/R200609210005/emf-sdo-xsd-SDK-2.2.1.zip</emfUrl>
-        <jemUrl>http://download.eclipse.org/tools/ve/downloads/drops/R-1.2.1-200609261748/JEM-SDK-1.2.1.zip</jemUrl>
-        <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/R-3.2.1-200609211617/GEF-SDK-3.2.1.zip</gefUrl>
-        <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/R1.5/R-1.5.2-200610261841/wtp-sdk-R-1.5.2-200610261841.zip</wtpUrl>
+        <emfUrl>http://download.eclipse.org/modeling/emf/emf/downloads/drops/2.2.2/R200702131851/emf-sdo-xsd-SDK-2.2.2.zip</emfUrl>
+        <jemUrl>http://download.eclipse.org/tools/ve/downloads/drops/R-1.2.3_jem-200701301117/JEM-SDK-1.2.3_jem.zip</jemUrl>
+        <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/R-3.2.2-200702081315/GEF-SDK-3.2.2.zip</gefUrl>
+        <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/R1.5/R-1.5.3-200702082048/wtp-sdk-R-1.5.3.zip</wtpUrl>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -286,7 +286,6 @@
         </repository>
     </repositories>
     <modules>
-    <!--<module>modules/eclipse-support</module>-->
         <module>maven-plugins</module>
         <module>emf</module>
         <module>plugins</module>
