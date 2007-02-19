@@ -107,7 +107,7 @@
                             <phase>process-sources</phase>
                             <configuration>
                                 <tasks>
-                                    <copy file="${basedir}/.classpath" todir="${project.build.directory}" overwrite="false"/>
+                                    <copy file="${basedir}/.classpath" todir="${project.build.directory}" overwrite="false" failonerror="false"/>
                                 </tasks>
                             </configuration>
                             <goals>
@@ -119,7 +119,7 @@
                             <phase>compile</phase>
                             <configuration>
                                 <tasks>
-                                    <copy file="${project.build.directory}/.classpath" todir="${basedir}" overwrite="true"/>
+                                    <copy file="${project.build.directory}/.classpath" todir="${basedir}" overwrite="true" failonerror="false"/>
                                 </tasks>
                             </configuration>
                             <goals>
