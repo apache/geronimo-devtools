@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo v12 Server Tools Core Plug-in
 Bundle-SymbolicName: org.apache.geronimo.st.v12.core;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.2.1
 Bundle-Activator: org.apache.geronimo.st.v12.core.Activator
 Bundle-Vendor: Apache
 Bundle-Localization: plugin
