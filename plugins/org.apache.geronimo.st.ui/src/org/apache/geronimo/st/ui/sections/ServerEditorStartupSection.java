@@ -17,9 +17,7 @@
 package org.apache.geronimo.st.ui.sections;
 
 import org.apache.geronimo.st.core.IGeronimoServer;
-import org.apache.geronimo.st.ui.commands.SetPasswordCommand;
 import org.apache.geronimo.st.ui.commands.SetServerInstancePropertyCommand;
-import org.apache.geronimo.st.ui.commands.SetUsernameCommand;
 import org.apache.geronimo.st.ui.internal.Messages;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swt.SWT;

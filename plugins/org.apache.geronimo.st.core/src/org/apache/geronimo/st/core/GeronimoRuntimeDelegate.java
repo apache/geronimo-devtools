@@ -36,8 +36,6 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.server.core.model.RuntimeDelegate;
 
-import sun.security.action.GetLongAction;
-
 /**
  * @version $Rev$ $Date$
  */
