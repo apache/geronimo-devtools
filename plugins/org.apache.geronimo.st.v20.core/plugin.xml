@@ -24,7 +24,7 @@
         <runtimeType id="org.apache.geronimo.runtime.20"
             name="%runtimeTypeName" description="%runtimeTypeDescription"
             vendor="%runtimeTypeVendor" version="1.2"
-            class="org.apache.geronimo.st.v12.core.GeronimoRuntime">
+            class="org.apache.geronimo.st.v20.core.GeronimoRuntime">
             <moduleType types="jst.web" versions="2.2, 2.3, 2.4"/>
             <moduleType types="jst.ejb" versions="1.1, 2.0, 2.1"/>
             <moduleType types="jst.connector" versions="1.0, 1.5"/>
