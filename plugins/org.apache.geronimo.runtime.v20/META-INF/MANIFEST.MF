@@ -19,3 +19,4 @@ Bundle-ClassPath: lib/geronimo-common-2.0-SNAPSHOT.jar,
  lib/geronimo-util-2.0-SNAPSHOT.jar, 
  lib/geronimo-web-builder-2.0-SNAPSHOT.jar
 Export-Package: 
+Bundle-Vendor: Apache.org

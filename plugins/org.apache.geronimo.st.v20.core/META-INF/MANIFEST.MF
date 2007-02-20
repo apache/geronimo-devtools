@@ -4,7 +4,7 @@ Bundle-Name: Geronimo v20 Server Tools Core Plug-in
 Bundle-SymbolicName: org.apache.geronimo.st.v20.core;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.apache.geronimo.st.v20.core.Activator
-Bundle-Vendor: Apache
+Bundle-Vendor: Apache.org
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.apache.geronimo.st.core,

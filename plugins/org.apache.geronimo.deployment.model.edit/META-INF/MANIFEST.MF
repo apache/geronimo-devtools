@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
+Bundle-Name: Geronimo V1 EMF Edit Models
 Bundle-SymbolicName: org.apache.geronimo.deployment.model.edit; singleton:=true
 Bundle-Version: 1.1.0
 Bundle-ClassPath: .
 Bundle-Activator: org.apache.geronimo.deployment.model.edit.GeronimoEMFEditPlugin$Implementation
-Bundle-Vendor: %providerName
+Bundle-Vendor: Apache.org
 Bundle-Localization: plugin
 Export-Package: org.apache.geronimo.deployment.model.edit,
  org.apache.geronimo.xml.ns.deployment.provider,

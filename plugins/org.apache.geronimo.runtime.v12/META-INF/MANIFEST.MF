@@ -116,4 +116,5 @@ Export-Package: org.apache.geronimo.common,
  schemaorg_apache_xmlbeans.system.sAC7A4D68E92F83330EB8FF8C7ED832FA,
  schemaorg_apache_xmlbeans.system.sC5F5ECFD800142D93893A168B2F9354E,
  schemaorg_apache_xmlbeans.system.sCBE57B9DB49E75998EBB730535873DD1
+Bundle-Vendor: Apache.org
 
