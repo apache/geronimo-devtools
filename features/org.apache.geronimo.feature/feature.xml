@@ -1,39 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ Licensed to the Apache Software Foundation (ASF) under one or more
-  ~ contributor license agreements.  See the NOTICE file distributed with
-  ~ this work for additional information regarding copyright ownership.
-  ~ The ASF licenses this file to You under the Apache License, Version 2.0
-  ~ (the "License"); you may not use this file except in compliance with
-  ~ the License.  You may obtain a copy of the License at
-  ~
-  ~    http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
-
-<!-- $Rev$ $Date$ -->
-
 <feature
       id="org.apache.geronimo.feature"
       label="org.apache.geronimo.feature"
       version="${org.apache.geronimo.feature_version}"
-      provider-name="Apache Software Foundation">
+      provider-name="Apache Software Foundation"
+      image="bigG.gif">
 
    <description url="http://geronimo.apache.org/devtools">
-        %description
+      %description
    </description>
 
    <copyright url="http://www.apache.org/licenses/LICENSE-2.0.txt">
-        $copyright
+      $copyright
    </copyright>
 
    <license url="http://www.apache.org/licenses/LICENSE-2.0">
-        %license
+      %license
    </license>
 
    <url>
@@ -41,40 +23,7 @@
    </url>
 
    <requires>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="org.eclipse.emf.ecore.xmi"/>
-      <import plugin="org.eclipse.emf.edit"/>
-      <import plugin="com.ibm.etools.emf.event"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.wst.server.core"/>
-      <import plugin="org.eclipse.debug.core"/>
-      <import plugin="org.eclipse.wst.common.modulecore"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.jst.j2ee"/>
-      <import plugin="org.eclipse.wst.rdb.models.sql.edit"/>
-      <import plugin="org.eclipse.wst.rdb.models.sql"/>
-      <import plugin="org.eclipse.wst.rdb.models.dbdefinition"/>
-      <import plugin="org.eclipse.wst.common.frameworks"/>
-      <import plugin="org.eclipse.core.commands"/>
-      <import plugin="org.eclipse.wst.common.project.facet.core"/>
-      <import plugin="org.apache.ant"/>
-      <import plugin="org.eclipse.wst.server.ui"/>
-      <import plugin="org.eclipse.jst.server.core"/>
-      <import plugin="org.eclipse.ui.forms"/>
-      <import plugin="org.eclipse.jdt.core"/>
-      <import plugin="org.eclipse.emf.mapping.xsd2ecore.editor"/>
-      <import plugin="org.eclipse.wst.web"/>
-      <import plugin="org.eclipse.jdt.launching"/>
-      <import plugin="org.eclipse.emf.edit.ui"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.ui.editors"/>
-      <import plugin="org.eclipse.ui.workbench.texteditor"/>
-      <import plugin="org.eclipse.jem.util"/>
-      <import plugin="org.eclipse.jst.j2ee.web"/>
-      <import plugin="org.eclipse.jst.j2ee.ejb"/>
-      <import plugin="org.eclipse.jst.j2ee.jca"/>
-      <import plugin="org.eclipse.emf.common"/>
+      <import feature="org.eclipse.jst" version="1.5.3" match="compatible"/>
    </requires>
 
    <plugin
@@ -103,7 +52,7 @@
          install-size="0"
          version="${org.apache.geronimo.v11.deployment.model.edit_version}"
          unpack="false"/>
-         
+
    <plugin
          id="org.apache.geronimo.common.deployment.model.edit"
          download-size="0"
@@ -117,7 +66,7 @@
          install-size="0"
          version="${org.apache.geronimo.v11.deployment.model_version}"
          unpack="false"/>
-         
+
    <plugin
          id="org.apache.geronimo.common.deployment.model"
          download-size="0"
@@ -180,6 +129,12 @@
          install-size="0"
          version="${org.apache.geronimo.runtime.v11_version}"/>
          
+   <plugin
+         id="org.apache.geronimo.runtime.v12"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.geronimo.runtime.v12_version}"/>
+
    <plugin
          id="org.apache.geronimo.runtime.v12"
          download-size="0"

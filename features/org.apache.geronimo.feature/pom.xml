@@ -47,6 +47,12 @@
                     <include>NOTICE</include>
                 </includes>
             </resource>
+            <resource>
+                <directory>..</directory>
+                <includes>
+                    <include>bigG.gif</include>
+                </includes>
+            </resource>
         </resources>
     </build>
 </project>

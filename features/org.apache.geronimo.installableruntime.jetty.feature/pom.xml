@@ -14,45 +14,49 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <!-- $Rev$ $Date$ -->
-
 <project>
-  <modelVersion>4.0.0</modelVersion>
-  <artifactId>org.apache.geronimo.installableruntime.jetty.feature</artifactId>
-  <packaging>jar</packaging>
-  <version>${org.apache.geronimo.installableruntime.jetty.feature_version}</version>
-  <name>${artifactId}</name>
-  <parent>
-    <groupId>org.apache.geronimo.devtools</groupId>
-    <artifactId>eclipse-features-parent</artifactId>
-    <version>1.0</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
-  <build>
-    <resources>
-      <resource>
-        <directory>.</directory>
-        <filtering>true</filtering>
-        <includes>
-          <include>feature.xml</include>
-          <include>feature.properties</include>
-        </includes>
-      </resource>
-      <resource>
-        <targetPath>META-INF</targetPath>
-        <directory>..</directory>
-        <includes>
-          <include>LICENSE</include>
-          <include>NOTICE</include>
-        </includes>
-      </resource>
-    </resources>
-    <plugins>
-        <plugin>
-            <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>maven-geronimodevtools-plugin</artifactId>
-        </plugin>
-    </plugins>
-  </build>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>org.apache.geronimo.installableruntime.jetty.feature</artifactId>
+    <packaging>jar</packaging>
+    <version>${org.apache.geronimo.installableruntime.jetty.feature_version}</version>
+    <name>${artifactId}</name>
+    <parent>
+        <groupId>org.apache.geronimo.devtools</groupId>
+        <artifactId>eclipse-features-parent</artifactId>
+        <version>1.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <build>
+        <resources>
+            <resource>
+                <directory>.</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>feature.xml</include>
+                    <include>feature.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>META-INF</targetPath>
+                <directory>..</directory>
+                <includes>
+                    <include>LICENSE</include>
+                    <include>NOTICE</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>..</directory>
+                <includes>
+                    <include>bigG.gif</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.geronimo.devtools</groupId>
+                <artifactId>maven-geronimodevtools-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
