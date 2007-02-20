@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jst.server.core,
  org.eclipse.jdt.launching,
  org.apache.geronimo.runtime.v20,
- org.apache.geronimo.st.core
+ org.apache.geronimo.st.core,
+ org.apache.geronimo.st.v12.core
 Eclipse-LazyStart: true
 Export-Package: 
  org.apache.geronimo.st.v20.core,

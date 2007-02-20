@@ -23,7 +23,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.forms.FormColors;
+import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
@@ -62,7 +62,7 @@ public class BannerPart extends SectionPart {
 		section.setClient(composite);
 
 		Label label = toolkit.createLabel(composite, "");
-		label.setForeground(toolkit.getColors().getColor(FormColors.TITLE));
+		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 		label.setImage(defaultImgDesc.createImage());
 	}

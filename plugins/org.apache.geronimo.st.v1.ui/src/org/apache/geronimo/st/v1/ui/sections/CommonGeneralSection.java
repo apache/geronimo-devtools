@@ -29,7 +29,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.forms.FormColors;
+import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -92,7 +92,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 
 	protected Label createLabel(Composite parent, String text, FormToolkit toolkit) {
 		Label label = toolkit.createLabel(parent, text);
-		label.setForeground(toolkit.getColors().getColor(FormColors.TITLE));
+		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 		return label;
 	}

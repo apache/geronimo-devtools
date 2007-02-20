@@ -28,8 +28,6 @@ import org.apache.geronimo.xbeans.geronimo.j2ee.GerApplicationDocument;
 import org.apache.geronimo.xbeans.geronimo.j2ee.GerApplicationType;
 import org.apache.geronimo.xbeans.geronimo.web.GerWebAppDocument;
 import org.apache.geronimo.xbeans.geronimo.web.GerWebAppType;
-import org.apache.openejb.xbeans.ejbjar.OpenejbOpenejbJarDocument;
-import org.apache.openejb.xbeans.ejbjar.OpenejbOpenejbJarType;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.eclipse.core.resources.IFile;
@@ -77,11 +75,11 @@ public class GeronimoRuntime extends GeronimoRuntimeDelegate {
 	 */
 	public XmlObject fixGeronimoEjbSchema(IFile plan) throws XmlException {
             XmlObject xmlplan = getXmlObject(plan);
-            if (plan != null) {
-                SchemaConversionUtils.fixGeronimoSchema(xmlplan, OpenejbOpenejbJarDocument.type.getDocumentElementName(),
-                    OpenejbOpenejbJarType.type);
+            //FIXME
+            /*if (plan != null) {
+                SchemaConversionUtils.fixGeronimoSchema(xmlplan, OpenejbOpenejbJarDocument.type.getDocumentElementName(), OpenejbOpenejbJarType.type);
                 save(xmlplan, plan);
-            }
+            }*/
             return xmlplan;
 	}
 

@@ -23,6 +23,7 @@ import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
 import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
 import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.core.IGeronimoVersionHandler;
+import org.apache.geronimo.st.v12.core.GeronimoV12Utils;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.wst.server.core.IModule;
@@ -106,7 +107,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
 	 */
 	public IGeronimoVersionHandler getVersionHandler() {
 		if (versionHandler == null)
-			versionHandler = new GeronimoV12VersionHandler();
+			versionHandler = new GeronimoV20VersionHandler();
 		return versionHandler;
 	}
 

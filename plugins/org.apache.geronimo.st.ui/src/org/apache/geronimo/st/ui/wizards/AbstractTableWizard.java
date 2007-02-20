@@ -17,7 +17,6 @@
 package org.apache.geronimo.st.ui.wizards;
 
 import org.apache.geronimo.st.ui.Activator;
-import org.apache.geronimo.st.ui.internal.Trace;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;

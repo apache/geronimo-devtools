@@ -16,7 +16,7 @@
  */
 package org.apache.geronimo.st.v20.core;
 
-import javax.enterprise.deploy.spi.TargetModuleID;
+import javax.enterprise.deploy.spi.TargetModuleID; 
 
 import org.apache.geronimo.deployment.plugin.TargetModuleIDImpl;
 import org.apache.geronimo.st.core.IGeronimoVersionHandler;
