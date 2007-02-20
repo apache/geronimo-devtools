@@ -7,7 +7,6 @@ Bundle-Activator: org.apache.geronimo.st.v20.core.Activator
 Bundle-Vendor: Apache.org
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
- org.apache.geronimo.st.core,
  org.eclipse.wst.server.core,
  org.eclipse.debug.core,
  org.eclipse.wst.common.modulecore,
@@ -17,11 +16,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.commands,
  org.eclipse.wst.common.project.facet.core,
  org.apache.ant,
- org.apache.geronimo.runtime.common,
  org.eclipse.jst.common.frameworks,
  org.eclipse.jst.server.core,
  org.eclipse.jdt.launching,
- org.apache.geronimo.runtime.v20
+ org.apache.geronimo.runtime.v20,
+ org.apache.geronimo.st.core
 Eclipse-LazyStart: true
 Export-Package: 
  org.apache.geronimo.st.v20.core,
