@@ -50,7 +50,7 @@ public class V1DeploymentPlanCreationOperation extends
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createGeronimoApplicationDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public EObject createGeronimoApplicationDeploymentPlan(IFile dpFile) {
-		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString());
+		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
 		GeronimoV1Utils.registerAppFactoryAndPackage(resourceSet);
@@ -81,7 +81,7 @@ public class V1DeploymentPlanCreationOperation extends
 	 */
 	public EObject createGeronimoWebDeploymentPlan(IFile dpFile) {
 
-		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString());
+		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
 		GeronimoV1Utils.registerWebFactoryAndPackage(resourceSet);
@@ -114,7 +114,7 @@ public class V1DeploymentPlanCreationOperation extends
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createOpenEjbDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public EObject createOpenEjbDeploymentPlan(IFile dpFile) {
-		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString());
+		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
 		GeronimoV1Utils.registerEjbFactoryAndPackage(resourceSet);
@@ -147,7 +147,7 @@ public class V1DeploymentPlanCreationOperation extends
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createConnectorDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public EObject createConnectorDeploymentPlan(IFile dpFile) {
-		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString());
+		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
 		GeronimoV1Utils.registerConnectorFactoryAndPackage(resourceSet);

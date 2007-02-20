@@ -63,7 +63,7 @@ public class DeploymentUtils {
 		IPath output = outputPath.append(module.getName() + getModuleExtension(module));
 		try {
 			IModuleResource[] resources = getModuleResources(module);
-			PublishUtil.smartCopy(resources, output, new NullProgressMonitor());
+			PublishUtil.publishSmart(resources, output, new NullProgressMonitor());
 			if(GeronimoUtils.isEarModule(module)) {
 				IEnterpriseApplication application = (IEnterpriseApplication) module.loadAdapter(IEnterpriseApplication.class, null);
 				if( application != null ){
@@ -72,7 +72,7 @@ public class DeploymentUtils {
 						 	IModule child = children[i];
 							IPath childPath = output.append(child.getName() + getModuleExtension(child));
 							IModuleResource[] childResources = getModuleResources(child);
-							PublishUtil.smartCopy(childResources, childPath, new NullProgressMonitor());
+							PublishUtil.publishSmart(childResources, childPath, new NullProgressMonitor());
 							if(GeronimoUtils.isWebModule(child)) {
 								IWebModule webModule = (IWebModule) module.loadAdapter(IWebModule.class, null);
 								IModule[] libs = webModule.getModules();
@@ -80,7 +80,7 @@ public class DeploymentUtils {
 								for(int j = 0; j < libs.length; j++) {
 									IModule lib = libs[j];
 									IModuleResource[] libResources = getModuleResources(lib);
-									PublishUtil.smartCopy(libResources, webLibPath.append(lib.getName() + getModuleExtension(lib)), new NullProgressMonitor());
+									PublishUtil.publishSmart(libResources, webLibPath.append(lib.getName() + getModuleExtension(lib)), new NullProgressMonitor());
 								}
 							}
 					 }

@@ -69,7 +69,6 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
 		String type = J2EEProjectUtilities.getJ2EEProjectType(getProject());
 
 		IFile planFile = null;
-		XmlObject plan = null;
 		
 		try {
 			if (type.equals(IModuleConstants.JST_WEB_MODULE)) {

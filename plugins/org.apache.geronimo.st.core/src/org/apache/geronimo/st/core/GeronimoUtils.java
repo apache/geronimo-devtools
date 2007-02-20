@@ -192,7 +192,7 @@ public class GeronimoUtils {
 	public static Resource load(IFile dpFile, ResourceSet resourceSet) {
 		try {
 
-			URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString());
+			URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 			Resource resource = resourceSet.createResource(uri);
 			if (!resource.isLoaded()) {

@@ -71,7 +71,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createGeronimoApplicationDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public EObject createGeronimoApplicationDeploymentPlan(IFile dpFile) {
-		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString());
+		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
 		GeronimoV11Utils.register(resourceSet, new ApplicationResourceFactoryImpl(), ApplicationPackage.eINSTANCE, ApplicationPackage.eNS_URI);
@@ -103,7 +103,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 */
 	public EObject createGeronimoWebDeploymentPlan(IFile dpFile) {
 
-		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString());
+		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
 		GeronimoV11Utils.register(resourceSet, new WebResourceFactoryImpl(), WebPackage.eINSTANCE, WebPackage.eNS_URI);
@@ -138,7 +138,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createOpenEjbDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public EObject createOpenEjbDeploymentPlan(IFile dpFile) {
-		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString());
+		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
 		GeronimoV11Utils.register(resourceSet, new JarResourceFactoryImpl(), JarPackage.eINSTANCE, JarPackage.eNS_URI);
@@ -171,7 +171,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createConnectorDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public EObject createConnectorDeploymentPlan(IFile dpFile) {
-		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString());
+		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
 		GeronimoV11Utils.register(resourceSet, new ConnectorResourceFactoryImpl(), ConnectorPackage.eINSTANCE, ConnectorPackage.eNS_URI);
@@ -195,7 +195,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	}
 
 	public EObject createServiceDeploymentPlan(IFile dpFile) {
-		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString());
+		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
 		GeronimoV11Utils.register(resourceSet, new DeploymentResourceFactoryImpl(), DeploymentPackage.eINSTANCE, DeploymentPackage.eNS_URI);

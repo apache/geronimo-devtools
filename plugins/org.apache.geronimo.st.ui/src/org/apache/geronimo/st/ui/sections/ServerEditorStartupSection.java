@@ -84,7 +84,7 @@ public class ServerEditorStartupSection extends ServerEditorSection {
 		section.setClient(composite);
 
 		// ------- Label and text field for the ping delay -------
-		Label s = createLabel(composite, Messages.pingDelay, toolkit);
+		createLabel(composite, Messages.pingDelay, toolkit);
 		pingDelay = toolkit.createText(composite, getPingDelay(), SWT.BORDER);
 		pingDelay.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		pingDelay.setToolTipText(Messages.pingDelayTooltip);
