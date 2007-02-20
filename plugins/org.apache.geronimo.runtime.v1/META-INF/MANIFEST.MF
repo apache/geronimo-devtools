@@ -207,3 +207,4 @@ Export-Package:
  schemaorg_apache_xmlbeans.type.http_3A_2F_2Fgeronimo_2Eapache_2Eorg_2Fxml_2Fns_2Fnaming_2D1_2E0,
  schemaorg_apache_xmlbeans.type.http_3A_2F_2Fjava_2Esun_2Ecom_2Fxml_2Fns_2Fj2ee
 Require-Bundle: org.apache.geronimo.runtime.common;visibility:=reexport
+Bundle-Vendor: Apache.org

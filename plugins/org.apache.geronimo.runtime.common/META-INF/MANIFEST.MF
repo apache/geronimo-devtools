@@ -214,3 +214,4 @@ Export-Package:
  schemaorg_apache_xmlbeans.type.http_3A_2F_2Fwww_2Ebea_2Ecom_2F2003_2F01_2Fxmlbean_2Fxsdownload,
  schemaorg_apache_xmlbeans.type.http_3A_2F_2Fwww_2Ebea_2Ecom_2F2003_2F05_2Fxmlbean_2Fltgfmt,
  schemaorg_apache_xmlbeans.type.http_3A_2F_2Fwww_2Ew3_2Eorg_2F2001_2FXMLSchema
+Bundle-Vendor: Apache.org

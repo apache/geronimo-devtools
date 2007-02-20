@@ -22,7 +22,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jst.common.frameworks,
  org.eclipse.jdt.launching
 Eclipse-LazyStart: true
-Bundle-Vendor: Apache
+Bundle-Vendor: Apache.org
 Export-Package: org.apache.geronimo.st.v1.core.operations,
  org.apache.geronimo.st.v1.core.internal,
  org.apache.geronimo.st.v1.core
