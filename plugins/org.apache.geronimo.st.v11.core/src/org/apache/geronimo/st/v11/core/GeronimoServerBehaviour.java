@@ -33,7 +33,6 @@ import org.apache.geronimo.kernel.config.InvalidConfigException;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.Activator;
-import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;

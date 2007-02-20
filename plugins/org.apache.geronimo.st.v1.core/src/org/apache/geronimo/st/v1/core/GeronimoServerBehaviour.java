@@ -33,7 +33,6 @@ import org.apache.geronimo.kernel.Kernel;
 import org.apache.geronimo.kernel.config.Configuration;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.jmx.KernelDelegate;
-import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.v1.core.internal.Trace;
 import org.eclipse.core.runtime.IPath;

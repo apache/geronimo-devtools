@@ -20,7 +20,6 @@ import org.apache.geronimo.st.core.GeronimoRuntimeDelegate;
 import org.apache.geronimo.st.ui.Activator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -30,7 +29,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -44,8 +42,6 @@ import org.eclipse.wst.server.ui.wizard.WizardFragment;
  * @version $Rev$ $Date$
  */
 public class GeronimoRuntimeSourceWizardFragment extends WizardFragment {
-	
-	private IWizardHandle fWizard;
 	
 	protected Text srcLoc;
 
@@ -63,7 +59,6 @@ public class GeronimoRuntimeSourceWizardFragment extends WizardFragment {
 	}
 	
 	public Composite createComposite(Composite parent, IWizardHandle handle) {
-		this.fWizard = handle;
 		Composite container = new Composite(parent, SWT.NONE);
 		GridLayout grid = new GridLayout(1, false);
 		grid.marginWidth = 0;

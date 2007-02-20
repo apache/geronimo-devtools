@@ -17,19 +17,11 @@
 package org.apache.geronimo.st.core.commands;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.DeploymentUtils;
 import org.apache.geronimo.st.core.IGeronimoServer;
 import org.apache.geronimo.st.core.internal.Trace;
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jst.j2ee.internal.deployables.J2EEFlexProjDeployable;
-import org.eclipse.wst.common.componentcore.ComponentCore;
-import org.eclipse.wst.common.componentcore.internal.resources.VirtualArchiveComponent;
-import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
-import org.eclipse.wst.common.componentcore.resources.IVirtualReference;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 

@@ -20,7 +20,6 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
-import org.eclipse.wst.server.core.ServerUtil;
 import org.osgi.framework.BundleContext;
 
 /**
