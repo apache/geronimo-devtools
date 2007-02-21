@@ -75,8 +75,9 @@ public class GeronimoServerRuntimeTargetHandler extends RuntimeClasspathProvider
 			} else {
 				list.add(JavaCore.newLibraryEntry(specPath, null, null));
 			}
-		} else if(version.equals("1.2")) {
-			//TODO Geronimo 1.2 Support
+		} else {
+			IPath specPath = runtime.getLocation().append("repository/org/apache/geronimo/specs/");
+			addLibraryEntries(list, specPath.toFile(), true);
 		}
 		
 		return (IClasspathEntry[])list.toArray(new IClasspathEntry[list.size()]);
