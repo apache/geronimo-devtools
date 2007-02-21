@@ -14,9 +14,6 @@ Bundle-ClassPath:
  lib/xbean-2.0.0.jar
 Bundle-Localization: plugin 
 Export-Package: 
- META-INF,
- META-INF.maven.org.apache.geronimo.specs.geronimo-j2ee-deployment_1.1_spec,
- META-INF.services,
  com.thoughtworks.xstream,
  com.thoughtworks.xstream.alias,
  com.thoughtworks.xstream.annotations,

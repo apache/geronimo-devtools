@@ -9,7 +9,6 @@ Bundle-Vendor: Apache.org
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.edit;visibility:=reexport,
- com.ibm.etools.emf.event,
  org.apache.geronimo.v11.deployment.model
 Eclipse-LazyStart: true
 Export-Package: org.apache.geronimo.v11.deployment.model.edit,
