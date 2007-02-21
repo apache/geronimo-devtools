@@ -31,24 +31,19 @@
     </extension>
     
     <extension point="org.eclipse.wst.server.ui.serverImages">
-    	<image id="org.apache.geronimo.runtime.image"
-            icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.runtime.10"/>
-        <image id="org.apache.geronimo.server.image"
-            icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.server.10"/>
-        <image id="org.apache.geronimo.runtime.image"
-            icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.runtime.11"/>
-        <image id="org.apache.geronimo.server.image"
-            icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.server.11"/>
-        <image id="org.apache.geronimo.runtime.image"
-            icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.runtime.12"/>
-        <image id="org.apache.geronimo.server.image"
-            icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.server.12"/>
+    	<image id="org.apache.geronimo.runtime.image" 
+    		icon="icons/obj16/littleG.gif"
+            typeIds="org.apache.geronimo.runtime.10,
+            		 org.apache.geronimo.runtime.11,
+            		 org.apache.geronimo.runtime.12,
+            		 org.apache.geronimo.runtime.20"/>
+     
+        <image id="org.apache.geronimo.server.image" 
+        	icon="icons/obj16/littleG.gif"
+            typeIds="org.apache.geronimo.server.10,
+            		 org.apache.geronimo.server.11,
+            		 org.apache.geronimo.server.12,
+            		 org.apache.geronimo.server.20"/>
     </extension>
 
     <extension point="org.eclipse.wst.server.ui.wizardFragments">
