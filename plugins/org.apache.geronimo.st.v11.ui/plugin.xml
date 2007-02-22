@@ -23,7 +23,7 @@
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.testenv" order="20"
             insertionId="org.eclipse.wst.server.editor.overview.left"
-            typeIds="org.apache.geronimo.server.11"
+            typeIds="org.apache.geronimo.server.11, org.apache.geronimo.server.12"
             class="org.apache.geronimo.st.v11.ui.sections.ServerEditorTestEnvSection">
         </section>
     </extension>
