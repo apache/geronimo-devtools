@@ -17,7 +17,6 @@
 package org.apache.geronimo.st.v11.ui.sections;
 
 import org.apache.geronimo.st.core.IGeronimoServer;
-import org.apache.geronimo.st.v11.core.GeronimoServer;
 import org.apache.geronimo.st.v11.ui.commands.SetInPlaceSharedLibCommand;
 import org.apache.geronimo.st.v11.ui.commands.SetRunFromWorkspaceCommand;
 import org.apache.geronimo.st.v11.ui.internal.Messages;
