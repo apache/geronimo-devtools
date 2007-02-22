@@ -111,6 +111,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
 	 * @see org.apache.geronimo.st.core.IGeronimoServer#isInPlace()
 	 */
 	public boolean isInPlaceSharedLib() {
+		//Not supported in 1.0
 		return false;
 	}
 	
@@ -118,7 +119,16 @@ public class GeronimoServer extends GeronimoServerDelegate {
 	 * @see org.apache.geronimo.st.core.IGeronimoServer#isRunFromWorkspace()
 	 */
 	public boolean isRunFromWorkspace() {
+		//Not supported in 1.0
 		return false;
+	}
+	
+	public void setInPlaceSharedLib(boolean enable) {
+		//Not supported in 1.0
+	}
+	
+	public void setRunFromWorkspace(boolean enable) {
+		//Not supported in 1.0
 	}
 
 }

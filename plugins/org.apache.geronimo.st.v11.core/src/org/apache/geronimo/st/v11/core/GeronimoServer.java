@@ -24,7 +24,6 @@ import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
 import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.core.IGeronimoVersionHandler;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
@@ -32,9 +31,6 @@ import org.eclipse.wst.server.core.util.SocketUtil;
  * @version $Rev$ $Date$
  */
 public class GeronimoServer extends GeronimoServerDelegate {
-	
-	public static final String PROPERTY_IN_PLACE_SHARED_LIB = "inPlaceSharedLib";
-	public static final String PROPERTY_RUN_FROM_WORKSPACE = "runFromWorkspace";
 
 	private static IGeronimoVersionHandler versionHandler = null;
 	
@@ -113,36 +109,4 @@ public class GeronimoServer extends GeronimoServerDelegate {
 	public void setInPlaceDeployment(DeploymentManager dm, boolean enable) {
 		((JMXDeploymentManager) dm).setInPlace(enable);
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.st.core.IGeronimoServer#isInPlace()
-	 */
-	public boolean isInPlaceSharedLib() {
-		return getAttribute(PROPERTY_IN_PLACE_SHARED_LIB, false);
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.st.core.IGeronimoServer#isRunFromWorkspace()
-	 */
-	public boolean isRunFromWorkspace() {
-		return getAttribute(PROPERTY_RUN_FROM_WORKSPACE, false);
-	}
-	
-	public void setInPlaceSharedLib(boolean enable) {
-		setAttribute(PROPERTY_IN_PLACE_SHARED_LIB, enable);
-	}
-	
-	public void setRunFromWorkspace(boolean enable) {
-		setAttribute(PROPERTY_RUN_FROM_WORKSPACE, enable);
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.st.core.GeronimoServerDelegate#setDefaults(org.eclipse.core.runtime.IProgressMonitor)
-	 */
-	public void setDefaults(IProgressMonitor monitor) {
-		super.setDefaults(monitor);
-		setInPlaceSharedLib(false);
-		setRunFromWorkspace(false);
-	}
-
 }
