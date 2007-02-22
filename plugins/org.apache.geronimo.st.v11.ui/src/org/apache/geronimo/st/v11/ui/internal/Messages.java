@@ -26,10 +26,6 @@ public class Messages extends NLS {
 	}
 	
 	public static String artifactId;
-	public static String editorSectionTestEnvTitle;
-	public static String editorSectionTestEnvDescription;
-	public static String editorSectionRunFromWorkspace;
-	public static String editorSectionSharedLibrariesInPlace;
 	public static String gBeanLink;
 	public static String groupId;
 	public static String moduleId;
