@@ -16,6 +16,7 @@
  */
 package org.apache.geronimo.st.v11.ui.sections;
 
+import org.apache.geronimo.st.core.IGeronimoServer;
 import org.apache.geronimo.st.v11.core.GeronimoServer;
 import org.apache.geronimo.st.v11.ui.commands.SetInPlaceSharedLibCommand;
 import org.apache.geronimo.st.v11.ui.commands.SetRunFromWorkspaceCommand;
@@ -68,7 +69,7 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		section.setClient(composite);
 		
-		GeronimoServer gs = (GeronimoServer) server.getAdapter(GeronimoServer.class);
+		IGeronimoServer gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
 
 		inPlaceSharedLib = toolkit.createButton(composite, Messages.editorSectionSharedLibrariesInPlace, SWT.CHECK);
 		inPlaceSharedLib.setSelection(gs.isInPlaceSharedLib());
@@ -86,8 +87,7 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 
 		runFromWorkspace = toolkit.createButton(composite, Messages.editorSectionRunFromWorkspace, SWT.CHECK);
 		runFromWorkspace.setSelection(gs.isRunFromWorkspace());
-		// TODO temporarily disable support until new implementation
-		//runFromWorkspace.setEnabled(false);
+		runFromWorkspace.setEnabled(false);	//FIXME disable support until supported
 		runFromWorkspace.addSelectionListener(new SelectionListener() {
 
 			public void widgetSelected(SelectionEvent e) {
