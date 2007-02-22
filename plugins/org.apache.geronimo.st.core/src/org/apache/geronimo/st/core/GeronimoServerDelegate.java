@@ -68,6 +68,10 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	public static final String PROPERTY_MAX_PINGS = "maxPings";
 	
 	public static final String PROPERTY_PUBLISH_TIMEOUT = "publishTimeout";
+	
+	public static final String PROPERTY_IN_PLACE_SHARED_LIB = "inPlaceSharedLib";
+	
+	public static final String PROPERTY_RUN_FROM_WORKSPACE = "runFromWorkspace";
 
 	public static final String CONSOLE_INFO = "--long";
 
@@ -313,7 +317,29 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	public void setPublishTimeout(long timeout) {
 		setInstanceProperty(PROPERTY_PUBLISH_TIMEOUT, Long.toString(timeout));
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.IGeronimoServer#isInPlace()
+	 */
+	public boolean isInPlaceSharedLib() {
+		return getAttribute(PROPERTY_IN_PLACE_SHARED_LIB, false);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.IGeronimoServer#isRunFromWorkspace()
+	 */
+	public boolean isRunFromWorkspace() {
+		return getAttribute(PROPERTY_RUN_FROM_WORKSPACE, false);
+	}
+	
+	public void setInPlaceSharedLib(boolean enable) {
+		setAttribute(PROPERTY_IN_PLACE_SHARED_LIB, enable);
+	}
+	
+	public void setRunFromWorkspace(boolean enable) {
+		setAttribute(PROPERTY_RUN_FROM_WORKSPACE, enable);
+	}
+	
 	public String discoverDeploymentFactoryClassName(IPath jarPath) {
 		try {
 			JarFile deployerJar = new JarFile(jarPath.toFile());
@@ -339,6 +365,8 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 		setMaxPings(new Integer(40));
 		setPingInterval(new Integer(5000));
 		setPublishTimeout(900000);
+		setInPlaceSharedLib(false);
+		setRunFromWorkspace(false);
 	}
 
 	public String getInstanceProperty(String name) {
