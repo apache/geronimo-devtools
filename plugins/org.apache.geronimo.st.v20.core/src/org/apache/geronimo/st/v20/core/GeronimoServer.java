@@ -77,7 +77,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
 	 * @see org.apache.geronimo.st.core.IGeronimoServer#getJSR88DeployerJar()
 	 */
 	public IPath getJSR88DeployerJar() {
-		return getServer().getRuntime().getLocation().append("/lib/geronimo-deploy-jsr88-1.1.jar");
+		return getServer().getRuntime().getLocation().append("/lib/jsr88-deploymentfactory.jar");
 	}
 
 	/*
