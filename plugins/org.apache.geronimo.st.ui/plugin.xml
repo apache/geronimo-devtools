@@ -121,7 +121,7 @@
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.testenv" order="20"
             insertionId="org.eclipse.wst.server.editor.overview.left"
-            typeIds="org.apache.geronimo.server.11, org.apache.geronimo.server.12"
+            typeIds="org.apache.geronimo.server.11, org.apache.geronimo.server.12, org.apache.geronimo.server.20"
             class="org.apache.geronimo.st.ui.sections.ServerEditorTestEnvSection">
         </section>
     </extension>
