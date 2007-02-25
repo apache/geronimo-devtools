@@ -185,30 +185,14 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
 	 * @return
 	 */
 	public String getInstallableTomcatRuntimeId() {
-		String version = getRuntime().getRuntimeType().getVersion();
-		if ("1.0".equals(version)) {
-			return "org.apache.geronimo.runtime.tomcat.10";
-		} else if ("1.1".equals(version)) {
-			return "org.apache.geronimo.runtime.tomcat.11";
-		} else if ("1.2".equals(version)) {
-			return "org.apache.geronimo.runtime.tomcat.12";
-		}
-		return null;
+		return "org.apache.geronimo.runtime.tomcat." + getRuntime().getRuntimeType().getVersion().replaceAll("\\.", "");
 	}
 
 	/**
 	 * @return
 	 */
 	public String getInstallableJettyRuntimeId() {
-		String version = getRuntime().getRuntimeType().getVersion();
-		if ("1.0".equals(version)) {
-			return "org.apache.geronimo.runtime.jetty.10";
-		} else if ("1.1".equals(version)) {
-			return "org.apache.geronimo.runtime.jetty.11";
-		} else if ("1.2".equals(version)) {
-			return "org.apache.geronimo.runtime.jetty.12";
-		}
-		return null;
+		return "org.apache.geronimo.runtime.jetty." + getRuntime().getRuntimeType().getVersion().replaceAll("\\.", "");
 	}
 
 	/**
