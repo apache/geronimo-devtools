@@ -65,7 +65,7 @@
     <extension point="org.eclipse.jst.server.core.runtimeFacetMappings">
         <runtimeFacetMapping
             runtimeTypeId="org.apache.geronimo.runtime.20"
-            runtime-component="org.apache.geronimo.runtime" version="1.1"/>
+            runtime-component="org.apache.geronimo.runtime" version="2.0"/>
     </extension>
   
 </plugin>
