@@ -108,6 +108,8 @@
                             <configuration>
                                 <tasks>
                                     <copy file="${basedir}/.classpath" todir="${project.build.directory}" overwrite="false" failonerror="false"/>
+                                    <copy file="${basedir}/.project" todir="${project.build.directory}" overwrite="false" failonerror="false"/>
+
                                 </tasks>
                             </configuration>
                             <goals>
@@ -120,6 +122,8 @@
                             <configuration>
                                 <tasks>
                                     <copy file="${project.build.directory}/.classpath" todir="${basedir}" overwrite="true" failonerror="false"/>
+                                    <copy file="${project.build.directory}/.project" todir="${basedir}" overwrite="true" failonerror="false"/>
+
                                 </tasks>
                             </configuration>
                             <goals>
