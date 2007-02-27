@@ -31,7 +31,6 @@
     </parent>
     <properties>
         <xbeanVersion>2.0.0</xbeanVersion>
-        <mx4jVersion>3.0.1</mx4jVersion>
         <commonsLoggingVersion>1.0.4</commonsLoggingVersion>
     </properties>
     <build>
