@@ -160,21 +160,22 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		String platform = System.getProperty("os.name");
 		String arch = System.getProperty("os.arch");
 		if (platform.startsWith("Windows")) {
-         fragment.setArtifactId(id.concat(".win32.win32.x86"));
+			fragment.setArtifactId(id.concat(".win32.win32.x86"));
 		} else if (platform.startsWith("Linux")) {
-         if (arch.equalsIgnoreCase("x86_64") || arch.equalsIgnoreCase("amd64"))
-            fragment.setArtifactId(id.concat(".gtk.linux.x86_64"));
-         else if (arch.startsWith("ppc"))
-            fragment.setArtifactId(id.concat(".gtk.linux.ppc"));
-         else
-			   fragment.setArtifactId(id.concat(".gtk.linux.x86"));
+			if (arch.equalsIgnoreCase("x86_64")
+					|| arch.equalsIgnoreCase("amd64"))
+				fragment.setArtifactId(id.concat(".gtk.linux.x86_64"));
+			else if (arch.startsWith("ppc"))
+				fragment.setArtifactId(id.concat(".gtk.linux.ppc"));
+			else
+				fragment.setArtifactId(id.concat(".gtk.linux.x86"));
 		} else if (platform.startsWith("Mac")) {
 			fragment.setArtifactId(id.concat(".carbon.macosx"));
 		} else if (platform.startsWith("SunOS")) {
-         if (arch.startsWith("x86") || arch.startsWith("amd"))
-            fragment.setArtifactId(id.concat(".gtk.solaris.x86"));
-         else
-            fragment.setArtifactId(id.concat(".gtk.solaris.sparc"));
+			if (arch.startsWith("x86") || arch.startsWith("amd"))
+				fragment.setArtifactId(id.concat(".gtk.solaris.x86"));
+			else
+				fragment.setArtifactId(id.concat(".gtk.solaris.sparc"));
 		} else if (platform.startsWith("AIX")) {
 			fragment.setArtifactId(id.concat(".motif.aix.ppc"));
 		}
