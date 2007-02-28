@@ -12,12 +12,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.mapping.xsd2ecore.editor,
  org.eclipse.debug.core,
  org.eclipse.jst.j2ee,
- org.eclipse.wst.common.frameworks,
  org.apache.geronimo.runtime.v1,
  org.eclipse.jst.common.frameworks,
- org.eclipse.wst.common.project.facet.core,
- org.eclipse.jst.server.core,
- org.eclipse.jdt.launching
+ org.eclipse.wst.common.project.facet.core
 Eclipse-LazyStart: true
 Bundle-Vendor: Apache.org
 Export-Package: org.apache.geronimo.st.v1.core.operations,

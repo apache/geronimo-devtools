@@ -8,22 +8,17 @@ Bundle-Vendor: Apache.org
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.server.core,
- org.apache.geronimo.st.core,
- org.eclipse.jdt.launching,
+ org.apache.geronimo.st.core;visibility:=reexport,
  org.eclipse.ui.forms,
  org.eclipse.emf.edit.ui,
  org.eclipse.ui.ide,
  org.eclipse.ui.editors,
  org.eclipse.wst.server.ui,
- org.eclipse.jst.server.core,
  org.eclipse.wst.common.project.facet.core,
  org.eclipse.debug.ui,
  org.eclipse.jdt.debug.ui,
- org.eclipse.wst.common.frameworks,
  org.eclipse.wst.common.modulecore,
- org.eclipse.jface,
- org.eclipse.emf.common,
- org.eclipse.ui.workbench.texteditor
+ org.eclipse.jface;visibility:=reexport
 Eclipse-LazyStart: true
 Export-Package: org.apache.geronimo.st.ui,
  org.apache.geronimo.st.ui.actions,

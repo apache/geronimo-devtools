@@ -24,8 +24,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.geronimo.runtime.common,
  org.eclipse.debug.core,
  org.eclipse.wst.web,
- org.eclipse.jem.util,
- org.eclipse.emf.common
+ org.eclipse.emf.common,
+ org.eclipse.jem.util
 Eclipse-LazyStart: true
 Export-Package: org.apache.geronimo.st.core,
  org.apache.geronimo.st.core.commands,
