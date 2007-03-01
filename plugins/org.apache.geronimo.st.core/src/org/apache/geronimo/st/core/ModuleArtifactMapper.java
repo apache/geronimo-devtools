@@ -54,7 +54,7 @@ public class ModuleArtifactMapper {
 	XStream xStream;
 
 	private ModuleArtifactMapper() {
-		xStream = new XStream(new DomDriver());
+		xStream = new XStream();
 		load();
 		if (serverEntries == null)
 			serverEntries = new HashMap();

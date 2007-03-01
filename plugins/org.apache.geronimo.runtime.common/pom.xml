@@ -98,6 +98,10 @@
                                     <artifactId>xstream</artifactId>
                                 </artifactItem>
                                 <artifactItem>
+                                    <groupId>xpp3</groupId>
+                                    <artifactId>xpp3</artifactId>
+                                </artifactItem>
+                                <artifactItem>
                                     <groupId>xmlbeans</groupId>
                                     <artifactId>xbean</artifactId>
                                     <version>${xbeanVersion}</version>
@@ -158,6 +162,10 @@
         <dependency>
             <groupId>xstream</groupId>
             <artifactId>xstream</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>xpp3</groupId>
+            <artifactId>xpp3</artifactId>
         </dependency>
     </dependencies>
 </project>

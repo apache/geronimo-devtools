@@ -9,7 +9,8 @@ Bundle-ClassPath:
  lib/stax-api-1.0.jar,
  lib/cglib-nodep-2.1_3.jar,
  lib/xstream-1.2.jar,
- lib/xbean-2.0.0.jar
+ lib/xbean-2.0.0.jar,
+ lib/xpp3-1.1.3.3.jar
 Bundle-Localization: plugin 
 Export-Package: 
  com.thoughtworks.xstream,
@@ -105,6 +106,16 @@ Export-Package:
  org.apache.xmlbeans.xml.stream.events,
  org.apache.xmlbeans.xml.stream.utils,
  org.w3c.dom,
+ org.xmlpull.mxp1,
+ org.xmlpull.mxp1_serializer,
+ org.xmlpull.v1,
+ org.xmlpull.v1.builder,
+ org.xmlpull.v1.builder.adapter,
+ org.xmlpull.v1.builder.impl,
+ org.xmlpull.v1.sax2,
+ org.xmlpull.v1.util,
+ org.xmlpull.v1.wrapper,
+ org.xmlpull.v1.wrapper.classic,
  repackage,
  schemaorg_apache_xmlbeans.attribute.http_3A_2F_2Fwww_2Ew3_2Eorg_2FXML_2F1998_2Fnamespace,
  schemaorg_apache_xmlbeans.attributegroup.http_3A_2F_2Fwww_2Ew3_2Eorg_2F2001_2FXMLSchema,
