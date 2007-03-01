@@ -5,19 +5,20 @@ Bundle-SymbolicName: org.apache.geronimo.runtime.v20;singleton:=true
 Bundle-Version: 2.0.0
 Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.runtime.common;visibility:=reexport
-Bundle-ClassPath: lib/geronimo-common-2.0-SNAPSHOT.jar, 
- lib/geronimo-connector-builder-2.0-SNAPSHOT.jar, 
- lib/geronimo-deploy-jsr88-2.0-SNAPSHOT.jar, 
- lib/geronimo-deployment-2.0-SNAPSHOT.jar, 
- lib/geronimo-j2ee-builder-2.0-SNAPSHOT.jar, 
- lib/geronimo-j2ee-schema-2.0-SNAPSHOT.jar, 
- lib/geronimo-kernel-2.0-SNAPSHOT.jar, 
- lib/geronimo-naming-builder-2.0-SNAPSHOT.jar, 
- lib/geronimo-security-builder-2.0-SNAPSHOT.jar, 
- lib/geronimo-service-builder-2.0-SNAPSHOT.jar, 
- lib/geronimo-system-2.0-SNAPSHOT.jar, 
- lib/geronimo-util-2.0-SNAPSHOT.jar, 
- lib/geronimo-web-builder-2.0-SNAPSHOT.jar
+Bundle-ClassPath: lib/geronimo-common-2.0-SNAPSHOT.jar,
+ lib/geronimo-connector-builder-2.0-SNAPSHOT.jar,
+ lib/geronimo-deploy-jsr88-2.0-SNAPSHOT.jar,
+ lib/geronimo-deployment-2.0-SNAPSHOT.jar,
+ lib/geronimo-j2ee-builder-2.0-SNAPSHOT.jar,
+ lib/geronimo-j2ee-schema-2.0-SNAPSHOT.jar,
+ lib/geronimo-kernel-2.0-SNAPSHOT.jar,
+ lib/geronimo-naming-builder-2.0-SNAPSHOT.jar,
+ lib/geronimo-security-builder-2.0-SNAPSHOT.jar,
+ lib/geronimo-service-builder-2.0-SNAPSHOT.jar,
+ lib/geronimo-system-2.0-SNAPSHOT.jar,
+ lib/geronimo-util-2.0-SNAPSHOT.jar,
+ lib/geronimo-web-builder-2.0-SNAPSHOT.jar,
+ lib/geronimo-deploy-config-2.0-SNAPSHOT.jar
 Export-Package: 
  org.apache.geronimo.common,
  org.apache.geronimo.common.propertyeditor,
