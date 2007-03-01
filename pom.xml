@@ -163,27 +163,6 @@
                 <artifactId>xbean</artifactId>
                 <version>2.0.0</version>     
             </dependency>
-            <!-- Dependencies for Crimson DOM Bug Workaround -->
-            <dependency>
-                <groupId>xerces</groupId>
-                <artifactId>xercesImpl</artifactId>
-                <version>2.5.0</version>
-            </dependency>
-            <dependency>
-                <groupId>xerces</groupId>
-                <artifactId>xmlParserAPIs</artifactId>
-                <version>2.6.2</version>
-            </dependency>
-            <dependency>
-                <groupId>xerces</groupId>
-                <artifactId>xerces</artifactId>
-                <version>2.4.0</version>
-            </dependency>
-            <dependency>
-                <groupId>xml-resolver</groupId>
-                <artifactId>xml-resolver</artifactId>
-                <version>1.1</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
     <distributionManagement>

@@ -37,27 +37,4 @@
         <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/maven-plugins/maven-emf-plugin</url>
     </scm>
     
-    <dependencies>
-        <!-- Dependencies for Crimson DOM Bug Workaround -->
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xmlParserAPIs</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xerces</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>xml-resolver</groupId>
-            <artifactId>xml-resolver</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-    </dependencies>
 </project>
