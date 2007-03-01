@@ -148,6 +148,10 @@
             						<artifactId>geronimo-deploy-config</artifactId>
             						<version>${geronimoVersion}</version>
                                 </artifactItem>
+                                <artifactItem>
+            						<groupId>org.apache.geronimo.specs</groupId>
+            						<artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
+        						</artifactItem>
                             </artifactItems>
                             <outputDirectory>lib</outputDirectory>
                         </configuration>
@@ -260,6 +264,10 @@
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.common</artifactId>
             <version>${org.apache.geronimo.runtime.common_version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
         </dependency>
     </dependencies>
 </project>

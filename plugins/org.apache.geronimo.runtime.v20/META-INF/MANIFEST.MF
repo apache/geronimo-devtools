@@ -18,7 +18,8 @@ Bundle-ClassPath: lib/geronimo-common-2.0-SNAPSHOT.jar,
  lib/geronimo-system-2.0-SNAPSHOT.jar,
  lib/geronimo-util-2.0-SNAPSHOT.jar,
  lib/geronimo-web-builder-2.0-SNAPSHOT.jar,
- lib/geronimo-deploy-config-2.0-SNAPSHOT.jar
+ lib/geronimo-deploy-config-2.0-SNAPSHOT.jar,
+ lib/geronimo-javaee-deployment_1.1MR3_spec-1.0-SNAPSHOT.jar
 Export-Package: 
  org.apache.geronimo.common,
  org.apache.geronimo.common.propertyeditor,
@@ -44,6 +45,7 @@ Export-Package:
  org.apache.geronimo.gbean.runtime,
  org.apache.geronimo.j2ee,
  org.apache.geronimo.j2ee.deployment,
+ org.apache.geronimo.j2ee.deployment.annotation,
  org.apache.geronimo.j2ee.jsr88,
  org.apache.geronimo.kernel,
  org.apache.geronimo.kernel.basic,
@@ -104,11 +106,5 @@ Export-Package:
  org.apache.geronimo.xbeans.geronimo.security,
  org.apache.geronimo.xbeans.geronimo.security.impl,
  org.apache.geronimo.xbeans.geronimo.web,
- org.apache.geronimo.xbeans.geronimo.web.impl,
- schemaorg_apache_xmlbeans.system.s298FA73A56E6B9E224C27BFC45E91D1F,
- schemaorg_apache_xmlbeans.system.s2A5EDA3EF2058DBC0CE211DBFA340232,
- schemaorg_apache_xmlbeans.system.s2DB7E3135D2CE4347D4080210ABEE654,
- schemaorg_apache_xmlbeans.system.s44CE0FF0281EA2917CA1CA4FDC167B35,
- schemaorg_apache_xmlbeans.system.s596967AB426BF091FD59326316BABB46,
- schemaorg_apache_xmlbeans.system.s77ADFC19E55C1E252CFDFBF93BB15E19
+ org.apache.geronimo.xbeans.geronimo.web.impl
 Bundle-Vendor: Apache.org
