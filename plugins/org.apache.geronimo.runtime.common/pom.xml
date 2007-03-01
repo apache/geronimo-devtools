@@ -96,7 +96,6 @@
                                 <artifactItem>
                                     <groupId>xstream</groupId>
                                     <artifactId>xstream</artifactId>
-                                    <version>1.1.3</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>xmlbeans</groupId>
@@ -159,7 +158,6 @@
         <dependency>
             <groupId>xstream</groupId>
             <artifactId>xstream</artifactId>
-            <version>1.1.3</version>
         </dependency>
     </dependencies>
 </project>
