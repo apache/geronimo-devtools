@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.debug.ui,
  org.eclipse.jdt.debug.ui,
  org.eclipse.wst.common.modulecore,
- org.eclipse.jface;visibility:=reexport
+ org.eclipse.jface;visibility:=reexport,
+ org.eclipse.ui.workbench.texteditor
 Eclipse-LazyStart: true
 Export-Package: org.apache.geronimo.st.ui,
  org.apache.geronimo.st.ui.actions,
