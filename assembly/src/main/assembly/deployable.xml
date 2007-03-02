@@ -44,6 +44,7 @@
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v1.core</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v11.core</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v12.core</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v20.core</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.ui</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v1.ui</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v11.ui</include>
@@ -55,10 +56,9 @@
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v1</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v11</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v12</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v20</include>
             </includes>
         </dependencySet>
-        <!-- TODO, this is a hack... need to open a defect against assembly plugin to support property names (artifactID,version),
-        for <outputDirectory> or to treat <outputFileNameMapping> as a target folder -->
         <!-- Features -->
         <dependencySet>
             <outputDirectory>features/org.apache.geronimo.feature_${version}</outputDirectory>
