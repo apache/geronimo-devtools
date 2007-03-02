@@ -12,7 +12,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.common.project.facet.core,
  org.apache.geronimo.runtime.v20,
  org.apache.geronimo.st.core,
- org.apache.geronimo.st.v12.core,
  org.eclipse.wst.common.modulecore,
  org.apache.geronimo.v11.deployment.model
 Eclipse-LazyStart: true

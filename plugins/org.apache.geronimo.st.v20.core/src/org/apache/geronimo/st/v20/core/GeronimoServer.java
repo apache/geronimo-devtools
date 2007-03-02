@@ -23,7 +23,6 @@ import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
 import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
 import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.core.IGeronimoVersionHandler;
-import org.apache.geronimo.st.v12.core.GeronimoV12Utils;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.wst.server.core.IModule;
@@ -49,7 +48,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
 	 * @see org.apache.geronimo.st.core.GenericGeronimoServer#getContextRoot(org.eclipse.wst.server.core.IModule)
 	 */
 	public String getContextRoot(IModule module) {
-		return GeronimoV12Utils.getContextRoot(module);
+		return GeronimoV20Utils.getContextRoot(module);
 	}
 
 	/*
