@@ -17,11 +17,14 @@
 package org.apache.geronimo.eclipse.devtools;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
@@ -38,6 +41,10 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.artifact.ProjectArtifactMetadata;
 import org.codehaus.plexus.util.IOUtil;
+import org.eclipse.osgi.util.ManifestElement;
+import org.osgi.framework.Constants;
+
+import sun.util.BuddhistCalendar;
 
 /**
  * This maven plugin installs to the local maven repository eclipse plugin
@@ -125,6 +132,8 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		while (i.hasNext()) {
 			Dependency dependency = (Dependency) i.next();
 			if (GROUP_ID.equals(dependency.getGroupId())) {
+				getLog().debug("\n");
+				getLog().debug("========== Processing Plug-in Dependency: " + dependency.getArtifactId() + "==========");
 				if ("org.eclipse.swt".equals(dependency.getArtifactId())) {
 					Dependency fragment = getSWTFragmentDependency(dependency);
 					processDependency(fragment);
@@ -137,17 +146,15 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 
 	private void processDependency(Dependency dependency) {
 		File bundle = findBundleForDependency(dependency);
+		getLog().debug("Matching bundle: " + bundle);
 		if (bundle != null) {
 			process(bundle, dependency);
-			if (bundle.isDirectory()
-					&& getBundleName(bundle).equals(dependency.getArtifactId())) {
-				getLog().info("Removing bundle directory dependency: "
-						+ dependency.getArtifactId());
+			if (bundle.isDirectory() && getBundleName(bundle).equals(dependency.getArtifactId())) {
+				getLog().info("Removing bundle directory dependency: " + dependency.getArtifactId());
 				removeList.add(dependency);
 			}
 		} else {
-			getLog().info("Bundle for dependency not found: "
-					+ dependency.getArtifactId());
+			getLog().error("Bundle for dependency not found: " + dependency.getArtifactId());
 		}
 	}
 
@@ -160,21 +167,22 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		String platform = System.getProperty("os.name");
 		String arch = System.getProperty("os.arch");
 		if (platform.startsWith("Windows")) {
-         fragment.setArtifactId(id.concat(".win32.win32.x86"));
+			fragment.setArtifactId(id.concat(".win32.win32.x86"));
 		} else if (platform.startsWith("Linux")) {
-         if (arch.equalsIgnoreCase("x86_64") || arch.equalsIgnoreCase("amd64"))
-            fragment.setArtifactId(id.concat(".gtk.linux.x86_64"));
-         else if (arch.startsWith("ppc"))
-            fragment.setArtifactId(id.concat(".gtk.linux.ppc"));
-         else
-			   fragment.setArtifactId(id.concat(".gtk.linux.x86"));
+			if (arch.equalsIgnoreCase("x86_64")
+					|| arch.equalsIgnoreCase("amd64"))
+				fragment.setArtifactId(id.concat(".gtk.linux.x86_64"));
+			else if (arch.startsWith("ppc"))
+				fragment.setArtifactId(id.concat(".gtk.linux.ppc"));
+			else
+				fragment.setArtifactId(id.concat(".gtk.linux.x86"));
 		} else if (platform.startsWith("Mac")) {
 			fragment.setArtifactId(id.concat(".carbon.macosx"));
 		} else if (platform.startsWith("SunOS")) {
-         if (arch.startsWith("x86") || arch.startsWith("amd"))
-            fragment.setArtifactId(id.concat(".gtk.solaris.x86"));
-         else
-            fragment.setArtifactId(id.concat(".gtk.solaris.sparc"));
+			if (arch.startsWith("x86") || arch.startsWith("amd"))
+				fragment.setArtifactId(id.concat(".gtk.solaris.x86"));
+			else
+				fragment.setArtifactId(id.concat(".gtk.solaris.sparc"));
 		} else if (platform.startsWith("AIX")) {
 			fragment.setArtifactId(id.concat(".motif.aix.ppc"));
 		}
@@ -198,7 +206,11 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 
 	private boolean isBundleForDependency(Dependency dependency, File bundle) {
 		String bundleName = getBundleName(bundle);
-		return dependency.getArtifactId().startsWith(bundleName);
+		boolean match = dependency.getArtifactId().equals(bundleName);
+		if(match) {
+			getLog().debug("Found match using bundle name: " + bundleName);
+		}
+		return match;
 	}
 
 	protected void process(File file, Dependency dependency) {
@@ -269,11 +281,38 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 		return bundle;
 	}
 
-	public static String getBundleName(File bundle) {
+	public static String getBundleNameFromFileName(File bundle) {
 		String id = removeJarExtension(bundle);
-		if (id.indexOf("_") != -1)
-			id = id.substring(0, id.indexOf("_"));
+		if (id.lastIndexOf("_") != -1)
+			id = id.substring(0, id.lastIndexOf("_"));
 		return id;
+	}
+	
+	public static String getBundleName(File bundle) {
+		try {
+			Manifest manifest = null;
+			if(bundle.isFile()) {
+				JarFile jar = new JarFile(bundle);
+				manifest = jar.getManifest();
+			} else {
+				FileInputStream fis = new FileInputStream(new File(bundle, "META-INF/MANIFEST.MF"));
+				manifest = new Manifest(fis);
+				fis.close();
+			}
+			if(manifest != null) {
+				String id = manifest.getMainAttributes().getValue(Constants.BUNDLE_SYMBOLICNAME);
+				if(id != null) {
+					ManifestElement[] elements = ManifestElement.parseHeader(Constants.BUNDLE_SYMBOLICNAME, id);
+					if (elements != null) {
+						return elements[0].getValue();
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 	public static String getBundleVersion(File bundle) {
@@ -289,7 +328,8 @@ public class InstallPluginDependenciesMojo extends AbstractMojo {
 	}
 
 	private void doIt(File file, String groupId, String artifactId, String version, String packaging) throws MojoExecutionException, MojoFailureException {
-
+		getLog().debug("Installing " + file + ": " + groupId + " " + artifactId + " " + version + " ");
+		
 		Artifact artifact = artifactFactory.createArtifact(groupId, artifactId, version, null, packaging);
 		generatePOM(artifact, groupId, artifactId, version);
 
