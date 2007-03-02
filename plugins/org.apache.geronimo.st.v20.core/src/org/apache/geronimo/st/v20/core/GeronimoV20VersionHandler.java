@@ -20,7 +20,6 @@ import javax.enterprise.deploy.spi.TargetModuleID;
 
 import org.apache.geronimo.deployment.plugin.TargetModuleIDImpl;
 import org.apache.geronimo.st.core.IGeronimoVersionHandler;
-import org.apache.geronimo.st.v12.core.GeronimoV12Utils;
 import org.eclipse.wst.server.core.IModule;
 
 /**
@@ -34,8 +33,7 @@ public class GeronimoV20VersionHandler implements IGeronimoVersionHandler {
 	 * @see org.apache.geronimo.st.core.IGeronimoVersionHandler#getConfigID(org.eclipse.wst.server.core.IModule)
 	 */
 	public String getConfigID(IModule module) {
-        //TODO
-		return GeronimoV12Utils.getConfigId2(module);
+		return GeronimoV20Utils.getConfigId2(module);
 	}
 	
 	/* (non-Javadoc)

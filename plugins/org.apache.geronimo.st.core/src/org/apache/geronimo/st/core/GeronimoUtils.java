@@ -107,6 +107,10 @@ public class GeronimoUtils {
 		}
 		return null;
 	}
+	
+	public static String getQualifiedConfigID(String groupId, String artifactId, String version, String type) {
+		return groupId + "/" + artifactId + "/" + version + "/" + type;
+	}
 
 	public static IFile getWebDeploymentPlanFile(IVirtualComponent comp) {
 		IPath deployPlanPath = comp.getRootFolder().getUnderlyingFolder().getProjectRelativePath().append("WEB-INF").append(WEB_PLAN_NAME);
