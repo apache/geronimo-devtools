@@ -54,24 +54,10 @@
          unpack="false"/>
 
    <plugin
-         id="org.apache.geronimo.common.deployment.model.edit"
-         download-size="0"
-         install-size="0"
-         version="${org.apache.geronimo.common.deployment.model.edit_version}"
-         unpack="false"/>
-
-   <plugin
          id="org.apache.geronimo.v11.deployment.model"
          download-size="0"
          install-size="0"
          version="${org.apache.geronimo.v11.deployment.model_version}"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.geronimo.common.deployment.model"
-         download-size="0"
-         install-size="0"
-         version="${org.apache.geronimo.common.deployment.model_version}"
          unpack="false"/>
 
    <plugin
