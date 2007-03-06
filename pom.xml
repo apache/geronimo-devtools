@@ -92,6 +92,10 @@
         <org.apache.geronimo.v11.deployment.model.edit_version>${common.plugin.version}</org.apache.geronimo.v11.deployment.model.edit_version>
         <!-- Feature Versions -->
         <org.apache.geronimo.feature_version>2.0.0</org.apache.geronimo.feature_version>
+        <org.apache.geronimo.v10.feature_version>2.0.0</org.apache.geronimo.v10.feature_version>
+        <org.apache.geronimo.v11.feature_version>2.0.0</org.apache.geronimo.v11.feature_version>
+        <org.apache.geronimo.v12.feature_version>2.0.0</org.apache.geronimo.v12.feature_version>
+        <org.apache.geronimo.v20.feature_version>2.0.0</org.apache.geronimo.v20.feature_version>
         <org.apache.geronimo.installableruntime.tomcat.feature_version>2.0.0</org.apache.geronimo.installableruntime.tomcat.feature_version>
         <org.apache.geronimo.installableruntime.jetty.feature_version>2.0.0</org.apache.geronimo.installableruntime.jetty.feature_version>
         <!-- Ext. Jar Dependency Versions -->
