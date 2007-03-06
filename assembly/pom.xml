@@ -160,6 +160,26 @@
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.v10.feature</artifactId>
+            <version>${org.apache.geronimo.v10.feature_version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.v11.feature</artifactId>
+            <version>${org.apache.geronimo.v11.feature_version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.v12.feature</artifactId>
+            <version>${org.apache.geronimo.v12.feature_version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.v12.feature</artifactId>
+            <version>${org.apache.geronimo.v12.feature_version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.installableruntime.jetty.feature</artifactId>
             <version>${org.apache.geronimo.installableruntime.jetty.feature_version}</version>
         </dependency>

@@ -65,6 +65,10 @@
             <unpack>true</unpack>
             <includes>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.feature</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.v10.feature</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.v11.feature</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.v12.feature</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.v20.feature</include>
             </includes>
         </dependencySet>
     </dependencySets>
