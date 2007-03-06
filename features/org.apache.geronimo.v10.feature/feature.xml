@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.apache.geronimo.v10.feature"
+      label="org.apache.geronimo.v10.feature"
+      version="${org.apache.geronimo.v10.feature_version}"
+      provider-name="Apache Software Foundation"
+      image="bigG.gif">
+    
+    <description url="http://geronimo.apache.org/devtools">
+      %description
+    </description>
+    
+    <copyright url="http://www.apache.org/licenses/LICENSE-2.0.txt">
+      $copyright
+    </copyright>
+    
+    <license url="http://www.apache.org/licenses/LICENSE-2.0.txt">
+      %license
+    </license>
+    
+    <url>
+        <update label="Apache Geronimo Eclipse Update Site" url="http://geronimo.apache.org/devtools/"/>
+    </url>
+    
+    <requires>
+        <import feature="org.eclipse.jst" version="1.6.0" match="compatible"/>
+    </requires>
+    
+    <includes
+        id="org.apache.geronimo.feature"
+        version="${org.apache.geronimo.feature_version}"/>
+    
+    <plugin
+         id="org.apache.geronimo.st.v1.core"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.geronimo.st.v1.core_version}"
+         unpack="false"/>
+
+    <plugin
+         id="org.apache.geronimo.st.v1.ui"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.geronimo.st.v1.ui_version}"
+         unpack="false"/>
+
+    <plugin
+         id="org.apache.geronimo.runtime.v1"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.geronimo.runtime.v1_version}"/>
+
+    <plugin
+         id="org.apache.geronimo.deployment.model"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.geronimo.deployment.model_version}"
+         unpack="false"/>
+    
+    <plugin
+         id="org.apache.geronimo.deployment.model.edit"
+         download-size="0"
+         install-size="0"
+         version="${org.apache.geronimo.deployment.model.edit_version}"
+         unpack="false"/>
+
+</feature>
