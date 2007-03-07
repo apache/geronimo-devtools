@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.apache.geronimo.feature"
+      id="org.apache.geronimo.v11.feature"
       label="Apache Geronimo v1.1.x Server Adapter"
       version="${org.apache.geronimo.v11.feature_version}"
       provider-name="Apache Software Foundation"
