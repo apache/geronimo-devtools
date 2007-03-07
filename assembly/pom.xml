@@ -175,8 +175,8 @@
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.v12.feature</artifactId>
-            <version>${org.apache.geronimo.v12.feature_version}</version>
+            <artifactId>org.apache.geronimo.v20.feature</artifactId>
+            <version>${org.apache.geronimo.v20.feature_version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
