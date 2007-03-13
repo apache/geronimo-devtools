@@ -47,5 +47,7 @@ public class Messages extends NLS {
 	public static String missingContent;
 	public static String errorPortInUse;
 	public static String missingServer;
+	
+	public static String errorNoProfiler;
 
 }

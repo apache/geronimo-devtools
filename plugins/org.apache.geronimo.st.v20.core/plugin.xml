@@ -43,7 +43,7 @@
             runtimeTypeId="org.apache.geronimo.runtime.20"
             launchConfigId="org.apache.geronimo.st.core.launchConfigurationType"
             behaviourClass="org.apache.geronimo.st.v20.core.GeronimoServerBehaviour"
-            hasConfiguration="false" launchModes="run,debug">
+            hasConfiguration="false" launchModes="run,debug,profile">
         </serverType>
     </extension>
     
