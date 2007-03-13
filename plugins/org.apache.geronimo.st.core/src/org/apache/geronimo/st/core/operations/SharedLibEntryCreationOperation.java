@@ -105,8 +105,8 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 		IModule[] modules = (IModule[]) model.getProperty(MODULES);
 		this.server = (IServer) model.getProperty(SERVER);
 		
-		HashMap addList = new HashMap();
-		List deleteList = new ArrayList();
+		HashMap<File, File> addList = new HashMap<File, File>();
+		List<File> deleteList = new ArrayList<File>();
 		
 		try {
 			String sharedLibPath = getSharedLibPath();

@@ -55,7 +55,7 @@ public class GeronimoServerRuntimeTargetHandler extends RuntimeClasspathProvider
 
 	public IClasspathEntry[] getServerClassPathEntry(IRuntime runtime) {
 		
-		List list = new ArrayList();
+		List<IClasspathEntry> list = new ArrayList<IClasspathEntry>();
 		IPath path = runtime.getLocation().append("lib");
 		addLibraryEntries(list, path.toFile(), true);
 		

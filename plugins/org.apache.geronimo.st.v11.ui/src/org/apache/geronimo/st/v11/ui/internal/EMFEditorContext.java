@@ -26,6 +26,7 @@ import org.apache.geronimo.xml.ns.j2ee.connector.provider.ConnectorItemProviderA
 import org.apache.geronimo.xml.ns.j2ee.web.provider.WebItemProviderAdapterFactory;
 import org.apache.geronimo.xml.ns.naming.provider.NamingItemProviderAdapterFactory;
 import org.apache.geronimo.xml.ns.security.provider.SecurityItemProviderAdapterFactory;
+import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.openejb.xml.ns.openejb.jar.provider.JarItemProviderAdapterFactory;
 import org.openejb.xml.ns.pkgen.provider.PkgenItemProviderAdapterFactory;
@@ -35,7 +36,7 @@ public class EMFEditorContext {
 	private static ComposedAdapterFactory factory;
 
 	static {
-		List factories = new ArrayList();
+		List<AdapterFactoryImpl> factories = new ArrayList<AdapterFactoryImpl>();
 		factories.add(new DeploymentItemProviderAdapterFactory());
 		factories.add(new ClientItemProviderAdapterFactory());
 		factories.add(new ApplicationItemProviderAdapterFactory());

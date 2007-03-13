@@ -125,7 +125,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	}
 
 	private IModule[] doGetParentModules(IModule module) {
-		ArrayList parents = new ArrayList();
+		ArrayList<IModule> parents = new ArrayList<IModule>();
 		parents.addAll(getApplicationModules(module));
 
 		// also check to see if the module is a utility module for a stand-alone
@@ -139,9 +139,9 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 		return (IModule[]) parents.toArray(new IModule[parents.size()]);
 	}
 
-	private List getApplicationModules(IModule module) {
+	private List<IModule> getApplicationModules(IModule module) {
 		IModule[] ears = ServerUtil.getModules(IModuleConstants.JST_EAR_MODULE);
-		ArrayList list = new ArrayList();
+		ArrayList<IModule> list = new ArrayList<IModule>();
 		for (int i = 0; i < ears.length; i++) {
 			IEnterpriseApplication ear = (IEnterpriseApplication) ears[i].loadAdapter(IEnterpriseApplication.class, null);
 			IModule[] childs = ear.getModules();
@@ -192,7 +192,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	 * @see org.eclipse.wst.server.core.model.ServerDelegate#getServerPorts()
 	 */
 	public ServerPort[] getServerPorts() {
-		List ports = new ArrayList();
+		List<ServerPort> ports = new ArrayList<ServerPort>();
 		ports.add(new ServerPort(PROPERTY_HTTP_PORT, "Web Connector", Integer.parseInt(getHTTPPort()), "http"));
 		ports.add(new ServerPort(PROPERTY_RMI_PORT, "RMI Naming", Integer.parseInt(getRMINamingPort()), "rmi"));
 		return (ServerPort[]) ports.toArray(new ServerPort[ports.size()]);

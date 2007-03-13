@@ -200,7 +200,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	protected void publishModules(int kind, List modules, List deltaKind, MultiStatus multi, IProgressMonitor monitor) {
 		IStatus status = Status.OK_STATUS;
 		if (modules != null && modules.size() > 0 && getGeronimoServer().isInPlaceSharedLib()) {
-			List rootModules = new ArrayList();
+			List rootModules = new ArrayList<IModule>();
 			for(int i = 0; i < modules.size(); i++) {
 				IModule[] module = (IModule[]) modules.get(i);
 				if(!rootModules.contains(module[0])) {
@@ -221,7 +221,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 			if (monitor.isCanceled())
 				return;
 			
-			List rootModulesPublished = new ArrayList();
+			List rootModulesPublished = new ArrayList<IModule>();
 			for (int i = 0; i < size; i++) {
 				IModule[] module = (IModule[]) modules.get(i);
 				int moduleDeltaKind = ((Integer)deltaKind.get(i)).intValue();
@@ -563,7 +563,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	}
 
 	protected void setupLaunchClasspath(ILaunchConfigurationWorkingCopy wc, IVMInstall vmInstall) throws CoreException {
-		List cp = new ArrayList();
+		List<IRuntimeClasspathEntry> cp = new ArrayList<IRuntimeClasspathEntry>();
 		IPath serverJar = getServer().getRuntime().getLocation().append("/bin/server.jar");
 		cp.add(JavaRuntime.newArchiveRuntimeClasspathEntry(serverJar));
 		// merge existing classpath with server classpath
@@ -578,7 +578,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	}
 
 	private List convertCPEntryToMemento(List cpEntryList) {
-		List list = new ArrayList(cpEntryList.size());
+		List<String> list = new ArrayList<String>(cpEntryList.size());
 		Iterator iterator = cpEntryList.iterator();
 		while (iterator.hasNext()) {
 			IRuntimeClasspathEntry entry = (IRuntimeClasspathEntry) iterator.next();

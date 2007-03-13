@@ -66,7 +66,7 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
 		IServer server = ServerUtil.getServer(configuration);
 		IModule[] modules = server.getModules();
 
-		List javaProjectList = new ArrayList();
+		List<IJavaProject> javaProjectList = new ArrayList<IJavaProject>();
 		// populate list of java projects and their source folders
 		processModules(modules, javaProjectList, server, monitor);
 

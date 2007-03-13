@@ -88,7 +88,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 
 	private IWizardHandle fWizard;
 
-	protected List installedJREs;
+	protected List<IVMInstall> installedJREs;
 
 	protected String[] jreNames;
 
@@ -474,7 +474,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 	}
 
 	protected void updateJREs() {
-		installedJREs = new ArrayList();
+		installedJREs = new ArrayList<IVMInstall>();
 		IVMInstallType[] vmInstallTypes = JavaRuntime.getVMInstallTypes();
 		int size = vmInstallTypes.length;
 		for (int i = 0; i < size; i++) {
