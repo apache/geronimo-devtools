@@ -82,7 +82,7 @@ public class GeronimoLaunchConfigurationDelegate extends AbstractJavaLaunchConfi
 		
 		if (ILaunchManager.PROFILE_MODE.equals(mode)) {
 			ServerProfiler[] sp = JavaServerPlugin.getServerProfilers();
-			if (sp == null || runner == null) {
+			if (sp == null || sp.length ==0 || runner == null) {
 				geronimoServer.stopImpl();
 				throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, Messages.errorNoProfiler, null));
 			}
