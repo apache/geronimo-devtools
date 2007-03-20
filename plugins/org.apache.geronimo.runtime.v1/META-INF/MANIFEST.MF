@@ -169,8 +169,6 @@ Export-Package:
  schemaorg_apache_xmlbeans.namespace.http_3A_2F_2Fwww_2Ew3_2Eorg_2FXML_2F1998_2Fnamespace,
  schemaorg_apache_xmlbeans.src.http_3A_2F_2Fwww_2Eibm_2Ecom_2Fwebservices_2Fxsd,
  schemaorg_apache_xmlbeans.src.http_3A_2F_2Fwww_2Ew3_2Eorg_2F2001,
- schemaorg_apache_xmlbeans.src.modules,
- schemaorg_apache_xmlbeans.src.openejb.modules,
  schemaorg_apache_xmlbeans.system.s3B01C45AB793F6BD8A54AA856D71D1A2,
  schemaorg_apache_xmlbeans.system.s3CEFE23A58609BDA2FB9781D0C61E5AE,
  schemaorg_apache_xmlbeans.system.s86635A1847D0665F1FF61E9AD85B644B,
