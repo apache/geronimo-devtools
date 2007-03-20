@@ -131,6 +131,13 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 		}
 		return false;
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate#getRuntimeClass()
+	 */
+	public String getRuntimeClass() {
+		return "org.apache.geronimo.kernel.util.MainConfigurationBootstrapper";
+	}
 
 	public IPath getPublishDirectory(IModule[] module) {
 		if (module == null || module.length == 0)
