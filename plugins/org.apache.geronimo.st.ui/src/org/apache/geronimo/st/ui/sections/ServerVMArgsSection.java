@@ -20,7 +20,7 @@ import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.ui.commands.SetVMArgsCommand;
 import org.apache.geronimo.st.ui.internal.Messages;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.debug.internal.ui.SWTUtil;
+import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.jdt.internal.debug.ui.launcher.LauncherMessages;
 import org.eclipse.swt.SWT;
@@ -101,8 +101,9 @@ public class ServerVMArgsSection extends ServerEditorSection {
 				execute(new SetVMArgsCommand(server, getAttributeValueFrom(fVMArgumentsText)));
 			}
 		});
-				
-		fPgrmArgVariableButton = SWTUtil.createPushButton(composite, LauncherMessages.VMArgumentsBlock_4, null);
+		
+		
+		fPgrmArgVariableButton = SWTFactory.createPushButton(composite, LauncherMessages.VMArgumentsBlock_4, null);
 		fPgrmArgVariableButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
 		fPgrmArgVariableButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
