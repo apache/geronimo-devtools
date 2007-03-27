@@ -33,8 +33,6 @@
 	        sourcePathComputerId="org.apache.geronimo.st.core.sourcePathComputer"/>
 	</extension>
 	
-	<!--org.eclipse.jst.server.generic.core.sourcePathComputer-->
-	
 	<extension point="org.eclipse.debug.core.sourcePathComputers">
     	<sourcePathComputer
         	id="org.apache.geronimo.st.core.sourcePathComputer"
