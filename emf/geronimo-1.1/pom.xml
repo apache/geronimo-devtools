@@ -191,6 +191,11 @@
     <!-- thus exclusions are needed to avoid attempt to pull in these missing transative dependencies -->
     <dependencies>
         <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-qname_1.1_spec</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
             <groupId>openejb</groupId>
             <artifactId>openejb-pkgen-builder</artifactId>
             <version>${openejbVersion}</version>
@@ -210,6 +215,10 @@
                 <exclusion>
                     <groupId>org.apache.geronimo.schema</groupId>
                     <artifactId>geronimo-schema-j2ee_1.4</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-qname_1.1_spec</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
