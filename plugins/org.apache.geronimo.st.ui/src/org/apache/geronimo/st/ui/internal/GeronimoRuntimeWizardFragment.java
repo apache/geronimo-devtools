@@ -413,11 +413,14 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 	}
 
 	private boolean isValidVM() {
-		String javaVersion = null;
-		IVMInstall vmInstall = getRuntimeDelegate().getVMInstall();
-		if (vmInstall instanceof IVMInstall2)
-			javaVersion = ((IVMInstall2) vmInstall).getJavaVersion();
-		return javaVersion != null && javaVersion.startsWith("1.4");
+		if(getRuntimeDelegate().getRuntime().getRuntimeType().getVersion().startsWith("1")) {
+			IVMInstall vmInstall = getRuntimeDelegate().getVMInstall();
+			if (vmInstall instanceof IVMInstall2) {
+				String javaVersion = ((IVMInstall2) vmInstall).getJavaVersion();
+				return javaVersion != null && javaVersion.startsWith("1.4");
+			}
+		}
+		return true;
 	}
 
 	/*
