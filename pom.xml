@@ -21,8 +21,8 @@
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>geronimo-eclipse-plugin</artifactId>
     <packaging>pom</packaging>
-    <name>Root POM :: ${artifactId}</name>
-    <version>1.1</version>
+    <name>${artifactId}</name>
+    <version>2.0.0</version>
     <description>Parent POM for Geronimo Eclipse Plugin</description>
     <url>http://geronimo.apache.org/devtools</url>
     <prerequisites>
@@ -69,27 +69,7 @@
         <url>http://geronimo.apache.org/</url>
     </organization>
     <properties>
-        <common.plugin.version>2.0.0</common.plugin.version>
-        <!-- Plugin Versions -->
-        <org.apache.geronimo.st.core_version>${common.plugin.version}</org.apache.geronimo.st.core_version>
-        <org.apache.geronimo.st.v1.core_version>${common.plugin.version}</org.apache.geronimo.st.v1.core_version>
-        <org.apache.geronimo.st.v11.core_version>${common.plugin.version}</org.apache.geronimo.st.v11.core_version>
-        <org.apache.geronimo.st.v12.core_version>${common.plugin.version}</org.apache.geronimo.st.v12.core_version>
-        <org.apache.geronimo.st.v20.core_version>${common.plugin.version}</org.apache.geronimo.st.v20.core_version>
-        <org.apache.geronimo.st.ui_version>${common.plugin.version}</org.apache.geronimo.st.ui_version>
-        <org.apache.geronimo.st.v1.ui_version>${common.plugin.version}</org.apache.geronimo.st.v1.ui_version>
-        <org.apache.geronimo.st.v11.ui_version>${common.plugin.version}</org.apache.geronimo.st.v11.ui_version>
-        <org.apache.geronimo.runtime.common_version>${common.plugin.version}</org.apache.geronimo.runtime.common_version>
-        <org.apache.geronimo.runtime.v1_version>${common.plugin.version}</org.apache.geronimo.runtime.v1_version>
-        <org.apache.geronimo.runtime.v11_version>${common.plugin.version}</org.apache.geronimo.runtime.v11_version>
-        <org.apache.geronimo.runtime.v12_version>${common.plugin.version}</org.apache.geronimo.runtime.v12_version>
-        <org.apache.geronimo.runtime.v20_version>${common.plugin.version}</org.apache.geronimo.runtime.v20_version>
-        <org.apache.geronimo.common.deployment.model_version>${common.plugin.version}</org.apache.geronimo.common.deployment.model_version>
-        <org.apache.geronimo.common.deployment.model.edit_version>${common.plugin.version}</org.apache.geronimo.common.deployment.model.edit_version>
-        <org.apache.geronimo.deployment.model_version>${common.plugin.version}</org.apache.geronimo.deployment.model_version>
-        <org.apache.geronimo.deployment.model.edit_version>${common.plugin.version}</org.apache.geronimo.deployment.model.edit_version>
-        <org.apache.geronimo.v11.deployment.model_version>${common.plugin.version}</org.apache.geronimo.v11.deployment.model_version>
-        <org.apache.geronimo.v11.deployment.model.edit_version>${common.plugin.version}</org.apache.geronimo.v11.deployment.model.edit_version>
+        <bundle.version>2.0.0</bundle.version>
         <!-- Feature Versions -->
         <org.apache.geronimo.feature_version>2.0.0</org.apache.geronimo.feature_version>
         <org.apache.geronimo.v10.feature_version>2.0.0</org.apache.geronimo.v10.feature_version>
@@ -287,7 +267,6 @@
         </repository>
     </repositories>
     <modules>
-    <!--<module>modules/eclipse-support</module>-->
         <module>maven-plugins</module>
         <module>emf</module>
         <module>plugins</module>

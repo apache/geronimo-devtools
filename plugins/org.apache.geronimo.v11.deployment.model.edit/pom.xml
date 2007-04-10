@@ -14,28 +14,22 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
-<!-- $Rev$ $Date$ -->        
-
+<!-- $Rev$ $Date$ -->
 <project>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.apache.geronimo.v11.deployment.model.edit</artifactId>
     <packaging>jar</packaging>
-    <version>${org.apache.geronimo.v11.deployment.model.edit_version}</version>
     <name>${artifactId}</name>
-    
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>eclipse-plugins-parent</artifactId>
-        <version>1.0</version>
+        <version>2.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    
     <properties>
         <imported-resources>
             ${project.build.directory}/imported-resources</imported-resources>
     </properties>
-    
     <build>
         <resources>
             <resource>
@@ -61,15 +55,14 @@
                 </includes>
             </resource>
         </resources>
-        
         <plugins>
-        	<plugin>
-            	<artifactId>maven-antrun-plugin</artifactId>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.geronimo.devtools</groupId>
                 <artifactId>maven-geronimodevtools-plugin</artifactId>
-            </plugin>           
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -90,7 +83,7 @@
                         <artifactItem>
                             <groupId>org.apache.geronimo.devtools</groupId>
                             <artifactId>geronimo-1.1-emf</artifactId>
-                            <version>1.0</version>
+                            <version>${version}</version>
                             <type>jar</type>
                         </artifactItem>
                     </artifactItems>
@@ -179,7 +172,7 @@
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.v11.deployment.model</artifactId>
-            <version>${org.apache.geronimo.v11.deployment.model_version}</version>
+            <version>${version}</version>
         </dependency>
-    </dependencies>   
+    </dependencies>
 </project>

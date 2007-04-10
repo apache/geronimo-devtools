@@ -34,13 +34,13 @@
          id="org.apache.geronimo.st.v12.core"
          download-size="0"
          install-size="0"
-         version="${org.apache.geronimo.st.v12.core_version}"
+         version="${bundle.version}"
          unpack="false"/>
     
     <plugin
          id="org.apache.geronimo.runtime.v12"
          download-size="0"
          install-size="0"
-         version="${org.apache.geronimo.runtime.v12_version}"/>
+         version="${bundle.version}"/>
 
 </feature>

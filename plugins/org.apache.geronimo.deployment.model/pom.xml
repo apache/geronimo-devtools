@@ -14,28 +14,22 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <!-- $Rev$ $Date$ -->
-
 <project>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.apache.geronimo.deployment.model</artifactId>
     <packaging>jar</packaging>
-    <version>${org.apache.geronimo.deployment.model_version}</version>
     <name>${artifactId}</name>
-    
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>eclipse-plugins-parent</artifactId>
-        <version>1.0</version>
+        <version>2.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    
     <properties>
         <imported-resources>
             ${project.build.directory}/imported-resources</imported-resources>
     </properties>
-    
     <build>
         <resources>
             <resource>
@@ -54,14 +48,13 @@
                 </includes>
             </resource>
         </resources>
-        
         <plugins>
             <plugin>
                 <groupId>org.apache.geronimo.devtools</groupId>
                 <artifactId>maven-geronimodevtools-plugin</artifactId>
             </plugin>
             <plugin>
-            	<artifactId>maven-antrun-plugin</artifactId>
+                <artifactId>maven-antrun-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -83,7 +76,7 @@
                         <artifactItem>
                             <groupId>org.apache.geronimo.devtools</groupId>
                             <artifactId>geronimo-1.0-emf</artifactId>
-                            <version>1.0</version>
+                            <version>${version}</version>
                             <type>jar</type>
                         </artifactItem>
                     </artifactItems>

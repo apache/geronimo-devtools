@@ -34,34 +34,34 @@
          id="org.apache.geronimo.st.v1.core"
          download-size="0"
          install-size="0"
-         version="${org.apache.geronimo.st.v1.core_version}"
+         version="${bundle.version}"
          unpack="false"/>
 
     <plugin
          id="org.apache.geronimo.st.v1.ui"
          download-size="0"
          install-size="0"
-         version="${org.apache.geronimo.st.v1.ui_version}"
+         version="${bundle.version}"
          unpack="false"/>
 
     <plugin
          id="org.apache.geronimo.runtime.v1"
          download-size="0"
          install-size="0"
-         version="${org.apache.geronimo.runtime.v1_version}"/>
+         version="${bundle.version}"/>
 
     <plugin
          id="org.apache.geronimo.deployment.model"
          download-size="0"
          install-size="0"
-         version="${org.apache.geronimo.deployment.model_version}"
+         version="${bundle.version}"
          unpack="false"/>
     
     <plugin
          id="org.apache.geronimo.deployment.model.edit"
          download-size="0"
          install-size="0"
-         version="${org.apache.geronimo.deployment.model.edit_version}"
+         version="${bundle.version}"
          unpack="false"/>
 
 </feature>

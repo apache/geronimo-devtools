@@ -19,12 +19,11 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>geronimo-1.1-emf</artifactId>
     <packaging>jar</packaging>
-    <version>1.0</version>
     <name>${artifactId}</name>
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-emf-parent</artifactId>
-        <version>1.0</version>
+        <version>2.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <properties>
@@ -187,8 +186,8 @@
             </plugin>
         </plugins>
     </build>
-    <!-- The exclusions in the depenencies below are needed due to incorrect published poms that cannot be fixed and -->
-    <!-- thus exclusions are needed to avoid attempt to pull in these missing transative dependencies -->
+<!-- The exclusions in the depenencies below are needed due to incorrect published poms that cannot be fixed and -->
+<!-- thus exclusions are needed to avoid attempt to pull in these missing transative dependencies -->
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>

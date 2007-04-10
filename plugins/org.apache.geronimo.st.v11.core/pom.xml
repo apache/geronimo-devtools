@@ -14,19 +14,16 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <!-- $Rev$ $Date$ -->
-
 <project>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.apache.geronimo.st.v11.core</artifactId>
     <packaging>jar</packaging>
-    <version>${org.apache.geronimo.st.v11.core_version}</version>
     <name>${artifactId}</name>
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>eclipse-plugins-parent</artifactId>
-        <version>1.0</version>
+        <version>2.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <build>
@@ -49,8 +46,8 @@
             </resource>
         </resources>
         <plugins>
-        	<plugin>
-            	<artifactId>maven-antrun-plugin</artifactId>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.geronimo.devtools</groupId>
@@ -63,26 +60,26 @@
         </plugins>
     </build>
     <dependencies>
-        <!-- g plugin dependencies -->
+<!-- g plugin dependencies -->
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.core</artifactId>
-            <version>${org.apache.geronimo.st.core_version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.v11.deployment.model</artifactId>
-            <version>${org.apache.geronimo.v11.deployment.model_version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.v11</artifactId>
-            <version>${org.apache.geronimo.runtime.v11_version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.common</artifactId>
-            <version>${org.apache.geronimo.runtime.common_version}</version>
+            <version>${version}</version>
         </dependency>
     </dependencies>
 </project>
