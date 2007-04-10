@@ -105,10 +105,10 @@
         <!-- Eclipse Distribution URLs -->
         <platformDriver>S-3.3M6-200703231616/eclipse-SDK-3.3M6</platformDriver>
         <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/${platformDriver}</platformUrl>
-        <emfUrl>http://download.eclipse.org/modeling/emf/emf/downloads/drops/2.3.0/I200703150200//emf-sdo-xsd-SDK-I200703150200.zip</emfUrl>
-        <dptUrl>http://download.eclipse.org/datatools/downloads/1.5/dtp-sdk_1.5M5.zip</dptUrl>
-        <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/I20070315-0952/GEF-SDK-I20070315-0952.zip</gefUrl>
-        <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/R2.0/I-I200703231630-200703231630/wtp-sdk-I-I200703231630-200703231630.zip</wtpUrl>
+        <emfUrl>http://download.eclipse.org/modeling/emf/emf/downloads/drops/2.3.0/S200703291501//emf-sdo-xsd-SDK-2.3.0M6.zip</emfUrl>
+        <dptUrl>http://download.eclipse.org/datatools/downloads/1.5/dtp-sdk_1.5M6.zip</dptUrl>
+        <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/S-3.3M6-200703300740/GEF-SDK-3.3M6.zip</gefUrl>
+        <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/R2.0/S-2.0M6-200704060120/wtp-sdk-S-2.0M6-200704060120.zip</wtpUrl>
     </properties>
     <dependencyManagement>
         <dependencies>
