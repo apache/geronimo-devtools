@@ -69,122 +69,122 @@
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.core</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v1.core</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v11.core</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v12.core</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v20.core</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.deployment.model</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.deployment.model.edit</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.v11.deployment.model</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.v11.deployment.model.edit</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.common</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.v1</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.v11</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.v12</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.v20</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.ui</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v1.ui</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v11.ui</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.feature</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.v10.feature</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.v11.feature</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.v12.feature</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.v20.feature</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.installableruntime.jetty.feature</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.installableruntime.tomcat.feature</artifactId>
-            <version>${bundle.version}</version>
+            <version>${version}</version>
         </dependency>
     </dependencies>
 </project>

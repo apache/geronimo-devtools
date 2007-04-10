@@ -30,19 +30,19 @@
          id="org.apache.geronimo.st.core"
          download-size="0"
          install-size="0"
-         version="${bundle.version}"
+         version="${version}"
          unpack="false"/>
 
     <plugin
          id="org.apache.geronimo.st.ui"
          download-size="0"
          install-size="0"
-         version="${bundle.version}"
+         version="${version}"
          unpack="false"/>
     
     <plugin
          id="org.apache.geronimo.runtime.common"
          download-size="0"
          install-size="0"
-         version="${bundle.version}"/>
+         version="${version}"/>
 </feature>
