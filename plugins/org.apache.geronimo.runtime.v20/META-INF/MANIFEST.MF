@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo V20 Runtime Plug-in
 Bundle-SymbolicName: org.apache.geronimo.runtime.v20;singleton:=true
 Bundle-Version: 2.0.0
-Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.runtime.common;visibility:=reexport
 Bundle-ClassPath: lib/geronimo-common-2.0-SNAPSHOT.jar,
  lib/geronimo-connector-builder-2.0-SNAPSHOT.jar,

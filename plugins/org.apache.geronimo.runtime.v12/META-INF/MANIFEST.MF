@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo V12 Runtime Plug-in
 Bundle-SymbolicName: org.apache.geronimo.runtime.v12;singleton:=true
 Bundle-Version: 2.0.0
-Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.runtime.common;visibility:=reexport
 Bundle-ClassPath: lib/geronimo-common-1.2-SNAPSHOT.jar, 
  lib/geronimo-connector-builder-1.2-SNAPSHOT.jar, 
@@ -28,6 +27,8 @@ Export-Package: org.apache.geronimo.common,
  org.apache.geronimo.deployment.javabean.xbeans,
  org.apache.geronimo.deployment.javabean.xbeans.impl,
  org.apache.geronimo.deployment.plugin,
+ org.apache.geronimo.deployment.plugin.application,
+ org.apache.geronimo.deployment.plugin.client,
  org.apache.geronimo.deployment.plugin.factories,
  org.apache.geronimo.deployment.plugin.jmx,
  org.apache.geronimo.deployment.plugin.local,
@@ -43,7 +44,6 @@ Export-Package: org.apache.geronimo.common,
  org.apache.geronimo.gbean.runtime,
  org.apache.geronimo.j2ee,
  org.apache.geronimo.j2ee.deployment,
- org.apache.geronimo.j2ee.jsr88,
  org.apache.geronimo.kernel,
  org.apache.geronimo.kernel.basic,
  org.apache.geronimo.kernel.classloader,

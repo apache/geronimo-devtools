@@ -16,7 +16,6 @@ Bundle-ClassPath:
  lib/geronimo-deploy-jsr88-1.0.jar,
  lib/geronimo-connector-builder-1.0.jar,
  lib/geronimo-common-1.0.jar
-Bundle-Localization: plugin
 Export-Package: 
  noNamespace,
  noNamespace.impl,
