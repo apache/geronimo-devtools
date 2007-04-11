@@ -33,6 +33,7 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMRunner;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
+import org.eclipse.jst.server.core.ServerProfilerDelegate;
 import org.eclipse.jst.server.core.internal.JavaServerPlugin;
 import org.eclipse.jst.server.core.internal.ServerProfiler;
 import org.eclipse.wst.server.core.IServer;
@@ -67,9 +68,10 @@ public class GeronimoLaunchConfigurationDelegate extends AbstractJavaLaunchConfi
 		String mainTypeName = geronimoServer.getRuntimeClass();
 		IVMInstall vm = verifyVMInstall(configuration);
 		IVMRunner runner = vm.getVMRunner(mode);
-
-		if (runner == null)
+		
+		if(runner == null && ILaunchManager.PROFILE_MODE.equals(mode)){
 			runner = vm.getVMRunner(ILaunchManager.RUN_MODE);
+		}
 
 		File workingDir = verifyWorkingDirectory(configuration);
 		String workingDirName = null;
@@ -82,7 +84,7 @@ public class GeronimoLaunchConfigurationDelegate extends AbstractJavaLaunchConfi
 		
 		if (ILaunchManager.PROFILE_MODE.equals(mode)) {
 			ServerProfiler[] sp = JavaServerPlugin.getServerProfilers();
-			if (sp == null || sp.length ==0 || runner == null) {
+			if (sp == null || sp.length == 0 || runner == null) {
 				geronimoServer.stopImpl();
 				throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, Messages.errorNoProfiler, null));
 			}
@@ -107,6 +109,15 @@ public class GeronimoLaunchConfigurationDelegate extends AbstractJavaLaunchConfi
 			runConfig.setBootClassPath(bootpath);
 
 		setDefaultSourceLocator(launch, configuration);
+		
+		/*if (ILaunchManager.PROFILE_MODE.equals(mode)) {
+			try {
+				ServerProfilerDelegate.configureProfiling(launch, vm, runConfig, monitor);
+			} catch (CoreException ce) {
+				geronimoServer.stopImpl();
+				throw ce;
+			}
+		}*/
 
 		geronimoServer.startPingThread();
 		runner.run(runConfig, launch, monitor);
