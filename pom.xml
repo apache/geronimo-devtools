@@ -92,46 +92,6 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.apache.maven</groupId>
-                <artifactId>maven-plugin-api</artifactId>
-                <version>2.0.4</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.maven</groupId>
-                <artifactId>maven-project</artifactId>
-                <version>2.0.4</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>2.1</version>
-            </dependency>
-            <dependency>
-                <groupId>ant</groupId>
-                <artifactId>ant</artifactId>
-                <version>1.6.5</version>
-            </dependency>
-            <dependency>
-                <groupId>velocity</groupId>
-                <artifactId>velocity</artifactId>
-                <version>1.4</version>
-            </dependency>
-            <dependency>
-                <groupId>velocity</groupId>
-                <artifactId>velocity-dep</artifactId>
-                <version>1.4</version>
-            </dependency>
-            <dependency>
-                <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-archiver</artifactId>
-                <version>1.0-alpha-3</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse</groupId>
-                <artifactId>osgi</artifactId>
-                <version>3.3.0.v20061213</version>
-            </dependency>
-            <dependency>
                 <groupId>xstream</groupId>
                 <artifactId>xstream</artifactId>
                 <version>1.2</version>     
@@ -251,17 +211,6 @@
             </snapshots>
             <releases>
                 <enabled>false</enabled>
-            </releases>
-        </repository>
-        <repository>
-            <id>sppatel</id>
-            <name>sppatel Repository on Apache</name>
-            <url>http://people.apache.org/~sppatel/maven/repository/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
             </releases>
         </repository>
     </repositories>
