@@ -23,7 +23,12 @@
     <packaging>pom</packaging>
     <name>${artifactId}</name>
     <version>2.0.0</version>
-    <description>Parent POM for Geronimo Eclipse Plugin</description>
+    <parent>
+        <groupId>org.apache</groupId>
+        <artifactId>apache</artifactId>
+        <version>4</version>
+    </parent>
+    <description>Apache Geronimo Eclipse Plugin and WTP Server Adapter</description>
     <url>http://geronimo.apache.org/devtools</url>
     <prerequisites>
         <maven>2.0.4</maven>
