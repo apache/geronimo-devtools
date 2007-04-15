@@ -32,7 +32,7 @@
             <plugins>
                 <plugin>
                     <groupId>org.apache.geronimo.devtools</groupId>
-                    <artifactId>maven-geronimodevtools-plugin</artifactId>
+                    <artifactId>maven-eclipse-plugin</artifactId>
                     <configuration>
                         <target>${project.build.outputDirectory}/schemas</target>
                         <includes>

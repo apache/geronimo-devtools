@@ -84,6 +84,6 @@
     </repositories>
     <modules>
         <module>maven-emf-plugin</module>
-        <module>maven-geronimodevtools-plugin</module>
+        <module>maven-eclipse-plugin</module>
     </modules>
 </project>

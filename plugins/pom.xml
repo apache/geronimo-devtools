@@ -49,7 +49,7 @@
             <plugins>
                 <plugin>
                     <groupId>org.apache.geronimo.devtools</groupId>
-                    <artifactId>maven-geronimodevtools-plugin</artifactId>
+                    <artifactId>maven-eclipse-plugin</artifactId>
                     <executions>
                         <execution>
                             <id>initialize</id>
@@ -97,7 +97,7 @@
                                 <goal>run</goal>
                             </goals>
                         </execution>
-<!-- workaround for bugzilla 147936 -->
+                        <!-- workaround for bugzilla 147936 -->
                         <execution>
                             <id>backup</id>
                             <phase>process-sources</phase>
@@ -124,7 +124,7 @@
                                 <goal>run</goal>
                             </goals>
                         </execution>
-<!-- /workaround -->
+                        <!-- /workaround -->
                     </executions>
                 </plugin>
                 <plugin>
