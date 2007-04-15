@@ -57,13 +57,6 @@
             <archive>http://mail-archives.apache.org/mod_mbox/geronimo-scm/</archive>
         </mailingList>
     </mailingLists>
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
     <scm>
         <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</connection>
         <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</developerConnection>
@@ -114,19 +107,9 @@
         </dependencies>
     </dependencyManagement>
     <distributionManagement>
-        <repository>
-            <id>apache-repo</id>
-            <name>Apache CVS Repository</name>
-            <url>scpexe://cvs.apache.org/www/cvs.apache.org/maven-snapshot-repository</url>
-        </repository>
-        <snapshotRepository>
-            <id>apache-snapshots</id>
-            <name>Apache CVS Development Repository</name>
-            <url>scpexe://cvs.apache.org/www/cvs.apache.org/maven-snapshot-repository</url>
-        </snapshotRepository>
         <site>
             <id>geronimo-website</id>
-            <url>scpexe://minotaur.apache.org/www/geronimo.apache.org/maven/</url>
+            <url>scp://people.apache.org/www/geronimo.apache.org/maven/devtools/eclipse-plugin</url>
         </site>
     </distributionManagement>
     <build>
