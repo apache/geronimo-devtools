@@ -277,7 +277,7 @@
             </activation>
             <properties>
                 <eclipsePlatformFamily>linux-gtk</eclipsePlatformFamily>
-                <artifactType>targ.gz</artifactType>
+                <artifactType>tar.gz</artifactType>
             </properties>
         </profile>
         <profile>
