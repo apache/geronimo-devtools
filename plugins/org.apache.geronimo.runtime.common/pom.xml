@@ -26,11 +26,6 @@
         <version>2.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <properties>
-        <xbeanVersion>2.0.0</xbeanVersion>
-        <commonsLoggingVersion>1.0.4</commonsLoggingVersion>
-        <geronimo_spec_version>1.0</geronimo_spec_version>
-    </properties>
     <build>
         <resources>
             <resource>
@@ -70,16 +65,17 @@
                             <goal>copy</goal>
                         </goals>
                         <configuration>
+                            <excludeTransitive>true</excludeTransitive>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.specs</groupId>
                                     <artifactId>geronimo-j2ee-deployment_1.1_spec</artifactId>
-                                    <version>${geronimo_spec_version}</version>
+                                    <version>1.0</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>commons-logging</groupId>
                                     <artifactId>commons-logging</artifactId>
-                                    <version>${commonsLoggingVersion}</version>
+                                    <version>1.0.4</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>cglib</groupId>
@@ -102,7 +98,6 @@
                                 <artifactItem>
                                     <groupId>xmlbeans</groupId>
                                     <artifactId>xbean</artifactId>
-                                    <version>${xbeanVersion}</version>
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>lib</outputDirectory>
@@ -140,12 +135,12 @@
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-j2ee-deployment_1.1_spec</artifactId>
-            <version>${geronimo_spec_version}</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
-            <version>${commonsLoggingVersion}</version>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
@@ -164,6 +159,10 @@
         <dependency>
             <groupId>xpp3</groupId>
             <artifactId>xpp3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>xmlbeans</groupId>
+            <artifactId>xbean</artifactId>
         </dependency>
     </dependencies>
 </project>
