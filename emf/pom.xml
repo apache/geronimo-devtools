@@ -31,21 +31,19 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.apache.geronimo.devtools</groupId>
-                    <artifactId>maven-eclipse-plugin</artifactId>
-                    <configuration>
-                        <target>${project.build.outputDirectory}/schemas</target>
-                        <includes>
-                            <include>**/*.xsd</include>
-                        </includes>
-                    </configuration>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
                     <executions>
                         <execution>
-                            <id>import-resources</id>
-                            <phase>process-resources</phase>
+                            <id>unpack-dependencies</id>
+                            <phase>generate-resources</phase>
                             <goals>
-                                <goal>importresources</goal>
+                                <goal>unpack-dependencies</goal>
                             </goals>
+                            <configuration>
+                                <excludeTransitive>true</excludeTransitive>
+                                <includeTypes>jar</includeTypes>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
@@ -70,6 +68,23 @@
                     </dependencies>
                     <executions>
                         <execution>
+                            <id>copy-schemas</id>
+                            <phase>process-resources</phase>
+                            <configuration>
+                                <tasks>
+                                    <copy todir="${project.build.outputDirectory}/schemas/" flatten="true">
+                                        <fileset dir="${project.build.directory}/dependency">
+                                            <include name="**/*.xsd"/>
+                                        </fileset>
+                                    </copy>
+                                </tasks>
+                            </configuration>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>fix-schemas</id>
                             <phase>process-classes</phase>
                             <configuration>
                                 <tasks>

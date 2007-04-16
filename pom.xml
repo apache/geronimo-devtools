@@ -66,8 +66,14 @@
         <name>Geronimo</name>
         <url>http://geronimo.apache.org/</url>
     </organization>
+    <distributionManagement>
+        <site>
+            <id>geronimo-website</id>
+            <url>scp://people.apache.org/www/geronimo.apache.org/maven/devtools/eclipse-plugin</url>
+        </site>
+    </distributionManagement>
     <properties>
-        <!-- Feature Versions -->
+<!-- Feature Versions -->
         <org.apache.geronimo.feature_version>2.0.0</org.apache.geronimo.feature_version>
         <org.apache.geronimo.v10.feature_version>2.0.0</org.apache.geronimo.v10.feature_version>
         <org.apache.geronimo.v11.feature_version>2.0.0</org.apache.geronimo.v11.feature_version>
@@ -75,17 +81,8 @@
         <org.apache.geronimo.v20.feature_version>2.0.0</org.apache.geronimo.v20.feature_version>
         <org.apache.geronimo.installableruntime.tomcat.feature_version>2.0.0</org.apache.geronimo.installableruntime.tomcat.feature_version>
         <org.apache.geronimo.installableruntime.jetty.feature_version>2.0.0</org.apache.geronimo.installableruntime.jetty.feature_version>
-        <!-- Ext. Jar Dependency Versions -->
+<!-- Ext. Jar Dependency Versions -->
         <geronimo_spec_version>1.0</geronimo_spec_version>
-        <stax-api_version>1.0</stax-api_version>
-        <junitVersion>3.8.1</junitVersion>
-        <!-- Eclipse Distribution URLs -->
-        <platformDriver>S-3.3M6-200703231616/eclipse-SDK-3.3M6</platformDriver>
-        <platformUrl>http://download.eclipse.org/eclipse/downloads/drops/${platformDriver}</platformUrl>
-        <emfUrl>http://download.eclipse.org/modeling/emf/emf/downloads/drops/2.3.0/S200703291501//emf-sdo-xsd-SDK-2.3.0M6.zip</emfUrl>
-        <dptUrl>http://download.eclipse.org/datatools/downloads/1.5/dtp-sdk_1.5M6.zip</dptUrl>
-        <gefUrl>http://download.eclipse.org/tools/gef/downloads/drops/S-3.3M6-200703300740/GEF-SDK-3.3M6.zip</gefUrl>
-        <wtpUrl>http://download.eclipse.org/webtools/downloads/drops/R2.0/S-2.0M6-200704060120/wtp-sdk-S-2.0M6-200704060120.zip</wtpUrl>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -106,40 +103,67 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <distributionManagement>
-        <site>
-            <id>geronimo-website</id>
-            <url>scp://people.apache.org/www/geronimo.apache.org/maven/devtools/eclipse-plugin</url>
-        </site>
-    </distributionManagement>
     <build>
         <defaultGoal>install</defaultGoal>
         <sourceDirectory>src/</sourceDirectory>
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>unpack-eclipse-distributions</id>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>unpack</goal>
+                            </goals>
+                            <configuration>
+                                <markersDirectory>../../target/dependency-maven-plugin-markers</markersDirectory>
+                                <outputDirectory>${settings.localRepository}/eclipse</outputDirectory>
+                                <artifactItems>
+                                    <artifactItem>
+                                        <groupId>org.eclipse.gef</groupId>
+                                        <artifactId>gef-sdk</artifactId>
+                                        <version>3.3M6</version>
+                                        <type>zip</type>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>org.eclipse.dtp</groupId>
+                                        <artifactId>dtp-sdk</artifactId>
+                                        <version>1.5M6</version>
+                                        <type>zip</type>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>org.eclipse.emf</groupId>
+                                        <artifactId>emf-sdo-xsd</artifactId>
+                                        <version>2.3.0M6</version>
+                                        <type>zip</type>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>org.eclipse.wtp</groupId>
+                                        <artifactId>wtp-sdk</artifactId>
+                                        <version>2.0M6</version>
+                                        <type>zip</type>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>org.eclipse.platform</groupId>
+                                        <artifactId>eclipse-sdk-${eclipsePlatformFamily}</artifactId>
+                                        <version>3.3M6</version>
+                                        <type>${artifactType}</type>
+                                    </artifactItem>
+                                </artifactItems>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
                     <groupId>org.apache.geronimo.devtools</groupId>
                     <artifactId>maven-eclipse-plugin</artifactId>
                     <version>1.0-SNAPSHOT</version>
                     <configuration>
-                        <platformUrl>${platformUrl}</platformUrl>
-                        <urls>
-                            <url>${emfUrl}</url>
-                            <url>${dptUrl}</url>
-                            <url>${gefUrl}</url>
-                            <url>${wtpUrl}</url>
-                        </urls>
                         <eclipseHome>${settings.localRepository}/eclipse/eclipse/</eclipseHome>
                     </configuration>
-                    <executions>
-                        <execution>
-                            <id>create-eclipse-image</id>
-                            <phase>validate</phase>
-                            <goals>
-                                <goal>download</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -164,6 +188,38 @@
             </plugin>
         </plugins>
     </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.eclipse.platform</groupId>
+            <artifactId>eclipse-sdk-${eclipsePlatformFamily}</artifactId>
+            <version>3.3M6</version>
+            <type>${artifactType}</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.gef</groupId>
+            <artifactId>gef-sdk</artifactId>
+            <version>3.3M6</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.dtp</groupId>
+            <artifactId>dtp-sdk</artifactId>
+            <version>1.5M6</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>emf-sdo-xsd</artifactId>
+            <version>2.3.0M6</version>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.wtp</groupId>
+            <artifactId>wtp-sdk</artifactId>
+            <version>2.0M6</version>
+            <type>zip</type>
+        </dependency>
+    </dependencies>
     <repositories>
         <repository>
             <id>apache-snapshots</id>
@@ -207,6 +263,17 @@
                 <enabled>false</enabled>
             </releases>
         </repository>
+        <repository>
+            <id>sppatel</id>
+            <name>sppatel Repository on Apache</name>
+            <url>http://people.apache.org/~sppatel/maven/repository/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -221,6 +288,44 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
+    <profiles>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <properties>
+                <eclipsePlatformFamily>win32</eclipsePlatformFamily>
+                <artifactType>zip</artifactType>
+            </properties>
+        </profile>
+        <profile>
+            <id>unix</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                </os>
+            </activation>
+            <properties>
+                <eclipsePlatformFamily>linux-gtk</eclipsePlatformFamily>
+                <artifactType>targ.gz</artifactType>
+            </properties>
+        </profile>
+        <profile>
+            <id>mac</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+            </activation>
+            <properties>
+                <eclipsePlatformFamily>macosx-carbon</eclipsePlatformFamily>
+                <artifactType>tar.gz</artifactType>
+            </properties>
+        </profile>
+    </profiles>
     <modules>
         <module>emf</module>
         <module>plugins</module>
