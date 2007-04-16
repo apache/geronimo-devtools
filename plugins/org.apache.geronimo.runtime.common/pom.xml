@@ -29,6 +29,7 @@
     <properties>
         <xbeanVersion>2.0.0</xbeanVersion>
         <commonsLoggingVersion>1.0.4</commonsLoggingVersion>
+        <geronimo_spec_version>1.0</geronimo_spec_version>
     </properties>
     <build>
         <resources>

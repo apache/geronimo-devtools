@@ -73,7 +73,7 @@
         </site>
     </distributionManagement>
     <properties>
-<!-- Feature Versions -->
+        <eclipseInstall>${settings.localRepository}/eclipse</eclipseInstall>
         <org.apache.geronimo.feature_version>2.0.0</org.apache.geronimo.feature_version>
         <org.apache.geronimo.v10.feature_version>2.0.0</org.apache.geronimo.v10.feature_version>
         <org.apache.geronimo.v11.feature_version>2.0.0</org.apache.geronimo.v11.feature_version>
@@ -81,8 +81,6 @@
         <org.apache.geronimo.v20.feature_version>2.0.0</org.apache.geronimo.v20.feature_version>
         <org.apache.geronimo.installableruntime.tomcat.feature_version>2.0.0</org.apache.geronimo.installableruntime.tomcat.feature_version>
         <org.apache.geronimo.installableruntime.jetty.feature_version>2.0.0</org.apache.geronimo.installableruntime.jetty.feature_version>
-<!-- Ext. Jar Dependency Versions -->
-        <geronimo_spec_version>1.0</geronimo_spec_version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -120,7 +118,7 @@
                             </goals>
                             <configuration>
                                 <markersDirectory>../../target/dependency-maven-plugin-markers</markersDirectory>
-                                <outputDirectory>${settings.localRepository}/eclipse</outputDirectory>
+                                <outputDirectory>${eclipseInstall}</outputDirectory>
                                 <artifactItems>
                                     <artifactItem>
                                         <groupId>org.eclipse.gef</groupId>
