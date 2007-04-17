@@ -26,10 +26,6 @@
         <version>2.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <properties>
-        <imported-resources>
-            ${project.build.directory}/imported-resources</imported-resources>
-    </properties>
     <build>
         <resources>
             <resource>
@@ -50,38 +46,35 @@
         </resources>
         <plugins>
             <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.geronimo.devtools</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>dependency-maven-plugin</artifactId>
+                <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
                         <phase>validate</phase>
                         <goals>
                             <goal>unpack</goal>
                         </goals>
+                        <configuration>
+                            <outputDirectory>${imported-resources}</outputDirectory>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.geronimo.devtools</groupId>
+                                    <artifactId>geronimo-1.1-emf</artifactId>
+                                    <version>${version}</version>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <artifactItems>
-                        <artifactItem>
-                            <groupId>org.apache.geronimo.devtools</groupId>
-                            <artifactId>geronimo-1.1-emf</artifactId>
-                            <version>${version}</version>
-                            <type>jar</type>
-                        </artifactItem>
-                    </artifactItems>
-                    <outputDirectory>${imported-resources}</outputDirectory>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.geronimo.devtools</groupId>
@@ -99,7 +92,7 @@
                         </goals>
                         <configuration>
                             <genmodel>
-                                ${imported-resources}/emf/geronimo-web-1.1.genmodel</genmodel>
+                                ${project.build.directory}/dependency/emf/geronimo-web-1.1.genmodel</genmodel>
                         </configuration>
                     </execution>
                     <execution>
@@ -110,7 +103,7 @@
                         </goals>
                         <configuration>
                             <genmodel>
-                                ${imported-resources}/emf/openejb-jar-2.1.genmodel</genmodel>
+                                ${project.build.directory}/dependency/emf/openejb-jar-2.1.genmodel</genmodel>
                         </configuration>
                     </execution>
                     <execution>
@@ -121,7 +114,7 @@
                         </goals>
                         <configuration>
                             <genmodel>
-                                ${imported-resources}/emf/geronimo-connector-1.1.genmodel</genmodel>
+                                ${project.build.directory}/dependency/emf/geronimo-connector-1.1.genmodel</genmodel>
                         </configuration>
                     </execution>
                     <execution>
@@ -132,7 +125,7 @@
                         </goals>
                         <configuration>
                             <genmodel>
-                                ${imported-resources}/emf/geronimo-application-1.1.genmodel</genmodel>
+                                ${project.build.directory}/dependency/emf/geronimo-application-1.1.genmodel</genmodel>
                         </configuration>
                     </execution>
                     <execution>
@@ -143,7 +136,7 @@
                         </goals>
                         <configuration>
                             <genmodel>
-                                ${imported-resources}/emf/geronimo-application-client-1.1.genmodel</genmodel>
+                                ${project.build.directory}/dependency/emf/geronimo-application-client-1.1.genmodel</genmodel>
                         </configuration>
                     </execution>
                     <execution>
@@ -154,7 +147,7 @@
                         </goals>
                         <configuration>
                             <genmodel>
-                                ${imported-resources}/emf/geronimo-security-1.1.genmodel</genmodel>
+                                ${project.build.directory}/dependency/emf/geronimo-security-1.1.genmodel</genmodel>
                         </configuration>
                     </execution>
                 </executions>
