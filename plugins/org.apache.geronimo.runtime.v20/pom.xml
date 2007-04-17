@@ -120,7 +120,7 @@
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.modules</groupId>
-                                    <artifactId>openejb-builder</artifactId>
+                                    <artifactId>geronimo-openejb-builder</artifactId>
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
                                 <artifactItem>
