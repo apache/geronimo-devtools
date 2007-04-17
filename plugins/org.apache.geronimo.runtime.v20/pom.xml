@@ -28,7 +28,6 @@
     </parent>
     <properties>
         <geronimoVersion>2.0-SNAPSHOT</geronimoVersion>
-        <openejbVersion>3.0-incubating-SNAPSHOT</openejbVersion>
     </properties>
     <build>
         <resources>
@@ -59,8 +58,7 @@
                 <artifactId>maven-antrun-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>dependency-maven-plugin</artifactId>
+                <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>copy</id>
@@ -120,11 +118,11 @@
                                     <artifactId>geronimo-j2ee-builder</artifactId>
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
-<!--<artifactItem>
-                                    <groupId>org.apache.openejb</groupId>
+                                <artifactItem>
+                                    <groupId>org.apache.geronimo.modules</groupId>
                                     <artifactId>openejb-builder</artifactId>
-                                    <version>${openejbVersion}</version>
-                                </artifactItem>-->
+                                    <version>${geronimoVersion}</version>
+                                </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.modules</groupId>
                                     <artifactId>geronimo-security-builder</artifactId>
@@ -177,7 +175,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
             </plugin>
         </plugins>

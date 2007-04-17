@@ -47,20 +47,18 @@
         </resources>
         <plugins>
             <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.geronimo.devtools</groupId>
                 <artifactId>maven-eclipsepde-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
     <dependencies>
-<!-- g plugin dependencies -->
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.core</artifactId>

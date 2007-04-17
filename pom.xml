@@ -107,7 +107,6 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
                     <executions>
                         <execution>
@@ -133,11 +132,6 @@
                     </configuration>
                 </plugin>
                 <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>dependency-maven-plugin</artifactId>
-                    <version>1.0</version>
-                </plugin>
-                <plugin>
                     <groupId>org.apache.geronimo.devtools</groupId>
                     <artifactId>maven-emf-plugin</artifactId>
                     <version>1.0-SNAPSHOT</version>
@@ -146,7 +140,6 @@
         </pluginManagement>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <source>1.5</source>
