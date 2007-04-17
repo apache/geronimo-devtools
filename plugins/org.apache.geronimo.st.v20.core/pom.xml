@@ -51,7 +51,7 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.geronimo.devtools</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
+                <artifactId>maven-eclipsepde-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
