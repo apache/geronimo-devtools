@@ -77,6 +77,9 @@
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
             </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
