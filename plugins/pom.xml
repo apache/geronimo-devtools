@@ -55,7 +55,6 @@
                             <id>initialize</id>
                             <phase>validate</phase>
                             <goals>
-                                <goal>qualifier</goal>
                                 <goal>manifestbundles</goal>
                                 <goal>install</goal>
                                 <goal>validatemanifest</goal>
