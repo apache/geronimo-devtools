@@ -110,15 +110,41 @@
                     <artifactId>maven-dependency-plugin</artifactId>
                     <executions>
                         <execution>
-                            <id>unpack-eclipse-distributions</id>
-                            <phase>process-resources</phase>
+                            <id>create-eclipse-target</id>
+                            <phase>validate</phase>
                             <goals>
-                                <goal>unpack-dependencies</goal>
+                                <goal>unpack</goal>
                             </goals>
                             <configuration>
                                 <markersDirectory>../../target/dependency-maven-plugin-markers</markersDirectory>
                                 <outputDirectory>${eclipseInstall}</outputDirectory>
-                                <includeGroupIds>org.eclipse.platform,org.eclipse.gef,org.eclipse.dtp,org.eclipse.emf,org.eclipse.wtp</includeGroupIds>
+                                <artifactItems>
+                                    <artifactItem>
+                                        <groupId>org.eclipse.platform</groupId>
+                                        <artifactId>eclipse-sdk-${eclipsePlatformFamily}</artifactId>
+                                        <type>${artifactType}</type>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>org.eclipse.gef</groupId>
+                                        <artifactId>gef-sdk</artifactId>
+                                        <type>zip</type>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>org.eclipse.dtp</groupId>
+                                        <artifactId>dtp-sdk</artifactId>
+                                        <type>zip</type>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>org.eclipse.emf</groupId>
+                                        <artifactId>emf-sdo-xsd</artifactId>
+                                        <type>zip</type>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>org.eclipse.wtp</groupId>
+                                        <artifactId>wtp-sdk</artifactId>
+                                        <type>zip</type>
+                                    </artifactItem>
+                                </artifactItems>
                             </configuration>
                         </execution>
                     </executions>

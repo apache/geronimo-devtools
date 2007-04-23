@@ -75,25 +75,13 @@
                     <artifactId>maven-jar-plugin</artifactId>
                     <configuration>
                         <archive>
-                            <manifestFile>${project.build.directory}/META-INF/MANIFEST.MF</manifestFile>
+                            <manifestFile>${basedir}/META-INF/MANIFEST.MF</manifestFile>
                         </archive>
                     </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-antrun-plugin</artifactId>
                     <executions>
-                        <execution>
-                            <phase>generate-sources</phase>
-                            <configuration>
-                                <tasks>
-                                    <copy file="${basedir}/META-INF/MANIFEST.MF" todir="${project.build.directory}/META-INF" overwrite="true"/>
-                                    <replace file="${project.build.directory}/META-INF/MANIFEST.MF" token="qualifier" value="${qualifier}"/>
-                                </tasks>
-                            </configuration>
-                            <goals>
-                                <goal>run</goal>
-                            </goals>
-                        </execution>
                         <!-- workaround for bugzilla 147936 -->
                         <execution>
                             <id>backup</id>
