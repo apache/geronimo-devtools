@@ -277,6 +277,12 @@
             <id>tlc</id>
             <name>TLC Repository</name>
             <url>http://commons.ucalgary.ca/pub/m2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </pluginRepository>
     </pluginRepositories>
     <profiles>
