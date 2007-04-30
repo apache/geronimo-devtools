@@ -104,7 +104,6 @@ Export-Package:
  org.apache.xmlbeans.xml.stream,
  org.apache.xmlbeans.xml.stream.events,
  org.apache.xmlbeans.xml.stream.utils,
- org.w3c.dom,
  org.xmlpull.mxp1,
  org.xmlpull.mxp1_serializer,
  org.xmlpull.v1,

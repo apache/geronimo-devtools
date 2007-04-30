@@ -101,6 +101,8 @@ public class GeronimoV20Utils extends GeronimoUtils {
 				e.printStackTrace();
 			} catch (XmlException e) {
 				e.printStackTrace();
+			} catch (Throwable e) {
+				e.printStackTrace();
 			}
 		}
 		
