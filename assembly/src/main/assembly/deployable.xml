@@ -61,7 +61,8 @@
         </dependencySet>
         <!-- Features -->
         <dependencySet>
-            <outputDirectory>features/org.apache.geronimo.feature_${version}</outputDirectory>
+            <outputFileNameMapping>${artifactId}_${version}</outputFileNameMapping>
+            <outputDirectory>features/</outputDirectory>
             <unpack>true</unpack>
             <includes>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.feature</include>
