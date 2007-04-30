@@ -32,14 +32,19 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.geronimo.devtools</groupId>
-                <artifactId>maven-eclipsepde-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>maven-buildnumber-plugin</artifactId>
+                <configuration>
+                    <format>{0,date,yyyyMMdd.HHmm}</format>
+                    <items>
+                        <item>timestamp</item>
+                    </items>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>generate-qualifier</id>
                         <phase>validate</phase>
                         <goals>
-                            <goal>qualifier</goal>
+                            <goal>create</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -47,7 +52,7 @@
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <finalName>g-eclipse-plugin-${version}-${qualifier}</finalName>
+                    <finalName>g-eclipse-plugin-${version}-v${buildNumber}</finalName>
                     <descriptors>
                         <descriptor>src/main/assembly/deployable.xml</descriptor>
                         <descriptor>src/main/assembly/updatesite.xml</descriptor>
