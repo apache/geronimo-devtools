@@ -14,3 +14,14 @@ Require-Bundle: org.eclipse.ui,
  org.apache.geronimo.deployment.model.edit,
  org.eclipse.core.resources
 Eclipse-LazyStart: true
+Export-Package: org,
+ org.apache,
+ org.apache.geronimo,
+ org.apache.geronimo.st,
+ org.apache.geronimo.st.v1,
+ org.apache.geronimo.st.v1.ui,
+ org.apache.geronimo.st.v1.ui.editors,
+ org.apache.geronimo.st.v1.ui.internal,
+ org.apache.geronimo.st.v1.ui.pages,
+ org.apache.geronimo.st.v1.ui.sections,
+ org.apache.geronimo.st.v1.ui.wizards
