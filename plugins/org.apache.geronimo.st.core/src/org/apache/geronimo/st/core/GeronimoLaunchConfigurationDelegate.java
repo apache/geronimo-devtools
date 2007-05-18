@@ -34,8 +34,6 @@ import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMRunner;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
 import org.eclipse.jst.server.core.ServerProfilerDelegate;
-import org.eclipse.jst.server.core.internal.JavaServerPlugin;
-import org.eclipse.jst.server.core.internal.ServerProfiler;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
 
@@ -81,15 +79,6 @@ public class GeronimoLaunchConfigurationDelegate extends AbstractJavaLaunchConfi
 		String pgmArgs = getProgramArguments(configuration);
 		String vmArgs = getVMArguments(configuration);
 		String[] envp = getEnvironment(configuration);
-		
-		if (ILaunchManager.PROFILE_MODE.equals(mode)) {
-			ServerProfiler[] sp = JavaServerPlugin.getServerProfilers();
-			if (sp == null || sp.length == 0 || runner == null) {
-				geronimoServer.stopImpl();
-				throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, Messages.errorNoProfiler, null));
-			}
-			vmArgs = vmArgs + " " + sp[0].getVMArgs();
-		}
 
 		ExecutionArguments execArgs = new ExecutionArguments(vmArgs, pgmArgs);
 		Map vmAttributesMap = getVMSpecificAttributesMap(configuration);
@@ -110,14 +99,14 @@ public class GeronimoLaunchConfigurationDelegate extends AbstractJavaLaunchConfi
 
 		setDefaultSourceLocator(launch, configuration);
 		
-		/*if (ILaunchManager.PROFILE_MODE.equals(mode)) {
+		if (ILaunchManager.PROFILE_MODE.equals(mode)) {
 			try {
 				ServerProfilerDelegate.configureProfiling(launch, vm, runConfig, monitor);
 			} catch (CoreException ce) {
 				geronimoServer.stopImpl();
 				throw ce;
 			}
-		}*/
+		}
 
 		geronimoServer.startPingThread();
 		runner.run(runConfig, launch, monitor);
