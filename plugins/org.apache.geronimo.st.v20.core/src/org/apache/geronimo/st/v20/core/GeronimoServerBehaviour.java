@@ -136,7 +136,7 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 	 * @see org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate#getRuntimeClass()
 	 */
 	public String getRuntimeClass() {
-		return "org.apache.geronimo.kernel.util.MainConfigurationBootstrapper";
+		return "org.apache.geronimo.cli.daemon.DaemonCLI";
 	}
 
 	public IPath getPublishDirectory(IModule[] module) {
