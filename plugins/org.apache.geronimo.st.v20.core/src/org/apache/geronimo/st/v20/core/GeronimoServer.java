@@ -21,10 +21,13 @@ import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 
 import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
 import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
+import org.apache.geronimo.st.core.GeronimoRuntimeDelegate;
 import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.core.IGeronimoVersionHandler;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
@@ -32,7 +35,7 @@ import org.eclipse.wst.server.core.util.SocketUtil;
  * @version $Rev$ $Date$
  */
 public class GeronimoServer extends GeronimoServerDelegate {
-	
+
 	public static final String PROPERTY_IN_PLACE_SHARED_LIB = "inPlaceSharedLib";
 	public static final String PROPERTY_RUN_FROM_WORKSPACE = "runFromWorkspace";
 
@@ -58,6 +61,37 @@ public class GeronimoServer extends GeronimoServerDelegate {
 	 */
 	public String getDeployerURL() {
 		return "deployer:geronimo:jmx://" + getServer().getHost() + ":" + getRMINamingPort();
+	}
+	
+	@Override
+	public String getVMArgs() {
+		String runtimeLocation = getServer().getRuntime().getLocation().toString();
+		GeronimoRuntimeDelegate geronimoRuntimeDelegate = (GeronimoRuntimeDelegate) getServer().getRuntime().getAdapter(GeronimoRuntimeDelegate.class);
+		if (geronimoRuntimeDelegate == null) {
+			geronimoRuntimeDelegate = (GeronimoRuntimeDelegate) getServer().getRuntime().loadAdapter(GeronimoRuntimeDelegate.class,new NullProgressMonitor());
+		}
+		IVMInstall vmInstall = geronimoRuntimeDelegate.getVMInstall();
+		String vmInstallLocation = vmInstall.getInstallLocation().getAbsolutePath() + "/jre";
+		
+		// set -javaagent:"GERONIMO_BASE/bin/jpa.jar"
+		String javaagent = "-javaagent:\"" + runtimeLocation + "/bin/jpa.jar\"";
+		// set -Djava.ext.dirs="GERONIMO_BASE/lib/ext;JRE_HOME/lib/ext"
+		String javaExtDirs = "-Djava.ext.dirs=\"" + runtimeLocation + "/lib/ext;" + vmInstallLocation + "/lib/ext\"";
+		// -Djava.endorsed.dirs="GERONIMO_BASE/lib/endorsed;JRE_HOME/lib/endorsed"
+		String javaEndorsedDirs = "-Djava.endorsed.dirs=\"" + runtimeLocation + "/lib/endorsed;" + vmInstallLocation + "/lib/endorsed\"";
+		// -Dorg.apache.geronimo.base.dir="GERONIMO_BASE"
+		String baseDir = "-Dorg.apache.geronimo.base.dir=\"" + runtimeLocation + "\"";
+		// -Djava.io.tmpdir="var\temp"
+		String tmpDir = "-Djava.io.tmpdir=\"var/temp\"";
+
+		String vmArgs = javaagent + " " + javaExtDirs + " " + javaEndorsedDirs + " " + baseDir + " " + tmpDir;
+
+		String superVMArgs = super.getVMArgs();
+		if (superVMArgs != null) {
+			vmArgs += " " + superVMArgs;
+		}
+		
+		return vmArgs;
 	}
 
 	/*
