@@ -28,6 +28,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
@@ -73,18 +75,32 @@ public class GeronimoServer extends GeronimoServerDelegate {
 		IVMInstall vmInstall = geronimoRuntimeDelegate.getVMInstall();
 		String vmInstallLocation = vmInstall.getInstallLocation().getAbsolutePath() + "/jre";
 		
-		// set -javaagent:"GERONIMO_BASE/bin/jpa.jar"
-		String javaagent = "-javaagent:\"" + runtimeLocation + "/bin/jpa.jar\"";
-		// set -Djava.ext.dirs="GERONIMO_BASE/lib/ext;JRE_HOME/lib/ext"
-		String javaExtDirs = "-Djava.ext.dirs=\"" + runtimeLocation + "/lib/ext;" + vmInstallLocation + "/lib/ext\"";
-		// -Djava.endorsed.dirs="GERONIMO_BASE/lib/endorsed;JRE_HOME/lib/endorsed"
-		String javaEndorsedDirs = "-Djava.endorsed.dirs=\"" + runtimeLocation + "/lib/endorsed;" + vmInstallLocation + "/lib/endorsed\"";
-		// -Dorg.apache.geronimo.base.dir="GERONIMO_BASE"
-		String baseDir = "-Dorg.apache.geronimo.base.dir=\"" + runtimeLocation + "\"";
-		// -Djava.io.tmpdir="var\temp"
-		String tmpDir = "-Djava.io.tmpdir=\"var/temp\"";
+		LibraryLocation[] libLocations = JavaRuntime.getLibraryLocations(vmInstall);
+		IPath vmLibDir = null;
+		for(int i = 0; i < libLocations.length; i++) {
+			LibraryLocation loc = libLocations[i];
+			IPath libDir = loc.getSystemLibraryPath().removeLastSegments(2);
+			if(libDir.toOSString().endsWith("lib")) {
+				vmLibDir = libDir;
+				break;
+			}
+		}
+		
+		String cp = System.getProperty("path.separator");
+		
+		//-javaagent:"GERONIMO_BASE/bin/jpa.jar"
+		String javaagent = "-javaagent:" + runtimeLocation + "/bin/jpa.jar";
+		
+		//-Djava.ext.dirs="GERONIMO_BASE/lib/ext;JRE_HOME/lib/ext"
+		String javaExtDirs = "-Djava.ext.dirs=" + runtimeLocation + "/lib/ext" + cp + vmLibDir.append("ext").toOSString();
+		
+		//-Djava.endorsed.dirs="GERONIMO_BASE/lib/endorsed;JRE_HOME/lib/endorsed"
+		String javaEndorsedDirs = "-Djava.endorsed.dirs=" + runtimeLocation + "/lib/endorsed" + cp + vmLibDir.append("endorsed").toOSString();
+		
+		//-Dorg.apache.geronimo.base.dir="GERONIMO_BASE"
+		String baseDir = "-Dorg.apache.geronimo.base.dir=" + runtimeLocation;
 
-		String vmArgs = javaagent + " " + javaExtDirs + " " + javaEndorsedDirs + " " + baseDir + " " + tmpDir;
+		String vmArgs = javaagent + " " + javaExtDirs + " " + javaEndorsedDirs;
 
 		String superVMArgs = super.getVMArgs();
 		if (superVMArgs != null) {
