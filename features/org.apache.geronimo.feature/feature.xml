@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.apache.geronimo.feature"
-      label="org.apache.geronimo.feature"
+      label="Geronimo Core Feature"
       version="${org.apache.geronimo.feature_version}"
       provider-name="Apache Software Foundation"
       image="bigG.gif">
