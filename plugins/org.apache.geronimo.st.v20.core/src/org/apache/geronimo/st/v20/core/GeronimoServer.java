@@ -89,13 +89,13 @@ public class GeronimoServer extends GeronimoServerDelegate {
 		String cp = System.getProperty("path.separator");
 		
 		//-javaagent:"GERONIMO_BASE/bin/jpa.jar"
-		String javaagent = "-javaagent:" + runtimeLocation + "/bin/jpa.jar";
+		String javaagent = "-javaagent:\"" + runtimeLocation + "/bin/jpa.jar\"";
 		
 		//-Djava.ext.dirs="GERONIMO_BASE/lib/ext;JRE_HOME/lib/ext"
-		String javaExtDirs = "-Djava.ext.dirs=" + runtimeLocation + "/lib/ext" + cp + vmLibDir.append("ext").toOSString();
+		String javaExtDirs = "-Djava.ext.dirs=\"" + runtimeLocation + "/lib/ext" + cp + vmLibDir.append("ext").toOSString() + "\"";
 		
 		//-Djava.endorsed.dirs="GERONIMO_BASE/lib/endorsed;JRE_HOME/lib/endorsed"
-		String javaEndorsedDirs = "-Djava.endorsed.dirs=" + runtimeLocation + "/lib/endorsed" + cp + vmLibDir.append("endorsed").toOSString();
+		String javaEndorsedDirs = "-Djava.endorsed.dirs=\"" + runtimeLocation + "/lib/endorsed" + cp + vmLibDir.append("endorsed").toOSString() + "\"";
 		
 		//-Dorg.apache.geronimo.base.dir="GERONIMO_BASE"
 		String baseDir = "-Dorg.apache.geronimo.base.dir=" + runtimeLocation;
