@@ -85,7 +85,8 @@ public class GeronimoRuntimeSourceWizardFragment extends WizardFragment {
 		GridData data = new GridData();
 		data.horizontalSpan = 3;
 		label.setLayoutData(data);
-		label.setToolTipText(Messages.tooltipLoc);
+		String tooltipLoc = Messages.bind(Messages.tooltipLoc, getRuntimeName());
+		label.setToolTipText(tooltipLoc);
 
 		srcLoc = new Text(composite, SWT.BORDER);
 
@@ -97,7 +98,7 @@ public class GeronimoRuntimeSourceWizardFragment extends WizardFragment {
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 2;
 		srcLoc.setLayoutData(data);
-		srcLoc.setToolTipText(Messages.tooltipLoc);
+		srcLoc.setToolTipText(tooltipLoc);
 		srcLoc.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				getRuntimeDelegate().setRuntimeSourceLocation(srcLoc.getText());
@@ -123,6 +124,13 @@ public class GeronimoRuntimeSourceWizardFragment extends WizardFragment {
 		if (wc == null)
 			return null;
 		return (GeronimoRuntimeDelegate) wc.loadAdapter(GeronimoRuntimeDelegate.class, new NullProgressMonitor());
+	}
+	
+	protected String getRuntimeName() {
+		if (getRuntimeDelegate() != null
+				&& getRuntimeDelegate().getRuntime() != null)
+			return getRuntimeDelegate().getRuntime().getName();
+		return null;
 	}
 
 }

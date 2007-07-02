@@ -84,7 +84,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 
 	private Button jetty;
 
-	private Group group;
+	protected Group group;
 
 	private IWizardHandle fWizard;
 
@@ -182,7 +182,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 			data = new GridData();
 			data.horizontalSpan = 3;
 			install.setLayoutData(data);
-			install.setToolTipText(Messages.tooltipInstall);
+			install.setToolTipText(Messages.bind(Messages.tooltipInstall, getRuntimeName()));
 			install.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent se) {
 					if (installDir != null && isValidLocation()) {
@@ -237,7 +237,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 		}
 	}
 
-	private GeronimoRuntimeDelegate getGeronimoRuntime() {
+	protected GeronimoRuntimeDelegate getGeronimoRuntime() {
 		if (geronimoRuntime == null)
 			geronimoRuntime = (GeronimoRuntimeDelegate) getRuntimeDelegate().getRuntime().loadAdapter(GeronimoRuntimeDelegate.class, null);
 		return geronimoRuntime;
@@ -249,7 +249,8 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 		GridData data = new GridData();
 		data.horizontalSpan = 3;
 		label.setLayoutData(data);
-		label.setToolTipText(Messages.tooltipLoc);
+		String tooltipLoc = Messages.bind(Messages.tooltipLoc, getRuntimeName());
+		label.setToolTipText(tooltipLoc);
 
 		installDir = new Text(composite, SWT.BORDER);
 
@@ -261,7 +262,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 2;
 		installDir.setLayoutData(data);
-		installDir.setToolTipText(Messages.tooltipLoc);
+		installDir.setToolTipText(tooltipLoc);
 		installDir.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				getRuntimeDelegate().getRuntimeWorkingCopy().setLocation(new Path(installDir.getText()));
@@ -469,7 +470,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 		return name;
 	}
 
-	private String getRuntimeName() {
+	protected String getRuntimeName() {
 		if (getRuntimeDelegate() != null
 				&& getRuntimeDelegate().getRuntime() != null)
 			return getRuntimeDelegate().getRuntime().getName();
