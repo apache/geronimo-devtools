@@ -27,7 +27,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <properties>
-        <geronimoVersion>2.0-SNAPSHOT</geronimoVersion>
+        <geronimoVersion>2.0.1</geronimoVersion>
     </properties>
     <build>
         <resources>
@@ -105,8 +105,13 @@
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.modules</groupId>
-                                    <artifactId>geronimo-web-builder</artifactId>
+                                    <artifactId>geronimo-web-2.5-builder</artifactId>
                                     <version>${geronimoVersion}</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.geronimo.schema</groupId>
+                                    <artifactId>geronimo-schema-jee_5</artifactId>
+                                    <version>1.1</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.modules</groupId>
@@ -146,7 +151,7 @@
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.specs</groupId>
                                     <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
-                                    <version>1.0-SNAPSHOT</version>
+                                    <version>1.0</version>
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>lib</outputDirectory>
@@ -217,8 +222,13 @@
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.modules</groupId>
-            <artifactId>geronimo-web-builder</artifactId>
+            <artifactId>geronimo-web-2.5-builder</artifactId>
             <version>${geronimoVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.schema</groupId>
+            <artifactId>geronimo-schema-jee_5</artifactId>
+            <version>1.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.modules</groupId>
@@ -258,7 +268,7 @@
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>

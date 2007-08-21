@@ -96,8 +96,8 @@
                                     <artifactId>xpp3</artifactId>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>xmlbeans</groupId>
-                                    <artifactId>xbean</artifactId>
+                                    <groupId>org.apache.xmlbeans</groupId>
+                                    <artifactId>xmlbeans</artifactId>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
@@ -144,8 +144,8 @@
             <artifactId>xpp3</artifactId>
         </dependency>
         <dependency>
-            <groupId>xmlbeans</groupId>
-            <artifactId>xbean</artifactId>
+            <groupId>org.apache.xmlbeans</groupId>
+            <artifactId>xmlbeans</artifactId>
         </dependency>
     </dependencies>
 </project>
