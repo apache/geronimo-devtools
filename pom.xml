@@ -178,31 +178,31 @@
         <dependency>
             <groupId>org.eclipse.platform</groupId>
             <artifactId>eclipse-sdk-${eclipsePlatformFamily}</artifactId>
-            <version>3.3RC2</version>
+            <version>3.3</version>
             <type>${artifactType}</type>
         </dependency>
         <dependency>
             <groupId>org.eclipse.gef</groupId>
             <artifactId>gef-sdk</artifactId>
-            <version>3.3RC2</version>
+            <version>3.3</version>
             <type>zip</type>
         </dependency>
         <dependency>
             <groupId>org.eclipse.dtp</groupId>
             <artifactId>dtp-sdk</artifactId>
-            <version>1.5RC2</version>
+            <version>1.5</version>
             <type>zip</type>
         </dependency>
         <dependency>
             <groupId>org.eclipse.emf</groupId>
             <artifactId>emf-sdo-xsd</artifactId>
-            <version>2.3.0RC2</version>
+            <version>2.3.0</version>
             <type>zip</type>
         </dependency>
         <dependency>
             <groupId>org.eclipse.wtp</groupId>
             <artifactId>wtp-sdk</artifactId>
-            <version>2.0RC2</version>
+            <version>2.0</version>
             <type>zip</type>
         </dependency>
     </dependencies>
@@ -250,9 +250,9 @@
             </releases>
         </repository>
         <repository>
-            <id>sppatel</id>
-            <name>sppatel Repository on Apache</name>
-            <url>http://people.apache.org/~sppatel/maven/repository/</url>
+            <id>mcconne</id>
+            <name>mcconne Repository on Apache</name>
+            <url>http://people.apache.org/~mcconne/maven/repository/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
