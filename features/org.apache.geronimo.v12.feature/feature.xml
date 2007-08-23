@@ -23,7 +23,7 @@
     </url>
     
     <requires>
-        <import feature="org.eclipse.jst" version="1.6.0" match="compatible"/>
+        <import feature="org.eclipse.jst" version="2.0.0" match="compatible"/>
     </requires>
     
     <includes
