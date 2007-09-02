@@ -47,7 +47,7 @@
     </dependencySets>
     <files>
         <file>
-            <source>src/main/assembly/site.xml</source>
+            <source>${basedir}/src/main/assembly/site.xml</source>
             <outputDirectory>/</outputDirectory>
         </file>
     </files>
