@@ -165,12 +165,12 @@
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.installableruntime.jetty.feature</artifactId>
-            <version>${version}</version>
+            <version>${org.apache.geronimo.installableruntime.jetty.feature_version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.installableruntime.tomcat.feature</artifactId>
-            <version>${version}</version>
+            <version>${org.apache.geronimo.installableruntime.tomcat.feature_version}</version>
         </dependency>
     </dependencies>
 </project>

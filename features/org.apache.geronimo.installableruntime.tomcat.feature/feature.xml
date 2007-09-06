@@ -38,7 +38,7 @@
    </license>
    
    <data
-    id="geronimo-tomcat6-jee5-2.0.zip"
+    id="geronimo-tomcat6-jee5-${org.apache.geronimo.installableruntime.tomcat.feature_version}.zip"
     download-size="0"
     install-size="0"/>
 
