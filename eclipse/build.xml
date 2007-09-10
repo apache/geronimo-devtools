@@ -22,20 +22,20 @@
 <project name="EuropaArtifacts">
 
     <target name="init">
-        <property name="europa_download_url"    value="http://www.eclipse.org/downloads/download.php?file=/eclipse/downloads/drops/M20070829-0800/"/>
-        <property name="dtp_download_url"       value="http://www.eclipse.org/downloads/download.php?file=/datatools/downloads/drops/N_DTP_1.5.1/"/>
-        <property name="emf_download_url"       value="http://www.eclipse.org/downloads/download.php?file=/modeling/emf/emf/downloads/drops/2.3.1/M200708142030/"/>
-        <property name="gef_download_url"       value="http://www.eclipse.org/downloads/download.php?file=/tools/gef/downloads/drops/M20070814-1555/"/>
-        <property name="wtp_download_url"       value="http://www.eclipse.org/downloads/download.php?file=/webtools/downloads/drops/R2.0/M-2.0.1-20070830174756/"/>
-        <property name="europa_jee_win32"       value="eclipse-SDK-M20070829-0800-win32.zip"/>
-        <property name="europa_jee_linux"       value="eclipse-SDK-M20070829-0800-linux-gtk.tar"/>
-        <property name="europa_jee_macos"       value="eclipse-SDK-M20070829-0800-macosx-carbon.tar"/>
+        <property name="europa_download_url"    value="http://www.eclipse.org/downloads/download.php?file=/eclipse/downloads/drops/R-3.3-200706251500/"/>
+        <property name="dtp_download_url"       value="http://www.eclipse.org/downloads/download.php?file=/datatools/downloads/1.5/"/>
+        <property name="emf_download_url"       value="http://www.eclipse.org/downloads/download.php?file=/modeling/emf/emf/downloads/drops/2.3.0/R200706262000/"/>
+        <property name="gef_download_url"       value="http://www.eclipse.org/downloads/download.php?file=/tools/gef/downloads/drops/R-3.3-200706281000/"/>
+        <property name="wtp_download_url"       value="http://www.eclipse.org/downloads/download.php?file=/webtools/downloads/drops/R2.0/R-2.0-200706260303/"/>
+        <property name="europa_jee_win32"       value="eclipse-SDK-3.3-win32.zip"/>
+        <property name="europa_jee_linux"       value="eclipse-SDK-3.3-linux-gtk.tar"/>
+        <property name="europa_jee_macos"       value="eclipse-SDK-3.3-macosx-carbon.tar"/>
         <property name="europa_jee_linux_gz"    value="${europa_jee_linux}.gz"/>
         <property name="europa_jee_macos_gz"    value="${europa_jee_macos}.gz"/>
-        <property name="dtp_sdk" value="dtp-sdk_1.5.1_N082907.zip"/>
-        <property name="emf_sdo" value="emf-sdo-xsd-SDK-M200708142030.zip"/>
-        <property name="gef_sdk" value="GEF-SDK-M20070814-1555.zip"/>
-        <property name="wtp_sdk" value="wtp-sdk-M-2.0.1-20070830174756.zip"/>
+        <property name="dtp_sdk" value="dtp-sdk_1.5.zip"/>
+        <property name="emf_sdo" value="emf-sdo-xsd-SDK-2.3.0.zip"/>
+        <property name="gef_sdk" value="GEF-SDK-3.3.zip"/>
+        <property name="wtp_sdk" value="wtp-sdk-R-2.0-200706260303.zip"/>
     </target>
 
     <target name="win32" depends="init,common" description="Download Windows-specific artifact(s)">
@@ -81,7 +81,7 @@
 
     <target name="common" description="Download artifacts common to all OS'es">
         <antcall target="dtp"/>
-        <antcall target="emf"/>
+        <antcall target="emf"/> 
         <antcall target="gef"/> 
         <antcall target="wtp"/> 
     </target>
