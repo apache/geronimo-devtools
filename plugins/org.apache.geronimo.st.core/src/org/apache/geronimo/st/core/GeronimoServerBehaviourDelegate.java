@@ -686,7 +686,14 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		if (url != null) {
 			try {
 				JMXServiceURL address = new JMXServiceURL(url);
-				JMXConnector jmxConnector = JMXConnectorFactory.connect(address, map);
+				JMXConnector jmxConnector;
+				try {
+					jmxConnector = JMXConnectorFactory.connect(address, map);
+				} catch (SecurityException se) {
+					//FIXME once GERONIMO-3467 JIRA is fixed
+					Thread.sleep(10000);
+					jmxConnector = JMXConnectorFactory.connect(address, map);
+				}
 				MBeanServerConnection connection = jmxConnector.getMBeanServerConnection();
 				Trace.trace(Trace.INFO, "Connected to kernel. " + url);
 				return connection;
