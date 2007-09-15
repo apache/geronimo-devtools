@@ -34,7 +34,7 @@
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <finalName>g-eclipse-plugin-${version}</finalName>
+                    <finalName>geronimo-eclipse-plugin-${version}</finalName>
                     <descriptors>
                         <descriptor>src/main/assembly/deployable.xml</descriptor>
                         <descriptor>src/main/assembly/updatesite.xml</descriptor>
