@@ -21,7 +21,9 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.geronimo.st.core.internal.Messages;
@@ -153,10 +155,13 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
 	 */
 	public String detectVersion() {
 
+		URL systemjarURL = null;
+		//
+		// Check lib directory first
+		//
 		File libDir = getRuntime().getLocation().append("lib").toFile();
 		if (libDir.exists()) {
 			File[] libs = libDir.listFiles();
-			URL systemjarURL = null;
 			for (int i = 0; i < libs.length; i++) {
 				if (libs[i].getName().startsWith("geronimo-system")) {
 					try {
@@ -167,15 +172,35 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
 					}
 				}
 			}
-			if (systemjarURL != null) {
-				URLClassLoader cl = new URLClassLoader(new URL[] { systemjarURL });
-				try {
-					Class clazz = cl.loadClass("org.apache.geronimo.system.serverinfo.ServerConstants");
-					Method method = clazz.getMethod("getVersion", new Class[] {});
-					return (String) method.invoke(null, null);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		}
+		// 
+		// Check repository if necessary
+		//
+                if (systemjarURL == null) {
+                    File systemDir = getRuntime().getLocation().append("repository/org/apache/geronimo/modules/geronimo-system").toFile();
+                    if (systemDir.exists() && systemDir.isDirectory() && systemDir.canRead()) {
+                        List<File> dirFiles = scanDirectory(systemDir);
+                        for (File jarFile : dirFiles) {
+                            if (jarFile.getName().startsWith("geronimo-system") && jarFile.getName().endsWith("jar")) {
+                                try {
+                                    systemjarURL = jarFile.toURL();
+                                    break;
+                                }
+                                catch (MalformedURLException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                }
+		if (systemjarURL != null) {
+			URLClassLoader cl = new URLClassLoader(new URL[] { systemjarURL });
+			try {
+				Class clazz = cl.loadClass("org.apache.geronimo.system.serverinfo.ServerConstants");
+				Method method = clazz.getMethod("getVersion", new Class[] {});
+				return (String) method.invoke(null, null);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		return null;
@@ -273,4 +298,23 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
 	public boolean isUsingDefaultJRE() {
 		return getVMInstallTypeId() == null;
 	}
+
+        private static List<File> scanDirectory(File dir) {
+            List<File> dirFiles = new ArrayList<File>();
+            scanDirectory(dir, dirFiles);
+            return dirFiles;
+        }
+
+        private static void scanDirectory(File dir, List<File> dirFiles) {
+            File[] files = dir.listFiles();
+            for (int ii = 0; ii < files.length; ii++) {
+                if (files[ii].isDirectory()) {
+                    scanDirectory(files[ii], dirFiles);
+                }
+                else {
+                    dirFiles.add(files[ii]);    
+                }
+            }
+        }
+        
 }

@@ -22,119 +22,123 @@
 <project name="EuropaArtifacts">
 
     <target name="init">
-        <property name="europa.download.url"    value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/20070702/"/>
-        <property name="dtp.download.url"       value="http://www.eclipse.org/downloads/download.php?file=/datatools/downloads/1.5/"/>
-        <property name="emf.download.url"       value="http://www.eclipse.org/downloads/download.php?file=/modeling/emf/emf/downloads/drops/2.3.0/R200706262000/"/>
-        <property name="gef.download.url"       value="http://www.eclipse.org/downloads/download.php?file=/tools/gef/downloads/drops/R-3.3-200706281000/"/>
-        <property name="wtp.download.url"       value="http://www.eclipse.org/downloads/download.php?file=/webtools/downloads/drops/R2.0/R-2.0-200706260303/"/>
-        <property name="europa.jee.win32"       value="eclipse-jee-europa-win32.zip"/>
-        <property name="europa.jee.linux"       value="eclipse-jee-europa-linux-gtk.tar"/>
-        <property name="europa.jee.linux.gz"    value="eclipse-jee-europa-linux-gtk.tar.gz"/>
-        <property name="europa.jee.macos"       value="eclipse-jee-europa-macosx-carbon.tar"/>
-        <property name="europa.jee.macos.gz"    value="eclipse-jee-europa-macosx-carbon.tar.gz"/>
-        <property name="dtp-sdk" value="dtp-sdk_1.5_20070704.zip"/>
-        <property name="emf-sdo" value="emf-sdo-xsd-SDK-2.3.0.zip"/>
-        <property name="gef-sdk" value="GEF-SDK-3.3.zip"/>
-        <property name="wtp-sdk" value="wtp-sdk-R-2.0-200706260303.zip"/>
+        <property name="base_url"               value="http://www.eclipse.org/downloads/download.php?file="/>
+        <property name="europa_win32_url"       value="${base_url}/eclipse/downloads/drops/R-3.3-200706251500/"/>
+        <property name="europa_linux_url"       value="${base_url}/eclipse/downloads/drops/R-3.3-200706251500/"/>
+        <property name="europa_macos_url"       value="${base_url}/eclipse/downloads/drops/R-3.3-200706251500/"/>
+        <property name="dtp_download_url"       value="${base_url}/datatools/downloads/1.5/"/>
+        <property name="emf_download_url"       value="${base_url}/modeling/emf/emf/downloads/drops/2.3.0/R200706262000/"/>
+        <property name="gef_download_url"       value="${base_url}/tools/gef/downloads/drops/R-3.3-200706281000/"/>
+        <property name="wtp_download_url"       value="${base_url}/webtools/downloads/drops/R2.0/R-2.0-200706260303/"/>
+        <property name="europa_jee_win32"       value="eclipse-SDK-3.3-win32.zip"/>
+        <property name="europa_jee_linux"       value="eclipse-SDK-3.3-linux-gtk.tar"/>
+        <property name="europa_jee_macos"       value="eclipse-SDK-3.3-macosx-carbon.tar"/>
+        <property name="europa_jee_linux_gz"    value="${europa_jee_linux}.gz"/>
+        <property name="europa_jee_macos_gz"    value="${europa_jee_macos}.gz"/>
+        <property name="dtp_sdk" value="dtp-sdk_1.5.zip"/>
+        <property name="emf_sdo" value="emf-sdo-xsd-SDK-2.3.0.zip"/>
+        <property name="gef_sdk" value="GEF-SDK-3.3.zip"/>
+        <property name="wtp_sdk" value="wtp-sdk-R-2.0-200706260303.zip"/>
+        <property name="protocol" value="&amp;r=1&amp;protocol=http"/>
     </target>
 
     <target name="win32" depends="init,common" description="Download Windows-specific artifact(s)">
-        <echo>Downloading ${europa.download.url}${europa.jee.win32}</echo>
+        <echo>Downloading ${europa_download_url}${europa_jee_win32}</echo>
         <mkdir dir="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3"/>
-        <get src="${europa.download.url}${europa.jee.win32}&amp;r=1&amp;protocol=http" 
-             dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa.jee.win32}" 
+        <get src="${europa_win32_url}${europa_jee_win32}${protocol}"
+             dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa_jee_win32}" 
              verbose="true"
              usetimestamp="true"/>
-        <echo>Unzipping ${europa.jee.win32} to the expected location in ${LOCAL_M2_REPO}</echo>
+        <echo>Unzipping ${europa_jee_win32} to the expected location in ${LOCAL_M2_REPO}</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
-        <unzip src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa.jee.win32}" 
+        <unzip src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa_jee_win32}" 
                dest="${LOCAL_M2_REPO}/eclipse"/>
     </target>
 
     <target name="linux" depends="init,common" description="Download Linux-specific artifact(s)">
-        <echo>Downloading ${europa.download.url}${europa.jee.linux.gz}</echo>
+        <echo>Downloading ${europa_download_url}${europa_jee_linux_gz}</echo>
         <mkdir dir="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3"/>
-        <get src="${europa.download.url}${europa.jee.linux.gz}&amp;r=1&amp;protocol=http" 
-             dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa.jee.linux.gz}" 
+        <get src="${europa_linux_url}${europa_jee_linux_gz}${protocol}"
+             dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa_jee_linux_gz}" 
              verbose="true"
              usetimestamp="true"/>
-        <echo>Unzipping ${europa.jee.linux.gz} to the expected location in ${LOCAL_M2_REPO}</echo>
+        <echo>Unzipping ${europa_jee_linux_gz} to the expected location in ${LOCAL_M2_REPO}</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
-        <gunzip src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa.jee.linux.gz}"/>
-        <untar  src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa.jee.linux}" 
+        <gunzip src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa_jee_linux_gz}"/>
+        <untar  src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa_jee_linux}" 
                dest="${LOCAL_M2_REPO}/eclipse"/>
     </target>
 
     <target name="macos" depends="init,common" description="Download Mac-specific artifact(s)">
-        <echo>Downloading ${europa.download.url}${europa.jee.macos.gz}</echo>
+        <echo>Downloading ${europa_download_url}${europa_jee_macos_gz}</echo>
         <mkdir dir="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3"/>
-        <get src="${europa.download.url}${europa.jee.macos.gz}&amp;r=1&amp;protocol=http" 
-             dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa.jee.macos.gz}" 
+        <get src="${europa_macos_url}${europa_jee_macos_gz}${protocol}"
+             dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa_jee_macos_gz}" 
              verbose="true"
              usetimestamp="true"/>
-        <echo>Unzipping ${europa.jee.macos.gz} to the expected location in ${LOCAL_M2_REPO}</echo>
+        <echo>Unzipping ${europa_jee_macos_gz} to the expected location in ${LOCAL_M2_REPO}</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
-        <gunzip src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa.jee.macos.gz}"/>
-        <untar  src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa.jee.macos}" 
+        <gunzip src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa_jee_macos_gz}"/>
+        <untar  src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa_jee_macos}" 
                dest="${LOCAL_M2_REPO}/eclipse"/>
     </target>
 
-    <target name="common" description="Download artifacts common to all OS'es">
+    <target name="common" depends="init" description="Download artifacts common to all OS'es">
         <antcall target="dtp"/>
-        <antcall target="emf"/>
-        <antcall target="gef"/>
-        <antcall target="wtp"/>
+        <antcall target="emf"/> 
+        <antcall target="gef"/> 
+        <antcall target="wtp"/> 
     </target>
 
-    <target name="dtp" description="Download Data Tools Platform (DTP) artifact">
-        <echo>Downloading ${dtp.download.url}${dtp-sdk}</echo>
+    <target name="dtp" depends="init" description="Download Data Tools Platform (DTP) artifact">
+        <echo>Downloading ${dtp_download_url}${dtp_sdk}</echo>
         <mkdir dir="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3"/>
-        <get src="${dtp.download.url}${dtp-sdk}&amp;r=1&amp;protocol=http" 
-             dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${dtp-sdk}" 
+        <get src="${dtp_download_url}${dtp_sdk}${protocol}"
+             dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${dtp_sdk}" 
              verbose="true"
              usetimestamp="true"/>
-        <echo>Unzipping ${dtp-sdk} to the expected location in ${LOCAL_M2_REPO}</echo>
+        <echo>Unzipping ${dtp_sdk} to the expected location in ${LOCAL_M2_REPO}</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
-        <unzip src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${dtp-sdk}" 
+        <unzip src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${dtp_sdk}" 
                dest="${LOCAL_M2_REPO}/eclipse"/>
     </target>
 
-    <target name="emf" description="Download Eclipse Modeling Framework (EMF) artifact">
-        <echo>Downloading ${emf.download.url}${emf-sdo}</echo>
+    <target name="emf" depends="init" description="Download Eclipse Modeling Framework (EMF) artifact">
+        <echo>Downloading ${emf_download_url}${emf_sdo}</echo>
         <mkdir dir="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3"/>
-        <get src="${emf.download.url}${emf-sdo}&amp;r=1&amp;protocol=http" 
-             dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${emf-sdo}" 
+        <get src="${emf_download_url}${emf_sdo}${protocol}"
+             dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${emf_sdo}" 
              verbose="true"
              usetimestamp="true"/>
-        <echo>Unzipping ${emf-sdo} to the expected location in ${LOCAL_M2_REPO}</echo>
+        <echo>Unzipping ${emf_sdo} to the expected location in ${LOCAL_M2_REPO}</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
-        <unzip src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${emf-sdo}" 
+        <unzip src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${emf_sdo}" 
                dest="${LOCAL_M2_REPO}/eclipse"/>
     </target>
 
-    <target name="gef" description="Download Graphical Editing Framework (GEF) artifact">
-        <echo>Downloading ${gef.download.url}${gef-sdk}</echo>
+    <target name="gef" depends="init" description="Download Graphical Editing Framework (GEF) artifact">
+        <echo>Downloading ${gef_download_url}${gef_sdk}</echo>
         <mkdir dir="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3"/>
-        <get src="${gef.download.url}${gef-sdk}&amp;r=1&amp;protocol=http" 
-             dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${gef-sdk}" 
+        <get src="${gef_download_url}${gef_sdk}${protocol}"
+             dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${gef_sdk}" 
              verbose="true"
              usetimestamp="true"/>
-        <echo>Unzipping ${gef-sdk} to the expected location in ${LOCAL_M2_REPO}</echo>
+        <echo>Unzipping ${gef_sdk} to the expected location in ${LOCAL_M2_REPO}</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
-        <unzip src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${gef-sdk}" 
+        <unzip src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${gef_sdk}" 
                dest="${LOCAL_M2_REPO}/eclipse"/>
     </target>
 
-    <target name="wtp" description="Download Web Tools Platform (WTP) artifact">
-        <echo>Downloading ${wtp.download.url}${wtp-sdk}</echo>
+    <target name="wtp" depends="init" description="Download Web Tools Platform (WTP) artifact">
+        <echo>Downloading ${wtp_download_url}${wtp_sdk}</echo>
         <mkdir dir="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3"/>
-        <get src="${wtp.download.url}${wtp-sdk}&amp;r=1&amp;protocol=http" 
-             dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${wtp-sdk}" 
+        <get src="${wtp_download_url}${wtp_sdk}${protocol}"
+             dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${wtp_sdk}" 
              verbose="true"
              usetimestamp="true"/>
-        <echo>Unzipping ${wtp-sdk} to the expected location in ${LOCAL_M2_REPO}</echo>
+        <echo>Unzipping ${wtp_sdk} to the expected location in ${LOCAL_M2_REPO}</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
-        <unzip src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${wtp-sdk}" 
+        <unzip src="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${wtp_sdk}" 
                dest="${LOCAL_M2_REPO}/eclipse"/>
     </target>
 

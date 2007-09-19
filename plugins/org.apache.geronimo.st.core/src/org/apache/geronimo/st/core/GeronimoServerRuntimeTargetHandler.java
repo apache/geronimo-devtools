@@ -78,6 +78,27 @@ public class GeronimoServerRuntimeTargetHandler extends RuntimeClasspathProvider
 		} else {
 			IPath specPath = runtime.getLocation().append("repository/org/apache/geronimo/specs/");
 			addLibraryEntries(list, specPath.toFile(), true);
+            //
+            // Add spec jars that are not in the specs directory (per Geronimo configs jee-specs)
+            //
+            if (!version.startsWith("1")) {
+            	IPath javaMailSpec = runtime.getLocation().append("repository/org/apache/geronimo/javamail/geronimo-javamail_1.4_mail/");
+            	IPath jaxbApiSpec  = runtime.getLocation().append("repository/javax/xml/bind/jaxb-api/");
+            	IPath jabxImplSpec = runtime.getLocation().append("repository/com/sun/xml/bind/jaxb-impl/");
+            	IPath jaxwsApiSpec = runtime.getLocation().append("repository/org/apache/axis2/axis2-jaxws-api/");
+            	IPath saajApiSpec  = runtime.getLocation().append("repository/org/apache/axis2/axis2-saaj-api/");
+            	IPath jstlSpec     = runtime.getLocation().append("repository/jstl/jstl/");
+            	IPath myfacesSpec  = runtime.getLocation().append("repository/org/apache/myfaces/core/myfaces-api/");
+            	IPath jdbcSpec     = runtime.getLocation().append("repository/org/apache/geronimo/modules/geronimo-jdbc/");
+            	addLibraryEntries(list, javaMailSpec.toFile(), true);
+            	addLibraryEntries(list, jaxbApiSpec.toFile(),  true);
+            	addLibraryEntries(list, jabxImplSpec.toFile(), true);
+            	addLibraryEntries(list, jaxwsApiSpec.toFile(), true);
+            	addLibraryEntries(list, saajApiSpec.toFile(),  true);
+            	addLibraryEntries(list, jstlSpec.toFile(),     true);
+            	addLibraryEntries(list, myfacesSpec.toFile(),  true);
+            	addLibraryEntries(list, jdbcSpec.toFile(),     true);
+            }
 		}
 		
 		return (IClasspathEntry[])list.toArray(new IClasspathEntry[list.size()]);
