@@ -36,7 +36,7 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>.</directory>
+                            <directory>${pom.basedir}</directory>
                             <includes>
                                 <include>.metadata</include>
                             </includes>
@@ -117,7 +117,7 @@
                     <configuration>
                         <filesets>
                             <fileset>
-                                <directory>.</directory>
+                                <directory>${pom.basedir}</directory>
                                 <includes>
                                     <include>lib</include>
                                 </includes>
