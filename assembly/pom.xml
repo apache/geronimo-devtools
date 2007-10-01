@@ -26,33 +26,15 @@
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
-        <version>2.0.1</version>
+        <version>2.0.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>maven-buildnumber-plugin</artifactId>
-                <configuration>
-                    <format>{0,date,yyyyMMdd.HHmm}</format>
-                    <items>
-                        <item>timestamp</item>
-                    </items>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>create</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <finalName>geronimo-eclipse-plugin-${version}-v${buildNumber}</finalName>
+                    <finalName>geronimo-eclipse-plugin-${version}-SNAPSHOT</finalName>
                     <descriptors>
                         <descriptor>src/main/assembly/deployable.xml</descriptor>
                         <descriptor>src/main/assembly/updatesite.xml</descriptor>
@@ -85,11 +67,6 @@
             <artifactId>org.apache.geronimo.st.v11.core</artifactId>
             <version>${version}</version>
         </dependency>
-        <!--<dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.st.v12.core</artifactId>
-            <version>${version}</version>
-        </dependency>-->
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v20.core</artifactId>
@@ -130,11 +107,6 @@
             <artifactId>org.apache.geronimo.runtime.v11</artifactId>
             <version>${version}</version>
         </dependency>
-        <!--<dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.runtime.v12</artifactId>
-            <version>${version}</version>
-        </dependency>-->
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.v20</artifactId>
@@ -170,11 +142,6 @@
             <artifactId>org.apache.geronimo.v11.feature</artifactId>
             <version>${version}</version>
         </dependency>
-        <!--<dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.v12.feature</artifactId>
-            <version>${version}</version>
-        </dependency>-->
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.v20.feature</artifactId>
