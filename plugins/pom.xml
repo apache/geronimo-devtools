@@ -39,6 +39,7 @@
                             <directory>${pom.basedir}</directory>
                             <includes>
                                 <include>.metadata</include>
+                                <include>*.log</include>
                             </includes>
                         </fileset>
                     </filesets>

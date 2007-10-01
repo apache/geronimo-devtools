@@ -182,6 +182,20 @@
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
             </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${pom.basedir}</directory>
+                            <includes>
+                                <include>.classpath</include>
+                                <include>lib</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <dependencies>

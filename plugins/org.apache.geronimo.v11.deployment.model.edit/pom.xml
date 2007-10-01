@@ -159,6 +159,40 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${pom.basedir}</directory>
+                            <includes>
+                                <include>plugin.*</include>
+                                <include>*.properties</include>
+                                <include>icons</include>
+                                <include>src/org/openejb</include>
+                                <include>src/org/apache/geronimo/v11</include>
+                                <include>src/org/apache/geronimo/xml/ns/j2ee</include>
+                                <include>**/provider/*.java</include>
+                            </includes>
+                            <excludes>
+                                <exclude>**/provider/ArtifactTypeItemProvider.java</exclude>
+                                <exclude>**/provider/DeploymentItemProviderAdapterFactory.java</exclude>
+                                <exclude>**/provider/EjbLocalRefTypeItemProvider.java</exclude>
+                                <exclude>**/provider/EjbRefTypeItemProvider.java</exclude>
+                                <exclude>**/provider/GbeanRefTypeItemProvider.java</exclude>
+                                <exclude>**/provider/GbeanTypeItemProvider.java</exclude>
+                                <exclude>**/provider/NamingItemProviderAdapterFactory.java</exclude>
+                                <exclude>**/provider/ResourceEnvRefTypeItemProvider.java</exclude>
+                                <exclude>**/provider/ResourceRefTypeItemProvider.java</exclude>
+                                <exclude>**/provider/RoleTypeItemProvider.java</exclude>
+                                <exclude>**/provider/SecurityItemProviderAdapterFactory.java</exclude>
+                                <exclude>**/provider/ServiceRefTypeItemProvider.java</exclude>
+                            </excludes>
+                            <followSymlinks>true</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
