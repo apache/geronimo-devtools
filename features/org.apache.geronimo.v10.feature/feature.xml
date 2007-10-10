@@ -20,10 +20,10 @@
       id="org.apache.geronimo.v10.feature"
       label="Geronimo v1.0 Server Adapter"
       version="${org.apache.geronimo.v10.feature_version}"
-      provider-name="Apache Software Foundation"
+      provider-name="%providerName"
       image="bigG.gif">
     
-    <description url="http://geronimo.apache.org/devtools">
+    <description url="http://geronimo.apache.org/development-tools">
       %description
     </description>
     
@@ -36,7 +36,7 @@
     </license>
     
     <url>
-        <update label="Apache Geronimo Eclipse Update Site" url="http://geronimo.apache.org/devtools/"/>
+        <update label="Apache Geronimo Eclipse Update Site" url="http://www.apache.org/dist/geronimo/eclipse/updates/"/>
     </url>
     
     <requires>

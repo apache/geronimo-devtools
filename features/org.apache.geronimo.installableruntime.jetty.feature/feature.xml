@@ -22,7 +22,7 @@
       id="org.apache.geronimo.installableruntime.jetty.feature"
       label="Geronimo 2.0 (Jetty) Runtime"
       version="${org.apache.geronimo.installableruntime.jetty.feature_version}"
-      provider-name="Apache Software Foundation"
+      provider-name="%providerName"
       image="bigG.gif">
 
    <description url="http://geronimo.apache.org/">

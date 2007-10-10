@@ -22,7 +22,7 @@
       id="org.apache.geronimo.installableruntime.tomcat.feature"
       label="Geronimo 2.0 (Tomcat) Runtime"
       version="${org.apache.geronimo.installableruntime.tomcat.feature_version}"
-      provider-name="Apache Software Foundation"
+      provider-name="%providerName"
       image="bigG.gif">
 
    <description url="http://geronimo.apache.org/">
