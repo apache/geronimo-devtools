@@ -41,11 +41,13 @@
     
     <requires>
         <import feature="org.eclipse.jst" version="2.0.0" match="compatible"/>
+        <import feature="org.apache.geronimo.feature" version="${org.apache.geronimo.feature_version}"/>
+        <import feature="org.apache.geronimo.v11.feature" version="${org.apache.geronimo.v11.feature_version}"/>
     </requires>
 
     <includes
-        id="org.apache.geronimo.feature"
-        version="${org.apache.geronimo.feature_version}"/>
+        id="org.apache.geronimo.v11.feature"
+        version="${org.apache.geronimo.v11.feature_version}"/>
     
     <plugin
          id="org.apache.geronimo.st.v20.core"
