@@ -12,6 +12,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.common.project.facet.core,
  org.apache.geronimo.runtime.v20,
  org.apache.geronimo.st.core,
+ org.eclipse.jst.common.frameworks,
  org.eclipse.wst.common.modulecore,
  org.apache.geronimo.v11.deployment.model
 Eclipse-LazyStart: true
@@ -22,4 +23,5 @@ Export-Package:
  org.apache.geronimo.st,
  org.apache.geronimo.st.v20,
  org.apache.geronimo.st.v20.core,
- org.apache.geronimo.st.v20.core.internal
+ org.apache.geronimo.st.v20.core.internal,
+ org.apache.geronimo.st.v20.core.operations
