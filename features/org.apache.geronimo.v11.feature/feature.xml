@@ -39,13 +39,14 @@
         <update label="Apache Geronimo Eclipse Update Site" url="http://www.apache.org/dist/geronimo/eclipse/updates/"/>
     </url>
     
+    <includes
+        id="org.apache.geronimo.feature"
+        version="${org.apache.geronimo.feature_version}"
+        name="Geronimo Core Feature"/>
+    
     <requires>
         <import feature="org.eclipse.jst" version="2.0.0" match="compatible"/>
     </requires>
-    
-    <includes
-        id="org.apache.geronimo.feature"
-        version="${org.apache.geronimo.feature_version}"/>
 
     <plugin
          id="org.apache.geronimo.st.v11.core"
