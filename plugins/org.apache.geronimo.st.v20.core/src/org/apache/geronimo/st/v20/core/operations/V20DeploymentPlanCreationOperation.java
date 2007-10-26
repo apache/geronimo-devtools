@@ -20,6 +20,7 @@ import org.apache.geronimo.st.core.GeronimoSchemaNS;
 import org.apache.geronimo.st.core.operations.DeploymentPlanCreationOperation;
 import org.apache.geronimo.st.v20.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.v20.core.GeronimoV20Utils;
+import org.apache.geronimo.st.v20.core.internal.Trace;
 import org.apache.geronimo.xml.ns.deployment.ArtifactType;
 import org.apache.geronimo.xml.ns.deployment.DependenciesType;
 import org.apache.geronimo.xml.ns.deployment.DependencyType;
@@ -63,14 +64,17 @@ public class V20DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 	public V20DeploymentPlanCreationOperation(IDataModel model, Object config) {
 		super(model, config);
+  		Trace.trace("Constructor Entry/Exit", "V20DeploymentPlanCreationOperation", model, config);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createGeronimoApplicationDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public EObject createGeronimoApplicationDeploymentPlan(IFile dpFile) {
+//		Trace.trace("Entry", "V20DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", dpFile);
+		
 		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -93,6 +97,7 @@ public class V20DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 		save(resource);
 
+//		Trace.trace("Exit", "V20DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", root);
 		return root;
 	}
 
@@ -102,6 +107,7 @@ public class V20DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createGeronimoWebDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public EObject createGeronimoWebDeploymentPlan(IFile dpFile) {
+//		Trace.trace("Entry", "V20DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", dpFile);
 
 		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
@@ -129,6 +135,7 @@ public class V20DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 		save(resource);
 
+//		Trace.trace("Exit", "V20DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", root);
 		return root;
 	}
 
@@ -138,6 +145,8 @@ public class V20DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createOpenEjbDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public EObject createOpenEjbDeploymentPlan(IFile dpFile) {
+//		Trace.trace("Entry", "V20DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile);
+		
 		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -162,6 +171,7 @@ public class V20DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 		save(resource);
 
+//		Trace.trace("Exit", "V20DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", root);
 		return root;
 	}
 
@@ -171,6 +181,8 @@ public class V20DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createConnectorDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public EObject createConnectorDeploymentPlan(IFile dpFile) {
+//		Trace.trace("Entry", "V20DeploymentPlanCreationOperation.createConnectorDeploymentPlan", dpFile);
+		
 		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -191,10 +203,13 @@ public class V20DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 		save(resource);
 
+//		Trace.trace("Exit", "V20DeploymentPlanCreationOperation.createConnectorDeploymentPlan", root);
 		return root;
 	}
 
 	public EObject createServiceDeploymentPlan(IFile dpFile) {
+//		Trace.trace("Entry", "V20DeploymentPlanCreationOperation.createServiceDeploymentPlan", dpFile);
+		
 		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -213,10 +228,13 @@ public class V20DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 		save(resource);
 
+//		Trace.trace("Exit", "V20DeploymentPlanCreationOperation.createServiceDeploymentPlan", root);
 		return root;
 	}
 
 	public EnvironmentType getConfigEnvironment() {
+//		Trace.trace("Entry", "V20DeploymentPlanCreationOperation.getConfigEnvironment");
+		
 		if (config != null && config instanceof DeploymentPlanInstallConfig) {
 			cfg = (DeploymentPlanInstallConfig) config;
 		}
@@ -241,10 +259,13 @@ public class V20DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 			env.setDependencies(dt);
 		}
 
+//		Trace.trace("Exit", "V20DeploymentPlanCreationOperation.getConfigEnvironment", env);
 		return env;
 	}
 
 	public static ArtifactType createArtifactType(String groupId, String artifactId, String version, String type) {
+//		Trace.trace("Entry", "V20DeploymentPlanCreationOperation.createArtifactType", groupId, artifactId, version, type);
+						
 		ArtifactType artifact = DeploymentFactory.eINSTANCE.createArtifactType();
 		if (groupId != null)
 			artifact.setGroupId(groupId);
@@ -253,10 +274,14 @@ public class V20DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		if (version != null)
 			artifact.setVersion(version);
 		artifact.setType(type);
+		
+//		Trace.trace("Exit", "V20DeploymentPlanCreationOperation.createArtifactType", artifact);
 		return artifact;
 	}
 
 	public static ArtifactType createDependencyType(String groupId, String artifactId, String version, String type) {
+//		Trace.trace("Entry", "V20DeploymentPlanCreationOperation.createDependencyType", groupId, artifactId, version, type);
+		
 		DependencyType artifact = DeploymentFactory.eINSTANCE.createDependencyType();
 		if (groupId != null)
 			artifact.setGroupId(groupId);
@@ -265,10 +290,15 @@ public class V20DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		if (version != null)
 			artifact.setVersion(version);
 		artifact.setType(type);
+		
+//		Trace.trace("Exit", "V20DeploymentPlanCreationOperation.createDependencyType", artifact);
 		return artifact;
 	}
 
 	private static boolean hasValue(String attribute) {
+//		Trace.trace("Entry", "V20DeploymentPlanCreationOperation.hasValue", attribute);
+//		Trace.trace("Exit", "V20DeploymentPlanCreationOperation.hasValue", (attribute != null && attribute.trim().length() != 0) );
+		
 		return attribute != null && attribute.trim().length() != 0;
 	}
 

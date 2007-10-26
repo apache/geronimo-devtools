@@ -17,6 +17,7 @@
 package org.apache.geronimo.st.v20.core.operations;
 
 import org.apache.geronimo.st.core.GeronimoFacetInstallDelegate;
+import org.apache.geronimo.st.v20.core.internal.Trace;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jst.common.project.facet.JavaProjectFacetCreationDataModelProvider;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
@@ -30,8 +31,12 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 public class GeronimoV20FacetInstallDelegate extends GeronimoFacetInstallDelegate {
 
 	public IDataModelOperation createDeploymentPlanCreationOp(IProject project, Object config) {
+		Trace.trace("Entry", "GeronimoV20FacetInstallDelegate.createDeploymentPlanCreationOp", project, config);
+		
 		IDataModel model = DataModelFactory.createDataModel(new JavaProjectFacetCreationDataModelProvider());
 		model.setStringProperty(IFacetDataModelProperties.FACET_PROJECT_NAME, project.getName());
-		return new V20DeploymentPlanCreationOperation(model, config);
+		
+		Trace.trace("Exit", "GeronimoV20FacetInstallDelegate.createDeploymentPlanCreationOp");
+		return new V20DeploymentPlanCreationOperation(model, config);		
 	}
 }
