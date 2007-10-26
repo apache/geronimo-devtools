@@ -18,6 +18,7 @@ package org.apache.geronimo.st.v20.ui.wizards;
 
 import org.apache.geronimo.st.v20.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.v20.ui.internal.Messages;
+import org.apache.geronimo.st.v20.ui.internal.Trace;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -38,9 +39,13 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
 	private Button sharedLib;
 
 	public FacetInstallPage() {
-		super("geronimo.plan.install");
+		super("geronimo.plan.install.v20");
+		Trace.trace("Constructor Entry", "FacetInstallPage");
+		
 		setTitle("Geronimo Deployment Plan");
 		setDescription("Configure the geronimo deployment plan.");
+		
+		Trace.trace("Constructor Exit", "FacetInstallPage");
 	}
 
 	/*
@@ -49,7 +54,11 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
 	 * @see org.eclipse.wst.common.project.facet.ui.IFacetWizardPage#setConfig(java.lang.Object)
 	 */
 	public void setConfig(Object config) {
+		Trace.trace("Entry", "FacetInstallPage.setConfig", config);
+
 		this.config = (DeploymentPlanInstallConfig) config;
+		
+		Trace.trace("Exit", "FacetInstallPage.setConfig");
 	}
 
 	/*
@@ -58,6 +67,7 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
 	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
 	 */
 	public void createControl(Composite parent) {
+		Trace.trace("Entry", "FacetInstallPage.createControl", parent);
 		
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
@@ -97,6 +107,8 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
 		sharedLib.setText(Messages.addSharedLib);
 		
 		setControl(composite);
+		
+		Trace.trace("Exit", "FacetInstallPage.createControl");		
 	}
 
 	/*
@@ -105,11 +117,15 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
 	 * @see org.eclipse.wst.common.project.facet.ui.AbstractFacetWizardPage#transferStateToConfig()
 	 */
 	public void transferStateToConfig() {
+		Trace.trace("Entry", "FacetInstallPage.transferStateToConfig");		
+	
 		config.setGroupId(groupText.getText());
 		config.setArtifactId(artifactText.getText());
 		config.setVersion(versionText.getText());
 		config.setType(typeText.getText());
 		config.setSharedLib(sharedLib.getSelection());
+		
+		Trace.trace("Exit", "FacetInstallPage.transferStateToConfig");		
 	}
 
 	private static GridData createGridData() {

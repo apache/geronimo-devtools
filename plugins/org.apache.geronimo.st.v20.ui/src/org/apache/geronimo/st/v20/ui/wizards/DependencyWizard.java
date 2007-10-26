@@ -17,6 +17,7 @@
 package org.apache.geronimo.st.v20.ui.wizards;
 
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.v20.ui.internal.Trace;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
 import org.apache.geronimo.xml.ns.deployment.ArtifactType;
@@ -68,6 +69,7 @@ public class DependencyWizard extends AbstractTableWizard {
 	 */
 	public DependencyWizard(AbstractTableSection section) {
 		super(section);
+        Trace.trace("Constructor Entry/Exit", "DependencyWizard");
 	}
 
 	/*
@@ -130,11 +132,15 @@ public class DependencyWizard extends AbstractTableWizard {
 	 * @see org.apache.geronimo.ui.wizards.AbstractTableWizard#processEAttributes(org.eclipse.jface.wizard.IWizardPage)
 	 */
 	public void processEAttributes(IWizardPage page) {
+//              Trace.trace("Entry", "DependencyWizard.processEAttributes", page);
+		
 		ArtifactType dt = (ArtifactType) eObject;
 		dt.setArtifactId(artifactIdText.getText());
 		dt.setGroupId(groupIdText.getText());
 		dt.setVersion(versionText.getText());
 		dt.setType(typeText.getText());
+		
+//              Trace.trace("Exit", "DependencyWizard.processEAttributes");
 	}
 
 	/*
@@ -143,23 +149,34 @@ public class DependencyWizard extends AbstractTableWizard {
 	 * @see org.eclipse.jface.wizard.IWizard#addPages()
 	 */
 	public void addPages() {
+//              Trace.trace("Entry", "DependencyWizard.addPages");
+		
 		WizardPage page = new DependencyWizardPage("Page0");
 		addPage(page);
+		
+//              Trace.trace("Exit", "DependencyWizard.addPages");
 	}
 
 	public class DependencyWizardPage extends WizardPage {
-
+		
 		public DependencyWizardPage(String pageName) {
 			super(pageName);
+           	Trace.trace("Constructor Entry", "DependencyWizardPage", pageName);
+			
 			setTitle(getWizardFirstPageTitle());
 			setDescription(getWizardFirstPageDescription());
+			
+           	Trace.trace("Constructor Exit", "DependencyWizardPage");
 		}
 
 		public DependencyWizardPage(String pageName, String title, ImageDescriptor titleImage) {
 			super(pageName, title, titleImage);
+			Trace.trace("Constructor Entry/Exit", "DependencyWizardPage", pageName, title, titleImage);
 		}
 
 		public void createControl(Composite parent) {
+//			Trace.trace("Entry", "DependencyWizardPage.createControl", parent);			
+			
 			Composite composite = new Composite(parent, SWT.NULL);
 
 			GridLayout layout = new GridLayout();
@@ -216,11 +233,14 @@ public class DependencyWizard extends AbstractTableWizard {
 			}
 
 			setControl(composite);
-
+//			Trace.trace("Exit", "DependencyWizardPage.createControl");
 		}
 	}
 
 	public GridData createLabelGridData() {
+//		Trace.trace("Entry", "DependencyWizard.createLabelGridData");
+//		Trace.trace("Exit", "DependencyWizard.createLabelGridData", new GridData(GridData.HORIZONTAL_ALIGN_FILL));
+
 		return new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 	}
 	
@@ -228,8 +248,9 @@ public class DependencyWizard extends AbstractTableWizard {
 	/* (non-Javadoc)
 	 * @see org.apache.geronimo.st.ui.wizards.AbstractTableWizard#performFinish()
 	 */
-	public boolean performFinish() {
-
+	public boolean performFinish() {		
+//		Trace.trace("Entry", "DependencyWizard.performFinish");
+		
 		if (eObject == null) {
 			eObject = getEFactory().create(section.getTableEntryObjectType());
 			EObject plan = section.getPlan();
@@ -247,6 +268,7 @@ public class DependencyWizard extends AbstractTableWizard {
 			section.getTableViewer().setInput(section.getInput());
 		}
 
+//		Trace.trace("Exit", "DependencyWizard.performFinish", true);
 		return true;
 	}
 }
