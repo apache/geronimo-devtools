@@ -33,7 +33,7 @@
     </extension>
 
     <extension point="org.eclipse.wst.common.project.facet.ui.wizardPages">
-  		<wizard-pages action="geronimo.plan.install">
+  		<wizard-pages action="geronimo.plan.install.v20">
     		<page class="org.apache.geronimo.st.v20.ui.wizards.FacetInstallPage"/>
   		</wizard-pages>
 	</extension>  
