@@ -17,6 +17,8 @@
 package org.apache.geronimo.st.v11.core;
 
 import org.eclipse.wst.common.project.facet.core.IActionConfigFactory;
+import org.apache.geronimo.st.v11.core.internal.Trace;
+
 
 /**
  * @version $Rev$ $Date$
@@ -37,6 +39,7 @@ public class DeploymentPlanInstallConfig {
     {
         public Object create()
         {
+        	Trace.trace("Entry/Exit", "DeploymentPlanInstallConfig.create");
             return new DeploymentPlanInstallConfig();
         }
     }

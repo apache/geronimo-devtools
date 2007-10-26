@@ -20,6 +20,7 @@ import org.apache.geronimo.st.core.GeronimoSchemaNS;
 import org.apache.geronimo.st.core.operations.DeploymentPlanCreationOperation;
 import org.apache.geronimo.st.v11.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.v11.core.GeronimoV11Utils;
+import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.apache.geronimo.xml.ns.deployment.ArtifactType;
 import org.apache.geronimo.xml.ns.deployment.DependenciesType;
 import org.apache.geronimo.xml.ns.deployment.DependencyType;
@@ -63,6 +64,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 	public V11DeploymentPlanCreationOperation(IDataModel model, Object config) {
 		super(model, config);
+  		Trace.trace("Constructor Entry/Exit", "V11DeploymentPlanCreationOperation", model, config);
 	}
 
 	/*
