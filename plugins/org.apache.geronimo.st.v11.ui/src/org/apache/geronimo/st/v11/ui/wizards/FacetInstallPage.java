@@ -18,6 +18,7 @@ package org.apache.geronimo.st.v11.ui.wizards;
 
 import org.apache.geronimo.st.v11.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.v11.ui.internal.Messages;
+import org.apache.geronimo.st.v11.ui.internal.Trace;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -38,9 +39,13 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
 	private Button sharedLib;
 
 	public FacetInstallPage() {
-		super("geronimo.plan.install");
+		super("geronimo.plan.install.v11");		
+        Trace.trace("Constructor Entry", "FacetInstallPage");
+        
 		setTitle("Geronimo Deployment Plan");
 		setDescription("Configure the geronimo deployment plan.");
+		
+        Trace.trace("Constructor Exit", "FacetInstallPage");
 	}
 
 	/*
