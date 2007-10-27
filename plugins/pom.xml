@@ -133,7 +133,6 @@
         <module>org.apache.geronimo.st.core</module>
         <module>org.apache.geronimo.st.v1.core</module>
         <module>org.apache.geronimo.st.v11.core</module>
-        <module>org.apache.geronimo.st.v12.core</module>
         <module>org.apache.geronimo.st.v20.core</module>
         <module>org.apache.geronimo.st.ui</module>
         <module>org.apache.geronimo.st.v1.ui</module>
@@ -146,7 +145,6 @@
         <module>org.apache.geronimo.runtime.common</module>
         <module>org.apache.geronimo.runtime.v1</module>
         <module>org.apache.geronimo.runtime.v11</module>
-        <module>org.apache.geronimo.runtime.v12</module>
         <module>org.apache.geronimo.runtime.v20</module>
     </modules>
 </project>
