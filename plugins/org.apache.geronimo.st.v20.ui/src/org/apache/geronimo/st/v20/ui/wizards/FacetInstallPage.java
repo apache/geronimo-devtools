@@ -39,7 +39,7 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
 	private Button sharedLib;
 
 	public FacetInstallPage() {
-		super("geronimo.plan.install.v20");
+		super("geronimo.plan.install");
 		Trace.trace("Constructor Entry", "FacetInstallPage");
 		
 		setTitle("Geronimo Deployment Plan");

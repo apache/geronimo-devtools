@@ -88,9 +88,9 @@ public class Trace {
      *            The class name + method name (e.g., "Class.method()")
      *            
      * @param parm1,2,3,4,5
-         *            Method parameters if the trace point is an "Entry"
-         *            or
-         *            Return value if the trace point is an "Exit"
+     *            Method parameters if the trace point is an "Entry"
+     *            or
+     *            Return value if the trace point is an "Exit"
      */
     public static void trace(String tracePoint, String classDotMethod) {
         trace(Trace.INFO, tracePoint + ": " + classDotMethod + "()" );

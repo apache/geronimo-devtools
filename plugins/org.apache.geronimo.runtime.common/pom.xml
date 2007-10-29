@@ -136,6 +136,7 @@
                             <includes>
                                 <include>.classpath</include>
                                 <include>lib</include>
+                                <include>bin</include>
                             </includes>
                         </fileset>
                     </filesets>

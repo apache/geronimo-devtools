@@ -169,6 +169,7 @@
                                 <include>plugin.*</include>
                                 <include>*.properties</include>
                                 <include>icons</include>
+                                <include>bin</include>
                                 <include>src/org/openejb</include>
                                 <include>src/org/apache/geronimo/deployment</include>
                                 <include>src/org/apache/geronimo/xml/ns/j2ee</include>

@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.geronimo.st.ui.Activator;
+import org.apache.geronimo.st.ui.internal.Trace;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -54,13 +55,19 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEd
 	 * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor#doAddPages()
 	 */
 	public void doAddPages() throws PartInitException {
+        Trace.trace("Entry", "SharedDeploymentPlanEditor.doAddPages");
+
 		if (getDeploymentPlan() != null && getLoader() != null) {
 			currentLoader.doAddPages(this);
 		}
 		addSourcePage();
+
+        Trace.trace("Exit", "SharedDeploymentPlanEditor.doAddPages");
 	}
 
 	private static synchronized void loadExtensionPoints() {
+        Trace.trace("Entry", "SharedDeploymentPlanEditor.loadExtensionPoints");
+
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IConfigurationElement[] cf = registry.getConfigurationElementsFor(Activator.PLUGIN_ID, "loader");
 		for (int i = 0; i < cf.length; i++) {
@@ -71,10 +78,13 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEd
 					String version = element.getAttribute("version");
 					loaders.put(version, loader);
 				} catch (CoreException e) {
+                    Trace.trace("CoreException", "SharedDeploymentPlanEditor.loadExtensionPoints");
 					e.printStackTrace();
 				}
 			}
 		}
+
+        Trace.trace("Exit", "SharedDeploymentPlanEditor.loadExtensionPoints");
 	}
 
 	/*
@@ -83,11 +93,15 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEd
 	 * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor#loadDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public EObject loadDeploymentPlan(IFile file) {
-		return getLoader() != null ? currentLoader.loadDeploymentPlan(file)
-				: null;
+        Trace.trace("Entry", "SharedDeploymentPlanEditor.loadDeploymentPlan", file);
+
+        Trace.trace("Exit", "SharedDeploymentPlanEditor.loadDeploymentPlan", (getLoader() != null ? currentLoader.loadDeploymentPlan(file) : null));
+		return getLoader() != null ? currentLoader.loadDeploymentPlan(file) : null;
 	}
 
 	private IGeronimoFormContentLoader getLoader() {
+        Trace.trace("Entry", "SharedDeploymentPlanEditor.getLoader");
+
 		if (currentLoader == null) {
 			IEditorInput input = getEditorInput();
 			if (input instanceof IFileEditorInput) {
@@ -98,10 +112,16 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEd
 					String version = runtime.getRuntimeType().getVersion();
 					currentLoader = (IGeronimoFormContentLoader) loaders.get(version);
 				} catch (CoreException e) {
+                    Trace.trace("CoreException", "SharedDeploymentPlanEditor.getLoader");
 					e.printStackTrace();
-				}
+				} catch (IllegalArgumentException ie) {
+                    Trace.trace("IllegalArgumentException", "SharedDeploymentPlanEditor.getLoader");
+				    throw new IllegalArgumentException("The project [" + project.getName() + "] does not have a Targeted Runtime specified.");
+                }
 			}
 		}
+
+        Trace.trace("Exit", "SharedDeploymentPlanEditor.getLoader", currentLoader);
 		return currentLoader;
 	}
 

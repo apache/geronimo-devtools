@@ -156,6 +156,7 @@
                                 <include>plugin.*</include>
                                 <include>*.properties</include>
                                 <include>src</include>
+                                <include>bin</include>
                             </includes>
                         </fileset>
                     </filesets>
