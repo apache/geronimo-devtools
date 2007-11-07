@@ -22,7 +22,7 @@
 <project name="EuropaArtifacts">
 
     <target name="init">
-        <property name="europa_drop"    value="R-3.3.1-200709211145"/>
+        <property name="europa_drop"    value="R-3.3.1.1-200710231652"/>
         <property name="dtp_drop"       value="1.5"/>
         <property name="emf_drop"       value="2.3.1/R200709252135"/>
         <property name="gef_drop"       value="R-3.3.1-200709241000"/>
@@ -38,9 +38,9 @@
         <property name="gef_download_url"   value="${base_url}/tools/gef/downloads/drops/${gef_drop}/"/>
         <property name="wtp_download_url"   value="${base_url}/webtools/downloads/drops/R2.0/${wtp_drop}/"/>
 
-        <property name="europa_jee_win32"       value="eclipse-SDK-3.3.1-win32.zip"/>
-        <property name="europa_jee_linux"       value="eclipse-SDK-3.3.1-linux-gtk.tar"/>
-        <property name="europa_jee_macos"       value="eclipse-SDK-3.3.1-macosx-carbon.tar"/>
+        <property name="europa_jee_win32"       value="eclipse-SDK-3.3.1.1-win32.zip"/>
+        <property name="europa_jee_linux"       value="eclipse-SDK-3.3.1.1-linux-gtk.tar"/>
+        <property name="europa_jee_macos"       value="eclipse-SDK-3.3.1.1-macosx-carbon.tar"/>
         <property name="europa_jee_linux_gz"    value="${europa_jee_linux}.gz"/>
         <property name="europa_jee_macos_gz"    value="${europa_jee_macos}.gz"/>
 
