@@ -23,7 +23,7 @@
     <artifactId>geronimo-eclipse-plugin</artifactId>
     <packaging>pom</packaging>
     <name>${artifactId}</name>
-    <version>2.0.2</version>
+    <version>2.1.0</version>
                         
     <parent>
         <groupId>org.apache</groupId>
@@ -84,12 +84,12 @@
                         
     <properties>
         <eclipseInstall>${settings.localRepository}/eclipse</eclipseInstall>
-        <org.apache.geronimo.feature_version>2.0.2</org.apache.geronimo.feature_version>
-        <org.apache.geronimo.v10.feature_version>2.0.2</org.apache.geronimo.v10.feature_version>
-        <org.apache.geronimo.v11.feature_version>2.0.2</org.apache.geronimo.v11.feature_version>
-        <org.apache.geronimo.v20.feature_version>2.0.2</org.apache.geronimo.v20.feature_version>
-        <org.apache.geronimo.installableruntime.tomcat.feature_version>2.0.2</org.apache.geronimo.installableruntime.tomcat.feature_version>
-        <org.apache.geronimo.installableruntime.jetty.feature_version>2.0.2</org.apache.geronimo.installableruntime.jetty.feature_version>
+        <org.apache.geronimo.feature_version>2.1.0</org.apache.geronimo.feature_version>
+        <org.apache.geronimo.v10.feature_version>2.1.0</org.apache.geronimo.v10.feature_version>
+        <org.apache.geronimo.v11.feature_version>2.1.0</org.apache.geronimo.v11.feature_version>
+        <org.apache.geronimo.v20.feature_version>2.1.0</org.apache.geronimo.v20.feature_version>
+        <org.apache.geronimo.installableruntime.tomcat.feature_version>2.1.0</org.apache.geronimo.installableruntime.tomcat.feature_version>
+        <org.apache.geronimo.installableruntime.jetty.feature_version>2.1.0</org.apache.geronimo.installableruntime.jetty.feature_version>
     </properties>
                         
     <dependencyManagement>
