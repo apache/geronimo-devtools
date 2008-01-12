@@ -33,6 +33,7 @@
         <module>org.apache.geronimo.v10.feature</module>
         <module>org.apache.geronimo.v11.feature</module>
         <module>org.apache.geronimo.v20.feature</module>
+        <module>org.apache.geronimo.v21.feature</module>
         <module>org.apache.geronimo.installableruntime.jetty.feature</module>
         <module>org.apache.geronimo.installableruntime.tomcat.feature</module>
     </modules>
