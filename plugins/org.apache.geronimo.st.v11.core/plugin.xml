@@ -68,6 +68,12 @@
             runtime-component="org.apache.geronimo.runtime" version="1.1"/>
     </extension>
     
+    <!-- ======================================================================================= -->
+    <!--                                                                                         -->
+    <!-- Declare the 1.1 version of the "Geronimo Deployment" <project-facet> and the <action>   -->
+    <!-- that the user can perform on the facet (i.e., install)                                  -->
+    <!--                                                                                         -->
+    <!-- ======================================================================================= -->
     <extension point="org.eclipse.wst.common.project.facet.core.facets">        
         <project-facet-version facet="org.apache.geronimo.facet" version="1.1">
             <action type="install" id="geronimo.plan.install">
@@ -100,6 +106,13 @@
         </project-facet-version>
     </extension>
     
+    
+    <!-- ======================================================================================= -->
+    <!--                                                                                         -->
+    <!-- Map the <runtime-component> (defined in org.apache.geronimo.st.core\plugin.xml) to a    -->
+    <!-- specific version of the "Geronimo Deployment" <project-facet>                           -->
+    <!--                                                                                         -->
+    <!-- ======================================================================================= -->
     <extension point="org.eclipse.wst.common.project.facet.core.defaultFacets" 
     	id="org.apache.geronimo.defaultFacets"
         name="Geronimo Default Facets">

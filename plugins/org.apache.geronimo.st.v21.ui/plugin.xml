@@ -21,20 +21,33 @@
 
 <plugin>
     <extension point="org.apache.geronimo.st.ui.loader">
-    	<loader class="org.apache.geronimo.st.v20.ui.editors.GeronimoFormContentLoader" version="1.1"/>
+    	<loader class="org.apache.geronimo.st.v21.ui.editors.GeronimoFormContentLoader" version="1.1"/>
     </extension>
     
     <extension point="org.apache.geronimo.st.ui.loader">
-    	<loader class="org.apache.geronimo.st.v20.ui.editors.GeronimoFormContentLoader" version="1.2"/>
+    	<loader class="org.apache.geronimo.st.v21.ui.editors.GeronimoFormContentLoader" version="1.2"/>
     </extension>
     
     <extension point="org.apache.geronimo.st.ui.loader">
- 	  	<loader class="org.apache.geronimo.st.v20.ui.editors.GeronimoFormContentLoader" version="2.0"/>
+ 	  	<loader class="org.apache.geronimo.st.v21.ui.editors.GeronimoFormContentLoader" version="2.0"/>
     </extension>
 
+    <extension point="org.apache.geronimo.st.ui.loader">
+ 	  	<loader class="org.apache.geronimo.st.v21.ui.editors.GeronimoFormContentLoader" version="2.1"/>
+    </extension>
+
+
+    <!-- ======================================================================================= -->
+    <!--                                                                                         -->
+    <!-- Map the <runtime-component> (defined in org.apache.geronimo.st.core\plugin.xml) to a    -->
+    <!-- specific version of the "Geronimo Deployment" <project-facet>. Note that the 1.1        -->
+    <!-- version is the only supported <project-facet-version> for the 2.1 Geronimo server.      -->
+    <!--                                                                                         -->
+    <!-- ======================================================================================= -->
     <extension point="org.eclipse.wst.common.project.facet.ui.wizardPages">
   		<wizard-pages action="geronimo.plan.install">
     		<page class="org.apache.geronimo.st.v11.ui.wizards.FacetInstallPage"/>
   		</wizard-pages>
 	</extension>  
+
 </plugin>
