@@ -53,11 +53,26 @@ class DistributeCommand extends DeployCommand {
 
 		if (targets == null)
 			targets = dm.getTargets();
-		
-		Trace.trace(Trace.INFO, "Target: " + targets[0]);
+
+        Trace.trace(Trace.INFO, "Available targets: ");
+        for ( int ii=0; ii<targets.length; ii++ ) {
+            Trace.trace(Trace.INFO, "--> Target[" + ii + "]: " + targets[ii]);
+        }
+
+        //
+        // Geronimo 2.1 now supports clustering which will likely result in multiple targets getting 
+        // returned from the deployment manager. In our case though we have to ensure that only the 
+        // first target is used, which is the default configuration store and which is explicitly 
+        // configured by users. Thus, we will distribute the project to the defaultTarget only.
+        //
+        Target[] defaultTarget = new Target[1];
+        defaultTarget[0] = targets[0];
+
+        Trace.trace(Trace.INFO, "Using default target:");
+        Trace.trace(Trace.INFO, "--> " + defaultTarget[0]);
 
 		File file = getTargetFile();
-		return new DeploymentCmdStatus(Status.OK_STATUS, dm.distribute(targets, file, null));
+		return new DeploymentCmdStatus(Status.OK_STATUS, dm.distribute( defaultTarget, file, null));
 	}
 
 	/*

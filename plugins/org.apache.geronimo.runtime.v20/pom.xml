@@ -192,6 +192,7 @@
                                 <include>.classpath</include>
                                 <include>lib</include>
                                 <include>bin</include>
+                                <include>*.log</include>
                             </includes>
                         </fileset>
                     </filesets>
