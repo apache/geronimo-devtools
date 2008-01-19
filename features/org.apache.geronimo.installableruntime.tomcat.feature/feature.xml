@@ -21,7 +21,7 @@
 <feature
       id="org.apache.geronimo.installableruntime.tomcat.feature"
       label="Geronimo 2.1 (Tomcat) Runtime"
-      version="${org.apache.geronimo.installableruntime.tomcat.feature_version}"
+      version="2.1.0"
       provider-name="%providerName"
       image="bigG.gif">
 

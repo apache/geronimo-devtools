@@ -19,8 +19,9 @@
 <feature
       id="org.apache.geronimo.v21.feature"
       label="Geronimo v2.1 Server Adapter"
-      version="${org.apache.geronimo.v21.feature_version}"
+      version="2.1.0"
       provider-name="%providerName"
+      plugin="org.apache.geronimo.st.v21.core"
       image="bigG.gif">
     
     <description url="http://geronimo.apache.org/development-tools">
@@ -41,7 +42,7 @@
     
     <includes
         id="org.apache.geronimo.v11.feature"
-        version="${org.apache.geronimo.v11.feature_version}"
+        version="2.1.0"
         name="Geronimo v1.1.x Server Adapter"/>
         
     <requires>
@@ -52,34 +53,34 @@
          id="org.apache.geronimo.st.v21.core"
          download-size="0"
          install-size="0"
-         version="${version}"
+         version="2.1.0"
          unpack="false"/>
     
     <plugin
          id="org.apache.geronimo.st.v21.ui"
          download-size="0"
          install-size="0"
-         version="${version}"
+         version="2.1.0"
          unpack="false"/>
 
     <plugin
          id="org.apache.geronimo.runtime.v21"
          download-size="0"
          install-size="0"
-         version="${version}"/>
+         version="2.1.0"/>
 
     <plugin
          id="org.apache.geronimo.v11.deployment.model"
          download-size="0"
          install-size="0"
-         version="${version}"
+         version="2.1.0"
          unpack="false"/>
     
     <plugin
          id="org.apache.geronimo.v11.deployment.model.edit"
          download-size="0"
          install-size="0"
-         version="${version}"
+         version="2.1.0"
          unpack="false"/>
          
 </feature>

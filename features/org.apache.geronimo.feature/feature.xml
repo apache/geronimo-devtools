@@ -19,7 +19,7 @@
 <feature
       id="org.apache.geronimo.feature"
       label="Geronimo Core Feature"
-      version="${org.apache.geronimo.feature_version}"
+      version="2.1.0"
       provider-name="%providerName"
       image="bigG.gif">
     
@@ -47,19 +47,19 @@
          id="org.apache.geronimo.st.core"
          download-size="0"
          install-size="0"
-         version="${version}"
+         version="2.1.0"
          unpack="false"/>
 
     <plugin
          id="org.apache.geronimo.st.ui"
          download-size="0"
          install-size="0"
-         version="${version}"
+         version="2.1.0"
          unpack="false"/>
     
     <plugin
          id="org.apache.geronimo.runtime.common"
          download-size="0"
          install-size="0"
-         version="${version}"/>
+         version="2.1.0"/>
 </feature>
