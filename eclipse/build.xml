@@ -22,11 +22,11 @@
 <project name="EuropaArtifacts">
 
     <target name="init">
-        <property name="europa_drop"    value="M20071205-0800"/>
+        <property name="europa_drop"    value="M20080110-0800"/>
         <property name="dtp_drop"       value="1.5"/>
-        <property name="emf_drop"       value="2.3.2/M200711272020"/>
+        <property name="emf_drop"       value="M200712211131"/>
         <property name="gef_drop"       value="R-3.3.1-200709241000"/>
-        <property name="wtp_drop"       value="M-2.0.2-20071222060852"/>
+        <property name="wtp_drop"       value="M-2.0.2-20080117053217"/>
 
         <property name="base_url"           value="http://www.eclipse.org/downloads/download.php?file="/>
         <property name="europa_win32_url"   value="${base_url}/eclipse/downloads/drops/${europa_drop}/"/>
@@ -34,7 +34,7 @@
         <property name="europa_macos_url"   value="${base_url}/eclipse/downloads/drops/${europa_drop}/"/>
 
         <property name="dtp_download_url"   value="${base_url}/datatools/downloads/${dtp_drop}/"/>
-        <property name="emf_download_url"   value="${base_url}/modeling/emf/emf/downloads/drops/${emf_drop}/"/>
+        <property name="emf_download_url"   value="${base_url}/modeling/emf/emf/downloads/drops/2.3.2/${emf_drop}/"/>
         <property name="gef_download_url"   value="${base_url}/tools/gef/downloads/drops/${gef_drop}/"/>
         <property name="wtp_download_url"   value="${base_url}/webtools/downloads/drops/R2.0/${wtp_drop}/"/>
 
@@ -45,7 +45,7 @@
         <property name="europa_jee_macos_gz"    value="${europa_jee_macos}.gz"/>
 
         <property name="dtp_sdk"    value="dtp-sdk_1.5.1_101607.zip"/>
-        <property name="emf_sdo"    value="emf-sdo-xsd-SDK-M200711272020.zip"/>
+        <property name="emf_sdo"    value="emf-sdo-xsd-SDK-${emf_drop}.zip"/>
         <property name="gef_sdk"    value="GEF-SDK-3.3.1.zip"/>
         <property name="wtp_sdk"    value="wtp-sdk-${wtp_drop}.zip"/>
 
