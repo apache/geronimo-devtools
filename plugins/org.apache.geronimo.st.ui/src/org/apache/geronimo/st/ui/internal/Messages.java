@@ -43,6 +43,7 @@ public class Messages extends NLS {
 	public static String editorSectionTestEnvDescription;
 	public static String editorSectionRunFromWorkspace;
 	public static String editorSectionSharedLibrariesInPlace;
+	public static String editorSectionSelectClasspathContainers;
 	
 	public static String info;
 	public static String debug;

@@ -19,7 +19,9 @@ package org.apache.geronimo.st.ui.sections;
 import org.apache.geronimo.st.core.IGeronimoServer;
 import org.apache.geronimo.st.ui.commands.SetInPlaceSharedLibCommand;
 import org.apache.geronimo.st.ui.commands.SetRunFromWorkspaceCommand;
+import org.apache.geronimo.st.ui.commands.SetSelectClasspathContainersCommand;
 import org.apache.geronimo.st.ui.internal.Messages;
+import org.apache.geronimo.st.ui.internal.Trace;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -34,68 +36,102 @@ import org.eclipse.wst.server.ui.editor.ServerEditorSection;
 
 public class ServerEditorTestEnvSection extends ServerEditorSection {
 
-	private Button runFromWorkspace;
+    // SWT widget(s)
+    private Button runFromWorkspace;
+    private Button inPlaceSharedLib;
+    private Button selectClasspathContainers = null;
+    private Composite composite = null;
 
-	private Button inPlaceSharedLib;
+    // Form widget(s)
+    private FormToolkit toolkit;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.wst.server.ui.editor.ServerEditorSection#createSection(org.eclipse.swt.widgets.Composite)
-	 */
-	public void createSection(Composite parent) {
-		super.createSection(parent);
 
-		FormToolkit toolkit = getFormToolkit(parent.getDisplay());
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.wst.server.ui.editor.ServerEditorSection#createSection(org.eclipse.swt.widgets.Composite)
+     */
+    public void createSection(Composite parent) {
+        super.createSection(parent);
 
-		Section section = toolkit.createSection(parent, ExpandableComposite.TWISTIE
-				| ExpandableComposite.EXPANDED
-				| ExpandableComposite.TITLE_BAR
-				| Section.DESCRIPTION | ExpandableComposite.FOCUS_TITLE);
+        Trace.tracePoint("ENTRY", "ServerEditorTestEnvSection.createSection", parent);
 
-		section.setText(Messages.editorSectionTestEnvTitle);
-		section.setDescription(Messages.editorSectionTestEnvDescription);
-		section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+        toolkit = getFormToolkit(parent.getDisplay());
 
-		Composite composite = toolkit.createComposite(section);
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 1;
-		layout.marginHeight = 5;
-		layout.marginWidth = 10;
-		layout.verticalSpacing = 5;
-		layout.horizontalSpacing = 15;
-		composite.setLayout(layout);
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		section.setClient(composite);
-		
-		IGeronimoServer gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
+        Section section = toolkit.createSection(parent, ExpandableComposite.TWISTIE
+                                                | ExpandableComposite.EXPANDED
+                                                | ExpandableComposite.TITLE_BAR
+                                                | Section.DESCRIPTION | ExpandableComposite.FOCUS_TITLE);
 
-		inPlaceSharedLib = toolkit.createButton(composite, Messages.editorSectionSharedLibrariesInPlace, SWT.CHECK);
-		inPlaceSharedLib.setSelection(gs.isInPlaceSharedLib());
-		inPlaceSharedLib.addSelectionListener(new SelectionListener() {
+        section.setText(Messages.editorSectionTestEnvTitle);
+        section.setDescription(Messages.editorSectionTestEnvDescription);
+        section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
-			public void widgetSelected(SelectionEvent e) {
-				execute(new SetInPlaceSharedLibCommand(server, inPlaceSharedLib
-						.getSelection()));
-			}
+        composite = toolkit.createComposite(section);
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 1;
+        layout.marginHeight = 5;
+        layout.marginWidth = 10;
+        layout.verticalSpacing = 5;
+        layout.horizontalSpacing = 15;
+        composite.setLayout(layout);
+        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        section.setClient(composite);
 
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
+        IGeronimoServer gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
 
-		});
 
-		runFromWorkspace = toolkit.createButton(composite, Messages.editorSectionRunFromWorkspace, SWT.CHECK);
-		runFromWorkspace.setSelection(gs.isRunFromWorkspace());
-		runFromWorkspace.setEnabled(false);	//FIXME disable support until supported
-		runFromWorkspace.addSelectionListener(new SelectionListener() {
+        //
+        // inPlaceSharedLib Button
+        //
+        inPlaceSharedLib = toolkit.createButton(composite, Messages.editorSectionSharedLibrariesInPlace, SWT.CHECK);
+        inPlaceSharedLib.setSelection(gs.isInPlaceSharedLib());
+        inPlaceSharedLib.addSelectionListener(new SelectionListener() {
 
-			public void widgetSelected(SelectionEvent e) {
-				execute(new SetRunFromWorkspaceCommand(server, runFromWorkspace.getSelection()));
-			}
+            public void widgetSelected(SelectionEvent e) {
+                execute(new SetInPlaceSharedLibCommand(server, inPlaceSharedLib.getSelection()));
+            }
 
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
+            public void widgetDefaultSelected(SelectionEvent e) {
+            }
 
-		});
-	}
+        });
+
+
+        //
+        // runFromWorkspace Button
+        //
+        runFromWorkspace = toolkit.createButton(composite, Messages.editorSectionRunFromWorkspace, SWT.CHECK);
+        runFromWorkspace.setSelection(gs.isRunFromWorkspace());
+        runFromWorkspace.setEnabled(false); //FIXME disable support until supported
+        runFromWorkspace.addSelectionListener(new SelectionListener() {
+
+            public void widgetSelected(SelectionEvent e) {
+                execute(new SetRunFromWorkspaceCommand(server, runFromWorkspace.getSelection()));
+            }
+
+            public void widgetDefaultSelected(SelectionEvent e) {
+            }
+
+        });
+
+
+        //
+        // selectClasspathContainers Button
+        //
+        selectClasspathContainers = toolkit.createButton(composite, Messages.editorSectionSelectClasspathContainers, SWT.CHECK); 
+        selectClasspathContainers.setSelection(gs.isSelectClasspathContainers()); 
+        selectClasspathContainers.addSelectionListener(new SelectionListener() { 
+
+            public void widgetSelected(SelectionEvent e) { 
+                execute(new SetSelectClasspathContainersCommand(server, selectClasspathContainers.getSelection())); 
+            } 
+
+            public void widgetDefaultSelected(SelectionEvent e) { 
+            } 
+
+        }); 
+
+        Trace.tracePoint("EXIT", "ServerEditorTestEnvSection.createSection");
+    }
 }

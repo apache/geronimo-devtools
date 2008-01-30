@@ -49,6 +49,8 @@ public interface IGeronimoServer extends IURLProvider {
 	
 	public boolean isRunFromWorkspace();
 	
+	public boolean isSelectClasspathContainers();
+	
 	public int getPingDelay();
 	
 	public int getPingInterval();

@@ -73,6 +73,8 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	
 	public static final String PROPERTY_RUN_FROM_WORKSPACE = "runFromWorkspace";
 
+	public static final String PROPERTY_SELECT_CLASSPATH_CONTAINERS = "selectClasspathContainers";
+
 	public static final String CONSOLE_INFO = "--long";
 
 	public static final String CONSOLE_DEBUG = "-vv";
@@ -332,12 +334,23 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 		return getAttribute(PROPERTY_RUN_FROM_WORKSPACE, false);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.apache.geronimo.st.core.IGeronimoServer#isSelectClasspathContainers()
+	 */
+	public boolean isSelectClasspathContainers() {
+		return getAttribute(PROPERTY_SELECT_CLASSPATH_CONTAINERS, false);
+	}
+	
 	public void setInPlaceSharedLib(boolean enable) {
 		setAttribute(PROPERTY_IN_PLACE_SHARED_LIB, enable);
 	}
 	
 	public void setRunFromWorkspace(boolean enable) {
 		setAttribute(PROPERTY_RUN_FROM_WORKSPACE, enable);
+	}
+	
+	public void setSelectClasspathContainers(boolean enable) {
+		setAttribute(PROPERTY_SELECT_CLASSPATH_CONTAINERS, enable);
 	}
 	
 	public String discoverDeploymentFactoryClassName(IPath jarPath) {
@@ -367,6 +380,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 		setPublishTimeout(900000);
 		setInPlaceSharedLib(false);
 		setRunFromWorkspace(false);
+		setSelectClasspathContainers(false);
 	}
 
 	public String getInstanceProperty(String name) {
