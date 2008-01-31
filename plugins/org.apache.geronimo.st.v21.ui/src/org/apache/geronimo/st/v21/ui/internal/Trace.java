@@ -115,7 +115,7 @@ public class Trace {
                                                                  "parm4=[" + (parm4 == null ? null : parm4.toString()) + "] )" );
     }
     public static void trace(String tracePoint, String classDotMethod, Object parm1, Object parm2, Object parm3, Object parm4, Object parm5) {
-        trace(Trace.INFO, ggacePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "], " +
+        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "], " +
                                                                  "parm2=[" + (parm2 == null ? null : parm2.toString()) + "], " +
                                                                  "parm3=[" + (parm3 == null ? null : parm3.toString()) + "], " +
                                                                  "parm4=[" + (parm4 == null ? null : parm4.toString()) + "], " +
