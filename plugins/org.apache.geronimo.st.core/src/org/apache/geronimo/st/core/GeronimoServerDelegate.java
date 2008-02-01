@@ -75,6 +75,8 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 
 	public static final String PROPERTY_SELECT_CLASSPATH_CONTAINERS = "selectClasspathContainers";
 
+	public static final String PROPERTY_CLASSPATH_CONTAINERS = "classpathContainers";
+
 	public static final String CONSOLE_INFO = "--long";
 
 	public static final String CONSOLE_DEBUG = "-vv";
@@ -334,12 +336,28 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 		return getAttribute(PROPERTY_RUN_FROM_WORKSPACE, false);
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.st.core.IGeronimoServer#isSelectClasspathContainers()
-	 */
+	
+    //
+	// PROPERTY_SELECT_CLASSPATH_CONTAINERS
+	//
 	public boolean isSelectClasspathContainers() {
 		return getAttribute(PROPERTY_SELECT_CLASSPATH_CONTAINERS, false);
 	}
+	public void setSelectClasspathContainers(boolean enable) {
+		setAttribute(PROPERTY_SELECT_CLASSPATH_CONTAINERS, enable);
+	}
+	
+	
+	//
+	// PROPERTY_CLASSPATH_CONTAINERS
+	//
+	public List<String> getClasspathContainers() {
+		return getAttribute(PROPERTY_CLASSPATH_CONTAINERS, new ArrayList<String>() );
+	}
+	public void setClasspathContainers( List<String> list ) {
+		setAttribute(PROPERTY_CLASSPATH_CONTAINERS, list);
+	}
+	
 	
 	public void setInPlaceSharedLib(boolean enable) {
 		setAttribute(PROPERTY_IN_PLACE_SHARED_LIB, enable);
@@ -347,10 +365,6 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	
 	public void setRunFromWorkspace(boolean enable) {
 		setAttribute(PROPERTY_RUN_FROM_WORKSPACE, enable);
-	}
-	
-	public void setSelectClasspathContainers(boolean enable) {
-		setAttribute(PROPERTY_SELECT_CLASSPATH_CONTAINERS, enable);
 	}
 	
 	public String discoverDeploymentFactoryClassName(IPath jarPath) {
@@ -400,4 +414,6 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	public void setServerInstanceProperties(Map map) {
 		setAttribute(GeronimoRuntimeDelegate.SERVER_INSTANCE_PROPERTIES, map);
 	}
+
+	
 }

@@ -16,6 +16,8 @@
  */
 package org.apache.geronimo.st.core;
 
+import java.util.List;
+
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 
@@ -50,6 +52,8 @@ public interface IGeronimoServer extends IURLProvider {
 	public boolean isRunFromWorkspace();
 	
 	public boolean isSelectClasspathContainers();
+	
+	public List<String> getClasspathContainers();
 	
 	public int getPingDelay();
 	

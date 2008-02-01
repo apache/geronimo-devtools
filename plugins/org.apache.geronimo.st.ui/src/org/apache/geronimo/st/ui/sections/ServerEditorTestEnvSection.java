@@ -16,12 +16,20 @@
  */
 package org.apache.geronimo.st.ui.sections;
 
+import java.util.List;
 import org.apache.geronimo.st.core.IGeronimoServer;
 import org.apache.geronimo.st.ui.commands.SetInPlaceSharedLibCommand;
 import org.apache.geronimo.st.ui.commands.SetRunFromWorkspaceCommand;
+import org.apache.geronimo.st.ui.commands.SetClasspathContainersCommand;
 import org.apache.geronimo.st.ui.commands.SetSelectClasspathContainersCommand;
 import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.internal.Trace;
+import org.apache.geronimo.st.ui.util.ClasspathContainersHelper;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.CheckStateChangedEvent;
+import org.eclipse.jface.viewers.ICheckStateListener;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -45,6 +53,10 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
     // Form widget(s)
     private FormToolkit toolkit;
 
+    // JFace viewer(s)
+    private CheckboxTableViewer checkbox;
+
+    private IGeronimoServer gs;
 
     /*
      * (non-Javadoc)
@@ -78,7 +90,7 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         section.setClient(composite);
 
-        IGeronimoServer gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
+        gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
 
 
         //
@@ -125,6 +137,25 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 
             public void widgetSelected(SelectionEvent e) { 
                 execute(new SetSelectClasspathContainersCommand(server, selectClasspathContainers.getSelection())); 
+
+                createCheckbox();
+
+                //
+                // For any selection change the checkbox will be populated from the workspace. 
+                // Changes to individual elements in the checkbox will be handled with the 
+                // CheckStateListener below.
+                //
+                List<String> containers = ClasspathContainersHelper.queryWorkspace();
+                checkbox.setInput( containers );
+                checkbox.setAllChecked( false );
+                if ( selectClasspathContainers.getSelection() ) {
+                    checkbox.getTable().setEnabled( true );
+                }
+                else {
+                    checkbox.getTable().setEnabled( false );
+                    // Clear any previously selected classpath containers
+                    execute(new SetClasspathContainersCommand(server, new Object[] {} ));
+                }
             } 
 
             public void widgetDefaultSelected(SelectionEvent e) { 
@@ -132,6 +163,69 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 
         }); 
 
+
+        //
+        // checkbox CheckboxTableViewer
+        //
+        createCheckbox();
+
+        //
+        // Populate the checkbox from the list of classpath containers in the workspace. If 
+        // workspace classpath containers had been previously selected then use the list from the
+        // server's instance properties to populate the checkbox. One advantage of this approach
+        // is that it will handle cases where new classpath containers are added in the workspace
+        // or existing containers are deleted from the workspace. 
+        //
+        List<String> containers = ClasspathContainersHelper.queryWorkspace();
+        checkbox.setInput( containers );
+
+        if ( selectClasspathContainers.getSelection() ) {
+            checkbox.getTable().setEnabled( true );
+            List<String> checkedContainers = gs.getClasspathContainers();
+            for (String container: checkedContainers) {
+                checkbox.setChecked( container, true );
+            }
+        }
+        else {
+            checkbox.getTable().setEnabled( false );
+        }
+
         Trace.tracePoint("EXIT", "ServerEditorTestEnvSection.createSection");
     }
+
+
+    //
+    // CheckboxTableViewer: checkbox
+    //
+	public void createCheckbox() {
+        Trace.tracePoint("ENTRY", "ServerEditorTestEnvSection.createCheckbox");
+    
+        if ( checkbox == null ) {
+                    
+            checkbox = CheckboxTableViewer.newCheckList( composite, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL );
+                    
+            GridData gridData = new GridData(GridData.FILL_BOTH);
+            gridData.heightHint = 250;
+            gridData.widthHint = 100;
+            checkbox.getTable().setLayoutData( gridData );
+                    
+            checkbox.addCheckStateListener( new ICheckStateListener() {
+
+                public void checkStateChanged(CheckStateChangedEvent event) {
+                    execute(new SetClasspathContainersCommand(server, checkbox.getCheckedElements()));
+                }
+
+            }); 
+
+            checkbox.setLabelProvider( new LabelProvider() {
+            });
+
+            checkbox.setContentProvider( new ArrayContentProvider() {
+            });
+
+        }
+
+        Trace.tracePoint("EXIT", "ServerEditorTestEnvSection.createCheckbox");
+	}
+
 }
