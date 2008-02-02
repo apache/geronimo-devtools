@@ -18,7 +18,13 @@ package org.apache.geronimo.st.ui.util;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.apache.geronimo.st.ui.internal.Trace;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 
 /**
  *
@@ -27,13 +33,49 @@ import java.util.List;
  */
 public class ClasspathContainersHelper {
 
+    //
+    // Query the workspace for the set of classpath containers
+    //
+    public static List<String> queryWorkspace() {
+        Trace.tracePoint("ENTRY", "ClasspathContainersHelper.queryWorkspace");
+
+        ArrayList<String> containers = new ArrayList<String>();
+
+        IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+
+        for ( IProject project : projects ) {
+
+            try {
+                if ( project.getNature(JavaCore.NATURE_ID) !=null ) {
+
+                    IJavaProject javaProject = JavaCore.create(project);
+                    IClasspathEntry[] cp = javaProject.getRawClasspath();
+
+                    for ( IClasspathEntry cpEntry : cp ) {
+                        int kind = cpEntry.getEntryKind();
+                        if (kind == IClasspathEntry.CPE_CONTAINER) {
+                            addEntry( containers, cpEntry.getPath().toString());
+                        }
+                    }
+                }
+            }
+            catch ( CoreException e ) {
+                e.printStackTrace();
+            }
+        }
+
+        Trace.tracePoint("ENTRY", "ClasspathContainersHelper.queryWorkspace", containers);
+        return containers;
+    }
+
 
     //
-    // query()
+    // Ensure no duplicates
     //
-	public static List<String> queryWorkspace() {
-        // TODO Return set of Classpath Containers discovered in the workspace
-        return new ArrayList<String>();
-	}
+    public static void addEntry( List<String> containers, String container ) {
 
+        if ( containers.indexOf( container ) < 0 ) {
+            containers.add( container );
+        }
+    }
 }
