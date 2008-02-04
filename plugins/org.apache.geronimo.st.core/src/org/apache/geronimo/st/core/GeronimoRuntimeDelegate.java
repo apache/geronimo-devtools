@@ -49,8 +49,6 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
 
 	public static final String SERVER_INSTANCE_PROPERTIES = "geronimo_server_instance_properties";
 	
-	public static final String SERVER_CLASSPATH_CONTAINERS = "classpathContainers";
-	
 	public static final String RUNTIME_SOURCE= "runtime.source";
 
 	public static final int NO_IMAGE = 0;

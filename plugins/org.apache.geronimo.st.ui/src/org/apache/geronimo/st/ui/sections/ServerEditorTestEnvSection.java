@@ -17,6 +17,8 @@
 package org.apache.geronimo.st.ui.sections;
 
 import java.util.List;
+
+import org.apache.geronimo.st.core.ClasspathContainersHelper;
 import org.apache.geronimo.st.core.IGeronimoServer;
 import org.apache.geronimo.st.ui.commands.SetInPlaceSharedLibCommand;
 import org.apache.geronimo.st.ui.commands.SetRunFromWorkspaceCommand;
@@ -24,7 +26,6 @@ import org.apache.geronimo.st.ui.commands.SetClasspathContainersCommand;
 import org.apache.geronimo.st.ui.commands.SetSelectClasspathContainersCommand;
 import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.internal.Trace;
-import org.apache.geronimo.st.ui.util.ClasspathContainersHelper;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;

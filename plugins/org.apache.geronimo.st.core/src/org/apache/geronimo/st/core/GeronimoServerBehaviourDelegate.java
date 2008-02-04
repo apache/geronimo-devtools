@@ -41,6 +41,7 @@ import org.apache.geronimo.st.core.internal.Trace;
 import org.apache.geronimo.st.core.operations.ISharedLibEntryCreationDataModelProperties;
 import org.apache.geronimo.st.core.operations.SharedLibEntryCreationOperation;
 import org.apache.geronimo.st.core.operations.SharedLibEntryDataModelProvider;
+import org.apache.geronimo.st.core.ClasspathContainersHelper;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -56,6 +57,10 @@ import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.jdt.core.IClasspathContainer;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
@@ -572,11 +577,31 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		cp.add(JavaRuntime.newArchiveRuntimeClasspathEntry(serverJar));
 		// merge existing classpath with server classpath
 		IRuntimeClasspathEntry[] existingCps = JavaRuntime.computeUnresolvedRuntimeClasspath(wc);
+
 		for (int i = 0; i < existingCps.length; i++) {
+            Trace.trace(Trace.INFO, "cpentry: " + cp );
 			if (cp.contains(existingCps[i]) == false) {
 				cp.add(existingCps[i]);
 			}
 		}
+
+        //
+        // Add classpath entries from any selected classpath containers
+        //
+        if ( getGeronimoServer().isSelectClasspathContainers()) {
+            List<String> containers = getGeronimoServer().getClasspathContainers();
+            for ( String containerPath : containers ) {
+                List<IClasspathEntry> cpes = ClasspathContainersHelper.queryWorkspace( containerPath );
+                for ( IClasspathEntry cpe : cpes ) {
+                    RuntimeClasspathEntry rcpe = new RuntimeClasspathEntry( cpe );
+                    Trace.trace(Trace.INFO, "Classpath Container Entry: " + rcpe );
+                    if (cp.contains(rcpe) == false) {
+                        cp.add( rcpe );
+                    }
+                }
+            }
+        }
+
 		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, convertCPEntryToMemento(cp));
 		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false);
 	}
