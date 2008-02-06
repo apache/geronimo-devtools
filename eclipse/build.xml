@@ -16,9 +16,11 @@
   ~ limitations under the License.
   -->
 
-<!-- ================================================================================= -->
-<!-- Download Europa Eclipse artifacts and unzip them into the user's local maven repo -->
-<!-- ================================================================================= -->
+<!--
+ |  
+ | Download Europa Eclipse artifacts and unzip them into the user's local maven repo     
+ |                                                                                             
+ -->
 <project name="EuropaArtifacts">
 
     <target name="init">
@@ -26,7 +28,7 @@
         <property name="dtp_drop"       value="1.5"/>
         <property name="emf_drop"       value="M200712211131"/>
         <property name="gef_drop"       value="R-3.3.1-200709241000"/>
-        <property name="wtp_drop"       value="M-2.0.2-20080117053217"/>
+        <property name="wtp_drop"       value="M-2.0.2RC1-20080131192943"/>
 
         <property name="base_url"           value="http://www.eclipse.org/downloads/download.php?file="/>
         <property name="europa_win32_url"   value="${base_url}/eclipse/downloads/drops/${europa_drop}/"/>
