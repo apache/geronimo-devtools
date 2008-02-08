@@ -24,7 +24,7 @@
 <project name="EuropaArtifacts">
 
     <target name="init">
-        <property name="europa_drop"    value="M20080110-0800"/>
+        <property name="europa_drop"    value="R-3.3.1.1-200710231652"/>
         <property name="dtp_drop"       value="1.5"/>
         <property name="emf_drop"       value="M200712211131"/>
         <property name="gef_drop"       value="R-3.3.1-200709241000"/>
@@ -40,9 +40,9 @@
         <property name="gef_download_url"   value="${base_url}/tools/gef/downloads/drops/${gef_drop}/"/>
         <property name="wtp_download_url"   value="${base_url}/webtools/downloads/drops/R2.0/${wtp_drop}/"/>
 
-        <property name="europa_jee_win32"       value="eclipse-SDK-${europa_drop}-win32.zip"/>
-        <property name="europa_jee_linux"       value="eclipse-SDK-${europa_drop}-linux-gtk.tar"/>
-        <property name="europa_jee_macos"       value="eclipse-SDK-${europa_drop}-macosx-carbon.tar"/>
+        <property name="europa_jee_win32"       value="eclipse-SDK-3.3.1.1-win32.zip"/>
+        <property name="europa_jee_linux"       value="eclipse-SDK-3.3.1.1-linux-gtk.tar"/>
+        <property name="europa_jee_macos"       value="eclipse-SDK-3.3.1.1-macosx-carbon.tar"/>
         <property name="europa_jee_linux_gz"    value="${europa_jee_linux}.gz"/>
         <property name="europa_jee_macos_gz"    value="${europa_jee_macos}.gz"/>
 
@@ -62,6 +62,7 @@
         <get src="${europa_win32_url}${europa_jee_win32}${protocol}"
              dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa_jee_win32}" 
              verbose="true"
+             ignoreerrors="true"
              usetimestamp="true"/>
         <echo>------------------------------------------------------------------------------</echo>
         <echo>Unzipping ${europa_jee_win32} to the expected location in ${LOCAL_M2_REPO}    </echo>
@@ -79,6 +80,7 @@
         <get src="${europa_linux_url}${europa_jee_linux_gz}${protocol}"
              dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa_jee_linux_gz}" 
              verbose="true"
+             ignoreerrors="true"
              usetimestamp="true"/>
         <echo>------------------------------------------------------------------------------</echo>
         <echo>Unzipping ${europa_jee_linux_gz} to the expected location in ${LOCAL_M2_REPO} </echo>
@@ -97,6 +99,7 @@
         <get src="${europa_macos_url}${europa_jee_macos_gz}${protocol}"
              dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${europa_jee_macos_gz}" 
              verbose="true"
+             ignoreerrors="true"
              usetimestamp="true"/>
         <echo>------------------------------------------------------------------------------</echo>
         <echo>Unzipping ${europa_jee_macos_gz} to the expected location in ${LOCAL_M2_REPO} </echo>
@@ -122,6 +125,7 @@
         <get src="${dtp_download_url}${dtp_sdk}${protocol}"
              dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${dtp_sdk}" 
              verbose="true"
+             ignoreerrors="true"
              usetimestamp="true"/>
         <echo>------------------------------------------------------------------------------</echo>
         <echo>Unzipping ${dtp_sdk} to the expected location in ${LOCAL_M2_REPO}             </echo>
@@ -139,6 +143,7 @@
         <get src="${emf_download_url}${emf_sdo}${protocol}"
              dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${emf_sdo}" 
              verbose="true"
+             ignoreerrors="true"
              usetimestamp="true"/>
         <echo>------------------------------------------------------------------------------</echo>
         <echo>Unzipping ${emf_sdo} to the expected location in ${LOCAL_M2_REPO}             </echo>
@@ -156,6 +161,7 @@
         <get src="${gef_download_url}${gef_sdk}${protocol}"
              dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${gef_sdk}" 
              verbose="true"
+             ignoreerrors="true"
              usetimestamp="true"/>
         <echo>------------------------------------------------------------------------------</echo>
         <echo>Unzipping ${gef_sdk} to the expected location in ${LOCAL_M2_REPO}             </echo>
@@ -173,6 +179,7 @@
         <get src="${wtp_download_url}${wtp_sdk}${protocol}"
              dest="${LOCAL_M2_REPO}/org/eclipse/eclipse/3.3/${wtp_sdk}" 
              verbose="true"
+             ignoreerrors="true"
              usetimestamp="true"/>
         <echo>------------------------------------------------------------------------------</echo>
         <echo>Unzipping ${wtp_sdk} to the expected location in ${LOCAL_M2_REPO}             </echo>
