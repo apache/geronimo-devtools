@@ -283,7 +283,7 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 				// if no outputlocation, output path will get picked up by
 				// default output path
 				if(includeOutputLocations && entry.getOutputLocation() != null) {
-                    path = project.getLocation().removeLastSegments(1).append(entry.getOutputLocation()).addTrailingSeparator().toOSString();
+					path = project.getLocation().append(entry.getOutputLocation()).addTrailingSeparator().toOSString();
 				}
 			} else {
 				path = resolveVarOrLibEntry(entry);
