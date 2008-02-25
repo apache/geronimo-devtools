@@ -24,11 +24,11 @@
 <project name="EuropaArtifacts">
 
     <target name="init">
-        <property name="europa_drop"    value="M20080212-1200"/>
+        <property name="europa_drop"    value="M20080221-1800"/>
         <property name="dtp_drop"       value="1.5"/>
         <property name="emf_drop"       value="M200802051830"/>
         <property name="gef_drop"       value="M200801291704"/>
-        <property name="wtp_drop"       value="M-2.0.2RC3-20080221101112"/>
+        <property name="wtp_drop"       value="R-2.0.2-20080223205547"/>
 
         <property name="base_url"           value="http://www.eclipse.org/downloads/download.php?file="/>
         <property name="europa_win32_url"   value="${base_url}/eclipse/downloads/drops/${europa_drop}/"/>
