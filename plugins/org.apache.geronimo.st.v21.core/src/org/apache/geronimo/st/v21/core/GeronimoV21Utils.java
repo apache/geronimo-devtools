@@ -21,6 +21,7 @@ import java.io.IOException;
 import org.apache.geronimo.deployment.xbeans.EnvironmentDocument;
 import org.apache.geronimo.deployment.xmlbeans.XmlBeansUtil;
 import org.apache.geronimo.st.core.GeronimoUtils;
+import org.apache.geronimo.st.core.internal.Trace;
 import org.apache.geronimo.xml.ns.deployment.ArtifactType;
 import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
 import org.apache.geronimo.xml.ns.deployment.EnvironmentType;
@@ -54,186 +55,228 @@ import org.openejb.xml.ns.openejb.jar.util.JarResourceFactoryImpl;
  * @version $Rev: 533836 $ $Date: 2007-04-30 15:39:14 -0400 (Mon, 30 Apr 2007) $
  */
 public class GeronimoV21Utils extends GeronimoUtils {
-	
-	public static EObject getDeploymentPlan(IFile file) {
-		if (!file.exists())
-			return null;
 
-		if (file.getName().equals(GeronimoUtils.APP_PLAN_NAME))
-			return getApplicationDeploymentPlan(file);
-		else if (file.getName().equals(GeronimoUtils.OPENEJB_PLAN_NAME))
-			return getOpenEjbDeploymentPlan(file);
-		else if (file.getName().equals(GeronimoUtils.WEB_PLAN_NAME))
-			return getWebDeploymentPlan(file);
-		else if (file.getName().equals(GeronimoUtils.CONNECTOR_PLAN_NAME))
-			return getConnectorDeploymentPlan(file);
+    public static EObject getDeploymentPlan(IFile file) {
+        Trace.tracePoint("ENTRY", "GeronimoV21Utils.getDeploymentPlan", file);
 
-		return null;
-	}
-	
-	public static String getConfigId2(IModule module) {
-		
-		IFile planFile = null;
-		IVirtualComponent comp = ComponentCore.createComponent(module.getProject());
-		if (isWebModule(module)) {
-			planFile = GeronimoUtils.getWebDeploymentPlanFile(comp);
-		} else if (isEjbJarModule(module)) {
-			planFile = GeronimoUtils.getOpenEjbDeploymentPlanFile(comp);
-		} else if (isEarModule(module)) {
-			planFile = GeronimoUtils.getApplicationDeploymentPlanFile(comp);
-		} else if (isRARModule(module)) {
-			planFile = GeronimoUtils.getConnectorDeploymentPlanFile(comp);
-		}
-		
-		if(planFile != null) {
-			try {
-				XmlObject xmlObject = XmlBeansUtil.parse(planFile.getLocation().toFile());
-				XmlCursor cursor = xmlObject.newCursor();
-				cursor.toFirstChild();
-				xmlObject = cursor.getObject();
-				XmlObject result[] = xmlObject.selectChildren(QNameSet.singleton(EnvironmentDocument.type.getDocumentElementName()));
-				if(result != null && result.length > 0) {
-					org.apache.geronimo.deployment.xbeans.EnvironmentType env = (org.apache.geronimo.deployment.xbeans.EnvironmentType) result[0].changeType(org.apache.geronimo.deployment.xbeans.EnvironmentType.type);
-					org.apache.geronimo.deployment.xbeans.ArtifactType moduleId = env.getModuleId();
-					return getQualifiedConfigID(moduleId);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (XmlException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return null;
-	}
+        if (!file.exists()) {
+            return null;
+        }
 
-	public static String getConfigId(IModule module) {
+        if (file.getName().equals(GeronimoUtils.APP_PLAN_NAME))
+            return getApplicationDeploymentPlan(file);
+        else if (file.getName().equals(GeronimoUtils.OPENEJB_PLAN_NAME))
+            return getOpenEjbDeploymentPlan(file);
+        else if (file.getName().equals(GeronimoUtils.WEB_PLAN_NAME))
+            return getWebDeploymentPlan(file);
+        else if (file.getName().equals(GeronimoUtils.CONNECTOR_PLAN_NAME))
+            return getConnectorDeploymentPlan(file);
 
-		EnvironmentType environment = null;
-		if (isWebModule(module)) {
-			WebAppType plan = getWebDeploymentPlan(module);
-			if (plan != null)
-				environment = plan.getEnvironment();
-		} else if (isEjbJarModule(module)) {
-			OpenejbJarType plan = getOpenEjbDeploymentPlan(module);
-			if (plan != null)
-				environment = plan.getEnvironment();
-		} else if (isEarModule(module)) {
-			ApplicationType plan = getApplicationDeploymentPlan(module);
-			if (plan != null)
-				environment = plan.getEnvironment();
-		} else if (isRARModule(module)) {
-			ConnectorType plan = getConnectorDeploymentPlan(module);
-			if (plan != null)
-				environment = plan.getEnvironment();
-		}
+        Trace.tracePoint("EXIT", "GeronimoV21Utils.getDeploymentPlan", null);
+        return null;
+    }
 
-		if (environment != null
-				&& environment.eIsSet(DeploymentPackage.eINSTANCE.getEnvironmentType_ModuleId())) {
-			return getQualifiedConfigID(environment.getModuleId());
-		}
+    public static String getConfigId2(IModule module) {
+        Trace.tracePoint("ENTRY", "GeronimoV21Utils.getConfigId2", module);
 
-		return getId(module);
-	}
+        IFile planFile = null;
+        IVirtualComponent comp = ComponentCore.createComponent(module.getProject());
+        if (isWebModule(module)) {
+            planFile = GeronimoUtils.getWebDeploymentPlanFile(comp);
+        }
+        else if (isEjbJarModule(module)) {
+            planFile = GeronimoUtils.getOpenEjbDeploymentPlanFile(comp);
+        }
+        else if (isEarModule(module)) {
+            planFile = GeronimoUtils.getApplicationDeploymentPlanFile(comp);
+        }
+        else if (isRARModule(module)) {
+            planFile = GeronimoUtils.getConnectorDeploymentPlanFile(comp);
+        }
 
-	public static String getQualifiedConfigID(ArtifactType artifact) {
-		return getQualifiedConfigID(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), artifact.getType());
-	}
-	
-	public static String getQualifiedConfigID(org.apache.geronimo.deployment.xbeans.ArtifactType artifact) {
-		return getQualifiedConfigID(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), artifact.getType());
-	}
+        if (planFile != null) {
+            try {
+                XmlObject xmlObject = XmlBeansUtil.parse(planFile.getLocation().toFile());
+                XmlCursor cursor = xmlObject.newCursor();
+                cursor.toFirstChild();
+                xmlObject = cursor.getObject();
+                XmlObject result[] = xmlObject.selectChildren(QNameSet.singleton(EnvironmentDocument.type.getDocumentElementName()));
+                if (result != null && result.length > 0) {
+                    org.apache.geronimo.deployment.xbeans.EnvironmentType env = (org.apache.geronimo.deployment.xbeans.EnvironmentType) result[0].changeType(org.apache.geronimo.deployment.xbeans.EnvironmentType.type);
+                    org.apache.geronimo.deployment.xbeans.ArtifactType moduleId = env.getModuleId();
+                    Trace.tracePoint("EXIT", "GeronimoV21Utils.getConfigId2", getQualifiedConfigID(moduleId));
+                    return getQualifiedConfigID(moduleId);
+                }
+                else {
+                    // 
+                    // FIXME -- Once GERONIMODEVTOOLS-263 is resolved
+                    // 
+                    String id = getConfigId(module);
+                    Trace.tracePoint("EXIT", "GeronimoV21Utils.getConfigId2", id);
+                    return id;
+                }
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            catch (XmlException e) {
+                e.printStackTrace();
+            }
+        }
 
-	public static String getContextRoot(IModule module) {
-		String contextRoot = null;
+        Trace.tracePoint("EXIT", "GeronimoV21Utils.getConfigId2", null);
+        return null;
+    }
 
-		WebAppType deploymentPlan = getWebDeploymentPlan(module);
-		if (deploymentPlan != null)
-			contextRoot = deploymentPlan.getContextRoot();
+    public static String getConfigId(IModule module) {
+        Trace.tracePoint("ENTRY", "GeronimoV21Utils.getConfigId", module);
 
-		if (contextRoot == null)
-			contextRoot = GeronimoUtils.getContextRoot(module);
+        EnvironmentType environment = null;
+        if (isWebModule(module)) {
+            WebAppType plan = getWebDeploymentPlan(module);
+            if (plan != null)
+                environment = plan.getEnvironment();
+        }
+        else if (isEjbJarModule(module)) {
+            OpenejbJarType plan = getOpenEjbDeploymentPlan(module);
+            if (plan != null)
+                environment = plan.getEnvironment();
+        }
+        else if (isEarModule(module)) {
+            ApplicationType plan = getApplicationDeploymentPlan(module);
+            if (plan != null)
+                environment = plan.getEnvironment();
+        }
+        else if (isRARModule(module)) {
+            ConnectorType plan = getConnectorDeploymentPlan(module);
+            if (plan != null)
+                environment = plan.getEnvironment();
+        }
 
-		return contextRoot;
-	}
+        if (environment != null
+            && environment.eIsSet(DeploymentPackage.eINSTANCE.getEnvironmentType_ModuleId())) {
+            Trace.tracePoint("EXIT", "GeronimoV21Utils.getConfigId", getQualifiedConfigID(environment.getModuleId()));
+            return getQualifiedConfigID(environment.getModuleId());
+        }
 
-	public static WebAppType getWebDeploymentPlan(IModule module) {
-		return getWebDeploymentPlan(getVirtualComponent(module));
-	}
+        Trace.tracePoint("EXIT", "GeronimoV21Utils.getConfigId", getId(module));
+        return getId(module);
+    }
 
-	public static ApplicationType getApplicationDeploymentPlan(IModule module) {
-		return getApplicationDeploymentPlan(getVirtualComponent(module));
-	}
+    public static String getQualifiedConfigID(ArtifactType artifact) {
+        return getQualifiedConfigID(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), artifact.getType());
+    }
 
-	public static OpenejbJarType getOpenEjbDeploymentPlan(IModule module) {
-		return getOpenEjbDeploymentPlan(getVirtualComponent(module));
-	}
+    public static String getQualifiedConfigID(org.apache.geronimo.deployment.xbeans.ArtifactType artifact) {
+        return getQualifiedConfigID(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), artifact.getType());
+    }
 
-	public static ConnectorType getConnectorDeploymentPlan(IModule module) {
-		return getConnectorDeploymentPlan(getVirtualComponent(module));
-	}
+    public static String getContextRoot(IModule module) {
+        String contextRoot = null;
 
-	public static ApplicationType getApplicationDeploymentPlan(IVirtualComponent comp) {
-		return getApplicationDeploymentPlan(getApplicationDeploymentPlanFile(comp));
-	}
+        WebAppType deploymentPlan = getWebDeploymentPlan(module);
+        if (deploymentPlan != null)
+            contextRoot = deploymentPlan.getContextRoot();
 
-	public static WebAppType getWebDeploymentPlan(IVirtualComponent comp) {
-		return getWebDeploymentPlan(getWebDeploymentPlanFile(comp));
-	}
+        if (contextRoot == null)
+            contextRoot = GeronimoUtils.getContextRoot(module);
 
-	public static OpenejbJarType getOpenEjbDeploymentPlan(IVirtualComponent comp) {
-		return getOpenEjbDeploymentPlan(getOpenEjbDeploymentPlanFile(comp));
-	}
+        return contextRoot;
+    }
 
-	public static ConnectorType getConnectorDeploymentPlan(IVirtualComponent comp) {
-		return getConnectorDeploymentPlan(getConnectorDeploymentPlanFile(comp));
-	}
+    public static WebAppType getWebDeploymentPlan(IModule module) {
+        return getWebDeploymentPlan(getVirtualComponent(module));
+    }
 
-	public static ApplicationType getApplicationDeploymentPlan(IFile file) {
-		if (file.getName().equals(APP_PLAN_NAME) && file.exists()) {
-			ResourceSet resourceSet = new ResourceSetImpl();
-			register(resourceSet, new ApplicationResourceFactoryImpl(), ApplicationPackage.eINSTANCE, ApplicationPackage.eNS_URI);
-			Resource resource = load(file, resourceSet);
-			if (resource != null) {
-				return ((org.apache.geronimo.xml.ns.j2ee.application.DocumentRoot) resource.getContents().get(0)).getApplication();
-			}
-		}
-		return null;
-	}
+    public static ApplicationType getApplicationDeploymentPlan(IModule module) {
+        return getApplicationDeploymentPlan(getVirtualComponent(module));
+    }
 
-	public static WebAppType getWebDeploymentPlan(IFile file) {
-		if (file.getName().equals(WEB_PLAN_NAME) && file.exists()) {
-			ResourceSet resourceSet = new ResourceSetImpl();
-			register(resourceSet, new WebResourceFactoryImpl(), WebPackage.eINSTANCE, WebPackage.eNS_URI);
-			Resource resource = load(file, resourceSet);
-			if (resource != null) {
-				return ((DocumentRoot) resource.getContents().get(0)).getWebApp();
-			}
-		}
-		return null;
-	}
+    public static OpenejbJarType getOpenEjbDeploymentPlan(IModule module) {
+        return getOpenEjbDeploymentPlan(getVirtualComponent(module));
+    }
 
-	public static OpenejbJarType getOpenEjbDeploymentPlan(IFile file) {
-		if (file.getName().equals(OPENEJB_PLAN_NAME) && file.exists()) {
-			ResourceSet resourceSet = new ResourceSetImpl();
-			register(resourceSet, new JarResourceFactoryImpl(), JarPackage.eINSTANCE, JarPackage.eNS_URI);
-			Resource resource = load(file, resourceSet);
-			if (resource != null) {
-				return ((org.openejb.xml.ns.openejb.jar.DocumentRoot) resource.getContents().get(0)).getOpenejbJar();
-			}
-		}
-		return null;
-	}
+    public static ConnectorType getConnectorDeploymentPlan(IModule module) {
+        return getConnectorDeploymentPlan(getVirtualComponent(module));
+    }
 
-	public static ConnectorType getConnectorDeploymentPlan(IFile file) {
-		if (file.getName().equals(CONNECTOR_PLAN_NAME) && file.exists()) {
-			ResourceSet resourceSet = new ResourceSetImpl();
-			register(resourceSet, new ConnectorResourceFactoryImpl(), ConnectorPackage.eINSTANCE, ConnectorPackage.eNS_URI);
-			Resource resource = load(file, resourceSet);
-			if (resource != null) {
-				return ((org.apache.geronimo.xml.ns.j2ee.connector.DocumentRoot) resource.getContents().get(0)).getConnector();
-			}
-		}
-		return null;
-	}
+    public static ApplicationType getApplicationDeploymentPlan(IVirtualComponent comp) {
+        return getApplicationDeploymentPlan(getApplicationDeploymentPlanFile(comp));
+    }
+
+    public static WebAppType getWebDeploymentPlan(IVirtualComponent comp) {
+        return getWebDeploymentPlan(getWebDeploymentPlanFile(comp));
+    }
+
+    public static OpenejbJarType getOpenEjbDeploymentPlan(IVirtualComponent comp) {
+        return getOpenEjbDeploymentPlan(getOpenEjbDeploymentPlanFile(comp));
+    }
+
+    public static ConnectorType getConnectorDeploymentPlan(IVirtualComponent comp) {
+        return getConnectorDeploymentPlan(getConnectorDeploymentPlanFile(comp));
+    }
+
+    public static ApplicationType getApplicationDeploymentPlan(IFile file) {
+        Trace.tracePoint("ENTRY", "GeronimoV21Utils.getApplicationDeploymentPlan", file);
+
+        if (file.getName().equals(APP_PLAN_NAME) && file.exists()) {
+            ResourceSet resourceSet = new ResourceSetImpl();
+            register(resourceSet, new ApplicationResourceFactoryImpl(), ApplicationPackage.eINSTANCE, ApplicationPackage.eNS_URI);
+            Resource resource = load(file, resourceSet);
+            if (resource != null) {
+                return((org.apache.geronimo.xml.ns.j2ee.application.DocumentRoot) resource.getContents().get(0)).getApplication();
+            }
+        }
+
+        Trace.tracePoint("EXIT", "GeronimoV21Utils.getApplicationDeploymentPlan", null);
+        return null;
+    }
+
+    public static WebAppType getWebDeploymentPlan(IFile file) {
+        Trace.tracePoint("ENTRY", "GeronimoV21Utils.getWebDeploymentPlan", file);
+
+        if (file.getName().equals(WEB_PLAN_NAME) && file.exists()) {
+            ResourceSet resourceSet = new ResourceSetImpl();
+            register(resourceSet, new WebResourceFactoryImpl(), WebPackage.eINSTANCE, WebPackage.eNS_URI);
+            Resource resource = load(file, resourceSet);
+            if (resource != null) {
+                return((DocumentRoot) resource.getContents().get(0)).getWebApp();
+            }
+        }
+
+        Trace.tracePoint("EXIT", "GeronimoV21Utils.getWebDeploymentPlan", null);
+        return null;
+    }
+
+    public static OpenejbJarType getOpenEjbDeploymentPlan(IFile file) {
+        Trace.tracePoint("ENTRY", "GeronimoV21Utils.getOpenEjbDeploymentPlan", file);
+
+        if (file.getName().equals(OPENEJB_PLAN_NAME) && file.exists()) {
+            ResourceSet resourceSet = new ResourceSetImpl();
+            register(resourceSet, new JarResourceFactoryImpl(), JarPackage.eINSTANCE, JarPackage.eNS_URI);
+            Resource resource = load(file, resourceSet);
+            if (resource != null) {
+                return((org.openejb.xml.ns.openejb.jar.DocumentRoot) resource.getContents().get(0)).getOpenejbJar();
+            }
+        }
+
+        Trace.tracePoint("EXIT", "GeronimoV21Utils.getOpenEjbDeploymentPlan", null);
+        return null;
+    }
+
+    public static ConnectorType getConnectorDeploymentPlan(IFile file) {
+        Trace.tracePoint("ENTRY", "GeronimoV21Utils.getConnectorDeploymentPlan", file);
+
+        if (file.getName().equals(CONNECTOR_PLAN_NAME) && file.exists()) {
+            ResourceSet resourceSet = new ResourceSetImpl();
+            register(resourceSet, new ConnectorResourceFactoryImpl(), ConnectorPackage.eINSTANCE, ConnectorPackage.eNS_URI);
+            Resource resource = load(file, resourceSet);
+            if (resource != null) {
+                return((org.apache.geronimo.xml.ns.j2ee.connector.DocumentRoot) resource.getContents().get(0)).getConnector();
+            }
+        }
+
+        Trace.tracePoint("EXIT", "GeronimoV21Utils.getConnectorDeploymentPlan", null);
+        return null;
+    }
 }
