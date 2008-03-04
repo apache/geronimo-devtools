@@ -78,14 +78,14 @@
         <installableRuntime id="org.apache.geronimo.runtime.tomcat.21"
             featureVersion="2.1.0"
             featureId="org.apache.geronimo.installableruntime.tomcat.feature"
-            featureSite="http://www.apache.org/dist/geronimo/eclipse/updates/"
-            path="geronimo-tomcat6-jee5-2.1.0.zip">
+            featureSite="http://people.apache.org/~mcconne/releases/2.1.0/RC1/staging_site/"
+            path="geronimo-tomcat6-javaee5-2.1.0.zip">
         </installableRuntime>
         <installableRuntime id="org.apache.geronimo.runtime.jetty.21"
             featureVersion="2.1.0"
             featureId="org.apache.geronimo.installableruntime.jetty.feature"
-            featureSite="http://www.apache.org/dist/geronimo/eclipse/updates/"
-            path="geronimo-jetty6-jee5-2.1.0.zip">
+            featureSite="http://people.apache.org/~mcconne/releases/2.1.0/RC1/staging_site/"
+            path="geronimo-jetty6-javaee5-2.1.0.zip">
         </installableRuntime>
     </extension>
     

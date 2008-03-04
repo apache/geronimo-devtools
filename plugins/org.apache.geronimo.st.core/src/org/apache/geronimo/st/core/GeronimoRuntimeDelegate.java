@@ -178,7 +178,7 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
         }
 
         // 
-        // Check pre-2.1repository if necessary
+        // Check pre-2.1 repository if necessary
         //
         if (systemjarURL == null) {
             File systemDir = getRuntime().getLocation().append("repository/org/apache/geronimo/modules/geronimo-system").toFile();

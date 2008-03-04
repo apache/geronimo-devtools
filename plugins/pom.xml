@@ -131,12 +131,12 @@
     </build>
     <modules>
         <module>org.apache.geronimo.st.core</module>
-        <module>org.apache.geronimo.st.v1.core</module>
+<!--    <module>org.apache.geronimo.st.v1.core</module>     -->
         <module>org.apache.geronimo.st.v11.core</module>
         <module>org.apache.geronimo.st.v20.core</module>
         <module>org.apache.geronimo.st.v21.core</module>
         <module>org.apache.geronimo.st.ui</module>
-        <module>org.apache.geronimo.st.v1.ui</module>
+<!--    <module>org.apache.geronimo.st.v1.ui</module>       -->
         <module>org.apache.geronimo.st.v11.ui</module>
         <module>org.apache.geronimo.st.v20.ui</module>
         <module>org.apache.geronimo.st.v21.ui</module>
@@ -145,7 +145,7 @@
         <module>org.apache.geronimo.v11.deployment.model</module>
         <module>org.apache.geronimo.v11.deployment.model.edit</module>
         <module>org.apache.geronimo.runtime.common</module>
-        <module>org.apache.geronimo.runtime.v1</module>
+<!--    <module>org.apache.geronimo.runtime.v1</module>     -->
         <module>org.apache.geronimo.runtime.v11</module>
         <module>org.apache.geronimo.runtime.v20</module>
         <module>org.apache.geronimo.runtime.v21</module>

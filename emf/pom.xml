@@ -87,7 +87,7 @@
         </pluginManagement>
     </build>
     <modules>
-        <module>geronimo-1.0</module>
+<!--    <module>geronimo-1.0</module>   -->
         <module>geronimo-1.1</module>
     </modules>
 </project>

@@ -30,7 +30,7 @@
     </parent>
     <modules>
         <module>org.apache.geronimo.feature</module>
-        <module>org.apache.geronimo.v10.feature</module>
+<!--    <module>org.apache.geronimo.v10.feature</module>    -->
         <module>org.apache.geronimo.v11.feature</module>
         <module>org.apache.geronimo.v20.feature</module>
         <module>org.apache.geronimo.v21.feature</module>
