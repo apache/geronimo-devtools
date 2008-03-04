@@ -72,7 +72,6 @@
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.feature</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.installableruntime.jetty.feature</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.installableruntime.tomcat.feature</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.v10.feature</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.v11.feature</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.v20.feature</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.v21.feature</include>

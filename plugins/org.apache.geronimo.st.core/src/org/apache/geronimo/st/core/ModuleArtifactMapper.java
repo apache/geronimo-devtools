@@ -38,7 +38,6 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * @version $Rev$ $Date$

@@ -232,7 +232,17 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
                                                  InstallableRuntime installable = (InstallableRuntime) (tomcat.getSelection() ? gWithTomcat
                                                                                                         : gWithJetty);
                                                  String version = installable.getFeatureVersion();
-                                                 installPath = installPath.append("geronimo-" + (tomcat.getSelection() ? "tomcat6" : "jetty6") + "-jee5-" + version);
+                                                 if ( version.startsWith("2.1") ) {
+                                                     installPath = installPath.append("geronimo-" + (tomcat.getSelection() ? "tomcat6" : "jetty6") + "-javaee5-" + version);
+                                                 }
+                                                 else {
+                                                     if ( version.startsWith("2.0") ) {
+                                                         installPath = installPath.append("geronimo-" + (tomcat.getSelection() ? "tomcat6" : "jetty6") + "-jee5-" + version);
+                                                     }
+                                                     else {
+                                                         installPath = installPath.append("geronimo-" + (tomcat.getSelection() ? "tomcat6" : "jetty6") + "-j2ee-" + version);
+                                                     }
+                                                 }
                                                  installDir.setText(installPath.toOSString());
                                              }
                                          });

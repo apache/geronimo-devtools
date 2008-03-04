@@ -21,7 +21,7 @@
 <feature
       id="org.apache.geronimo.installableruntime.tomcat.feature"
       label="Geronimo 2.1 (Tomcat) Runtime"
-      version="2.1.0"
+      version="${org.apache.geronimo.installableruntime.tomcat.feature_version}"
       provider-name="%providerName"
       image="bigG.gif">
 
@@ -38,7 +38,7 @@
    </license>
    
    <data
-    id="geronimo-tomcat6-jee5-${org.apache.geronimo.installableruntime.tomcat.feature_version}.zip"
+    id="geronimo-tomcat6-javaee5-${org.apache.geronimo.installableruntime.tomcat.feature_version}.zip"
     download-size="0"
     install-size="0"/>
 
