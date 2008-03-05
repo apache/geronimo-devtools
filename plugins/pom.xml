@@ -140,8 +140,8 @@
         <module>org.apache.geronimo.st.v11.ui</module>
         <module>org.apache.geronimo.st.v20.ui</module>
         <module>org.apache.geronimo.st.v21.ui</module>
-        <module>org.apache.geronimo.deployment.model</module>
-        <module>org.apache.geronimo.deployment.model.edit</module>
+<!--    <module>org.apache.geronimo.deployment.model</module>       -->
+<!--    <module>org.apache.geronimo.deployment.model.edit</module>  -->
         <module>org.apache.geronimo.v11.deployment.model</module>
         <module>org.apache.geronimo.v11.deployment.model.edit</module>
         <module>org.apache.geronimo.runtime.common</module>

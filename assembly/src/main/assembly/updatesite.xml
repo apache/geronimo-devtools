@@ -31,8 +31,8 @@
             <outputDirectory>plugins/</outputDirectory>
             <unpack>false</unpack>
             <includes>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.deployment.model</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.deployment.model.edit</include>
+<!--            <include>org.apache.geronimo.devtools:org.apache.geronimo.deployment.model</include>        -->
+<!--            <include>org.apache.geronimo.devtools:org.apache.geronimo.deployment.model.edit</include>   -->
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.common</include>
 <!--            <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v1</include>      -->
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v11</include>

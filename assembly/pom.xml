@@ -77,7 +77,7 @@
             <artifactId>org.apache.geronimo.st.v21.core</artifactId>
             <version>${version}</version>
         </dependency>
-        <dependency>
+<!--    <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.deployment.model</artifactId>
             <version>${version}</version>
@@ -86,7 +86,7 @@
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.deployment.model.edit</artifactId>
             <version>${version}</version>
-        </dependency>
+        </dependency>                                       -->
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.v11.deployment.model</artifactId>
@@ -102,11 +102,11 @@
             <artifactId>org.apache.geronimo.runtime.common</artifactId>
             <version>${version}</version>
         </dependency>
-        <dependency>
+<!--    <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.v1</artifactId>
             <version>${version}</version>
-        </dependency>
+        </dependency>                                       -->
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.v11</artifactId>
