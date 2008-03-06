@@ -16,10 +16,9 @@
  */
 package org.apache.geronimo.st.v21.ui.sections;
 
-import org.apache.geronimo.xml.ns.j2ee.application.ApplicationPackage;
-import org.apache.geronimo.xml.ns.j2ee.application.ApplicationType;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
+import javax.xml.bind.JAXBElement;
+
+import org.apache.geronimo.xml.ns.j2ee.application_2.ApplicationType;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
@@ -27,9 +26,9 @@ public class AppGeneralSection extends CommonGeneralSection {
 
 	ApplicationType plan;
 
-	public AppGeneralSection(Composite parent, FormToolkit toolkit, int style, EObject plan) {
+	public AppGeneralSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
 		super(parent, toolkit, style, plan);
-		this.plan = (ApplicationType) plan;
+		this.plan = (ApplicationType) plan.getValue();
 		createClient();
 	}
 
@@ -38,7 +37,7 @@ public class AppGeneralSection extends CommonGeneralSection {
 	 * 
 	 * @see org.apache.geronimo.st.v21.ui.sections.CommonGeneralSection#getEnvironmentEReference()
 	 */
-	protected EReference getEnvironmentEReference() {
-		return ApplicationPackage.eINSTANCE.getApplicationType_Environment();
+	protected JAXBElement getEnvironmentEReference() {
+		return null; //ApplicationPackage.eINSTANCE.getApplicationType_Environment();
 	}
 }

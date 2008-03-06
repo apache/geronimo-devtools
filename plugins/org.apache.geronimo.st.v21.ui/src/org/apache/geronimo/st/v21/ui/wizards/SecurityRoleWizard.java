@@ -16,19 +16,19 @@
  */
 package org.apache.geronimo.st.v21.ui.wizards;
 
+import javax.xml.bind.JAXBElement;
+
+import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
+import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
+import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v21.ui.sections.SecuritySection;
-import org.apache.geronimo.xml.ns.security.DescriptionType;
-import org.apache.geronimo.xml.ns.security.RoleMappingsType;
-import org.apache.geronimo.xml.ns.security.RoleType;
-import org.apache.geronimo.xml.ns.security.SecurityFactory;
-import org.apache.geronimo.xml.ns.security.SecurityPackage;
-import org.apache.geronimo.xml.ns.security.SecurityType;
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.emf.ecore.EObject;
+import org.apache.geronimo.xml.ns.security_2.DescriptionType;
+import org.apache.geronimo.xml.ns.security_2.RoleMappingsType;
+import org.apache.geronimo.xml.ns.security_2.RoleType;
+import org.apache.geronimo.xml.ns.security_2.SecurityType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -41,12 +41,12 @@ public class SecurityRoleWizard extends AbstractTableWizard {
 		super(section);
 	}
 
-	public EFactory getEFactory() {
-		return SecurityFactory.eINSTANCE;
+	public JAXBObjectFactory getEFactory() {
+		return JAXBObjectFactoryImpl.getInstance();
 	}
 
-	public EAttribute[] getTableColumnEAttributes() {
-		return new EAttribute[] { SecurityPackage.eINSTANCE.getRoleType_RoleName() };
+	public String[] getTableColumnEAttributes() {
+		return new String[] { "RoleName" };
 	}
 
 	public String getAddWizardWindowTitle() {
@@ -110,7 +110,7 @@ public class SecurityRoleWizard extends AbstractTableWizard {
 				RoleType roleType = (RoleType) eObject;
 				if (!roleType.getDescription().isEmpty()) {
 					DescriptionType desc = (DescriptionType) roleType.getDescription().get(0);
-					if (desc.eIsSet(SecurityPackage.eINSTANCE.getDescriptionType_Value())) {
+					if (desc.getValue() != null) {
 						descriptionText.setText(desc.getValue());
 					}
 				}
@@ -122,36 +122,36 @@ public class SecurityRoleWizard extends AbstractTableWizard {
 		SecurityRoleWizardPage page = (SecurityRoleWizardPage) getPages()[0];
 
 		if (eObject == null) {
-			eObject = getEFactory().create(getTableColumnEAttributes()[0].getEContainingClass());
-			EObject plan = section.getPlan();
+			eObject = getEFactory().create(RoleType.class);
+			JAXBElement plan = section.getPlan();
 
-			SecurityType securityType = (SecurityType) plan.eGet(((SecuritySection) section).securityERef);
+			SecurityType securityType = JAXBModelUtils.getSecurityType(plan);
 			if (securityType == null) {
-				securityType = SecurityFactory.eINSTANCE.createSecurityType();
-				plan.eSet(((SecuritySection) section).securityERef, securityType);
+				securityType = (SecurityType)getEFactory().create(SecurityType.class);
+				JAXBModelUtils.setSecurityType(plan, securityType);
 			}
 
 			RoleMappingsType roleMappingsType = securityType.getRoleMappings();
 			if (roleMappingsType == null) {
-				roleMappingsType = SecurityFactory.eINSTANCE.createRoleMappingsType();
+				roleMappingsType = (RoleMappingsType)getEFactory().create(RoleMappingsType.class);
 				securityType.setRoleMappings(roleMappingsType);
 			}
 
-			roleMappingsType.getRole().add(eObject);
+			roleMappingsType.getRole().add((RoleType)eObject);
 		}
 
 		processEAttributes(page);
 
 		DescriptionType type = null;
-		RoleType roleType = ((RoleType) eObject);
+		RoleType roleType = (RoleType) eObject;
 		if (roleType.getDescription().isEmpty()) {
-			type = SecurityFactory.eINSTANCE.createDescriptionType();
+			type = (DescriptionType)getEFactory().create(DescriptionType.class);
 			roleType.getDescription().add(type);
 		} else {
 			type = (DescriptionType) roleType.getDescription().get(0);
 		}
 		type.setValue(page.descriptionText.getText());
-
+		
 		if (section.getTableViewer().getInput() == section.getPlan()) {
 			section.getTableViewer().setInput(section.getInput());
 		}

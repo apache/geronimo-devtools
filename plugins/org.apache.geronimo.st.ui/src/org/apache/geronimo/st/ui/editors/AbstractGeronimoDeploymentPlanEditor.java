@@ -16,20 +16,24 @@
  */
 package org.apache.geronimo.st.ui.editors;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
 
 import org.apache.geronimo.st.core.operations.ImportDeploymentPlanDataModelProvider;
 import org.apache.geronimo.st.core.operations.ImportDeploymentPlanOperation;
+import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.internal.Trace;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
@@ -53,7 +57,7 @@ import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
  */
 public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 
-	private EObject deploymentPlan;
+	protected JAXBElement deploymentPlan;
 
 	public AbstractGeronimoDeploymentPlanEditor() {
 		super();
@@ -69,8 +73,10 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 		try {
 			IEditorInput input = getEditorInput();
 			if (input instanceof IFileEditorInput) {
+				IFileEditorInput fei = (IFileEditorInput) input;
 				if (deploymentPlan != null) {
-					saveEditors();
+					saveDeploymentPlan(fei.getFile());
+					commitFormPages(true);
 				}
 
 				if (getActiveEditor() == null) {
@@ -78,12 +84,11 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 				} else {
 					getActiveEditor().doSave(monitor);
 					if (deploymentPlan != null) {
-						if (deploymentPlan.eResource() != null) {
-							deploymentPlan.eResource().unload();
-						}
+//						if (deploymentPlan.eResource() != null) {
+//							deploymentPlan.eResource().unload();
+//						}
 						// TODO not sure if this is the best way to refresh
 						// model
-						IFileEditorInput fei = (IFileEditorInput) input;
 						deploymentPlan = loadDeploymentPlan(fei.getFile());
 					}
 				}
@@ -100,10 +105,11 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 		}
 	}
 
-	private void saveEditors() throws IOException {
-		deploymentPlan.eResource().save(Collections.EMPTY_MAP);
-		commitFormPages(true);
-	}
+//	private void saveEditors(IFile file) throws IOException, JAXBException {
+//		JAXBContext jb = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1", Activator.class.getClassLoader() );
+//		jb.createMarshaller().marshal( deploymentPlan, new File( file.getLocationURI().toURL().getFile()) );
+//		commitFormPages(true);
+//	}
 
 	/*
 	 * (non-Javadoc)
@@ -164,7 +170,7 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 		return (IFormPage[]) formPages.toArray(new IFormPage[formPages.size()]);
 	}
 
-	public EObject getDeploymentPlan() {
+	public JAXBElement getDeploymentPlan() {
 		return deploymentPlan;
 	}
 
@@ -207,6 +213,7 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 		}
 	}
 
-	abstract public EObject loadDeploymentPlan(IFile file);
+	abstract public JAXBElement loadDeploymentPlan(IFile file);
+	abstract public void saveDeploymentPlan(IFile file) throws IOException, JAXBException;
 
 }

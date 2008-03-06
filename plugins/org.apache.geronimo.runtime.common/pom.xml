@@ -99,6 +99,21 @@
                                     <groupId>org.apache.xmlbeans</groupId>
                                     <artifactId>xmlbeans</artifactId>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>javax.xml.bind</groupId>
+                                    <artifactId>jaxb-api</artifactId>
+                                    <version>2.1</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.sun.xml.bind</groupId>
+                                    <artifactId>jaxb-impl</artifactId>
+                                    <version>2.1.3</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>javax.activation</groupId>
+                                    <artifactId>activation</artifactId>
+                                    <version>1.1</version>
+                                </artifactItem>
                             </artifactItems>
                         </configuration>
                     </execution>
@@ -167,6 +182,21 @@
         <dependency>
             <groupId>org.apache.xmlbeans</groupId>
             <artifactId>xmlbeans</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1</version>
         </dependency>
     </dependencies>
 </project>

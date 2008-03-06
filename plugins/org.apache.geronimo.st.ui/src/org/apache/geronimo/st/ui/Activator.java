@@ -55,6 +55,7 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public Activator() {
 		plugin = this;
+		this.setDebugging( true );
 	}
 
 	/*

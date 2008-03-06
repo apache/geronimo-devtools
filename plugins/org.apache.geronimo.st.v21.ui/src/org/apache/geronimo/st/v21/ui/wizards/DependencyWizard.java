@@ -16,18 +16,15 @@
  */
 package org.apache.geronimo.st.v21.ui.wizards;
 
+import javax.enterprise.deploy.spi.factories.DeploymentFactory;
+
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.v21.ui.internal.Trace;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.apache.geronimo.xml.ns.deployment.ArtifactType;
-import org.apache.geronimo.xml.ns.deployment.DependenciesType;
-import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
-import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
-import org.apache.geronimo.xml.ns.deployment.EnvironmentType;
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.emf.ecore.EObject;
+import org.apache.geronimo.st.v21.ui.internal.Trace;
+import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
+import org.apache.geronimo.xml.ns.deployment_1.DependenciesType;
+import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
@@ -72,23 +69,23 @@ public class DependencyWizard extends AbstractTableWizard {
         Trace.trace("Constructor Entry/Exit", "DependencyWizard");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEFactory()
-	 */
-	public EFactory getEFactory() {
-		return DeploymentFactory.eINSTANCE;
-	}
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEFactory()
+//	 */
+//	public EFactory getEFactory() {
+//		return DeploymentFactory.eINSTANCE;
+//	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getTableColumnEAttributes()
-	 */
-	public EAttribute[] getTableColumnEAttributes() {
-		return new EAttribute[] {};
-	}
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getTableColumnEAttributes()
+//	 */
+//	public EAttribute[] getTableColumnEAttributes() {
+//		return new EAttribute[] {};
+//	}
 
 	/*
 	 * (non-Javadoc)
@@ -218,18 +215,18 @@ public class DependencyWizard extends AbstractTableWizard {
 			typeText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 			if (eObject != null) {
-				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_ArtifactId())) {
-					artifactIdText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_ArtifactId()).toString());
-				}
-				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_GroupId())) {
-					groupIdText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_GroupId()).toString());
-				}
-				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_Version())) {
-					versionText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_Version()).toString());
-				}
-				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_Type())) {
-					typeText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_Type()).toString());
-				}
+//				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_ArtifactId())) {
+//					artifactIdText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_ArtifactId()).toString());
+//				}
+//				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_GroupId())) {
+//					groupIdText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_GroupId()).toString());
+//				}
+//				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_Version())) {
+//					versionText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_Version()).toString());
+//				}
+//				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_Type())) {
+//					typeText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_Type()).toString());
+//				}
 			}
 
 			setControl(composite);
@@ -252,14 +249,14 @@ public class DependencyWizard extends AbstractTableWizard {
 //		Trace.trace("Entry", "DependencyWizard.performFinish");
 		
 		if (eObject == null) {
-			eObject = getEFactory().create(section.getTableEntryObjectType());
-			EObject plan = section.getPlan();
-			DependenciesType dependenciesType = ((EnvironmentType) plan.eGet(section.getEReference())).getDependencies();
-			if(dependenciesType == null) {
-				dependenciesType = DeploymentFactory.eINSTANCE.createDependenciesType();
-				((EnvironmentType) plan.eGet(section.getEReference())).setDependencies(dependenciesType);
-			}
-			dependenciesType.getDependency().add(eObject);
+//			eObject = getEFactory().create(section.getTableEntryObjectType());
+//			EObject plan = section.getPlan();
+//			DependenciesType dependenciesType = ((EnvironmentType) plan.eGet(section.getEReference())).getDependencies();
+//			if(dependenciesType == null) {
+//				dependenciesType = DeploymentFactory.eINSTANCE.createDependenciesType();
+//				((EnvironmentType) plan.eGet(section.getEReference())).setDependencies(dependenciesType);
+//			}
+//			dependenciesType.getDependency().add(eObject);
 		}
 
 		processEAttributes(getPages()[0]);

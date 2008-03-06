@@ -16,22 +16,24 @@
  */
 package org.apache.geronimo.st.v21.ui.sections;
 
+import java.util.List;
+
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
-import org.apache.geronimo.st.v21.ui.internal.EMFEditorContext;
 import org.apache.geronimo.st.v21.ui.wizards.GBeanWizard;
-import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
-import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
+import org.apache.geronimo.xml.ns.deployment_1.GbeanType;
+import org.apache.geronimo.xml.ns.j2ee.web_2_0.WebAppType;
+import org.apache.geronimo.xml.ns.naming_1.ResourceRefType;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class GBeanSection extends AbstractTableSection {
 
-	private EReference gBeanERef;
+	private List gbeans;
 
 	private static final String[] COLUMN_NAMES = new String[] {
 			CommonMessages.name, CommonMessages.className };
@@ -42,9 +44,9 @@ public class GBeanSection extends AbstractTableSection {
 	 * @param toolkit
 	 * @param style
 	 */
-	public GBeanSection(EObject plan, EReference gBeanERef, Composite parent, FormToolkit toolkit, int style) {
+	public GBeanSection(JAXBElement plan, List gbeans, Composite parent, FormToolkit toolkit, int style) {
 		super(plan, parent, toolkit, style);
-		this.gBeanERef = gBeanERef;
+		this.gbeans = gbeans;
 		createClient();
 	}
 
@@ -75,15 +77,10 @@ public class GBeanSection extends AbstractTableSection {
 		return COLUMN_NAMES;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
-	 */
-	public EReference getEReference() {
-		return gBeanERef;
+	public List getObjectContainer() {
+		return gbeans;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -98,8 +95,8 @@ public class GBeanSection extends AbstractTableSection {
 	 * 
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
 	 */
-	public EClass getTableEntryObjectType() {
-		return DeploymentPackage.eINSTANCE.getGbeanType();
+	public Class getTableEntryObjectType() {
+		return GbeanType.class;
 	}
 
 	/*
@@ -108,6 +105,27 @@ public class GBeanSection extends AbstractTableSection {
 	 * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
 	 */
 	public AdapterFactory getAdapterFactory() {
-		return EMFEditorContext.getFactory();
+		return new AdapterFactory() {
+			public Object[] getElements(Object inputElement) {
+				if (!JAXBElement.class.isInstance(inputElement)) {
+					return new String[] { "" };
+				}
+				JAXBElement plan = (JAXBElement)inputElement;
+				if (plan.getDeclaredType().equals(WebAppType.class)) {
+					return ((WebAppType)plan.getValue()).getResourceRef().toArray();
+				}
+				return new String[] { "" };
+			}
+			public String getColumnText(Object element, int columnIndex) {
+				if (ResourceRefType.class.isInstance(element)) {
+					ResourceRefType resourceRef = (ResourceRefType)element;
+					switch (columnIndex) {
+					case 0: return resourceRef.getRefName();
+					case 1: return resourceRef.getResourceLink();
+					}
+				}
+				return null;
+			}
+		};
 	}
 }

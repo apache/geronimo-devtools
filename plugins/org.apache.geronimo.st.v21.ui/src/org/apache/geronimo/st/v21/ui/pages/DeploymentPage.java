@@ -16,19 +16,22 @@
  */
 package org.apache.geronimo.st.v21.ui.pages;
 
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
+import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.ui.sections.DependencySection;
 import org.apache.geronimo.st.v21.ui.sections.GBeanSection;
-import org.eclipse.emf.ecore.EReference;
+import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
 public class DeploymentPage extends AbstractGeronimoFormPage {
 	
-	public EReference environment;
+//	public EnvironmentType environment;
 	
-	public EReference gbeanERef;
+	public JAXBElement gbeanERef;
 
 	public DeploymentPage(FormEditor editor, String id, String title) {
 		super(editor, id, title);
@@ -40,8 +43,8 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
 	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
 	 */
 	protected void fillBody(IManagedForm managedForm) {
-		managedForm.addPart(new DependencySection(getDeploymentPlan(), environment, body, toolkit, getStyle()));
-		managedForm.addPart(new GBeanSection(getDeploymentPlan(), gbeanERef, body, toolkit, getStyle()));
+		managedForm.addPart(new DependencySection(getDeploymentPlan(), JAXBModelUtils.getEnvironmentType(getDeploymentPlan()), body, toolkit, getStyle()));
+		managedForm.addPart(new GBeanSection(getDeploymentPlan(), JAXBModelUtils.getServiceOrPersistence(getDeploymentPlan()), body, toolkit, getStyle()));
 	}
 
 	/*

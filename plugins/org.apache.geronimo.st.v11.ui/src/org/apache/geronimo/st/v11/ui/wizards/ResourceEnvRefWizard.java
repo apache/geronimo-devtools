@@ -19,10 +19,6 @@ package org.apache.geronimo.st.v11.ui.wizards;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.apache.geronimo.xml.ns.naming.NamingFactory;
-import org.apache.geronimo.xml.ns.naming.NamingPackage;
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EFactory;
 
 public class ResourceEnvRefWizard extends AbstractTableWizard {
 
@@ -33,15 +29,15 @@ public class ResourceEnvRefWizard extends AbstractTableWizard {
 		super(section);
 	}
 
-	public EFactory getEFactory() {
-		return NamingFactory.eINSTANCE;
-	}
-
-	public EAttribute[] getTableColumnEAttributes() {
-		return new EAttribute[] {
-				NamingPackage.eINSTANCE.getResourceEnvRefType_RefName(),
-				NamingPackage.eINSTANCE.getResourceEnvRefType_MessageDestinationLink() };
-	}
+//	public EFactory getEFactory() {
+//		return NamingFactory.eINSTANCE;
+//	}
+//
+//	public EAttribute[] getTableColumnEAttributes() {
+//		return new EAttribute[] {
+//				NamingPackage.eINSTANCE.getResourceEnvRefType_RefName(),
+//				NamingPackage.eINSTANCE.getResourceEnvRefType_MessageDestinationLink() };
+//	}
 
 	/*
 	 * (non-Javadoc)

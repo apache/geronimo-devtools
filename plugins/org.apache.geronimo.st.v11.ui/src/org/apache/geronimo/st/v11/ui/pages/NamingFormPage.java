@@ -16,6 +16,8 @@
  */
 package org.apache.geronimo.st.v11.ui.pages;
 
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v11.ui.sections.EjbLocalRefSection;
@@ -24,23 +26,22 @@ import org.apache.geronimo.st.v11.ui.sections.GBeanRefSection;
 import org.apache.geronimo.st.v11.ui.sections.ResourceEnvRefSection;
 import org.apache.geronimo.st.v11.ui.sections.ResourceRefSection;
 import org.apache.geronimo.st.v11.ui.sections.ServiceRefSection;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
 public class NamingFormPage extends AbstractGeronimoFormPage {
 
-	public EReference resRef;
+	public JAXBElement resRef;
 
-	public EReference resEnvRef;
+	public JAXBElement resEnvRef;
 
-	public EReference ejbRef;
+	public JAXBElement ejbRef;
 
-	public EReference ejbLocalRef;
+	public JAXBElement ejbLocalRef;
 
-	public EReference gbeanRef;
+	public JAXBElement gbeanRef;
 
-	public EReference serviceRef;
+	public JAXBElement serviceRef;
 
 	public NamingFormPage(FormEditor editor, String id, String title) {
 		super(editor, id, title);

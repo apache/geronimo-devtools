@@ -16,8 +16,12 @@
  */
 package org.apache.geronimo.st.ui.editors;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
 
 import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.ui.internal.Trace;
@@ -27,7 +31,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jst.server.core.FacetUtil;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
@@ -92,11 +95,17 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEd
 	 * 
 	 * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor#loadDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
-	public EObject loadDeploymentPlan(IFile file) {
+	public JAXBElement loadDeploymentPlan(IFile file) {
         Trace.tracePoint("ENTRY", "SharedDeploymentPlanEditor.loadDeploymentPlan", file);
 
         Trace.tracePoint("EXIT", "SharedDeploymentPlanEditor.loadDeploymentPlan", (getLoader() != null ? currentLoader.loadDeploymentPlan(file) : null));
 		return getLoader() != null ? currentLoader.loadDeploymentPlan(file) : null;
+	}
+	
+	public void saveDeploymentPlan(IFile file) throws IOException, JAXBException {
+		if (getLoader() != null) {
+			getLoader().saveDeploymentPlan(deploymentPlan, file);
+		}
 	}
 
 	private IGeronimoFormContentLoader getLoader() {

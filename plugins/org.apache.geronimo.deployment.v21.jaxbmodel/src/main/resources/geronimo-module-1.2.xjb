@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
+version="1.0">
+<jaxb:bindings schemaLocation="geronimo-module-1.2.xsd">
+  <jaxb:bindings node="//xs:complexType[@name='patternType']">
+     <jaxb:bindings node=".//xs:element[@name='name']">
+        <jaxb:property name="customFoo"/>
+     </jaxb:bindings>
+  </jaxb:bindings>
+</jaxb:bindings>
+</jaxb:bindings>

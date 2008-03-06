@@ -109,55 +109,55 @@ public class SecurityRoleWizard extends AbstractTableWizard {
 			data.widthHint = 100;
 			descriptionText.setLayoutData(data);
 
-			if (eObject != null && eObject instanceof RoleType) {
-				RoleType roleType = (RoleType) eObject;
-				if (!roleType.getDescription().isEmpty()) {
-					DescriptionType desc = (DescriptionType) roleType.getDescription().get(0);
-					if (desc.eIsSet(SecurityPackage.eINSTANCE.getDescriptionType_Value())) {
-						descriptionText.setText(desc.getValue());
-					}
-				}
-			}
+//			if (eObject != null && eObject instanceof RoleType) {
+//				RoleType roleType = (RoleType) eObject;
+//				if (!roleType.getDescription().isEmpty()) {
+//					DescriptionType desc = (DescriptionType) roleType.getDescription().get(0);
+//					if (desc.eIsSet(SecurityPackage.eINSTANCE.getDescriptionType_Value())) {
+//						descriptionText.setText(desc.getValue());
+//					}
+//				}
+//			}
 		}
 	}
 
 	public boolean performFinish() {
 		SecurityRoleWizardPage page = (SecurityRoleWizardPage) getPages()[0];
-
-		if (eObject == null) {
-			eObject = getEFactory().create(getTableColumnEAttributes()[0].getEContainingClass());
-			EObject plan = section.getPlan();
-
-			SecurityType securityType = (SecurityType) plan.eGet(((SecuritySection) section).securityERef);
-			if (securityType == null) {
-				securityType = SecurityFactory.eINSTANCE.createSecurityType();
-				plan.eSet(((SecuritySection) section).securityERef, securityType);
-			}
-
-			RoleMappingsType roleMappingsType = securityType.getRoleMappings();
-			if (roleMappingsType == null) {
-				roleMappingsType = SecurityFactory.eINSTANCE.createRoleMappingsType();
-				securityType.setRoleMappings(roleMappingsType);
-			}
-
-			roleMappingsType.getRole().add(eObject);
-		}
+//
+//		if (eObject == null) {
+//			eObject = getEFactory().create(getTableColumnEAttributes()[0].getEContainingClass());
+//			EObject plan = section.getPlan();
+//
+//			SecurityType securityType = (SecurityType) plan.eGet(((SecuritySection) section).securityERef);
+//			if (securityType == null) {
+//				securityType = SecurityFactory.eINSTANCE.createSecurityType();
+//				plan.eSet(((SecuritySection) section).securityERef, securityType);
+//			}
+//
+//			RoleMappingsType roleMappingsType = securityType.getRoleMappings();
+//			if (roleMappingsType == null) {
+//				roleMappingsType = SecurityFactory.eINSTANCE.createRoleMappingsType();
+//				securityType.setRoleMappings(roleMappingsType);
+//			}
+//
+//			roleMappingsType.getRole().add(eObject);
+//		}
 
 		processEAttributes(page);
 
-		DescriptionType type = null;
-		RoleType roleType = ((RoleType) eObject);
-		if (roleType.getDescription().isEmpty()) {
-			type = SecurityFactory.eINSTANCE.createDescriptionType();
-			roleType.getDescription().add(type);
-		} else {
-			type = (DescriptionType) roleType.getDescription().get(0);
-		}
-		type.setValue(page.descriptionText.getText());
-
-		if (section.getTableViewer().getInput() == section.getPlan()) {
-			section.getTableViewer().setInput(section.getInput());
-		}
+//		DescriptionType type = null;
+//		RoleType roleType = ((RoleType) eObject);
+//		if (roleType.getDescription().isEmpty()) {
+//			type = SecurityFactory.eINSTANCE.createDescriptionType();
+//			roleType.getDescription().add(type);
+//		} else {
+//			type = (DescriptionType) roleType.getDescription().get(0);
+//		}
+//		type.setValue(page.descriptionText.getText());
+//
+//		if (section.getTableViewer().getInput() == section.getPlan()) {
+//			section.getTableViewer().setInput(section.getInput());
+//		}
 
 		return true;
 	}

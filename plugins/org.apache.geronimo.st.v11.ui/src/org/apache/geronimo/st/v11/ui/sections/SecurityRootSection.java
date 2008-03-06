@@ -16,13 +16,11 @@
  */
 package org.apache.geronimo.st.v11.ui.sections;
 
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractSectionPart;
-import org.apache.geronimo.xml.ns.security.SecurityFactory;
-import org.apache.geronimo.xml.ns.security.SecurityPackage;
-import org.apache.geronimo.xml.ns.security.SecurityType;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
+import org.apache.geronimo.xml.ns.security_1.SecurityType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -40,7 +38,7 @@ import org.eclipse.ui.forms.widgets.Section;
 
 public class SecurityRootSection extends AbstractSectionPart {
 
-	EReference secERef;
+	JAXBElement secERef;
 
 	Text defaultRole;
 
@@ -60,7 +58,7 @@ public class SecurityRootSection extends AbstractSectionPart {
 	 * @param toolkit
 	 * @param style
 	 */
-	public SecurityRootSection(Composite parent, FormToolkit toolkit, int style, EObject plan, EReference secERef) {
+	public SecurityRootSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan, JAXBElement secERef) {
 		super(parent, toolkit, style, plan);
 		this.secERef = secERef;
 		createClient();
@@ -136,21 +134,21 @@ public class SecurityRootSection extends AbstractSectionPart {
 	}
 
 	private String getDefaultRole() {
-		SecurityType secType = (SecurityType) getPlan().eGet(secERef);
-		if (secType != null
-				&& secType.eIsSet(SecurityPackage.eINSTANCE.getSecurityType_DefaultRole())) {
-			return secType.getDefaultRole();
-		}
+//		SecurityType secType = (SecurityType) getPlan().eGet(secERef);
+//		if (secType != null
+//				&& secType.eIsSet(SecurityPackage.eINSTANCE.getSecurityType_DefaultRole())) {
+//			return secType.getDefaultRole();
+//		}
 		return "";
 	}
 
 	private SecurityType getSecurityType() {
-		SecurityType secType = (SecurityType) getPlan().eGet(secERef);
-		if (secType == null) {
-			secType = SecurityFactory.eINSTANCE.createSecurityType();
-			getPlan().eSet(secERef, secType);
-		}
-		return secType;
+//		SecurityType secType = (SecurityType) getPlan().eGet(secERef);
+//		if (secType == null) {
+//			secType = SecurityFactory.eINSTANCE.createSecurityType();
+//			getPlan().eSet(secERef, secType);
+//		}
+		return null;//secType;
 	}
 
 }

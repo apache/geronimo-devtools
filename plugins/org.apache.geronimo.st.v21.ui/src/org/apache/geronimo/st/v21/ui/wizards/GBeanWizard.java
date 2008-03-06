@@ -16,13 +16,11 @@
  */
 package org.apache.geronimo.st.v21.ui.wizards;
 
+import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
-import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EFactory;
+import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 
 public class GBeanWizard extends AbstractTableWizard {
 
@@ -33,14 +31,12 @@ public class GBeanWizard extends AbstractTableWizard {
 		super(section);
 	}
 
-	public EFactory getEFactory() {
-		return DeploymentFactory.eINSTANCE;
+	public JAXBObjectFactory getEFactory() {
+		return JAXBObjectFactoryImpl.getInstance();
 	}
-
-	public EAttribute[] getTableColumnEAttributes() {
-		return new EAttribute[] {
-				DeploymentPackage.eINSTANCE.getGbeanType_Name(),
-				DeploymentPackage.eINSTANCE.getGbeanType_Class() };
+	
+	public String[] getTableColumnEAttributes() {
+		return new String[] { "Name", "Clazz" };
 	}
 
 	/*

@@ -16,8 +16,7 @@
  */
 package org.apache.geronimo.st.core.operations;
 
-import java.io.IOException;
-import java.util.Collections;
+import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.core.GeronimoUtils;
 import org.eclipse.core.commands.ExecutionException;
@@ -26,9 +25,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -79,36 +75,32 @@ public abstract class DeploymentPlanCreationOperation extends
 		}
 	}
 
-	public void save(Resource resource) {
-
-		if (resource instanceof XMLResource) {
-			((XMLResource) resource).setEncoding("UTF-8");
-		}
-
-		try {
-			resource.save(Collections.EMPTY_MAP);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//TODO JAXB Refactoring - Can this function be removed without harm?
+//	public void save(Resource resource) {
+//		try {
+//			resource.save(Collections.EMPTY_MAP);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
-	public EObject createOpenEjbDeploymentPlan(IFile file) {
+	public JAXBElement createOpenEjbDeploymentPlan(IFile file) {
 		return null;
 	}
 
-	public EObject createGeronimoWebDeploymentPlan(IFile file) {
+	public JAXBElement createGeronimoWebDeploymentPlan(IFile file) {
 		return null;
 	}
 
-	public EObject createGeronimoApplicationDeploymentPlan(IFile file) {
+	public JAXBElement createGeronimoApplicationDeploymentPlan(IFile file) {
 		return null;
 	}
 
-	public EObject createConnectorDeploymentPlan(IFile file) {
+	public JAXBElement createConnectorDeploymentPlan(IFile file) {
 		return null;
 	}
 	
-	public EObject createServiceDeploymentPlan(IFile file) {
+	public JAXBElement createServiceDeploymentPlan(IFile file) {
 		return null;
 	}
 }

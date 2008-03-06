@@ -26,11 +26,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.jst.j2ee.internal.deployables.J2EEFlexProjDeployable;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.server.core.IWebModule;
@@ -163,8 +158,9 @@ public class GeronimoUtils {
 			ArtifactEdit edit = null;
 			try {
 				edit = ArtifactEdit.getArtifactEditForRead(j2eeModule.getProject());
-				XMIResource res = (XMIResource) edit.getContentModelRoot().eResource();
-				moduleId = res.getID(edit.getContentModelRoot());
+				//TODO JAXB Refactoring - Can below two lines be removed without harm?
+				//XMIResource res = (XMIResource) edit.getContentModelRoot().eResource();
+				//moduleId = res.getID(edit.getContentModelRoot());
 			} finally {
 				if (edit != null)
 					edit.dispose();
@@ -193,6 +189,8 @@ public class GeronimoUtils {
 		return moduleId;
 	}
 
+/*
+//TODO JAXB Refactoring - Can this function be removed without harm?
 	public static Resource load(IFile dpFile, ResourceSet resourceSet) {
 		try {
 
@@ -210,10 +208,13 @@ public class GeronimoUtils {
 		}
 		return null;
 	}
-	
+*/	
+/*
+//TODO JAXB Refactoring - Can this function be removed without harm?
 	public static void register(ResourceSet resourceSet,
 			Resource.Factory factory, EPackage pkg, String nsUri) {
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, factory);
 		resourceSet.getPackageRegistry().put(nsUri, pkg);
 	}
+*/
 }

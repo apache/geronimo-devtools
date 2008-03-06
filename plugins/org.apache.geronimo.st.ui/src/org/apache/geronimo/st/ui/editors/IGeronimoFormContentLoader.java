@@ -16,8 +16,12 @@
  */
 package org.apache.geronimo.st.ui.editors;
 
+import java.io.IOException;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+
 import org.eclipse.core.resources.IFile;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.FormEditor;
 
@@ -26,7 +30,8 @@ import org.eclipse.ui.forms.editor.FormEditor;
  */
 public interface IGeronimoFormContentLoader {
 	
-	public EObject loadDeploymentPlan(IFile file);
+	public JAXBElement loadDeploymentPlan(IFile file);
+	public void saveDeploymentPlan(JAXBElement deploymentPlan, IFile file) throws IOException, JAXBException;
 	
 	public void doAddPages(FormEditor editor) throws PartInitException;
 

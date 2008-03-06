@@ -16,17 +16,17 @@
  */
 package org.apache.geronimo.st.ui.wizards;
 
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EFactory;
+import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
+
 
 /**
  * @version $Rev$ $Date$
  */
 public interface TableWizard {
 
-	public EFactory getEFactory();
+	public JAXBObjectFactory getEFactory();
 
-	public EAttribute[] getTableColumnEAttributes();
+	public String[] getTableColumnEAttributes();
 
 	public String getAddWizardWindowTitle();
 

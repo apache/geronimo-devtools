@@ -16,16 +16,13 @@
  */
 package org.apache.geronimo.st.v21.ui.sections;
 
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.Activator;
-import org.apache.geronimo.st.v21.ui.internal.EMFEditorContext;
 import org.apache.geronimo.st.v21.ui.wizards.ResourceEnvRefWizard;
-import org.apache.geronimo.xml.ns.naming.NamingPackage;
-import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
+import org.apache.geronimo.xml.ns.naming_1.ResourceEnvRefType;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
@@ -33,13 +30,13 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class ResourceEnvRefSection extends AbstractTableSection {
 
-	EReference resourceEnvRefERef;
+	Object resourceEnvRefERef;
 
 	private static final String[] COLUMN_NAMES = new String[] {
 			CommonMessages.editorResEnvRefNameTitle,
 			CommonMessages.editorResEnvRefMsgDestTitle };
 
-	public ResourceEnvRefSection(EObject plan, Composite parent, FormToolkit toolkit, int style, EReference resourceEnvRefERef) {
+	public ResourceEnvRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, Object resourceEnvRefERef) {
 		super(plan, parent, toolkit, style);
 		this.resourceEnvRefERef = resourceEnvRefERef;
 		createClient();
@@ -72,14 +69,14 @@ public class ResourceEnvRefSection extends AbstractTableSection {
 		return COLUMN_NAMES;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
-	 */
-	public EReference getEReference() {
-		return resourceEnvRefERef;
-	}
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
+//	 */
+//	public JAXBElement getEReference() {
+//		return resourceEnvRefERef;
+//	}
 
 	/*
 	 * (non-Javadoc)
@@ -99,16 +96,16 @@ public class ResourceEnvRefSection extends AbstractTableSection {
 	 * 
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
 	 */
-	public EClass getTableEntryObjectType() {
-		return NamingPackage.eINSTANCE.getResourceEnvRefType();
+	public Class getTableEntryObjectType() {
+		return ResourceEnvRefType.class;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
-	 */
-	public AdapterFactory getAdapterFactory() {
-		return EMFEditorContext.getFactory();
-	}
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
+//	 */
+//	public AdapterFactory getAdapterFactory() {
+//		return EMFEditorContext.getFactory();
+//	}
 }

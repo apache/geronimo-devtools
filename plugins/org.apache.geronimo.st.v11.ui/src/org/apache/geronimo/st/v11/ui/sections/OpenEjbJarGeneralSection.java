@@ -16,20 +16,19 @@
  */
 package org.apache.geronimo.st.v11.ui.sections;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
+import javax.xml.bind.JAXBElement;
+
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.openejb.xml.ns.openejb.jar.JarPackage;
-import org.openejb.xml.ns.openejb.jar.OpenejbJarType;
+import org.openejb.xml.ns.openejb_jar_2.OpenejbJarType;
 
 public class OpenEjbJarGeneralSection extends CommonGeneralSection {
 
 	OpenejbJarType plan;
 
-	public OpenEjbJarGeneralSection(Composite parent, FormToolkit toolkit, int style, EObject plan) {
+	public OpenEjbJarGeneralSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
 		super(parent, toolkit, style, plan);
-		this.plan = (OpenejbJarType) plan;
+		this.plan = (OpenejbJarType) plan.getValue();
 		createClient();
 	}
 
@@ -38,7 +37,7 @@ public class OpenEjbJarGeneralSection extends CommonGeneralSection {
 	 * 
 	 * @see org.apache.geronimo.st.v11.ui.sections.CommonGeneralSection#getEnvironmentEReference()
 	 */
-	protected EReference getEnvironmentEReference() {
-		return JarPackage.eINSTANCE.getOpenejbJarType_Environment();
+	protected JAXBElement getEnvironmentEReference() {
+		return null;//JarPackage.eINSTANCE.getOpenejbJarType_Environment();
 	}
 }

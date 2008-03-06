@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Geronimo V1.1 JAXB Models
+Bundle-SymbolicName: org.apache.geronimo.deployment.v11.jaxbmodel;singleton:=true
+Bundle-Version: 1.1.0
+Bundle-ClassPath: .
+Bundle-Vendor: Apache.org
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime,
+ org.apache.geronimo.runtime.common
+Export-Package: org.apache.geronimo.xml.ns.deployment.javabean_1,
+ org.apache.geronimo.xml.ns.deployment_1,
+ org.apache.geronimo.xml.ns.j2ee.application_1,
+ org.apache.geronimo.xml.ns.j2ee.application_client_1,
+ org.apache.geronimo.xml.ns.j2ee.connector_1,
+ org.apache.geronimo.xml.ns.j2ee.web_1,
+ org.apache.geronimo.xml.ns.loginconfig_1,
+ org.apache.geronimo.xml.ns.naming_1,
+ org.apache.geronimo.xml.ns.security_1,
+ org.openejb.xml.ns.corba_css_config_2,
+ org.openejb.xml.ns.corba_tss_config_2,
+ org.openejb.xml.ns.openejb_jar_2,
+ org.openejb.xml.ns.pkgen_2

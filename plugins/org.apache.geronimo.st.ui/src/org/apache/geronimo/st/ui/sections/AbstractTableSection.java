@@ -16,15 +16,16 @@
  */
 package org.apache.geronimo.st.ui.sections;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.providers.AdapterFactory;
+import org.apache.geronimo.st.ui.providers.ContentProvider;
+import org.apache.geronimo.st.ui.providers.LabelProvider;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
-import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -77,7 +78,7 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 	 * 
 	 * Subclasses should call createClient() in constructor
 	 */
-	public AbstractTableSection(EObject plan, Composite parent,
+	public AbstractTableSection(JAXBElement plan, Composite parent,
 			FormToolkit toolkit, int style) {
 		super(parent, toolkit, style, plan);
 	}
@@ -86,6 +87,7 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 
 		if (getTableEntryObjectType() == null)
 			throw new NullPointerException();
+		
 
 		getSection().setText(getTitle());
 		getSection().setDescription(getDescription());
@@ -95,8 +97,8 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 		table = createTable(composite);
 
 		tableViewer = new TableViewer(getTable());
-		tableViewer.setContentProvider(new AdapterFactoryContentProvider(getAdapterFactory()));
-		tableViewer.setLabelProvider(new AdapterFactoryLabelProvider(getAdapterFactory()));
+		tableViewer.setContentProvider(new ContentProvider(getAdapterFactory()));
+		tableViewer.setLabelProvider(new LabelProvider(getAdapterFactory()));
 		tableViewer.setInput(getInput());
 
 		tableViewer.addFilter(new ViewerFilter() {
@@ -122,6 +124,7 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 	}
 
 	protected boolean filter(Viewer viewer, Object parentElement, Object element) {
+		System.out.println( getTableEntryObjectType() + ":" + element );
 		return getTableEntryObjectType().isInstance(element);
 	}
 
@@ -195,9 +198,9 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 				int[] selectedIndices = table.getSelectionIndices();
 				for (int i = 0; i < selectedIndices.length; i++) {
 					TableItem tableItem = table.getItem(selectedIndices[i]);
-					EObject type = (EObject) (tableItem.getData());
+					Object type = tableItem.getData();
 					table.remove(selectedIndices[i]);
-					EcoreUtil.remove(type);
+					getObjectContainer().remove(type);
 					markDirty();
 				}
 			}
@@ -236,7 +239,7 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 					Wizard wizard = getWizard();
 					if (wizard != null) {
 						if (wizard instanceof AbstractTableWizard) {
-							((AbstractTableWizard) wizard).setEObject((EObject) o);
+							((AbstractTableWizard) wizard).setEObject(o);
 						}
 						WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
 						dialog.open();
@@ -274,10 +277,24 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
 
 	abstract public Wizard getWizard();
 
-	abstract public EReference getEReference();
+//	abstract public EReference getEReference();
 
-	abstract public EClass getTableEntryObjectType();
+	abstract public Class getTableEntryObjectType();
 	
-	abstract public AdapterFactory getAdapterFactory();
+	public List getObjectContainer() {
+		return new ArrayList();
+	}
+	
+	public AdapterFactory getAdapterFactory() { 
+		return new AdapterFactory() {
+			public Object[] getElements(Object inputElement) {
+				return new String[] { "" };
+			}
+			public String getColumnText(Object element, int columnIndex) {
+				return "";
+			}
+		};
+	};
+	
 
 }

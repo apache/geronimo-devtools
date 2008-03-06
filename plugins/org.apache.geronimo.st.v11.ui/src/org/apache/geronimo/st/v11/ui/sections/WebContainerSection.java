@@ -16,15 +16,13 @@
  */
 package org.apache.geronimo.st.v11.ui.sections;
 
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.ui.sections.AbstractSectionPart;
 import org.apache.geronimo.st.v11.ui.internal.Messages;
-import org.apache.geronimo.xml.ns.j2ee.web.WebAppType;
-import org.apache.geronimo.xml.ns.naming.GbeanLocatorType;
-import org.apache.geronimo.xml.ns.naming.NamingFactory;
-import org.apache.geronimo.xml.ns.naming.NamingPackage;
-import org.apache.geronimo.xml.ns.naming.PatternType;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
+import org.apache.geronimo.xml.ns.deployment_1.PatternType;
+import org.apache.geronimo.xml.ns.j2ee.web_1.WebAppType;
+import org.apache.geronimo.xml.ns.naming_1.GbeanLocatorType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -66,9 +64,9 @@ public class WebContainerSection extends AbstractSectionPart {
 	 * @param style
 	 * @param plan
 	 */
-	public WebContainerSection(Composite parent, FormToolkit toolkit, int style, EObject plan) {
+	public WebContainerSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
 		super(parent, toolkit, style, plan);
-		this.plan = (WebAppType) plan;
+		this.plan = (WebAppType) plan.getValue();
 		createClient();
 	}
 
@@ -118,7 +116,7 @@ public class WebContainerSection extends AbstractSectionPart {
 		group.setLayoutData(createTextFieldGridData());
 		group.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				setPatternTypeAttribute(NamingPackage.eINSTANCE.getPatternType_GroupId(), group.getText());
+//				setPatternTypeAttribute(NamingPackage.eINSTANCE.getPatternType_GroupId(), group.getText());
 				markDirty();
 			}
 		});
@@ -130,7 +128,7 @@ public class WebContainerSection extends AbstractSectionPart {
 		artifact.setLayoutData(createTextFieldGridData());
 		artifact.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				setPatternTypeAttribute(NamingPackage.eINSTANCE.getPatternType_ArtifactId(), artifact.getText());
+//				setPatternTypeAttribute(NamingPackage.eINSTANCE.getPatternType_ArtifactId(), artifact.getText());
 				markDirty();
 			}
 		});
@@ -142,7 +140,7 @@ public class WebContainerSection extends AbstractSectionPart {
 		module.setLayoutData(createTextFieldGridData());
 		module.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				setPatternTypeAttribute(NamingPackage.eINSTANCE.getPatternType_Module(), module.getText());
+//				setPatternTypeAttribute(NamingPackage.eINSTANCE.getPatternType_Module(), module.getText());
 				markDirty();
 			}
 		});
@@ -154,7 +152,7 @@ public class WebContainerSection extends AbstractSectionPart {
 		name.setLayoutData(createTextFieldGridData());
 		name.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				setPatternTypeAttribute(NamingPackage.eINSTANCE.getPatternType_Name(), name.getText());
+//				setPatternTypeAttribute(NamingPackage.eINSTANCE.getPatternType_Name(), name.getText());
 				markDirty();
 			}
 		});
@@ -166,7 +164,7 @@ public class WebContainerSection extends AbstractSectionPart {
 		version.setLayoutData(createTextFieldGridData());
 		version.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				setPatternTypeAttribute(NamingPackage.eINSTANCE.getPatternType_Version(), version.getText());
+//				setPatternTypeAttribute(NamingPackage.eINSTANCE.getPatternType_Version(), version.getText());
 				markDirty();
 			}
 		});
@@ -174,11 +172,11 @@ public class WebContainerSection extends AbstractSectionPart {
 		specifyAsLink.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				if (specifyAsLink.getSelection()) {
-					if (plan.getWebContainer() != null
-							&& plan.getWebContainer().eIsSet(NamingPackage.eINSTANCE.getGbeanLocatorType_Pattern())) {
-						plan.getWebContainer().eUnset(NamingPackage.eINSTANCE.getGbeanLocatorType_Pattern());
-						markDirty();
-					}
+//					if (plan.getWebContainer() != null
+//							&& plan.getWebContainer().eIsSet(NamingPackage.eINSTANCE.getGbeanLocatorType_Pattern())) {
+//						plan.getWebContainer().eUnset(NamingPackage.eINSTANCE.getGbeanLocatorType_Pattern());
+//						markDirty();
+//					}
 					if (gBeanLink.getText().length() > 0) {
 						plan.getWebContainer().setGbeanLink(gBeanLink.getText());
 						markDirty();
@@ -191,11 +189,11 @@ public class WebContainerSection extends AbstractSectionPart {
 		specifyAsPattern.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				if (specifyAsPattern.getSelection()) {
-					if (plan.getWebContainer() != null
-							&& plan.getWebContainer().eIsSet(NamingPackage.eINSTANCE.getGbeanLocatorType_GbeanLink())) {
-						plan.getWebContainer().eUnset(NamingPackage.eINSTANCE.getGbeanLocatorType_GbeanLink());
-						markDirty();
-					}
+//					if (plan.getWebContainer() != null
+//							&& plan.getWebContainer().eIsSet(NamingPackage.eINSTANCE.getGbeanLocatorType_GbeanLink())) {
+//						plan.getWebContainer().eUnset(NamingPackage.eINSTANCE.getGbeanLocatorType_GbeanLink());
+//						markDirty();
+//					}
 					if (group.getText().length() > 0) {
 						getPatternType().setGroupId(group.getText());
 						markDirty();
@@ -209,7 +207,7 @@ public class WebContainerSection extends AbstractSectionPart {
 						markDirty();
 					}
 					if (name.getText().length() > 0) {
-						getPatternType().setName(name.getText());
+//						getPatternType().setName(name.getText());
 						markDirty();
 					}
 					if (version.getText().length() > 0) {
@@ -245,7 +243,7 @@ public class WebContainerSection extends AbstractSectionPart {
 	private GbeanLocatorType getGBeanLocator() {
 		GbeanLocatorType wc = plan.getWebContainer();
 		if (wc == null) {
-			wc = NamingFactory.eINSTANCE.createGbeanLocatorType();
+//			wc = NamingFactory.eINSTANCE.createGbeanLocatorType();
 			plan.setWebContainer(wc);
 		}
 		return wc;
@@ -256,21 +254,21 @@ public class WebContainerSection extends AbstractSectionPart {
 	 */
 	private PatternType getPatternType() {
 		GbeanLocatorType locator = getGBeanLocator();
-		PatternType pattern = locator.getPattern();
-		if (pattern == null) {
-			pattern = NamingFactory.eINSTANCE.createPatternType();
-			locator.setPattern(pattern);
-		}
-		return pattern;
+//		PatternType pattern = locator.getPattern();
+//		if (pattern == null) {
+//			pattern = NamingFactory.eINSTANCE.createPatternType();
+//			locator.setPattern(pattern);
+//		}
+		return null;//pattern;
 	}
 
-	/**
-	 * @param feature
-	 * @param value
-	 */
-	private void setPatternTypeAttribute(EStructuralFeature feature, String value) {
-		getPatternType().eSet(feature, value);
-	}
+//	/**
+//	 * @param feature
+//	 * @param value
+//	 */
+//	private void setPatternTypeAttribute(EStructuralFeature feature, String value) {
+//		getPatternType().eSet(feature, value);
+//	}
 
 	protected Label createLabel(Composite parent, String text) {
 		Label label = toolkit.createLabel(parent, text);

@@ -16,16 +16,13 @@
  */
 package org.apache.geronimo.st.v11.ui.sections;
 
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v11.ui.Activator;
 import org.apache.geronimo.st.v11.ui.internal.EMFEditorContext;
 import org.apache.geronimo.st.v11.ui.wizards.EjbLocalRefWizard;
-import org.apache.geronimo.xml.ns.naming.NamingPackage;
-import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
@@ -33,13 +30,13 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class EjbLocalRefSection extends AbstractTableSection {
 
-	EReference ejbLocalRefERef;
+	JAXBElement ejbLocalRefERef;
 
 	private static final String[] COLUMN_NAMES = new String[] {
 			CommonMessages.name,
 			CommonMessages.editorEjbRefEjbLink };
 
-	public EjbLocalRefSection(EObject plan, Composite parent, FormToolkit toolkit, int style, EReference ejbLocalRefERef) {
+	public EjbLocalRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, JAXBElement ejbLocalRefERef) {
 		super(plan, parent, toolkit, style);
 		this.ejbLocalRefERef = ejbLocalRefERef;
 		createClient();
@@ -77,7 +74,7 @@ public class EjbLocalRefSection extends AbstractTableSection {
 	 * 
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
 	 */
-	public EReference getEReference() {
+	public JAXBElement getEReference() {
 		return ejbLocalRefERef;
 	}
 
@@ -99,16 +96,16 @@ public class EjbLocalRefSection extends AbstractTableSection {
 	 * 
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
 	 */
-	public EClass getTableEntryObjectType() {
-		return NamingPackage.eINSTANCE.getEjbLocalRefType();
+	public Class getTableEntryObjectType() {
+		return ejbLocalRefERef.getDeclaredType();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
-	 */
-	public AdapterFactory getAdapterFactory() {
-		return EMFEditorContext.getFactory();
-	}
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
+//	 */
+//	public AdapterFactory getAdapterFactory() {
+//		return EMFEditorContext.getFactory();
+//	}
 }

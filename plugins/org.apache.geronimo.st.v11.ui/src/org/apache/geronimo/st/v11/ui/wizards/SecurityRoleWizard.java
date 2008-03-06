@@ -19,16 +19,8 @@ package org.apache.geronimo.st.v11.ui.wizards;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.apache.geronimo.st.v11.ui.sections.SecuritySection;
-import org.apache.geronimo.xml.ns.security.DescriptionType;
-import org.apache.geronimo.xml.ns.security.RoleMappingsType;
-import org.apache.geronimo.xml.ns.security.RoleType;
-import org.apache.geronimo.xml.ns.security.SecurityFactory;
-import org.apache.geronimo.xml.ns.security.SecurityPackage;
-import org.apache.geronimo.xml.ns.security.SecurityType;
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.emf.ecore.EObject;
+import org.apache.geronimo.xml.ns.j2ee.connector_1.DescriptionType;
+import org.apache.geronimo.xml.ns.security_1.RoleType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -41,13 +33,13 @@ public class SecurityRoleWizard extends AbstractTableWizard {
 		super(section);
 	}
 
-	public EFactory getEFactory() {
-		return SecurityFactory.eINSTANCE;
-	}
-
-	public EAttribute[] getTableColumnEAttributes() {
-		return new EAttribute[] { SecurityPackage.eINSTANCE.getRoleType_RoleName() };
-	}
+//	public EFactory getEFactory() {
+//		return SecurityFactory.eINSTANCE;
+//	}
+//
+//	public EAttribute[] getTableColumnEAttributes() {
+//		return new EAttribute[] { SecurityPackage.eINSTANCE.getRoleType_RoleName() };
+//	}
 
 	public String getAddWizardWindowTitle() {
 		return CommonMessages.wizardNewTitle_SecurityRole;
@@ -106,15 +98,15 @@ public class SecurityRoleWizard extends AbstractTableWizard {
 			data.widthHint = 100;
 			descriptionText.setLayoutData(data);
 
-			if (eObject != null && eObject instanceof RoleType) {
-				RoleType roleType = (RoleType) eObject;
-				if (!roleType.getDescription().isEmpty()) {
-					DescriptionType desc = (DescriptionType) roleType.getDescription().get(0);
-					if (desc.eIsSet(SecurityPackage.eINSTANCE.getDescriptionType_Value())) {
-						descriptionText.setText(desc.getValue());
-					}
-				}
-			}
+//			if (eObject != null && eObject instanceof RoleType) {
+//				RoleType roleType = (RoleType) eObject;
+//				if (!roleType.getDescription().isEmpty()) {
+//					DescriptionType desc = (DescriptionType) roleType.getDescription().get(0);
+//					if (desc.eIsSet(SecurityPackage.eINSTANCE.getDescriptionType_Value())) {
+//						descriptionText.setText(desc.getValue());
+//					}
+//				}
+//			}
 		}
 	}
 
@@ -122,22 +114,22 @@ public class SecurityRoleWizard extends AbstractTableWizard {
 		SecurityRoleWizardPage page = (SecurityRoleWizardPage) getPages()[0];
 
 		if (eObject == null) {
-			eObject = getEFactory().create(getTableColumnEAttributes()[0].getEContainingClass());
-			EObject plan = section.getPlan();
-
-			SecurityType securityType = (SecurityType) plan.eGet(((SecuritySection) section).securityERef);
-			if (securityType == null) {
-				securityType = SecurityFactory.eINSTANCE.createSecurityType();
-				plan.eSet(((SecuritySection) section).securityERef, securityType);
-			}
-
-			RoleMappingsType roleMappingsType = securityType.getRoleMappings();
-			if (roleMappingsType == null) {
-				roleMappingsType = SecurityFactory.eINSTANCE.createRoleMappingsType();
-				securityType.setRoleMappings(roleMappingsType);
-			}
-
-			roleMappingsType.getRole().add(eObject);
+//			eObject = getEFactory().create(getTableColumnEAttributes()[0].getEContainingClass());
+//			EObject plan = section.getPlan();
+//
+//			SecurityType securityType = (SecurityType) plan.eGet(((SecuritySection) section).securityERef);
+//			if (securityType == null) {
+//				securityType = SecurityFactory.eINSTANCE.createSecurityType();
+//				plan.eSet(((SecuritySection) section).securityERef, securityType);
+//			}
+//
+//			RoleMappingsType roleMappingsType = securityType.getRoleMappings();
+//			if (roleMappingsType == null) {
+//				roleMappingsType = SecurityFactory.eINSTANCE.createRoleMappingsType();
+//				securityType.setRoleMappings(roleMappingsType);
+//			}
+//
+//			roleMappingsType.getRole().add(eObject);
 		}
 
 		processEAttributes(page);
@@ -145,10 +137,10 @@ public class SecurityRoleWizard extends AbstractTableWizard {
 		DescriptionType type = null;
 		RoleType roleType = ((RoleType) eObject);
 		if (roleType.getDescription().isEmpty()) {
-			type = SecurityFactory.eINSTANCE.createDescriptionType();
-			roleType.getDescription().add(type);
+//			type = SecurityFactory.eINSTANCE.createDescriptionType();
+//			roleType.getDescription().add(type);
 		} else {
-			type = (DescriptionType) roleType.getDescription().get(0);
+//			type = (DescriptionType) roleType.getDescription().get(0);
 		}
 		type.setValue(page.descriptionText.getText());
 

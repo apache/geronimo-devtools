@@ -77,12 +77,12 @@
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.v11.deployment.model</artifactId>
+            <artifactId>org.apache.geronimo.deployment.v11.jaxbmodel</artifactId>
             <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.v11.deployment.model.edit</artifactId>
+            <artifactId>org.apache.geronimo.runtime.common</artifactId>
             <version>${version}</version>
         </dependency>
         <dependency>

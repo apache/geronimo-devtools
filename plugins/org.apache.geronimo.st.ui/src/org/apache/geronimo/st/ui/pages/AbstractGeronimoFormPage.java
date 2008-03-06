@@ -16,8 +16,9 @@
  */
 package org.apache.geronimo.st.ui.pages;
 
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IManagedForm;
@@ -33,7 +34,7 @@ import org.eclipse.ui.forms.widgets.Section;
  */
 public abstract class AbstractGeronimoFormPage extends FormPage {
 
-	EObject deploymentPlan;
+	JAXBElement deploymentPlan;
 
 	protected FormToolkit toolkit;
 
@@ -90,7 +91,7 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
 
 	abstract protected void fillBody(IManagedForm managedForm);
 
-	public EObject getDeploymentPlan() {
+	public JAXBElement getDeploymentPlan() {
 		return deploymentPlan;
 	}
 

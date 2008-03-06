@@ -16,17 +16,14 @@
  */
 package org.apache.geronimo.st.v11.ui.sections;
 
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v11.ui.Activator;
 import org.apache.geronimo.st.v11.ui.internal.EMFEditorContext;
 import org.apache.geronimo.st.v11.ui.wizards.DependencyWizard;
-import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
-import org.apache.geronimo.xml.ns.deployment.EnvironmentType;
-import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
+import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
@@ -34,7 +31,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class DependencySection extends AbstractTableSection {
 
-	private EReference environmentERef;
+	private JAXBElement environmentERef;
 
 	/**
 	 * @param plan
@@ -42,7 +39,7 @@ public class DependencySection extends AbstractTableSection {
 	 * @param toolkit
 	 * @param style
 	 */
-	public DependencySection(EObject plan, EReference environment, Composite parent, FormToolkit toolkit, int style) {
+	public DependencySection(JAXBElement plan, JAXBElement environment, Composite parent, FormToolkit toolkit, int style) {
 		super(plan, parent, toolkit, style);
 		this.environmentERef = environment;
 		createClient();
@@ -71,7 +68,7 @@ public class DependencySection extends AbstractTableSection {
 	 * 
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
 	 */
-	public EReference getEReference() {
+	public JAXBElement getEReference() {
 		return environmentERef;
 	}
 
@@ -102,21 +99,21 @@ public class DependencySection extends AbstractTableSection {
 	 * 
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
 	 */
-	public EClass getTableEntryObjectType() {
-		return DeploymentPackage.eINSTANCE.getDependencyType();
+	public Class getTableEntryObjectType() {
+		return environmentERef.getDeclaredType();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
-	 */
-	public AdapterFactory getAdapterFactory() {
-		return EMFEditorContext.getFactory();
-	}
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
+//	 */
+//	public AdapterFactory getAdapterFactory() {
+//		return EMFEditorContext.getFactory();
+//	}
 	
 	public Object getInput() {
-		EnvironmentType envType = (EnvironmentType) getPlan().eGet(getEReference());
+		EnvironmentType envType = null;//(EnvironmentType) getPlan().eGet(getEReference());
 		if (envType != null) {
 			return envType.getDependencies();
 		}

@@ -16,44 +16,22 @@
  */
 package org.apache.geronimo.st.v21.core.operations;
 
-import org.apache.geronimo.st.core.GeronimoSchemaNS;
+import javax.enterprise.deploy.spi.factories.DeploymentFactory;
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.core.operations.DeploymentPlanCreationOperation;
 import org.apache.geronimo.st.v21.core.DeploymentPlanInstallConfig;
-import org.apache.geronimo.st.v21.core.GeronimoV21Utils;
 import org.apache.geronimo.st.v21.core.internal.Trace;
-import org.apache.geronimo.xml.ns.deployment.ArtifactType;
-import org.apache.geronimo.xml.ns.deployment.DependenciesType;
-import org.apache.geronimo.xml.ns.deployment.DependencyType;
-import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
-import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
-import org.apache.geronimo.xml.ns.deployment.DocumentRoot;
-import org.apache.geronimo.xml.ns.deployment.EnvironmentType;
-import org.apache.geronimo.xml.ns.deployment.ModuleType;
-import org.apache.geronimo.xml.ns.deployment.util.DeploymentResourceFactoryImpl;
-import org.apache.geronimo.xml.ns.j2ee.application.ApplicationFactory;
-import org.apache.geronimo.xml.ns.j2ee.application.ApplicationPackage;
-import org.apache.geronimo.xml.ns.j2ee.application.ApplicationType;
-import org.apache.geronimo.xml.ns.j2ee.application.util.ApplicationResourceFactoryImpl;
-import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorFactory;
-import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorPackage;
-import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorType;
-import org.apache.geronimo.xml.ns.j2ee.connector.util.ConnectorResourceFactoryImpl;
-import org.apache.geronimo.xml.ns.j2ee.web.WebAppType;
-import org.apache.geronimo.xml.ns.j2ee.web.WebFactory;
-import org.apache.geronimo.xml.ns.j2ee.web.WebPackage;
-import org.apache.geronimo.xml.ns.j2ee.web.util.WebResourceFactoryImpl;
+import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
+import org.apache.geronimo.xml.ns.deployment_1.DependenciesType;
+import org.apache.geronimo.xml.ns.deployment_1.DependencyType;
+import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
+import org.apache.geronimo.xml.ns.j2ee.application_2.ApplicationType;
+import org.apache.geronimo.xml.ns.j2ee.connector_1.ConnectorType;
+import org.apache.geronimo.xml.ns.j2ee.ejb.openejb_2.GeronimoEjbJarType;
+import org.apache.geronimo.xml.ns.j2ee.web_2_0.WebAppType;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.emf.common.util.EMap;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
-import org.openejb.xml.ns.openejb.jar.JarFactory;
-import org.openejb.xml.ns.openejb.jar.JarPackage;
-import org.openejb.xml.ns.openejb.jar.OpenejbJarType;
-import org.openejb.xml.ns.openejb.jar.util.JarResourceFactoryImpl;
 
 /**
  * @version $Rev: 509704 $ $Date: 2007-02-20 13:42:24 -0500 (Tue, 20 Feb 2007) $
@@ -72,9 +50,14 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * 
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createGeronimoApplicationDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
-	public EObject createGeronimoApplicationDeploymentPlan(IFile dpFile) {
+	public JAXBElement createGeronimoApplicationDeploymentPlan(IFile dpFile) {
 //		Trace.trace("Entry", "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", dpFile);
 		
+		org.apache.geronimo.xml.ns.j2ee.application_2.ObjectFactory applicationFactory = new org.apache.geronimo.xml.ns.j2ee.application_2.ObjectFactory();
+		ApplicationType application = applicationFactory.createApplicationType();
+		application.setApplicationName(getProject().getName());
+		application.setEnvironment(getConfigEnvironment());
+/*		
 		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -90,15 +73,15 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS_1_1);
 
 		root.setApplicationName(getProject().getName());
-		root.setEnvironment(getConfigEnvironment());
+		root.setEnvironment();
 
 		documentRoot.setApplication(root);
 		resource.getContents().add(documentRoot);
 
 		save(resource);
-
+*/
 //		Trace.trace("Exit", "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", root);
-		return root;
+		return applicationFactory.createApplication(application);
 	}
 
 	/*
@@ -106,9 +89,12 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * 
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createGeronimoWebDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
-	public EObject createGeronimoWebDeploymentPlan(IFile dpFile) {
+	public JAXBElement createGeronimoWebDeploymentPlan(IFile dpFile) {
 //		Trace.trace("Entry", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", dpFile);
 
+		org.apache.geronimo.xml.ns.j2ee.web_2_0.ObjectFactory webFactory = new org.apache.geronimo.xml.ns.j2ee.web_2_0.ObjectFactory();
+		WebAppType web = webFactory.createWebAppType();
+/*
 		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -136,7 +122,9 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		save(resource);
 
 //		Trace.trace("Exit", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", root);
-		return root;
+		return new JAXBElement<JAXBElement>();
+*/
+		return webFactory.createWebApp(web);
 	}
 
 	/*
@@ -144,9 +132,13 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * 
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createOpenEjbDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
-	public EObject createOpenEjbDeploymentPlan(IFile dpFile) {
+	public JAXBElement createOpenEjbDeploymentPlan(IFile dpFile) {
 //		Trace.trace("Entry", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile);
+		org.apache.geronimo.xml.ns.j2ee.ejb.openejb_2.ObjectFactory ejbFactory = new org.apache.geronimo.xml.ns.j2ee.ejb.openejb_2.ObjectFactory();
+		GeronimoEjbJarType ejbjar = ejbFactory.createGeronimoEjbJarType();
+
 		
+/*
 		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -173,6 +165,9 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 //		Trace.trace("Exit", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", root);
 		return root;
+*/
+		return ejbFactory.createEjbJar(ejbjar);
+		
 	}
 
 	/*
@@ -180,9 +175,15 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * 
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createConnectorDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
-	public EObject createConnectorDeploymentPlan(IFile dpFile) {
+	public JAXBElement createConnectorDeploymentPlan(IFile dpFile) {
 //		Trace.trace("Entry", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", dpFile);
 		
+		org.apache.geronimo.xml.ns.j2ee.connector_1.ObjectFactory connectorFactory = new org.apache.geronimo.xml.ns.j2ee.connector_1.ObjectFactory();
+		ConnectorType connector = connectorFactory.createConnectorType();
+		return connectorFactory.createConnector(connector);
+
+		
+/*
 		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -205,11 +206,18 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 //		Trace.trace("Exit", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", root);
 		return root;
+*/
 	}
 
-	public EObject createServiceDeploymentPlan(IFile dpFile) {
+	public JAXBElement createServiceDeploymentPlan(IFile dpFile) {
 //		Trace.trace("Entry", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", dpFile);
+
+		org.apache.geronimo.xml.ns.deployment_1.ObjectFactory serviceFactory = new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory();
+		org.apache.geronimo.xml.ns.deployment_1.ModuleType module = serviceFactory.createModuleType();
+		return serviceFactory.createModule(module);
+
 		
+/*
 		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
 
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -230,6 +238,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 //		Trace.trace("Exit", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", root);
 		return root;
+*/
 	}
 
 	public EnvironmentType getConfigEnvironment() {
@@ -249,12 +258,14 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 				: "car";
 
 		ArtifactType artifact = createArtifactType(groupId, artifactId, version, type);
-		EnvironmentType env = DeploymentFactory.eINSTANCE.createEnvironmentType();
+		org.apache.geronimo.xml.ns.deployment_1.ObjectFactory serviceFactory = new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory();
+   
+		EnvironmentType env = serviceFactory.createEnvironmentType();
 		env.setModuleId(artifact);
 
 		if (cfg != null && cfg.isSharedLib()) {
-			DependenciesType dt = DeploymentFactory.eINSTANCE.createDependenciesType();
-			ArtifactType sharedLib = createDependencyType("org.apache.geronimo.configs", "sharedlib", null, "car");
+			DependenciesType dt = serviceFactory.createDependenciesType();
+			DependencyType sharedLib = createDependencyType("org.apache.geronimo.configs", "sharedlib", null, "car");
 			dt.getDependency().add(sharedLib);
 			env.setDependencies(dt);
 		}
@@ -265,8 +276,9 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 	public static ArtifactType createArtifactType(String groupId, String artifactId, String version, String type) {
 //		Trace.trace("Entry", "V21DeploymentPlanCreationOperation.createArtifactType", groupId, artifactId, version, type);
-						
-		ArtifactType artifact = DeploymentFactory.eINSTANCE.createArtifactType();
+		org.apache.geronimo.xml.ns.deployment_1.ObjectFactory serviceFactory = new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory();
+		ArtifactType artifact = serviceFactory.createArtifactType();
+
 		if (groupId != null)
 			artifact.setGroupId(groupId);
 		if (artifactId != null)
@@ -279,20 +291,20 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		return artifact;
 	}
 
-	public static ArtifactType createDependencyType(String groupId, String artifactId, String version, String type) {
+	public static DependencyType createDependencyType(String groupId, String artifactId, String version, String type) {
 //		Trace.trace("Entry", "V21DeploymentPlanCreationOperation.createDependencyType", groupId, artifactId, version, type);
-		
-		DependencyType artifact = DeploymentFactory.eINSTANCE.createDependencyType();
+		org.apache.geronimo.xml.ns.deployment_1.ObjectFactory serviceFactory = new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory();
+		DependencyType dependency = serviceFactory.createDependencyType();
 		if (groupId != null)
-			artifact.setGroupId(groupId);
+			dependency.setGroupId(groupId);
 		if (artifactId != null)
-			artifact.setArtifactId(artifactId);
+			dependency.setArtifactId(artifactId);
 		if (version != null)
-			artifact.setVersion(version);
-		artifact.setType(type);
+			dependency.setVersion(version);
+		dependency.setType(type);
 		
 //		Trace.trace("Exit", "V21DeploymentPlanCreationOperation.createDependencyType", artifact);
-		return artifact;
+		return dependency;
 	}
 
 	private static boolean hasValue(String attribute) {

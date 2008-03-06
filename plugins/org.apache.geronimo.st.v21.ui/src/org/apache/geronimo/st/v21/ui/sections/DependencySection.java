@@ -16,17 +16,20 @@
  */
 package org.apache.geronimo.st.v21.ui.sections;
 
+import java.util.List;
+
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.Activator;
-import org.apache.geronimo.st.v21.ui.internal.EMFEditorContext;
 import org.apache.geronimo.st.v21.ui.wizards.DependencyWizard;
-import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
-import org.apache.geronimo.xml.ns.deployment.EnvironmentType;
-import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
+import org.apache.geronimo.xml.ns.deployment_1.DependenciesType;
+import org.apache.geronimo.xml.ns.deployment_1.DependencyType;
+import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
+import org.apache.geronimo.xml.ns.j2ee.web_2_0.WebAppType;
+import org.apache.geronimo.xml.ns.naming_1.ResourceRefType;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
@@ -34,7 +37,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class DependencySection extends AbstractTableSection {
 
-	private EReference environmentERef;
+	private EnvironmentType environment;
 
 	/**
 	 * @param plan
@@ -42,9 +45,9 @@ public class DependencySection extends AbstractTableSection {
 	 * @param toolkit
 	 * @param style
 	 */
-	public DependencySection(EObject plan, EReference environment, Composite parent, FormToolkit toolkit, int style) {
+	public DependencySection(JAXBElement plan, EnvironmentType environment, Composite parent, FormToolkit toolkit, int style) {
 		super(plan, parent, toolkit, style);
-		this.environmentERef = environment;
+		this.environment = environment;
 		createClient();
 	}
 
@@ -66,13 +69,8 @@ public class DependencySection extends AbstractTableSection {
 		return CommonMessages.editorSectionDependenciesDescription;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
-	 */
-	public EReference getEReference() {
-		return environmentERef;
+	public List getObjectContainer() {
+		return environment.getDependencies().getDependency();
 	}
 
 	/*
@@ -102,24 +100,37 @@ public class DependencySection extends AbstractTableSection {
 	 * 
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
 	 */
-	public EClass getTableEntryObjectType() {
-		return DeploymentPackage.eINSTANCE.getDependencyType();
+	public Class getTableEntryObjectType() {
+		return DependencyType.class;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
-	 */
-	public AdapterFactory getAdapterFactory() {
-		return EMFEditorContext.getFactory();
-	}
 	
 	public Object getInput() {
-		EnvironmentType envType = (EnvironmentType) getPlan().eGet(getEReference());
-		if (envType != null) {
-			return envType.getDependencies();
+		if (environment != null) {
+			return environment.getDependencies();
 		}
 		return super.getInput();
+	}
+	
+	public AdapterFactory getAdapterFactory() {
+		return new AdapterFactory() {
+			public Object[] getElements(Object inputElement) {
+				if (!DependenciesType.class.isInstance(inputElement)) {
+					return new String[] { "" };
+				}
+				DependenciesType plan = (DependenciesType)inputElement;
+				return plan.getDependency().toArray();
+			}
+			public String getColumnText(Object element, int columnIndex) {
+				if (DependencyType.class.isInstance(element)) {
+					DependencyType dependency = (DependencyType)element;
+					switch (columnIndex) {
+					case 0: return dependency.getGroupId();
+					case 1: return dependency.getArtifactId();
+					}
+				}
+				return null;
+			}
+		};
 	}
 }

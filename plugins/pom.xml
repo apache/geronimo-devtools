@@ -130,6 +130,8 @@
         </pluginManagement>
     </build>
     <modules>
+        <module>org.apache.geronimo.deployment.v11.jaxbmodel</module>
+        <module>org.apache.geronimo.deployment.v21.jaxbmodel</module>
         <module>org.apache.geronimo.st.core</module>
 <!--    <module>org.apache.geronimo.st.v1.core</module>     -->
         <module>org.apache.geronimo.st.v11.core</module>

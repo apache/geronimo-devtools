@@ -20,13 +20,7 @@ import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
 import org.apache.geronimo.st.v1.ui.internal.Messages;
-import org.apache.geronimo.xml.ns.deployment.DependencyType;
-import org.apache.geronimo.xml.ns.deployment.DeploymentFactory;
-import org.apache.geronimo.xml.ns.deployment.DeploymentPackage;
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -79,23 +73,23 @@ public class DependencyWizard extends AbstractTableWizard {
 		super(section);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEFactory()
-	 */
-	public EFactory getEFactory() {
-		return DeploymentFactory.eINSTANCE;
-	}
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEFactory()
+//	 */
+//	public EFactory getEFactory() {
+//		return DeploymentFactory.eINSTANCE;
+//	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getTableColumnEAttributes()
-	 */
-	public EAttribute[] getTableColumnEAttributes() {
-		return new EAttribute[] {};
-	}
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getTableColumnEAttributes()
+//	 */
+//	public EAttribute[] getTableColumnEAttributes() {
+//		return new EAttribute[] {};
+//	}
 
 	/*
 	 * (non-Javadoc)
@@ -138,21 +132,21 @@ public class DependencyWizard extends AbstractTableWizard {
 	 * 
 	 * @see org.apache.geronimo.ui.wizards.AbstractTableWizard#processEAttributes(org.eclipse.jface.wizard.IWizardPage)
 	 */
-	public void processEAttributes(IWizardPage page) {
-		DependencyType dt = (DependencyType) eObject;
-
-		if (uriButton.getSelection()) {
-			dt.setUri(uriText.getText());
-			dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_ArtifactId());
-			dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_GroupId());
-			dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_Version());
-		} else {
-			dt.setArtifactId(artifactIdText.getText());
-			dt.setGroupId(groupIdText.getText());
-			dt.setVersion(versionText.getText());
-			dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_Uri());
-		}
-	}
+//	public void processEAttributes(IWizardPage page) {
+//		DependencyType dt = (DependencyType) eObject;
+//
+//		if (uriButton.getSelection()) {
+//			dt.setUri(uriText.getText());
+//			dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_ArtifactId());
+//			dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_GroupId());
+//			dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_Version());
+//		} else {
+//			dt.setArtifactId(artifactIdText.getText());
+//			dt.setGroupId(groupIdText.getText());
+//			dt.setVersion(versionText.getText());
+//			dt.eUnset(DeploymentPackage.eINSTANCE.getDependencyType_Uri());
+//		}
+//	}
 
 	/*
 	 * (non-Javadoc)
@@ -248,21 +242,21 @@ public class DependencyWizard extends AbstractTableWizard {
 			});
 
 			if (eObject != null) {
-				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getDependencyType_Uri())) {
-					uriButton.setSelection(true);
-					uriText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getDependencyType_Uri()).toString());
-				} else {
-					mavenButton.setSelection(true);
-					if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getDependencyType_ArtifactId())) {
-						artifactIdText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getDependencyType_ArtifactId()).toString());
-					}
-					if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getDependencyType_GroupId())) {
-						groupIdText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getDependencyType_GroupId()).toString());
-					}
-					if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getDependencyType_Version())) {
-						versionText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getDependencyType_Version()).toString());
-					}
-				}
+//				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getDependencyType_Uri())) {
+//					uriButton.setSelection(true);
+//					uriText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getDependencyType_Uri()).toString());
+//				} else {
+//					mavenButton.setSelection(true);
+//					if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getDependencyType_ArtifactId())) {
+//						artifactIdText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getDependencyType_ArtifactId()).toString());
+//					}
+//					if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getDependencyType_GroupId())) {
+//						groupIdText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getDependencyType_GroupId()).toString());
+//					}
+//					if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getDependencyType_Version())) {
+//						versionText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getDependencyType_Version()).toString());
+//					}
+//				}
 			} else {
 				uriButton.setSelection(true);
 				uriLabel.setEnabled(true);

@@ -16,19 +16,20 @@
  */
 package org.apache.geronimo.st.v11.ui.pages;
 
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v11.ui.sections.DependencySection;
 import org.apache.geronimo.st.v11.ui.sections.GBeanSection;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
 public class DeploymentPage extends AbstractGeronimoFormPage {
 	
-	public EReference environment;
+	public JAXBElement environment;
 	
-	public EReference gbeanERef;
+	public JAXBElement gbeanERef;
 
 	public DeploymentPage(FormEditor editor, String id, String title) {
 		super(editor, id, title);

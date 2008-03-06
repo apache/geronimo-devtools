@@ -16,22 +16,23 @@
  */
 package org.apache.geronimo.st.core.operations;
 
+import javax.xml.bind.JAXBElement;
+
 import org.eclipse.core.resources.IFile;
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * @version $Rev$ $Date$
  */
 public interface IDeploymentPlanCreationOp {
 
-	public EObject createOpenEjbDeploymentPlan(IFile file);
+	public JAXBElement createOpenEjbDeploymentPlan(IFile file);
 
-	public EObject createGeronimoWebDeploymentPlan(IFile file);
+	public JAXBElement createGeronimoWebDeploymentPlan(IFile file);
 
-	public EObject createGeronimoApplicationDeploymentPlan(IFile file);
+	public JAXBElement createGeronimoApplicationDeploymentPlan(IFile file);
 
-	public EObject createConnectorDeploymentPlan(IFile file);
+	public JAXBElement createConnectorDeploymentPlan(IFile file);
 	
-	public EObject createServiceDeploymentPlan(IFile file);
+	public JAXBElement createServiceDeploymentPlan(IFile file);
 
 }

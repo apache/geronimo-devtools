@@ -11,8 +11,9 @@ Require-Bundle: org.eclipse.ui,
  org.apache.geronimo.st.v1.core,
  org.apache.geronimo.st.ui,
  org.eclipse.ui.forms,
- org.apache.geronimo.deployment.model.edit,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ org.apache.geronimo.deployment.v11.jaxbmodel,
+ org.apache.geronimo.runtime.common
 Eclipse-LazyStart: true
 Export-Package: org,
  org.apache,

@@ -16,18 +16,19 @@
  */
 package org.apache.geronimo.st.v21.ui.sections;
 
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.v21.ui.wizards.ImportWizard;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
+import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class ImportSection extends DependencySection {
 
-	public ImportSection(EObject plan, EReference dependenciesERef, Composite parent, FormToolkit toolkit, int style) {
-		super(plan, dependenciesERef, parent, toolkit, style);
+	public ImportSection(JAXBElement plan, EnvironmentType environment, Composite parent, FormToolkit toolkit, int style) {
+		super(plan, environment, parent, toolkit, style);
 	}
 
 	/*

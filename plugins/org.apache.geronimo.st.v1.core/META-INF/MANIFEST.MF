@@ -7,14 +7,13 @@ Bundle-Activator: org.apache.geronimo.st.v1.core.Activator
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.apache.geronimo.st.core,
- org.apache.geronimo.deployment.model,
  org.eclipse.wst.server.core,
- org.eclipse.emf.mapping.xsd2ecore.editor,
  org.eclipse.debug.core,
  org.eclipse.jst.j2ee,
  org.apache.geronimo.runtime.v1,
  org.eclipse.jst.common.frameworks,
- org.eclipse.wst.common.project.facet.core
+ org.eclipse.wst.common.project.facet.core,
+ org.apache.geronimo.deployment.v11.jaxbmodel
 Eclipse-LazyStart: true
 Bundle-Vendor: Apache.org
 Export-Package: org,

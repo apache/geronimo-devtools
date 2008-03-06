@@ -16,7 +16,11 @@
  */
 package org.apache.geronimo.st.ui.sections;
 
-import org.eclipse.emf.ecore.EObject;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.JAXBElement;
+
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -29,7 +33,7 @@ public abstract class AbstractSectionPart extends SectionPart {
 
 	protected FormToolkit toolkit;
 
-	private EObject plan;
+	private JAXBElement plan;
 
 	/**
 	 * @param section
@@ -45,7 +49,7 @@ public abstract class AbstractSectionPart extends SectionPart {
 	 * @param plan
 	 */
 	public AbstractSectionPart(Composite parent, FormToolkit toolkit,
-			int style, EObject plan) {
+			int style, JAXBElement plan) {
 		super(parent, toolkit, style);
 		this.toolkit = toolkit;
 		this.plan = plan;
@@ -67,7 +71,7 @@ public abstract class AbstractSectionPart extends SectionPart {
 		}
 	}
 
-	public EObject getPlan() {
+	public JAXBElement getPlan() {
 		return plan;
 	}
 

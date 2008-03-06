@@ -16,7 +16,10 @@
  */
 package org.apache.geronimo.st.v21.ui.pages;
 
+import java.util.List;
+
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v21.ui.sections.EjbLocalRefSection;
 import org.apache.geronimo.st.v21.ui.sections.EjbRefSection;
@@ -24,26 +27,29 @@ import org.apache.geronimo.st.v21.ui.sections.GBeanRefSection;
 import org.apache.geronimo.st.v21.ui.sections.ResourceEnvRefSection;
 import org.apache.geronimo.st.v21.ui.sections.ResourceRefSection;
 import org.apache.geronimo.st.v21.ui.sections.ServiceRefSection;
-import org.eclipse.emf.ecore.EReference;
+import org.apache.geronimo.xml.ns.j2ee.web_2_0.WebAppType;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
 public class NamingFormPage extends AbstractGeronimoFormPage {
 
-	public EReference resRef;
+	public List resRefs;
 
-	public EReference resEnvRef;
+	public List resEnvRefs;
 
-	public EReference ejbRef;
+	public List ejbRefs;
 
-	public EReference ejbLocalRef;
+	public List ejbLocalRefs;
 
-	public EReference gbeanRef;
+	public List gbeanRefs;
 
-	public EReference serviceRef;
+	public List serviceRefs;
 
 	public NamingFormPage(FormEditor editor, String id, String title) {
 		super(editor, id, title);
+		WebAppType webapp = (WebAppType)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
+		resRefs = webapp.getResourceRef();
+		serviceRefs = webapp.getServiceRef();
 	}
 
 	/*
@@ -52,12 +58,12 @@ public class NamingFormPage extends AbstractGeronimoFormPage {
 	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
 	 */
 	protected void fillBody(IManagedForm managedForm) {
-		managedForm.addPart(new ResourceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), resRef));
-		managedForm.addPart(new ResourceEnvRefSection(getDeploymentPlan(), body, toolkit, getStyle(), resEnvRef));
-		managedForm.addPart(new EjbRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbRef));
-		managedForm.addPart(new EjbLocalRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbLocalRef));
-		managedForm.addPart(new GBeanRefSection(getDeploymentPlan(), body, toolkit, getStyle(), gbeanRef));
-		managedForm.addPart(new ServiceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), serviceRef));
+		managedForm.addPart(new ResourceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), resRefs));
+		managedForm.addPart(new ResourceEnvRefSection(getDeploymentPlan(), body, toolkit, getStyle(), resEnvRefs));
+		managedForm.addPart(new EjbRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbRefs));
+		managedForm.addPart(new EjbLocalRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbLocalRefs));
+		managedForm.addPart(new GBeanRefSection(getDeploymentPlan(), body, toolkit, getStyle(), gbeanRefs));
+		managedForm.addPart(new ServiceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), serviceRefs));
 	}
 
 	/*

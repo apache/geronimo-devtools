@@ -8,13 +8,15 @@ Bundle-Vendor: Apache.org
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
+ org.eclipse.core.commands,
  org.apache.geronimo.st.v11.core,
  org.apache.geronimo.st.ui,
  org.eclipse.ui.forms,
  org.eclipse.core.resources,
- org.apache.geronimo.v11.deployment.model.edit,
- org.apache.geronimo.v11.deployment.model,
- org.eclipse.wst.common.project.facet.ui
+ org.eclipse.wst.common.project.facet.ui,
+ org.eclipse.wst.common.frameworks,
+ org.apache.geronimo.deployment.v11.jaxbmodel,
+ org.apache.geronimo.runtime.common
 Eclipse-LazyStart: true
 Export-Package: org,
  org.apache,
