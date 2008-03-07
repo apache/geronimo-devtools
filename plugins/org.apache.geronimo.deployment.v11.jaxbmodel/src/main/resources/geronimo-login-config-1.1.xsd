@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-
-    Copyright 2005 The Apache Software Foundation
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    (the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
 
        http://www.apache.org/licenses/LICENSE-2.0
 
@@ -15,8 +15,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-
-<!-- $Rev: 409817 $ $Date: 2006-05-27 03:56:38 -0400 (Sat, 27 May 2006) $ -->
+<!-- $Rev$ $Date$ -->
 
 <xsd:schema
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
