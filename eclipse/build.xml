@@ -24,10 +24,10 @@
 <project name="EuropaArtifacts">
 
     <target name="init">
-        <property name="europa_drop"    value="M20080221-1800"/>
+        <property name="europa_drop"    value="R-3.3.2-200802211800"/>
         <property name="dtp_drop"       value="1.5"/>
-        <property name="emf_drop"       value="M200802051830"/>
-        <property name="gef_drop"       value="M200801291704"/>
+        <property name="emf_drop"       value="R200802051830"/>
+        <property name="gef_drop"       value="R200802211602"/>
         <property name="wtp_drop"       value="R-2.0.2-20080223205547"/>
 
         <property name="base_url"           value="http://www.eclipse.org/downloads/download.php?file="/>
@@ -40,15 +40,15 @@
         <property name="gef_download_url"   value="${base_url}/tools/gef/downloads/drops/3.3.2/${gef_drop}/"/>
         <property name="wtp_download_url"   value="${base_url}/webtools/downloads/drops/R2.0/${wtp_drop}/"/>
 
-        <property name="europa_jee_win32"       value="eclipse-SDK-${europa_drop}-win32.zip"/>
-        <property name="europa_jee_linux"       value="eclipse-SDK-${europa_drop}-linux-gtk.tar"/>
-        <property name="europa_jee_macos"       value="eclipse-SDK-${europa_drop}-macosx-carbon.tar"/>
+        <property name="europa_jee_win32"       value="eclipse-SDK-3.3.2-win32.zip"/>
+        <property name="europa_jee_linux"       value="eclipse-SDK-3.3.2-linux-gtk.tar"/>
+        <property name="europa_jee_macos"       value="eclipse-SDK-3.3.2-macosx-carbon.tar"/>
         <property name="europa_jee_linux_gz"    value="${europa_jee_linux}.gz"/>
         <property name="europa_jee_macos_gz"    value="${europa_jee_macos}.gz"/>
 
-        <property name="dtp_sdk"    value="dtp-sdk_1.5.1_101607.zip"/>
-        <property name="emf_sdo"    value="emf-sdo-xsd-SDK-${emf_drop}.zip"/>
-        <property name="gef_sdk"    value="GEF-SDK-${gef_drop}.zip"/>
+        <property name="dtp_sdk"    value="dtp-sdk_1.5.2_022008.zip"/>
+        <property name="emf_sdo"    value="emf-sdo-xsd-SDK-2.3.2.zip"/>
+        <property name="gef_sdk"    value="GEF-SDK-3.3.2.zip"/>
         <property name="wtp_sdk"    value="wtp-sdk-${wtp_drop}.zip"/>
 
         <property name="protocol"   value="&amp;r=1&amp;protocol=http"/>
@@ -57,7 +57,9 @@
     <target name="win32" depends="init,common" description="Download Windows-specific artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading ${europa_win32_url}${europa_jee_win32}                            </echo>
+        <echo>## Downloading: ${europa_jee_win32}                                              </echo>                                                                            
+        <echo>##                                                                               </echo>
+        <echo>## From: ${europa_win32_url}                                                     </echo>                                                                            
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
@@ -68,18 +70,20 @@
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping ${europa_jee_win32} to the expected location in ${LOCAL_M2_REPO}    </echo>
+        <echo>## Unzipping: ${europa_jee_win32}                                                </echo>                                                                            
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
         <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${europa_jee_win32}" 
-               dest="${LOCAL_M2_REPO}/eclipse"/>
+              dest="${LOCAL_M2_REPO}/eclipse"/>
     </target>
 
     <target name="linux" depends="init,common" description="Download Linux-specific artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading ${europa_linux_url}${europa_jee_linux_gz}                         </echo>
+        <echo>## Downloading: ${europa_jee_linux_gz}                                           </echo>
+        <echo>##                                                                               </echo>
+        <echo>## From: ${europa_linux_url}                                                     </echo>                                                                            
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
@@ -90,10 +94,10 @@
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping ${europa_jee_linux_gz} to the expected location in ${LOCAL_M2_REPO} </echo>
+        <echo>## Unzipping: ${europa_jee_linux_gz}                                             </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
-        <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
+        <mkdir  dir="${LOCAL_M2_REPO}/eclipse"/>
         <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${europa_jee_linux_gz}"/>
         <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${europa_jee_linux}" 
                dest="${LOCAL_M2_REPO}/eclipse"/>
@@ -102,7 +106,9 @@
     <target name="macos" depends="init,common" description="Download Mac-specific artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading ${europa_macos_url}${europa_jee_macos_gz}                         </echo>
+        <echo>## Downloading: ${europa_jee_macos_gz}                                           </echo>
+        <echo>##                                                                               </echo>
+        <echo>## From: ${europa_macos_url}                                                     </echo>                                                                            
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
@@ -113,10 +119,10 @@
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping ${europa_jee_macos_gz} to the expected location in ${LOCAL_M2_REPO} </echo>
+        <echo>## Unzipping: ${europa_jee_macos_gz}                                             </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
-        <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
+        <mkdir  dir="${LOCAL_M2_REPO}/eclipse"/>
         <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${europa_jee_macos_gz}"/>
         <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${europa_jee_macos}" 
                dest="${LOCAL_M2_REPO}/eclipse"/>
@@ -132,7 +138,9 @@
     <target name="dtp" depends="init" description="Download Data Tools Platform (DTP) artifact">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading ${dtp_download_url}${dtp_sdk}                                     </echo>
+        <echo>## Downloading: ${dtp_sdk}                                                       </echo>
+        <echo>##                                                                               </echo>
+        <echo>## From: ${dtp_download_url}                                                     </echo>                                                                            
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
@@ -143,18 +151,20 @@
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping ${dtp_sdk} to the expected location in ${LOCAL_M2_REPO}             </echo>
+        <echo>## Unzipping: ${dtp_sdk}                                                         </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
         <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${dtp_sdk}" 
-               dest="${LOCAL_M2_REPO}/eclipse"/>
+              dest="${LOCAL_M2_REPO}/eclipse"/>
     </target>
 
     <target name="emf" depends="init" description="Download Eclipse Modeling Framework (EMF) artifact">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading ${emf_download_url}${emf_sdo}                                     </echo>
+        <echo>## Downloading: ${emf_sdo}                                                       </echo>
+        <echo>##                                                                               </echo>
+        <echo>## From: ${emf_download_url}                                                     </echo>                                                                            
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
@@ -165,18 +175,20 @@
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping ${emf_sdo} to the expected location in ${LOCAL_M2_REPO}             </echo>
+        <echo>## Unzipping: ${emf_sdo}                                                         </echo>                                                                                       
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
         <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${emf_sdo}" 
-               dest="${LOCAL_M2_REPO}/eclipse"/>
+              dest="${LOCAL_M2_REPO}/eclipse"/>
     </target>
 
     <target name="gef" depends="init" description="Download Graphical Editing Framework (GEF) artifact">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading ${gef_download_url}${gef_sdk}                                     </echo>
+        <echo>## Downloading: ${gef_sdk}                                                       </echo>
+        <echo>##                                                                               </echo>
+        <echo>## From: ${gef_download_url}                                                     </echo>                                                                            
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
@@ -187,18 +199,20 @@
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping ${gef_sdk} to the expected location in ${LOCAL_M2_REPO}             </echo>
+        <echo>## Unzipping: ${gef_sdk}                                                         </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
         <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${gef_sdk}" 
-               dest="${LOCAL_M2_REPO}/eclipse"/>
+              dest="${LOCAL_M2_REPO}/eclipse"/>
     </target>
 
     <target name="wtp" depends="init" description="Download Web Tools Platform (WTP) artifact">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading ${wtp_download_url}${wtp_sdk}                                     </echo>
+        <echo>## Downloading: ${wtp_sdk}                                                       </echo>
+        <echo>##                                                                               </echo>
+        <echo>## From: ${wtp_download_url}                                                     </echo>                                                                            
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
@@ -209,12 +223,12 @@
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping ${wtp_sdk} to the expected location in ${LOCAL_M2_REPO}             </echo>
+        <echo>## Unzipping: ${wtp_sdk}                                                         </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
         <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${wtp_sdk}" 
-               dest="${LOCAL_M2_REPO}/eclipse"/>
+              dest="${LOCAL_M2_REPO}/eclipse"/>
     </target>
 
 </project>
