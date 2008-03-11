@@ -16,6 +16,8 @@
  */
 package org.apache.geronimo.st.v21.ui.sections;
 
+import java.util.List;
+
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.ui.CommonMessages;
@@ -30,13 +32,13 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class EjbLocalRefSection extends AbstractTableSection {
 
-	Object ejbLocalRefERef;
+	List ejbLocalRefERef;
 
 	private static final String[] COLUMN_NAMES = new String[] {
 			CommonMessages.name,
 			CommonMessages.editorEjbRefEjbLink };
 
-	public EjbLocalRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, Object ejbLocalRefERef) {
+	public EjbLocalRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List ejbLocalRefERef) {
 		super(plan, parent, toolkit, style);
 		this.ejbLocalRefERef = ejbLocalRefERef;
 		createClient();

@@ -16,16 +16,18 @@
  */
 package org.apache.geronimo.st.v20.ui.sections;
 
+import java.util.List;
+
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v20.ui.Activator;
 import org.apache.geronimo.st.v20.ui.internal.EMFEditorContext;
 import org.apache.geronimo.st.v20.ui.wizards.ResourceRefWizard;
-import org.apache.geronimo.xml.ns.naming.NamingPackage;
-import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
+import org.apache.geronimo.xml.ns.j2ee.web_2_0.WebAppType;
+import org.apache.geronimo.xml.ns.naming_1.ResourceRefType;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
@@ -33,13 +35,13 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class ResourceRefSection extends AbstractTableSection {
 
-	EReference resourceRefERef;
+	List resourceRefERef;
 
 	private static final String[] COLUMN_NAMES = new String[] {
 			CommonMessages.editorResRefNameTitle,
 			CommonMessages.editorResRefLinkTitle};
 
-	public ResourceRefSection(EObject plan, Composite parent, FormToolkit toolkit, int style, EReference resourceRefERef) {
+	public ResourceRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List resourceRefERef) {
 		super(plan, parent, toolkit, style);
 		this.resourceRefERef = resourceRefERef;
 		createClient();
@@ -77,9 +79,9 @@ public class ResourceRefSection extends AbstractTableSection {
 	 * 
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
 	 */
-	public EReference getEReference() {
-		return resourceRefERef;
-	}
+//	public EReference getEReference() {
+//		return resourceRefERef;
+//	}
 
 	/*
 	 * (non-Javadoc)
@@ -99,8 +101,8 @@ public class ResourceRefSection extends AbstractTableSection {
 	 * 
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
 	 */
-	public EClass getTableEntryObjectType() {
-		return NamingPackage.eINSTANCE.getResourceRefType();
+	public Class getTableEntryObjectType() {
+		return ResourceRefType.class;
 	}
 
 	/*
@@ -109,6 +111,27 @@ public class ResourceRefSection extends AbstractTableSection {
 	 * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
 	 */
 	public AdapterFactory getAdapterFactory() {
-		return EMFEditorContext.getFactory();
+		return new AdapterFactory() {
+			public Object[] getElements(Object inputElement) {
+				if (!JAXBElement.class.isInstance(inputElement)) {
+					return new String[] { "" };
+				}
+				JAXBElement plan = (JAXBElement)inputElement;
+				if (plan.getDeclaredType().equals(WebAppType.class)) {
+					return ((WebAppType)plan.getValue()).getResourceRef().toArray();
+				}
+				return new String[] { "" };
+			}
+			public String getColumnText(Object element, int columnIndex) {
+				if (ResourceRefType.class.isInstance(element)) {
+					ResourceRefType resourceRef = (ResourceRefType)element;
+					switch (columnIndex) {
+					case 0: return resourceRef.getRefName();
+					case 1: return resourceRef.getResourceLink();
+					}
+				}
+				return null;
+			}
+		};
 	}
 }

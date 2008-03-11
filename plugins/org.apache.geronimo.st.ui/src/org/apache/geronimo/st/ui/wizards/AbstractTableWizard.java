@@ -64,8 +64,8 @@ public abstract class AbstractTableWizard extends Wizard implements TableWizard 
 		if (eObject == null) {
 			eObject = getEFactory().create(section.getTableEntryObjectType());
 			List container = section.getObjectContainer();
-			System.out.println( "-==--=-=" + container );
 			container.add(eObject);
+			System.out.println( "-==--=-=" + container );
 		}
 
 		processEAttributes(getPages()[0]);
@@ -152,7 +152,6 @@ public abstract class AbstractTableWizard extends Wizard implements TableWizard 
 				data.grabExcessHorizontalSpace = true;
 				data.widthHint = 100;
 				text.setLayoutData(data);
-				System.out.println( "Null :  " + eObject);
 				if (eObject != null) {
 					String value = (String) JAXBUtils.getValue(eObject,getTableColumnEAttributes()[i]);
 					if (value != null) {

@@ -16,10 +16,9 @@
  */
 package org.apache.geronimo.st.v20.ui.sections;
 
-import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorPackage;
-import org.apache.geronimo.xml.ns.j2ee.connector.ConnectorType;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
+import javax.xml.bind.JAXBElement;
+
+import org.apache.geronimo.xml.ns.j2ee.connector_1.ConnectorType;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
@@ -27,13 +26,13 @@ public class ConnectorGeneralSection extends CommonGeneralSection {
 
 	ConnectorType plan;
 
-	public ConnectorGeneralSection(Composite parent, FormToolkit toolkit, int style, EObject plan) {
+	public ConnectorGeneralSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
 		super(parent, toolkit, style, plan);
-		this.plan = (ConnectorType) plan;
+		this.plan = (ConnectorType) plan.getValue();
 		createClient();
 	}
 
-	protected EReference getEnvironmentEReference() {
-		return ConnectorPackage.eINSTANCE.getConnectorType_Environment();
+	protected JAXBElement getEnvironmentEReference() {
+		return null;//ConnectorPackage.eINSTANCE.getConnectorType_Environment();
 	}
 }

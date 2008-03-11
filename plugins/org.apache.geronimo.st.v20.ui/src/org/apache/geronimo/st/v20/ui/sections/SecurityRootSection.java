@@ -16,13 +16,13 @@
  */
 package org.apache.geronimo.st.v20.ui.sections;
 
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractSectionPart;
-import org.apache.geronimo.xml.ns.security.SecurityFactory;
-import org.apache.geronimo.xml.ns.security.SecurityPackage;
-import org.apache.geronimo.xml.ns.security.SecurityType;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
+import org.apache.geronimo.st.v20.core.jaxb.JAXBModelUtils;
+import org.apache.geronimo.st.v20.core.jaxb.JAXBObjectFactoryImpl;
+import org.apache.geronimo.xml.ns.security_2.SecurityType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -40,7 +40,7 @@ import org.eclipse.ui.forms.widgets.Section;
 
 public class SecurityRootSection extends AbstractSectionPart {
 
-	EReference secERef;
+	SecurityType secERef;
 
 	Text defaultRole;
 
@@ -60,7 +60,7 @@ public class SecurityRootSection extends AbstractSectionPart {
 	 * @param toolkit
 	 * @param style
 	 */
-	public SecurityRootSection(Composite parent, FormToolkit toolkit, int style, EObject plan, EReference secERef) {
+	public SecurityRootSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan, SecurityType secERef) {
 		super(parent, toolkit, style, plan);
 		this.secERef = secERef;
 		createClient();
@@ -136,19 +136,19 @@ public class SecurityRootSection extends AbstractSectionPart {
 	}
 
 	private String getDefaultRole() {
-		SecurityType secType = (SecurityType) getPlan().eGet(secERef);
+		SecurityType secType = JAXBModelUtils.getSecurityType(getPlan());
 		if (secType != null
-				&& secType.eIsSet(SecurityPackage.eINSTANCE.getSecurityType_DefaultRole())) {
+				&& secType.getDefaultRole() != null) {
 			return secType.getDefaultRole();
 		}
 		return "";
 	}
 
 	private SecurityType getSecurityType() {
-		SecurityType secType = (SecurityType) getPlan().eGet(secERef);
+		SecurityType secType = JAXBModelUtils.getSecurityType(getPlan());
 		if (secType == null) {
-			secType = SecurityFactory.eINSTANCE.createSecurityType();
-			getPlan().eSet(secERef, secType);
+			secType = (SecurityType)JAXBObjectFactoryImpl.getInstance().create( SecurityType.class );
+			JAXBModelUtils.setSecurityType(getPlan(),secType);
 		}
 		return secType;
 	}

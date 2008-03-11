@@ -16,15 +16,13 @@
  */
 package org.apache.geronimo.st.v21.ui.wizards;
 
-import javax.enterprise.deploy.spi.factories.DeploymentFactory;
-
+import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
+import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v21.ui.internal.Trace;
 import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
-import org.apache.geronimo.xml.ns.deployment_1.DependenciesType;
-import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
@@ -69,14 +67,14 @@ public class DependencyWizard extends AbstractTableWizard {
         Trace.trace("Constructor Entry/Exit", "DependencyWizard");
 	}
 
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEFactory()
-//	 */
-//	public EFactory getEFactory() {
-//		return DeploymentFactory.eINSTANCE;
-//	}
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEFactory()
+	 */
+	public JAXBObjectFactory getEFactory() {
+		return JAXBObjectFactoryImpl.getInstance();
+	}
 
 //	/*
 //	 * (non-Javadoc)
@@ -215,6 +213,11 @@ public class DependencyWizard extends AbstractTableWizard {
 			typeText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 			if (eObject != null) {
+				ArtifactType artifact = (ArtifactType)eObject;
+				groupIdText.setText(artifact.getGroupId());
+				artifactIdText.setText(artifact.getArtifactId());
+				versionText.setText(artifact.getVersion());
+				typeText.setText(artifact.getType());
 //				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_ArtifactId())) {
 //					artifactIdText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_ArtifactId()).toString());
 //				}
@@ -245,27 +248,27 @@ public class DependencyWizard extends AbstractTableWizard {
 	/* (non-Javadoc)
 	 * @see org.apache.geronimo.st.ui.wizards.AbstractTableWizard#performFinish()
 	 */
-	public boolean performFinish() {		
-//		Trace.trace("Entry", "DependencyWizard.performFinish");
-		
-		if (eObject == null) {
-//			eObject = getEFactory().create(section.getTableEntryObjectType());
-//			EObject plan = section.getPlan();
-//			DependenciesType dependenciesType = ((EnvironmentType) plan.eGet(section.getEReference())).getDependencies();
-//			if(dependenciesType == null) {
-//				dependenciesType = DeploymentFactory.eINSTANCE.createDependenciesType();
-//				((EnvironmentType) plan.eGet(section.getEReference())).setDependencies(dependenciesType);
-//			}
-//			dependenciesType.getDependency().add(eObject);
-		}
-
-		processEAttributes(getPages()[0]);
-		
-		if (section.getTableViewer().getInput() == null) {
-			section.getTableViewer().setInput(section.getInput());
-		}
-
-//		Trace.trace("Exit", "DependencyWizard.performFinish", true);
-		return true;
-	}
+//	public boolean performFinish() {		
+////		Trace.trace("Entry", "DependencyWizard.performFinish");
+//		
+//		if (eObject == null) {
+////			eObject = getEFactory().create(section.getTableEntryObjectType());
+////			EObject plan = section.getPlan();
+////			DependenciesType dependenciesType = ((EnvironmentType) plan.eGet(section.getEReference())).getDependencies();
+////			if(dependenciesType == null) {
+////				dependenciesType = DeploymentFactory.eINSTANCE.createDependenciesType();
+////				((EnvironmentType) plan.eGet(section.getEReference())).setDependencies(dependenciesType);
+////			}
+////			dependenciesType.getDependency().add(eObject);
+//		}
+//
+//		processEAttributes(getPages()[0]);
+//		
+//		if (section.getTableViewer().getInput() == null) {
+//			section.getTableViewer().setInput(section.getInput());
+//		}
+//
+////		Trace.trace("Exit", "DependencyWizard.performFinish", true);
+//		return true;
+//	}
 }

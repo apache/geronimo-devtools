@@ -41,7 +41,7 @@ public class SecurityPage extends AbstractGeronimoFormPage {
 	 */
 	protected void fillBody(IManagedForm managedForm) {
 		managedForm.addPart(new SecurityRootSection(body, toolkit, getStyle(), getDeploymentPlan(), security));
-		managedForm.addPart(new SecuritySection(getDeploymentPlan(), body, toolkit, getStyle(), security.getRoleMappings()));
+		managedForm.addPart(new SecuritySection(getDeploymentPlan(), body, toolkit, getStyle(), security == null ? null : security.getRoleMappings()));
 	}
 
 	/*

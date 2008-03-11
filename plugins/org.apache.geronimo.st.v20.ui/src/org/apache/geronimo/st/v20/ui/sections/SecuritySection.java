@@ -16,19 +16,19 @@
  */
 package org.apache.geronimo.st.v20.ui.sections;
 
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
+import org.apache.geronimo.st.v20.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v20.ui.Activator;
 import org.apache.geronimo.st.v20.ui.internal.EMFEditorContext;
 import org.apache.geronimo.st.v20.ui.wizards.SecurityRoleWizard;
-import org.apache.geronimo.xml.ns.security.DescriptionType;
-import org.apache.geronimo.xml.ns.security.RoleType;
-import org.apache.geronimo.xml.ns.security.SecurityPackage;
-import org.apache.geronimo.xml.ns.security.SecurityType;
-import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
+import org.apache.geronimo.xml.ns.security_2.DescriptionType;
+import org.apache.geronimo.xml.ns.security_2.RoleMappingsType;
+import org.apache.geronimo.xml.ns.security_2.RoleType;
+import org.apache.geronimo.xml.ns.security_2.SecurityType;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
@@ -45,7 +45,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class SecuritySection extends AbstractTableSection {
 
-	public EReference securityERef;
+	public RoleMappingsType securityERef;
 
 	Text roleNameText;
 
@@ -59,7 +59,7 @@ public class SecuritySection extends AbstractTableSection {
 	 * @param toolkit
 	 * @param style
 	 */
-	public SecuritySection(EObject plan, Composite parent, FormToolkit toolkit, int style, EReference securityERef) {
+	public SecuritySection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, RoleMappingsType securityERef) {
 		super(plan, parent, toolkit, style);
 		this.securityERef = securityERef;
 		createClient();
@@ -97,9 +97,9 @@ public class SecuritySection extends AbstractTableSection {
 	 * 
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
 	 */
-	public EReference getEReference() {
-		return SecurityPackage.eINSTANCE.getRoleMappingsType_Role();
-	}
+//	public EReference getEReference() {
+//		return SecurityPackage.eINSTANCE.getRoleMappingsType_Role();
+//	}
 
 	/*
 	 * (non-Javadoc)
@@ -115,8 +115,8 @@ public class SecuritySection extends AbstractTableSection {
 	 * 
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
 	 */
-	public EClass getTableEntryObjectType() {
-		return SecurityPackage.eINSTANCE.getRoleType();
+	public Class getTableEntryObjectType() {
+		return RoleType.class;
 	}
 
 	/*
@@ -183,7 +183,7 @@ public class SecuritySection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getInput()
 	 */
 	public Object getInput() {
-		SecurityType secType = (SecurityType) getPlan().eGet(securityERef);
+		SecurityType secType = JAXBModelUtils.getSecurityType(getPlan());//
 		if (secType != null) {
 			return secType.getRoleMappings();
 		}
@@ -220,6 +220,23 @@ public class SecuritySection extends AbstractTableSection {
 	 * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
 	 */
 	public AdapterFactory getAdapterFactory() {
-		return EMFEditorContext.getFactory();
+		return new AdapterFactory() {
+			public Object[] getElements(Object inputElement) {
+				if (!RoleMappingsType.class.isInstance(inputElement)) {
+					return new String[] { "" };
+				}
+				RoleMappingsType plan = (RoleMappingsType)inputElement;
+				return plan.getRole().toArray();
+			}
+			public String getColumnText(Object element, int columnIndex) {
+				if (RoleType.class.isInstance(element)) {
+					RoleType role = (RoleType)element;
+					switch (columnIndex) {
+					case 0: return role.getRoleName();
+					}
+				}
+				return null;
+			}
+		};
 	}
 }

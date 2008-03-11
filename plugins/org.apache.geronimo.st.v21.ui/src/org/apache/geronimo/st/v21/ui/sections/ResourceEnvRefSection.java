@@ -16,6 +16,8 @@
  */
 package org.apache.geronimo.st.v21.ui.sections;
 
+import java.util.List;
+
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.ui.CommonMessages;
@@ -30,13 +32,13 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class ResourceEnvRefSection extends AbstractTableSection {
 
-	Object resourceEnvRefERef;
+	List resourceEnvRefERef;
 
 	private static final String[] COLUMN_NAMES = new String[] {
 			CommonMessages.editorResEnvRefNameTitle,
 			CommonMessages.editorResEnvRefMsgDestTitle };
 
-	public ResourceEnvRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, Object resourceEnvRefERef) {
+	public ResourceEnvRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List resourceEnvRefERef) {
 		super(plan, parent, toolkit, style);
 		this.resourceEnvRefERef = resourceEnvRefERef;
 		createClient();

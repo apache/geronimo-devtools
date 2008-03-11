@@ -18,15 +18,13 @@ package org.apache.geronimo.st.v21.core;
 
 import java.io.IOException;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
 import org.apache.geronimo.deployment.xbeans.EnvironmentDocument;
 import org.apache.geronimo.deployment.xmlbeans.XmlBeansUtil;
 import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.core.internal.Trace;
+import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
 import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
 import org.apache.geronimo.xml.ns.j2ee.application_2.ApplicationType;
@@ -38,7 +36,6 @@ import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IModule;
@@ -218,7 +215,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
 //            if (resource != null) {
 //                return((org.apache.geronimo.xml.ns.j2ee.application.DocumentRoot) resource.getContents().get(0)).getApplication();
 //            }
-        	return unmarshalDeploymentPlan( file );
+        	return JAXBModelUtils.unmarshalDeploymentPlan( file );
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getApplicationDeploymentPlan", null);
@@ -235,7 +232,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
 //            if (resource != null) {
 //                return((DocumentRoot) resource.getContents().get(0)).getWebApp();
 //            }
-            return unmarshalDeploymentPlan( file );
+            return JAXBModelUtils.unmarshalDeploymentPlan( file );
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getWebDeploymentPlan", null);
@@ -252,7 +249,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
 //            if (resource != null) {
 //                return((org.openejb.xml.ns.openejb.jar.DocumentRoot) resource.getContents().get(0)).getOpenejbJar();
 //            }
-        	return unmarshalDeploymentPlan( file );
+        	return JAXBModelUtils.unmarshalDeploymentPlan( file );
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getOpenEjbDeploymentPlan", null);
@@ -269,24 +266,11 @@ public class GeronimoV21Utils extends GeronimoUtils {
 //            if (resource != null) {
 //                return((org.apache.geronimo.xml.ns.j2ee.connector.DocumentRoot) resource.getContents().get(0)).getConnector();
 //            }
-        	return unmarshalDeploymentPlan( file );
+        	return JAXBModelUtils.unmarshalDeploymentPlan( file );
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getConnectorDeploymentPlan", null);
         return null;
     }
     
-	private static JAXBElement unmarshalDeploymentPlan( IFile file ) {
-		try {
-	    	JAXBContext jb = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
-	    	Unmarshaller ums = jb.createUnmarshaller();
-	    	JAXBElement plan = (JAXBElement)ums.unmarshal( file.getContents() );
-	    	return plan;
-		} catch ( JAXBException e ) {
-			e.printStackTrace();
-		} catch ( CoreException e ) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 }

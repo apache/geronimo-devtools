@@ -16,6 +16,8 @@
  */
 package org.apache.geronimo.st.v21.ui.sections;
 
+import java.util.List;
+
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.ui.CommonMessages;
@@ -30,7 +32,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class EjbRefSection extends AbstractTableSection {
 
-	Object ejbRefERef;
+	List ejbRefERef;
 
 	private static final String[] COLUMN_NAMES = new String[] {
 			CommonMessages.name,
@@ -42,7 +44,7 @@ public class EjbRefSection extends AbstractTableSection {
 	 * @param toolkit
 	 * @param style
 	 */
-	public EjbRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, Object ejbRefERef) {
+	public EjbRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List ejbRefERef) {
 		super(plan, parent, toolkit, style);
 		this.ejbRefERef = ejbRefERef;
 		createClient();

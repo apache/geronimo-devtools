@@ -19,17 +19,13 @@ package org.apache.geronimo.st.v20.ui.wizards;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.apache.geronimo.xml.ns.naming.NamingFactory;
-import org.apache.geronimo.xml.ns.naming.NamingPackage;
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EFactory;
 
 public class GBeanRefWizard extends AbstractTableWizard {
 
 	public GBeanRefWizard(AbstractTableSection section) {
 		super(section);
 	}
-
+/*
 	public EFactory getEFactory() {
 		return NamingFactory.eINSTANCE;
 	}
@@ -39,7 +35,7 @@ public class GBeanRefWizard extends AbstractTableWizard {
 				NamingPackage.eINSTANCE.getGbeanRefType_RefName(),
 				NamingPackage.eINSTANCE.getGbeanRefType_RefType()};
 	}
-
+*/
 	/*
 	 * (non-Javadoc)
 	 * 

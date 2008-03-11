@@ -31,7 +31,7 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
 	
 //	public EnvironmentType environment;
 	
-	public JAXBElement gbeanERef;
+//	public JAXBElement gbeanERef;
 
 	public DeploymentPage(FormEditor editor, String id, String title) {
 		super(editor, id, title);
@@ -44,7 +44,7 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
 	 */
 	protected void fillBody(IManagedForm managedForm) {
 		managedForm.addPart(new DependencySection(getDeploymentPlan(), JAXBModelUtils.getEnvironmentType(getDeploymentPlan()), body, toolkit, getStyle()));
-		managedForm.addPart(new GBeanSection(getDeploymentPlan(), JAXBModelUtils.getServiceOrPersistence(getDeploymentPlan()), body, toolkit, getStyle()));
+		managedForm.addPart(new GBeanSection(getDeploymentPlan(), JAXBModelUtils.getGbeans(getDeploymentPlan()), body, toolkit, getStyle()));
 	}
 
 	/*

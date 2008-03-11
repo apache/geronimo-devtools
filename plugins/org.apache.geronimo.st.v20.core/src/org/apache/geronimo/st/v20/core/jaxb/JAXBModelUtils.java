@@ -14,21 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v21.core.jaxb;
+package org.apache.geronimo.st.v20.core.jaxb;
 
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
-import org.apache.geronimo.st.v21.core.Activator;
 import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
 import org.apache.geronimo.xml.ns.j2ee.web_2_0.WebAppType;
 import org.apache.geronimo.xml.ns.security_2.SecurityType;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 
 /**
  * @version $Rev$ $Date$
@@ -53,7 +47,6 @@ public class JAXBModelUtils {
 	public static EnvironmentType getEnvironmentType(JAXBElement element) {
 		Object plan = element.getValue();
 		if ( WebAppType.class.isInstance( plan ) ) {
-			System.out.println( "Element : " + ((WebAppType)plan).getEnvironment() );
 			return ((WebAppType)plan).getEnvironment() == null ? null : ((WebAppType)plan).getEnvironment();
 		}
 		return null;
@@ -63,30 +56,6 @@ public class JAXBModelUtils {
 		Object plan = element.getValue();
 		if ( WebAppType.class.isInstance( plan ) ) {
 			return ((WebAppType)plan).getServiceOrPersistence() == null ? null : ((WebAppType)plan).getServiceOrPersistence();
-		}
-		return null;
-	}
-	
-	public static List getGbeans(JAXBElement element) {
-		Object plan = element.getValue();
-		if ( WebAppType.class.isInstance( plan ) ) {
-//			return ((WebAppType)plan).getGbeans() == null ? null : ((WebAppType)plan).getGbeans();
-		}
-		return null;
-	}
-	
-	public static JAXBElement unmarshalDeploymentPlan( IFile file ) {
-		try {
-	    	JAXBContext jb = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
-	    	Unmarshaller ums = jb.createUnmarshaller();
-	    	JAXBElement plan = (JAXBElement)ums.unmarshal( file.getContents() );
-	    	return plan;
-		} catch ( JAXBException e ) {
-			e.printStackTrace();
-		} catch ( CoreException e ) {
-			e.printStackTrace();
-		} catch ( Exception e ) {
-			e.printStackTrace();
 		}
 		return null;
 	}

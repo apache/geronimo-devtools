@@ -20,18 +20,18 @@ import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v20.ui.sections.SecurityRootSection;
 import org.apache.geronimo.st.v20.ui.sections.SecuritySection;
-import org.eclipse.emf.ecore.EReference;
+import org.apache.geronimo.xml.ns.security_2.SecurityType;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
 public class SecurityPage extends AbstractGeronimoFormPage {
 
-	public EReference securityERef;
+	public SecurityType security;
 
-	public SecurityPage(FormEditor editor, String id, String title, EReference securityERef) {
+	public SecurityPage(FormEditor editor, String id, String title, SecurityType security) {
 		super(editor, id, title);
-		this.securityERef = securityERef;
+		this.security = security;
 	}
 
 	/*
@@ -40,8 +40,8 @@ public class SecurityPage extends AbstractGeronimoFormPage {
 	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
 	 */
 	protected void fillBody(IManagedForm managedForm) {
-		managedForm.addPart(new SecurityRootSection(body, toolkit, getStyle(), getDeploymentPlan(), securityERef));
-		managedForm.addPart(new SecuritySection(getDeploymentPlan(), body, toolkit, getStyle(), securityERef));
+		managedForm.addPart(new SecurityRootSection(body, toolkit, getStyle(), getDeploymentPlan(), security));
+		managedForm.addPart(new SecuritySection(getDeploymentPlan(), body, toolkit, getStyle(), security.getRoleMappings()));
 	}
 
 	/*

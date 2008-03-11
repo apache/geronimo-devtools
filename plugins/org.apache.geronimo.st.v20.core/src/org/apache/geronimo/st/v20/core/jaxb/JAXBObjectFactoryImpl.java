@@ -14,12 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v21.core.jaxb;
+package org.apache.geronimo.st.v20.core.jaxb;
 
 import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
-import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
-import org.apache.geronimo.xml.ns.deployment_1.DependenciesType;
-import org.apache.geronimo.xml.ns.deployment_1.DependencyType;
 import org.apache.geronimo.xml.ns.deployment_1.GbeanType;
 import org.apache.geronimo.xml.ns.naming_1.ObjectFactory;
 import org.apache.geronimo.xml.ns.naming_1.ResourceRefType;
@@ -57,12 +54,6 @@ public class JAXBObjectFactoryImpl implements JAXBObjectFactory {
 			return (new org.apache.geronimo.xml.ns.security_2.ObjectFactory()).createRoleType();
 		} else if ( type.equals( GbeanType.class ) ) {
 			return (new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory()).createGbeanType();
-		} else if ( type.equals( ArtifactType.class ) ) {
-			return (new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory()).createArtifactType();
-		} else if ( type.equals( DependenciesType.class ) ) {
-			return (new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory()).createDependenciesType();
-		} else if ( type.equals( DependencyType.class ) ) {
-			return (new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory()).createDependencyType();
 		}
 		
 		return null;

@@ -23,13 +23,12 @@ import javax.xml.bind.JAXBElement;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
+import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.wizards.DependencyWizard;
 import org.apache.geronimo.xml.ns.deployment_1.DependenciesType;
 import org.apache.geronimo.xml.ns.deployment_1.DependencyType;
 import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
-import org.apache.geronimo.xml.ns.j2ee.web_2_0.WebAppType;
-import org.apache.geronimo.xml.ns.naming_1.ResourceRefType;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
@@ -70,6 +69,10 @@ public class DependencySection extends AbstractTableSection {
 	}
 
 	public List getObjectContainer() {
+		if ( environment.getDependencies() == null ) {
+			DependenciesType dependencies = (DependenciesType)JAXBObjectFactoryImpl.getInstance().create(DependenciesType.class);
+			environment.setDependencies(dependencies);
+		}
 		return environment.getDependencies().getDependency();
 	}
 

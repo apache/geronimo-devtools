@@ -16,41 +16,27 @@
  */
 package org.apache.geronimo.st.v20.ui.internal;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.geronimo.xml.ns.deployment.provider.DeploymentItemProviderAdapterFactory;
-import org.apache.geronimo.xml.ns.j2ee.application.client.provider.ClientItemProviderAdapterFactory;
-import org.apache.geronimo.xml.ns.j2ee.application.provider.ApplicationItemProviderAdapterFactory;
-import org.apache.geronimo.xml.ns.j2ee.connector.provider.ConnectorItemProviderAdapterFactory;
-import org.apache.geronimo.xml.ns.j2ee.web.provider.WebItemProviderAdapterFactory;
-import org.apache.geronimo.xml.ns.naming.provider.NamingItemProviderAdapterFactory;
-import org.apache.geronimo.xml.ns.security.provider.SecurityItemProviderAdapterFactory;
-import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.openejb.xml.ns.openejb.jar.provider.JarItemProviderAdapterFactory;
-import org.openejb.xml.ns.pkgen.provider.PkgenItemProviderAdapterFactory;
 
 public class EMFEditorContext {
 	
-	private static ComposedAdapterFactory factory;
-
-	static {
-		List<AdapterFactoryImpl> factories = new ArrayList<AdapterFactoryImpl>();
-		factories.add(new DeploymentItemProviderAdapterFactory());
-		factories.add(new ClientItemProviderAdapterFactory());
-		factories.add(new ApplicationItemProviderAdapterFactory());
-		factories.add(new ConnectorItemProviderAdapterFactory());
-		factories.add(new WebItemProviderAdapterFactory());
-		factories.add(new NamingItemProviderAdapterFactory());
-		factories.add(new SecurityItemProviderAdapterFactory());
-		factories.add(new JarItemProviderAdapterFactory());
-		factories.add(new PkgenItemProviderAdapterFactory());
-		factory = new ComposedAdapterFactory(factories);
-	}
-
-	public static ComposedAdapterFactory getFactory() {
-		return factory;
-	}
+//	private static ComposedAdapterFactory factory;
+//
+//	static {
+//		List<AdapterFactoryImpl> factories = new ArrayList<AdapterFactoryImpl>();
+//		factories.add(new DeploymentItemProviderAdapterFactory());
+//		factories.add(new ClientItemProviderAdapterFactory());
+//		factories.add(new ApplicationItemProviderAdapterFactory());
+//		factories.add(new ConnectorItemProviderAdapterFactory());
+//		factories.add(new WebItemProviderAdapterFactory());
+//		factories.add(new NamingItemProviderAdapterFactory());
+//		factories.add(new SecurityItemProviderAdapterFactory());
+//		factories.add(new JarItemProviderAdapterFactory());
+//		factories.add(new PkgenItemProviderAdapterFactory());
+//		factory = new ComposedAdapterFactory(factories);
+//	}
+//
+//	public static ComposedAdapterFactory getFactory() {
+//		return factory;
+//	}
 
 }
