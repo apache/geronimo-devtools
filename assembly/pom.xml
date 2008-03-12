@@ -57,11 +57,6 @@
             <artifactId>org.apache.geronimo.st.core</artifactId>
             <version>${version}</version>
         </dependency>
-<!--    <dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.st.v1.core</artifactId>
-            <version>${version}</version>
-        </dependency>                                       -->
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v11.core</artifactId>
@@ -77,16 +72,6 @@
             <artifactId>org.apache.geronimo.st.v21.core</artifactId>
             <version>${version}</version>
         </dependency>
-<!--    <dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.deployment.model</artifactId>
-            <version>${version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.deployment.model.edit</artifactId>
-            <version>${version}</version>
-        </dependency>                                       -->
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.v11.deployment.model</artifactId>
@@ -102,11 +87,6 @@
             <artifactId>org.apache.geronimo.runtime.common</artifactId>
             <version>${version}</version>
         </dependency>
-<!--    <dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.runtime.v1</artifactId>
-            <version>${version}</version>
-        </dependency>                                       -->
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.v11</artifactId>
@@ -127,11 +107,6 @@
             <artifactId>org.apache.geronimo.st.ui</artifactId>
             <version>${version}</version>
         </dependency>
-<!--    <dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.st.v1.ui</artifactId>
-            <version>${version}</version>
-        </dependency>                                       -->
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v11.ui</artifactId>
@@ -152,11 +127,6 @@
             <artifactId>org.apache.geronimo.feature</artifactId>
             <version>${version}</version>
         </dependency>
-<!---    <dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.v10.feature</artifactId>
-            <version>${version}</version>
-        </dependency>                                       -->
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.v11.feature</artifactId>
