@@ -311,7 +311,6 @@
                         
     <modules>
         <module>eclipse</module>
-        <module>emf</module>
         <module>plugins</module>
         <module>features</module>
         <module>assembly</module>
