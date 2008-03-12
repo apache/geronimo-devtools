@@ -69,14 +69,7 @@
          version="2.1.0"/>
 
     <plugin
-         id="org.apache.geronimo.v11.deployment.model"
-         download-size="0"
-         install-size="0"
-         version="2.1.0"
-         unpack="false"/>
-    
-    <plugin
-         id="org.apache.geronimo.v11.deployment.model.edit"
+         id="org.apache.geronimo.deployment.v11.jaxbmodel"
          download-size="0"
          install-size="0"
          version="2.1.0"
