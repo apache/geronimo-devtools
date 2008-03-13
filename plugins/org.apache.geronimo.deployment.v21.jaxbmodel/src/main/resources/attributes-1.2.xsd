@@ -16,7 +16,7 @@
     limitations under the License.
 -->
 
-<!-- $Rev: 597481 $ $Date: 2007-11-23 03:25:03 +0800 (Fri, 23 Nov 2007) $ -->
+<!-- $Rev$ $Date$ -->
 
 <xsd:schema targetNamespace="http://geronimo.apache.org/xml/ns/attributes-1.2"
     xmlns:atts="http://geronimo.apache.org/xml/ns/attributes-1.2"
