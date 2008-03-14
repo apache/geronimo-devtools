@@ -111,19 +111,18 @@
     -->
     
     
-    <!-- ======================================================================================= -->
-    <!--                                                                                         -->
-    <!-- Map the <runtime-component> (defined in org.apache.geronimo.st.core\plugin.xml) to a    -->
-    <!-- specific version of the "Geronimo Deployment" <project-facet>. Note that the 1.1        -->
-    <!-- version is the only supported <project-facet-version> for the 2.0 Geronimo server.      -->
-    <!--                                                                                         -->
-    <!-- ======================================================================================= -->
+    <!-- 
+     |
+     | Map the <runtime-component> (defined in org.apache.geronimo.st.core\plugin.xml) 
+     | to a specific version of the "Geronimo Deployment" <project-facet>
+     |
+     -->
     <extension point="org.eclipse.wst.common.project.facet.core.defaultFacets" 
     	id="org.apache.geronimo.defaultFacets"
         name="Geronimo Default Facets">
         <default-facets>
             <runtime-component id="org.apache.geronimo.runtime" version="2.0"/>
-            <facet id="org.apache.geronimo.facet" version="1.1"/>
+            <facet id="org.apache.geronimo.facet" version="1.2"/>
         </default-facets>
     </extension>
   

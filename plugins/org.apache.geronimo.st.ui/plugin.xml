@@ -38,48 +38,44 @@
     </extension>
     
 
-    <!-- ======================================================================================= -->
-    <!--                                                                                         -->
-    <!-- Define the icon for the Geronimo runtime and server types                               -->
-    <!-- (defined in plugins\org.apache.geronimo.st.v*.core\plugin.xml)                          --> 
-    <!--                                                                                         -->
-    <!-- ======================================================================================= -->
+    <!-- 
+     |
+     | Define the icon for the Geronimo runtime and server types                               
+     | (defined in plugins\org.apache.geronimo.st.v*.core\plugin.xml)                          
+     |   
+     -->
     <extension point="org.eclipse.wst.server.ui.serverImages">
 
     	<image id="org.apache.geronimo.runtime.image" 
     		icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.runtime.10,
-            		 org.apache.geronimo.runtime.11,
+            typeIds="org.apache.geronimo.runtime.11,
             		 org.apache.geronimo.runtime.20,
             		 org.apache.geronimo.runtime.21"/>
 
         <image id="org.apache.geronimo.server.image" 
         	icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.server.10,
-            		 org.apache.geronimo.server.11,
+            typeIds="org.apache.geronimo.server.11,
             		 org.apache.geronimo.server.20,
             		 org.apache.geronimo.server.21"/>
     </extension>
 
 
-    <!-- ======================================================================================= -->
-    <!--                                                                                         -->
-    <!-- Extend WTP wizardFragments to include the Geronimo runtime and server types             -->
-    <!-- (defined in plugins\org.apache.geronimo.st.v*.core\plugin.xml) when defining either a   --> 
-    <!-- new Geronimo runtime (e.g., via Window->Preferences->Server->Installed Runtimes->Add)   --> 
-    <!-- or a new Geronimo server (e.g., via File->New->Other->Server)                           -->
-    <!--                                                                                         -->
-    <!-- ======================================================================================= -->
+    <!-- 
+     |
+     | Extend WTP wizardFragments to include the Geronimo runtime and server types                
+     | (defined in plugins\org.apache.geronimo.st.v*.core\plugin.xml) when defining either a       
+     | new Geronimo runtime (e.g., via Window->Preferences->Server->Installed Runtimes->Add)       
+     | or a new Geronimo server (e.g., via File->New->Other->Server)                              
+     |   
+     -->
     <extension point="org.eclipse.wst.server.ui.wizardFragments">
         <fragment id="org.apache.geronimo.runtime.wizardFragment"
-            typeIds="org.apache.geronimo.runtime.10,
-            		 org.apache.geronimo.runtime.11,
+            typeIds="org.apache.geronimo.runtime.11,
             		 org.apache.geronimo.runtime.20,
                      org.apache.geronimo.runtime.21"
             class="org.apache.geronimo.st.ui.internal.GeronimoRuntimeWizardFragment"/>
         <fragment id="org.apache.geronimo.server.wizardFragment"
-            typeIds="org.apache.geronimo.server.10,
-            		 org.apache.geronimo.server.11,
+            typeIds="org.apache.geronimo.server.11,
             		 org.apache.geronimo.server.20,
                      org.apache.geronimo.server.21"
             class="org.apache.geronimo.st.ui.internal.GeronimoServerWizardFragment"/>
