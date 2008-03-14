@@ -90,46 +90,6 @@
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.framework</groupId>
-                                    <artifactId>geronimo-service-builder</artifactId>
-                                    <version>${geronimoVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.apache.geronimo.modules</groupId>
-                                    <artifactId>geronimo-connector-builder</artifactId>
-                                    <version>${geronimoVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.apache.geronimo.modules</groupId>
-                                    <artifactId>geronimo-web-2.5-builder</artifactId>
-                                    <version>${geronimoVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.apache.geronimo.schema</groupId>
-                                    <artifactId>geronimo-schema-jee_5</artifactId>
-                                    <version>1.1</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.apache.geronimo.modules</groupId>
-                                    <artifactId>geronimo-naming-builder</artifactId>
-                                    <version>${geronimoVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.apache.geronimo.modules</groupId>
-                                    <artifactId>geronimo-j2ee-builder</artifactId>
-                                    <version>${geronimoVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.apache.geronimo.modules</groupId>
-                                    <artifactId>geronimo-openejb-builder</artifactId>
-                                    <version>${geronimoVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.apache.geronimo.modules</groupId>
-                                    <artifactId>geronimo-security-builder</artifactId>
-                                    <version>${geronimoVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.apache.geronimo.framework</groupId>
                                     <artifactId>geronimo-system</artifactId>
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
@@ -230,46 +190,6 @@
         <dependency>
             <groupId>org.apache.geronimo.modules</groupId>
             <artifactId>geronimo-j2ee-schema</artifactId>
-            <version>${geronimoVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.framework</groupId>
-            <artifactId>geronimo-service-builder</artifactId>
-            <version>${geronimoVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.modules</groupId>
-            <artifactId>geronimo-connector-builder</artifactId>
-            <version>${geronimoVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.modules</groupId>
-            <artifactId>geronimo-web-2.5-builder</artifactId>
-            <version>${geronimoVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.schema</groupId>
-            <artifactId>geronimo-schema-jee_5</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.modules</groupId>
-            <artifactId>geronimo-naming-builder</artifactId>
-            <version>${geronimoVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.modules</groupId>
-            <artifactId>geronimo-j2ee-builder</artifactId>
-            <version>${geronimoVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.modules</groupId>
-            <artifactId>geronimo-openejb-builder</artifactId>
-            <version>${geronimoVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.modules</groupId>
-            <artifactId>geronimo-security-builder</artifactId>
             <version>${geronimoVersion}</version>
         </dependency>
         <dependency>

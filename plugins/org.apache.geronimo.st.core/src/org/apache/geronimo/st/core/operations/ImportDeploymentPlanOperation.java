@@ -20,8 +20,6 @@ import java.io.IOException;
 
 import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.core.IGeronimoRuntime;
-import org.apache.xmlbeans.XmlException;
-import org.apache.xmlbeans.XmlObject;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -70,35 +68,35 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
 
 		IFile planFile = null;
 		
-		try {
+		//try {
 			if (type.equals(IModuleConstants.JST_WEB_MODULE)) {
 				planFile = GeronimoUtils.getWebDeploymentPlanFile(comp);
-				runtime.fixGeronimoWebSchema(planFile);	
+				//runtime.fixGeronimoWebSchema(planFile);	
 			} else if (type.equals(IModuleConstants.JST_EJB_MODULE)) {
 				planFile = GeronimoUtils.getOpenEjbDeploymentPlanFile(comp);
-				runtime.fixGeronimoEjbSchema(planFile);
+				//runtime.fixGeronimoEjbSchema(planFile);
 			} else if (type.equals(IModuleConstants.JST_EAR_MODULE)) {
 				planFile = GeronimoUtils.getApplicationDeploymentPlanFile(comp);
-				runtime.fixGeronimoEarSchema(planFile);
+				//runtime.fixGeronimoEarSchema(planFile);
 			} else if (type.equals(IModuleConstants.JST_CONNECTOR_MODULE)) {
 				planFile = GeronimoUtils.getConnectorDeploymentPlanFile(comp);
-				runtime.fixGeronimoConnectorSchema(planFile);
+				//runtime.fixGeronimoConnectorSchema(planFile);
 			}
-		} catch (XmlException e) {
-			throw new ExecutionException("Error fixing plan., e");
-		}
+		//} catch (XmlException e) {
+		//	throw new ExecutionException("Error fixing plan., e");
+		//}
 
 		return Status.OK_STATUS;
 	}
 
-	private void save(XmlObject object, IFile file) {
-		try {
-			object.save(file.getLocation().toFile());
-			file.refreshLocal(IFile.DEPTH_ONE, null);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-	}
+	//private void save(XmlObject object, IFile file) {
+	//	try {
+	//		object.save(file.getLocation().toFile());
+	//		file.refreshLocal(IFile.DEPTH_ONE, null);
+	//	} catch (IOException e) {
+	//		e.printStackTrace();
+	//	} catch (CoreException e) {
+	//		e.printStackTrace();
+	//	}
+	//}
 }

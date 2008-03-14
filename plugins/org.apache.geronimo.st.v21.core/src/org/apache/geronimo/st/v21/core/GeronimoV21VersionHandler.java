@@ -33,7 +33,7 @@ public class GeronimoV21VersionHandler implements IGeronimoVersionHandler {
 	 * @see org.apache.geronimo.st.core.IGeronimoVersionHandler#getConfigID(org.eclipse.wst.server.core.IModule)
 	 */
 	public String getConfigID(IModule module) {
-		return GeronimoV21Utils.getConfigId2(module);
+		return GeronimoV21Utils.getConfigId(module);
 	}
 	
 	/* (non-Javadoc)
