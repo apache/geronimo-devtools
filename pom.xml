@@ -305,7 +305,7 @@
     </profiles>
                         
     <modules>
-        <!--module>eclipse</module-->
+        <module>eclipse</module>
         <module>plugins</module>
         <module>features</module>
         <module>assembly</module>
