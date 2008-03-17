@@ -117,6 +117,12 @@
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
                 <version>2.0</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>jsr173_api</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
                         
             <dependency>
@@ -129,6 +135,16 @@
                 <groupId>com.sun.xml.bind</groupId>
                 <artifactId>jaxb-impl</artifactId>
                 <version>2.0.5</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>jsr173_api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>activation</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
                         
             <dependency>
