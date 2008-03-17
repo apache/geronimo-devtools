@@ -39,7 +39,7 @@ public class DeploymentPlanInstallConfig {
     {
         public Object create()
         {
-        	Trace.trace("Entry/Exit", "DeploymentPlanInstallConfig.create");
+        	Trace.tracePoint("Entry/Exit", "DeploymentPlanInstallConfig.create");
             return new DeploymentPlanInstallConfig();
         }
     }

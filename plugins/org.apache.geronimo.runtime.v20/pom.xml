@@ -111,7 +111,6 @@
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.specs</groupId>
                                     <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
-                                    <version>1.0</version>
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>lib</outputDirectory>
@@ -210,7 +209,6 @@
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
-            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>

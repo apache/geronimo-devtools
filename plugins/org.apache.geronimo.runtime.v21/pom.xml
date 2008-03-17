@@ -111,12 +111,10 @@
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.specs</groupId>
                                     <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
-                                    <version>1.0</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.codehaus.plexus</groupId>
                                     <artifactId>plexus-archiver</artifactId>
-                                    <version>1.0-alpha-7</version>
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>lib</outputDirectory>
@@ -215,7 +213,6 @@
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
-            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
@@ -225,7 +222,6 @@
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-archiver</artifactId>
-            <version>1.0-alpha-7</version>
         </dependency>
     </dependencies>
 </project>

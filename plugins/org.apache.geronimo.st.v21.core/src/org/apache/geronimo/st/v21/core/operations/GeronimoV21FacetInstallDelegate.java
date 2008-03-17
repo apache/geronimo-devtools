@@ -31,12 +31,12 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 public class GeronimoV21FacetInstallDelegate extends GeronimoFacetInstallDelegate {
 
 	public IDataModelOperation createDeploymentPlanCreationOp(IProject project, Object config) {
-		Trace.trace("Entry", "GeronimoV21FacetInstallDelegate.createDeploymentPlanCreationOp", project, config);
+		Trace.tracePoint("Entry", "GeronimoV21FacetInstallDelegate.createDeploymentPlanCreationOp", project, config);
 		
 		IDataModel model = DataModelFactory.createDataModel(new JavaProjectFacetCreationDataModelProvider());
 		model.setStringProperty(IFacetDataModelProperties.FACET_PROJECT_NAME, project.getName());
 		
-		Trace.trace("Exit", "GeronimoV21FacetInstallDelegate.createDeploymentPlanCreationOp");
+		Trace.tracePoint("Exit ", "GeronimoV21FacetInstallDelegate.createDeploymentPlanCreationOp");
 		return new V21DeploymentPlanCreationOperation(model, config);		
 	}
 }

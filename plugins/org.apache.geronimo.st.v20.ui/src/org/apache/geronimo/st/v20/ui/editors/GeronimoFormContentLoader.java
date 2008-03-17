@@ -17,6 +17,7 @@
 package org.apache.geronimo.st.v20.ui.editors;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.xml.bind.JAXBContext;
@@ -97,7 +98,8 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
 	
 	public void saveDeploymentPlan(JAXBElement deploymentPlan, IFile file) throws IOException, JAXBException {
 		JAXBContext jb = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
-		jb.createMarshaller().marshal( deploymentPlan, new File( file.getLocationURI().toURL().getFile()) );
+//		jb.createMarshaller().marshal( deploymentPlan, new File( file.getLocationURI().toURL().getFile()) );
+		jb.createMarshaller().marshal( deploymentPlan, new FileOutputStream( new File( file.getLocationURI().toURL().getFile()) ) );
 	}
 	
 	protected FormPage getWebNamingPage(FormEditor editor) {
