@@ -16,8 +16,6 @@
  */
 package org.apache.geronimo.st.core.operations;
 
-import javax.xml.bind.JAXBElement;
-
 import org.apache.geronimo.st.core.GeronimoUtils;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
@@ -63,7 +61,7 @@ public abstract class DeploymentPlanCreationOperation extends
 		String type = J2EEProjectUtilities.getJ2EEProjectType(getProject());
 
 		if (IModuleConstants.JST_WEB_MODULE.equals(type)) {
-			createGeronimoWebDeploymentPlan(GeronimoUtils.getWebDeploymentPlanFile(comp));
+			createGeronimoWebDeploymentPlan(GeronimoUtils.getWebDeploymentPlanFile(comp));			
 		} else if (IModuleConstants.JST_EJB_MODULE.equals(type)) {
 			createOpenEjbDeploymentPlan(GeronimoUtils.getOpenEjbDeploymentPlanFile(comp));
 		} else if (IModuleConstants.JST_EAR_MODULE.equals(type)) {
@@ -75,15 +73,6 @@ public abstract class DeploymentPlanCreationOperation extends
 		}
 	}
 
-//TODO JAXB Refactoring - Can this function be removed without harm?
-//	public void save(Resource resource) {
-//		try {
-//			resource.save(Collections.EMPTY_MAP);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
 	public JAXBElement createOpenEjbDeploymentPlan(IFile file) {
 		return null;
 	}

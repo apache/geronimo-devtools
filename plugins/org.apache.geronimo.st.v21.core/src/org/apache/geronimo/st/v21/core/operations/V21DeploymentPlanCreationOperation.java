@@ -16,10 +16,19 @@
  */
 package org.apache.geronimo.st.v21.core.operations;
 
-import javax.enterprise.deploy.spi.factories.DeploymentFactory;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 import org.apache.geronimo.st.core.operations.DeploymentPlanCreationOperation;
+import org.apache.geronimo.st.v21.core.Activator;
 import org.apache.geronimo.st.v21.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.v21.core.internal.Trace;
 import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
@@ -31,7 +40,9 @@ import org.apache.geronimo.xml.ns.j2ee.connector_1.ConnectorType;
 import org.apache.geronimo.xml.ns.j2ee.ejb.openejb_2.GeronimoEjbJarType;
 import org.apache.geronimo.xml.ns.j2ee.web_2_0.WebAppType;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+
 
 /**
  * @version $Rev: 509704 $ $Date: 2007-02-20 13:42:24 -0500 (Tue, 20 Feb 2007) $
@@ -55,79 +66,90 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		
 		org.apache.geronimo.xml.ns.j2ee.application_2.ObjectFactory applicationFactory = new org.apache.geronimo.xml.ns.j2ee.application_2.ObjectFactory();
 		ApplicationType application = applicationFactory.createApplicationType();
+		
 		application.setApplicationName(getProject().getName());
 		application.setEnvironment(getConfigEnvironment());
-/*		
-		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
+		
+		// TODO: Consolidate into saveDeploymentPlan
+		JAXBElement jaxbElement = null;
+		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
+			jaxbElement = applicationFactory.createApplication(application);
+			Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+            marshaller.marshal(jaxbElement, new FileOutputStream( new File( dpFile.getLocationURI().toURL().getFile() )));
+            dpFile.refreshLocal(IFile.DEPTH_ONE, null);
+		}
+		catch( JAXBException jaxbException ) {
+			Trace.tracePoint("JAXBException", "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", dpFile.getFullPath() );
+			jaxbException.printStackTrace();
+		}
+		catch( FileNotFoundException fileNotFoundException ) {
+			Trace.tracePoint("FileNotFoundException", "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", dpFile.getFullPath() );
+			fileNotFoundException.printStackTrace();
+		}
+		catch( MalformedURLException malformedURLException ) {
+			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", dpFile.getFullPath() );
+			malformedURLException.printStackTrace();
+		}
+		catch( CoreException coreException ) {
+			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", dpFile.getFullPath() );
+			coreException.printStackTrace();
+		}
 
-		ResourceSet resourceSet = new ResourceSetImpl();
-		GeronimoV21Utils.register(resourceSet, new ApplicationResourceFactoryImpl(), ApplicationPackage.eINSTANCE, ApplicationPackage.eNS_URI);
-
-		Resource resource = resourceSet.createResource(uri);
-		org.apache.geronimo.xml.ns.j2ee.application.DocumentRoot documentRoot = ApplicationFactory.eINSTANCE.createDocumentRoot();
-		ApplicationType root = ApplicationFactory.eINSTANCE.createApplicationType();
-
-		EMap map = documentRoot.getXMLNSPrefixMap();
-		map.put("", GeronimoSchemaNS.GERONIMO_APP_NS_1_1);
-		map.put("sec", GeronimoSchemaNS.GERONIMO_SECURITY_NS_1_1);
-		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS_1_1);
-
-		root.setApplicationName(getProject().getName());
-		root.setEnvironment();
-
-		documentRoot.setApplication(root);
-		resource.getContents().add(documentRoot);
-
-		save(resource);
-*/
-//		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", root);
+		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", applicationFactory.createApplication(application));
 		return applicationFactory.createApplication(application);
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createGeronimoWebDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public JAXBElement createGeronimoWebDeploymentPlan(IFile dpFile) {
-  		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", dpFile);
+  		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", dpFile, dpFile.getFullPath() );
 
 		org.apache.geronimo.xml.ns.j2ee.web_2_0.ObjectFactory webFactory = new org.apache.geronimo.xml.ns.j2ee.web_2_0.ObjectFactory();
 		WebAppType web = webFactory.createWebAppType();
 		
-/*
-		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
-
-		ResourceSet resourceSet = new ResourceSetImpl();
-		GeronimoV21Utils.register(resourceSet, new WebResourceFactoryImpl(), WebPackage.eINSTANCE, WebPackage.eNS_URI);
-
-		Resource resource = resourceSet.createResource(uri);
-		org.apache.geronimo.xml.ns.j2ee.web.DocumentRoot documentRoot = WebFactory.eINSTANCE.createDocumentRoot();
-
-		EMap map = documentRoot.getXMLNSPrefixMap();
-		map.put("", GeronimoSchemaNS.GERONIMO_WEB_NS_1_1);
-		map.put("sec", GeronimoSchemaNS.GERONIMO_SECURITY_NS_1_1);
-		map.put("nam", GeronimoSchemaNS.GERONIMO_NAMING_NS_1_1);
-		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS_1_1);
-
-		WebAppType root = WebFactory.eINSTANCE.createWebAppType();
-
-		root.setEnvironment(getConfigEnvironment());
-		root.setContextRoot("/" + getProject().getName());
-		// root.setContextPriorityClassloader(false); //TODO Replace this with
-		// inverse-classloading
-
-		documentRoot.setWebApp(root);
-		resource.getContents().add(documentRoot);
-
-		save(resource);
-
-//		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", root);
-		return new JAXBElement<JAXBElement>();
-*/
-		return webFactory.createWebApp(web);
+		web.setContextRoot( "/" + getProject().getName() );
+		web.setEnvironment(	getConfigEnvironment() );
+		
+		// TODO: Consolidate into saveDeploymentPlan
+		JAXBElement jaxbElement = null;
+		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
+			jaxbElement = webFactory.createWebApp(web);
+			Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+            marshaller.marshal(jaxbElement, new FileOutputStream( new File( dpFile.getLocationURI().toURL().getFile() )));
+            dpFile.refreshLocal(IFile.DEPTH_ONE, null);
+		}
+		catch( JAXBException jaxbException ) {
+			Trace.tracePoint("JAXBException", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", dpFile.getFullPath() );
+			jaxbException.printStackTrace();
+		}
+		catch( FileNotFoundException fileNotFoundException ) {
+			Trace.tracePoint("FileNotFoundException", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", dpFile.getFullPath() );
+			fileNotFoundException.printStackTrace();
+		}
+		catch( MalformedURLException malformedURLException ) {
+			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", dpFile.getFullPath() );
+			malformedURLException.printStackTrace();
+		}
+		catch( CoreException coreException ) {
+			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", dpFile.getFullPath() );
+			coreException.printStackTrace();
+		}
+	
+		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", jaxbElement);
+		return jaxbElement;
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -137,41 +159,44 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
   		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile);
 
 		org.apache.geronimo.xml.ns.j2ee.ejb.openejb_2.ObjectFactory ejbFactory = new org.apache.geronimo.xml.ns.j2ee.ejb.openejb_2.ObjectFactory();
-		GeronimoEjbJarType ejbjar = ejbFactory.createGeronimoEjbJarType();
+		GeronimoEjbJarType ejbJar = ejbFactory.createGeronimoEjbJarType();
 
+		ejbJar.setEnvironment(getConfigEnvironment());
 		
-/*
-		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
-
-		ResourceSet resourceSet = new ResourceSetImpl();
-		GeronimoV21Utils.register(resourceSet, new JarResourceFactoryImpl(), JarPackage.eINSTANCE, JarPackage.eNS_URI);
-
-		Resource resource = resourceSet.createResource(uri);
-		org.openejb.xml.ns.openejb.jar.DocumentRoot documentRoot = JarFactory.eINSTANCE.createDocumentRoot();
-		OpenejbJarType root = JarFactory.eINSTANCE.createOpenejbJarType();
-
-		EMap map = documentRoot.getXMLNSPrefixMap();
-		map.put("", GeronimoSchemaNS.GERONIMO_OPENEJB_NS_2_1);
-		map.put("sec", GeronimoSchemaNS.GERONIMO_SECURITY_NS_1_1);
-		map.put("nam", GeronimoSchemaNS.GERONIMO_NAMING_NS_1_1);
-		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS_1_1);
-		map.put("pkgen", GeronimoSchemaNS.GERONIMO_PKGEN_NS_2_0);
-
-		root.setEnvironment(getConfigEnvironment());
-		root.setEnterpriseBeans(JarFactory.eINSTANCE.createEnterpriseBeansType());
-
-		documentRoot.setOpenejbJar(root);
-		resource.getContents().add(documentRoot);
-
-		save(resource);
-
-//		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", root);
-		return root;
-*/
-		return ejbFactory.createEjbJar(ejbjar);
+		// TODO: Consolidate into saveDeploymentPlan
+		JAXBElement jaxbElement = null;
+		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
+			jaxbElement = ejbFactory.createEjbJar(ejbJar);
+			Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+            marshaller.marshal(jaxbElement, new FileOutputStream( new File( dpFile.getLocationURI().toURL().getFile() )));
+            dpFile.refreshLocal(IFile.DEPTH_ONE, null);
+		}
+		catch( JAXBException jaxbException ) {
+			Trace.tracePoint("JAXBException", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile.getFullPath() );
+			jaxbException.printStackTrace();
+		}
+		catch( FileNotFoundException fileNotFoundException ) {
+			Trace.tracePoint("FileNotFoundException", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile.getFullPath() );
+			fileNotFoundException.printStackTrace();
+		}
+		catch( MalformedURLException malformedURLException ) {
+			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile.getFullPath() );
+			malformedURLException.printStackTrace();
+		}
+		catch( CoreException coreException ) {
+			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile.getFullPath() );
+			coreException.printStackTrace();
+		}
+		
+		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", jaxbElement);
+		return jaxbElement;
 		
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -182,67 +207,85 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		
 		org.apache.geronimo.xml.ns.j2ee.connector_1.ObjectFactory connectorFactory = new org.apache.geronimo.xml.ns.j2ee.connector_1.ObjectFactory();
 		ConnectorType connector = connectorFactory.createConnectorType();
-		return connectorFactory.createConnector(connector);
-
 		
-/*
-		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
+		connector.setEnvironment(getConfigEnvironment());
+		
+		// TODO: Consolidate into saveDeploymentPlan
+		JAXBElement jaxbElement = null;
+		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
+			jaxbElement = connectorFactory.createConnector(connector);
+			Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+            marshaller.marshal(jaxbElement, new FileOutputStream( new File( dpFile.getLocationURI().toURL().getFile() )));
+            dpFile.refreshLocal(IFile.DEPTH_ONE, null);
+		}
+		catch( JAXBException jaxbException ) {
+			Trace.tracePoint("JAXBException", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", dpFile.getFullPath() );
+			jaxbException.printStackTrace();
+		}
+		catch( FileNotFoundException fileNotFoundException ) {
+			Trace.tracePoint("FileNotFoundException", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", dpFile.getFullPath() );
+			fileNotFoundException.printStackTrace();
+		}
+		catch( MalformedURLException malformedURLException ) {
+			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", dpFile.getFullPath() );
+			malformedURLException.printStackTrace();
+		}
+		catch( CoreException coreException ) {
+			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", dpFile.getFullPath() );
+			coreException.printStackTrace();
+		}
+		
+		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", jaxbElement);
+		return jaxbElement;
 
-		ResourceSet resourceSet = new ResourceSetImpl();
-		GeronimoV21Utils.register(resourceSet, new ConnectorResourceFactoryImpl(), ConnectorPackage.eINSTANCE, ConnectorPackage.eNS_URI);
-
-		Resource resource = resourceSet.createResource(uri);
-		org.apache.geronimo.xml.ns.j2ee.connector.DocumentRoot documentRoot = ConnectorFactory.eINSTANCE.createDocumentRoot();
-		ConnectorType root = ConnectorFactory.eINSTANCE.createConnectorType();
-
-		EMap map = documentRoot.getXMLNSPrefixMap();
-		map.put("", GeronimoSchemaNS.GERONIMO_CONNECTOR_NS_1_1);
-		map.put("nam", GeronimoSchemaNS.GERONIMO_NAMING_NS_1_1);
-		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS_1_1);
-
-		root.setEnvironment(getConfigEnvironment());
-		documentRoot.setConnector(root);
-		resource.getContents().add(documentRoot);
-
-		save(resource);
-
-//		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", root);
-		return root;
-*/
 	}
 
+		
 	public JAXBElement createServiceDeploymentPlan(IFile dpFile) {
   		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", dpFile);
 
 		org.apache.geronimo.xml.ns.deployment_1.ObjectFactory serviceFactory = new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory();
 		org.apache.geronimo.xml.ns.deployment_1.ModuleType module = serviceFactory.createModuleType();
-		return serviceFactory.createModule(module);
-
 		
-/*
-		URI uri = URI.createPlatformResourceURI(dpFile.getFullPath().toString(), false);
+		module.setEnvironment(getConfigEnvironment());
+		
+		// TODO: Consolidate into saveDeploymentPlan
+		JAXBElement jaxbElement = null;
+		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
+			jaxbElement = serviceFactory.createModule(module);
+			Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+            marshaller.marshal(jaxbElement, new FileOutputStream( new File( dpFile.getLocationURI().toURL().getFile() )));
+            dpFile.refreshLocal(IFile.DEPTH_ONE, null);
+		}
+		catch( JAXBException jaxbException ) {
+			Trace.tracePoint("JAXBException", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", dpFile.getFullPath() );
+			jaxbException.printStackTrace();
+		}
+		catch( FileNotFoundException fileNotFoundException ) {
+			Trace.tracePoint("FileNotFoundException", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", dpFile.getFullPath() );
+			fileNotFoundException.printStackTrace();
+		}
+		catch( MalformedURLException malformedURLException ) {
+			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", dpFile.getFullPath() );
+			malformedURLException.printStackTrace();
+		}
+		catch( CoreException coreException ) {
+			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", dpFile.getFullPath() );
+			coreException.printStackTrace();
+		}
+		
+		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", jaxbElement);
+		return jaxbElement;
 
-		ResourceSet resourceSet = new ResourceSetImpl();
-		GeronimoV21Utils.register(resourceSet, new DeploymentResourceFactoryImpl(), DeploymentPackage.eINSTANCE, DeploymentPackage.eNS_URI);
-
-		Resource resource = resourceSet.createResource(uri);
-		DocumentRoot documentRoot = DeploymentFactory.eINSTANCE.createDocumentRoot();
-		ModuleType root = DeploymentFactory.eINSTANCE.createModuleType();
-
-		EMap map = documentRoot.getXMLNSPrefixMap();
-		map.put("sys", GeronimoSchemaNS.GERONIMO_DEPLOYMENT_NS_1_1);
-
-		root.setEnvironment(getConfigEnvironment());
-		documentRoot.setModule(root);
-		resource.getContents().add(documentRoot);
-
-		save(resource);
-
-//		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", root);
-		return root;
-*/
 	}
 
+	
 	public EnvironmentType getConfigEnvironment() {
         Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.getConfigEnvironment");
 		
@@ -276,6 +319,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		return env;
 	}
 
+	
 	public static ArtifactType createArtifactType(String groupId, String artifactId, String version, String type) {
   		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.createArtifactType", groupId, artifactId, version, type);
 
@@ -294,6 +338,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		return artifact;
 	}
 
+	
 	public static DependencyType createDependencyType(String groupId, String artifactId, String version, String type) {
   		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.createDependencyType", groupId, artifactId, version, type);
 
@@ -311,6 +356,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		return dependency;
 	}
 
+	
 	private static boolean hasValue(String attribute) {
   		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.hasValue", attribute);
   		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.hasValue", (attribute != null && attribute.trim().length() != 0) );
