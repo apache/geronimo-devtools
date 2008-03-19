@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.net.MalformedURLException;
-import java.net.URI;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -40,7 +39,6 @@ import org.apache.geronimo.xml.ns.j2ee.connector_1.ConnectorType;
 import org.apache.geronimo.xml.ns.j2ee.ejb.openejb_2.GeronimoEjbJarType;
 import org.apache.geronimo.xml.ns.j2ee.web_2_0.WebAppType;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 
@@ -71,6 +69,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		application.setEnvironment(getConfigEnvironment());
 		
 		// TODO: Consolidate into saveDeploymentPlan
+		// TODO: Use IResource to create the geronimo-application.xml file so it will show up
 		JAXBElement jaxbElement = null;
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
@@ -79,7 +78,6 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             marshaller.marshal(jaxbElement, new FileOutputStream( new File( dpFile.getLocationURI().toURL().getFile() )));
-            dpFile.refreshLocal(IFile.DEPTH_ONE, null);
 		}
 		catch( JAXBException jaxbException ) {
 			Trace.tracePoint("JAXBException", "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", dpFile.getFullPath() );
@@ -93,11 +91,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", dpFile.getFullPath() );
 			malformedURLException.printStackTrace();
 		}
-		catch( CoreException coreException ) {
-			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", dpFile.getFullPath() );
-			coreException.printStackTrace();
-		}
-
+		
 		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", applicationFactory.createApplication(application));
 		return applicationFactory.createApplication(application);
 	}
@@ -118,6 +112,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		web.setEnvironment(	getConfigEnvironment() );
 		
 		// TODO: Consolidate into saveDeploymentPlan
+		// TODO: Use IResource to create the geronimo-web.xml file so it will show up
 		JAXBElement jaxbElement = null;
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
@@ -126,7 +121,6 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             marshaller.marshal(jaxbElement, new FileOutputStream( new File( dpFile.getLocationURI().toURL().getFile() )));
-            dpFile.refreshLocal(IFile.DEPTH_ONE, null);
 		}
 		catch( JAXBException jaxbException ) {
 			Trace.tracePoint("JAXBException", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", dpFile.getFullPath() );
@@ -139,10 +133,6 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		catch( MalformedURLException malformedURLException ) {
 			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", dpFile.getFullPath() );
 			malformedURLException.printStackTrace();
-		}
-		catch( CoreException coreException ) {
-			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", dpFile.getFullPath() );
-			coreException.printStackTrace();
 		}
 	
 		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", jaxbElement);
@@ -164,6 +154,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		ejbJar.setEnvironment(getConfigEnvironment());
 		
 		// TODO: Consolidate into saveDeploymentPlan
+		// TODO: Use IResource to create the openejb.xml file so it will show up
 		JAXBElement jaxbElement = null;
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
@@ -172,7 +163,6 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             marshaller.marshal(jaxbElement, new FileOutputStream( new File( dpFile.getLocationURI().toURL().getFile() )));
-            dpFile.refreshLocal(IFile.DEPTH_ONE, null);
 		}
 		catch( JAXBException jaxbException ) {
 			Trace.tracePoint("JAXBException", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile.getFullPath() );
@@ -185,10 +175,6 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		catch( MalformedURLException malformedURLException ) {
 			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile.getFullPath() );
 			malformedURLException.printStackTrace();
-		}
-		catch( CoreException coreException ) {
-			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile.getFullPath() );
-			coreException.printStackTrace();
 		}
 		
 		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", jaxbElement);
@@ -211,6 +197,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		connector.setEnvironment(getConfigEnvironment());
 		
 		// TODO: Consolidate into saveDeploymentPlan
+		// TODO: Use IResource to create the geronimo-connector.xml file so it will show up
 		JAXBElement jaxbElement = null;
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
@@ -219,7 +206,6 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             marshaller.marshal(jaxbElement, new FileOutputStream( new File( dpFile.getLocationURI().toURL().getFile() )));
-            dpFile.refreshLocal(IFile.DEPTH_ONE, null);
 		}
 		catch( JAXBException jaxbException ) {
 			Trace.tracePoint("JAXBException", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", dpFile.getFullPath() );
@@ -232,10 +218,6 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		catch( MalformedURLException malformedURLException ) {
 			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", dpFile.getFullPath() );
 			malformedURLException.printStackTrace();
-		}
-		catch( CoreException coreException ) {
-			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", dpFile.getFullPath() );
-			coreException.printStackTrace();
 		}
 		
 		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", jaxbElement);
@@ -253,6 +235,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		module.setEnvironment(getConfigEnvironment());
 		
 		// TODO: Consolidate into saveDeploymentPlan
+		// TODO: Use IResource to create the geronimo-service.xml file so it will show up
 		JAXBElement jaxbElement = null;
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
@@ -261,7 +244,6 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             marshaller.marshal(jaxbElement, new FileOutputStream( new File( dpFile.getLocationURI().toURL().getFile() )));
-            dpFile.refreshLocal(IFile.DEPTH_ONE, null);
 		}
 		catch( JAXBException jaxbException ) {
 			Trace.tracePoint("JAXBException", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", dpFile.getFullPath() );
@@ -274,10 +256,6 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		catch( MalformedURLException malformedURLException ) {
 			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", dpFile.getFullPath() );
 			malformedURLException.printStackTrace();
-		}
-		catch( CoreException coreException ) {
-			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", dpFile.getFullPath() );
-			coreException.printStackTrace();
 		}
 		
 		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", jaxbElement);

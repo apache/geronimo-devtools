@@ -16,6 +16,8 @@
  */
 package org.apache.geronimo.st.core.operations;
 
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.core.GeronimoUtils;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
@@ -28,6 +30,7 @@ import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+
 
 /**
  * @version $Rev$ $Date$
