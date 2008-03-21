@@ -43,6 +43,31 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 
 /**
+ * <strong>V21DeploymentPlanCreationOperation</strong>
+ * is invoked when projects are created the are to be deployment on the 2.1
+ * version of the Geronimo server. One of these Geronimo-specific deployment
+ * plans is created as a result is inserted into the user's Eclipse workspace in
+ * the appropriate folder:
+ * 
+ * <ol>
+ *      <li>geronimo-application.xml
+ *      <li>geronimo-web.xml
+ *      <li>openejb-jar.xml
+ *      <li>geronimo-ra.xml
+ * </ol>
+ * 
+ * Remaining TODO Task(s):
+ * 
+ * <ol>
+ *      <li>Use the Eclipse framework IResource interface to create the files
+ *      above -- otherwise the user will have to refresh their workspace for the
+ *      contents of the file to display, and an "Out of sync" message will be
+ *      displayed.
+ *      <li>JUnit testcases
+ *      <li>How to invoke Service Deployment Plan
+ *      <li>How to invoke App Client Deployment Plan
+ * </ol>
+ * 
  * @version $Rev: 509704 $ $Date: 2007-02-20 13:42:24 -0500 (Tue, 20 Feb 2007) $
  */
 public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOperation {
@@ -68,8 +93,6 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		application.setApplicationName(getProject().getName());
 		application.setEnvironment(getConfigEnvironment());
 		
-		// TODO: Consolidate into saveDeploymentPlan
-		// TODO: Use IResource to create the geronimo-application.xml file so it will show up
 		JAXBElement jaxbElement = null;
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
@@ -111,8 +134,6 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		web.setContextRoot( "/" + getProject().getName() );
 		web.setEnvironment(	getConfigEnvironment() );
 		
-		// TODO: Consolidate into saveDeploymentPlan
-		// TODO: Use IResource to create the geronimo-web.xml file so it will show up
 		JAXBElement jaxbElement = null;
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
@@ -153,11 +174,9 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 		ejbJar.setEnvironment(getConfigEnvironment());
 		
-		// TODO: Consolidate into saveDeploymentPlan
-		// TODO: Use IResource to create the openejb.xml file so it will show up
 		JAXBElement jaxbElement = null;
 		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
+			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.ejb.openejb_2:org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
 			jaxbElement = ejbFactory.createEjbJar(ejbJar);
 			Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -196,11 +215,9 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		
 		connector.setEnvironment(getConfigEnvironment());
 		
-		// TODO: Consolidate into saveDeploymentPlan
-		// TODO: Use IResource to create the geronimo-connector.xml file so it will show up
 		JAXBElement jaxbElement = null;
 		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
+			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.connector_1:org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
 			jaxbElement = connectorFactory.createConnector(connector);
 			Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -234,8 +251,6 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		
 		module.setEnvironment(getConfigEnvironment());
 		
-		// TODO: Consolidate into saveDeploymentPlan
-		// TODO: Use IResource to create the geronimo-service.xml file so it will show up
 		JAXBElement jaxbElement = null;
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
