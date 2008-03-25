@@ -16,18 +16,10 @@
  */
 package org.apache.geronimo.st.v21.core.operations;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.net.MalformedURLException;
-
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 
+import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.core.operations.DeploymentPlanCreationOperation;
-import org.apache.geronimo.st.v21.core.Activator;
 import org.apache.geronimo.st.v21.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.v21.core.internal.Trace;
 import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
@@ -44,9 +36,9 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 /**
  * <strong>V21DeploymentPlanCreationOperation</strong>
- * is invoked when projects are created the are to be deployment on the 2.1
+ * is invoked when projects are created that are to be deployed on the 2.1
  * version of the Geronimo server. One of these Geronimo-specific deployment
- * plans is created as a result is inserted into the user's Eclipse workspace in
+ * plans is created as a result and is inserted into the user's Eclipse workspace in
  * the appropriate folder:
  * 
  * <ol>
@@ -59,10 +51,6 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  * Remaining TODO Task(s):
  * 
  * <ol>
- *      <li>Use the Eclipse framework IResource interface to create the files
- *      above -- otherwise the user will have to refresh their workspace for the
- *      contents of the file to display, and an "Out of sync" message will be
- *      displayed.
  *      <li>JUnit testcases
  *      <li>How to invoke Service Deployment Plan
  *      <li>How to invoke App Client Deployment Plan
@@ -78,7 +66,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		super(model, config);
   		Trace.tracePoint("Constructor Entry/Exit", "V21DeploymentPlanCreationOperation", model, config);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -89,31 +77,10 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		
 		org.apache.geronimo.xml.ns.j2ee.application_2.ObjectFactory applicationFactory = new org.apache.geronimo.xml.ns.j2ee.application_2.ObjectFactory();
 		ApplicationType application = applicationFactory.createApplicationType();
-		
 		application.setApplicationName(getProject().getName());
 		application.setEnvironment(getConfigEnvironment());
-		
-		JAXBElement jaxbElement = null;
-		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
-			jaxbElement = applicationFactory.createApplication(application);
-			Marshaller marshaller = jaxbContext.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-            marshaller.marshal(jaxbElement, new FileOutputStream( new File( dpFile.getLocationURI().toURL().getFile() )));
-		}
-		catch( JAXBException jaxbException ) {
-			Trace.tracePoint("JAXBException", "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", dpFile.getFullPath() );
-			jaxbException.printStackTrace();
-		}
-		catch( FileNotFoundException fileNotFoundException ) {
-			Trace.tracePoint("FileNotFoundException", "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", dpFile.getFullPath() );
-			fileNotFoundException.printStackTrace();
-		}
-		catch( MalformedURLException malformedURLException ) {
-			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", dpFile.getFullPath() );
-			malformedURLException.printStackTrace();
-		}
+		JAXBElement jaxbElement = applicationFactory.createApplication(application);
+		JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
 		
 		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", applicationFactory.createApplication(application));
 		return applicationFactory.createApplication(application);
@@ -134,27 +101,8 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		web.setContextRoot( "/" + getProject().getName() );
 		web.setEnvironment(	getConfigEnvironment() );
 		
-		JAXBElement jaxbElement = null;
-		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
-			jaxbElement = webFactory.createWebApp(web);
-			Marshaller marshaller = jaxbContext.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-            marshaller.marshal(jaxbElement, new FileOutputStream( new File( dpFile.getLocationURI().toURL().getFile() )));
-		}
-		catch( JAXBException jaxbException ) {
-			Trace.tracePoint("JAXBException", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", dpFile.getFullPath() );
-			jaxbException.printStackTrace();
-		}
-		catch( FileNotFoundException fileNotFoundException ) {
-			Trace.tracePoint("FileNotFoundException", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", dpFile.getFullPath() );
-			fileNotFoundException.printStackTrace();
-		}
-		catch( MalformedURLException malformedURLException ) {
-			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", dpFile.getFullPath() );
-			malformedURLException.printStackTrace();
-		}
+		JAXBElement jaxbElement = webFactory.createWebApp(web);
+		JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
 	
 		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", jaxbElement);
 		return jaxbElement;
@@ -174,31 +122,11 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 		ejbJar.setEnvironment(getConfigEnvironment());
 		
-		JAXBElement jaxbElement = null;
-		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.ejb.openejb_2:org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
-			jaxbElement = ejbFactory.createEjbJar(ejbJar);
-			Marshaller marshaller = jaxbContext.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-            marshaller.marshal(jaxbElement, new FileOutputStream( new File( dpFile.getLocationURI().toURL().getFile() )));
-		}
-		catch( JAXBException jaxbException ) {
-			Trace.tracePoint("JAXBException", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile.getFullPath() );
-			jaxbException.printStackTrace();
-		}
-		catch( FileNotFoundException fileNotFoundException ) {
-			Trace.tracePoint("FileNotFoundException", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile.getFullPath() );
-			fileNotFoundException.printStackTrace();
-		}
-		catch( MalformedURLException malformedURLException ) {
-			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile.getFullPath() );
-			malformedURLException.printStackTrace();
-		}
+		JAXBElement jaxbElement = ejbFactory.createEjbJar(ejbJar);
+		JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
 		
 		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", jaxbElement);
 		return jaxbElement;
-		
 	}
 
 	
@@ -215,27 +143,8 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		
 		connector.setEnvironment(getConfigEnvironment());
 		
-		JAXBElement jaxbElement = null;
-		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.connector_1:org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
-			jaxbElement = connectorFactory.createConnector(connector);
-			Marshaller marshaller = jaxbContext.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-            marshaller.marshal(jaxbElement, new FileOutputStream( new File( dpFile.getLocationURI().toURL().getFile() )));
-		}
-		catch( JAXBException jaxbException ) {
-			Trace.tracePoint("JAXBException", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", dpFile.getFullPath() );
-			jaxbException.printStackTrace();
-		}
-		catch( FileNotFoundException fileNotFoundException ) {
-			Trace.tracePoint("FileNotFoundException", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", dpFile.getFullPath() );
-			fileNotFoundException.printStackTrace();
-		}
-		catch( MalformedURLException malformedURLException ) {
-			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", dpFile.getFullPath() );
-			malformedURLException.printStackTrace();
-		}
+		JAXBElement jaxbElement = connectorFactory.createConnector(connector);
+		JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
 		
 		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", jaxbElement);
 		return jaxbElement;
@@ -251,27 +160,8 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		
 		module.setEnvironment(getConfigEnvironment());
 		
-		JAXBElement jaxbElement = null;
-		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
-			jaxbElement = serviceFactory.createModule(module);
-			Marshaller marshaller = jaxbContext.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-            marshaller.marshal(jaxbElement, new FileOutputStream( new File( dpFile.getLocationURI().toURL().getFile() )));
-		}
-		catch( JAXBException jaxbException ) {
-			Trace.tracePoint("JAXBException", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", dpFile.getFullPath() );
-			jaxbException.printStackTrace();
-		}
-		catch( FileNotFoundException fileNotFoundException ) {
-			Trace.tracePoint("FileNotFoundException", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", dpFile.getFullPath() );
-			fileNotFoundException.printStackTrace();
-		}
-		catch( MalformedURLException malformedURLException ) {
-			Trace.tracePoint("MalformedURLException", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", dpFile.getFullPath() );
-			malformedURLException.printStackTrace();
-		}
+		JAXBElement jaxbElement = serviceFactory.createModule(module);
+		JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
 		
 		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", jaxbElement);
 		return jaxbElement;

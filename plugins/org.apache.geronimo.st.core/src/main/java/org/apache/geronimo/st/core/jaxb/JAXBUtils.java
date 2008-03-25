@@ -16,13 +16,72 @@
  */
 package org.apache.geronimo.st.core.jaxb;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
+import org.apache.geronimo.st.core.Activator;
+import org.apache.geronimo.st.core.internal.Trace;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 
 /**
  * @version $Rev$ $Date$
  */
 public class JAXBUtils {
+
+	// JAXBContext instantiation is costly - must be done only once!
+	private static JAXBContext jaxbContext;
+	{
+		try {
+			jaxbContext = JAXBContext.newInstance("org.apache.geronimo.xml.ns.j2ee.web_2_0:"
+					+ "org.apache.geronimo.xml.ns.j2ee.application_2:"
+					+ "org.apache.geronimo.xml.ns.deployment_1:" + "org.apache.geronimo.xml.ns.naming_1:"
+					+ "org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader());
+		} catch (JAXBException e) {
+			Trace.tracePoint("JAXBException", "JAXBContext.newInstance");
+			e.printStackTrace();
+		}
+	}
+
+	public static void marshalDeploymentPlan(JAXBElement jaxbElement, IFile file) {
+		try {
+			Marshaller marshaller = jaxbContext.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+			ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+			marshaller.marshal(jaxbElement, buffer);
+			file.setContents(new ByteArrayInputStream(buffer.toByteArray()), IFile.FORCE, null);
+		} catch (JAXBException jaxbException) {
+			Trace.tracePoint("JAXBException", "JAXBUtils.marshallToIFile()", file.getFullPath());
+			jaxbException.printStackTrace();
+		} catch (CoreException coreException) {
+			Trace.tracePoint("CoreException", "JAXBUtils.marshallToIFile()", file.getFullPath());
+			coreException.printStackTrace();
+		}
+	}
+
+	public static JAXBElement unmarshalDeploymentPlan(IFile file) {
+		try {
+			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+			JAXBElement plan = (JAXBElement) unmarshaller.unmarshal(file.getContents());
+			return plan;
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		} catch (CoreException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public static Object getValue( Object element, String name ) {
 		try {

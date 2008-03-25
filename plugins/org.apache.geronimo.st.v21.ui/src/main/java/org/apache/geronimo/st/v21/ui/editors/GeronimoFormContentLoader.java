@@ -16,20 +16,13 @@
  */
 package org.apache.geronimo.st.v21.ui.editors;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.FileOutputStream;
-
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
 
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader;
 import org.apache.geronimo.st.v21.core.GeronimoV21Utils;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
-import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.pages.AppGeneralPage;
 import org.apache.geronimo.st.v21.ui.pages.ConnectorOverviewPage;
 import org.apache.geronimo.st.v21.ui.pages.DeploymentPage;
@@ -101,12 +94,6 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
 		return GeronimoV21Utils.getDeploymentPlan(file);
 	}
 	
-	public void saveDeploymentPlan(JAXBElement deploymentPlan, IFile file) throws IOException, JAXBException {
-		JAXBContext jb = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
-		jb.createMarshaller().marshal( deploymentPlan, new FileOutputStream( new File( file.getLocationURI().toURL().getFile()) ) );
-		//jb.createMarshaller().marshal( deploymentPlan, new File( file.getLocationURI().toURL().getFile()) );
-	}
-
 	protected FormPage getWebNamingPage(FormEditor editor) {
 		NamingFormPage formPage = createNamingFormPage(editor);
 //		WebPackage pkg = null; //WebFactory.eINSTANCE.getWebPackage();

@@ -18,17 +18,11 @@ package org.apache.geronimo.st.v21.core.jaxb;
 
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
-import org.apache.geronimo.st.v21.core.Activator;
 import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
 import org.apache.geronimo.xml.ns.j2ee.web_2_0.WebAppType;
 import org.apache.geronimo.xml.ns.security_2.SecurityType;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 
 /**
  * @version $Rev$ $Date$
@@ -74,20 +68,5 @@ public class JAXBModelUtils {
 		}
 		return null;
 	}
-	
-	public static JAXBElement unmarshalDeploymentPlan( IFile file ) {
-		try {
-	    	JAXBContext jb = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1:org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader() );
-	    	Unmarshaller ums = jb.createUnmarshaller();
-	    	JAXBElement plan = (JAXBElement)ums.unmarshal( file.getContents() );
-	    	return plan;
-		} catch ( JAXBException e ) {
-			e.printStackTrace();
-		} catch ( CoreException e ) {
-			e.printStackTrace();
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+
 }

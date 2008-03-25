@@ -20,7 +20,7 @@ import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.core.internal.Trace;
-import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
+import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
 import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
 import org.apache.geronimo.xml.ns.j2ee.application_2.ApplicationType;
@@ -206,7 +206,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
 //            if (resource != null) {
 //                return((org.apache.geronimo.xml.ns.j2ee.application.DocumentRoot) resource.getContents().get(0)).getApplication();
 //            }
-        	return JAXBModelUtils.unmarshalDeploymentPlan( file );
+        	return JAXBUtils.unmarshalDeploymentPlan(file);
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getApplicationDeploymentPlan", null);
@@ -223,7 +223,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
 //            if (resource != null) {
 //                return((DocumentRoot) resource.getContents().get(0)).getWebApp();
 //            }
-            return JAXBModelUtils.unmarshalDeploymentPlan( file );
+            return JAXBUtils.unmarshalDeploymentPlan(file);
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getWebDeploymentPlan", null);
@@ -240,7 +240,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
 //            if (resource != null) {
 //                return((org.openejb.xml.ns.openejb.jar.DocumentRoot) resource.getContents().get(0)).getOpenejbJar();
 //            }
-        	return JAXBModelUtils.unmarshalDeploymentPlan( file );
+        	return JAXBUtils.unmarshalDeploymentPlan(file);
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getOpenEjbDeploymentPlan", null);
@@ -257,7 +257,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
 //            if (resource != null) {
 //                return((org.apache.geronimo.xml.ns.j2ee.connector.DocumentRoot) resource.getContents().get(0)).getConnector();
 //            }
-        	return JAXBModelUtils.unmarshalDeploymentPlan( file );
+        	return JAXBUtils.unmarshalDeploymentPlan(file);
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getConnectorDeploymentPlan", null);

@@ -16,7 +16,14 @@
  */
 package org.apache.geronimo.st.ui.editors;
 
+import java.io.IOException;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+
 import org.apache.geronimo.st.core.GeronimoUtils;
+import org.apache.geronimo.st.core.jaxb.JAXBUtils;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
@@ -53,4 +60,9 @@ public abstract class AbstractGeronimoFormContentLoader implements IGeronimoForm
 	abstract public void addConnectorPlanPages(FormEditor editor) throws PartInitException;
 	
 	abstract public void addApplicationPlanPages(FormEditor editor) throws PartInitException;
+
+	public void saveDeploymentPlan(JAXBElement deploymentPlan, IFile file) throws IOException, JAXBException {
+		JAXBUtils.marshalDeploymentPlan(deploymentPlan, file);
+	}
+
 }
