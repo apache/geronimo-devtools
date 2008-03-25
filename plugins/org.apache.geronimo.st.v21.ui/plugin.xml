@@ -40,7 +40,7 @@
     <!-- 
      |
      | Map the <runtime-component> (defined in org.apache.geronimo.st.core\plugin.xml) 
-     | to a specific version of the "2eronimo Deployment" <project-facet>
+     | to a specific version of the "Geronimo Deployment" <project-facet>
      |
      -->
     <extension point="org.eclipse.wst.common.project.facet.ui.wizardPages">

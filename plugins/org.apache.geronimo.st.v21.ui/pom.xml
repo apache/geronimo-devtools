@@ -100,10 +100,5 @@
             <artifactId>org.apache.geronimo.st.ui</artifactId>
             <version>${version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.st.v11.ui</artifactId>
-            <version>${version}</version>
-        </dependency>
     </dependencies>
 </project>
