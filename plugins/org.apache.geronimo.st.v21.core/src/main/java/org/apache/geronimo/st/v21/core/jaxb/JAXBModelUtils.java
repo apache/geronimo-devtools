@@ -74,25 +74,5 @@ public class JAXBModelUtils {
 		}
 		return null;
 	}
-	
-//
-//  public static JAXBElement unmarshalDeploymentPlan( IFile file ) {
-//      try {
-//          JAXBContext jb = JAXBContext.newInstance( "org.apache.geronimo.jee.web:" +
-//                                                    "org.apache.geronimo.jee.application:" +
-//                                                    "org.apache.geronimo.jee.deployment:" +
-//                                                    "org.apache.geronimo.jee.naming:" +
-//                                                    "org.apache.geronimo.jee.security", Activator.class.getClassLoader() );
-//          Unmarshaller ums = jb.createUnmarshaller();
-//          JAXBElement plan = (JAXBElement)ums.unmarshal( file.getContents() );
-//          return plan;
-//      } catch ( JAXBException e ) {
-//          e.printStackTrace();
-//      } catch ( CoreException e ) {
-//          e.printStackTrace();
-//      } catch ( Exception e ) {
-//          e.printStackTrace();
-//      }
-//      return null;
-//  }
+
 }

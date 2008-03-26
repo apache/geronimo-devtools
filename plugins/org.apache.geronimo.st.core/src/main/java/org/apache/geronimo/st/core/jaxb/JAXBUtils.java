@@ -41,10 +41,14 @@ public class JAXBUtils {
 	private static JAXBContext jaxbContext;
 	{
 		try {
-			jaxbContext = JAXBContext.newInstance("org.apache.geronimo.xml.ns.j2ee.web_2_0:"
-					+ "org.apache.geronimo.xml.ns.j2ee.application_2:"
-					+ "org.apache.geronimo.xml.ns.deployment_1:" + "org.apache.geronimo.xml.ns.naming_1:"
-					+ "org.apache.geronimo.xml.ns.security_2", Activator.class.getClassLoader());
+            jaxbContext = JAXBContext.newInstance( 
+            		"org.apache.geronimo.jee.connector:" +
+                    "org.apache.geronimo.jee.openejb:" +
+                    "org.apache.geronimo.jee.web:" +
+                    "org.apache.geronimo.jee.application:" +
+                    "org.apache.geronimo.jee.deployment:" +
+                    "org.apache.geronimo.jee.naming:" +
+                    "org.apache.geronimo.jee.security", Activator.class.getClassLoader() );
 		} catch (JAXBException e) {
 			Trace.tracePoint("JAXBException", "JAXBContext.newInstance");
 			e.printStackTrace();
@@ -76,8 +80,6 @@ public class JAXBUtils {
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		} catch (CoreException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
