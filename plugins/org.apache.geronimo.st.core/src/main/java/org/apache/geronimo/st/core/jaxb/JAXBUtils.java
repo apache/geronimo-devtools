@@ -38,10 +38,10 @@ import org.eclipse.core.runtime.CoreException;
 public class JAXBUtils {
 
 	// JAXBContext instantiation is costly - must be done only once!
-	private static JAXBContext jaxbContext;
-	{
+	private static final JAXBContext jaxbContext = newJAXBContext();
+	private static JAXBContext newJAXBContext() {
 		try {
-            jaxbContext = JAXBContext.newInstance( 
+            return JAXBContext.newInstance( 
             		"org.apache.geronimo.jee.connector:" +
                     "org.apache.geronimo.jee.openejb:" +
                     "org.apache.geronimo.jee.web:" +
@@ -53,6 +53,7 @@ public class JAXBUtils {
 			Trace.tracePoint("JAXBException", "JAXBContext.newInstance");
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	public static void marshalDeploymentPlan(JAXBElement jaxbElement, IFile file) {

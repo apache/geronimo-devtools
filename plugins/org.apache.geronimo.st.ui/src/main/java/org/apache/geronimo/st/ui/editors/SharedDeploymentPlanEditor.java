@@ -97,9 +97,9 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEd
 	 */
 	public JAXBElement loadDeploymentPlan(IFile file) {
         Trace.tracePoint("ENTRY", "SharedDeploymentPlanEditor.loadDeploymentPlan", file);
-
-        Trace.tracePoint("EXIT", "SharedDeploymentPlanEditor.loadDeploymentPlan", (getLoader() != null ? currentLoader.loadDeploymentPlan(file) : null));
-		return getLoader() != null ? currentLoader.loadDeploymentPlan(file) : null;
+        JAXBElement jaxbElement = getLoader() != null ? currentLoader.loadDeploymentPlan(file) : null;
+        Trace.tracePoint("EXIT", "SharedDeploymentPlanEditor.loadDeploymentPlan", jaxbElement);
+		return jaxbElement;
 	}
 	
 	public void saveDeploymentPlan(IFile file) throws IOException, JAXBException {
