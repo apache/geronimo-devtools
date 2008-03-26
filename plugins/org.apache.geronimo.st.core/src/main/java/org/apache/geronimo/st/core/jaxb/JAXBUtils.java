@@ -61,9 +61,14 @@ public class JAXBUtils {
 			Marshaller marshaller = jaxbContext.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-			ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-			marshaller.marshal(jaxbElement, buffer);
-			file.setContents(new ByteArrayInputStream(buffer.toByteArray()), IFile.FORCE, null);
+			ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
+			marshaller.marshal(jaxbElement, outBuffer);
+			ByteArrayInputStream inBuffer = new ByteArrayInputStream(outBuffer.toByteArray());
+			if(file.exists()) {
+				file.setContents(inBuffer, true, false, null);
+			} else {
+				file.create(inBuffer, true, null);
+			}
 		} catch (JAXBException jaxbException) {
 			Trace.tracePoint("JAXBException", "JAXBUtils.marshallToIFile()", file.getFullPath());
 			jaxbException.printStackTrace();
