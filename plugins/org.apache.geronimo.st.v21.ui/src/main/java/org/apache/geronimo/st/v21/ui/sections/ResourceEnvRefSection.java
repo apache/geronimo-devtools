@@ -24,7 +24,7 @@ import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.wizards.ResourceEnvRefWizard;
-import org.apache.geronimo.xml.ns.naming_1.ResourceEnvRefType;
+import org.apache.geronimo.jee.naming.ResourceEnvRef;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
@@ -99,7 +99,7 @@ public class ResourceEnvRefSection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
 	 */
 	public Class getTableEntryObjectType() {
-		return ResourceEnvRefType.class;
+		return ResourceEnvRef.class;
 	}
 
 //	/*

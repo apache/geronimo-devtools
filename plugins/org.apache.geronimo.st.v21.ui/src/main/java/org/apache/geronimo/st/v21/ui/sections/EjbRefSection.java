@@ -24,7 +24,7 @@ import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.wizards.EjbRefWizard;
-import org.apache.geronimo.xml.ns.naming_1.EjbRefType;
+import org.apache.geronimo.jee.naming.EjbRef;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
@@ -105,7 +105,7 @@ public class EjbRefSection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
 	 */
 	public Class getTableEntryObjectType() {
-		return EjbRefType.class;
+		return EjbRef.class;
 	}
 
 //	/*

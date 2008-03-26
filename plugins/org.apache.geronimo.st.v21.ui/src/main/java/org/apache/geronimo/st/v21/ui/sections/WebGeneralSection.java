@@ -18,8 +18,8 @@ package org.apache.geronimo.st.v21.ui.sections;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.xml.ns.j2ee.web_2_0.WebAppType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -32,11 +32,11 @@ public class WebGeneralSection extends CommonGeneralSection {
 
 	protected Text contextRoot;
 
-	WebAppType plan;
+	WebApp plan;
 
 	public WebGeneralSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
 		super(parent, toolkit, style, plan);
-		this.plan = (WebAppType) plan.getValue();
+		this.plan = (WebApp) plan.getValue();
 		createClient();
 	}
 

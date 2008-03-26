@@ -21,7 +21,7 @@ import javax.xml.bind.JAXBElement;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.wizards.GBeanRefWizard;
-import org.apache.geronimo.xml.ns.deployment_1.GbeanType;
+import org.apache.geronimo.jee.deployment.Gbean;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -91,7 +91,7 @@ public class GBeanRefSection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
 	 */
 	public Class getTableEntryObjectType() {
-		return GbeanType.class;
+		return Gbean.class;
 	}
 
 //	/*

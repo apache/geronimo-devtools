@@ -22,7 +22,7 @@ import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractSectionPart;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
-import org.apache.geronimo.xml.ns.security_2.SecurityType;
+import org.apache.geronimo.jee.security.Security;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -40,7 +40,7 @@ import org.eclipse.ui.forms.widgets.Section;
 
 public class SecurityRootSection extends AbstractSectionPart {
 
-	SecurityType secERef;
+	Security secERef;
 
 	Text defaultRole;
 
@@ -60,7 +60,7 @@ public class SecurityRootSection extends AbstractSectionPart {
 	 * @param toolkit
 	 * @param style
 	 */
-	public SecurityRootSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan, SecurityType secERef) {
+	public SecurityRootSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan, Security secERef) {
 		super(parent, toolkit, style, plan);
 		this.secERef = secERef;
 		createClient();
@@ -91,7 +91,7 @@ public class SecurityRootSection extends AbstractSectionPart {
 		defaultRole.setLayoutData(gd);
 		defaultRole.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				getSecurityType().setDefaultRole(defaultRole.getText());
+				getSecurity().setDefaultRole(defaultRole.getText());
 				markDirty();
 			}
 		});
@@ -103,11 +103,11 @@ public class SecurityRootSection extends AbstractSectionPart {
 			}
 
 			public void widgetSelected(SelectionEvent e) {
-				getSecurityType().setDoasCurrentCaller(doas.getSelection());
+				getSecurity().setDoasCurrentCaller(doas.getSelection());
 				markDirty();
 			}
 		});
-		doas.setSelection(getSecurityType().isDoasCurrentCaller());
+		doas.setSelection(getSecurity().isDoasCurrentCaller());
 
 		useCtxHdl = toolkit.createButton(composite, CommonMessages.useContextHandler, SWT.CHECK);
 		useCtxHdl.setLayoutData(createGridData());
@@ -116,11 +116,11 @@ public class SecurityRootSection extends AbstractSectionPart {
 			}
 
 			public void widgetSelected(SelectionEvent e) {
-				getSecurityType().setUseContextHandler(useCtxHdl.getSelection());
+				getSecurity().setUseContextHandler(useCtxHdl.getSelection());
 				markDirty();
 			}
 		});
-		useCtxHdl.setSelection(getSecurityType().isUseContextHandler());
+		useCtxHdl.setSelection(getSecurity().isUseContextHandler());
 
 	}
 
@@ -138,21 +138,21 @@ public class SecurityRootSection extends AbstractSectionPart {
 	}
 
 	private String getDefaultRole() {
-		SecurityType secType = JAXBModelUtils.getSecurityType(getPlan());
-		if (secType != null
-				&& secType.getDefaultRole() != null ) {
-			return secType.getDefaultRole();
+		Security security = JAXBModelUtils.getSecurity(getPlan());
+		if (security != null
+				&& security.getDefaultRole() != null ) {
+			return security.getDefaultRole();
 		}
 		return "";
 	}
 
-	private SecurityType getSecurityType() {
-		SecurityType secType = JAXBModelUtils.getSecurityType(getPlan());
-		if (secType == null) {
-			secType = (SecurityType)JAXBObjectFactoryImpl.getInstance().create( SecurityType.class );
-			JAXBModelUtils.setSecurityType(getPlan(),secType);
+	private Security getSecurity() {
+		Security security = JAXBModelUtils.getSecurity(getPlan());
+		if (security == null) {
+			security = (Security)JAXBObjectFactoryImpl.getInstance().create( Security.class );
+			JAXBModelUtils.setSecurity(getPlan(),security);
 		}
-		return secType;
+		return security;
 	}
 
 }

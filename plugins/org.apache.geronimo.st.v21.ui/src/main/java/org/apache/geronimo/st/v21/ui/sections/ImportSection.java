@@ -20,14 +20,14 @@ import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.v21.ui.wizards.ImportWizard;
-import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
+import org.apache.geronimo.jee.deployment.Environment;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class ImportSection extends DependencySection {
 
-	public ImportSection(JAXBElement plan, EnvironmentType environment, Composite parent, FormToolkit toolkit, int style) {
+	public ImportSection(JAXBElement plan, Environment environment, Composite parent, FormToolkit toolkit, int style) {
 		super(plan, environment, parent, toolkit, style);
 	}
 

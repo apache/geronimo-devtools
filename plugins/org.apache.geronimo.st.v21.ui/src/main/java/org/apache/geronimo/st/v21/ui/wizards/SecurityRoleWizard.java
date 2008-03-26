@@ -25,10 +25,10 @@ import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v21.ui.sections.SecuritySection;
-import org.apache.geronimo.xml.ns.security_2.DescriptionType;
-import org.apache.geronimo.xml.ns.security_2.RoleMappingsType;
-import org.apache.geronimo.xml.ns.security_2.RoleType;
-import org.apache.geronimo.xml.ns.security_2.SecurityType;
+import org.apache.geronimo.jee.security.Description;
+import org.apache.geronimo.jee.security.RoleMappings;
+import org.apache.geronimo.jee.security.Role;
+import org.apache.geronimo.jee.security.Security;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -106,10 +106,10 @@ public class SecurityRoleWizard extends AbstractTableWizard {
 			data.widthHint = 100;
 			descriptionText.setLayoutData(data);
 
-			if (eObject != null && eObject instanceof RoleType) {
-				RoleType roleType = (RoleType) eObject;
-				if (!roleType.getDescription().isEmpty()) {
-					DescriptionType desc = (DescriptionType) roleType.getDescription().get(0);
+			if (eObject != null && eObject instanceof Role) {
+				Role role = (Role) eObject;
+				if (!role.getDescription().isEmpty()) {
+					Description desc = (Description) role.getDescription().get(0);
 					if (desc.getValue() != null) {
 						descriptionText.setText(desc.getValue());
 					}
@@ -122,33 +122,33 @@ public class SecurityRoleWizard extends AbstractTableWizard {
 		SecurityRoleWizardPage page = (SecurityRoleWizardPage) getPages()[0];
 
 		if (eObject == null) {
-			eObject = getEFactory().create(RoleType.class);
+			eObject = getEFactory().create(Role.class);
 			JAXBElement plan = section.getPlan();
 
-			SecurityType securityType = JAXBModelUtils.getSecurityType(plan);
-			if (securityType == null) {
-				securityType = (SecurityType)getEFactory().create(SecurityType.class);
-				JAXBModelUtils.setSecurityType(plan, securityType);
+			Security security = JAXBModelUtils.getSecurity(plan);
+			if (security == null) {
+				security = (Security)getEFactory().create(Security.class);
+				JAXBModelUtils.setSecurity(plan, security);
 			}
 
-			RoleMappingsType roleMappingsType = securityType.getRoleMappings();
-			if (roleMappingsType == null) {
-				roleMappingsType = (RoleMappingsType)getEFactory().create(RoleMappingsType.class);
-				securityType.setRoleMappings(roleMappingsType);
+			RoleMappings roleMappings = security.getRoleMappings();
+			if (roleMappings == null) {
+				roleMappings = (RoleMappings)getEFactory().create(RoleMappings.class);
+				security.setRoleMappings(roleMappings);
 			}
 
-			roleMappingsType.getRole().add((RoleType)eObject);
+			roleMappings.getRole().add((Role)eObject);
 		}
 
 		processEAttributes(page);
 
-		DescriptionType type = null;
-		RoleType roleType = (RoleType) eObject;
-		if (roleType.getDescription().isEmpty()) {
-			type = (DescriptionType)getEFactory().create(DescriptionType.class);
-			roleType.getDescription().add(type);
+		Description type = null;
+		Role role = (Role) eObject;
+		if (role.getDescription().isEmpty()) {
+			type = (Description)getEFactory().create(Description.class);
+			role.getDescription().add(type);
 		} else {
-			type = (DescriptionType) roleType.getDescription().get(0);
+			type = (Description) role.getDescription().get(0);
 		}
 		type.setValue(page.descriptionText.getText());
 		

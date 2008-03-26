@@ -26,9 +26,9 @@ import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.wizards.DependencyWizard;
-import org.apache.geronimo.xml.ns.deployment_1.DependenciesType;
-import org.apache.geronimo.xml.ns.deployment_1.DependencyType;
-import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
+import org.apache.geronimo.jee.deployment.Dependencies;
+import org.apache.geronimo.jee.deployment.Dependency;
+import org.apache.geronimo.jee.deployment.Environment;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
@@ -36,7 +36,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class DependencySection extends AbstractTableSection {
 
-	private EnvironmentType environment;
+	private Environment environment;
 
 	/**
 	 * @param plan
@@ -44,7 +44,7 @@ public class DependencySection extends AbstractTableSection {
 	 * @param toolkit
 	 * @param style
 	 */
-	public DependencySection(JAXBElement plan, EnvironmentType environment, Composite parent, FormToolkit toolkit, int style) {
+	public DependencySection(JAXBElement plan, Environment environment, Composite parent, FormToolkit toolkit, int style) {
 		super(plan, parent, toolkit, style);
 		this.environment = environment;
 		createClient();
@@ -70,7 +70,7 @@ public class DependencySection extends AbstractTableSection {
 
 	public List getObjectContainer() {
 		if ( environment.getDependencies() == null ) {
-			DependenciesType dependencies = (DependenciesType)JAXBObjectFactoryImpl.getInstance().create(DependenciesType.class);
+			Dependencies dependencies = (Dependencies)JAXBObjectFactoryImpl.getInstance().create(Dependencies.class);
 			environment.setDependencies(dependencies);
 		}
 		return environment.getDependencies().getDependency();
@@ -104,7 +104,7 @@ public class DependencySection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
 	 */
 	public Class getTableEntryObjectType() {
-		return DependencyType.class;
+		return Dependency.class;
 	}
 
 	
@@ -118,15 +118,15 @@ public class DependencySection extends AbstractTableSection {
 	public AdapterFactory getAdapterFactory() {
 		return new AdapterFactory() {
 			public Object[] getElements(Object inputElement) {
-				if (!DependenciesType.class.isInstance(inputElement)) {
+				if (!Dependencies.class.isInstance(inputElement)) {
 					return new String[] { "" };
 				}
-				DependenciesType plan = (DependenciesType)inputElement;
+				Dependencies plan = (Dependencies)inputElement;
 				return plan.getDependency().toArray();
 			}
 			public String getColumnText(Object element, int columnIndex) {
-				if (DependencyType.class.isInstance(element)) {
-					DependencyType dependency = (DependencyType)element;
+				if (Dependency.class.isInstance(element)) {
+					Dependency dependency = (Dependency)element;
 					switch (columnIndex) {
 					case 0: return dependency.getGroupId();
 					case 1: return dependency.getArtifactId();

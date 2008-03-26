@@ -16,17 +16,20 @@
  */
 package org.apache.geronimo.st.v21.core;
 
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
+import org.apache.geronimo.jee.application.Application;
+import org.apache.geronimo.jee.connector.Connector;
+import org.apache.geronimo.jee.deployment.Artifact;
+import org.apache.geronimo.jee.deployment.Environment;
+import org.apache.geronimo.jee.openejb.OpenejbJar;
+import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.core.internal.Trace;
-import org.apache.geronimo.st.core.jaxb.JAXBUtils;
-import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
-import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
-import org.apache.geronimo.xml.ns.j2ee.application_2.ApplicationType;
-import org.apache.geronimo.xml.ns.j2ee.connector_1.ConnectorType;
-import org.apache.geronimo.xml.ns.j2ee.ejb.openejb_2.OpenejbJarType;
-import org.apache.geronimo.xml.ns.j2ee.web_2_0.WebAppType;
+//port org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IModule;
@@ -111,24 +114,24 @@ public class GeronimoV21Utils extends GeronimoUtils {
     public static String getConfigId(IModule module) {
         Trace.tracePoint("ENTRY", "GeronimoV21Utils.getConfigId", module);
 
-        EnvironmentType environment = null;
+        Environment environment = null;
         if (isWebModule(module)) {
-            WebAppType plan = getWebDeploymentPlan(module).getValue();
+            WebApp plan = getWebDeploymentPlan(module).getValue();
             if (plan != null)
                 environment = plan.getEnvironment();
         }
         else if (isEjbJarModule(module)) {
-            OpenejbJarType plan = getOpenEjbDeploymentPlan(module).getValue();
+            OpenejbJar plan = getOpenEjbDeploymentPlan(module).getValue();
 //            if (plan != null)
 //                environment = plan.getEnvironment();
         }
         else if (isEarModule(module)) {
-            ApplicationType plan = getApplicationDeploymentPlan(module).getValue();
+            Application plan = getApplicationDeploymentPlan(module).getValue();
             if (plan != null)
                 environment = plan.getEnvironment();
         }
         else if (isRARModule(module)) {
-            ConnectorType plan = getConnectorDeploymentPlan(module).getValue();
+            Connector plan = getConnectorDeploymentPlan(module).getValue();
             if (plan != null)
                 environment = plan.getEnvironment();
         }
@@ -143,7 +146,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
         return getId(module);
     }
 
-    public static String getQualifiedConfigID(ArtifactType artifact) {
+    public static String getQualifiedConfigID(Artifact artifact) {
         return getQualifiedConfigID(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), artifact.getType());
     }
 
@@ -154,7 +157,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
     public static String getContextRoot(IModule module) {
         String contextRoot = null;
 
-        WebAppType deploymentPlan = getWebDeploymentPlan(module).getValue();
+        WebApp deploymentPlan = getWebDeploymentPlan(module).getValue();
         if (deploymentPlan != null)
             contextRoot = deploymentPlan.getContextRoot();
 
@@ -164,19 +167,19 @@ public class GeronimoV21Utils extends GeronimoUtils {
         return contextRoot;
     }
 
-    public static JAXBElement<WebAppType> getWebDeploymentPlan(IModule module) {
+    public static JAXBElement<WebApp> getWebDeploymentPlan(IModule module) {
         return getWebDeploymentPlan(getVirtualComponent(module));
     }
 
-    public static JAXBElement<ApplicationType> getApplicationDeploymentPlan(IModule module) {
+    public static JAXBElement<Application> getApplicationDeploymentPlan(IModule module) {
         return getApplicationDeploymentPlan(getVirtualComponent(module));
     }
 
-    public static JAXBElement<OpenejbJarType> getOpenEjbDeploymentPlan(IModule module) {
+    public static JAXBElement<OpenejbJar> getOpenEjbDeploymentPlan(IModule module) {
         return getOpenEjbDeploymentPlan(getVirtualComponent(module));
     }
 
-    public static JAXBElement<ConnectorType> getConnectorDeploymentPlan(IModule module) {
+    public static JAXBElement<Connector> getConnectorDeploymentPlan(IModule module) {
         return getConnectorDeploymentPlan(getVirtualComponent(module));
     }
 
@@ -200,13 +203,21 @@ public class GeronimoV21Utils extends GeronimoUtils {
         Trace.tracePoint("ENTRY", "GeronimoV21Utils.getApplicationDeploymentPlan", file);
 
         if (file.getName().equals(APP_PLAN_NAME) && file.exists()) {
-//            ResourceSet resourceSet = new ResourceSetImpl();
-//            register(resourceSet, new ApplicationResourceFactoryImpl(), ApplicationPackage.eINSTANCE, ApplicationPackage.eNS_URI);
-//            Resource resource = load(file, resourceSet);
-//            if (resource != null) {
-//                return((org.apache.geronimo.xml.ns.j2ee.application.DocumentRoot) resource.getContents().get(0)).getApplication();
-//            }
-        	return JAXBUtils.unmarshalDeploymentPlan(file);
+            try {
+                JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.jee.web:" +
+                                                                   "org.apache.geronimo.jee.application:" +
+                                                                   "org.apache.geronimo.jee.deployment:" +
+                                                                   "org.apache.geronimo.jee.naming:" +
+                                                                   "org.apache.geronimo.jee.security", Activator.class.getClassLoader() );
+                Unmarshaller ums = jaxbContext.createUnmarshaller();
+                JAXBElement plan = (JAXBElement)ums.unmarshal( file.getContents() );
+                return plan;
+            } catch ( JAXBException e ) {
+                e.printStackTrace();
+            } catch ( Exception e ) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getApplicationDeploymentPlan", null);
@@ -217,13 +228,20 @@ public class GeronimoV21Utils extends GeronimoUtils {
         Trace.tracePoint("ENTRY", "GeronimoV21Utils.getWebDeploymentPlan", file);
 
         if (file.getName().equals(WEB_PLAN_NAME) && file.exists()) {
-//            ResourceSet resourceSet = new ResourceSetImpl();
-//            register(resourceSet, new WebResourceFactoryImpl(), WebPackage.eINSTANCE, WebPackage.eNS_URI);
-//            Resource resource = load(file, resourceSet);
-//            if (resource != null) {
-//                return((DocumentRoot) resource.getContents().get(0)).getWebApp();
-//            }
-            return JAXBUtils.unmarshalDeploymentPlan(file);
+            try {
+                JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.jee.web:" +
+                                                                   "org.apache.geronimo.jee.naming:" +
+                                                                   "org.apache.geronimo.jee.application:" +
+                                                                   "org.apache.geronimo.jee.deployment", Activator.class.getClassLoader() );
+                Unmarshaller ums = jaxbContext.createUnmarshaller();
+                JAXBElement plan = (JAXBElement)ums.unmarshal( file.getContents() );
+                return plan;
+            } catch ( JAXBException e ) {
+                e.printStackTrace();
+            } catch ( Exception e ) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getWebDeploymentPlan", null);
@@ -234,13 +252,22 @@ public class GeronimoV21Utils extends GeronimoUtils {
         Trace.tracePoint("ENTRY", "GeronimoV21Utils.getOpenEjbDeploymentPlan", file);
 
         if (file.getName().equals(OPENEJB_PLAN_NAME) && file.exists()) {
-//            ResourceSet resourceSet = new ResourceSetImpl();
-//            register(resourceSet, new JarResourceFactoryImpl(), JarPackage.eINSTANCE, JarPackage.eNS_URI);
-//            Resource resource = load(file, resourceSet);
-//            if (resource != null) {
-//                return((org.openejb.xml.ns.openejb.jar.DocumentRoot) resource.getContents().get(0)).getOpenejbJar();
-//            }
-        	return JAXBUtils.unmarshalDeploymentPlan(file);
+            try {
+                JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.jee.openejb:" +
+                                                                   "org.apache.geronimo.jee.web:" +									
+                                                                   "org.apache.geronimo.jee.application:" +
+                                                                   "org.apache.geronimo.jee.deployment:" +
+                                                                   "org.apache.geronimo.jee.naming:" +
+                                                                   "org.apache.geronimo.jee.security", Activator.class.getClassLoader() );
+                Unmarshaller ums = jaxbContext.createUnmarshaller();
+                JAXBElement plan = (JAXBElement)ums.unmarshal( file.getContents() );
+                return plan;
+            } catch ( JAXBException e ) {
+                e.printStackTrace();
+            } catch ( Exception e ) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getOpenEjbDeploymentPlan", null);
@@ -251,13 +278,22 @@ public class GeronimoV21Utils extends GeronimoUtils {
         Trace.tracePoint("ENTRY", "GeronimoV21Utils.getConnectorDeploymentPlan", file);
 
         if (file.getName().equals(CONNECTOR_PLAN_NAME) && file.exists()) {
-//            ResourceSet resourceSet = new ResourceSetImpl();
-//            register(resourceSet, new ConnectorResourceFactoryImpl(), ConnectorPackage.eINSTANCE, ConnectorPackage.eNS_URI);
-//            Resource resource = load(file, resourceSet);
-//            if (resource != null) {
-//                return((org.apache.geronimo.xml.ns.j2ee.connector.DocumentRoot) resource.getContents().get(0)).getConnector();
-//            }
-        	return JAXBUtils.unmarshalDeploymentPlan(file);
+            try {
+                JAXBContext jaxbContext = JAXBContext.newInstance( "org.apache.geronimo.jee.connector:" +
+                                                                   "org.apache.geronimo.jee.web:" +			
+                                                                   "org.apache.geronimo.jee.application:" +
+                                                                   "org.apache.geronimo.jee.deployment:" +
+                                                                   "org.apache.geronimo.jee.naming:" +
+                                                                   "org.apache.geronimo.jee.security", Activator.class.getClassLoader() );
+                Unmarshaller ums = jaxbContext.createUnmarshaller();
+                JAXBElement plan = (JAXBElement)ums.unmarshal( file.getContents() );
+                return plan;
+            } catch ( JAXBException e ) {
+                e.printStackTrace();
+            } catch ( Exception e ) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getConnectorDeploymentPlan", null);

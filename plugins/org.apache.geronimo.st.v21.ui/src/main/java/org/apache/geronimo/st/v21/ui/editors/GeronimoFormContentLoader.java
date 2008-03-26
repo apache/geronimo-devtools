@@ -16,13 +16,20 @@
  */
 package org.apache.geronimo.st.v21.ui.editors;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
 
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader;
 import org.apache.geronimo.st.v21.core.GeronimoV21Utils;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
+import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.pages.AppGeneralPage;
 import org.apache.geronimo.st.v21.ui.pages.ConnectorOverviewPage;
 import org.apache.geronimo.st.v21.ui.pages.DeploymentPage;
@@ -30,7 +37,7 @@ import org.apache.geronimo.st.v21.ui.pages.EjbOverviewPage;
 import org.apache.geronimo.st.v21.ui.pages.NamingFormPage;
 import org.apache.geronimo.st.v21.ui.pages.SecurityPage;
 import org.apache.geronimo.st.v21.ui.pages.WebGeneralPage;
-import org.apache.geronimo.xml.ns.security_2.SecurityType;
+import org.apache.geronimo.jee.security.Security;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.FormEditor;
@@ -81,7 +88,7 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
 		JAXBElement plan = geronimoEditor.getDeploymentPlan();
 		editor.addPage(new WebGeneralPage(editor, "generalpage", CommonMessages.editorTabGeneral));
 		editor.addPage(getWebNamingPage(editor));
-		editor.addPage(new SecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity, (SecurityType)JAXBModelUtils.getSecurityType( plan )));
+		editor.addPage(new SecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity, (Security)JAXBModelUtils.getSecurity( plan )));
 		editor.addPage(getWebDeploymentPage(editor));
 	}
 
@@ -94,22 +101,32 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
 		return GeronimoV21Utils.getDeploymentPlan(file);
 	}
 	
+	public void saveDeploymentPlan(JAXBElement deploymentPlan, IFile file) throws IOException, JAXBException {
+		JAXBContext jb = JAXBContext.newInstance( "org.apache.geronimo.jee.web:" +
+										          "org.apache.geronimo.jee.application:" +
+										          "org.apache.geronimo.jee.deployment:" +
+										          "org.apache.geronimo.jee.naming:" +
+										          "org.apache.geronimo.jee.security", Activator.class.getClassLoader() );
+		jb.createMarshaller().marshal( deploymentPlan, new FileOutputStream( new File( file.getLocationURI().toURL().getFile()) ) );
+		//jb.createMarshaller().marshal( deploymentPlan, new File( file.getLocationURI().toURL().getFile()) );
+	}
+
 	protected FormPage getWebNamingPage(FormEditor editor) {
 		NamingFormPage formPage = createNamingFormPage(editor);
 //		WebPackage pkg = null; //WebFactory.eINSTANCE.getWebPackage();
-//		formPage.ejbLocalRef = pkg.getWebAppType_EjbLocalRef();
-//		formPage.ejbRef = pkg.getWebAppType_EjbRef();
-//		formPage.resEnvRef = pkg.getWebAppType_ResourceEnvRef();
-//		formPage.resRef = pkg.getWebAppType_ResourceRef();
-//		formPage.gbeanRef = pkg.getWebAppType_GbeanRef();
-//		formPage.serviceRef = pkg.getWebAppType_ServiceRef();
+//		formPage.ejbLocalRef = pkg.getWebApp_EjbLocalRef();
+//		formPage.ejbRef = pkg.getWebApp_EjbRef();
+//		formPage.resEnvRef = pkg.getWebApp_ResourceEnvRef();
+//		formPage.resRef = pkg.getWebApp_ResourceRef();
+//		formPage.gbeanRef = pkg.getWebApp_GbeanRef();
+//		formPage.serviceRef = pkg.getWebApp_ServiceRef();
 		return formPage;
 	}
 
 	protected FormPage getWebDeploymentPage(FormEditor editor) {
 		DeploymentPage formPage = createDeploymentFormPage(editor);
-//		formPage.environment = WebFactory.eINSTANCE.getWebPackage().getWebAppType_Environment();
-//		formPage.gbeanERef = WebFactory.eINSTANCE.getWebPackage().getWebAppType_Gbean();
+//		formPage.environment = WebFactory.eINSTANCE.getWebPackage().getWebApp_Environment();
+//		formPage.gbeanERef = WebFactory.eINSTANCE.getWebPackage().getWebApp_Gbean();
 		return formPage;
 	}
 

@@ -18,55 +18,81 @@ package org.apache.geronimo.st.v21.core.jaxb;
 
 import java.util.List;
 
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
-import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
-import org.apache.geronimo.xml.ns.j2ee.web_2_0.WebAppType;
-import org.apache.geronimo.xml.ns.security_2.SecurityType;
+import org.apache.geronimo.jee.deployment.Environment;
+import org.apache.geronimo.jee.security.Security;
+import org.apache.geronimo.jee.web.WebApp;
+import org.apache.geronimo.st.v21.core.Activator;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 
 /**
  * @version $Rev$ $Date$
  */
 public class JAXBModelUtils {
 	
-	public static SecurityType getSecurityType(JAXBElement element) {
+	public static Security getSecurity(JAXBElement element) {
 		Object plan = element.getValue();
-		if ( WebAppType.class.isInstance( plan ) ) {
-			return ((WebAppType)plan).getSecurity() == null ? null : (SecurityType)((WebAppType)plan).getSecurity().getValue();
+		if ( WebApp.class.isInstance( plan ) ) {
+			return ((WebApp)plan).getSecurity() == null ? null : (Security)((WebApp)plan).getSecurity().getValue();
 		}
 		return null;
 	}
 	
-	public static void setSecurityType(JAXBElement element, SecurityType security) {
+	public static void setSecurity(JAXBElement element, Security security) {
 		Object plan = element.getValue();
-		if ( WebAppType.class.isInstance( plan ) ) {
-			((WebAppType)plan).setSecurity((new org.apache.geronimo.xml.ns.security_2.ObjectFactory()).createSecurity( security ) );
+		if ( WebApp.class.isInstance( plan ) ) {
+			((WebApp)plan).setSecurity((new org.apache.geronimo.jee.security.ObjectFactory()).createSecurity( security ) );
 		}
 	}
 	
-	public static EnvironmentType getEnvironmentType(JAXBElement element) {
+	public static Environment getEnvironment(JAXBElement element) {
 		Object plan = element.getValue();
-		if ( WebAppType.class.isInstance( plan ) ) {
-			System.out.println( "Element : " + ((WebAppType)plan).getEnvironment() );
-			return ((WebAppType)plan).getEnvironment() == null ? null : ((WebAppType)plan).getEnvironment();
+		if ( WebApp.class.isInstance( plan ) ) {
+			System.out.println( "Element : " + ((WebApp)plan).getEnvironment() );
+			return ((WebApp)plan).getEnvironment() == null ? null : ((WebApp)plan).getEnvironment();
 		}
 		return null;
 	}
 	
 	public static List getServiceOrPersistence(JAXBElement element) {
 		Object plan = element.getValue();
-		if ( WebAppType.class.isInstance( plan ) ) {
-			return ((WebAppType)plan).getServiceOrPersistence() == null ? null : ((WebAppType)plan).getServiceOrPersistence();
+		if ( WebApp.class.isInstance( plan ) ) {
+			return ((WebApp)plan).getServiceOrPersistence() == null ? null : ((WebApp)plan).getServiceOrPersistence();
 		}
 		return null;
 	}
 	
 	public static List getGbeans(JAXBElement element) {
 		Object plan = element.getValue();
-		if ( WebAppType.class.isInstance( plan ) ) {
-//			return ((WebAppType)plan).getGbeans() == null ? null : ((WebAppType)plan).getGbeans();
+		if ( WebApp.class.isInstance( plan ) ) {
+//			return ((WebApp)plan).getGbeans() == null ? null : ((WebApp)plan).getGbeans();
 		}
 		return null;
 	}
-
+	
+//
+//  public static JAXBElement unmarshalDeploymentPlan( IFile file ) {
+//      try {
+//          JAXBContext jb = JAXBContext.newInstance( "org.apache.geronimo.jee.web:" +
+//                                                    "org.apache.geronimo.jee.application:" +
+//                                                    "org.apache.geronimo.jee.deployment:" +
+//                                                    "org.apache.geronimo.jee.naming:" +
+//                                                    "org.apache.geronimo.jee.security", Activator.class.getClassLoader() );
+//          Unmarshaller ums = jb.createUnmarshaller();
+//          JAXBElement plan = (JAXBElement)ums.unmarshal( file.getContents() );
+//          return plan;
+//      } catch ( JAXBException e ) {
+//          e.printStackTrace();
+//      } catch ( CoreException e ) {
+//          e.printStackTrace();
+//      } catch ( Exception e ) {
+//          e.printStackTrace();
+//      }
+//      return null;
+//  }
 }

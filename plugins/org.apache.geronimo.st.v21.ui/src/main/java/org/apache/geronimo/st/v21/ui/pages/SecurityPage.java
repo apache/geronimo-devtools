@@ -20,16 +20,16 @@ import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v21.ui.sections.SecurityRootSection;
 import org.apache.geronimo.st.v21.ui.sections.SecuritySection;
-import org.apache.geronimo.xml.ns.security_2.SecurityType;
+import org.apache.geronimo.jee.security.Security;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
 public class SecurityPage extends AbstractGeronimoFormPage {
 
-	public SecurityType security;
+	public Security security;
 
-	public SecurityPage(FormEditor editor, String id, String title, SecurityType security) {
+	public SecurityPage(FormEditor editor, String id, String title, Security security) {
 		super(editor, id, title);
 		this.security = security;
 	}

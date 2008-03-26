@@ -18,11 +18,11 @@ package org.apache.geronimo.st.v21.ui.sections;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.ui.sections.AbstractSectionPart;
 import org.apache.geronimo.st.v21.ui.internal.Messages;
-import org.apache.geronimo.xml.ns.deployment_1.PatternType;
-import org.apache.geronimo.xml.ns.j2ee.web_2_0.WebAppType;
-import org.apache.geronimo.xml.ns.naming_1.GbeanLocatorType;
+import org.apache.geronimo.jee.deployment.Pattern;
+import org.apache.geronimo.jee.naming.GbeanLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -56,7 +56,7 @@ public class WebContainerSection extends AbstractSectionPart {
 
 	protected Button specifyAsPattern;
 
-	WebAppType plan;
+	WebApp plan;
 
 	/**
 	 * @param parent
@@ -66,7 +66,7 @@ public class WebContainerSection extends AbstractSectionPart {
 	 */
 	public WebContainerSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
 		super(parent, toolkit, style, plan);
-		this.plan = (WebAppType) plan.getValue();
+		this.plan = (WebApp) plan.getValue();
 		createClient();
 	}
 
@@ -93,7 +93,7 @@ public class WebContainerSection extends AbstractSectionPart {
 		data.horizontalSpan = 2;
 		specifyAsLink.setLayoutData(data);
 
-		GbeanLocatorType wc = plan.getWebContainer();
+		GbeanLocator wc = plan.getWebContainer();
 
 		createLabel(composite, Messages.gBeanLink);
 		String value = wc != null ? wc.getGbeanLink() : null;
@@ -195,15 +195,15 @@ public class WebContainerSection extends AbstractSectionPart {
 //						markDirty();
 //					}
 					if (group.getText().length() > 0) {
-						getPatternType().setGroupId(group.getText());
+						getPattern().setGroupId(group.getText());
 						markDirty();
 					}
 					if (artifact.getText().length() > 0) {
-						getPatternType().setArtifactId(artifact.getText());
+						getPattern().setArtifactId(artifact.getText());
 						markDirty();
 					}
 					if (module.getText().length() > 0) {
-						getPatternType().setModule(module.getText());
+						getPattern().setModule(module.getText());
 						markDirty();
 					}
 					if (name.getText().length() > 0) {
@@ -211,7 +211,7 @@ public class WebContainerSection extends AbstractSectionPart {
 //						markDirty();
 					}
 					if (version.getText().length() > 0) {
-						getPatternType().setVersion(version.getText());
+						getPattern().setVersion(version.getText());
 						markDirty();
 					}
 					toggle();
@@ -240,8 +240,8 @@ public class WebContainerSection extends AbstractSectionPart {
 	/**
 	 * @return
 	 */
-	private GbeanLocatorType getGBeanLocator() {
-		GbeanLocatorType wc = plan.getWebContainer();
+	private GbeanLocator getGBeanLocator() {
+		GbeanLocator wc = plan.getWebContainer();
 		if (wc == null) {
 //			wc = NamingFactory.eINSTANCE.createGbeanLocatorType();
 			plan.setWebContainer(wc);
@@ -252,8 +252,8 @@ public class WebContainerSection extends AbstractSectionPart {
 	/**
 	 * @return
 	 */
-	private PatternType getPatternType() {
-		GbeanLocatorType locator = getGBeanLocator();
+	private Pattern getPattern() {
+		GbeanLocator locator = getGBeanLocator();
 //		PatternType pattern = locator.getPattern();
 //		if (pattern == null) {
 //			pattern = NamingFactory.eINSTANCE.createPatternType();

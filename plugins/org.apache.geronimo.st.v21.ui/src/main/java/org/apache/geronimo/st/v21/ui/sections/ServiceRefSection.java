@@ -23,7 +23,7 @@ import javax.xml.bind.JAXBElement;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.wizards.ServiceRefWizard;
-import org.apache.geronimo.xml.ns.naming_1.ServiceRefType;
+import org.apache.geronimo.jee.naming.ServiceRef;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -91,7 +91,7 @@ public class ServiceRefSection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
 	 */
 	public Class getTableEntryObjectType() {
-		return ServiceRefType.class;
+		return ServiceRef.class;
 	}
 
 //	/*

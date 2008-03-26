@@ -18,17 +18,17 @@ package org.apache.geronimo.st.v21.ui.sections;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.xml.ns.j2ee.connector_1.ConnectorType;
+import org.apache.geronimo.jee.connector.Connector;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class ConnectorGeneralSection extends CommonGeneralSection {
 
-	ConnectorType plan;
+	Connector plan;
 
 	public ConnectorGeneralSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
 		super(parent, toolkit, style, plan);
-		this.plan = (ConnectorType) plan.getValue();
+		this.plan = (Connector) plan.getValue();
 		createClient();
 	}
 

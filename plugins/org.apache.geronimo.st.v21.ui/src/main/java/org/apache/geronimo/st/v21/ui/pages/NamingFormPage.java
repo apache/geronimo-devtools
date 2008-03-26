@@ -18,6 +18,7 @@ package org.apache.geronimo.st.v21.ui.pages;
 
 import java.util.List;
 
+import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
@@ -27,7 +28,6 @@ import org.apache.geronimo.st.v21.ui.sections.GBeanRefSection;
 import org.apache.geronimo.st.v21.ui.sections.ResourceEnvRefSection;
 import org.apache.geronimo.st.v21.ui.sections.ResourceRefSection;
 import org.apache.geronimo.st.v21.ui.sections.ServiceRefSection;
-import org.apache.geronimo.xml.ns.j2ee.web_2_0.WebAppType;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
@@ -47,7 +47,7 @@ public class NamingFormPage extends AbstractGeronimoFormPage {
 
 	public NamingFormPage(FormEditor editor, String id, String title) {
 		super(editor, id, title);
-		WebAppType webapp = (WebAppType)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
+		WebApp webapp = (WebApp)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
 		resRefs = webapp.getResourceRef();
 		serviceRefs = webapp.getServiceRef();
 	}

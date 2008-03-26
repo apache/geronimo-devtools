@@ -99,5 +99,9 @@
             <artifactId>org.apache.geronimo.deployment.v21.jaxbmodel</artifactId>
             <version>${version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+        </dependency>
     </dependencies>
 </project>

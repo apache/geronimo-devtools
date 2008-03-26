@@ -22,7 +22,7 @@ import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v21.ui.internal.Trace;
-import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
+import org.apache.geronimo.jee.deployment.Artifact;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
@@ -129,7 +129,7 @@ public class DependencyWizard extends AbstractTableWizard {
 	public void processEAttributes(IWizardPage page) {
 //              Trace.trace("Entry", "DependencyWizard.processEAttributes", page);
 		
-		ArtifactType dt = (ArtifactType) eObject;
+		Artifact dt = (Artifact) eObject;
 		dt.setArtifactId(artifactIdText.getText());
 		dt.setGroupId(groupIdText.getText());
 		dt.setVersion(versionText.getText());
@@ -213,7 +213,7 @@ public class DependencyWizard extends AbstractTableWizard {
 			typeText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 			if (eObject != null) {
-				ArtifactType artifact = (ArtifactType)eObject;
+				Artifact artifact = (Artifact)eObject;
 				groupIdText.setText(artifact.getGroupId());
 				artifactIdText.setText(artifact.getArtifactId());
 				versionText.setText(artifact.getVersion());

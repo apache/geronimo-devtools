@@ -21,14 +21,16 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.jee.web.WebApp;
+import org.apache.geronimo.jee.deployment.Artifact;
+import org.apache.geronimo.jee.deployment.Dependencies;
+import org.apache.geronimo.jee.deployment.Dependency;
+import org.apache.geronimo.jee.deployment.Environment;
+import org.apache.geronimo.jee.deployment.ObjectFactory;
+import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractSectionPart;
 import org.apache.geronimo.st.v21.ui.internal.Messages;
-import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
-import org.apache.geronimo.xml.ns.deployment_1.DependenciesType;
-import org.apache.geronimo.xml.ns.deployment_1.DependencyType;
-import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
-import org.apache.geronimo.xml.ns.j2ee.web_2_0.WebAppType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -59,6 +61,8 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 	protected Button suppressDefaultEnv;
 	
 	protected Button sharedLibDepends;
+    
+	protected ObjectFactory deploymentObjectFactory = null;
 
 	public CommonGeneralSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
 		super(parent, toolkit, style, plan);
@@ -118,7 +122,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 
 		createLabel(composite, Messages.artifactType);
 
-		type = toolkit.createText(composite, getArtifactType(), SWT.BORDER);
+		type = toolkit.createText(composite, getArtifact(), SWT.BORDER);
 		type.setLayoutData(createTextFieldGridData());
 		type.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
@@ -190,7 +194,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 	}
 
 	protected String getGroupId() {
-		ArtifactType moduleId = getModuleId(false);
+		Artifact moduleId = getModuleId(false);
 		if (moduleId != null
 				&& moduleId.getGroupId() != null)
 			return moduleId.getGroupId();
@@ -198,7 +202,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 	}
 
 	protected String getArtifactId() {
-		ArtifactType moduleId = getModuleId(false);
+		Artifact moduleId = getModuleId(false);
 		if (moduleId != null
 				&& moduleId.getArtifactId() != null)
 			return moduleId.getArtifactId();
@@ -206,15 +210,15 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 	}
 
 	protected String getVersion() {
-		ArtifactType moduleId = getModuleId(false);
+		Artifact moduleId = getModuleId(false);
 		if (moduleId != null
 				&& moduleId.getVersion() != null)
 			return moduleId.getVersion();
 		return "";
 	}
 
-	protected String getArtifactType() {
-		ArtifactType moduleId = getModuleId(false);
+	protected String getArtifact() {
+		Artifact moduleId = getModuleId(false);
 		if (moduleId != null
 				&& moduleId.getType() != null)
 			return moduleId.getType();
@@ -222,17 +226,17 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 	}
 
 	protected boolean isInverseClassloading() {
-		EnvironmentType type = getEnvironmentType(false);
+		Environment type = getEnvironment(false);
 		return type != null && type.getInverseClassloading() != null;
 	}
 
 	protected boolean isSuppressDefaultEnvironment() {
-		EnvironmentType type = getEnvironmentType(false);
+		Environment type = getEnvironment(false);
 		return type != null && type.getSuppressDefaultEnvironment() != null;
 	}
 	
 	protected boolean isSharedLibDependency() {
-		DependenciesType depType = getDependenciesType(false);
+		Dependencies depType = getDependencies(false);
 		if(depType != null) {
 			return getSharedLibDependency(depType) != null;
 		}
@@ -241,10 +245,10 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 
 	protected void setInverseClassloading(boolean enable) {
 		if (enable) {
-			EnvironmentType type = getEnvironmentType(true);
-			type.setInverseClassloading(getDeploymentObjectFactory().createEmptyType());
+			Environment type = getEnvironment(true);
+			type.setInverseClassloading(getDeploymentObjectFactory().createEmpty());
 		} else {
-			EnvironmentType type = getEnvironmentType(false);
+			Environment type = getEnvironment(false);
 			if (type != null) {
 				type.setInverseClassloading(null);
 			}
@@ -253,10 +257,10 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 
 	protected void setSuppressDefaultEnvironment(boolean enable) {
 		if (enable) {
-			EnvironmentType type = getEnvironmentType(true);
-			type.setSuppressDefaultEnvironment(getDeploymentObjectFactory().createEmptyType());
+			Environment type = getEnvironment(true);
+			type.setSuppressDefaultEnvironment(getDeploymentObjectFactory().createEmpty());
 		} else {
-			EnvironmentType type = getEnvironmentType(false);
+			Environment type = getEnvironment(false);
 			if (type != null) {
 				type.setSuppressDefaultEnvironment(null);
 			}
@@ -265,16 +269,16 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 	
 	protected void setSharedLibDependency(boolean enable) {
 		if (enable) {
-			DependenciesType deptype = getDependenciesType(true);
-			DependencyType sharedLib = getDeploymentObjectFactory().createDependencyType();
+			Dependencies deptype = getDependencies(true);
+			Dependency sharedLib = getDeploymentObjectFactory().createDependency();
 			sharedLib.setGroupId("org.apache.geronimo.configs");
 			sharedLib.setArtifactId("sharedlib");
 			sharedLib.setType("car");
 			deptype.getDependency().add(sharedLib);
 		} else {
-			DependenciesType deptype = getDependenciesType(false);
+			Dependencies deptype = getDependencies(false);
 			if (deptype != null) {
-				ArtifactType artifact = getSharedLibDependency(deptype);
+				Artifact artifact = getSharedLibDependency(deptype);
 				if(artifact != null) {
 					deptype.getDependency().remove(artifact);
 				}
@@ -282,12 +286,12 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 		}
 	}
 	
-	private ArtifactType getSharedLibDependency(DependenciesType dependenciesType) {
-		DependenciesType depType = getDependenciesType(false);
-		List dependencies = depType.getDependency();
-		Iterator i = dependencies.iterator();
+	private Artifact getSharedLibDependency(Dependencies dependencies) {
+		Dependencies depType = getDependencies(false);
+		List dependenciesList = depType.getDependency();
+		Iterator i = dependenciesList.iterator();
 		while(i.hasNext()) {
-			ArtifactType artifact = (ArtifactType) i.next();
+			Artifact artifact = (Artifact) i.next();
 			if("org.apache.geronimo.configs".equals(artifact.getGroupId()) && "sharedlib".equals(artifact.getArtifactId()) && "car".equals(artifact.getType())) {
 				return artifact;
 			}
@@ -295,21 +299,38 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 		return null;
 	}
 
-	private EnvironmentType getEnvironmentType(boolean create) {
-		EnvironmentType type = ((WebAppType) getPlan().getValue()).getEnvironment();
-		if (type == null && create) {
-			type = getDeploymentObjectFactory().createEnvironmentType();
-			((WebAppType) getPlan().getValue()).setEnvironment( type );
+
+	//
+	// Need to support both WebApp and Connector 
+	//
+	private Environment getEnvironment(boolean create) {
+		
+		Environment type = null;
+		Object plan = getPlan().getValue();
+		if ( WebApp.class.isInstance( plan ) ) {
+			type = ((WebApp)plan).getEnvironment();
+			if (type == null && create) {
+                type = getDeploymentObjectFactory().createEnvironment();
+                ((WebApp)plan).setEnvironment( type );
+			}
 		}
-		return type;
+		if ( Connector.class.isInstance( plan ) ) {
+			type = ((Connector)plan).getEnvironment();
+			if (type == null && create) {
+                type = getDeploymentObjectFactory().createEnvironment();
+                ((Connector)plan).setEnvironment( type );
+			}
+		}
+        return type;
+		
 	}
 	
-	private DependenciesType getDependenciesType(boolean create) {
-		EnvironmentType env = getEnvironmentType(create);
+	private Dependencies getDependencies(boolean create) {
+		Environment env = getEnvironment(create);
 		if(env != null) {
-			DependenciesType dep = env.getDependencies();
+			Dependencies dep = env.getDependencies();
 			if (dep == null && create) {
-				dep = getDeploymentObjectFactory().createDependenciesType();
+				dep = getDeploymentObjectFactory().createDependencies();
 				env.setDependencies(dep);
 			}
 			return dep;
@@ -317,12 +338,12 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 		return null;
 	}
 
-	private ArtifactType getModuleId(boolean create) {
-		EnvironmentType type = getEnvironmentType(create);
+	private Artifact getModuleId(boolean create) {
+		Environment type = getEnvironment(create);
 		if (type != null) {
-			ArtifactType moduleId = type.getModuleId();
+			Artifact moduleId = type.getModuleId();
 			if (moduleId == null && create) {
-				moduleId = getDeploymentObjectFactory().createArtifactType();
+				moduleId = getDeploymentObjectFactory().createArtifact();
 				type.setModuleId(moduleId);
 			}
 			return moduleId;
@@ -330,12 +351,11 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 		return null;
 	}
 	
-	org.apache.geronimo.xml.ns.deployment_1.ObjectFactory deploymentObjectFacotry = null;
-	private org.apache.geronimo.xml.ns.deployment_1.ObjectFactory getDeploymentObjectFactory() {
-		if ( deploymentObjectFacotry == null ) {
-			deploymentObjectFacotry = new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory();
+	private org.apache.geronimo.jee.deployment.ObjectFactory getDeploymentObjectFactory() {
+		if ( deploymentObjectFactory == null ) {
+			deploymentObjectFactory = new org.apache.geronimo.jee.deployment.ObjectFactory();
 		}
-		return deploymentObjectFacotry;
+		return deploymentObjectFactory;
 	}
 
 	protected abstract JAXBElement getEnvironmentEReference();

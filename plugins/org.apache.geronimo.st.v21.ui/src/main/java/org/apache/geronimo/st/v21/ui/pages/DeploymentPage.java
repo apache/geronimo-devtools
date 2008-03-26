@@ -18,12 +18,12 @@ package org.apache.geronimo.st.v21.ui.pages;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.ui.sections.DependencySection;
 import org.apache.geronimo.st.v21.ui.sections.GBeanSection;
-import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
@@ -43,7 +43,7 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
 	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
 	 */
 	protected void fillBody(IManagedForm managedForm) {
-		managedForm.addPart(new DependencySection(getDeploymentPlan(), JAXBModelUtils.getEnvironmentType(getDeploymentPlan()), body, toolkit, getStyle()));
+		managedForm.addPart(new DependencySection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan()), body, toolkit, getStyle()));
 		managedForm.addPart(new GBeanSection(getDeploymentPlan(), JAXBModelUtils.getGbeans(getDeploymentPlan()), body, toolkit, getStyle()));
 	}
 

@@ -17,16 +17,16 @@
 package org.apache.geronimo.st.v21.core.jaxb;
 
 import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
-import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
-import org.apache.geronimo.xml.ns.deployment_1.DependenciesType;
-import org.apache.geronimo.xml.ns.deployment_1.DependencyType;
-import org.apache.geronimo.xml.ns.deployment_1.GbeanType;
-import org.apache.geronimo.xml.ns.naming_1.ObjectFactory;
-import org.apache.geronimo.xml.ns.naming_1.ResourceRefType;
-import org.apache.geronimo.xml.ns.security_2.DescriptionType;
-import org.apache.geronimo.xml.ns.security_2.RoleMappingsType;
-import org.apache.geronimo.xml.ns.security_2.RoleType;
-import org.apache.geronimo.xml.ns.security_2.SecurityType;
+import org.apache.geronimo.jee.deployment.Artifact;
+import org.apache.geronimo.jee.deployment.Dependencies;
+import org.apache.geronimo.jee.deployment.Dependency;
+import org.apache.geronimo.jee.deployment.Gbean;
+import org.apache.geronimo.jee.naming.ObjectFactory;
+import org.apache.geronimo.jee.naming.ResourceRef;
+import org.apache.geronimo.jee.security.Description;
+import org.apache.geronimo.jee.security.RoleMappings;
+import org.apache.geronimo.jee.security.Role;
+import org.apache.geronimo.jee.security.Security;
 
 /**
  * @version $Rev$ $Date$
@@ -45,24 +45,24 @@ public class JAXBObjectFactoryImpl implements JAXBObjectFactory {
 	
 	public Object create(Class type) {
 		System.out.println( type );
-		if ( type.equals( ResourceRefType.class ) ) {
-			return (new ObjectFactory()).createResourceRefType();
-		} else if ( type.equals( SecurityType.class ) ) {
-			return (new org.apache.geronimo.xml.ns.security_2.ObjectFactory()).createSecurityType();
-		} else if ( type.equals( RoleMappingsType.class ) ) {
-			return (new org.apache.geronimo.xml.ns.security_2.ObjectFactory()).createRoleMappingsType();
-		} else if ( type.equals( DescriptionType.class ) ) {
-			return (new org.apache.geronimo.xml.ns.security_2.ObjectFactory()).createDescriptionType();
-		} else if ( type.equals( RoleType.class ) ) {
-			return (new org.apache.geronimo.xml.ns.security_2.ObjectFactory()).createRoleType();
-		} else if ( type.equals( GbeanType.class ) ) {
-			return (new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory()).createGbeanType();
-		} else if ( type.equals( ArtifactType.class ) ) {
-			return (new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory()).createArtifactType();
-		} else if ( type.equals( DependenciesType.class ) ) {
-			return (new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory()).createDependenciesType();
-		} else if ( type.equals( DependencyType.class ) ) {
-			return (new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory()).createDependencyType();
+		if ( type.equals( ResourceRef.class ) ) {
+			return (new ObjectFactory()).createResourceRef();
+		} else if ( type.equals( Security.class ) ) {
+			return (new org.apache.geronimo.jee.security.ObjectFactory()).createSecurity();
+		} else if ( type.equals( RoleMappings.class ) ) {
+			return (new org.apache.geronimo.jee.security.ObjectFactory()).createRoleMappings();
+		} else if ( type.equals( Description.class ) ) {
+			return (new org.apache.geronimo.jee.security.ObjectFactory()).createDescription();
+		} else if ( type.equals( Role.class ) ) {
+			return (new org.apache.geronimo.jee.security.ObjectFactory()).createRole();
+		} else if ( type.equals( Gbean.class ) ) {
+			return (new org.apache.geronimo.jee.deployment.ObjectFactory()).createGbean();
+		} else if ( type.equals( Artifact.class ) ) {
+			return (new org.apache.geronimo.jee.deployment.ObjectFactory()).createArtifact();
+		} else if ( type.equals( Dependencies.class ) ) {
+			return (new org.apache.geronimo.jee.deployment.ObjectFactory()).createDependencies();
+		} else if ( type.equals( Dependency.class ) ) {
+			return (new org.apache.geronimo.jee.deployment.ObjectFactory()).createDependency();
 		}
 		
 		return null;

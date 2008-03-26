@@ -18,17 +18,17 @@ package org.apache.geronimo.st.v21.ui.sections;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.xml.ns.j2ee.ejb.openejb_2.OpenejbJarType;
+import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class OpenEjbJarGeneralSection extends CommonGeneralSection {
 
-	OpenejbJarType plan;
+	OpenejbJar plan;
 
 	public OpenEjbJarGeneralSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
 		super(parent, toolkit, style, plan);
-		this.plan = (OpenejbJarType) plan.getValue();
+		this.plan = (OpenejbJar) plan.getValue();
 		createClient();
 	}
 

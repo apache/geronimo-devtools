@@ -21,13 +21,13 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.wizards.ResourceRefWizard;
-import org.apache.geronimo.xml.ns.j2ee.web_2_0.WebAppType;
-import org.apache.geronimo.xml.ns.naming_1.ResourceRefType;
+import org.apache.geronimo.jee.naming.ResourceRef;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
@@ -102,7 +102,7 @@ public class ResourceRefSection extends AbstractTableSection {
 	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
 	 */
 	public Class getTableEntryObjectType() {
-		return ResourceRefType.class;
+		return ResourceRef.class;
 	}
 	
 	public List getObjectContainer() {
@@ -121,14 +121,14 @@ public class ResourceRefSection extends AbstractTableSection {
 					return new String[] { "" };
 				}
 				JAXBElement plan = (JAXBElement)inputElement;
-				if (plan.getDeclaredType().equals(WebAppType.class)) {
-					return ((WebAppType)plan.getValue()).getResourceRef().toArray();
+				if (plan.getDeclaredType().equals(WebApp.class)) {
+					return ((WebApp)plan.getValue()).getResourceRef().toArray();
 				}
 				return new String[] { "" };
 			}
 			public String getColumnText(Object element, int columnIndex) {
-				if (ResourceRefType.class.isInstance(element)) {
-					ResourceRefType resourceRef = (ResourceRefType)element;
+				if (ResourceRef.class.isInstance(element)) {
+					ResourceRef resourceRef = (ResourceRef)element;
 					switch (columnIndex) {
 					case 0: return resourceRef.getRefName();
 					case 1: return resourceRef.getResourceLink();
