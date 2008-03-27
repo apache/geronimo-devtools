@@ -18,17 +18,17 @@ package org.apache.geronimo.st.v21.ui.sections;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.xml.ns.j2ee.application_2.ApplicationType;
+import org.apache.geronimo.jee.application.Application;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class AppGeneralSection extends CommonGeneralSection {
 
-	ApplicationType plan;
+	Application plan;
 
 	public AppGeneralSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
 		super(parent, toolkit, style, plan);
-		this.plan = (ApplicationType) plan.getValue();
+		this.plan = (Application) plan.getValue();
 		createClient();
 	}
 

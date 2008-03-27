@@ -43,9 +43,10 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  * 
  * <ol>
  *      <li>geronimo-application.xml
+ *      <li>geronimo-ra.xml
+ *      <li>geronimo-service.xml
  *      <li>geronimo-web.xml
  *      <li>openejb-jar.xml
- *      <li>geronimo-ra.xml
  * </ol>
  * 
  * Remaining TODO Task(s):
@@ -54,7 +55,6 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  *      <li>JUnit testcases
  *      <li>JAXBElement warning messages
  *      <li>How to invoke Service Deployment Plan
- *      <li>How to invoke App Client Deployment Plan
  * </ol>
  * 
  * @version $Rev: 509704 $ $Date: 2007-02-20 13:42:24 -0500 (Tue, 20 Feb 2007) $

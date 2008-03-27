@@ -30,10 +30,7 @@ import javax.xml.bind.annotation.XmlElementRefs;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.geronimo.jee.application.AbstractSecurity;
-//port org.apache.geronimo.jee.application.StringType;
-//port org.apache.geronimo.jee.deployment.AbstractService;
 import org.apache.geronimo.jee.deployment.Environment;
-//port org.apache.geronimo.jee.deployment.Gbean;
 import org.apache.geronimo.jee.naming.AbstractNamingEntry;
 import org.apache.geronimo.jee.naming.EjbLocalRef;
 import org.apache.geronimo.jee.naming.EjbRef;
@@ -42,8 +39,7 @@ import org.apache.geronimo.jee.naming.MessageDestination;
 import org.apache.geronimo.jee.naming.ResourceRef;
 import org.apache.geronimo.jee.naming.ResourceEnvRef;
 import org.apache.geronimo.jee.naming.ServiceRef;
-
-import com.sun.java.xml.ns.persistence.Persistence;
+import org.apache.geronimo.jee.persistence.Persistence;
 
 
 /**
