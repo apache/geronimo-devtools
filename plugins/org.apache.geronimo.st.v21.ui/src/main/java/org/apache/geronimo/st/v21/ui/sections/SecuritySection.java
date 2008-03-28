@@ -20,17 +20,16 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.jee.security.Description;
+import org.apache.geronimo.jee.security.Role;
+import org.apache.geronimo.jee.security.RoleMappings;
+import org.apache.geronimo.jee.security.Security;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.wizards.SecurityRoleWizard;
-import org.apache.geronimo.jee.naming.ResourceRef;
-import org.apache.geronimo.jee.security.Description;
-import org.apache.geronimo.jee.security.RoleMappings;
-import org.apache.geronimo.jee.security.Role;
-import org.apache.geronimo.jee.security.Security;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;

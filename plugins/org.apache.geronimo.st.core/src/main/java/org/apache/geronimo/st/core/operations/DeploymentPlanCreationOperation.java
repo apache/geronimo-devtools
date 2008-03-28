@@ -69,6 +69,8 @@ public abstract class DeploymentPlanCreationOperation extends
 			createOpenEjbDeploymentPlan(GeronimoUtils.getOpenEjbDeploymentPlanFile(comp));
 		} else if (IModuleConstants.JST_EAR_MODULE.equals(type)) {
 			createGeronimoApplicationDeploymentPlan(GeronimoUtils.getApplicationDeploymentPlanFile(comp));
+		} else if (IModuleConstants.JST_APPCLIENT_MODULE.equals(type)) {
+			createGeronimoApplicationClientDeploymentPlan(GeronimoUtils.getApplicationClientDeploymentPlanFile(comp));
 		} else if (IModuleConstants.JST_CONNECTOR_MODULE.equals(type)) {
 			createConnectorDeploymentPlan(GeronimoUtils.getConnectorDeploymentPlanFile(comp));
 		} else if (IModuleConstants.JST_UTILITY_MODULE.equals(type)) {
@@ -89,6 +91,10 @@ public abstract class DeploymentPlanCreationOperation extends
 		return null;
 	}
 
+	public JAXBElement createGeronimoApplicationClientDeploymentPlan(IFile file) {
+		return null;
+	}
+
 	public JAXBElement createConnectorDeploymentPlan(IFile file) {
 		return null;
 	}
@@ -96,4 +102,5 @@ public abstract class DeploymentPlanCreationOperation extends
 	public JAXBElement createServiceDeploymentPlan(IFile file) {
 		return null;
 	}
+	
 }

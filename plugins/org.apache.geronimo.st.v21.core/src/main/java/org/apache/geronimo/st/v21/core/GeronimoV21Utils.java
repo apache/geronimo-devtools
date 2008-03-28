@@ -19,6 +19,7 @@ package org.apache.geronimo.st.v21.core;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.application.Application;
+import org.apache.geronimo.jee.applicationclient.ApplicationClient;
 import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.jee.deployment.Artifact;
 import org.apache.geronimo.jee.deployment.Environment;
@@ -204,6 +205,17 @@ public class GeronimoV21Utils extends GeronimoUtils {
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getApplicationDeploymentPlan", null);
+        return null;
+    }
+
+    public static JAXBElement getApplicationClientDeploymentPlan(IFile file) {
+        Trace.tracePoint("ENTRY", "GeronimoV21Utils.getApplicationClientDeploymentPlan", file);
+
+        if (file.getName().equals(APP_CLIENT_PLAN_NAME) && file.exists()) {
+        	return JAXBUtils.unmarshalDeploymentPlan(file);
+        }
+
+        Trace.tracePoint("EXIT", "GeronimoV21Utils.getApplicationClientDeploymentPlan", null);
         return null;
     }
 

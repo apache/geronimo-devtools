@@ -49,6 +49,14 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader#addApplicationPlanPages(org.eclipse.ui.forms.editor.FormEditor)
+	 */
+	public void addApplicationClientPlanPages(FormEditor editor) throws PartInitException {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader#addConnectorPlanPages(org.eclipse.ui.forms.editor.FormEditor)
 	 */
 	public void addConnectorPlanPages(FormEditor editor) throws PartInitException {

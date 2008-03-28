@@ -691,6 +691,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 				modulePath = modulePath.addFileExtension("rar");
 			} else if (GeronimoUtils.isEarModule(workingModule)) {
 				modulePath = modulePath.addFileExtension("ear");
+			} else if (GeronimoUtils.isAppClientModule(workingModule)) {
+				modulePath = modulePath.addFileExtension("jar");
 			}
 		}
 

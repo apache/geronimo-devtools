@@ -46,6 +46,7 @@ public class JAXBUtils {
                     "org.apache.geronimo.jee.openejb:" +
                     "org.apache.geronimo.jee.web:" +
                     "org.apache.geronimo.jee.application:" +
+                    "org.apache.geronimo.jee.applicationclient:" +
                     "org.apache.geronimo.jee.deployment:" +
                     "org.apache.geronimo.jee.naming:" +
                     "org.apache.geronimo.jee.security", Activator.class.getClassLoader() );

@@ -16,9 +16,6 @@
  */
 package org.apache.geronimo.st.core;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-
 import javax.enterprise.deploy.shared.ModuleType;
 
 import org.apache.geronimo.st.core.internal.Trace;
@@ -46,6 +43,8 @@ public class GeronimoUtils {
 
 	public static final String APP_PLAN_NAME = "geronimo-application.xml";
 
+	public static final String APP_CLIENT_PLAN_NAME = "geronimo-application-client.xml";
+
 	public static final String CONNECTOR_PLAN_NAME = "geronimo-ra.xml";
 	
 	public static final String SERVICE_PLAN_NAME = "geronimo-service.xml";
@@ -60,6 +59,10 @@ public class GeronimoUtils {
 
 	public static boolean isEarModule(IModule module) {
 		return "jst.ear".equals(module.getModuleType().getId());
+	}
+
+	public static boolean isAppClientModule(IModule module) {
+		return "jst.appclient".equals(module.getModuleType().getId());
 	}
 
 	public static boolean isRARModule(IModule module) {
@@ -95,6 +98,8 @@ public class GeronimoUtils {
 			return getOpenEjbDeploymentPlanFile(comp);
 		} else if (IModuleConstants.JST_EAR_MODULE.equals(type)) {
 			return getApplicationDeploymentPlanFile(comp);
+		} else if (IModuleConstants.JST_APPCLIENT_MODULE.equals(type)) {
+			return getApplicationClientDeploymentPlanFile(comp);
 		} else if (IModuleConstants.JST_CONNECTOR_MODULE.equals(type)) {
 			return getConnectorDeploymentPlanFile(comp);
 		} else if (IModuleConstants.JST_UTILITY_MODULE.equals(type)) {
@@ -119,6 +124,11 @@ public class GeronimoUtils {
 
 	public static IFile getApplicationDeploymentPlanFile(IVirtualComponent comp) {
 		IPath deployPlanPath = comp.getRootFolder().getUnderlyingFolder().getProjectRelativePath().append("META-INF").append(APP_PLAN_NAME);
+		return comp.getProject().getFile(deployPlanPath);
+	}
+
+	public static IFile getApplicationClientDeploymentPlanFile(IVirtualComponent comp) {
+		IPath deployPlanPath = comp.getRootFolder().getUnderlyingFolder().getProjectRelativePath().append("META-INF").append(APP_CLIENT_PLAN_NAME);
 		return comp.getProject().getFile(deployPlanPath);
 	}
 

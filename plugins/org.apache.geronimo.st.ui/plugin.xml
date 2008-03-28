@@ -150,15 +150,26 @@
         </section>
     </extension>
     
+    
+    <!-- 
+     |
+     | Define the Web editor class for the various Geronimo-specific XML files
+     | (except for geronimo-application-client.xml)
+     |   
+     -->
     <extension point="org.eclipse.ui.editors">
         <editor class="org.apache.geronimo.st.ui.editors.SharedDeploymentPlanEditor"
             default="true" 
-            filenames="geronimo-web.xml,geronimo-application.xml,openejb-jar.xml,geronimo-ra.xml"
+            filenames="geronimo-web.xml,
+                       geronimo-application.xml,    
+                       openejb-jar.xml,
+                       geronimo-ra.xml"
             icon="icons/obj16/littleG.gif"
             id="org.apache.geronimo.ui.editors.WebEditor" 
             name="%deploymentPlanEditorName">
         </editor>
     </extension>
+    
     
   	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
     	<launchConfigurationTypeImage

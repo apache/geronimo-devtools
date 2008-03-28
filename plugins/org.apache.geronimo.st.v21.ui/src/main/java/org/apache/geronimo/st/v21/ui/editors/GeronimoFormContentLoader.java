@@ -66,6 +66,18 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader#addApplicationPlanPages(org.eclipse.ui.forms.editor.FormEditor)
+	 */
+	public void addApplicationClientPlanPages(FormEditor editor) throws PartInitException {
+		editor.addPage(new AppGeneralPage(editor, "appgeneralpage", CommonMessages.editorTabGeneral));
+		editor.addPage(new SecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity, null));
+		editor.addPage(getApplicationDeploymentPage(editor));
+	}
+
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader#addOpenEjbPlanPages()
 	 */
 	public void addOpenEjbPlanPages(FormEditor editor) throws PartInitException {
@@ -139,6 +151,13 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
 		DeploymentPage formPage = createDeploymentFormPage(editor);
 //		formPage.environment = ConnectorFactory.eINSTANCE.getConnectorPackage().getConnectorType_Environment();
 //		formPage.gbeanERef = ConnectorFactory.eINSTANCE.getConnectorPackage().getConnectorType_Gbean();
+		return formPage;
+	}
+
+	protected FormPage getApplicationClientDeploymentPage(FormEditor editor) {
+		DeploymentPage formPage = createDeploymentFormPage(editor);
+//		formPage.environment = ApplicationFactory.eINSTANCE.getApplicationPackage().getApplicationType_Environment();
+//		formPage.gbeanERef = ApplicationFactory.eINSTANCE.getApplicationPackage().getApplicationType_Gbean();
 		return formPage;
 	}
 

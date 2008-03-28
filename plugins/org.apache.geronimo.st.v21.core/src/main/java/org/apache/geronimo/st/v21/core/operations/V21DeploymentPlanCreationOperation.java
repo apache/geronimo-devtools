@@ -19,6 +19,7 @@ package org.apache.geronimo.st.v21.core.operations;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.application.Application;
+import org.apache.geronimo.jee.applicationclient.ApplicationClient;
 import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.jee.deployment.Artifact;
 import org.apache.geronimo.jee.deployment.Dependencies;
@@ -43,18 +44,11 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  * 
  * <ol>
  *      <li>geronimo-application.xml
+ *      <li>geronimo-application-client.xml
  *      <li>geronimo-ra.xml
  *      <li>geronimo-service.xml
  *      <li>geronimo-web.xml
  *      <li>openejb-jar.xml
- * </ol>
- * 
- * Remaining TODO Task(s):
- * 
- * <ol>
- *      <li>JUnit testcases
- *      <li>JAXBElement warning messages
- *      <li>How to invoke Service Deployment Plan
  * </ol>
  * 
  * @version $Rev: 509704 $ $Date: 2007-02-20 13:42:24 -0500 (Tue, 20 Feb 2007) $
@@ -90,6 +84,8 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 				applicationFactory.createApplication(application));
 		return applicationFactory.createApplication(application);
 	}
+
+	
 
 	
 	/*
@@ -173,6 +169,25 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	}
 
 	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createGeronimoApplicationDeploymentPlan(org.eclipse.core.resources.IFile)
+	 */
+	public JAXBElement createGeronimoApplicationClientDeploymentPlan(IFile dpFile) {
+		Trace.tracePoint("Entry","V21DeploymentPlanCreationOperation.createGeronimoApplicationClientDeploymentPlan", dpFile);
+
+		org.apache.geronimo.jee.applicationclient.ObjectFactory applicationClientFactory = new org.apache.geronimo.jee.applicationclient.ObjectFactory();
+		ApplicationClient applicationClient = applicationClientFactory.createApplicationClient();
+
+        applicationClient.setServerEnvironment(getConfigEnvironment());
+
+		JAXBElement jaxbElement = applicationClientFactory.createApplicationClient(applicationClient);
+		JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
+
+		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createGeronimoApplicationClientDeploymentPlan", applicationClientFactory.createApplicationClient(applicationClient));
+		return applicationClientFactory.createApplicationClient(applicationClient);
+	}
 	public Environment getConfigEnvironment() {
         Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.getConfigEnvironment");
 		

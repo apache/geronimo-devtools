@@ -49,6 +49,8 @@ public abstract class AbstractGeronimoFormContentLoader implements IGeronimoForm
 				addConnectorPlanPages(editor);
 			} else if(GeronimoUtils.APP_PLAN_NAME.equals(planFileName)) {
 				addApplicationPlanPages(editor);
+			} else if(GeronimoUtils.APP_CLIENT_PLAN_NAME.equals(planFileName)) {
+				addApplicationClientPlanPages(editor);
 			}
 		}
 	}
@@ -60,6 +62,8 @@ public abstract class AbstractGeronimoFormContentLoader implements IGeronimoForm
 	abstract public void addConnectorPlanPages(FormEditor editor) throws PartInitException;
 	
 	abstract public void addApplicationPlanPages(FormEditor editor) throws PartInitException;
+
+	abstract public void addApplicationClientPlanPages(FormEditor editor) throws PartInitException;
 
 	public void saveDeploymentPlan(JAXBElement deploymentPlan, IFile file) throws IOException, JAXBException {
 		JAXBUtils.marshalDeploymentPlan(deploymentPlan, file);
