@@ -29,7 +29,9 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.internal.Trace;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 
 /**
@@ -68,13 +70,14 @@ public class JAXBUtils {
 			if(file.exists()) {
 				file.setContents(inBuffer, true, false, null);
 			} else {
+				prepareFolder(file.getParent());
 				file.create(inBuffer, true, null);
 			}
 		} catch (JAXBException jaxbException) {
-			Trace.tracePoint("JAXBException", "JAXBUtils.marshallToIFile()", file.getFullPath());
+			Trace.tracePoint("JAXBException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
 			jaxbException.printStackTrace();
 		} catch (CoreException coreException) {
-			Trace.tracePoint("CoreException", "JAXBUtils.marshallToIFile()", file.getFullPath());
+			Trace.tracePoint("CoreException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
 			coreException.printStackTrace();
 		}
 	}
@@ -85,11 +88,22 @@ public class JAXBUtils {
 			JAXBElement plan = (JAXBElement) unmarshaller.unmarshal(file.getContents());
 			return plan;
 		} catch (JAXBException e) {
+			Trace.tracePoint("JAXBException", "JAXBUtils.unmarshalDeploymentPlan()", file.getFullPath());
 			e.printStackTrace();
 		} catch (CoreException e) {
+			Trace.tracePoint("CoreException", "JAXBUtils.unmarshalDeploymentPlan()", file.getFullPath());
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private static void prepareFolder(IContainer folder) throws CoreException {
+		if (folder.exists() || !(folder instanceof IFolder)) {
+			return;
+		}
+		// prepare the upper level folders recursively
+		prepareFolder(folder.getParent());
+		((IFolder) folder).create(true, true, null);
 	}
 
 	public static Object getValue( Object element, String name ) {
