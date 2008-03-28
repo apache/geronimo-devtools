@@ -27,6 +27,7 @@ import org.apache.geronimo.jee.deployment.Dependencies;
 import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.jee.deployment.ObjectFactory;
+import org.apache.geronimo.jee.application.Application;
 import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractSectionPart;
@@ -304,25 +305,29 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 	// Need to support both WebApp and Connector 
 	//
 	private Environment getEnvironment(boolean create) {
-		
 		Environment type = null;
 		Object plan = getPlan().getValue();
-		if ( WebApp.class.isInstance( plan ) ) {
-			type = ((WebApp)plan).getEnvironment();
+		if (WebApp.class.isInstance(plan)) {
+			type = ((WebApp) plan).getEnvironment();
 			if (type == null && create) {
-                type = getDeploymentObjectFactory().createEnvironment();
-                ((WebApp)plan).setEnvironment( type );
+				type = getDeploymentObjectFactory().createEnvironment();
+				((WebApp) plan).setEnvironment(type);
+			}
+		} else if (Connector.class.isInstance(plan)) {
+			type = ((Connector) plan).getEnvironment();
+			if (type == null && create) {
+				type = getDeploymentObjectFactory().createEnvironment();
+				((Connector) plan).setEnvironment(type);
+			}
+		} else if (Application.class.isInstance(plan)) {
+			type = ((Application) plan).getEnvironment();
+			if (type == null && create) {
+				type = getDeploymentObjectFactory().createEnvironment();
+				((Application) plan).setEnvironment(type);
 			}
 		}
-		if ( Connector.class.isInstance( plan ) ) {
-			type = ((Connector)plan).getEnvironment();
-			if (type == null && create) {
-                type = getDeploymentObjectFactory().createEnvironment();
-                ((Connector)plan).setEnvironment( type );
-			}
-		}
-        return type;
-		
+		// TODO add support for open-ejb & app-client clients
+		return type;
 	}
 	
 	private Dependencies getDependencies(boolean create) {
