@@ -20,10 +20,12 @@ package org.apache.geronimo.jee.connector;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
 import org.apache.geronimo.jee.naming.GbeanLocator;
 
 
@@ -135,7 +137,7 @@ public class ResourceadapterInstance
      * 
      * @return
      *     possible object is
-     *     {@link GbeanLocatorType }
+     *     {@link GbeanLocator}
      *     
      */
     public GbeanLocator getWorkmanager() {
@@ -150,7 +152,7 @@ public class ResourceadapterInstance
      * 
      * @param value
      *     allowed object is
-     *     {@link GbeanLocatorType }
+     *     {@link GbeanLocator}
      *     
      */
     public void setWorkmanager(GbeanLocator value) {

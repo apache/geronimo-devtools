@@ -26,7 +26,8 @@ import javax.xml.namespace.QName;
 /**
  * This object contains factory methods for each 
  * Java content interface and Java element interface 
- * generated in the org.apache.geronimo.jee.application package. 
+ * generated in the <strong>org.apache.geronimo.jee.application</strong> package. 
+ * 
  * <p>An ObjectFactory allows you to programatically 
  * construct new instances of the Java representation 
  * for XML content. The Java representation of XML 
@@ -45,7 +46,8 @@ public class ObjectFactory {
     private final static QName _Clustering_QNAME = new QName("http://geronimo.apache.org/xml/ns/j2ee/application-2.0", "clustering");
 
     /**
-     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: org.apache.geronimo.jee.application
+     * Create a new ObjectFactory that can be used to create new instances of schema 
+     * derived classes for package: org.apache.geronimo.jee.application
      * 
      */
     public ObjectFactory() {
@@ -55,7 +57,7 @@ public class ObjectFactory {
      * Create an instance of {@link StringType }
      * 
      */
-    public StringType createString() {
+    public StringType createStringType() {
         return new StringType();
     }
 

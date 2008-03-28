@@ -30,8 +30,19 @@ import javax.xml.bind.annotation.XmlElementRefs;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.geronimo.jee.application.AbstractSecurity;
+import org.apache.geronimo.jee.deployment.AbstractService;
 import org.apache.geronimo.jee.deployment.Environment;
+import org.apache.geronimo.jee.deployment.Gbean;
+import org.apache.geronimo.jee.naming.AbstractNamingEntry;
+import org.apache.geronimo.jee.naming.EjbLocalRef;
+import org.apache.geronimo.jee.naming.EjbRef;
+import org.apache.geronimo.jee.naming.GbeanRef;
 import org.apache.geronimo.jee.naming.MessageDestination;
+import org.apache.geronimo.jee.naming.PersistenceContextRef;
+import org.apache.geronimo.jee.naming.PersistenceUnitRef;
+import org.apache.geronimo.jee.naming.ResourceEnvRef;
+import org.apache.geronimo.jee.naming.ResourceRef;
+import org.apache.geronimo.jee.naming.ServiceRef;
 import org.apache.geronimo.jee.persistence.Persistence;
 
 
@@ -112,7 +123,7 @@ public class GeronimoEjbJar
      * 
      * @return
      *     possible object is
-     *     {@link EnvironmentType }
+     *     {@link Environment}
      *     
      */
     public Environment getEnvironment() {
@@ -124,7 +135,7 @@ public class GeronimoEjbJar
      * 
      * @param value
      *     allowed object is
-     *     {@link EnvironmentType }
+     *     {@link Environment}
      *     
      */
     public void setEnvironment(Environment value) {
@@ -173,15 +184,15 @@ public class GeronimoEjbJar
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link JAXBElement }{@code <}{@link ServiceRefType }{@code >}
-     * {@link JAXBElement }{@code <}{@link ResourceEnvRefType }{@code >}
-     * {@link JAXBElement }{@code <}{@link EjbLocalRefType }{@code >}
-     * {@link JAXBElement }{@code <}{@link ResourceRefType }{@code >}
-     * {@link JAXBElement }{@code <}{@link PersistenceContextRefType }{@code >}
-     * {@link JAXBElement }{@code <}{@link EjbRefType }{@code >}
-     * {@link JAXBElement }{@code <}{@link AbstractNamingEntryType }{@code >}
-     * {@link JAXBElement }{@code <}{@link PersistenceUnitRefType }{@code >}
-     * {@link JAXBElement }{@code <}{@link GbeanRefType }{@code >}
+     * {@link JAXBElement }{@code <}{@link ServiceRef}{@code >}
+     * {@link JAXBElement }{@code <}{@link ResourceEnvRef}{@code >}
+     * {@link JAXBElement }{@code <}{@link EjbLocalRef}{@code >}
+     * {@link JAXBElement }{@code <}{@link ResourceRef}{@code >}
+     * {@link JAXBElement }{@code <}{@link PersistenceContextRef}{@code >}
+     * {@link JAXBElement }{@code <}{@link EjbRef}{@code >}
+     * {@link JAXBElement }{@code <}{@link AbstractNamingEntry}{@code >}
+     * {@link JAXBElement }{@code <}{@link PersistenceUnitRef}{@code >}
+     * {@link JAXBElement }{@code <}{@link GbeanRef}{@code >}
      * 
      * 
      */
@@ -210,7 +221,7 @@ public class GeronimoEjbJar
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link MessageDestinationType }
+     * {@link MessageDestination}
      * 
      * 
      */
@@ -284,10 +295,8 @@ public class GeronimoEjbJar
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link org.apache.geronimo.xml.ns.security_2.SecurityType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link org.apache.geronimo.xml.ns.security_1.SecurityType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link org.apache.geronimo.xml.ns.subject_info_1.SecurityType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractSecurityType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link org.apache.geronimo.jee.security.Security}{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractSecurity}{@code >}
      *     
      */
     public JAXBElement<? extends AbstractSecurity> getSecurity() {
@@ -299,10 +308,8 @@ public class GeronimoEjbJar
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link org.apache.geronimo.xml.ns.security_2.SecurityType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link org.apache.geronimo.xml.ns.security_1.SecurityType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link org.apache.geronimo.xml.ns.subject_info_1.SecurityType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link AbstractSecurityType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link org.apache.geronimo.jee.security.Security}{@code >}
+     *     {@link JAXBElement }{@code <}{@link AbstractSecurity}{@code >}
      *     
      */
     public void setSecurity(JAXBElement<? extends AbstractSecurity> value) {
@@ -328,8 +335,8 @@ public class GeronimoEjbJar
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link Persistence }
-     * {@link JAXBElement }{@code <}{@link GbeanType }{@code >}
-     * {@link JAXBElement }{@code <}{@link AbstractServiceType }{@code >}
+     * {@link JAXBElement }{@code <}{@link Gbean}{@code >}
+     * {@link JAXBElement }{@code <}{@link AbstractService}{@code >}
      * 
      * 
      */

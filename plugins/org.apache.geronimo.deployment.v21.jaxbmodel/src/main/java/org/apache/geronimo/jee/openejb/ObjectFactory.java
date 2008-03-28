@@ -21,6 +21,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
 import javax.xml.namespace.QName;
+
 import org.apache.geronimo.jee.naming.EjbLocalRef;
 import org.apache.geronimo.jee.naming.EjbRef;
 import org.apache.geronimo.jee.naming.ResourceEnvRef;
@@ -29,18 +30,18 @@ import org.apache.geronimo.jee.naming.ServiceRef;
 
 
 /**
- * This object contains factory methods for each 
- * Java content interface and Java element interface 
- * generated in the org.apache.geronimo.jee.openejb package. 
- * <p>An ObjectFactory allows you to programatically 
- * construct new instances of the Java representation 
- * for XML content. The Java representation of XML 
- * content can consist of schema derived interfaces 
- * and classes representing the binding of schema 
- * type definitions, element declarations and model 
- * groups.  Factory methods for each of these are 
- * provided in this class.
+ * This object contains factory methods for each
+ * Java content interface and Java element interface
+ * generated in the <strong>org.apache.geronimo.jee.openejb</strong> package.
  * 
+ * <p>An ObjectFactory allows you to programatically
+ * construct new instances of the Java representation
+ * for XML content. The Java representation of XML
+ * content can consist of schema derived interfaces
+ * and classes representing the binding of schema
+ * type definitions, element declarations and model
+ * groups.  Factory methods for each of these are
+ * provided in this class.
  */
 @XmlRegistry
 public class ObjectFactory {
@@ -109,7 +110,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link EjbLocalRefType }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link EjbLocalRef}{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://geronimo.apache.org/xml/ns/naming-1.2", name = "ejb-local-ref", scope = GeronimoEjbJar.class)
@@ -118,7 +119,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ResourceEnvRefType }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ResourceEnvRef}{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://geronimo.apache.org/xml/ns/naming-1.2", name = "resource-env-ref", scope = GeronimoEjbJar.class)
@@ -127,7 +128,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ResourceRefType }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ResourceRef}{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://geronimo.apache.org/xml/ns/naming-1.2", name = "resource-ref", scope = GeronimoEjbJar.class)
@@ -136,7 +137,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link EjbRefType }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link EjbRef}{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://geronimo.apache.org/xml/ns/naming-1.2", name = "ejb-ref", scope = GeronimoEjbJar.class)
@@ -145,7 +146,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ServiceRefType }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ServiceRef}{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://geronimo.apache.org/xml/ns/naming-1.2", name = "service-ref", scope = GeronimoEjbJar.class)

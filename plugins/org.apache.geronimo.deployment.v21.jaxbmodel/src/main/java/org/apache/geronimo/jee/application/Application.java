@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.apache.geronimo.jee.deployment.AbstractService;
 import org.apache.geronimo.jee.deployment.Environment;
+import org.apache.geronimo.jee.deployment.Gbean;
 
 
 /**
@@ -97,7 +98,7 @@ public class Application
      * 
      * @return
      *     possible object is
-     *     {@link EnvironmentType }
+     *     {@link Environment}
      *     
      */
     public Environment getEnvironment() {
@@ -112,7 +113,7 @@ public class Application
      * 
      * @param value
      *     allowed object is
-     *     {@link EnvironmentType }
+     *     {@link Environment}
      *     
      */
     public void setEnvironment(Environment value) {
@@ -188,10 +189,8 @@ public class Application
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link org.apache.geronimo.xml.ns.security_2.SecurityType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link org.apache.geronimo.xml.ns.security_1.SecurityType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractSecurity }{@code >}
-     *     {@link JAXBElement }{@code <}{@link org.apache.geronimo.xml.ns.subject_info_1.SecurityType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link org.apache.geronimo.jee.security.Security}{@code >}
      *     
      */
     public JAXBElement<? extends AbstractSecurity> getSecurity() {
@@ -209,10 +208,8 @@ public class Application
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link org.apache.geronimo.xml.ns.security_2.SecurityType }{@code >}
-     *     {@link JAXBElement }{@code <}{@link org.apache.geronimo.xml.ns.security_1.SecurityType }{@code >}
      *     {@link JAXBElement }{@code <}{@link AbstractSecurity }{@code >}
-     *     {@link JAXBElement }{@code <}{@link org.apache.geronimo.xml.ns.subject_info_1.SecurityType }{@code >}
+     *     {@link JAXBElement }{@code <}{@link org.apache.geronimo.jee.security.Security}{@code >}
      *     
      */
     public void setSecurity(JAXBElement<? extends AbstractSecurity> value) {
@@ -240,8 +237,8 @@ public class Application
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link JAXBElement }{@code <}{@link GbeanType }{@code >}
-     * {@link JAXBElement }{@code <}{@link AbstractServiceType }{@code >}
+     * {@link JAXBElement }{@code <}{@link Gbean}{@code >}
+     * {@link JAXBElement }{@code <}{@link AbstractService}{@code >}
      * 
      * 
      */

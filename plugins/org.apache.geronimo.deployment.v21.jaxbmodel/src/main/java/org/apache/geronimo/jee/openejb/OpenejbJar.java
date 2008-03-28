@@ -18,10 +18,12 @@
 package org.apache.geronimo.jee.openejb;
 
 import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlType;
+
 import org.w3c.dom.Element;
 
 

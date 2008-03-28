@@ -20,14 +20,17 @@ package org.apache.geronimo.jee.connector;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlType;
+
 import org.apache.geronimo.jee.deployment.AbstractService;
 import org.apache.geronimo.jee.deployment.Environment;
+import org.apache.geronimo.jee.deployment.Gbean;
 
 
 /**
@@ -88,7 +91,7 @@ public class Connector
      * 
      * @return
      *     possible object is
-     *     {@link EnvironmentType }
+     *     {@link Environment}
      *     
      */
     public Environment getEnvironment() {
@@ -103,7 +106,7 @@ public class Connector
      * 
      * @param value
      *     allowed object is
-     *     {@link EnvironmentType }
+     *     {@link Environment}
      *     
      */
     public void setEnvironment(Environment value) {
@@ -189,8 +192,8 @@ public class Connector
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link JAXBElement }{@code <}{@link GbeanType }{@code >}
-     * {@link JAXBElement }{@code <}{@link AbstractServiceType }{@code >}
+     * {@link JAXBElement }{@code <}{@link Gbean}{@code >}
+     * {@link JAXBElement }{@code <}{@link AbstractService}{@code >}
      * 
      * 
      */

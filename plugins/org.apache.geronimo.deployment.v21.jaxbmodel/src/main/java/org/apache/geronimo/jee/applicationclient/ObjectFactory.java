@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.geronimo.jee.web;
+package org.apache.geronimo.jee.applicationclient;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;
@@ -26,7 +26,7 @@ import javax.xml.namespace.QName;
 /**
  * This object contains factory methods for each
  * Java content interface and Java element interface
- * generated in the <strong>org.apache.geronimo.jee.web</strong> package.
+ * generated in the <strong>org.apache.geronimo.jee.applicationclient</strong> package.
  * 
  * <p>An ObjectFactory allows you to programatically
  * construct new instances of the Java representation
@@ -40,39 +40,39 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _WebApp_QNAME = new QName("http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1", "web-app");
+    private final static QName _ApplicationClient_QNAME = new QName("http://geronimo.apache.org/xml/ns/j2ee/application-client-2.0", "application-client");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema 
-     * derived classes for package: org.apache.geronimo.jee.web
+     * derived classes for package: org.apache.geronimo.jee.applicationclient
      * 
      */
     public ObjectFactory() {
     }
 
     /**
-     * Create an instance of {@link WebApp}
+     * Create an instance of {@link ApplicationClient }
      * 
      */
-    public WebApp createWebApp() {
-        return new WebApp();
+    public ApplicationClient createApplicationClient() {
+        return new ApplicationClient();
     }
 
     /**
-     * Create an instance of {@link ContainerConfig}
+     * Create an instance of {@link Resource }
      * 
      */
-    public ContainerConfig createContainerConfig() {
-        return new ContainerConfig();
+    public Resource createResource() {
+        return new Resource();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link WebApp}{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ApplicationClient }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1", name = "web-app")
-    public JAXBElement<WebApp> createWebApp(WebApp value) {
-        return new JAXBElement<WebApp>(_WebApp_QNAME, WebApp.class, null, value);
+    @XmlElementDecl(namespace = "http://geronimo.apache.org/xml/ns/j2ee/application-client-2.0", name = "application-client")
+    public JAXBElement<ApplicationClient> createApplicationClient(ApplicationClient value) {
+        return new JAXBElement<ApplicationClient>(_ApplicationClient_QNAME, ApplicationClient.class, null, value);
     }
 
 }
