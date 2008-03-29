@@ -22,11 +22,11 @@
 <plugin>
 
 
-    <!-- ======================================================================================= -->
-    <!--                                                                                         -->
-    <!-- Extend WTP runtimeTypes to include the new Geronimo runtime type                        -->
-    <!--                                                                                         -->
-    <!-- ======================================================================================= -->
+    <!-- 
+     | 
+     | Extend WTP runtimeTypes to include the 2.1 version of the "Geronimo Runtime Type"
+     | 
+     -->
     <extension point="org.eclipse.wst.server.core.runtimeTypes">
         <runtimeType id="org.apache.geronimo.runtime.21" version="2.1"
             name="%runtimeTypeName"
