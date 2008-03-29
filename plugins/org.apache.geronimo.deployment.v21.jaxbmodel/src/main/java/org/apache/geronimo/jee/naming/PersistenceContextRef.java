@@ -49,7 +49,7 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;/complexType>
  * </pre>
  * 
- * 
+ * @version $Rev$ $Date$
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "persistence-context-refType", propOrder = {

@@ -56,7 +56,7 @@ import org.apache.geronimo.jee.naming.GbeanLocator;
  * &lt;/complexType>
  * </pre>
  * 
- * 
+ * @version $Rev$ $Date$
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "resourceadapter-instanceType", propOrder = {

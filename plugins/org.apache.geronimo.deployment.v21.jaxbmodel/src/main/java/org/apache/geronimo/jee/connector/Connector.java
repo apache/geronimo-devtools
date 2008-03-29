@@ -61,7 +61,7 @@ import org.apache.geronimo.jee.deployment.Gbean;
  * &lt;/complexType>
  * </pre>
  * 
- * 
+ * @version $Rev$ $Date$
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "connectorType", propOrder = {

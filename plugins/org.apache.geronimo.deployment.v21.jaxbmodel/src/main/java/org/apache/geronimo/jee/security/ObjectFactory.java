@@ -38,6 +38,8 @@ import org.apache.geronimo.jee.deployment.Pattern;
  * type definitions, element declarations and model
  * groups.  Factory methods for each of these are
  * provided in this class.
+ * 
+ * @version $Rev$ $Date$
  */
 @XmlRegistry
 public class ObjectFactory {

@@ -61,7 +61,7 @@ import org.apache.geronimo.jee.deployment.Pattern;
  * &lt;/complexType>
  * </pre>
  * 
- * 
+ * @version $Rev$ $Date$
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "securityType", propOrder = {

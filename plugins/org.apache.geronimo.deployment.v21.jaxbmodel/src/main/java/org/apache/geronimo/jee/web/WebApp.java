@@ -78,7 +78,7 @@ import org.apache.geronimo.jee.persistence.Persistence;
  * &lt;/complexType>
  * </pre>
  * 
- * 
+ * @version $Rev$ $Date$
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "web-appType", propOrder = {

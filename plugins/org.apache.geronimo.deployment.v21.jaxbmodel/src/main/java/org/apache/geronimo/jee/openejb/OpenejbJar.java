@@ -44,7 +44,7 @@ import org.w3c.dom.Element;
  * &lt;/complexType>
  * </pre>
  * 
- * 
+ * @version $Rev$ $Date$
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "openejb-jarType", propOrder = {

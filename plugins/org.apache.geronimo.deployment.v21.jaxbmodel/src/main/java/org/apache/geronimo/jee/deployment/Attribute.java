@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlValue;
  * &lt;/complexType>
  * </pre>
  * 
- * 
+ * @version $Rev$ $Date$
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "attributeType", propOrder = {

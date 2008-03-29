@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlEnum;
  * &lt;/simpleType>
  * </pre>
  * 
+ * @version $Rev$ $Date$
  */
 @XmlEnum
 public enum PersistenceUnitTransaction {

@@ -15,5 +15,8 @@
  * limitations under the License.
  */
 
+/**
+ * @version $Rev$ $Date$
+ */
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://java.sun.com/xml/ns/persistence", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.apache.geronimo.jee.persistence;

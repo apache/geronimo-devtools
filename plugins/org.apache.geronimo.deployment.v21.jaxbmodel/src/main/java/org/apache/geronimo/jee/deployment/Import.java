@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlEnumValue;
  * &lt;/simpleType>
  * </pre>
  * 
+ * @version $Rev$ $Date$
  */
 @XmlEnum
 public enum Import {

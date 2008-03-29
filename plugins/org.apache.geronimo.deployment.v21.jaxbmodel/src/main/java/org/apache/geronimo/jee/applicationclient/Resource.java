@@ -49,7 +49,7 @@ import org.apache.geronimo.jee.connector.Connector;
  * &lt;/complexType>
  * </pre>
  * 
- * 
+ * @version $Rev$ $Date$
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "resourceType", propOrder = {

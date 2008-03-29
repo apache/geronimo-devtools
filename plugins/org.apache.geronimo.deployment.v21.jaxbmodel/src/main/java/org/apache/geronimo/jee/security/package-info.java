@@ -15,5 +15,8 @@
  * limitations under the License.
  */
 
+/**
+ * @version $Rev$ $Date$
+ */
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://geronimo.apache.org/xml/ns/security-2.0", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.apache.geronimo.jee.security;

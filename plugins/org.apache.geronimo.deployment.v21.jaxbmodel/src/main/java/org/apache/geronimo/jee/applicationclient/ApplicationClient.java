@@ -71,7 +71,7 @@ import org.apache.geronimo.jee.security.SubjectInfo;
  * &lt;/complexType>
  * </pre>
  * 
- * 
+ * @version $Rev$ $Date$
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "application-clientType", propOrder = {
