@@ -48,6 +48,10 @@
 
     <build>
         <plugins>
+            <!--
+             |
+             | Disable the compilation of the Geronimo 2.1 server schemas
+             |
             <plugin>
                 <groupId>com.sun.tools.xjc.maven2</groupId>
                 <artifactId>maven-jaxb-plugin</artifactId>
@@ -63,6 +67,7 @@
                     <args>-extension</args>
                 </configuration>
             </plugin>
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

@@ -25,7 +25,7 @@
         <runtimeType id="org.apache.geronimo.runtime.20"
             name="%runtimeTypeName" description="%runtimeTypeDescription"
             vendor="%runtimeTypeVendor" version="2.0"
-            class="org.apache.geronimo.st.v20.core.GeronimoRuntime">
+            class="org.apache.geronimo.st.v21.core.GeronimoRuntime">
             <moduleType types="jst.web" versions="2.2, 2.3, 2.4, 2.5"/>
             <moduleType types="jst.ejb" versions="1.1, 2.0, 2.1, 3.0"/>
             <moduleType types="jst.connector" versions="1.0, 1.5"/>
@@ -38,12 +38,12 @@
         <serverType id="org.apache.geronimo.server.20"
             name="%serverTypeName" description="%serverTypeDescription"
             runtime="true"
-            class="org.apache.geronimo.st.v20.core.GeronimoServer"
+            class="org.apache.geronimo.st.v21.core.GeronimoServer"
             initialState="stopped" supportsRemoteHosts="true"
             startTimeout="240000" stopTimeout="30000" startBeforePublish="true"
             runtimeTypeId="org.apache.geronimo.runtime.20"
             launchConfigId="org.apache.geronimo.st.core.launchConfigurationType"
-            behaviourClass="org.apache.geronimo.st.v20.core.GeronimoServerBehaviour"
+            behaviourClass="org.apache.geronimo.st.v21.core.GeronimoServerBehaviour"
             hasConfiguration="false" launchModes="run,debug,profile">
         </serverType>
     </extension>
@@ -70,18 +70,17 @@
     </extension>
     
     
-    <!-- ======================================================================================= -->
-    <!--                                                                                         -->
-    <!-- Declare the 2.0 version of the "Geronimo Deployment" <project-facet> and the <action>   -->
-    <!-- that the user can perform on the facet (i.e., install)                                  -->
-    <!--                                                                                         -->
-    <!-- ======================================================================================= -->
     <!-- 
-    <extension point="org.eclipse.wst.common.project.facet.core.facets">        
-        <project-facet-version facet="org.apache.geronimo.facet" version="2.0">
-            <action type="install" id="geronimo.plan.install">
-                <delegate class="org.apache.geronimo.st.v20.core.operations.GeronimoV20FacetInstallDelegate"/>
-                <config-factory class="org.apache.geronimo.st.v20.core.DeploymentPlanInstallConfig$Factory"/>
+     | 
+     | Declare the 1.2 version of the "Geronimo Deployment" <project-facet> and the <action>    
+     | that the user can perform on the facet (i.e., install)                                  
+     | 
+     -->
+    <extension point="org.eclipse.wst.common.project.facet.core.facets">
+        <project-facet-version facet="org.apache.geronimo.facet" version="1.2">
+            <action type="INSTALL" id="geronimo.plan.install">
+                <delegate class="org.apache.geronimo.st.v21.core.operations.GeronimoV21FacetInstallDelegate"/>
+                <config-factory class="org.apache.geronimo.st.v21.core.DeploymentPlanInstallConfig$Factory"/>
             </action>
             <constraint>
                 <or>
@@ -109,7 +108,6 @@
             </constraint>
         </project-facet-version>
     </extension>
-    -->
     
     
     <!-- 

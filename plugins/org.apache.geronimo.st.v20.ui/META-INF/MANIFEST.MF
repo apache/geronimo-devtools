@@ -7,7 +7,7 @@ Bundle-Activator: org.apache.geronimo.st.v21.ui.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.commands,
- org.apache.geronimo.st.v20.core,
+ org.apache.geronimo.st.v21.core,
  org.apache.geronimo.st.ui,
  org.eclipse.ui.forms,
  org.eclipse.core.resources,
