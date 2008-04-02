@@ -57,13 +57,18 @@
         <runtime-component-version type="org.apache.geronimo.runtime" version="1.1"/>
         <runtime-component-version type="org.apache.geronimo.runtime" version="2.0"/>
         <runtime-component-version type="org.apache.geronimo.runtime" version="2.1"/>
-        <adapter>
+
+        <!-- The referenced class "org.eclipse.jst.common.project.facet.core.IClasspathProvider" doesn't exist.
+        Not sure if this is the cause for https://issues.apache.org/jira/browse/GERONIMODEVTOOLS-316.
+        Experimenting by commenting out the entire element below to see if it resolves the issue.
+        If any further problems, please revert back. -->
+        <!-- <adapter>
             <runtime-component id="org.apache.geronimo.runtime"/>
             <factory
                 class="org.eclipse.jst.server.core.internal.RuntimeClasspathProvider$Factory"/>
             <type
                 class="org.eclipse.jst.common.project.facet.core.IClasspathProvider"/>
-        </adapter>
+        </adapter> -->
 
         <supported>
             <runtime-component id="org.apache.geronimo.runtime" version="1.1"/>
