@@ -42,7 +42,7 @@
          -->
         <dependencySet>
             <outputFileNameMapping>${artifactId}_${version}.${extension}</outputFileNameMapping>
-            <outputDirectory>plugins/</outputDirectory>
+            <outputDirectory>eclipse/plugins/</outputDirectory>
             <unpack>false</unpack>
             <includes>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.deployment.v11.jaxbmodel</include>
@@ -69,7 +69,7 @@
          -->
         <dependencySet>
             <outputFileNameMapping>${artifactId}_${version}</outputFileNameMapping>
-            <outputDirectory>features/</outputDirectory>
+            <outputDirectory>eclipse/features/</outputDirectory>
             <unpack>true</unpack>
             <includes>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.feature</include>
