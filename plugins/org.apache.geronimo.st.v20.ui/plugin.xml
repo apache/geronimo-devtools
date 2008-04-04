@@ -28,15 +28,13 @@
  	  	<loader class="org.apache.geronimo.st.v21.ui.editors.GeronimoFormContentLoader" version="2.0"/>
     </extension>
 
-
     <!-- 
      |
-     | Map the <runtime-component> (defined in org.apache.geronimo.st.core\plugin.xml) 
-     | to a specific version of the "Geronimo Deployment" <project-facet>
+     | Map the action defined for the "Geronimo Deployment" project-facet to a specific class
      |
      -->
     <extension point="org.eclipse.wst.common.project.facet.ui.wizardPages">
-  		<wizard-pages action="geronimo.plan.install">
+  		<wizard-pages action="geronimo.plan.install.v20">
     		<page class="org.apache.geronimo.st.v21.ui.wizards.FacetInstallPage"/>
   		</wizard-pages>
 	</extension>  

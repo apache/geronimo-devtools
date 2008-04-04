@@ -105,13 +105,14 @@
 
     <!-- 
      | 
-     | Declare the 1.2 version of the "Geronimo Deployment" <project-facet> and the <action>    
-     | that the user can perform on the facet (i.e., install)                                  
+     | Declare the 1.2 version of the "Geronimo Deployment" project-facet and the action
+     | that the user can perform on the facet (i.e., install). Note that the id associated 
+     | action must be unique across all plugins. 
      | 
      -->
     <extension point="org.eclipse.wst.common.project.facet.core.facets">
         <project-facet-version facet="org.apache.geronimo.facet" version="1.2">
-            <action type="INSTALL" id="geronimo.plan.install">
+            <action type="install" id="geronimo.plan.install.v21">
                 <delegate class="org.apache.geronimo.st.v21.core.operations.GeronimoV21FacetInstallDelegate"/>
                 <config-factory class="org.apache.geronimo.st.v21.core.DeploymentPlanInstallConfig$Factory"/>
             </action>
