@@ -26,7 +26,7 @@
     <fileSets>
         <fileSet>
             <directory>..</directory>
-            <outputDirectory>.</outputDirectory>
+            <outputDirectory>eclipse</outputDirectory>
             <includes>
                 <include>LICENSE</include>
                 <include>NOTICE</include>
