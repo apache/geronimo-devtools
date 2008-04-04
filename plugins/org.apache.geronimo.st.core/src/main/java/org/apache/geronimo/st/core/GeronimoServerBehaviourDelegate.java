@@ -41,7 +41,6 @@ import org.apache.geronimo.st.core.internal.Trace;
 import org.apache.geronimo.st.core.operations.ISharedLibEntryCreationDataModelProperties;
 import org.apache.geronimo.st.core.operations.SharedLibEntryCreationOperation;
 import org.apache.geronimo.st.core.operations.SharedLibEntryDataModelProvider;
-import org.apache.geronimo.st.core.ClasspathContainersHelper;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -57,9 +56,7 @@ import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
-import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
@@ -234,12 +231,12 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 			for (int i = 0; i < size; i++) {
 				IModule[] module = (IModule[]) modules.get(i);
 				int moduleDeltaKind = ((Integer)deltaKind.get(i)).intValue();
-				//has this root of this module been published already?
+				//has the root of this module been published already?
 				if(!rootModulesPublished.contains(module[0])) {
 					status = publishModule(kind, module, moduleDeltaKind, ProgressUtil.getSubMonitorFor(monitor, 3000));
 					if (status != null && !status.isOK())
 						multi.add(status);
-					//cache published root modules to comapre against to prevent dup redeploys
+					//cache published root modules to compare against to prevent dup redeploys
 					if(moduleDeltaKind != NO_CHANGE) {
 						rootModulesPublished.add(module[0]);
 					}
@@ -268,9 +265,9 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
 		try {
 			//NO_CHANGE need if app is associated but not started and no delta
-			if (module.length == 1 && (deltaKind == ADDED || deltaKind == REMOVED || deltaKind == NO_CHANGE)) {
+			if (deltaKind == NO_CHANGE && module.length == 1) {
 				invokeCommand(deltaKind, module[0]);
-			} else if (deltaKind == CHANGED) {
+			} else if (deltaKind == CHANGED || deltaKind == ADDED || deltaKind == REMOVED) {
 				invokeCommand(deltaKind, module[0]);
 			} 
 		} finally {
