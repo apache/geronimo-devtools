@@ -111,6 +111,7 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>3.8.1</version>
+                <scope>compile</scope>
             </dependency>
                         
             <dependency>
@@ -189,12 +190,19 @@
                 <version>1.0.1</version>
             </dependency>
 
+            <dependency>
+                <groupId>xmlunit</groupId>
+                <artifactId>xmlunit</artifactId>
+                <version>1.1</version>
+                <scope>test</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
                         
     <build>
         <defaultGoal>install</defaultGoal>
-        <sourceDirectory>src/</sourceDirectory>
+        <sourceDirectory>src/main/</sourceDirectory>
                         
         <pluginManagement>
             <plugins>
@@ -248,6 +256,15 @@
                    <version>1.1</version>
                 </plugin>
                 
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.3</version>
+                    <configuration>
+                        <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                    </configuration>
+                </plugin>
+
             </plugins>
         </pluginManagement>
                 
