@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><!--
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
     Licensed to the Apache Software Foundation (ASF) under one or more
     contributor license agreements.  See the NOTICE file distributed with
     this work for additional information regarding copyright ownership.
@@ -13,7 +14,10 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
---><!-- @version $Rev$ $Date$ -->
+-->
+
+<!-- @version $Rev$ $Date$ -->
+
 <ns2:application xmlns="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:ns2="http://geronimo.apache.org/xml/ns/j2ee/application-2.0">
     <environment>
         <moduleId>
@@ -42,14 +46,14 @@
                             <connector:config-property-setting xmlns:ns4="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns="" name="DatabaseName">TestDatabase</connector:config-property-setting>
                             <connector:config-property-setting xmlns:ns4="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns="" name="CreateDatabase">false</connector:config-property-setting>
                             <connector:connectionmanager>
-                                <connector:container-managed-security/>
-                                <connector:xa-transaction>
-                                    <connector:transaction-caching/>
+<connector:container-managed-security/>
+<connector:xa-transaction>
+    <connector:transaction-caching/>
                                 </connector:xa-transaction>
-                                <connector:single-pool>
-                                    <connector:max-size>10</connector:max-size>
-                                    <connector:blocking-timeout-milliseconds>5000</connector:blocking-timeout-milliseconds>
-                                    <connector:select-one-assume-match/>
+<connector:single-pool>
+    <connector:max-size>10</connector:max-size>
+    <connector:blocking-timeout-milliseconds>5000</connector:blocking-timeout-milliseconds>
+    <connector:select-one-assume-match/>
                                 </connector:single-pool>
                             </connector:connectionmanager>
                         </connector:connectiondefinition-instance>
@@ -60,13 +64,13 @@
                             <connector:config-property-setting xmlns:ns4="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns="" name="DatabaseName">TestDatabase</connector:config-property-setting>
                             <connector:config-property-setting xmlns:ns4="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns="" name="CreateDatabase">true</connector:config-property-setting>
                             <connector:connectionmanager>
-                                <connector:xa-transaction>
-                                    <connector:transaction-caching/>
+<connector:xa-transaction>
+    <connector:transaction-caching/>
                                 </connector:xa-transaction>
-                                <connector:single-pool>
-                                    <connector:max-size>10</connector:max-size>
-                                    <connector:blocking-timeout-milliseconds>5000</connector:blocking-timeout-milliseconds>
-                                    <connector:select-one-assume-match/>
+<connector:single-pool>
+    <connector:max-size>10</connector:max-size>
+    <connector:blocking-timeout-milliseconds>5000</connector:blocking-timeout-milliseconds>
+    <connector:select-one-assume-match/>
                                 </connector:single-pool>
                             </connector:connectionmanager>
                         </connector:connectiondefinition-instance>
@@ -79,7 +83,7 @@
                     <lc:login-config>
                         <lc:login-module-ref control-flag="REQUIRED">
                             <lc:pattern>
-                                <ns4:name>test-cms-credentials
+<ns4:name>test-cms-credentials
                                 </ns4:name>
                             </lc:pattern>
                         </lc:login-module-ref>
