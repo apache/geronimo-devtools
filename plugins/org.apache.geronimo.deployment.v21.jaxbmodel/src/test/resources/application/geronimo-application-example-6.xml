@@ -141,37 +141,4 @@
             </security>
         </web-app>
     </module>
-    <gbean name="test-credential-store" class="org.apache.geronimo.security.credentialstore.SimpleCredentialStoreImpl">
-        <xml-attribute name="credentialStore">
-            <credential-store xmlns="http://geronimo.apache.org/xml/ns/credentialstore-1.0">
-                <realm name="test-cms-realm">
-                    <subject>
-                        <id>test</id>
-                        <credential>
-                            <type>org.apache.geronimo.security.credentialstore.NameCallbackHandler</type>
-                            <value>george</value>
-                        </credential>
-                        <credential>
-                            <type>org.apache.geronimo.security.credentialstore.PasswordCallbackHandler</type>
-                            <value>bone</value>
-                        </credential>
-                    </subject>
-                    <subject>
-                        <id>fail</id>
-                        <credential>
-                            <type>org.apache.geronimo.security.credentialstore.NameCallbackHandler</type>
-                            <value>gracie</value>
-                        </credential>
-                        <credential>
-                            <type>org.apache.geronimo.security.credentialstore.PasswordCallbackHandler</type>
-                            <value>biscuit</value>
-                        </credential>
-                    </subject>
-                </realm>
-            </credential-store>
-        </xml-attribute>
-        <dependency>
-            <name>test-cms-realm</name>
-        </dependency>
-    </gbean>
 </application>

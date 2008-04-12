@@ -59,6 +59,7 @@
             <groupId>xmlunit</groupId>
             <artifactId>xmlunit</artifactId>
         </dependency>
+
     </dependencies>
 
     <build>

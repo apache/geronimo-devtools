@@ -25,6 +25,7 @@ import org.apache.geronimo.jee.deployment.Artifact;
 import org.apache.geronimo.jee.deployment.Dependencies;
 import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.jee.deployment.Environment;
+import org.apache.geronimo.jee.naming.ServiceRef;
 import org.apache.geronimo.jee.openejb.GeronimoEjbJar;
 import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
@@ -62,6 +63,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
   		Trace.tracePoint("Constructor Entry/Exit", "V21DeploymentPlanCreationOperation", model, config);
 	}
 	
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -84,8 +86,6 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 				applicationFactory.createApplication(application));
 		return applicationFactory.createApplication(application);
 	}
-
-	
 
 	
 	/*
@@ -181,6 +181,16 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		ApplicationClient applicationClient = applicationClientFactory.createApplicationClient();
 
         applicationClient.setServerEnvironment(getConfigEnvironment());
+        applicationClient.setClientEnvironment(getConfigEnvironment());
+        
+        //
+        // Add a ServiceRef
+        //
+        org.apache.geronimo.jee.naming.ObjectFactory namingFactory = new org.apache.geronimo.jee.naming.ObjectFactory();
+        ServiceRef serviceRef = namingFactory.createServiceRef();
+        serviceRef.setServiceRefName("ServiceRefName");
+        
+        applicationClient.getServiceRef().add(serviceRef);
 
 		JAXBElement jaxbElement = applicationClientFactory.createApplicationClient(applicationClient);
 		JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
@@ -188,6 +198,8 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createGeronimoApplicationClientDeploymentPlan", applicationClientFactory.createApplicationClient(applicationClient));
 		return applicationClientFactory.createApplicationClient(applicationClient);
 	}
+
+	
 	public Environment getConfigEnvironment() {
         Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.getConfigEnvironment");
 		

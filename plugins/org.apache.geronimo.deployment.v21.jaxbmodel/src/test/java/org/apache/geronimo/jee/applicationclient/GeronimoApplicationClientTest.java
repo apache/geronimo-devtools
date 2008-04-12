@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.geronimo.jee.application;
+package org.apache.geronimo.jee.applicationclient;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -43,11 +43,11 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLFilterImpl;
 
 /**
- * <strong>GeronimoApplicationTest</strong> is used to test various JAXB 
+ * <strong>GeronimoApplicationClientTest</strong> is used to test various JAXB 
  * operations on the following Geronimo-specific XML file supported by the GEP:
  * 
  * <ul>
- *      <li>geronimo-application.xml
+ *      <li>geronimo-application-client.xml
  * </ul>
  * 
  * <p>The following JAXB operations are performed: 
@@ -59,9 +59,9 @@ import org.xml.sax.helpers.XMLFilterImpl;
  * </ol>
  * 
  * 
- * @version $Rev$ $Date$  
+ * @version $Rev$ $Date$
  */
-public class GeronimoApplicationTest extends TestCase {
+public class GeronimoApplicationClientTest extends TestCase {
 
 	// 
 	// JAXBContext instantiation is costly - should be done only once
@@ -69,7 +69,7 @@ public class GeronimoApplicationTest extends TestCase {
 	private static final JAXBContext jaxbContext = newJAXBContext();
 	private static JAXBContext newJAXBContext() {
 		try {
-            return JAXBContext.newInstance(Application.class, 
+            return JAXBContext.newInstance(ApplicationClient.class,
                                            Module.class);
 		} catch (JAXBException e) {
 			System.out.println("JAXBException: JAXBContext.newInstance");
@@ -84,26 +84,26 @@ public class GeronimoApplicationTest extends TestCase {
     // 
     public void testUnmarshallAndMarshall() throws Exception {
 
-        unmarshallAndMarshall("application/geronimo-application-example-1.xml", 
-                              "application/geronimo-application-expected-1.xml");
+        unmarshallAndMarshall("applicationclient/geronimo-application-client-example-1.xml", 
+                              "applicationclient/geronimo-application-client-expected-1.xml");
 
-        unmarshallAndMarshall("application/geronimo-application-example-2.xml", 
-                              "application/geronimo-application-expected-2.xml");
+        unmarshallAndMarshall("applicationclient/geronimo-application-client-example-2.xml", 
+                              "applicationclient/geronimo-application-client-expected-2.xml");
 
-        unmarshallAndMarshall("application/geronimo-application-example-3.xml", 
-                              "application/geronimo-application-expected-3.xml");
+        unmarshallAndMarshall("applicationclient/geronimo-application-client-example-3.xml", 
+                              "applicationclient/geronimo-application-client-expected-3.xml");
     }
 
     public void testConvertNamespace() throws Exception {
 
-        convertNamespace("application/geronimo-application-example-4.xml",
-                         "application/geronimo-application-expected-1.xml");
+        convertNamespace("applicationclient/geronimo-application-client-example-4.xml",
+                         "applicationclient/geronimo-application-client-expected-1.xml");
 
-        convertNamespace("application/geronimo-application-example-5.xml", 
-                         "application/geronimo-application-expected-2.xml");
+        convertNamespace("applicationclient/geronimo-application-client-example-5.xml", 
+                         "applicationclient/geronimo-application-client-expected-2.xml");
 
-        convertNamespace("application/geronimo-application-example-6.xml", 
-                         "application/geronimo-application-expected-3.xml");
+        convertNamespace("applicationclient/geronimo-application-client-example-6.xml", 
+                         "applicationclient/geronimo-application-client-expected-3.xml");
     }
 
 
@@ -209,8 +209,7 @@ public class GeronimoApplicationTest extends TestCase {
         try {
             Diff myDiff = new Diff(expected, actual);
             assertTrue("Files are similar " + myDiff, myDiff.similar());
-        }
-        catch (AssertionFailedError e) {
+        } catch (AssertionFailedError e) {
             System.out.println("[Example XML] " + '\n' + example + '\n');
             System.out.println("[Expected XML] " + '\n' + expected + '\n');
             System.out.println("[Actual XML] " + '\n' + actual + '\n');
@@ -240,12 +239,13 @@ public class GeronimoApplicationTest extends TestCase {
 
         public void startElement(String uri, String localName, String qname, Attributes atts) throws SAXException {
 
-            if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/application-1.2")) {
-                uri = "http://geronimo.apache.org/xml/ns/j2ee/application-2.0";
+            if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/application-client-1.1")) {
+                uri = "http://geronimo.apache.org/xml/ns/j2ee/application-client-2.0";
             }
             else if (uri.equals("http://geronimo.apache.org/xml/ns/deployment-1.1")) {
                 uri = "http://geronimo.apache.org/xml/ns/deployment-1.2";
             }
+
             super.startElement(uri, localName, qname, atts);
         }
     }
