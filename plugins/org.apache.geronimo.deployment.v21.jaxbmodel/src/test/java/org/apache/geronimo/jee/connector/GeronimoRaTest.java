@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.geronimo.jee.application;
+package org.apache.geronimo.jee.web;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -41,11 +41,11 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLFilterImpl;
 
 /**
- * <strong>GeronimoApplicationTest</strong> is used to test various JAXB 
- * operations on the following Geronimo-specific XML file supported by the GEP:
+ * <strong>GeronimoRaTest</strong> is used to test various JAXB operations on
+ * the following Geronimo-specific XML file supported by the GEP: 
  * 
  * <ul>
- *      <li>geronimo-application.xml
+ *      <li>geronimo-ra.xml
  * </ul>
  * 
  * <p>The following JAXB operations are performed: 
@@ -57,31 +57,31 @@ import org.xml.sax.helpers.XMLFilterImpl;
  * </ol>
  * 
  * 
- * @version $Rev$ $Date$  
+ * @version $Rev$ $Date$
  */
-public class GeronimoApplicationTest extends TestCase {
+public class GeronimoRaTest extends TestCase {
 
     /*------------------------------------------------------------------------*\
     |                                                                          |
-    |  Testcase(s)                                                             | 
+    |  testcase(s)                                                             | 
     |                                                                          |
     \*------------------------------------------------------------------------*/
     public void testUnmarshallAndMarshall() throws Exception {
-        unmarshallAndMarshall("application/geronimo-application-example-1.xml", 
-                              "application/geronimo-application-expected-1.xml");
-        unmarshallAndMarshall("application/geronimo-application-example-2.xml", 
-                              "application/geronimo-application-expected-2.xml");
-        unmarshallAndMarshall("application/geronimo-application-example-3.xml", 
-                              "application/geronimo-application-expected-3.xml");
+        unmarshallAndMarshall("connector/geronimo-ra-example-1.xml", 
+                              "connector/geronimo-ra-expected-1.xml");
+        unmarshallAndMarshall("connector/geronimo-ra-example-2.xml", 
+                              "connector/geronimo-ra-expected-2.xml");
+        unmarshallAndMarshall("connector/geronimo-ra-example-3.xml", 
+                              "connector/geronimo-ra-expected-3.xml");
     }
 
     public void testConvertNamespace() throws Exception {
-        convertNamespace("application/geronimo-application-example-4.xml",
-                         "application/geronimo-application-expected-1.xml");
-        convertNamespace("application/geronimo-application-example-5.xml", 
-                         "application/geronimo-application-expected-2.xml");
-        convertNamespace("application/geronimo-application-example-6.xml", 
-                         "application/geronimo-application-expected-6.xml");
+        convertNamespace("connector/geronimo-ra-example-4.xml",
+                         "connector/geronimo-ra-expected-1.xml");
+        convertNamespace("connector/geronimo-ra-example-5.xml", 
+                         "connector/geronimo-ra-expected-2.xml");
+        convertNamespace("connector/geronimo-ra-example-6.xml", 
+                         "connector/geronimo-ra-expected-3.xml");
     }
 
 
@@ -96,8 +96,14 @@ public class GeronimoApplicationTest extends TestCase {
         // Create unmarshaller and marshaller
         // 
         JAXBContext jaxbContext = JAXBContext.newInstance( 
+                                    "org.apache.geronimo.jee.connector:" +
+                                    "org.apache.geronimo.jee.openejb:" +
+                                    "org.apache.geronimo.jee.web:" +
                                     "org.apache.geronimo.jee.application:" +
-                                    "org.apache.geronimo.jee.deployment", getClass().getClassLoader() );
+                                    "org.apache.geronimo.jee.applicationclient:" +
+                                    "org.apache.geronimo.jee.deployment:" +
+                                    "org.apache.geronimo.jee.naming:" +
+                                    "org.apache.geronimo.jee.security", getClass().getClassLoader() );
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -150,8 +156,14 @@ public class GeronimoApplicationTest extends TestCase {
         // Create unmarshaller and marshaller
         // 
         JAXBContext jaxbContext = JAXBContext.newInstance( 
+                                    "org.apache.geronimo.jee.connector:" +
+                                    "org.apache.geronimo.jee.openejb:" +
+                                    "org.apache.geronimo.jee.web:" +
                                     "org.apache.geronimo.jee.application:" +
-                                    "org.apache.geronimo.jee.deployment", getClass().getClassLoader() );
+                                    "org.apache.geronimo.jee.applicationclient:" +
+                                    "org.apache.geronimo.jee.deployment:" +
+                                    "org.apache.geronimo.jee.naming:" +
+                                    "org.apache.geronimo.jee.security", getClass().getClassLoader() );
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);

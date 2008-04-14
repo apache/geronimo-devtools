@@ -96,13 +96,10 @@ public class GeronimoWebTest extends TestCase {
         // Create unmarshaller and marshaller
         // 
         JAXBContext jaxbContext = JAXBContext.newInstance( 
-                                    "org.apache.geronimo.jee.connector:" +
-                                    "org.apache.geronimo.jee.openejb:" +
                                     "org.apache.geronimo.jee.web:" +
                                     "org.apache.geronimo.jee.application:" +
-                                    "org.apache.geronimo.jee.applicationclient:" +
                                     "org.apache.geronimo.jee.deployment:" +
-                                    "org.apache.geronimo.jee.naming:" +
+                                    "org.apache.geronimo.jee.naming:" + 
                                     "org.apache.geronimo.jee.security", getClass().getClassLoader() );
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         Marshaller marshaller = jaxbContext.createMarshaller();
@@ -156,13 +153,10 @@ public class GeronimoWebTest extends TestCase {
         // Create unmarshaller and marshaller
         // 
         JAXBContext jaxbContext = JAXBContext.newInstance( 
-                                    "org.apache.geronimo.jee.connector:" +
-                                    "org.apache.geronimo.jee.openejb:" +
                                     "org.apache.geronimo.jee.web:" +
                                     "org.apache.geronimo.jee.application:" +
-                                    "org.apache.geronimo.jee.applicationclient:" +
                                     "org.apache.geronimo.jee.deployment:" +
-                                    "org.apache.geronimo.jee.naming:" +
+                                    "org.apache.geronimo.jee.naming:" + 
                                     "org.apache.geronimo.jee.security", getClass().getClassLoader() );
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         Marshaller marshaller = jaxbContext.createMarshaller();
@@ -264,6 +258,9 @@ public class GeronimoWebTest extends TestCase {
             }
             else if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/web-1.1")) {
                 uri = "http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1";
+            }
+            else if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/connector-1.1")) {
+                uri = "http://geronimo.apache.org/xml/ns/j2ee/connector-1.2";
             }
 
             super.startElement(uri, localName, qname, atts);

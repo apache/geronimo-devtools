@@ -254,6 +254,9 @@ public class GeronimoApplicationClientTest extends TestCase {
             else if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/web-1.1")) {
                 uri = "http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1";
             }
+            else if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/connector-1.1")) {
+                uri = "http://geronimo.apache.org/xml/ns/j2ee/connector-1.2";
+            }
 
             super.startElement(uri, localName, qname, atts);
         }
