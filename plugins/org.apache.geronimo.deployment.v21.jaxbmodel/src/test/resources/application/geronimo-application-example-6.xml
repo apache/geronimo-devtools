@@ -115,6 +115,7 @@
             </gbean>
         </connector>
     </module>
+
     <module>
         <web>web.war</web>
         <web-app xmlns="http://geronimo.apache.org/xml/ns/j2ee/web-2.0">
@@ -141,4 +142,5 @@
             </security>
         </web-app>
     </module>
+
 </application>

@@ -35,4 +35,14 @@
             <type>car</type>
         </moduleId>
     </server-environment>
+    <ns2:service-ref>
+        <ns2:service-ref-name>services/Greeter</ns2:service-ref-name>
+        <ns2:port>
+            <ns2:port-name>GreeterPort</ns2:port-name>
+            <ns2:protocol>http</ns2:protocol>
+            <ns2:host>localhost</ns2:host>
+            <ns2:port>8080</ns2:port>
+            <ns2:uri>/jaxws-war/servlet2</ns2:uri>
+        </ns2:port>
+    </ns2:service-ref>
 </ns4:application-client>

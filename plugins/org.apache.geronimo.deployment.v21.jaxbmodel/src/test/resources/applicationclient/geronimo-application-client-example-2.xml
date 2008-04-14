@@ -20,6 +20,7 @@
 
 <application-client
    xmlns="http://geronimo.apache.org/xml/ns/j2ee/application-client-2.0"
+   xmlns:naming="http://geronimo.apache.org/xml/ns/naming-1.2"
    xmlns:dep="http://geronimo.apache.org/xml/ns/deployment-1.2">
 
     <dep:client-environment>
@@ -40,15 +41,15 @@
         </dep:moduleId>
     </dep:server-environment>
 
-    <service-ref>
-        <service-ref-name>services/Greeter</service-ref-name>
-        <port>
-            <port-name>GreeterPort</port-name>
-            <protocol>http</protocol>
-            <host>localhost</host>
-            <port>8080</port>
-            <uri>/jaxws-war/servlet2</uri>
-        </port>
-    </service-ref>
+    <naming:service-ref>
+        <naming:service-ref-name>services/Greeter</naming:service-ref-name>
+        <naming:port>
+            <naming:port-name>GreeterPort</naming:port-name>
+            <naming:protocol>http</naming:protocol>
+            <naming:host>localhost</naming:host>
+            <naming:port>8080</naming:port>
+            <naming:uri>/jaxws-war/servlet2</naming:uri>
+        </naming:port>
+    </naming:service-ref>
 
 </application-client>

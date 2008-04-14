@@ -20,6 +20,7 @@
 
 <application xmlns="http://geronimo.apache.org/xml/ns/j2ee/application-1.2"
              xmlns:dep="http://geronimo.apache.org/xml/ns/deployment-1.1">
+
     <dep:environment>
         <dep:moduleId>
             <dep:groupId>org.apache.geronimo.testsuite</dep:groupId>
@@ -28,4 +29,5 @@
             <dep:type>car</dep:type>
         </dep:moduleId>
     </dep:environment>
+
 </application>

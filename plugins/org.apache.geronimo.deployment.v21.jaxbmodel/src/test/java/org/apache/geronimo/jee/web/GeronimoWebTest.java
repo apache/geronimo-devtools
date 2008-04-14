@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.geronimo.jee.applicationclient;
+package org.apache.geronimo.jee.web;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -41,11 +41,11 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLFilterImpl;
 
 /**
- * <strong>GeronimoApplicationClientTest</strong> is used to test various JAXB 
- * operations on the following Geronimo-specific XML file supported by the GEP:
+ * <strong>GeronimoWebTest</strong> is used to test various JAXB operations on
+ * the following Geronimo-specific XML file supported by the GEP: 
  * 
  * <ul>
- *      <li>geronimo-application-client.xml
+ *      <li>geronimo-web.xml
  * </ul>
  * 
  * <p>The following JAXB operations are performed: 
@@ -59,29 +59,29 @@ import org.xml.sax.helpers.XMLFilterImpl;
  * 
  * @version $Rev$ $Date$
  */
-public class GeronimoApplicationClientTest extends TestCase {
+public class GeronimoWebTest extends TestCase {
 
     /*------------------------------------------------------------------------*\
     |                                                                          |
-    |  Testcase(s)                                                             | 
+    |  testcase(s)                                                             | 
     |                                                                          |
     \*------------------------------------------------------------------------*/
     public void testUnmarshallAndMarshall() throws Exception {
-        unmarshallAndMarshall("applicationclient/geronimo-application-client-example-1.xml", 
-                              "applicationclient/geronimo-application-client-expected-1.xml");
-        unmarshallAndMarshall("applicationclient/geronimo-application-client-example-2.xml", 
-                              "applicationclient/geronimo-application-client-expected-2.xml");
-        unmarshallAndMarshall("applicationclient/geronimo-application-client-example-3.xml", 
-                              "applicationclient/geronimo-application-client-expected-3.xml");
+        unmarshallAndMarshall("web/geronimo-web-example-1.xml", 
+                              "web/geronimo-web-expected-1.xml");
+        unmarshallAndMarshall("web/geronimo-web-example-2.xml", 
+                              "web/geronimo-web-expected-2.xml");
+        unmarshallAndMarshall("web/geronimo-web-example-3.xml", 
+                              "web/geronimo-web-expected-3.xml");
     }
 
     public void testConvertNamespace() throws Exception {
-        convertNamespace("applicationclient/geronimo-application-client-example-4.xml",
-                         "applicationclient/geronimo-application-client-expected-1.xml");
-        convertNamespace("applicationclient/geronimo-application-client-example-5.xml", 
-                         "applicationclient/geronimo-application-client-expected-2.xml");
-        convertNamespace("applicationclient/geronimo-application-client-example-6.xml", 
-                         "applicationclient/geronimo-application-client-expected-3.xml");
+        convertNamespace("web/geronimo-web-example-4.xml",
+                         "web/geronimo-web-expected-4.xml");
+        convertNamespace("web/geronimo-web-example-5.xml", 
+                         "web/geronimo-web-expected-5.xml");
+        convertNamespace("web/geronimo-web-example-6.xml", 
+                         "web/geronimo-web-expected-6.xml");
     }
 
 
@@ -96,9 +96,14 @@ public class GeronimoApplicationClientTest extends TestCase {
         // Create unmarshaller and marshaller
         // 
         JAXBContext jaxbContext = JAXBContext.newInstance( 
+                                    "org.apache.geronimo.jee.connector:" +
+                                    "org.apache.geronimo.jee.openejb:" +
+                                    "org.apache.geronimo.jee.web:" +
+                                    "org.apache.geronimo.jee.application:" +
                                     "org.apache.geronimo.jee.applicationclient:" +
+                                    "org.apache.geronimo.jee.deployment:" +
                                     "org.apache.geronimo.jee.naming:" +
-                                    "org.apache.geronimo.jee.deployment", getClass().getClassLoader() );
+                                    "org.apache.geronimo.jee.security", getClass().getClassLoader() );
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -151,9 +156,14 @@ public class GeronimoApplicationClientTest extends TestCase {
         // Create unmarshaller and marshaller
         // 
         JAXBContext jaxbContext = JAXBContext.newInstance( 
+                                    "org.apache.geronimo.jee.connector:" +
+                                    "org.apache.geronimo.jee.openejb:" +
+                                    "org.apache.geronimo.jee.web:" +
+                                    "org.apache.geronimo.jee.application:" +
                                     "org.apache.geronimo.jee.applicationclient:" +
+                                    "org.apache.geronimo.jee.deployment:" +
                                     "org.apache.geronimo.jee.naming:" +
-                                    "org.apache.geronimo.jee.deployment", getClass().getClassLoader() );
+                                    "org.apache.geronimo.jee.security", getClass().getClassLoader() );
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -200,7 +210,8 @@ public class GeronimoApplicationClientTest extends TestCase {
         try {
             Diff myDiff = new Diff(expected, actual);
             assertTrue("Files are similar " + myDiff, myDiff.similar());
-        } catch (AssertionFailedError e) {
+        }
+        catch (AssertionFailedError e) {
             System.out.println("[Example XML: " + fileExample + "] " + '\n' + example + '\n');
             System.out.println("[Expected XML: " + fileExpected + "] " + '\n' + expected + '\n');
             System.out.println("[Actual XML] " + '\n' + actual + '\n');

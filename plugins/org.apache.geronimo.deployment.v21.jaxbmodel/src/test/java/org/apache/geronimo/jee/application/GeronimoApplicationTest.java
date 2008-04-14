@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.SAXParser;
@@ -34,7 +33,6 @@ import javax.xml.transform.sax.SAXSource;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
-import org.apache.geronimo.jee.deployment.Module;
 import org.custommonkey.xmlunit.Diff;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -63,55 +61,43 @@ import org.xml.sax.helpers.XMLFilterImpl;
  */
 public class GeronimoApplicationTest extends TestCase {
 
-	// 
-	// JAXBContext instantiation is costly - should be done only once
-	// 
-	private static final JAXBContext jaxbContext = newJAXBContext();
-	private static JAXBContext newJAXBContext() {
-		try {
-            return JAXBContext.newInstance(Application.class, 
-                                           Module.class);
-		} catch (JAXBException e) {
-			System.out.println("JAXBException: JAXBContext.newInstance");
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-
-    // 
-    // Testcase(s)
-    // 
+    /*------------------------------------------------------------------------*\
+    |                                                                          |
+    |  Testcase(s)                                                             | 
+    |                                                                          |
+    \*------------------------------------------------------------------------*/
     public void testUnmarshallAndMarshall() throws Exception {
-
         unmarshallAndMarshall("application/geronimo-application-example-1.xml", 
                               "application/geronimo-application-expected-1.xml");
-
         unmarshallAndMarshall("application/geronimo-application-example-2.xml", 
                               "application/geronimo-application-expected-2.xml");
-
         unmarshallAndMarshall("application/geronimo-application-example-3.xml", 
                               "application/geronimo-application-expected-3.xml");
     }
 
     public void testConvertNamespace() throws Exception {
-
         convertNamespace("application/geronimo-application-example-4.xml",
                          "application/geronimo-application-expected-1.xml");
-
         convertNamespace("application/geronimo-application-example-5.xml", 
                          "application/geronimo-application-expected-2.xml");
-
         convertNamespace("application/geronimo-application-example-6.xml", 
-                         "application/geronimo-application-expected-3.xml");
+                         "application/geronimo-application-expected-6.xml");
     }
 
 
+    /*------------------------------------------------------------------------*\
+    |                                                                          |
+    |  Private method(s)                                                       | 
+    |                                                                          |
+    \*------------------------------------------------------------------------*/
     private void unmarshallAndMarshall(String fileExample, String fileExpected) throws Exception {
 
         // 
         // Create unmarshaller and marshaller
         // 
+        JAXBContext jaxbContext = JAXBContext.newInstance( 
+                                    "org.apache.geronimo.jee.application:" +
+                                    "org.apache.geronimo.jee.deployment", getClass().getClassLoader() );
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -149,8 +135,8 @@ public class GeronimoApplicationTest extends TestCase {
             assertTrue("Files are similar " + myDiff, myDiff.similar());
         }
         catch (AssertionFailedError e) {
-            System.out.println("[Example XML] " + '\n' + example + '\n');
-            System.out.println("[Expected XML] " + '\n' + expected + '\n');
+            System.out.println("[Example XML: " + fileExample + "] " + '\n' + example + '\n');
+            System.out.println("[Expected XML: " + fileExpected + "] " + '\n' + expected + '\n');
             System.out.println("[Actual XML] " + '\n' + actual + '\n');
             throw e;            
         }
@@ -163,6 +149,9 @@ public class GeronimoApplicationTest extends TestCase {
         // 
         // Create unmarshaller and marshaller
         // 
+        JAXBContext jaxbContext = JAXBContext.newInstance( 
+                                    "org.apache.geronimo.jee.application:" +
+                                    "org.apache.geronimo.jee.deployment", getClass().getClassLoader() );
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -211,8 +200,8 @@ public class GeronimoApplicationTest extends TestCase {
             assertTrue("Files are similar " + myDiff, myDiff.similar());
         }
         catch (AssertionFailedError e) {
-            System.out.println("[Example XML] " + '\n' + example + '\n');
-            System.out.println("[Expected XML] " + '\n' + expected + '\n');
+            System.out.println("[Example XML: " + fileExample + "] " + '\n' + example + '\n');
+            System.out.println("[Expected XML: " + fileExpected + "] " + '\n' + expected + '\n');
             System.out.println("[Actual XML] " + '\n' + actual + '\n');
             throw e;            
         }
@@ -240,12 +229,31 @@ public class GeronimoApplicationTest extends TestCase {
 
         public void startElement(String uri, String localName, String qname, Attributes atts) throws SAXException {
 
-            if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/application-1.2")) {
-                uri = "http://geronimo.apache.org/xml/ns/j2ee/application-2.0";
+            if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/application-client-1.1")) {
+                uri = "http://geronimo.apache.org/xml/ns/j2ee/application-client-2.0";
             }
             else if (uri.equals("http://geronimo.apache.org/xml/ns/deployment-1.1")) {
                 uri = "http://geronimo.apache.org/xml/ns/deployment-1.2";
             }
+            else if (uri.equals("http://geronimo.apache.org/xml/ns/naming-1.1")) {
+                uri = "http://geronimo.apache.org/xml/ns/naming-1.2";
+            }
+            else if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/application-1.2")) {
+                uri = "http://geronimo.apache.org/xml/ns/j2ee/application-2.0";
+            }
+            else if (uri.equals("http://geronimo.apache.org/xml/ns/security-1.1")) {
+                uri = "http://geronimo.apache.org/xml/ns/security-2.0";
+            }
+            else if (uri.equals("http://geronimo.apache.org/xml/ns/security-1.2")) {
+                uri = "http://geronimo.apache.org/xml/ns/security-2.0";
+            }
+            else if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/web-2.0")) {
+                uri = "http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1";
+            }
+            else if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/web-1.1")) {
+                uri = "http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1";
+            }
+
             super.startElement(uri, localName, qname, atts);
         }
     }
