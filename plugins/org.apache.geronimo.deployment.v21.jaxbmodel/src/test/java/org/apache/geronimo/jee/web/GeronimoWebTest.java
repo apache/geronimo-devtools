@@ -63,7 +63,7 @@ public class GeronimoWebTest extends TestCase {
 
     /*------------------------------------------------------------------------*\
     |                                                                          |
-    |  testcase(s)                                                             | 
+    |  Testcase(s)                                                             | 
     |                                                                          |
     \*------------------------------------------------------------------------*/
     public void testUnmarshallAndMarshall() throws Exception {

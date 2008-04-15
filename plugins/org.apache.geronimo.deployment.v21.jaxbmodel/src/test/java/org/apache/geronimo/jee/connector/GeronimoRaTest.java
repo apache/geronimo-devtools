@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.geronimo.jee.web;
+package org.apache.geronimo.jee.connector;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -63,7 +63,7 @@ public class GeronimoRaTest extends TestCase {
 
     /*------------------------------------------------------------------------*\
     |                                                                          |
-    |  testcase(s)                                                             | 
+    |  Testcase(s)                                                             | 
     |                                                                          |
     \*------------------------------------------------------------------------*/
     public void testUnmarshallAndMarshall() throws Exception {
@@ -97,13 +97,7 @@ public class GeronimoRaTest extends TestCase {
         // 
         JAXBContext jaxbContext = JAXBContext.newInstance( 
                                     "org.apache.geronimo.jee.connector:" +
-                                    "org.apache.geronimo.jee.openejb:" +
-                                    "org.apache.geronimo.jee.web:" +
-                                    "org.apache.geronimo.jee.application:" +
-                                    "org.apache.geronimo.jee.applicationclient:" +
-                                    "org.apache.geronimo.jee.deployment:" +
-                                    "org.apache.geronimo.jee.naming:" +
-                                    "org.apache.geronimo.jee.security", getClass().getClassLoader() );
+                                    "org.apache.geronimo.jee.deployment:", getClass().getClassLoader() );
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -157,13 +151,7 @@ public class GeronimoRaTest extends TestCase {
         // 
         JAXBContext jaxbContext = JAXBContext.newInstance( 
                                     "org.apache.geronimo.jee.connector:" +
-                                    "org.apache.geronimo.jee.openejb:" +
-                                    "org.apache.geronimo.jee.web:" +
-                                    "org.apache.geronimo.jee.application:" +
-                                    "org.apache.geronimo.jee.applicationclient:" +
-                                    "org.apache.geronimo.jee.deployment:" +
-                                    "org.apache.geronimo.jee.naming:" +
-                                    "org.apache.geronimo.jee.security", getClass().getClassLoader() );
+                                    "org.apache.geronimo.jee.deployment:", getClass().getClassLoader() );
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
