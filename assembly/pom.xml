@@ -32,6 +32,7 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <finalName>geronimo-eclipse-plugin-${version}-RC1</finalName>
