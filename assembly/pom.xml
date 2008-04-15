@@ -32,7 +32,10 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <!-- Note:  The dependencySet - outputFileMapping changed in 2.2-beta-2, so use the prior version that was working for us -->
+                <version>2.2-beta-1</version>
                 <configuration>
                     <finalName>geronimo-eclipse-plugin-${version}</finalName>
                     <descriptors>
