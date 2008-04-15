@@ -17,6 +17,10 @@
 
 package org.apache.geronimo.st.core.jaxb;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.geronimo.st.core.internal.Trace;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -32,23 +36,50 @@ import org.xml.sax.helpers.XMLFilterImpl;
  */
 public class NamespaceFilter extends XMLFilterImpl {
 
-    public NamespaceFilter(XMLReader xmlReader) {
-        super(xmlReader);
+    private static Map<String, String> namespace = new HashMap<String, String>();
+
+    static {
+        namespace.put("http://geronimo.apache.org/xml/ns/deployment-1.1", 
+                      "http://geronimo.apache.org/xml/ns/deployment-1.2");
+
+        namespace.put("http://geronimo.apache.org/xml/ns/j2ee/application-1.2", 
+                      "http://geronimo.apache.org/xml/ns/j2ee/application-2.0");
+
+        namespace.put("http://geronimo.apache.org/xml/ns/j2ee/application-client-1.1", 
+                      "http://geronimo.apache.org/xml/ns/j2ee/application-client-2.0");
+
+        namespace.put("http://geronimo.apache.org/xml/ns/j2ee/connector-1.1", 
+                      "http://geronimo.apache.org/xml/ns/j2ee/connector-1.2");
+
+        namespace.put("http://geronimo.apache.org/xml/ns/j2ee/web-1.1", 
+                      "http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1");
+
+        namespace.put("http://geronimo.apache.org/xml/ns/j2ee/web-2.0", 
+                      "http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1");
+
+        namespace.put("http://geronimo.apache.org/xml/ns/naming-1.1", 
+                      "http://geronimo.apache.org/xml/ns/naming-1.2");
+
+        namespace.put("http://geronimo.apache.org/xml/ns/security-1.1", 
+                      "http://geronimo.apache.org/xml/ns/security-2.0");
+
+        namespace.put("http://geronimo.apache.org/xml/ns/security-1.2", 
+                      "http://geronimo.apache.org/xml/ns/security-2.0");
     }
 
+    public NamespaceFilter(XMLReader xmlReader) {
+        super(xmlReader);
+        Trace.tracePoint("Constructor", "NamespaceFilter", xmlReader);
+    }
 
     public void startElement(String uri, String localName, String qname, Attributes atts) throws SAXException {
+        Trace.tracePoint("Entry", "NamespaceFilter.startElement", uri, localName, qname, atts);
 
-        if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/application-1.2")) {
-            uri = "http://geronimo.apache.org/xml/ns/j2ee/application-2.0";
-        }
-        else if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/application-client-1.1")) {
-            uri = "http://geronimo.apache.org/xml/ns/j2ee/application-client-2.0";
-        }
-        else if (uri.equals("http://geronimo.apache.org/xml/ns/deployment-1.1")) {
-            uri = "http://geronimo.apache.org/xml/ns/deployment-1.2";
+        if (namespace.containsKey( uri )) {
+            uri = namespace.get( uri );
         }
 
+        Trace.tracePoint("Exit ", "NamespaceFilter.startElement", uri, localName, qname, atts);
         super.startElement(uri, localName, qname, atts);
     }
 }

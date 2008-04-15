@@ -147,7 +147,7 @@ public class GeronimoWebTest extends TestCase {
     }
 
 
-    private void convertNamespace(String fileExample,String fileExpected) throws Exception {
+    private void convertNamespace(String fileExample, String fileExpected) throws Exception {
 
         // 
         // Create unmarshaller and marshaller

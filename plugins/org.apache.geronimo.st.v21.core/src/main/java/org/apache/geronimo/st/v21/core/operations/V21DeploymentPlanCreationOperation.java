@@ -60,7 +60,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 	public V21DeploymentPlanCreationOperation(IDataModel model, Object config) {
 		super(model, config);
-  		Trace.tracePoint("Constructor Entry/Exit", "V21DeploymentPlanCreationOperation", model, config);
+  		Trace.tracePoint("Constructor", "V21DeploymentPlanCreationOperation", model, config);
 	}
 	
 	

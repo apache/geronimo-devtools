@@ -26,6 +26,10 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.sax.SAXSource;
 
 import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.internal.Trace;
@@ -33,6 +37,8 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * @version $Rev$ $Date$
@@ -94,6 +100,33 @@ public class JAXBUtils {
 			Trace.tracePoint("CoreException", "JAXBUtils.unmarshalDeploymentPlan()", file.getFullPath());
 			e.printStackTrace();
 		}
+		return null;
+	}
+
+	public static JAXBElement unmarshalFilterDeploymentPlan(IFile file) {
+		try {
+			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            factory.setNamespaceAware(true);
+            factory.setValidating(false);
+            SAXParser parser = factory.newSAXParser();
+            NamespaceFilter xmlFilter = new NamespaceFilter(parser.getXMLReader());
+            SAXSource source = new SAXSource(xmlFilter, new InputSource( file.getContents()));
+            JAXBElement plan = (JAXBElement) unmarshaller.unmarshal(source);
+			return plan;
+		} catch (JAXBException e) {
+			Trace.tracePoint("JAXBException", "JAXBUtils.unmarshalFilterDeploymentPlan()", file.getFullPath());
+			e.printStackTrace();
+		} catch (CoreException e) {
+			Trace.tracePoint("CoreException", "JAXBUtils.unmarshalFilterDeploymentPlan()", file.getFullPath());
+			e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            Trace.tracePoint("ParserConfigurationException", "JAXBUtils.unmarshalFilterDeploymentPlan()", file.getFullPath());
+            e.printStackTrace();
+        } catch (SAXException e) {
+            Trace.tracePoint("SAXException", "JAXBUtils.unmarshalFilterDeploymentPlan()", file.getFullPath());
+            e.printStackTrace();
+        }
 		return null;
 	}
 

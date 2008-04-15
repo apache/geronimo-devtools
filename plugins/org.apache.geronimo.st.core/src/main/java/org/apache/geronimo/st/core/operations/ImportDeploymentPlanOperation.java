@@ -16,13 +16,12 @@
  */
 package org.apache.geronimo.st.core.operations;
 
-import java.io.IOException;
-
 import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.core.IGeronimoRuntime;
+import org.apache.geronimo.st.core.internal.Trace;
+import org.apache.geronimo.st.core.jaxb.ConversionHelper;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -38,65 +37,67 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  */
 public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponentOperation {
 
-	/**
-	 * 
-	 */
-	public ImportDeploymentPlanOperation() {
-		super();
-	}
+    /**
+     * 
+     */
+    public ImportDeploymentPlanOperation() {
+        super();
+        Trace.tracePoint("Constructor", "ImportDeploymentPlanOperation");
+    }
 
-	/**
-	 * @param model
-	 */
-	public ImportDeploymentPlanOperation(IDataModel model) {
-		super(model);
-	}
+    /**
+     * @param model
+     */
+    public ImportDeploymentPlanOperation(IDataModel model) {
+        super(model);
+        Trace.tracePoint("Constructor", "ImportDeploymentPlanOperation", model);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.commands.operations.AbstractOperation#execute(org.eclipse.core.runtime.IProgressMonitor,
-	 *      org.eclipse.core.runtime.IAdaptable)
-	 */
-	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		if (!isGeronimoRuntimeTarget())
-			return Status.OK_STATUS;
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.core.commands.operations.AbstractOperation#execute(org.eclipse.core.runtime.IProgressMonitor,
+     *      org.eclipse.core.runtime.IAdaptable)
+     */
+    public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+        Trace.tracePoint("Entry", "ImportDeploymentPlanOperation.execute", monitor, info);
 
-		IGeronimoRuntime runtime = (IGeronimoRuntime) getRuntime().loadAdapter(IGeronimoRuntime.class, null);
-		IVirtualComponent comp = ComponentCore.createComponent(getProject());
-		String type = J2EEProjectUtilities.getJ2EEProjectType(getProject());
+        if (!isGeronimoRuntimeTarget())
+            return Status.OK_STATUS;
 
-		IFile planFile = null;
-		
-		//try {
-			if (type.equals(IModuleConstants.JST_WEB_MODULE)) {
-				planFile = GeronimoUtils.getWebDeploymentPlanFile(comp);
-				//runtime.fixGeronimoWebSchema(planFile);	
-			} else if (type.equals(IModuleConstants.JST_EJB_MODULE)) {
-				planFile = GeronimoUtils.getOpenEjbDeploymentPlanFile(comp);
-				//runtime.fixGeronimoEjbSchema(planFile);
-			} else if (type.equals(IModuleConstants.JST_EAR_MODULE)) {
-				planFile = GeronimoUtils.getApplicationDeploymentPlanFile(comp);
-				//runtime.fixGeronimoEarSchema(planFile);
-			} else if (type.equals(IModuleConstants.JST_CONNECTOR_MODULE)) {
-				planFile = GeronimoUtils.getConnectorDeploymentPlanFile(comp);
-				//runtime.fixGeronimoConnectorSchema(planFile);
-			}
-		//} catch (XmlException e) {
-		//	throw new ExecutionException("Error fixing plan., e");
-		//}
+        IGeronimoRuntime runtime = (IGeronimoRuntime) getRuntime().loadAdapter(IGeronimoRuntime.class, null);
+        IVirtualComponent comp = ComponentCore.createComponent(getProject());
+        String type = J2EEProjectUtilities.getJ2EEProjectType(getProject());
 
-		return Status.OK_STATUS;
-	}
+        IFile planFile = null;
 
-	//private void save(XmlObject object, IFile file) {
-	//	try {
-	//		object.save(file.getLocation().toFile());
-	//		file.refreshLocal(IFile.DEPTH_ONE, null);
-	//	} catch (IOException e) {
-	//		e.printStackTrace();
-	//	} catch (CoreException e) {
-	//		e.printStackTrace();
-	//	}
-	//}
+        try {
+            if (type.equals(IModuleConstants.JST_WEB_MODULE)) {
+                planFile = GeronimoUtils.getWebDeploymentPlanFile(comp);
+                ConversionHelper.convertGeronimoWebFile(planFile);    
+            }
+            else if (type.equals(IModuleConstants.JST_EJB_MODULE)) {
+                planFile = GeronimoUtils.getOpenEjbDeploymentPlanFile(comp);
+                ConversionHelper.convertGeronimoOpenEjbFile(planFile);
+            }
+            else if (type.equals(IModuleConstants.JST_EAR_MODULE)) {
+                planFile = GeronimoUtils.getApplicationDeploymentPlanFile(comp);
+                ConversionHelper.convertGeronimoApplicationFile(planFile);
+            }
+            else if (type.equals(IModuleConstants.JST_CONNECTOR_MODULE)) {
+                planFile = GeronimoUtils.getConnectorDeploymentPlanFile(comp);
+                ConversionHelper.convertGeronimoRaFile(planFile);
+            }
+            else if (type.equals(IModuleConstants.JST_APPCLIENT_MODULE)) {
+                planFile = GeronimoUtils.getApplicationClientDeploymentPlanFile(comp);
+                ConversionHelper.convertGeronimoApplicationClientFile(planFile);
+            }
+        }
+        catch (Exception e) {
+            throw new ExecutionException("ImportDeploymentPlanOperation.execute(): Error converting plan: " + planFile.getFullPath() );
+        }
+
+        Trace.tracePoint("Exit ", "ImportDeploymentPlanOperation.execute", Status.OK_STATUS);
+        return Status.OK_STATUS;
+    }
 }
