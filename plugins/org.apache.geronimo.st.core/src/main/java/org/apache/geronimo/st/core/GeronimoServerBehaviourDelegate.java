@@ -171,27 +171,23 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#stop(boolean)
 	 */
     synchronized public void stop(final boolean force) {
-        new Thread() {
-            public void run() {
-                Trace.trace(Trace.INFO, "--> stop()");
-                stopPingThread();
-                if (getServer().getServerState() != IServer.STATE_STOPPED) {
-                    setServerState(IServer.STATE_STOPPING);
-                    stopKernel();
-                }
-                GeronimoConnectionFactory.getInstance().destroy(getServer());
-                if (force) {
-                    terminate();
-                    return;
-                }
-                int state = getServer().getServerState();
-                if (state == IServer.STATE_STOPPED)
-                    return;
-                if (state == IServer.STATE_STARTING || state == IServer.STATE_STOPPING)
-                    terminate();
-                Trace.trace(Trace.INFO, "<-- stop()");
-            }
-        }.start();
+        Trace.trace(Trace.INFO, "--> stop()");
+        stopPingThread();
+        if (getServer().getServerState() != IServer.STATE_STOPPED) {
+            setServerState(IServer.STATE_STOPPING);
+            stopKernel();
+        }
+        GeronimoConnectionFactory.getInstance().destroy(getServer());
+        if (force) {
+            terminate();
+            return;
+        }
+        int state = getServer().getServerState();
+        if (state == IServer.STATE_STOPPED)
+            return;
+        if (state == IServer.STATE_STARTING || state == IServer.STATE_STOPPING)
+            terminate();
+        Trace.trace(Trace.INFO, "<-- stop()");
     }
 
 	/* 
