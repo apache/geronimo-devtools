@@ -17,7 +17,6 @@
 package org.apache.geronimo.st.core.operations;
 
 import org.apache.geronimo.st.core.GeronimoUtils;
-import org.apache.geronimo.st.core.IGeronimoRuntime;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.apache.geronimo.st.core.jaxb.ConversionHelper;
 import org.eclipse.core.commands.ExecutionException;
@@ -65,7 +64,6 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
         if (!isGeronimoRuntimeTarget())
             return Status.OK_STATUS;
 
-        IGeronimoRuntime runtime = (IGeronimoRuntime) getRuntime().loadAdapter(IGeronimoRuntime.class, null);
         IVirtualComponent comp = ComponentCore.createComponent(getProject());
         String type = J2EEProjectUtilities.getJ2EEProjectType(getProject());
 

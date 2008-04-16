@@ -16,7 +16,6 @@
  */
 package org.apache.geronimo.st.core;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jst.server.core.IJavaRuntime;
 
@@ -24,14 +23,6 @@ import org.eclipse.jst.server.core.IJavaRuntime;
  * @version $Rev$ $Date$
  */
 public interface IGeronimoRuntime extends IJavaRuntime {
-	
-	//public XmlObject fixGeronimoEarSchema(IFile plan) throws XmlException;
-	
-	//public XmlObject fixGeronimoWebSchema(IFile plan) throws XmlException;
-	
-	//public XmlObject fixGeronimoEjbSchema(IFile plan) throws XmlException;
-	
-	//public XmlObject fixGeronimoConnectorSchema(IFile plan) throws XmlException;
 	
 	public IPath getRuntimeSourceLocation();
 
