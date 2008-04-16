@@ -54,6 +54,9 @@ public class NamespaceFilter extends XMLFilterImpl {
         namespace.put("http://geronimo.apache.org/xml/ns/j2ee/web-1.1", 
                       "http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1");
 
+        namespace.put("http://geronimo.apache.org/xml/ns/j2ee/web-1.2", 
+                      "http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1");
+
         namespace.put("http://geronimo.apache.org/xml/ns/j2ee/web-2.0", 
                       "http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1");
 
