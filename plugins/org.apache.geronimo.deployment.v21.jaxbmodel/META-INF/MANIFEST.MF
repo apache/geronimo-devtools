@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Geronimo V1 JAXB Models
+Bundle-Name: Geronimo V21 JAXB Models
 Bundle-SymbolicName: org.apache.geronimo.deployment.v21.jaxbmodel;singleton:=true
 Bundle-Version: 2.1.0
 Bundle-ClassPath: .
