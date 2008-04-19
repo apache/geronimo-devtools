@@ -98,7 +98,7 @@
             <dependency>
                 <groupId>com.thoughtworks.xstream</groupId>
                 <artifactId>xstream</artifactId>
-                <version>1.2.1</version>
+                <version>1.2.2</version>
             </dependency>
                         
             <dependency>
@@ -149,12 +149,6 @@
             </dependency>
                         
             <dependency>
-                <groupId>javax.activation</groupId>
-                <artifactId>activation</artifactId>
-                <version>1.1</version>
-            </dependency>
-                        
-            <dependency>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-archiver</artifactId>
                 <version>1.0-alpha-7</version>
@@ -172,6 +166,12 @@
                 <version>2.1_3</version>
             </dependency>
                         
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-activation_1.1_spec</artifactId>
+                <version>1.0.2</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.apache.geronimo.specs</groupId>
                 <artifactId>geronimo-j2ee-deployment_1.1_spec</artifactId>

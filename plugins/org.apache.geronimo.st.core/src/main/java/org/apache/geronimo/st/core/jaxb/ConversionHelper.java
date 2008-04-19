@@ -28,15 +28,6 @@ import org.eclipse.core.resources.IFile;
  * methods to aid in the conversion of Geronimo-specific deployment plans from 
  * one JAXB version to another (e.g., v1.1 to v2.1)<p> 
  * 
- * <p><strong>Note(s):</strong>
- * <ul>
- * <li>Although this helper class will likely alter the deployment plans passed 
- * to it, it will not save them; the caller is responsible for persisting them 
- * <li>This helper class will validate any changes it makes to the deployment descriptor. An
- * exception will be thrown if it fails to parse
- * </ul>
- * 
- * 
  * @version $Rev$ $Date$ 
  */
 public class ConversionHelper {

@@ -100,8 +100,8 @@
                                     <artifactId>jaxb-impl</artifactId>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>javax.activation</groupId>
-                                    <artifactId>activation</artifactId>
+                                    <groupId>org.apache.geronimo.specs</groupId>
+                                    <artifactId>geronimo-activation_1.1_spec</artifactId>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
@@ -193,8 +193,8 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>activation</artifactId>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-activation_1.1_spec</artifactId>
         </dependency>
     </dependencies>
 </project>
