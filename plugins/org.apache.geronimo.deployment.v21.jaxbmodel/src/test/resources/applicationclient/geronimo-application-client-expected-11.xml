@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one or more
+   contributor license agreements.  See the NOTICE file distributed with
+   this work for additional information regarding copyright ownership.
+   The ASF licenses this file to You under the Apache License, Version 2.0
+   (the "License"); you may not use this file except in compliance with
+   the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+   
+<!-- @version $Rev$ $Date$ -->
+   
+<ns4:application-client xmlns="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:ns2="http://geronimo.apache.org/xml/ns/naming-1.2" xmlns:ns3="http://geronimo.apache.org/xml/ns/security-2.0" xmlns:ns4="http://geronimo.apache.org/xml/ns/j2ee/application-client-2.0" xmlns:ns5="http://geronimo.apache.org/xml/ns/j2ee/connector-1.2">
+    <client-environment>
+        <moduleId>
+            <groupId>org.apache.geronimo.testsuite</groupId>
+            <artifactId>agent-ear</artifactId>
+            <version>2.2-SNAPSHOT</version>
+            <type>ear</type>
+        </moduleId>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.geronimo.testsuite</groupId>
+                <artifactId>agent-ds</artifactId>
+                <version>2.2-SNAPSHOT</version>
+                <type>car</type>
+            </dependency>
+        </dependencies>
+    </client-environment>
+    <server-environment>
+        <moduleId>
+            <groupId>org.apache.geronimo.testsuite</groupId>
+            <artifactId>agent-ear</artifactId>
+            <version>2.2-SNAPSHOT</version>
+            <type>ear</type>
+        </moduleId>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.geronimo.testsuite</groupId>
+                <artifactId>agent-ds</artifactId>
+                <version>2.2-SNAPSHOT</version>
+                <type>car</type>
+            </dependency>
+        </dependencies>
+    </server-environment>
+    <ns2:gbean-ref>
+        <ns2:ref-name>gbeanref-name</ns2:ref-name>
+        <ns2:ref-type>gbeanref-reftype</ns2:ref-type>
+        <ns2:pattern>
+            <ns2:groupId>gbeanref-pattern-groupid</ns2:groupId>
+            <ns2:artifactId>gbeanref-pattern-artifactid</ns2:artifactId>
+            <ns2:version>gbeanref-pattern-version</ns2:version>
+            <ns2:module>gbeanref-pattern-module</ns2:module>
+            <ns2:name>gbeanref-pattern-name</ns2:name>
+        </ns2:pattern>
+    </ns2:gbean-ref>
+    <ns2:ejb-ref>
+        <ns2:ref-name>ejbref-refname</ns2:ref-name>
+        <ns2:pattern>
+            <ns2:groupId>ejbref-pattern-groupid</ns2:groupId>
+            <ns2:artifactId>ejbref-pattern-artifactid</ns2:artifactId>
+            <ns2:version>ejbref-pattern-version</ns2:version>
+            <ns2:module>ejbref-pattern-module</ns2:module>
+            <ns2:name>ejbref-pattern-name</ns2:name>
+        </ns2:pattern>
+        <ns2:ns-corbaloc>ejbref-nscorbaloc</ns2:ns-corbaloc>
+        <ns2:name>ejbref-name</ns2:name>
+        <ns2:css>
+            <ns2:groupId>ejbref-css-groupid</ns2:groupId>
+            <ns2:artifactId>ejbref-css-artifactid</ns2:artifactId>
+            <ns2:version>ejbref-css-version</ns2:version>
+            <ns2:module>ejbref-css-module</ns2:module>
+            <ns2:name>ejbref-css-name</ns2:name>
+        </ns2:css>
+        <ns2:css-link>ejbref-csslink</ns2:css-link>
+        <ns2:ejb-link>ejbref-ejblink</ns2:ejb-link>
+    </ns2:ejb-ref>
+    <ns2:service-ref>
+        <ns2:service-ref-name>serviceref-refname</ns2:service-ref-name>
+        <ns2:service-completion>
+            <ns2:service-name>serviceref-servicecompletion-servicename</ns2:service-name>
+            <ns2:port-completion>
+                <ns2:port>
+                    <ns2:port-name>serviceref-servicecompletion-portcompletion-port-portname</ns2:port-name>
+                    <ns2:protocol>serviceref-servicecompletion-portcompletion-port-protocol</ns2:protocol>
+                    <ns2:host>serviceref-servicecompletion-portcompletion-port-host</ns2:host>
+                    <ns2:port>0</ns2:port>
+                    <ns2:uri>serviceref-servicecompletion-portcompletion-port-uri</ns2:uri>
+                    <ns2:credentials-name>serviceref-servicecompletion-portcompletion-port-credentialsname</ns2:credentials-name>
+                </ns2:port>
+                <ns2:binding-name>serviceref-servicecompletion-portcompletion-bindingname</ns2:binding-name>
+            </ns2:port-completion>
+        </ns2:service-completion>
+        <ns2:port>
+            <ns2:port-name>serviceref-port-portname</ns2:port-name>
+            <ns2:protocol>serviceref-port-protocol</ns2:protocol>
+            <ns2:host>serviceref-port-host</ns2:host>
+            <ns2:port>0</ns2:port>
+            <ns2:uri>serviceref-port-uri</ns2:uri>
+            <ns2:credentials-name>serviceref-port-credentialsname</ns2:credentials-name>
+        </ns2:port>
+    </ns2:service-ref>
+    <ns2:resource-ref>
+        <ns2:ref-name>resourceref-refname</ns2:ref-name>
+        <ns2:pattern>
+            <ns2:groupId>resourceref-pattern-groupid</ns2:groupId>
+            <ns2:artifactId>resourceref-pattern-artifactid</ns2:artifactId>
+            <ns2:version>resourceref-pattern-version</ns2:version>
+            <ns2:module>resourcref-pattern-module</ns2:module>
+            <ns2:name>resourceref-pattern-name</ns2:name>
+        </ns2:pattern>
+        <ns2:resource-link>resourceref-resourcelink</ns2:resource-link>
+        <ns2:url>resourceref-url</ns2:url>
+    </ns2:resource-ref>
+    <ns2:resource-env-ref>
+        <ns2:ref-name>resourceenvref-refname</ns2:ref-name>
+        <ns2:pattern>
+            <ns2:groupId>resourceenvref-pattern-groupid</ns2:groupId>
+            <ns2:artifactId>resourceenvref-pattern-artifactid</ns2:artifactId>
+            <ns2:version>resourceenvref-pattern-version</ns2:version>
+            <ns2:module>resourceenvref-pattern-module</ns2:module>
+            <ns2:name>resourceenvref-pattern-name</ns2:name>
+        </ns2:pattern>
+        <ns2:message-destination-link>resourceenvref-messagedestinationlink</ns2:message-destination-link>
+        <ns2:admin-object-module>resourceenvref-adminobjectmodule</ns2:admin-object-module>
+        <ns2:admin-object-link>resourceenvref-adminobjectlink</ns2:admin-object-link>
+    </ns2:resource-env-ref>
+    <ns2:message-destination>
+        <ns2:message-destination-name>messagedestination-name</ns2:message-destination-name>
+        <ns2:pattern>
+            <ns2:groupId>messagedestination-pattern-groupid</ns2:groupId>
+            <ns2:artifactId>messagedestination-pattern-artifactid</ns2:artifactId>
+            <ns2:version>messagedestination-pattern-version</ns2:version>
+            <ns2:module>messagedestination-pattern-module</ns2:module>
+            <ns2:name>messagedestination-pattern-name</ns2:name>
+        </ns2:pattern>
+        <ns2:admin-object-module>messagedestination-adminobjectmodule</ns2:admin-object-module>
+        <ns2:admin-object-link>messagedestination-adminobjectlink</ns2:admin-object-link>
+    </ns2:message-destination>
+    <ns3:default-subject>
+        <ns3:description>subjectinfo-description</ns3:description>
+        <ns3:realm>subjectinfo-realm</ns3:realm>
+        <ns3:id>subjectinfo-id</ns3:id>
+    </ns3:default-subject>
+    <ns4:realm-name>realmname</ns4:realm-name>
+    <ns4:callback-handler>callbackhandler</ns4:callback-handler>
+    <ns4:resource>
+        <ns4:external-rar>
+            <groupId>resource-externalrar-groupid</groupId>
+            <artifactId>resource-externalrar-artifactid</artifactId>
+            <version>resource-externalrar-version</version>
+            <module>resource-externalrar-module</module>
+            <type>resource-externalrar-type</type>
+            <name>resource-externalrar-customfoo</name>
+        </ns4:external-rar>
+        <ns4:internal-rar>resource-internalrar</ns4:internal-rar>
+        <ns5:connector>
+            <environment>
+                <moduleId>
+                    <groupId>org.apache.geronimo.testsuite</groupId>
+                    <artifactId>agent-ear</artifactId>
+                    <version>2.2-SNAPSHOT</version>
+                    <type>ear</type>
+                </moduleId>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.geronimo.testsuite</groupId>
+                        <artifactId>agent-ds</artifactId>
+                        <version>2.2-SNAPSHOT</version>
+                        <type>car</type>
+                    </dependency>
+                </dependencies>
+            </environment>
+            <ns5:resourceadapter>
+                <ns5:resourceadapter-instance>
+                    <ns5:resourceadapter-name>resource-connector-resourceadapter-name</ns5:resourceadapter-name>
+                    <ns5:config-property-setting name="resource-connector-resourceadapter-instance-name">resource-connector-resourceadapter-instance-value</ns5:config-property-setting>
+                    <ns2:workmanager>
+                        <ns2:pattern>
+                            <ns2:groupId>connector-resourceadapter-workmanager-pattern-groupid</ns2:groupId>
+                            <ns2:artifactId>connector-resourceadapter-workmanager-pattern-artifactid</ns2:artifactId>
+                            <ns2:version>connector-resourceadapter-workmanager-pattern-version</ns2:version>
+                            <ns2:module>connector-resourceadapter-workmanager-pattern-module</ns2:module>
+                            <ns2:name>connector-resourceadapter-workmanager-pattern-name</ns2:name>
+                        </ns2:pattern>
+                        <ns2:gbean-link>connector-resourceadapter-workmanager-gbeanlink</ns2:gbean-link>
+                    </ns2:workmanager>
+                </ns5:resourceadapter-instance>
+                <ns5:outbound-resourceadapter>
+                    <ns5:connection-definition>
+                        <ns5:connectionfactory-interface>resource-connector-resourceadapter-outbound-connectiondefinition-interface</ns5:connectionfactory-interface>
+                        <ns5:connectiondefinition-instance>
+                            <ns5:name>resource-connector-resourceadapter-outbound-connectiondefinition-instance-name</ns5:name>
+                            <ns5:implemented-interface>resource-connector-resourceadapter-outbound-connectiondefinition-instance-implementedinterface</ns5:implemented-interface>
+                            <ns5:config-property-setting name="resource-connector-resourceadapter-outbound-connectiondefinition-instance-name">resource-connector-resourceadapter-outbound-connectiondefinition-instance-value</ns5:config-property-setting>
+                            <ns5:connectionmanager>
+<ns5:container-managed-security/>
+<ns5:no-transaction/>
+<ns5:local-transaction/>
+<ns5:xa-transaction>
+    <ns5:transaction-caching/>
+    <ns5:thread-caching/>
+</ns5:xa-transaction>
+<ns5:transaction-log/>
+<ns5:no-pool/>
+<ns5:single-pool>
+    <ns5:max-size>0</ns5:max-size>
+    <ns5:min-size>0</ns5:min-size>
+    <ns5:blocking-timeout-milliseconds>0</ns5:blocking-timeout-milliseconds>
+    <ns5:idle-timeout-minutes>0</ns5:idle-timeout-minutes>
+    <ns5:match-one/>
+    <ns5:match-all/>
+    <ns5:select-one-assume-match/>
+</ns5:single-pool>
+<ns5:partitioned-pool>
+    <ns5:max-size>0</ns5:max-size>
+    <ns5:min-size>0</ns5:min-size>
+    <ns5:blocking-timeout-milliseconds>0</ns5:blocking-timeout-milliseconds>
+    <ns5:idle-timeout-minutes>0</ns5:idle-timeout-minutes>
+    <ns5:match-one/>
+    <ns5:match-all/>
+    <ns5:select-one-assume-match/>
+    <ns5:partition-by-subject/>
+    <ns5:partition-by-connectionrequestinfo/>
+</ns5:partitioned-pool>
+                            </ns5:connectionmanager>
+                        </ns5:connectiondefinition-instance>
+                    </ns5:connection-definition>
+                </ns5:outbound-resourceadapter>
+            </ns5:resourceadapter>
+            <ns5:adminobject>
+                <ns5:adminobject-interface>resource-connector-adminobject-adminobjectinterface</ns5:adminobject-interface>
+                <ns5:adminobject-class>resource-connector-adminobject-adminobjectclass</ns5:adminobject-class>
+                <ns5:adminobject-instance>
+                    <ns5:message-destination-name>resource-connector-adminobject-instance-messagedestinationname</ns5:message-destination-name>
+                    <ns5:config-property-setting name="resource-connector-adminobject-instance-name">resource-connector-adminobject-instance-value</ns5:config-property-setting>
+                </ns5:adminobject-instance>
+            </ns5:adminobject>
+            <gbean name="resource-connector-gbean-name" class="resource-connector-gbean-class"/>
+        </ns5:connector>
+    </ns4:resource>
+    <gbean name="service-gbean-name" class="service-gbean-class"/>
+</ns4:application-client>
