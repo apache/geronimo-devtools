@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    (the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<!-- @version $Rev$ $Date$ -->
+
+<ns2:application xmlns="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:ns2="http://geronimo.apache.org/xml/ns/j2ee/application-2.0" application-name="test-app-name">
+    <environment>
+        <moduleId>
+            <groupId>org.apache.geronimo.testsuite</groupId>
+            <artifactId>agent-ear</artifactId>
+            <version>2.2-SNAPSHOT</version>
+            <type>ear</type>
+        </moduleId>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.geronimo.testsuite</groupId>
+                <artifactId>agent-ds</artifactId>
+                <version>2.2-SNAPSHOT</version>
+                <type>car</type>
+            </dependency>
+        </dependencies>
+    </environment>
+    <ns2:module>
+        <ns2:connector id="module-connector-path-id">module-connector-path-value</ns2:connector>
+        <ns2:ejb id="module-ejb-path-id">module-ejb-path-value</ns2:ejb>
+        <ns2:java id="module-java-path-id">module-java-path-value</ns2:java>
+        <ns2:web id="module-web-path-id">module-web-path-value</ns2:web>
+        <ns2:alt-dd id="module-altdd-path-id">module-altdd-path-value</ns2:alt-dd>
+    </ns2:module>
+    <ns2:ext-module>
+        <ns2:connector id="extmodule-connector-path-id">extmodule-connector-path-value</ns2:connector>
+        <ns2:ejb id="extmodule-ejb-path-id">extmodule-ejb-path-value</ns2:ejb>
+        <ns2:java id="extmodule-java-path-id">extmodule-java-path-value</ns2:java>
+        <ns2:web id="extmodule-web-path-id">extmodule-web-path-value</ns2:web>
+        <ns2:internal-path>extmodule-internalpath</ns2:internal-path>
+        <ns2:external-path>
+            <groupId>extmodule-externalpath-groupid</groupId>
+            <artifactId>extmodule-externalpath-artifactid</artifactId>
+            <version>extmodule-externalpath-version</version>
+            <module>extmodule-externalpath-module</module>
+            <type>extmodule-externalpath-type</type>
+            <name>extmodule-externalpath-customfoo</name>
+        </ns2:external-path>
+    </ns2:ext-module>
+    <gbean name="gbean-name" class="gbean-class"/>
+</ns2:application>
