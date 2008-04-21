@@ -14,6 +14,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.common.project.facet.ui,
  org.apache.geronimo.st.v21.ui,
  org.apache.geronimo.runtime.common,
- org.apache.geronimo.deployment.v21.jaxbmodel
+ org.apache.geronimo.jee.v21.jaxbmodel
 Eclipse-LazyStart: true
 Bundle-Vendor: Apache.org

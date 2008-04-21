@@ -15,5 +15,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.geronimo.st.core,
  org.eclipse.jst.common.frameworks,
  org.eclipse.wst.common.modulecore,
- org.apache.geronimo.deployment.v21.jaxbmodel
+ org.apache.geronimo.jee.v21.jaxbmodel
 Eclipse-LazyStart: true

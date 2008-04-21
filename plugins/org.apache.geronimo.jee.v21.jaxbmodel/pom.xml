@@ -19,7 +19,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
   
-    <artifactId>org.apache.geronimo.deployment.v21.jaxbmodel</artifactId>
+    <artifactId>org.apache.geronimo.jee.v21.jaxbmodel</artifactId>
     <packaging>jar</packaging>
     <name>${artifactId}</name>
     <parent>

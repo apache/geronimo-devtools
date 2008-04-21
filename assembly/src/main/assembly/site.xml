@@ -32,10 +32,6 @@
         <category name="org.eclipse.wst.server.core.serverAdapter"/>
     </feature>
 
-    <feature url="eclipse/features/org.apache.geronimo.v11.feature_2.1.0.jar" id="org.apache.geronimo.v11.feature" version="2.1.0">
-        <category name="org.eclipse.wst.server.core.serverAdapter"/>
-    </feature>
-
     <feature url="eclipse/features/org.apache.geronimo.v20.feature_2.1.0.jar" id="org.apache.geronimo.v20.feature" version="2.1.0">
         <category name="org.eclipse.wst.server.core.serverAdapter"/>
     </feature>

@@ -36,16 +36,13 @@ public class GeronimoServerRuntimeTargetHandler extends RuntimeClasspathProvider
      */
     public String getClasspathContainerLabel(IRuntime runtime) {
         String version = runtime.getRuntimeType().getVersion();
-        if (version.equals("1.0")) {
-            return Messages.target10runtime;
+        if (version.equals("2.0")) {
+            return Messages.target20runtime;
         }
-        else if (version.equals("1.1")) {
-            return Messages.target11runtime;
+        else if (version.equals("2.1")) {
+            return Messages.target21runtime;
         }
-        else if (version.equals("1.2")) {
-            return Messages.target12runtime;
-        }
-        return Messages.target12runtime;
+        return Messages.target21runtime;
     }
 
     /* (non-Javadoc)
