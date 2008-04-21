@@ -18,7 +18,7 @@
 
 <!-- @version $Rev$ $Date$ -->
 
-<ns2:application xmlns="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:ns2="http://geronimo.apache.org/xml/ns/j2ee/application-2.0" application-name="test-app-name">
+<ns2:application xmlns="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:ns2="http://geronimo.apache.org/xml/ns/j2ee/application-2.0" xmlns:ns3="http://geronimo.apache.org/xml/ns/security-2.0" application-name="test-app-name">
     <environment>
         <moduleId>
             <groupId>org.apache.geronimo.testsuite</groupId>
@@ -57,5 +57,42 @@
             <name>extmodule-externalpath-customfoo</name>
         </ns2:external-path>
     </ns2:ext-module>
+    <ns2:security xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns3:securityType" use-context-handler="true" doas-current-caller="true" default-role="security-role">
+        <ns3:credential-store-ref>
+            <groupId>security-credentialstoreref-groupid</groupId>
+            <artifactId>security-credentialstoreref-artifactid</artifactId>
+            <version>security-credentialstoreref-version</version>
+            <module>security-credentialstoreref-module</module>
+            <type>security-credentialstoreref-type</type>
+            <name>security-credentialstoreref-customfoo</name>
+        </ns3:credential-store-ref>
+        <ns3:default-subject>
+            <ns3:description>security-subjectinfo-description</ns3:description>
+            <ns3:realm>security-subjectinfo-realm</ns3:realm>
+            <ns3:id>security-subjectinfo-id</ns3:id>
+        </ns3:default-subject>
+        <ns3:role-mappings>
+            <ns3:role role-name="security-role">
+                <ns3:description>security-role-description</ns3:description>
+                <ns3:run-as-subject>
+                    <ns3:description>security-role-subjectinfo-description</ns3:description>
+                    <ns3:realm>security-role-subjectinfo-realm</ns3:realm>
+                    <ns3:id>security-role-subjectinfo-id</ns3:id>
+                </ns3:run-as-subject>
+                <ns3:realm-principal name="security-role-realmprincipal-name" class="security-role-realmprincipal-class">
+                    <ns3:description>security-role-realmprincipal-description</ns3:description>
+                </ns3:realm-principal>
+                <ns3:login-domain-principal domain-name="security-role-logindomainprincipal-domainname" name="security-role-logindomainprincipal-name" class="security-role-logindomainprincipal-class">
+                    <ns3:description>security-role-logindomainprincipal-description</ns3:description>
+                </ns3:login-domain-principal>
+                <ns3:principal name="security-role-principal-name" class="security-role-principal-class">
+                    <ns3:description>security-role-principal-description</ns3:description>
+                </ns3:principal>
+                <ns3:distinguished-name name="security-role-distinguishedname">
+                    <ns3:description>security-role-distinguished-name-description</ns3:description>
+                </ns3:distinguished-name>
+            </ns3:role>
+        </ns3:role-mappings>
+    </ns2:security>
     <gbean name="gbean-name" class="gbean-class"/>
 </ns2:application>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!-- @version $Rev$ $Date$ -->
+           
+<ns2:ejb-jar xmlns="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:ns2="http://geronimo.apache.org/xml/ns/j2ee/ejb/openejb-2.0" xmlns:ns3="http://geronimo.apache.org/xml/ns/naming-1.2" xmlns:ns4="http://geronimo.apache.org/xml/ns/j2ee/application-2.0" xmlns:ns5="http://geronimo.apache.org/xml/ns/security-2.0" xmlns:ns6="http://java.sun.com/xml/ns/persistence">
+    <environment>
+        <moduleId>
+            <groupId>org.apache.geronimo.testsuite</groupId>
+            <artifactId>agent-ear</artifactId>
+            <version>2.2-SNAPSHOT</version>
+            <type>ear</type>
+        </moduleId>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.geronimo.testsuite</groupId>
+                <artifactId>agent-ds</artifactId>
+                <version>2.2-SNAPSHOT</version>
+                <type>car</type>
+            </dependency>
+        </dependencies>
+    </environment>
+    <ns3:abstract-naming-entry xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns3:persistence-unit-refType">
+        <ns3:persistence-unit-ref-name>jndienvironmentrefsgroup-persistenceunitref-unitrefname</ns3:persistence-unit-ref-name>
+        <ns3:persistence-unit-name>jndienvironmentrefsgroup-persistenceunitref-unitname</ns3:persistence-unit-name>
+        <ns3:pattern>
+            <ns3:groupId>jndienvironmentrefsgroup-persistenceunitref-pattern-groupid</ns3:groupId>
+            <ns3:artifactId>jndienvironmentrefsgroup-persistenceunitref-pattern-artifactid</ns3:artifactId>
+            <ns3:version>jndienvironmentrefsgroup-persistenceunitref-pattern-version</ns3:version>
+            <ns3:module>jndienvironmentrefsgroup-persistenceunitref-pattern-module</ns3:module>
+            <ns3:name>jndienvironmentrefsgroup-persistenceunitref-pattern-name</ns3:name>
+        </ns3:pattern>
+    </ns3:abstract-naming-entry>
+    <ns3:message-destination>
+        <ns3:message-destination-name>messagedestination-name</ns3:message-destination-name>
+        <ns3:pattern>
+            <ns3:groupId>messagedestination-pattern-groupid</ns3:groupId>
+            <ns3:artifactId>messagedestination-pattern-artifactid</ns3:artifactId>
+            <ns3:version>messagedestination-pattern-version</ns3:version>
+            <ns3:module>messagedestination-pattern-module</ns3:module>
+            <ns3:name>messagedestination-pattern-name</ns3:name>
+        </ns3:pattern>
+        <ns3:admin-object-module>messagedestination-adminobjectmodule</ns3:admin-object-module>
+        <ns3:admin-object-link>messagedestination-adminobjectlink</ns3:admin-object-link>
+    </ns3:message-destination>
+    <ns2:tss-link>
+        <ns2:ejb-name>tsslink-ejbname</ns2:ejb-name>
+        <ns2:tss-name>tsslink-tssname</ns2:tss-name>
+        <ns2:jndi-name>tssname-jndiname</ns2:jndi-name>
+    </ns2:tss-link>
+    <ns2:web-service-binding>
+        <ns2:ejb-name>webservicebinding-ejbname</ns2:ejb-name>
+        <ns2:web-service-address>webservicebinding-webserviceaddress</ns2:web-service-address>
+        <ns2:web-service-virtual-host>webservicebinding-webservicevirtualhost</ns2:web-service-virtual-host>
+        <ns2:web-service-security>
+            <ns2:security-realm-name>webservicebinding-webservicesecurity-securityrealmname</ns2:security-realm-name>
+            <ns2:realm-name>webservicebinding-webservicesecurity-realmname</ns2:realm-name>
+            <ns2:transport-guarantee>INTEGRAL</ns2:transport-guarantee>
+            <ns2:auth-method>BASIC</ns2:auth-method>
+        </ns2:web-service-security>
+    </ns2:web-service-binding>
+    <ns5:security use-context-handler="true" doas-current-caller="true" default-role="security-role">
+        <ns5:credential-store-ref>
+            <groupId>security-credentialstoreref-groupid</groupId>
+            <artifactId>security-credentialstoreref-artifactid</artifactId>
+            <version>security-credentialstoreref-version</version>
+            <module>security-credentialstoreref-module</module>
+            <type>security-credentialstoreref-type</type>
+            <name>security-credentialstoreref-customfoo</name>
+        </ns5:credential-store-ref>
+        <ns5:default-subject>
+            <ns5:description>security-subjectinfo-description</ns5:description>
+            <ns5:realm>security-subjectinfo-realm</ns5:realm>
+            <ns5:id>security-subjectinfo-id</ns5:id>
+        </ns5:default-subject>
+        <ns5:role-mappings>
+            <ns5:role role-name="security-role">
+                <ns5:description>security-role-description</ns5:description>
+                <ns5:run-as-subject>
+                    <ns5:description>security-role-subjectinfo-description</ns5:description>
+                    <ns5:realm>security-role-subjectinfo-realm</ns5:realm>
+                    <ns5:id>security-role-subjectinfo-id</ns5:id>
+                </ns5:run-as-subject>
+                <ns5:realm-principal name="security-role-realmprincipal-name" class="security-role-realmprincipal-class">
+                    <ns5:description>security-role-realmprincipal-description</ns5:description>
+                </ns5:realm-principal>
+                <ns5:login-domain-principal domain-name="security-role-logindomainprincipal-domainname" name="security-role-logindomainprincipal-name" class="security-role-logindomainprincipal-class">
+                    <ns5:description>security-role-logindomainprincipal-description</ns5:description>
+                </ns5:login-domain-principal>
+                <ns5:principal name="security-role-principal-name" class="security-role-principal-class">
+                    <ns5:description>security-role-principal-description</ns5:description>
+                </ns5:principal>
+                <ns5:distinguished-name name="security-role-distinguishedname">
+                    <ns5:description>security-role-distinguished-name-description</ns5:description>
+                </ns5:distinguished-name>
+            </ns5:role>
+        </ns5:role-mappings>
+    </ns5:security>
+    <ns6:persistence version="persistence-version">
+        <ns6:persistence-unit transaction-type="RESOURCE_LOCAL" name="persistence-name">
+            <ns6:description>persistence-description</ns6:description>
+            <ns6:provider>persistence-provider</ns6:provider>
+            <ns6:jta-data-source>persistence-jtadatasource</ns6:jta-data-source>
+            <ns6:non-jta-data-source>persistence-nonjtadatasource</ns6:non-jta-data-source>
+            <ns6:mapping-file>persistence-mappingfile</ns6:mapping-file>
+            <ns6:jar-file>persistence-jarfile</ns6:jar-file>
+            <ns6:class>persistence-clazz</ns6:class>
+            <ns6:exclude-unlisted-classes>true</ns6:exclude-unlisted-classes>
+            <ns6:properties>
+                <ns6:property value="persistence-property-value" name="persistence-property-name"/>
+            </ns6:properties>
+        </ns6:persistence-unit>
+    </ns6:persistence>
+</ns2:ejb-jar>

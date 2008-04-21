@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.SAXParser;
@@ -33,6 +34,13 @@ import javax.xml.transform.sax.SAXSource;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
+import org.apache.geronimo.jee.deployment.Artifact;
+import org.apache.geronimo.jee.deployment.Dependencies;
+import org.apache.geronimo.jee.deployment.Dependency;
+import org.apache.geronimo.jee.deployment.Environment;
+import org.apache.geronimo.jee.deployment.Gbean;
+import org.apache.geronimo.jee.naming.GbeanLocator;
+import org.apache.geronimo.jee.naming.Pattern;
 import org.custommonkey.xmlunit.Diff;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -53,7 +61,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
  *      <li>Unmarshalling and marshalling sequence
  *      <li>Namespace conversion
  *      <li>Element conversion (TODO)
- *      <li>Create a file (TODO)
+ *      <li>Create XML with all fields
  * </ol>
  * 
  * 
@@ -84,6 +92,9 @@ public class GeronimoRaTest extends TestCase {
                          "connector/geronimo-ra-expected-3.xml");
     }
 
+    public void testCompleteXML() throws Exception {
+        buildFullXMLFromScratch("connector/geronimo-ra-expected-11.xml");
+    }
 
     /*------------------------------------------------------------------------*\
     |                                                                          |
@@ -207,6 +218,144 @@ public class GeronimoRaTest extends TestCase {
         }
     }
 
+    private void buildFullXMLFromScratch (String fileExpected) throws Exception {
+        org.apache.geronimo.jee.connector.ObjectFactory connectorFactory = new org.apache.geronimo.jee.connector.ObjectFactory();
+        org.apache.geronimo.jee.deployment.ObjectFactory deploymentFactory = new org.apache.geronimo.jee.deployment.ObjectFactory();
+        org.apache.geronimo.jee.naming.ObjectFactory namingFactory = new org.apache.geronimo.jee.naming.ObjectFactory();
+        Connector connector = connectorFactory.createConnector();
+ 
+        // set the Environment
+        Environment environment = deploymentFactory.createEnvironment();
+        Artifact artifact = deploymentFactory.createArtifact();
+        artifact.setGroupId("org.apache.geronimo.testsuite");
+        artifact.setArtifactId("agent-ear");
+        artifact.setVersion("2.2-SNAPSHOT");
+        artifact.setType("ear");
+        environment.setModuleId(artifact);
+        Dependencies dependencies = deploymentFactory.createDependencies();
+        Dependency dependency = deploymentFactory.createDependency();
+        dependency.setGroupId("org.apache.geronimo.testsuite");
+        dependency.setArtifactId("agent-ds");
+        dependency.setVersion("2.2-SNAPSHOT");
+        dependency.setType("car");
+        dependencies.getDependency().add(dependency);
+        environment.setDependencies(dependencies);
+        connector.setEnvironment (environment);
+
+        // set the Admin Object
+        Adminobject adminobject = connectorFactory.createAdminobject();
+        adminobject.setAdminobjectClass("adminobject-adminobjectclass");
+        adminobject.setAdminobjectInterface("adminobject-adminobjectinterface");
+        AdminobjectInstance adminobjectInstance = connectorFactory.createAdminobjectInstance();
+        adminobjectInstance.setMessageDestinationName("adminobject-instance-messagedestinationname");
+        ConfigPropertySetting configPropertySetting = connectorFactory.createConfigPropertySetting();
+        configPropertySetting.setName("adminobject-instance-name");
+        configPropertySetting.setValue("adminobject-instance-value");
+        adminobjectInstance.getConfigPropertySetting().add(configPropertySetting);
+        adminobject.getAdminobjectInstance().add(adminobjectInstance);
+        connector.getAdminobject().add(adminobject);
+
+        // set the Resource Adapter
+        Resourceadapter resourceadapter = connectorFactory.createResourceadapter();
+        ResourceadapterInstance resourceadapterInstance = connectorFactory.createResourceadapterInstance();
+        resourceadapterInstance.setResourceadapterName("resourceadapter-name");
+        GbeanLocator gbeanLocator = namingFactory.createGbeanLocator();
+        gbeanLocator.setGbeanLink("connector-resourceadapter-workmanager-gbeanlink");
+        Pattern namingPattern = namingFactory.createPattern();
+        namingPattern.setArtifactId("connector-resourceadapter-workmanager-pattern-artifactid");
+        namingPattern.setGroupId("connector-resourceadapter-workmanager-pattern-groupid");
+        namingPattern.setModule("connector-resourceadapter-workmanager-pattern-module");
+        namingPattern.setName("connector-resourceadapter-workmanager-pattern-name");
+        namingPattern.setVersion("connector-resourceadapter-workmanager-pattern-version");
+        gbeanLocator.setPattern(namingPattern);
+        resourceadapterInstance.setWorkmanager(gbeanLocator);
+        configPropertySetting = connectorFactory.createConfigPropertySetting();
+        configPropertySetting.setName("resourceadapter-instance-name");
+        configPropertySetting.setValue("resourceadapter-instance-value");        
+        resourceadapterInstance.getConfigPropertySetting().add(configPropertySetting);
+        resourceadapter.setResourceadapterInstance(resourceadapterInstance);
+        OutboundResourceadapter outboundResourceadapter = connectorFactory.createOutboundResourceadapter();
+        ConnectionDefinition connectionDefinition = connectorFactory.createConnectionDefinition();
+        connectionDefinition.setConnectionfactoryInterface("resourceadapter-outbound-connectiondefinition-interface");
+        ConnectiondefinitionInstance connectionDefinitionInstance = connectorFactory.createConnectiondefinitionInstance();
+        connectionDefinitionInstance.setName("resourceadapter-outbound-connectiondefinition-instance-name");
+        connectionDefinitionInstance.getImplementedInterface().add("resourceadapter-outbound-connectiondefinition-instance-implementedinterface");
+        Connectionmanager connectionManager = connectorFactory.createConnectionmanager();
+        Empty empty = connectorFactory.createEmpty();
+        connectionManager.setContainerManagedSecurity(empty);
+        connectionManager.setLocalTransaction(empty);
+        connectionManager.setNoPool(empty);
+        connectionManager.setNoTransaction(empty);
+        connectionManager.setTransactionLog(empty);
+        Partitionedpool partitionedPool = connectorFactory.createPartitionedpool();
+        partitionedPool.setBlockingTimeoutMilliseconds(new Integer(0));
+        partitionedPool.setIdleTimeoutMinutes(new Integer(0));
+        partitionedPool.setMatchAll(empty);
+        partitionedPool.setMatchOne(empty);
+        partitionedPool.setMaxSize(new Integer(0));
+        partitionedPool.setMinSize(new Integer(0));
+        partitionedPool.setPartitionByConnectionrequestinfo(empty);
+        partitionedPool.setPartitionBySubject(empty);
+        partitionedPool.setSelectOneAssumeMatch(empty);
+        connectionManager.setPartitionedPool(partitionedPool);
+        Singlepool singlePool = connectorFactory.createSinglepool();
+        singlePool.setBlockingTimeoutMilliseconds(new Integer(0));
+        singlePool.setIdleTimeoutMinutes(new Integer(0));
+        singlePool.setMatchAll(empty);
+        singlePool.setMatchOne(empty);
+        singlePool.setMaxSize(new Integer(0));
+        singlePool.setMinSize(new Integer(0));
+        singlePool.setSelectOneAssumeMatch(empty);
+        connectionManager.setPartitionedPool(partitionedPool);
+        connectionManager.setSinglePool(singlePool);
+        Xatransaction xaTransaction = connectorFactory.createXatransaction();
+        xaTransaction.setThreadCaching(empty);
+        xaTransaction.setTransactionCaching(empty);
+        connectionManager.setXaTransaction(xaTransaction);
+        connectionDefinitionInstance.setConnectionmanager(connectionManager);
+        configPropertySetting = connectorFactory.createConfigPropertySetting();
+        configPropertySetting.setName("resourceadapter-outbound-connectiondefinition-instance-name");
+        configPropertySetting.setValue("resourceadapter-outbound-connectiondefinition-instance-value");
+        connectionDefinitionInstance.getConfigPropertySetting().add(configPropertySetting);
+        connectionDefinition.getConnectiondefinitionInstance().add(connectionDefinitionInstance);
+        outboundResourceadapter.getConnectionDefinition().add(connectionDefinition);
+        resourceadapter.setOutboundResourceadapter(outboundResourceadapter);
+        connector.getResourceadapter().add(resourceadapter);
+
+        // set the Service
+        Gbean gbean = deploymentFactory.createGbean();
+        gbean.setClazz("gbean-class");
+        gbean.setName("gbean-name");
+        connector.getService().add(deploymentFactory.createGbean(gbean));
+
+        JAXBElement<Connector> jaxbElement = connectorFactory.createConnector(connector);
+        
+        // 
+        // Marshall the output of the unmarshall
+        // 
+        JAXBContext jaxbContext = JAXBContext.newInstance( 
+                "org.apache.geronimo.jee.connector:" +
+                "org.apache.geronimo.jee.deployment:", getClass().getClassLoader() );
+        Marshaller marshaller = jaxbContext.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        marshaller.marshal(jaxbElement, baos);
+        String actual = new String(baos.toByteArray());
+
+        InputStream expectedInputStream = this.getClass().getClassLoader().getResourceAsStream(fileExpected);
+        String expected = readContent(expectedInputStream);
+
+        try {
+            Diff myDiff = new Diff(expected, actual);
+            assertTrue("Files are similar " + myDiff, myDiff.similar());
+        }
+        catch (AssertionFailedError e) {
+            System.out.println("Actual XML:\n" + actual + '\n');
+            System.out.println("[Expected XML: " + fileExpected + "]\n" + expected + '\n');
+            throw e;            
+        }
+    }
 
     private String readContent(InputStream in) throws IOException {
         StringBuffer sb = new StringBuffer();

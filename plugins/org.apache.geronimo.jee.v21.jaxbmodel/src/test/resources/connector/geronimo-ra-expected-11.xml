@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+           
+<!-- @version $Rev$ $Date$ -->
+           
+<ns2:connector xmlns="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:ns2="http://geronimo.apache.org/xml/ns/j2ee/connector-1.2" xmlns:ns3="http://geronimo.apache.org/xml/ns/naming-1.2">
+    <environment>
+        <moduleId>
+            <groupId>org.apache.geronimo.testsuite</groupId>
+            <artifactId>agent-ear</artifactId>
+            <version>2.2-SNAPSHOT</version>
+            <type>ear</type>
+        </moduleId>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.geronimo.testsuite</groupId>
+                <artifactId>agent-ds</artifactId>
+                <version>2.2-SNAPSHOT</version>
+                <type>car</type>
+            </dependency>
+        </dependencies>
+    </environment>
+    <ns2:resourceadapter>
+        <ns2:resourceadapter-instance>
+            <ns2:resourceadapter-name>resourceadapter-name</ns2:resourceadapter-name>
+            <ns2:config-property-setting name="resourceadapter-instance-name">resourceadapter-instance-value</ns2:config-property-setting>
+            <ns3:workmanager>
+                <ns3:pattern>
+                    <ns3:groupId>connector-resourceadapter-workmanager-pattern-groupid</ns3:groupId>
+                    <ns3:artifactId>connector-resourceadapter-workmanager-pattern-artifactid</ns3:artifactId>
+                    <ns3:version>connector-resourceadapter-workmanager-pattern-version</ns3:version>
+                    <ns3:module>connector-resourceadapter-workmanager-pattern-module</ns3:module>
+                    <ns3:name>connector-resourceadapter-workmanager-pattern-name</ns3:name>
+                </ns3:pattern>
+                <ns3:gbean-link>connector-resourceadapter-workmanager-gbeanlink</ns3:gbean-link>
+            </ns3:workmanager>
+        </ns2:resourceadapter-instance>
+        <ns2:outbound-resourceadapter>
+            <ns2:connection-definition>
+                <ns2:connectionfactory-interface>resourceadapter-outbound-connectiondefinition-interface</ns2:connectionfactory-interface>
+                <ns2:connectiondefinition-instance>
+                    <ns2:name>resourceadapter-outbound-connectiondefinition-instance-name</ns2:name>
+                    <ns2:implemented-interface>resourceadapter-outbound-connectiondefinition-instance-implementedinterface</ns2:implemented-interface>
+                    <ns2:config-property-setting name="resourceadapter-outbound-connectiondefinition-instance-name">resourceadapter-outbound-connectiondefinition-instance-value</ns2:config-property-setting>
+                    <ns2:connectionmanager>
+                        <ns2:container-managed-security/>
+                        <ns2:no-transaction/>
+                        <ns2:local-transaction/>
+                        <ns2:xa-transaction>
+                            <ns2:transaction-caching/>
+                            <ns2:thread-caching/>
+                        </ns2:xa-transaction>
+                        <ns2:transaction-log/>
+                        <ns2:no-pool/>
+                        <ns2:single-pool>
+                            <ns2:max-size>0</ns2:max-size>
+                            <ns2:min-size>0</ns2:min-size>
+                            <ns2:blocking-timeout-milliseconds>0</ns2:blocking-timeout-milliseconds>
+                            <ns2:idle-timeout-minutes>0</ns2:idle-timeout-minutes>
+                            <ns2:match-one/>
+                            <ns2:match-all/>
+                            <ns2:select-one-assume-match/>
+                        </ns2:single-pool>
+                        <ns2:partitioned-pool>
+                            <ns2:max-size>0</ns2:max-size>
+                            <ns2:min-size>0</ns2:min-size>
+                            <ns2:blocking-timeout-milliseconds>0</ns2:blocking-timeout-milliseconds>
+                            <ns2:idle-timeout-minutes>0</ns2:idle-timeout-minutes>
+                            <ns2:match-one/>
+                            <ns2:match-all/>
+                            <ns2:select-one-assume-match/>
+                            <ns2:partition-by-subject/>
+                            <ns2:partition-by-connectionrequestinfo/>
+                        </ns2:partitioned-pool>
+                    </ns2:connectionmanager>
+                </ns2:connectiondefinition-instance>
+            </ns2:connection-definition>
+        </ns2:outbound-resourceadapter>
+    </ns2:resourceadapter>
+    <ns2:adminobject>
+        <ns2:adminobject-interface>adminobject-adminobjectinterface</ns2:adminobject-interface>
+        <ns2:adminobject-class>adminobject-adminobjectclass</ns2:adminobject-class>
+        <ns2:adminobject-instance>
+            <ns2:message-destination-name>adminobject-instance-messagedestinationname</ns2:message-destination-name>
+            <ns2:config-property-setting name="adminobject-instance-name">adminobject-instance-value</ns2:config-property-setting>
+        </ns2:adminobject-instance>
+    </ns2:adminobject>
+    <gbean name="gbean-name" class="gbean-class"/>
+</ns2:connector>

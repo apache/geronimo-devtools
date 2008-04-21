@@ -236,16 +236,15 @@ public class GeronimoApplicationTest extends TestCase {
         application.setApplicationName("test-app-name");
 
         // set the Environment
-        Environment environment = new Environment ();
-        Artifact artifact = new Artifact ();
+        Environment environment = deploymentFactory.createEnvironment();
+        Artifact artifact = deploymentFactory.createArtifact();
         artifact.setGroupId("org.apache.geronimo.testsuite");
         artifact.setArtifactId("agent-ear");
         artifact.setVersion("2.2-SNAPSHOT");
         artifact.setType("ear");
         environment.setModuleId(artifact);
-
-        Dependencies dependencies = new Dependencies ();
-        Dependency dependency = new Dependency ();
+        Dependencies dependencies = deploymentFactory.createDependencies();
+        Dependency dependency = deploymentFactory.createDependency();
         dependency.setGroupId("org.apache.geronimo.testsuite");
         dependency.setArtifactId("agent-ds");
         dependency.setVersion("2.2-SNAPSHOT");
@@ -254,6 +253,7 @@ public class GeronimoApplicationTest extends TestCase {
         environment.setDependencies(dependencies);
         application.setEnvironment(environment);
 
+        // set the Module
         Module module = applicationFactory.createModule();
         Path path = applicationFactory.createPath();
         path.setId("module-altdd-path-id");
@@ -278,6 +278,7 @@ public class GeronimoApplicationTest extends TestCase {
         module.setWeb(path);
         application.getModule().add(module);
 
+        // set the Ext Module
         ExtModule extModule = applicationFactory.createExtModule();
         extModule.setInternalPath("extmodule-internalpath");
 //        module.setAny("module-any"); //TODO
@@ -307,15 +308,13 @@ public class GeronimoApplicationTest extends TestCase {
         extModule.setExternalPath(pattern);
         application.getExtModule().add(extModule);
 
+        // set the Service
         Gbean gbean = deploymentFactory.createGbean();
         gbean.setClazz("gbean-class");
         gbean.setName("gbean-name");
         application.getService().add(deploymentFactory.createGbean(gbean));
 
         // set the Security
-        // TODO: this whole block just gets us <ns2:security/> which can't be correct
-        // also, when adding the security to the application, the marshalling
-        // gives that the types aren't compatible.
         Security security = securityFactory.createSecurity();
         security.setDefaultRole ("security-role");
         security.setDoasCurrentCaller(true);
@@ -378,7 +377,7 @@ public class GeronimoApplicationTest extends TestCase {
         role.getRealmPrincipal().add(realmPrincipal);
         roleMappings.getRole().add(role);
         security.setRoleMappings(roleMappings);
-//        application.setSecurity(securityFactory.createSecurity(security));
+        application.setSecurity(applicationFactory.createSecurity(security));
  
         JAXBElement<Application> jaxbElement = applicationFactory.createApplication(application);
         
@@ -387,6 +386,7 @@ public class GeronimoApplicationTest extends TestCase {
         // 
         JAXBContext jaxbContext = JAXBContext.newInstance( 
                 "org.apache.geronimo.jee.application:" +
+                "org.apache.geronimo.jee.security:" +
                 "org.apache.geronimo.jee.deployment", getClass().getClassLoader() );
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
