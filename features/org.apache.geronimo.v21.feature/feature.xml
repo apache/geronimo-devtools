@@ -44,6 +44,11 @@
         <import feature="org.eclipse.jst" version="2.0.0" match="compatible"/>
     </requires>
     
+    <includes
+        id="org.apache.geronimo.feature"
+        version="2.1.0"
+        name="Geronimo Core Feature"/>
+        
     <plugin
          id="org.apache.geronimo.st.v21.core"
          download-size="0"
