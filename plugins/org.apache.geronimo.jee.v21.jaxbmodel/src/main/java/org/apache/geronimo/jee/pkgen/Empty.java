@@ -15,8 +15,37 @@
  * limitations under the License.
  */
 
+package org.apache.geronimo.jee.pkgen;
+
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
+
+
 /**
+ * <p>Java class for emptyType complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="emptyType">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
  * @version $Rev$ $Date$
  */
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://openejb.apache.org/xml/ns/openejb-jar-2.2", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
-package org.apache.geronimo.jee.openejb;
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "emptyType")
+public class Empty
+    implements Serializable
+{
+
+    private final static long serialVersionUID = 12343L;
+
+}

@@ -37,8 +37,8 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="security-realm-name" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="realm-name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="transport-guarantee" type="{http://geronimo.apache.org/xml/ns/j2ee/ejb/openejb-2.0}transport-guaranteeType"/>
- *         &lt;element name="auth-method" type="{http://geronimo.apache.org/xml/ns/j2ee/ejb/openejb-2.0}auth-methodType"/>
+ *         &lt;element name="transport-guarantee" type="{http://openejb.apache.org/xml/ns/openejb-jar-2.2}transport-guaranteeType"/>
+ *         &lt;element name="auth-method" type="{http://openejb.apache.org/xml/ns/openejb-jar-2.2}auth-methodType"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -121,7 +121,7 @@ public class WebServiceSecurity
      * 
      * @return
      *     possible object is
-     *     {@link TransportGuarantee }
+     *     {@link TransportGuarantee}
      *     
      */
     public TransportGuarantee getTransportGuarantee() {
@@ -133,7 +133,7 @@ public class WebServiceSecurity
      * 
      * @param value
      *     allowed object is
-     *     {@link TransportGuarantee }
+     *     {@link TransportGuarantee}
      *     
      */
     public void setTransportGuarantee(TransportGuarantee value) {
@@ -145,7 +145,7 @@ public class WebServiceSecurity
      * 
      * @return
      *     possible object is
-     *     {@link AuthMethod }
+     *     {@link AuthMethod}
      *     
      */
     public AuthMethod getAuthMethod() {
@@ -157,7 +157,7 @@ public class WebServiceSecurity
      * 
      * @param value
      *     allowed object is
-     *     {@link AuthMethod }
+     *     {@link AuthMethod}
      *     
      */
     public void setAuthMethod(AuthMethod value) {

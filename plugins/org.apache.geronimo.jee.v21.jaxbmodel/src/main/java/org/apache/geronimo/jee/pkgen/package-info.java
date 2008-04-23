@@ -18,5 +18,5 @@
 /**
  * @version $Rev$ $Date$
  */
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://openejb.apache.org/xml/ns/openejb-jar-2.2", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
-package org.apache.geronimo.jee.openejb;
+@javax.xml.bind.annotation.XmlSchema(namespace = "http://openejb.apache.org/xml/ns/pkgen-2.1", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+package org.apache.geronimo.jee.pkgen;

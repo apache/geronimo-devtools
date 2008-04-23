@@ -26,7 +26,7 @@ import org.apache.geronimo.jee.deployment.Dependencies;
 import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.jee.naming.ServiceRef;
-import org.apache.geronimo.jee.openejb.GeronimoEjbJar;
+import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.core.operations.DeploymentPlanCreationOperation;
@@ -120,11 +120,11 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
   		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile);
 
 		org.apache.geronimo.jee.openejb.ObjectFactory ejbFactory = new org.apache.geronimo.jee.openejb.ObjectFactory();
-		GeronimoEjbJar ejbJar = ejbFactory.createGeronimoEjbJar();
+		OpenejbJar ejbJar = ejbFactory.createOpenejbJar();
 
 		ejbJar.setEnvironment(getConfigEnvironment());
 
-		JAXBElement jaxbElement = ejbFactory.createEjbJar(ejbJar);
+		JAXBElement jaxbElement = ejbFactory.createOpenejbJar(ejbJar);
 		JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
 
 		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", jaxbElement);

@@ -22,25 +22,18 @@ import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
 import javax.xml.namespace.QName;
 
-import org.apache.geronimo.jee.naming.EjbLocalRef;
-import org.apache.geronimo.jee.naming.EjbRef;
-import org.apache.geronimo.jee.naming.ResourceEnvRef;
-import org.apache.geronimo.jee.naming.ResourceRef;
-import org.apache.geronimo.jee.naming.ServiceRef;
-
 
 /**
- * This object contains factory methods for each
- * Java content interface and Java element interface
- * generated in the <strong>org.apache.geronimo.jee.openejb</strong> package.
- * 
- * <p>An ObjectFactory allows you to programatically
- * construct new instances of the Java representation
- * for XML content. The Java representation of XML
- * content can consist of schema derived interfaces
- * and classes representing the binding of schema
- * type definitions, element declarations and model
- * groups.  Factory methods for each of these are
+ * This object contains factory methods for each 
+ * Java content interface and Java element interface 
+ * generated in the org.apache.openejb.xml.ns.openejb_jar_2 package. 
+ * <p>An ObjectFactory allows you to programatically 
+ * construct new instances of the Java representation 
+ * for XML content. The Java representation of XML 
+ * content can consist of schema derived interfaces 
+ * and classes representing the binding of schema 
+ * type definitions, element declarations and model 
+ * groups.  Factory methods for each of these are 
  * provided in this class.
  * 
  * @version $Rev$ $Date$
@@ -48,55 +41,33 @@ import org.apache.geronimo.jee.naming.ServiceRef;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _GeronimoEjbJarEjbLocalRef_QNAME = new QName("http://geronimo.apache.org/xml/ns/naming-1.2", "ejb-local-ref");
-    private final static QName _GeronimoEjbJarResourceEnvRef_QNAME = new QName("http://geronimo.apache.org/xml/ns/naming-1.2", "resource-env-ref");
-    private final static QName _GeronimoEjbJarResourceRef_QNAME = new QName("http://geronimo.apache.org/xml/ns/naming-1.2", "resource-ref");
-    private final static QName _GeronimoEjbJarEjbRef_QNAME = new QName("http://geronimo.apache.org/xml/ns/naming-1.2", "ejb-ref");
-    private final static QName _GeronimoEjbJarServiceRef_QNAME = new QName("http://geronimo.apache.org/xml/ns/naming-1.2", "service-ref");
-    private final static QName _EjbJar_QNAME = new QName("http://geronimo.apache.org/xml/ns/j2ee/ejb/openejb-2.0", "ejb-jar");
+    private final static QName _OpenejbJar_QNAME = new QName("http://openejb.apache.org/xml/ns/openejb-jar-2.2", "openejb-jar");
 
     /**
-     * Create a new ObjectFactory that can be used to create new instances of schema 
-     * derived classes for package: org.apache.geronimo.jee.openejb
+     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: org.apache.openejb.xml.ns.openejb_jar_2
      * 
      */
     public ObjectFactory() {
     }
 
     /**
-     * Create an instance of {@link Empty }
+     * Create an instance of {@link EntityBean.CmpFieldMapping }
      * 
      */
-    public Empty createEmpty() {
-        return new Empty();
+    public EntityBean.CmpFieldMapping createEntityBeanCmpFieldMapping() {
+        return new EntityBean.CmpFieldMapping();
     }
 
     /**
-     * Create an instance of {@link TssLink }
+     * Create an instance of {@link EjbRelation}
      * 
      */
-    public TssLink createTssLink() {
-        return new TssLink();
+    public EjbRelation createEjbRelation() {
+        return new EjbRelation();
     }
 
     /**
-     * Create an instance of {@link GeronimoEjbJar }
-     * 
-     */
-    public GeronimoEjbJar createGeronimoEjbJar() {
-        return new GeronimoEjbJar();
-    }
-
-    /**
-     * Create an instance of {@link WebServiceBinding }
-     * 
-     */
-    public WebServiceBinding createWebServiceBinding() {
-        return new WebServiceBinding();
-    }
-
-    /**
-     * Create an instance of {@link WebServiceSecurity }
+     * Create an instance of {@link WebServiceSecurity}
      * 
      */
     public WebServiceSecurity createWebServiceSecurity() {
@@ -104,7 +75,104 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link OpenejbJar }
+     * Create an instance of {@link Group}
+     * 
+     */
+    public Group createGroup() {
+        return new Group();
+    }
+
+    /**
+     * Create an instance of {@link EjbRelationshipRole}
+     * 
+     */
+    public EjbRelationshipRole createEjbRelationshipRole() {
+        return new EjbRelationshipRole();
+    }
+
+    /**
+     * Create an instance of {@link Empty}
+     * 
+     */
+    public Empty createEmpty() {
+        return new Empty();
+    }
+
+    /**
+     * Create an instance of {@link Query.QueryMethod.MethodParams }
+     * 
+     */
+    public Query.QueryMethod.MethodParams createQueryQueryMethodMethodParams() {
+        return new Query.QueryMethod.MethodParams();
+    }
+
+    /**
+     * Create an instance of {@link EjbRelationshipRole.RoleMapping }
+     * 
+     */
+    public EjbRelationshipRole.RoleMapping createEjbRelationshipRoleRoleMapping() {
+        return new EjbRelationshipRole.RoleMapping();
+    }
+
+    /**
+     * Create an instance of {@link OpenejbJar.EnterpriseBeans }
+     * 
+     */
+    public OpenejbJar.EnterpriseBeans createOpenejbJarEnterpriseBeans() {
+        return new OpenejbJar.EnterpriseBeans();
+    }
+
+    /**
+     * Create an instance of {@link EntityBean.PrefetchGroup }
+     * 
+     */
+    public EntityBean.PrefetchGroup createEntityBeanPrefetchGroup() {
+        return new EntityBean.PrefetchGroup();
+    }
+
+    /**
+     * Create an instance of {@link EjbRelationshipRole.RoleMapping.CmrFieldMapping 
+     * } 
+     * 
+     */
+    public EjbRelationshipRole.RoleMapping.CmrFieldMapping createEjbRelationshipRoleRoleMappingCmrFieldMapping() {
+        return new EjbRelationshipRole.RoleMapping.CmrFieldMapping();
+    }
+
+    /**
+     * Create an instance of {@link ActivationConfig}
+     * 
+     */
+    public ActivationConfig createActivationConfig() {
+        return new ActivationConfig();
+    }
+
+    /**
+     * Create an instance of {@link Query}
+     * 
+     */
+    public Query createQuery() {
+        return new Query();
+    }
+
+    /**
+     * Create an instance of {@link EntityBean.Cache }
+     * 
+     */
+    public EntityBean.Cache createEntityBeanCache() {
+        return new EntityBean.Cache();
+    }
+
+    /**
+     * Create an instance of {@link EntityGroupMapping}
+     * 
+     */
+    public EntityGroupMapping createEntityGroupMapping() {
+        return new EntityGroupMapping();
+    }
+
+    /**
+     * Create an instance of {@link OpenejbJar}
      * 
      */
     public OpenejbJar createOpenejbJar() {
@@ -112,57 +180,100 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link EjbLocalRef}{@code >}}
+     * Create an instance of {@link CmrFieldGroupMapping}
      * 
      */
-    @XmlElementDecl(namespace = "http://geronimo.apache.org/xml/ns/naming-1.2", name = "ejb-local-ref", scope = GeronimoEjbJar.class)
-    public JAXBElement<EjbLocalRef> createGeronimoEjbJarEjbLocalRef(EjbLocalRef value) {
-        return new JAXBElement<EjbLocalRef>(_GeronimoEjbJarEjbLocalRef_QNAME, EjbLocalRef.class, GeronimoEjbJar.class, value);
+    public CmrFieldGroupMapping createCmrFieldGroupMapping() {
+        return new CmrFieldGroupMapping();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ResourceEnvRef}{@code >}}
+     * Create an instance of {@link EjbRelationshipRole.RelationshipRoleSource }
      * 
      */
-    @XmlElementDecl(namespace = "http://geronimo.apache.org/xml/ns/naming-1.2", name = "resource-env-ref", scope = GeronimoEjbJar.class)
-    public JAXBElement<ResourceEnvRef> createGeronimoEjbJarResourceEnvRef(ResourceEnvRef value) {
-        return new JAXBElement<ResourceEnvRef>(_GeronimoEjbJarResourceEnvRef_QNAME, ResourceEnvRef.class, GeronimoEjbJar.class, value);
+    public EjbRelationshipRole.RelationshipRoleSource createEjbRelationshipRoleRelationshipRoleSource() {
+        return new EjbRelationshipRole.RelationshipRoleSource();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ResourceRef}{@code >}}
+     * Create an instance of {@link Query.QueryMethod }
      * 
      */
-    @XmlElementDecl(namespace = "http://geronimo.apache.org/xml/ns/naming-1.2", name = "resource-ref", scope = GeronimoEjbJar.class)
-    public JAXBElement<ResourceRef> createGeronimoEjbJarResourceRef(ResourceRef value) {
-        return new JAXBElement<ResourceRef>(_GeronimoEjbJarResourceRef_QNAME, ResourceRef.class, GeronimoEjbJar.class, value);
+    public Query.QueryMethod createQueryQueryMethod() {
+        return new Query.QueryMethod();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link EjbRef}{@code >}}
+     * Create an instance of {@link CmpFieldGroupMapping}
      * 
      */
-    @XmlElementDecl(namespace = "http://geronimo.apache.org/xml/ns/naming-1.2", name = "ejb-ref", scope = GeronimoEjbJar.class)
-    public JAXBElement<EjbRef> createGeronimoEjbJarEjbRef(EjbRef value) {
-        return new JAXBElement<EjbRef>(_GeronimoEjbJarEjbRef_QNAME, EjbRef.class, GeronimoEjbJar.class, value);
+    public CmpFieldGroupMapping createCmpFieldGroupMapping() {
+        return new CmpFieldGroupMapping();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ServiceRef}{@code >}}
+     * Create an instance of {@link SessionBean}
      * 
      */
-    @XmlElementDecl(namespace = "http://geronimo.apache.org/xml/ns/naming-1.2", name = "service-ref", scope = GeronimoEjbJar.class)
-    public JAXBElement<ServiceRef> createGeronimoEjbJarServiceRef(ServiceRef value) {
-        return new JAXBElement<ServiceRef>(_GeronimoEjbJarServiceRef_QNAME, ServiceRef.class, GeronimoEjbJar.class, value);
+    public SessionBean createSessionBean() {
+        return new SessionBean();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GeronimoEjbJar }{@code >}}
+     * Create an instance of {@link EjbRelationshipRole.CmrField }
      * 
      */
-    @XmlElementDecl(namespace = "http://geronimo.apache.org/xml/ns/j2ee/ejb/openejb-2.0", name = "ejb-jar")
-    public JAXBElement<GeronimoEjbJar> createEjbJar(GeronimoEjbJar value) {
-        return new JAXBElement<GeronimoEjbJar>(_EjbJar_QNAME, GeronimoEjbJar.class, null, value);
+    public EjbRelationshipRole.CmrField createEjbRelationshipRoleCmrField() {
+        return new EjbRelationshipRole.CmrField();
+    }
+
+    /**
+     * Create an instance of {@link EntityBean}
+     * 
+     */
+    public EntityBean createEntityBean() {
+        return new EntityBean();
+    }
+
+    /**
+     * Create an instance of {@link Group.CmrField }
+     * 
+     */
+    public Group.CmrField createGroupCmrField() {
+        return new Group.CmrField();
+    }
+
+    /**
+     * Create an instance of {@link MessageDrivenBean}
+     * 
+     */
+    public MessageDrivenBean createMessageDrivenBean() {
+        return new MessageDrivenBean();
+    }
+
+    /**
+     * Create an instance of {@link ActivationConfigProperty}
+     * 
+     */
+    public ActivationConfigProperty createActivationConfigProperty() {
+        return new ActivationConfigProperty();
+    }
+
+    /**
+     * Create an instance of {@link Relationships}
+     * 
+     */
+    public Relationships createRelationships() {
+        return new Relationships();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link OpenejbJar}{@code >}} 
+     * 
+     */
+    @XmlElementDecl(namespace = "http://openejb.apache.org/xml/ns/openejb-jar-2.2", name = "openejb-jar")
+    public JAXBElement<OpenejbJar> createOpenejbJar(OpenejbJar value) {
+        return new JAXBElement<OpenejbJar>(_OpenejbJar_QNAME, OpenejbJar.class, null, value);
     }
 
 }

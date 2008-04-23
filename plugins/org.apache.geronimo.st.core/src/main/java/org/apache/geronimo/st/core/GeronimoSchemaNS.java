@@ -36,6 +36,7 @@ public class GeronimoSchemaNS {
 	public static final String GERONIMO_APP_NS_1_1 = "http://geronimo.apache.org/xml/ns/j2ee/application-1.1";
 	public static final String GERONIMO_WEB_NS_1_1 = "http://geronimo.apache.org/xml/ns/j2ee/web-1.1";
 	public static final String GERONIMO_OPENEJB_NS_2_1 = "http://www.openejb.org/xml/ns/openejb-jar-2.1";
+	public static final String GERONIMO_OPENEJB_NS_2_2 = "http://www.openejb.org/xml/ns/openejb-jar-2.2";
 	public static final String GERONIMO_CONNECTOR_NS_1_1 = "http://geronimo.apache.org/xml/ns/j2ee/connector-1.1";
 	public static final String GERONIMO_NAMING_NS_1_1 = "http://geronimo.apache.org/xml/ns/naming-1.1";
 	public static final String GERONIMO_DEPLOYMENT_NS_1_1 = "http://geronimo.apache.org/xml/ns/deployment-1.1";
