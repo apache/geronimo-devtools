@@ -48,14 +48,12 @@
 
     	<image id="org.apache.geronimo.runtime.image" 
     		icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.runtime.11,
-            		 org.apache.geronimo.runtime.20,
+            typeIds="org.apache.geronimo.runtime.20,
             		 org.apache.geronimo.runtime.21"/>
 
         <image id="org.apache.geronimo.server.image" 
         	icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.server.11,
-            		 org.apache.geronimo.server.20,
+            typeIds="org.apache.geronimo.server.20,
             		 org.apache.geronimo.server.21"/>
     </extension>
 
@@ -70,13 +68,11 @@
      -->
     <extension point="org.eclipse.wst.server.ui.wizardFragments">
         <fragment id="org.apache.geronimo.runtime.wizardFragment"
-            typeIds="org.apache.geronimo.runtime.11,
-            		 org.apache.geronimo.runtime.20,
+            typeIds="org.apache.geronimo.runtime.20,
                      org.apache.geronimo.runtime.21"
             class="org.apache.geronimo.st.ui.internal.GeronimoRuntimeWizardFragment"/>
         <fragment id="org.apache.geronimo.server.wizardFragment"
-            typeIds="org.apache.geronimo.server.11,
-            		 org.apache.geronimo.server.20,
+            typeIds="org.apache.geronimo.server.20,
                      org.apache.geronimo.server.21"
             class="org.apache.geronimo.st.ui.internal.GeronimoServerWizardFragment"/>
     </extension>
@@ -143,8 +139,7 @@
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.testenv" order="20"
             insertionId="org.eclipse.wst.server.editor.overview.left"
-            typeIds="org.apache.geronimo.server.11, 
-                     org.apache.geronimo.server.20,
+            typeIds="org.apache.geronimo.server.20, 
                      org.apache.geronimo.server.21"
             class="org.apache.geronimo.st.ui.sections.ServerEditorTestEnvSection">
         </section>

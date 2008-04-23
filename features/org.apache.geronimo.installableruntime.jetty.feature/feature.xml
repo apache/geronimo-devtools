@@ -38,7 +38,7 @@
    </license>
    
    <data
-    id="geronimo-jetty6-javaee5-${org.apache.geronimo.installableruntime.jetty.feature_version}.zip"
+    id="geronimo-jetty6-javaee5-2.1.zip"
     download-size="0"
     install-size="0"/>
 
