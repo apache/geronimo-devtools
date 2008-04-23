@@ -76,7 +76,7 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
             }
             else if (type.equals(IModuleConstants.JST_EJB_MODULE)) {
                 planFile = GeronimoUtils.getOpenEjbDeploymentPlanFile(comp);
-                ConversionHelper.convertGeronimoOpenEjbFile(planFile);
+                ConversionHelper.convertOpenEjbJarFile(planFile);
             }
             else if (type.equals(IModuleConstants.JST_EAR_MODULE)) {
                 planFile = GeronimoUtils.getApplicationDeploymentPlanFile(comp);

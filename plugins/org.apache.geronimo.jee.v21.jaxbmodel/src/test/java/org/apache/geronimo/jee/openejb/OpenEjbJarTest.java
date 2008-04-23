@@ -24,39 +24,21 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
-import org.apache.geronimo.jee.deployment.Artifact;
-import org.apache.geronimo.jee.deployment.Dependencies;
-import org.apache.geronimo.jee.deployment.Dependency;
-import org.apache.geronimo.jee.deployment.Environment;
-import org.apache.geronimo.jee.naming.MessageDestination;
-import org.apache.geronimo.jee.naming.PersistenceUnitRef;
-import org.apache.geronimo.jee.persistence.Persistence;
-import org.apache.geronimo.jee.persistence.PersistenceUnitTransaction;
-import org.apache.geronimo.jee.security.Description;
-import org.apache.geronimo.jee.security.DistinguishedName;
-import org.apache.geronimo.jee.security.LoginDomainPrincipal;
-import org.apache.geronimo.jee.security.Principal;
-import org.apache.geronimo.jee.security.RealmPrincipal;
-import org.apache.geronimo.jee.security.Role;
-import org.apache.geronimo.jee.security.RoleMappings;
-import org.apache.geronimo.jee.security.Security;
-import org.apache.geronimo.jee.security.SubjectInfo;
 import org.custommonkey.xmlunit.Diff;
 import org.xml.sax.InputSource;
 
 /**
- * <strong>GeronimoOpenejbTest</strong> is used to test various JAXB operations
- * on the following Geronimo-specific XML file supported by the GEP: 
+ * <strong>OpenEjbJarTest</strong> is used to test various JAXB operations on
+ * the following Geronimo-specific XML file supported by the GEP: 
  * 
  * <ul>
- *      <li>geronimo-openejb.xml
+ *      <li>openejb-jar.xml
  * </ul>
  * 
  * <p>The following JAXB operations are performed: 
@@ -65,13 +47,12 @@ import org.xml.sax.InputSource;
  *      <li>Namespace conversion (TODO)
  *      <li>Element conversion (TODO)
  *      <li>Create XML with all fields
- *      <li>openejb-jar.xml testcases (TODO)
  * </ol>
  * 
  * 
  * @version $Rev$ $Date$
  */
-public class GeronimoOpenejbTest extends TestCase {
+public class OpenEjbJarTest extends TestCase {
 
     /*------------------------------------------------------------------------*\
     |                                                                          |
@@ -79,14 +60,14 @@ public class GeronimoOpenejbTest extends TestCase {
     |                                                                          |
     \*------------------------------------------------------------------------*/
     public void testUnmarshallAndMarshall() throws Exception {
-//      unmarshallAndMarshall("openejb/geronimo-openejb-example-1.xml", 
-//                            "openejb/geronimo-openejb-expected-1.xml");
-//      unmarshallAndMarshall("openejb/geronimo-openejb-example-2.xml", 
-//                            "openejb/geronimo-openejb-expected-2.xml");
+        unmarshallAndMarshall("openejb/openejb-jar-example-1.xml", 
+                              "openejb/openejb-jar-expected-1.xml");
+        unmarshallAndMarshall("openejb/openejb-jar-example-2.xml", 
+                              "openejb/openejb-jar-expected-2.xml");
     }
 
     public void testCompleteXML() throws Exception {
-//      buildFullXMLFromScratch("openejb/geronimo-openejb-expected-11.xml");
+//      buildFullXMLFromScratch("openejb/openejb-jar-expected-11.xml");
     }
 
 

@@ -18,7 +18,7 @@
 
 <!-- @version $Rev$ $Date$ -->
            
-<ns2:ejb-jar xmlns="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:ns2="http://geronimo.apache.org/xml/ns/j2ee/ejb/openejb-2.0" xmlns:ns3="http://geronimo.apache.org/xml/ns/naming-1.2" xmlns:ns4="http://geronimo.apache.org/xml/ns/j2ee/application-2.0" xmlns:ns5="http://geronimo.apache.org/xml/ns/security-2.0" xmlns:ns6="http://java.sun.com/xml/ns/persistence">
+<ns2:openejb-jar xmlns="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:ns2="http://openejb.apache.org/xml/ns/openejb-jar-2.2" xmlns:ns3="http://geronimo.apache.org/xml/ns/naming-1.2" xmlns:ns4="http://geronimo.apache.org/xml/ns/j2ee/application-2.0" xmlns:ns5="http://geronimo.apache.org/xml/ns/security-2.0" xmlns:ns6="http://java.sun.com/xml/ns/persistence">
     <environment>
         <moduleId>
             <groupId>org.apache.geronimo.testsuite</groupId>
@@ -126,4 +126,4 @@
             </ns6:properties>
         </ns6:persistence-unit>
     </ns6:persistence>
-</ns2:ejb-jar>
+</ns2:openejb-jar>

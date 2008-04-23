@@ -50,14 +50,14 @@ public class ConversionHelper {
 
 
     /**
-     * Convert a geronimo-openejb.xml deployment plan file (if necessary)
-     * and return the JAXB representation
+     * Convert an openejb-jar.xml deployment plan file (if necessary) and return the
+     * JAXB representation 
      * 
-     * @param plan Geronimo deployment plan
+     * @param plan OpenEJB deployment plan
      * 
      * @exception JAXBException if JAXB error
      */
-    public static void convertGeronimoOpenEjbFile( IFile plan ) throws JAXBException {
+    public static void convertOpenEjbJarFile( IFile plan ) throws JAXBException {
         Trace.tracePoint("Entry", "ConversionHelper.convertGeronimoOpenEjbFile", plan);
 
         convertNamespace( plan );
