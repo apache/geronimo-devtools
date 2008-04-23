@@ -24,12 +24,38 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
+import org.apache.geronimo.jee.deployment.Artifact;
+import org.apache.geronimo.jee.deployment.Dependencies;
+import org.apache.geronimo.jee.deployment.Dependency;
+import org.apache.geronimo.jee.deployment.Environment;
+import org.apache.geronimo.jee.deployment.Gbean;
+import org.apache.geronimo.jee.naming.EjbLocalRef;
+import org.apache.geronimo.jee.naming.EjbRef;
+import org.apache.geronimo.jee.naming.MessageDestination;
+import org.apache.geronimo.jee.naming.PersistenceUnitRef;
+import org.apache.geronimo.jee.naming.Port;
+import org.apache.geronimo.jee.naming.PortCompletion;
+import org.apache.geronimo.jee.naming.ResourceEnvRef;
+import org.apache.geronimo.jee.naming.ResourceLocator;
+import org.apache.geronimo.jee.naming.ResourceRef;
+import org.apache.geronimo.jee.naming.ServiceCompletion;
+import org.apache.geronimo.jee.naming.ServiceRef;
+import org.apache.geronimo.jee.security.Description;
+import org.apache.geronimo.jee.security.DistinguishedName;
+import org.apache.geronimo.jee.security.LoginDomainPrincipal;
+import org.apache.geronimo.jee.security.Principal;
+import org.apache.geronimo.jee.security.RealmPrincipal;
+import org.apache.geronimo.jee.security.Role;
+import org.apache.geronimo.jee.security.RoleMappings;
+import org.apache.geronimo.jee.security.Security;
+import org.apache.geronimo.jee.security.SubjectInfo;
 import org.custommonkey.xmlunit.Diff;
 import org.xml.sax.InputSource;
 
@@ -67,7 +93,7 @@ public class OpenEjbJarTest extends TestCase {
     }
 
     public void testCompleteXML() throws Exception {
-//      buildFullXMLFromScratch("openejb/openejb-jar-expected-11.xml");
+        buildFullXMLFromScratch("openejb/openejb-jar-expected-11.xml");
     }
 
 
@@ -132,13 +158,17 @@ public class OpenEjbJarTest extends TestCase {
     }
 
     private void buildFullXMLFromScratch (String fileExpected) throws Exception {
-/*
+
         org.apache.geronimo.jee.openejb.ObjectFactory openejbFactory = new org.apache.geronimo.jee.openejb.ObjectFactory();
         org.apache.geronimo.jee.deployment.ObjectFactory deploymentFactory = new org.apache.geronimo.jee.deployment.ObjectFactory();
         org.apache.geronimo.jee.naming.ObjectFactory namingFactory = new org.apache.geronimo.jee.naming.ObjectFactory();
-        org.apache.geronimo.jee.persistence.ObjectFactory persistenceFactory = new org.apache.geronimo.jee.persistence.ObjectFactory();
         org.apache.geronimo.jee.security.ObjectFactory securityFactory = new org.apache.geronimo.jee.security.ObjectFactory();
-        GeronimoEjbJar geronimoEjbJar = openejbFactory.createGeronimoEjbJar();
+        OpenejbJar openEjbJar = openejbFactory.createOpenejbJar();
+
+        openEjbJar.setDbSyntaxFactory("dbsyntaxfactory");
+        openEjbJar.setEjbQlCompilerFactory("ejbqlcompilerfactory");
+        Empty empty = openejbFactory.createEmpty();
+        openEjbJar.setEnforceForeignKeyConstraints(empty);
 
         // set the Environment
         Environment environment = deploymentFactory.createEnvironment();
@@ -156,25 +186,163 @@ public class OpenEjbJarTest extends TestCase {
         dependency.setType("car");
         dependencies.getDependency().add(dependency);
         environment.setDependencies(dependencies);
-        geronimoEjbJar.setEnvironment (environment);
-        
-        // set the Open EJB Jar TODO
-        //OpenejbJar openejbJar = openejbFactory.createOpenejbJar();
-        //openejbJar.setAny("openejbjar-any");
-        //geronimoEjbJar.setOpenejbJar(openejbJar);
+        openEjbJar.setEnvironment (environment);
 
-        // set the JNDI Environment Refs Group
-        PersistenceUnitRef persistenceUnitRef = namingFactory.createPersistenceUnitRef();
-        persistenceUnitRef.setPersistenceUnitName("jndienvironmentrefsgroup-persistenceunitref-unitname");
-        persistenceUnitRef.setPersistenceUnitRefName("jndienvironmentrefsgroup-persistenceunitref-unitrefname");
+        // set the Cmp Connection Factory
+        ResourceLocator resourceLocator = namingFactory.createResourceLocator();
+        resourceLocator.setUrl("resourcelocator-url");
+        resourceLocator.setResourceLink("resourcelocator-resourcelink");
         org.apache.geronimo.jee.naming.Pattern namingPattern = namingFactory.createPattern();
-        namingPattern.setArtifactId("jndienvironmentrefsgroup-persistenceunitref-pattern-artifactid");
-        namingPattern.setGroupId("jndienvironmentrefsgroup-persistenceunitref-pattern-groupid");
-        namingPattern.setModule("jndienvironmentrefsgroup-persistenceunitref-pattern-module");
-        namingPattern.setName("jndienvironmentrefsgroup-persistenceunitref-pattern-name");
-        namingPattern.setVersion("jndienvironmentrefsgroup-persistenceunitref-pattern-version");
+        namingPattern.setArtifactId("resourcelocator-pattern-artifactid");
+        namingPattern.setGroupId("resourcelocator-pattern-groupid");
+        namingPattern.setModule("resourcelocator-pattern-module");
+        namingPattern.setName("resourcelocator-pattern-name");
+        namingPattern.setVersion("resourcelocator-pattern-version");
+        resourceLocator.setPattern(namingPattern);
+        openEjbJar.setCmpConnectionFactory(resourceLocator);
+
+        // set the  Enterprise Bean 
+        OpenejbJar.EnterpriseBeans enterpriseBeans = openejbFactory.createOpenejbJarEnterpriseBeans();
+        MessageDrivenBean messageDrivenBean = openejbFactory.createMessageDrivenBean();
+        messageDrivenBean.setEjbName("messagedrivenbean-ejbname");
+        messageDrivenBean.setId("messagedrivenbean-id");
+        PersistenceUnitRef persistenceUnitRef = namingFactory.createPersistenceUnitRef();
+        persistenceUnitRef.setPersistenceUnitName("messagedrivenbean-persistenceunitref-unitname");
+        persistenceUnitRef.setPersistenceUnitRefName("messagedrivenbean-persistenceunitref-unitrefname");
+        namingPattern = namingFactory.createPattern();
+        namingPattern.setArtifactId("messagedrivenbean-persistenceunitref-pattern-artifactid");
+        namingPattern.setGroupId("messagedrivenbean-persistenceunitref-pattern-groupid");
+        namingPattern.setModule("messagedrivenbean-persistenceunitref-pattern-module");
+        namingPattern.setName("messagedrivenbean-persistenceunitref-pattern-name");
+        namingPattern.setVersion("messagedrivenbean-persistenceunitref-pattern-version");
         persistenceUnitRef.setPattern(namingPattern);
-        geronimoEjbJar.getJndiEnvironmentRefsGroup().add(namingFactory.createAbstractNamingEntry(persistenceUnitRef));
+        messageDrivenBean.getAbstractNamingEntry().add(namingFactory.createAbstractNamingEntry(persistenceUnitRef));
+        ActivationConfig activationConfig = openejbFactory.createActivationConfig();
+        ActivationConfigProperty activationConfigProperty = openejbFactory.createActivationConfigProperty();
+        activationConfigProperty.setActivationConfigPropertyName("messagedrivenbean-activationconfigproperty-name");
+        activationConfigProperty.setActivationConfigPropertyValue("messagedrivenbean-activationconfigproperty-value");
+        activationConfig.getActivationConfigProperty().add(activationConfigProperty);
+        activationConfig.getDescription().add("messagedrivenbean-activationconfig-description");
+        messageDrivenBean.setActivationConfig(activationConfig);
+        EjbLocalRef ejbLocalRef = namingFactory.createEjbLocalRef();
+        ejbLocalRef.setRefName("messagedrivenbean-ejblocalref-refname");
+        ejbLocalRef.setEjbLink("messagedrivenbean-ejblocalref-ejblink");
+        namingPattern = namingFactory.createPattern();
+        namingPattern.setArtifactId("messagedrivenbean-ejblocalref-pattern-artifactid");
+        namingPattern.setGroupId("messagedrivenbean-ejblocalref-pattern-groupid");
+        namingPattern.setModule("messagedrivenbean-ejblocalref-pattern-module");
+        namingPattern.setName("messagedrivenbean-ejblocalref-pattern-name");
+        namingPattern.setVersion("messagedrivenbean-ejblocalref-pattern-version");
+        ejbLocalRef.setPattern(namingPattern);
+        messageDrivenBean.getEjbLocalRef().add(ejbLocalRef);
+        EjbRef ejbRef = namingFactory.createEjbRef();
+        ejbRef.setName("messagedrivenbean-ejbref-name");
+        ejbRef.setRefName("messagedrivenbean-ejbref-refname");
+        ejbRef.setCssLink("messagedrivenbean-ejbref-csslink");
+        ejbRef.setEjbLink("messagedrivenbean-ejbref-ejblink");
+        ejbRef.setNsCorbaloc("messagedrivenbean-ejbref-nscorbaloc");
+        namingPattern = namingFactory.createPattern();
+        namingPattern.setArtifactId("messagedrivenbean-ejbref-css-artifactid");
+        namingPattern.setGroupId("messagedrivenbean-ejbref-css-groupid");
+        namingPattern.setModule("messagedrivenbean-ejbref-css-module");
+        namingPattern.setName("messagedrivenbean-ejbref-css-name");
+        namingPattern.setVersion("messagedrivenbean-ejbref-css-version");
+        ejbRef.setCss(namingPattern);
+        namingPattern = namingFactory.createPattern();
+        namingPattern.setArtifactId("messagedrivenbean-ejbref-pattern-artifactid");
+        namingPattern.setGroupId("messagedrivenbean-ejbref-pattern-groupid");
+        namingPattern.setModule("messagedrivenbean-ejbref-pattern-module");
+        namingPattern.setName("messagedrivenbean-ejbref-pattern-name");
+        namingPattern.setVersion("messagedrivenbean-ejbref-pattern-version");
+        ejbRef.setPattern(namingPattern);
+        messageDrivenBean.getEjbRef().add(ejbRef);
+        resourceLocator = namingFactory.createResourceLocator();
+        resourceLocator.setUrl("messagedrivenbean-resourcelocator-url");
+        resourceLocator.setResourceLink("messagedrivenbean-resourcelocator-resourcelink");
+        namingPattern = namingFactory.createPattern();
+        namingPattern.setArtifactId("messagedrivenbean-resourcelocator-pattern-artifactid");
+        namingPattern.setGroupId("messagedrivenbean-resourcelocator-pattern-groupid");
+        namingPattern.setModule("messagedrivenbean-resourcelocator-pattern-module");
+        namingPattern.setName("messagedrivenbean-resourcelocator-pattern-name");
+        namingPattern.setVersion("messagedrivenbean-resourcelocator-pattern-version");
+        resourceLocator.setPattern(namingPattern);
+        messageDrivenBean.setResourceAdapter(resourceLocator);
+        ResourceEnvRef resourceEnvRef = namingFactory.createResourceEnvRef();
+        resourceEnvRef.setAdminObjectLink("messagedrivenbean-resourceenvref-adminobjectlink");
+        resourceEnvRef.setAdminObjectModule("messagedrivenbean-resourceenvref-adminobjectmodule");
+        resourceEnvRef.setMessageDestinationLink("messagedrivenbean-resourceenvref-messagedestinationlink");
+        resourceEnvRef.setRefName("messagedrivenbean-resourceenvref-refname");
+        namingPattern = namingFactory.createPattern();
+        namingPattern.setArtifactId("messagedrivenbean-resourceenvref-pattern-artifactid");
+        namingPattern.setGroupId("messagedrivenbean-resourceenvref-pattern-groupid");
+        namingPattern.setModule("messagedrivenbean-resourceenvref-pattern-module");
+        namingPattern.setName("messagedrivenbean-resourceenvref-pattern-name");
+        namingPattern.setVersion("messagedrivenbean-resourceenvref-pattern-version");
+        resourceEnvRef.setPattern(namingPattern);
+        messageDrivenBean.getResourceEnvRef().add(resourceEnvRef);
+        ResourceRef resourceRef = namingFactory.createResourceRef();
+        resourceRef.setRefName("messagedrivenbean-resourceref-refname");
+        resourceRef.setResourceLink("messagedrivenbean-resourceref-resourcelink");
+        resourceRef.setUrl("messagedrivenbean-resourceref-url");
+        namingPattern = namingFactory.createPattern();
+        namingPattern.setArtifactId("messagedrivenbean-resourceref-pattern-artifactid");
+        namingPattern.setGroupId("messagedrivenbean-resourceref-pattern-groupid");
+        namingPattern.setModule("messagedrivenbean-resourcref-pattern-module");
+        namingPattern.setName("messagedrivenbean-resourceref-pattern-name");
+        namingPattern.setVersion("messagedrivenbean-resourceref-pattern-version");
+        resourceRef.setPattern(namingPattern);
+        messageDrivenBean.getResourceRef().add(resourceRef);
+        ServiceRef serviceRef = namingFactory.createServiceRef();
+        serviceRef.setServiceRefName("messagedrivenbean-serviceref-refname");
+        ServiceCompletion serviceCompletion = namingFactory.createServiceCompletion();
+        serviceCompletion.setServiceName("messagedrivenbean-serviceref-servicecompletion-servicename");
+        PortCompletion portCompletion = namingFactory.createPortCompletion();
+        portCompletion.setBindingName("messagedrivenbean-serviceref-servicecompletion-portcompletion-bindingname");
+        Port port = namingFactory.createPort();
+        port.setCredentialsName("messagedrivenbean-serviceref-servicecompletion-portcompletion-port-credentialsname");
+        port.setHost("messagedrivenbean-serviceref-servicecompletion-portcompletion-port-host");
+        port.setPort(new Integer(0));
+        port.setPortName("messagedrivenbean-serviceref-servicecompletion-portcompletion-port-portname");
+        port.setProtocol("messagedrivenbean-serviceref-servicecompletion-portcompletion-port-protocol");
+        port.setUri("messagedrivenbean-serviceref-servicecompletion-portcompletion-port-uri");
+        portCompletion.setPort(port);
+        serviceCompletion.getPortCompletion().add(portCompletion);
+        serviceRef.setServiceCompletion(serviceCompletion);
+        port = namingFactory.createPort();
+        port.setCredentialsName("messagedrivenbean-serviceref-port-credentialsname");
+        port.setHost("messagedrivenbean-serviceref-port-host");
+        port.setPort(new Integer(0));
+        port.setPortName("messagedrivenbean-serviceref-port-portname");
+        port.setProtocol("messagedrivenbean-serviceref-port-protocol");
+        port.setUri("messagedrivenbean-serviceref-port-uri");
+        serviceRef.getPort().add(port);
+        messageDrivenBean.getServiceRef().add(serviceRef);
+        enterpriseBeans.getSessionOrEntityOrMessageDriven().add(messageDrivenBean);
+        openEjbJar.setEnterpriseBeans(enterpriseBeans);
+
+        // set the Relationships
+        Relationships relationships = openejbFactory.createRelationships();
+        EjbRelation ejbRelation = openejbFactory.createEjbRelation();
+        ejbRelation.setEjbRelationName("ejbrelation-ejbrelationname");
+        ejbRelation.setManyToManyTableName("ejbrelation-manytomanytablename");
+        EjbRelationshipRole ejbRelationshipRole = openejbFactory.createEjbRelationshipRole();
+        ejbRelationshipRole.setEjbRelationshipRoleName("ejbrelation-role-name");
+        EjbRelationshipRole.CmrField cmrField = openejbFactory.createEjbRelationshipRoleCmrField();
+        cmrField.setCmrFieldName("ejbrelation-role-cmrfieldname");
+        ejbRelationshipRole.setCmrField(cmrField);
+        //TODO ejbRelationshipRole.setForeignKeyColumnOnSource(value);
+        EjbRelationshipRole.RelationshipRoleSource relationshipRoleSource = openejbFactory.createEjbRelationshipRoleRelationshipRoleSource();
+        relationshipRoleSource.setEjbName("ejbrelation-role-ejbname");
+        ejbRelationshipRole.setRelationshipRoleSource(relationshipRoleSource);
+        EjbRelationshipRole.RoleMapping roleMapping = openejbFactory.createEjbRelationshipRoleRoleMapping();
+        EjbRelationshipRole.RoleMapping.CmrFieldMapping cmrFieldMapping = openejbFactory.createEjbRelationshipRoleRoleMappingCmrFieldMapping();
+        cmrFieldMapping.setKeyColumn("ejbrelation-role-mapping-keycolumn");
+        cmrFieldMapping.setForeignKeyColumn("ejbrelation-role-mapping-foreignkeycolumn");
+        roleMapping.getCmrFieldMapping().add(cmrFieldMapping);
+        ejbRelationshipRole.setRoleMapping(roleMapping);
+        ejbRelation.getEjbRelationshipRole().add(ejbRelationshipRole);
+        relationships.getEjbRelation().add(ejbRelation);
+        openEjbJar.setRelationships(relationships);
 
         // set the Message Destination
         MessageDestination messageDestination = namingFactory.createMessageDestination();
@@ -188,50 +356,13 @@ public class OpenEjbJarTest extends TestCase {
         namingPattern.setName("messagedestination-pattern-name");
         namingPattern.setVersion("messagedestination-pattern-version");
         messageDestination.setPattern(namingPattern);
-        geronimoEjbJar.getMessageDestination().add(messageDestination);
+        openEjbJar.getMessageDestination().add(messageDestination);
 
-        // set the Service or Persistence
-        Persistence persistence = persistenceFactory.createPersistence();
-        persistence.setVersion("persistence-version");
-        Persistence.PersistenceUnit persistenceUnit = persistenceFactory.createPersistencePersistenceUnit();
-        persistenceUnit.setName("persistence-name");
-        persistenceUnit.setDescription("persistence-description");
-        persistenceUnit.setExcludeUnlistedClasses(true);
-        persistenceUnit.setJtaDataSource("persistence-jtadatasource");
-        persistenceUnit.setNonJtaDataSource("persistence-nonjtadatasource");
-        persistenceUnit.setProvider("persistence-provider");
-        Persistence.PersistenceUnit.Properties properties = persistenceFactory.createPersistencePersistenceUnitProperties();
-        Persistence.PersistenceUnit.Properties.Property property = persistenceFactory.createPersistencePersistenceUnitPropertiesProperty();
-        property.setName("persistence-property-name");
-        property.setValue("persistence-property-value");
-        properties.getProperty().add(property);
-        persistenceUnit.setProperties(properties);
-        persistenceUnit.setTransactionType(PersistenceUnitTransaction.RESOURCE_LOCAL);
-        persistenceUnit.getClazz().add("persistence-clazz");
-        persistenceUnit.getJarFile().add("persistence-jarfile");
-        persistenceUnit.getMappingFile().add("persistence-mappingfile");
-        persistence.getPersistenceUnit().add(persistenceUnit);
-        geronimoEjbJar.getServiceOrPersistence().add(persistence);
-
-        // set the TSS Link
-        TssLink tssLink = openejbFactory.createTssLink();
-        tssLink.setEjbName("tsslink-ejbname");
-        tssLink.setTssName("tsslink-tssname");
-        tssLink.getJndiName().add("tssname-jndiname");
-        geronimoEjbJar.getTssLink().add(tssLink);
-
-        // set the Web Service Binding
-        WebServiceBinding webServiceBinding = openejbFactory.createWebServiceBinding();
-        webServiceBinding.setEjbName("webservicebinding-ejbname");
-        webServiceBinding.setWebServiceAddress("webservicebinding-webserviceaddress");
-        webServiceBinding.getWebServiceVirtualHost().add("webservicebinding-webservicevirtualhost");
-        WebServiceSecurity webServiceSecurity = openejbFactory.createWebServiceSecurity();
-        webServiceSecurity.setRealmName("webservicebinding-webservicesecurity-realmname");
-        webServiceSecurity.setSecurityRealmName("webservicebinding-webservicesecurity-securityrealmname");
-        webServiceSecurity.setAuthMethod(AuthMethod.BASIC);
-        webServiceSecurity.setTransportGuarantee(TransportGuarantee.INTEGRAL);
-        webServiceBinding.setWebServiceSecurity(webServiceSecurity);
-        geronimoEjbJar.getWebServiceBinding().add(webServiceBinding);
+        // set the Service
+        Gbean gbean = deploymentFactory.createGbean();
+        gbean.setClazz("gbean-class");
+        gbean.setName("gbean-name");
+        openEjbJar.getService().add(deploymentFactory.createGbean(gbean));
 
         // set the Security
         Security security = securityFactory.createSecurity();
@@ -296,9 +427,9 @@ public class OpenEjbJarTest extends TestCase {
         role.getRealmPrincipal().add(realmPrincipal);
         roleMappings.getRole().add(role);
         security.setRoleMappings(roleMappings);
-        geronimoEjbJar.setSecurity(securityFactory.createSecurity(security));
+        openEjbJar.setSecurity(securityFactory.createSecurity(security));
 
-        JAXBElement<GeronimoEjbJar> jaxbElement = openejbFactory.createEjbJar(geronimoEjbJar);
+        JAXBElement<OpenejbJar> jaxbElement = openejbFactory.createOpenejbJar(openEjbJar);
         
         // 
         // Marshall the output of the unmarshall
@@ -328,7 +459,6 @@ public class OpenEjbJarTest extends TestCase {
             System.out.println("[Expected XML: " + fileExpected + "]\n" + expected + '\n');
             throw e;            
         }
-*/
     }
 
     private String readContent(InputStream in) throws IOException {
