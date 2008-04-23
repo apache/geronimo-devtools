@@ -68,24 +68,28 @@
     </extension>
     
     
-    <!-- ======================================================================================= -->
-    <!--                                                                                         -->
-    <!-- Extend WTP installableRuntimes so that the new Geronimo server or runtime type          -->
-    <!-- can be discovered via the GeronimoRuntimeWizardFragment extension                       -->
-    <!--                                                                                         -->
-    <!-- ======================================================================================= -->
+    <!--
+     |
+     | Extend WTP installableRuntimes so that the new Geronimo server or runtime type          
+     | can be discovered via the GeronimoRuntimeWizardFragment extension. Note that 
+     | the featureSite tag should be one of the following:
+     |
+     |  1. featureSite="http://www.apache.org/dist/geronimo/eclipse/updates/"
+     |  2. fatureSite="http://people.apache.org/~mcconne/releases/2.1.0/RC1/staging_site/"
+     |
+     -->
     <extension point="org.eclipse.wst.server.core.installableRuntimes">
         <installableRuntime id="org.apache.geronimo.runtime.tomcat.21"
             featureVersion="2.1.0"
             featureId="org.apache.geronimo.installableruntime.tomcat.feature"
             featureSite="http://people.apache.org/~mcconne/releases/2.1.0/RC1/staging_site/"
-            path="geronimo-tomcat6-javaee5-2.1.0.zip">
+            path="geronimo-tomcat6-javaee5-2.1.zip">
         </installableRuntime>
         <installableRuntime id="org.apache.geronimo.runtime.jetty.21"
             featureVersion="2.1.0"
             featureId="org.apache.geronimo.installableruntime.jetty.feature"
             featureSite="http://people.apache.org/~mcconne/releases/2.1.0/RC1/staging_site/"
-            path="geronimo-jetty6-javaee5-2.1.0.zip">
+            path="geronimo-jetty6-javaee5-2.1.zip">
         </installableRuntime>
     </extension>
     
