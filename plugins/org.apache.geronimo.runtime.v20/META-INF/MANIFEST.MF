@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo V20 Runtime Plug-in
 Bundle-SymbolicName: org.apache.geronimo.runtime.v20;singleton:=true
-Bundle-Version: 2.1.0
+Bundle-Version: 2.1.1
 Require-Bundle: org.apache.geronimo.runtime.common;visibility:=reexport
 Bundle-ClassPath: lib/geronimo-common-2.0.1.jar,
  lib/geronimo-deploy-jsr88-2.0.1.jar,

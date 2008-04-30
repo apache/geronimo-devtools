@@ -19,7 +19,7 @@
 <feature
       id="org.apache.geronimo.v21.feature"
       label="Geronimo v2.1 Server Adapter"
-      version="2.1.0"
+      version="2.1.1"
       provider-name="%providerName"
       plugin="org.apache.geronimo.st.v21.core"
       image="bigG.gif">
@@ -46,34 +46,34 @@
     
     <includes
         id="org.apache.geronimo.feature"
-        version="2.1.0"
+        version="2.1.1"
         name="Geronimo Core Feature"/>
         
     <plugin
          id="org.apache.geronimo.st.v21.core"
          download-size="0"
          install-size="0"
-         version="2.1.0"
+         version="2.1.1"
          unpack="false"/>
     
     <plugin
          id="org.apache.geronimo.st.v21.ui"
          download-size="0"
          install-size="0"
-         version="2.1.0"
+         version="2.1.1"
          unpack="false"/>
 
     <plugin
          id="org.apache.geronimo.runtime.v21"
          download-size="0"
          install-size="0"
-         version="2.1.0"/>
+         version="2.1.1"/>
 
     <plugin
          id="org.apache.geronimo.jee.v21.jaxbmodel"
          download-size="0"
          install-size="0"
-         version="2.1.0"
+         version="2.1.1"
          unpack="false"/>
     
 </feature>
