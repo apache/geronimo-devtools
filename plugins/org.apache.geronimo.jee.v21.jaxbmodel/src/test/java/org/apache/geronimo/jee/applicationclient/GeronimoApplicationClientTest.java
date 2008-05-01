@@ -34,6 +34,8 @@ import javax.xml.transform.sax.SAXSource;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
+import org.apache.geronimo.jee.common.NamespaceFilter;
+import org.apache.geronimo.jee.common.NamespacePrefixMapperImpl;
 import org.apache.geronimo.jee.connector.Adminobject;
 import org.apache.geronimo.jee.connector.AdminobjectInstance;
 import org.apache.geronimo.jee.connector.ConfigPropertySetting;
@@ -66,11 +68,7 @@ import org.apache.geronimo.jee.naming.ServiceRef;
 import org.apache.geronimo.jee.security.Description;
 import org.apache.geronimo.jee.security.SubjectInfo;
 import org.custommonkey.xmlunit.Diff;
-import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLFilterImpl;
 
 /**
  * <strong>GeronimoApplicationClientTest</strong> is used to test various JAXB 
@@ -139,6 +137,7 @@ public class GeronimoApplicationClientTest extends TestCase {
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+        marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapperImpl());
 
         // 
         // Read example and expected XML files
@@ -194,6 +193,7 @@ public class GeronimoApplicationClientTest extends TestCase {
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+        marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapperImpl());
 
         // 
         // Create SAXParser
@@ -535,6 +535,7 @@ public class GeronimoApplicationClientTest extends TestCase {
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+        marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapperImpl());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         marshaller.marshal(jaxbElement, baos);
         String actual = new String(baos.toByteArray());
@@ -563,46 +564,5 @@ public class GeronimoApplicationClientTest extends TestCase {
         }
         String content = sb.toString();
         return content;
-    }
-
-
-    private class NamespaceFilter extends XMLFilterImpl {
-
-        public NamespaceFilter(XMLReader xmlReader) {
-            super(xmlReader);
-        }
-
-        public void startElement(String uri, String localName, String qname, Attributes atts) throws SAXException {
-
-            if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/application-client-1.1")) {
-                uri = "http://geronimo.apache.org/xml/ns/j2ee/application-client-2.0";
-            }
-            else if (uri.equals("http://geronimo.apache.org/xml/ns/deployment-1.1")) {
-                uri = "http://geronimo.apache.org/xml/ns/deployment-1.2";
-            }
-            else if (uri.equals("http://geronimo.apache.org/xml/ns/naming-1.1")) {
-                uri = "http://geronimo.apache.org/xml/ns/naming-1.2";
-            }
-            else if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/application-1.2")) {
-                uri = "http://geronimo.apache.org/xml/ns/j2ee/application-2.0";
-            }
-            else if (uri.equals("http://geronimo.apache.org/xml/ns/security-1.1")) {
-                uri = "http://geronimo.apache.org/xml/ns/security-2.0";
-            }
-            else if (uri.equals("http://geronimo.apache.org/xml/ns/security-1.2")) {
-                uri = "http://geronimo.apache.org/xml/ns/security-2.0";
-            }
-            else if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/web-2.0")) {
-                uri = "http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1";
-            }
-            else if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/web-1.1")) {
-                uri = "http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1";
-            }
-            else if (uri.equals("http://geronimo.apache.org/xml/ns/j2ee/connector-1.1")) {
-                uri = "http://geronimo.apache.org/xml/ns/j2ee/connector-1.2";
-            }
-
-            super.startElement(uri, localName, qname, atts);
-        }
     }
 }

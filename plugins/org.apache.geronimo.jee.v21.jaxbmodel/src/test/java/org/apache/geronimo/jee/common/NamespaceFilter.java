@@ -15,12 +15,11 @@
  *  limitations under the License.
  */
 
-package org.apache.geronimo.st.core.jaxb;
+package org.apache.geronimo.jee.common;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.geronimo.st.core.internal.Trace;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -31,8 +30,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
  * v1.1) of Geronimo namespaces and replace them with the more current versions 
  * (e.g., v2.1)<p>
  * 
- * If this class changes, then the test version in org.apache.geronimo.jee.common
- * need to be updated to be kept in sync
+ * This is a test version of the class that is found in org.apache.geronimo.st.core.jaxb
  * 
  * @version $Rev$ $Date$
  */
@@ -74,17 +72,14 @@ public class NamespaceFilter extends XMLFilterImpl {
 
     public NamespaceFilter(XMLReader xmlReader) {
         super(xmlReader);
-        Trace.tracePoint("Constructor", "NamespaceFilter", xmlReader);
     }
 
     public void startElement(String uri, String localName, String qname, Attributes atts) throws SAXException {
-        Trace.tracePoint("Entry", "NamespaceFilter.startElement", uri, localName, qname, atts);
 
         if (namespace.containsKey( uri )) {
             uri = namespace.get( uri );
         }
 
-        Trace.tracePoint("Exit ", "NamespaceFilter.startElement", uri, localName, qname, atts);
         super.startElement(uri, localName, qname, atts);
     }
 }

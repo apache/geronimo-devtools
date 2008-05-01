@@ -31,6 +31,7 @@ import javax.xml.bind.Unmarshaller;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
+import org.apache.geronimo.jee.common.NamespacePrefixMapperImpl;
 import org.apache.geronimo.jee.deployment.Artifact;
 import org.apache.geronimo.jee.deployment.Dependencies;
 import org.apache.geronimo.jee.deployment.Dependency;
@@ -116,6 +117,7 @@ public class OpenEjbJarTest extends TestCase {
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+        marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapperImpl());
 
         // 
         // Read example and expected XML files
@@ -443,6 +445,7 @@ public class OpenEjbJarTest extends TestCase {
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+        marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapperImpl());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         marshaller.marshal(jaxbElement, baos);
         String actual = new String(baos.toByteArray());
