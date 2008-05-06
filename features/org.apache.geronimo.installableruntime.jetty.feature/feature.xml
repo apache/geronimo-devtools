@@ -20,8 +20,8 @@
 
 <feature
       id="org.apache.geronimo.installableruntime.jetty.feature"
-      label="Geronimo 2.1 (Jetty) Runtime"
-      version="${org.apache.geronimo.installableruntime.jetty.feature_version}"
+      label="Geronimo 2.1.1 (Jetty) Runtime"
+      version="2.1.1"
       provider-name="%providerName"
       image="bigG.gif">
 
