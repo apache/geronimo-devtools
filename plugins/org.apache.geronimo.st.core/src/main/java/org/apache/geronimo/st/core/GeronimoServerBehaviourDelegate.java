@@ -664,7 +664,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		timer.schedule(new UpdateServerStateTask(this, getServer()), TIMER_TASK_DELAY * 1000, TIMER_TASK_INTERVAL * 1000);
 	}
 
-	protected void stopUpdateServerStateTask() {
+	public void stopUpdateServerStateTask() {
 		Trace.trace(Trace.INFO, "stopUpdateServerStateTask() " + getServer().getName());
 		if (timer != null)
 			timer.cancel();
