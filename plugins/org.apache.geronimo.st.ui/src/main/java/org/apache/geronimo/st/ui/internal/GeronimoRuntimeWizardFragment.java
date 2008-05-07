@@ -382,6 +382,8 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 
         IRuntime runtime = getRuntimeDelegate().getRuntime();
 
+        String runtimeName = runtime.getRuntimeType().getName();
+
         IWizardHandle wizard = getWizard();
 
         if (runtime == null) {
@@ -394,7 +396,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 
         if (installDir.getText() == null || installDir.getText().length() == 0) {
             // installDir field has not been entered
-            wizard.setMessage(Messages.installDirInfo, IMessageProvider.NONE);
+            wizard.setMessage(Messages.bind(Messages.installDirInfo, runtimeName), IMessageProvider.NONE);
         }
         else {
             IStatus status = runtimeWC.validate(null);
@@ -421,6 +423,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
                 group.setEnabled(enableGroup);
                 if (file.isDirectory()) {
                     String message = file.canWrite() ? Messages.noImageFound : Messages.cannotInstallAtLocation;
+                    message = Messages.bind(message, runtimeName);
                     wizard.setMessage(message, IMessageProvider.ERROR);
                 }
                 else {
@@ -429,8 +432,10 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
                 return;
             }
 
-            if (!isValidVM())
-                wizard.setMessage(Messages.jvmWarning, IMessageProvider.WARNING);
+            if (!isValidVM()) {
+                wizard.setMessage(Messages.bind(Messages.jvmWarning,
+                        runtimeName), IMessageProvider.WARNING);
+            }
         }
     }
 
