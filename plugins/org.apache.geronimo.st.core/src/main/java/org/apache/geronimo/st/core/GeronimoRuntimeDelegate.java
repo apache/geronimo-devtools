@@ -105,23 +105,33 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
         count = runtimeLoc.append("lib").toFile().exists() ? ++count : count;
         count = runtimeLoc.append("repository").toFile().exists() ? ++count : count;
 
-        if (count == 0)
+        if (count == 0) {
             return new Status(IStatus.ERROR, Activator.PLUGIN_ID, NO_IMAGE, "", null);
+        }
 
         if (count < 4) {
-            // part of a server image was found, don't let install happen
-            return new Status(IStatus.ERROR, Activator.PLUGIN_ID, PARTIAL_IMAGE, Messages.missingContent, null);
-        }
+			// part of a server image was found, don't let install happen
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+					PARTIAL_IMAGE, Messages.bind(Messages.missingContent,
+							getRuntime().getName()), null);
+		}
 
         String detectedVersion = detectVersion();
-        if (detectedVersion == null)
-            return new Status(IStatus.WARNING, Activator.PLUGIN_ID, INCORRECT_VERSION, Messages.noVersion, null);
+        if (detectedVersion == null) {
+			return new Status(IStatus.WARNING, Activator.PLUGIN_ID,
+					INCORRECT_VERSION, Messages.bind(Messages.noVersion,
+							getRuntime().getName()), null);
+		}
 
-        if (!detectedVersion.startsWith(getRuntime().getRuntimeType().getVersion())) {
-            String message = NLS.bind(Messages.incorrectVersion, new String[] {
-                                          getRuntime().getRuntimeType().getVersion(), detectedVersion});
-            return new Status(IStatus.ERROR, Activator.PLUGIN_ID, INCORRECT_VERSION, message, null);
-        }
+        if (!detectedVersion.startsWith(getRuntime().getRuntimeType()
+				.getVersion())) {
+			String message = NLS.bind(Messages.incorrectVersion,
+					new String[] { getRuntime().getName(),
+							getRuntime().getRuntimeType().getVersion(),
+							detectedVersion });
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+					INCORRECT_VERSION, message, null);
+		}
 
         return Status.OK_STATUS;
     }
