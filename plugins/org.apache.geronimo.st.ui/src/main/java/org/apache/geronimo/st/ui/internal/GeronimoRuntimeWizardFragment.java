@@ -313,11 +313,16 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 
         combo.addSelectionListener(new SelectionListener() {
                                        public void widgetSelected(SelectionEvent e) {
+                                           // if the first item in the list is selected, then pass null
+                                           // to setVMInstall to use the default JRE.
+                                           // otherwise the array list of JRE's is one off from what is
+                                           // in the combo; subtract 1 from the selection to get the correct JRE.
                                            int sel = combo.getSelectionIndex();
                                            IVMInstall vmInstall = null;
-                                           if (sel > 0)
+                                           if (sel > 0) {
                                                vmInstall = (IVMInstall) installedJREs.get(sel - 1);
-                                           getGeronimoRuntime().setVMInstall(vmInstall);
+                                           }
+                                           getRuntimeDelegate().setVMInstall(vmInstall);
                                            validate();
                                        }
 
@@ -513,6 +518,10 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
             }
         }
 
+        // The Default JRE will always be the first item in the combo.  This is
+        // an assumption that is made by the combo selection listener and that all
+        // other installed JREs are listed afterwards in the same order that they
+        // are found in the list of installed JREs
         size = installedJREs.size();
         jreNames = new String[size + 1];
         jreNames[0] = Messages.runtimeDefaultJRE;
