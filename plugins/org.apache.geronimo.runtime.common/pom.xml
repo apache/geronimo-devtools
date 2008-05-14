@@ -89,7 +89,7 @@
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>xpp3</groupId>
-                                    <artifactId>xpp3</artifactId>
+                                    <artifactId>xpp3_min</artifactId>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>javax.xml.bind</groupId>
@@ -166,7 +166,7 @@
         </dependency>
         <dependency>
             <groupId>xpp3</groupId>
-            <artifactId>xpp3</artifactId>
+            <artifactId>xpp3_min</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.xml.bind</groupId>
