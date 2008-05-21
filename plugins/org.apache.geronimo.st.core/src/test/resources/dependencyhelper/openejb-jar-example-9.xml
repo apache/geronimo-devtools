@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!-- @version $Rev$ $Date$ -->
+
+<ejb:openejb-jar xmlns:ejb="http://openejb.apache.org/xml/ns/openejb-jar-2.2" xmlns:dep="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:name="http://geronimo.apache.org/xml/ns/naming-1.2" xmlns:pkgen="http://openejb.apache.org/xml/ns/pkgen-2.1" xmlns:app="http://geronimo.apache.org/xml/ns/j2ee/application-2.0" xmlns:sec="http://geronimo.apache.org/xml/ns/security-2.0">
+
+    <dep:environment>
+        <dep:moduleId>
+            <dep:groupId>default</dep:groupId>
+            <dep:artifactId>openejb-jar-1</dep:artifactId>
+            <dep:version>2.0</dep:version>
+            <dep:type>ear</dep:type>
+        </dep:moduleId>
+
+        <dep:dependencies>
+            <dep:dependency>
+                <dep:groupId>org.apache.geronimo.testsuite</dep:groupId>
+                <dep:artifactId>agent-ds</dep:artifactId>
+                <dep:version>2.2-SNAPSHOT</dep:version>
+                <dep:type>car</dep:type>
+            </dep:dependency>
+
+            <dep:dependency>
+                <dep:groupId>org.apache.geronimo.configs</dep:groupId>
+                <dep:artifactId>tomcat6</dep:artifactId>
+                <dep:version>2.2-SNAPSHOT</dep:version>
+                <dep:type>car</dep:type>
+            </dep:dependency>
+        </dep:dependencies>
+    </dep:environment>
+
+    <name:cmp-connection-factory>
+        <name:pattern>
+            <name:groupId>resourcelocator-pattern-groupid</name:groupId>
+            <name:artifactId>resourcelocator-pattern-artifactid</name:artifactId>
+            <name:version>resourcelocator-pattern-version</name:version>
+            <name:module>resourcelocator-pattern-module</name:module>
+            <name:name>resourcelocator-pattern-name</name:name>
+        </name:pattern>
+        <name:resource-link>resourcelocator-resourcelink</name:resource-link>
+        <name:url>resourcelocator-url</name:url>
+    </name:cmp-connection-factory>
+    <ejb:ejb-ql-compiler-factory>ejbqlcompilerfactory</ejb:ejb-ql-compiler-factory>
+    <ejb:db-syntax-factory>dbsyntaxfactory</ejb:db-syntax-factory>
+    <ejb:enforce-foreign-key-constraints/>
+    <ejb:enterprise-beans>
+        <ejb:message-driven id="messagedrivenbean-id">
+            <ejb:ejb-name>messagedrivenbean-ejbname</ejb:ejb-name>
+            <name:resource-adapter>
+                <name:pattern>
+                    <name:groupId>messagedrivenbean-resourcelocator-pattern-groupid</name:groupId>
+                    <name:artifactId>messagedrivenbean-resourcelocator-pattern-artifactid</name:artifactId>
+                    <name:version>messagedrivenbean-resourcelocator-pattern-version</name:version>
+                    <name:module>messagedrivenbean-resourcelocator-pattern-module</name:module>
+                    <name:name>messagedrivenbean-resourcelocator-pattern-name</name:name>
+                </name:pattern>
+                <name:resource-link>messagedrivenbean-resourcelocator-resourcelink</name:resource-link>
+                <name:url>messagedrivenbean-resourcelocator-url</name:url>
+            </name:resource-adapter>
+            <ejb:activation-config>
+                <ejb:description>messagedrivenbean-activationconfig-description</ejb:description>
+                <ejb:activation-config-property>
+                    <ejb:activation-config-property-name>messagedrivenbean-activationconfigproperty-name</ejb:activation-config-property-name>
+                    <ejb:activation-config-property-value>messagedrivenbean-activationconfigproperty-value</ejb:activation-config-property-value>
+                </ejb:activation-config-property>
+            </ejb:activation-config>
+            <name:abstract-naming-entry xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="name:persistence-unit-refType">
+                <name:persistence-unit-ref-name>messagedrivenbean-persistenceunitref-unitrefname</name:persistence-unit-ref-name>
+                <name:persistence-unit-name>messagedrivenbean-persistenceunitref-unitname</name:persistence-unit-name>
+                <name:pattern>
+                    <name:groupId>messagedrivenbean-persistenceunitref-pattern-groupid</name:groupId>
+                    <name:artifactId>messagedrivenbean-persistenceunitref-pattern-artifactid</name:artifactId>
+                    <name:version>messagedrivenbean-persistenceunitref-pattern-version</name:version>
+                    <name:module>messagedrivenbean-persistenceunitref-pattern-module</name:module>
+                    <name:name>messagedrivenbean-persistenceunitref-pattern-name</name:name>
+                </name:pattern>
+            </name:abstract-naming-entry>
+            <name:ejb-ref>
+                <name:ref-name>messagedrivenbean-ejbref-refname</name:ref-name>
+                <name:pattern>
+                    <name:groupId>messagedrivenbean-ejbref-pattern-groupid</name:groupId>
+                    <name:artifactId>messagedrivenbean-ejbref-pattern-artifactid</name:artifactId>
+                    <name:version>messagedrivenbean-ejbref-pattern-version</name:version>
+                    <name:module>messagedrivenbean-ejbref-pattern-module</name:module>
+                    <name:name>messagedrivenbean-ejbref-pattern-name</name:name>
+                </name:pattern>
+                <name:ns-corbaloc>messagedrivenbean-ejbref-nscorbaloc</name:ns-corbaloc>
+                <name:name>messagedrivenbean-ejbref-name</name:name>
+                <name:css>
+                    <name:groupId>messagedrivenbean-ejbref-css-groupid</name:groupId>
+                    <name:artifactId>messagedrivenbean-ejbref-css-artifactid</name:artifactId>
+                    <name:version>messagedrivenbean-ejbref-css-version</name:version>
+                    <name:module>messagedrivenbean-ejbref-css-module</name:module>
+                    <name:name>messagedrivenbean-ejbref-css-name</name:name>
+                </name:css>
+                <name:css-link>messagedrivenbean-ejbref-csslink</name:css-link>
+                <name:ejb-link>messagedrivenbean-ejbref-ejblink</name:ejb-link>
+            </name:ejb-ref>
+            <name:ejb-local-ref>
+                <name:ref-name>messagedrivenbean-ejblocalref-refname</name:ref-name>
+                <name:pattern>
+                    <name:groupId>messagedrivenbean-ejblocalref-pattern-groupid</name:groupId>
+                    <name:artifactId>messagedrivenbean-ejblocalref-pattern-artifactid</name:artifactId>
+                    <name:version>messagedrivenbean-ejblocalref-pattern-version</name:version>
+                    <name:module>messagedrivenbean-ejblocalref-pattern-module</name:module>
+                    <name:name>messagedrivenbean-ejblocalref-pattern-name</name:name>
+                </name:pattern>
+                <name:ejb-link>messagedrivenbean-ejblocalref-ejblink</name:ejb-link>
+            </name:ejb-local-ref>
+            <name:service-ref>
+                <name:service-ref-name>messagedrivenbean-serviceref-refname</name:service-ref-name>
+                <name:service-completion>
+                    <name:service-name>messagedrivenbean-serviceref-servicecompletion-servicename</name:service-name>
+                    <name:port-completion>
+                        <name:port>
+                            <name:port-name>messagedrivenbean-serviceref-servicecompletion-portcompletion-port-portname</name:port-name>
+                            <name:protocol>messagedrivenbean-serviceref-servicecompletion-portcompletion-port-protocol</name:protocol>
+                            <name:host>messagedrivenbean-serviceref-servicecompletion-portcompletion-port-host</name:host>
+                            <name:port>0</name:port>
+                            <name:uri>messagedrivenbean-serviceref-servicecompletion-portcompletion-port-uri</name:uri>
+                            <name:credentials-name>messagedrivenbean-serviceref-servicecompletion-portcompletion-port-credentialsname</name:credentials-name>
+                        </name:port>
+                        <name:binding-name>messagedrivenbean-serviceref-servicecompletion-portcompletion-bindingname</name:binding-name>
+                    </name:port-completion>
+                </name:service-completion>
+                <name:port>
+                    <name:port-name>messagedrivenbean-serviceref-port-portname</name:port-name>
+                    <name:protocol>messagedrivenbean-serviceref-port-protocol</name:protocol>
+                    <name:host>messagedrivenbean-serviceref-port-host</name:host>
+                    <name:port>0</name:port>
+                    <name:uri>messagedrivenbean-serviceref-port-uri</name:uri>
+                    <name:credentials-name>messagedrivenbean-serviceref-port-credentialsname</name:credentials-name>
+                </name:port>
+            </name:service-ref>
+            <name:resource-ref>
+                <name:ref-name>messagedrivenbean-resourceref-refname</name:ref-name>
+                <name:pattern>
+                    <name:groupId>messagedrivenbean-resourceref-pattern-groupid</name:groupId>
+                    <name:artifactId>messagedrivenbean-resourceref-pattern-artifactid</name:artifactId>
+                    <name:version>messagedrivenbean-resourceref-pattern-version</name:version>
+                    <name:module>messagedrivenbean-resourcref-pattern-module</name:module>
+                    <name:name>messagedrivenbean-resourceref-pattern-name</name:name>
+                </name:pattern>
+                <name:resource-link>messagedrivenbean-resourceref-resourcelink</name:resource-link>
+                <name:url>messagedrivenbean-resourceref-url</name:url>
+            </name:resource-ref>
+            <name:resource-env-ref>
+                <name:ref-name>messagedrivenbean-resourceenvref-refname</name:ref-name>
+                <name:pattern>
+                    <name:groupId>messagedrivenbean-resourceenvref-pattern-groupid</name:groupId>
+                    <name:artifactId>messagedrivenbean-resourceenvref-pattern-artifactid</name:artifactId>
+                    <name:version>messagedrivenbean-resourceenvref-pattern-version</name:version>
+                    <name:module>messagedrivenbean-resourceenvref-pattern-module</name:module>
+                    <name:name>messagedrivenbean-resourceenvref-pattern-name</name:name>
+                </name:pattern>
+                <name:message-destination-link>messagedrivenbean-resourceenvref-messagedestinationlink</name:message-destination-link>
+                <name:admin-object-module>messagedrivenbean-resourceenvref-adminobjectmodule</name:admin-object-module>
+                <name:admin-object-link>messagedrivenbean-resourceenvref-adminobjectlink</name:admin-object-link>
+            </name:resource-env-ref>
+        </ejb:message-driven>
+    </ejb:enterprise-beans>
+    <ejb:relationships>
+        <ejb:ejb-relation>
+            <ejb:ejb-relation-name>ejbrelation-ejbrelationname</ejb:ejb-relation-name>
+            <ejb:many-to-many-table-name>ejbrelation-manytomanytablename</ejb:many-to-many-table-name>
+            <ejb:ejb-relationship-role>
+                <ejb:ejb-relationship-role-name>ejbrelation-role-name</ejb:ejb-relationship-role-name>
+                <ejb:relationship-role-source>
+                    <ejb:ejb-name>ejbrelation-role-ejbname</ejb:ejb-name>
+                </ejb:relationship-role-source>
+                <ejb:cmr-field>
+                    <ejb:cmr-field-name>ejbrelation-role-cmrfieldname</ejb:cmr-field-name>
+                </ejb:cmr-field>
+                <ejb:role-mapping>
+                    <ejb:cmr-field-mapping>
+                        <ejb:key-column>ejbrelation-role-mapping-keycolumn</ejb:key-column>
+                        <ejb:foreign-key-column>ejbrelation-role-mapping-foreignkeycolumn</ejb:foreign-key-column>
+                    </ejb:cmr-field-mapping>
+                </ejb:role-mapping>
+            </ejb:ejb-relationship-role>
+        </ejb:ejb-relation>
+    </ejb:relationships>
+    <name:message-destination>
+        <name:message-destination-name>messagedestination-name</name:message-destination-name>
+        <name:pattern>
+            <name:groupId>messagedestination-pattern-groupid</name:groupId>
+            <name:artifactId>messagedestination-pattern-artifactid</name:artifactId>
+            <name:version>messagedestination-pattern-version</name:version>
+            <name:module>messagedestination-pattern-module</name:module>
+            <name:name>messagedestination-pattern-name</name:name>
+        </name:pattern>
+        <name:admin-object-module>messagedestination-adminobjectmodule</name:admin-object-module>
+        <name:admin-object-link>messagedestination-adminobjectlink</name:admin-object-link>
+    </name:message-destination>
+    <sec:security use-context-handler="true" doas-current-caller="true" default-role="security-role">
+        <sec:credential-store-ref>
+            <dep:groupId>security-credentialstoreref-groupid</dep:groupId>
+            <dep:artifactId>security-credentialstoreref-artifactid</dep:artifactId>
+            <dep:version>security-credentialstoreref-version</dep:version>
+            <dep:module>security-credentialstoreref-module</dep:module>
+            <dep:type>security-credentialstoreref-type</dep:type>
+            <dep:name>security-credentialstoreref-customfoo</dep:name>
+        </sec:credential-store-ref>
+        <sec:default-subject>
+            <sec:description>security-subjectinfo-description</sec:description>
+            <sec:realm>security-subjectinfo-realm</sec:realm>
+            <sec:id>security-subjectinfo-id</sec:id>
+        </sec:default-subject>
+        <sec:role-mappings>
+            <sec:role role-name="security-role">
+                <sec:description>security-role-description</sec:description>
+                <sec:run-as-subject>
+                    <sec:description>security-role-subjectinfo-description</sec:description>
+                    <sec:realm>security-role-subjectinfo-realm</sec:realm>
+                    <sec:id>security-role-subjectinfo-id</sec:id>
+                </sec:run-as-subject>
+                <sec:realm-principal name="security-role-realmprincipal-name" class="security-role-realmprincipal-class">
+                    <sec:description>security-role-realmprincipal-description</sec:description>
+                </sec:realm-principal>
+                <sec:login-domain-principal domain-name="security-role-logindomainprincipal-domainname" name="security-role-logindomainprincipal-name" class="security-role-logindomainprincipal-class">
+                    <sec:description>security-role-logindomainprincipal-description</sec:description>
+                </sec:login-domain-principal>
+                <sec:principal name="security-role-principal-name" class="security-role-principal-class">
+                    <sec:description>security-role-principal-description</sec:description>
+                </sec:principal>
+                <sec:distinguished-name name="security-role-distinguishedname">
+                    <sec:description>security-role-distinguished-name-description</sec:description>
+                </sec:distinguished-name>
+            </sec:role>
+        </sec:role-mappings>
+    </sec:security>
+    <dep:gbean name="gbean-name" class="gbean-class"/>
+</ejb:openejb-jar>

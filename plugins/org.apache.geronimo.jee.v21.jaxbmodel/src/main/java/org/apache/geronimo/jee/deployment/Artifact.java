@@ -195,4 +195,64 @@ public class Artifact
         this.type = value;
     }
 
+
+    /**
+     * 
+     * @return String representation of Artifact
+     */
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+
+        if (groupId != null) {
+            buffer.append(groupId);
+        }
+        buffer.append("/");
+
+        if (artifactId != null) {
+            buffer.append(artifactId);
+        }
+        buffer.append("/");
+
+        if (version != null) {
+            buffer.append(version);
+        }
+        buffer.append("/");
+
+        if (type != null) {
+            buffer.append(type);
+        }
+        return buffer.toString();
+    }
+
+
+    /**
+     * 
+     */
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final Artifact that = (Artifact) o;
+
+        if (groupId != null ? !groupId.equals(that.groupId) : that.groupId != null) return false;
+        if (artifactId != null ? !artifactId.equals(that.artifactId) : that.artifactId != null) return false;
+        if (version != null ? !version.equals(that.version) : that.version != null) return false;
+        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+
+        return true;
+    }
+    
+    /**
+     * 
+     */
+    public int hashCode() {
+        int result;
+        result = (groupId != null ? groupId.hashCode() : 0);
+        result = 29 * result + (artifactId != null? artifactId.hashCode() : 0);
+        result = 29 * result + (version != null ? version.hashCode() : 0);
+        result = 29 * result + (type != null ? type.hashCode() : 0);
+        return result;
+    }
+
 }

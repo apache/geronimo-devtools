@@ -35,7 +35,7 @@ import org.apache.geronimo.jee.deployment.Artifact;
  * 
  * <p>Like the DependencyManager in the Geronimo server, it uses the nomenclature of parent-child
  * where a child is dependent on a parent. The names parent and child have no other meaning are just
- * a convience to make the code readable.
+ * a convenience to make the code readable.
  * 
  * <p>The initial usage of this DependencyManager in the GEP is somewhat limited but other usages 
  * are possible<p>
@@ -71,6 +71,7 @@ public class DependencyManager {
      * @param parent the component the child is depending on
      */
     public void addDependency(Artifact child, Artifact parent) {
+        Trace.tracePoint("Entry", "DependencyManager.addDependency", child, parent);
 
         Set parents = (Set) childToParentMap.get(child);
         if (parents == null) {
@@ -85,6 +86,9 @@ public class DependencyManager {
             parentToChildMap.put(parent, children);
         }
         children.add(child);
+
+        Trace.tracePoint("Exit ", "DependencyManager.addDependency", childToParentMap.size() );
+        Trace.tracePoint("Exit ", "DependencyManager.addDependency", parentToChildMap.size() );
     }
 
 
@@ -95,6 +99,7 @@ public class DependencyManager {
      * @param parent the component that the child wil no longer depend on
      */
     public void removeDependency(Artifact child, Artifact parent) {
+        Trace.tracePoint("Entry", "DependencyManager.removeDependency", child, parent);
 
         Set parents = (Set) childToParentMap.get(child);
         if (parents != null) {
@@ -105,6 +110,8 @@ public class DependencyManager {
         if (children != null) {
             children.remove(child);
         }
+
+        Trace.tracePoint("Exit ", "DependencyManager.addDependency");
     }
 
 
@@ -114,6 +121,7 @@ public class DependencyManager {
      * @param child the component that will no longer depend on anything
      */
     public void removeAllDependencies(Artifact child) {
+        Trace.tracePoint("Entry", "DependencyManager.removeAllDependencies", child);
 
         Set parents = (Set) childToParentMap.remove(child);
         if (parents == null) {
@@ -127,6 +135,8 @@ public class DependencyManager {
                 children.remove(child);
             }
         }
+
+        Trace.tracePoint("Exit ", "DependencyManager.removeAllDependencies");
     }
 
 
@@ -137,6 +147,7 @@ public class DependencyManager {
      * @param parents the set of components the child is depending on
      */
     public void addDependencies(Artifact child, Set parents) {
+        Trace.tracePoint("Entry", "DependencyManager.addDependencies", child, parents);
 
         Set existingParents = (Set) childToParentMap.get(child);
         if (existingParents == null) {
@@ -156,6 +167,8 @@ public class DependencyManager {
             }
             children.add(child);
         }
+
+        Trace.tracePoint("Exit ", "DependencyManager.addDependencies");
     }
 
 
@@ -166,12 +179,15 @@ public class DependencyManager {
      * @return a collection containing all of the components the child depends on; will never be null
      */
     public Set getParents(Artifact child) {
+        Trace.tracePoint("Entry", "DependencyManager.getParents", child);
 
         Set parents = (Set) childToParentMap.get(child);
         if (parents == null) {
+            Trace.tracePoint("Exit", "DependencyManager.getParents", 0);
             return Collections.EMPTY_SET;
         }
 
+        Trace.tracePoint("Exit", "DependencyManager.getParents", parents.size() );
         return new HashSet(parents);
     }
 
@@ -183,12 +199,15 @@ public class DependencyManager {
      * @return a collection containing all of the components that depend on the parent; will never be null
      */
     public Set getChildren(Artifact parent) {
+        Trace.tracePoint("Entry", "DependencyManager.getChildren", parent);
 
         Set children = (Set) parentToChildMap.get(parent);
         if (children == null) {
+            Trace.tracePoint("Exit ", "DependencyManager.getChildren", 0);
             return Collections.EMPTY_SET;
         }
 
+        Trace.tracePoint("Exit ", "DependencyManager.getChildren", children.size() );
         return new HashSet(children);
     }
 }

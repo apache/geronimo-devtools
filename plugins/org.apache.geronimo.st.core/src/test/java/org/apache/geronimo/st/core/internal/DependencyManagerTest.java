@@ -107,11 +107,31 @@ public class DependencyManagerTest extends TestCase {
     }
 
 
-    /*------------------------------------------------------------------------*\
-    |                                                                          |
-    |  Testcase(s)                                                             | 
-    |                                                                          |
-    \*------------------------------------------------------------------------*/
+    /*--------------------------------------------------------------------------------------------*\
+    |                                                                                              |
+    |  Testcase(s)                                                                                 |
+    |                                                                                              |
+    \*--------------------------------------------------------------------------------------------*/ 
+
+    public void testSimple() {
+
+        dm.addDependency(artifact1,artifact2);
+
+        Set children = dm.getChildren(artifact1);
+        assertEquals(children.size(),0);
+
+        children = dm.getChildren(artifact2);
+        assertEquals(children.size(),1);
+        assertTrue(children.contains(artifact1));
+
+        Set parents = dm.getParents(artifact1);
+        assertEquals(parents.size(),1);
+        assertTrue(parents.contains(artifact2));
+
+        parents = dm.getParents(artifact2);
+        assertEquals(parents.size(),0);
+    }
+
     public void testSingleParent() {
 
         dm.addDependency(artifact2,artifact1);
