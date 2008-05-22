@@ -182,12 +182,13 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
             data = new GridData();
             data.horizontalSpan = 3;
             install.setLayoutData(data);
+            String runtimeName = getRuntimeName();
             install.setToolTipText(Messages.bind(Messages.tooltipInstall, getRuntimeName()));
             install.addSelectionListener(new SelectionAdapter() {
                                              public void widgetSelected(SelectionEvent se) {
                                                  if (installDir != null && isValidLocation()) {
                                                      Shell shell = installDir.getShell();
-                                                     ConfirmInstallDialog dialog = new ConfirmInstallDialog(shell, installDir.getText());
+                                                     ConfirmInstallDialog dialog = new ConfirmInstallDialog(shell, getRuntimeName(), installDir.getText());
                                                      dialog.open();
                                                      if (dialog.getReturnCode() == IDialogConstants.OK_ID) {
 

@@ -33,10 +33,12 @@ import org.eclipse.swt.widgets.Shell;
 public class ConfirmInstallDialog extends Dialog {
 
 	private String installPath = null;
+	private String runtimeName = null;
 
-	public ConfirmInstallDialog(Shell parentShell, String installPath) {
+	public ConfirmInstallDialog(Shell parentShell, String runtimeName, String installPath) {
 		super(parentShell);
 		this.installPath = installPath;
+		this.runtimeName = runtimeName;
 	}
 
 	/*
@@ -66,7 +68,7 @@ public class ConfirmInstallDialog extends Dialog {
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		composite.setFont(parent.getFont());
 		Label label = new Label(composite, SWT.WRAP);
-		label.setText(NLS.bind(Messages.installMessage, new String[] { installPath }));
+		label.setText(NLS.bind(Messages.installMessage, new String[] { runtimeName, installPath }));
 		GridData data = new GridData();
 		data.widthHint = 400;
 		label.setLayoutData(data);
