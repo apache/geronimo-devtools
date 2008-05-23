@@ -57,6 +57,10 @@ public class DependencyHelper {
 
     private DependencyManager dm = new DependencyManager();
     private ObjectFactory deploymentFactory = new ObjectFactory();
+    private List inputModules = new ArrayList();
+    private List inputDeltaKind = new ArrayList();
+    private List reorderedModules = new ArrayList();
+    private List reorderedKinds  = new ArrayList();
     private List<JAXBElement> inputJAXBElements = new ArrayList();
     private List<JAXBElement> reorderedJAXBElements = new ArrayList();
 
@@ -72,19 +76,21 @@ public class DependencyHelper {
     public List reorderModules( List modules, List deltaKind ) {
         Trace.tracePoint("Entry", "DependencyHelper.reorderModules", modules, deltaKind);
 
-        int size = modules.size();
-        if (size == 0) {
+        if (modules.size() == 0) {
             List reorderedLists = new ArrayList(2);
-            reorderedLists.add( modules );
-            reorderedLists.add( deltaKind );
+            reorderedLists.add(modules);
+            reorderedLists.add(deltaKind);
             Trace.tracePoint("Exit ", "DependencyHelper.reorderModules", reorderedLists);
             return reorderedLists;
         }
 
+        inputModules = modules;
+        inputDeltaKind = deltaKind;
+
         // 
         // Iterate through all the modules and register the dependencies
         // 
-        for (int ii=0; ii<size; ii++) {
+        for (int ii=0; ii<modules.size(); ii++) {
             IModule[] module = (IModule[]) modules.get(ii);
             int moduleDeltaKind = ((Integer)deltaKind.get(ii)).intValue();
             if (moduleDeltaKind != ServerBehaviourDelegate.REMOVED) {
@@ -108,84 +114,53 @@ public class DependencyHelper {
         }
 
         // 
-        // Reorder modules and deltaKind as necessary
+        // Iterate through all the modules again and reorder as necessary
         // 
-        List reorderedModules = new ArrayList(size);
-        List reorderedKinds  = new ArrayList(size);
-
-        // Move REMOVED modules first
-        for (int ii=0; ii<size; ii++) {
+        for (int ii=0; ii<modules.size(); ii++) {
             IModule[] module = (IModule[]) modules.get(ii);
             int moduleDeltaKind = ((Integer)deltaKind.get(ii)).intValue();
-            if (moduleDeltaKind == ServerBehaviourDelegate.REMOVED) {
-                reorderedModules.add( module );
-                reorderedKinds.add( moduleDeltaKind );
-            }
-        }
-
-        // Next move modules with no dependencies
-        for (int ii=0; ii<size; ii++) {
-            IModule[] module = (IModule[]) modules.get(ii);
-            int moduleDeltaKind = ((Integer)deltaKind.get(ii)).intValue();
-            if (moduleDeltaKind != ServerBehaviourDelegate.REMOVED) {
-                Environment environment = getEnvironment(module[0]);
-                if (environment != null) {
-                    Artifact artifact = environment.getModuleId();
-                    if (dm.getChildren(artifact).size() == 0 && 
-                        dm.getParents(artifact).size() == 0) {
-                        reorderedModules.add( module );
-                        reorderedKinds.add( moduleDeltaKind );
-                    }
+            if (!reorderedModules.contains(module)) {
+                // Not already moved 
+                if (moduleDeltaKind == ServerBehaviourDelegate.REMOVED) {
+                    // Move module if going to be removed 
+                    reorderedModules.add(module);
+                    reorderedKinds.add(moduleDeltaKind);
                 }
-            }
-        }
-
-        // Next move modules with children but no parents
-        for (int ii=0; ii<size; ii++) {
-            IModule[] module = (IModule[]) modules.get(ii);
-            int moduleDeltaKind = ((Integer)deltaKind.get(ii)).intValue();
-            if (moduleDeltaKind != ServerBehaviourDelegate.REMOVED) {
-                Environment environment = getEnvironment(module[0]);
-                if (environment != null) {
-                    Artifact artifact = environment.getModuleId();
-                    if (dm.getChildren(artifact).size() > 0 &&
-                        dm.getParents(artifact).size() == 0) {
-                        reorderedModules.add( module );
-                        reorderedKinds.add( moduleDeltaKind );
-                    }
-                }
-            }
-        }
-
-        // Next move modules with parents but no children
-        for (int ii=0; ii<size; ii++) {
-            IModule[] module = (IModule[]) modules.get(ii);
-            int moduleDeltaKind = ((Integer)deltaKind.get(ii)).intValue();
-            if (moduleDeltaKind != ServerBehaviourDelegate.REMOVED) {
-                Environment environment = getEnvironment(module[0]);
-                if (environment != null) {
-                    Artifact artifact = environment.getModuleId();
-                    if (dm.getChildren(artifact).size() == 0 &&
-                        dm.getParents(artifact).size() > 0) {
-                        reorderedModules.add( module );
-                        reorderedKinds.add( moduleDeltaKind );
-                    }
-                }
-            }
-        }
-
-        // Finally move modules with both parent(s) and children (TODO)
-        for (int ii=0; ii<size; ii++) {
-            IModule[] module = (IModule[]) modules.get(ii);
-            int moduleDeltaKind = ((Integer)deltaKind.get(ii)).intValue();
-            if (moduleDeltaKind != ServerBehaviourDelegate.REMOVED) {
-                Environment environment = getEnvironment(module[0]);
-                if (environment != null) {
-                    Artifact artifact = environment.getModuleId();
-                    if (dm.getChildren(artifact).size() > 0 &&
-                        dm.getParents(artifact).size() > 0) {
-                        reorderedModules.add( module );
-                        reorderedKinds.add( moduleDeltaKind );
+                else {
+                    Environment environment = getEnvironment(module[0]);
+                    if (environment != null) {
+                        Artifact artifact = environment.getModuleId();
+                        if (artifact == null) {
+                            // Move if null (nothing can be done)
+                            if (!reorderedModules.contains(module)) {
+                                reorderedModules.add(module);
+                                reorderedKinds.add(moduleDeltaKind);
+                            }
+                        }
+                        else if (dm.getParents(artifact).contains(artifact) ||  
+                                 dm.getChildren(artifact).contains(artifact)) {
+                            // Move if a tight circular dependency (nothing can be done)
+                            if (!reorderedModules.contains(module)) {
+                                reorderedModules.add(module);
+                                reorderedKinds.add(moduleDeltaKind);
+                            }
+                        }
+                        else if (dm.getParents(artifact).size() == 0) {
+                            // Move if no parents (nothing to do)
+                            if (!reorderedModules.contains(module)) {
+                                reorderedModules.add(module);
+                                reorderedKinds.add(moduleDeltaKind);
+                            }
+                        }
+                        else if (dm.getParents(artifact).size() > 0) {
+                            // Move parents first
+                            processParents(dm.getParents(artifact), artifact);
+                            // Move self 
+                            if (!reorderedModules.contains(module)) {
+                                reorderedModules.add(module);
+                                reorderedKinds.add(moduleDeltaKind);
+                            }
+                        }
                     }
                 }
             }
@@ -201,8 +176,8 @@ public class DependencyHelper {
         // Return List of lists
         // 
         List reorderedLists = new ArrayList(2);
-        reorderedLists.add( reorderedModules );
-        reorderedLists.add( reorderedKinds );
+        reorderedLists.add(reorderedModules);
+        reorderedLists.add(reorderedKinds);
 
         Trace.tracePoint("Exit ", "DependencyHelper.reorderModules", reorderedLists);
         return reorderedLists;
@@ -219,13 +194,12 @@ public class DependencyHelper {
     public List<JAXBElement> reorderJAXBElements( List<JAXBElement> jaxbElements ) {
         Trace.tracePoint("Entry", "DependencyHelper.reorderModules", jaxbElements);
 
-        inputJAXBElements = jaxbElements;
-
-        int size = jaxbElements.size();
-        if (size == 0) {
+        if (jaxbElements.size() == 0) {
             Trace.tracePoint("Exit ", "DependencyHelper.reorderModules", jaxbElements);
             return jaxbElements;
         }
+
+        inputJAXBElements = jaxbElements;
 
         // 
         // Iterate through all the JAXBElements and register the dependencies
@@ -257,8 +231,8 @@ public class DependencyHelper {
         // Iterate through all the JAXBElements again and reorder as necessary
         // 
         for (JAXBElement jaxbElement : jaxbElements) {
-            // Already moved ??
             if (!reorderedJAXBElements.contains(jaxbElement)) {
+                // Not already moved
                 Environment environment = getEnvironment(jaxbElement);
                 if (environment != null) {
                     Artifact artifact = environment.getModuleId();
@@ -283,7 +257,7 @@ public class DependencyHelper {
                     }
                     else if (dm.getParents(artifact).size() > 0) {
                         // Move parents first
-                        processParents(dm.getParents(artifact), artifact);
+                        processJaxbParents(dm.getParents(artifact), artifact);
                         // Move self 
                         if (!reorderedJAXBElements.contains(jaxbElement)) {
                             reorderedJAXBElements.add(jaxbElement);
@@ -319,6 +293,49 @@ public class DependencyHelper {
     |  Private method(s)                                                                           | 
     |                                                                                              |
     \*--------------------------------------------------------------------------------------------*/
+
+    /**
+     * Process the parents for a given artifact. The terminatingArtifact parameter will be used as
+     * the terminating condition to ensure there will not be an infinite loop (i.e., if
+     * terminatingArtifact is encountered again there is a circular dependency).
+     * 
+     * @param parents
+     * @param terminatingArtifact
+     */
+    private void processParents(Set parents, Artifact terminatingArtifact) {
+        Trace.tracePoint("Enter", "DependencyHelper.processParents", parents, terminatingArtifact );
+
+        if (parents == null) {
+            Trace.tracePoint("Exit ", "DependencyHelper.processParents", null);
+            return;
+        }
+        for (Iterator ii = parents.iterator(); ii.hasNext();) {
+            Artifact artifact = (Artifact)ii.next();
+            if (dm.getParents(artifact).size() > 0 && !artifact.equals(terminatingArtifact)) {
+                // Keep processing parents (as long as no circular dependencies)
+                processParents(dm.getParents(artifact), terminatingArtifact);
+                // Move self 
+                IModule[] module = getModule(artifact);
+                int moduleDeltaKind = getDeltaKind(artifact);
+                if (!reorderedModules.contains(module)) {
+                    reorderedModules.add(module);
+                    reorderedKinds.add(moduleDeltaKind);
+                }
+            }
+            else {
+                // Move parent
+                IModule[] module = getModule(artifact);
+                int moduleDeltaKind = getDeltaKind(artifact);
+                if (!reorderedModules.contains(module)) {
+                    reorderedModules.add(module);
+                    reorderedKinds.add(moduleDeltaKind);
+                }
+            }
+        }
+
+        Trace.tracePoint("Exit ", "DependencyHelper.processParents");
+    }
+
 
     /**
      * Returns the Environment for the given IModule
@@ -358,36 +375,57 @@ public class DependencyHelper {
 
 
     /**
-     * Returns the Environment for the given JAXBElement plan
+     * Return the IModule[] for a given artifact
      * 
-     * @param jaxbElement JAXBElement plan
+     * @param artifact
      * 
-     * @return Environment
+     * @return IModule[]
      */
-    private Environment getEnvironment(JAXBElement jaxbElement) {
-        Trace.tracePoint("Enter", "DependencyHelper.getEnvironment", jaxbElement);
+    private IModule[] getModule(Artifact artifact) {
+        Trace.tracePoint("Enter", "DependencyHelper.getModule", artifact);
 
-        Environment environment = null;
-        Object plan = jaxbElement.getValue();
-        if (WebApp.class.isInstance(plan)) {
-            if (plan != null)
-                environment = ((WebApp)plan).getEnvironment();
-        }
-        else if (OpenejbJar.class.isInstance(plan)) {
-            if (plan != null)
-                environment = ((OpenejbJar)plan).getEnvironment();
-        }
-        else if (Application.class.isInstance(plan)) {
-            if (plan != null)
-                environment = ((Application)plan).getEnvironment();
-        }
-        else if (Connector.class.isInstance(plan)) {
-            if (plan != null)
-                environment = ((Connector)plan).getEnvironment();
+        for (int ii=0; ii<inputModules.size(); ii++) {
+            IModule[] module = (IModule[]) inputModules.get(ii);
+            int moduleDeltaKind = ((Integer)inputDeltaKind.get(ii)).intValue();
+            Environment environment = getEnvironment(module[0]);
+            if (environment != null) {
+                Artifact moduleArtifact = environment.getModuleId();
+                if (artifact.equals(moduleArtifact)) {
+                    Trace.tracePoint("Exit ", "DependencyHelper.getModule", module);
+                    return module;
+                }
+            }
         }
 
-        Trace.tracePoint("Exit ", "DependencyHelper.getEnvironment", environment);
-        return environment;
+        Trace.tracePoint("Exit ", "DependencyHelper.getModule", null);
+        return null;
+    }
+
+
+    /**
+     * Return the deltaKind array index for a given artifact
+     * 
+     * @param artifact
+     * 
+     * @return int
+     */
+    private int getDeltaKind(Artifact artifact) {
+        Trace.tracePoint("Enter", "DependencyHelper.getDeltaKind", artifact);
+
+        for (int ii=0; ii<inputModules.size(); ii++) {
+            IModule[] module = (IModule[]) inputModules.get(ii);
+            int moduleDeltaKind = ((Integer)inputDeltaKind.get(ii)).intValue();
+            Environment environment = getEnvironment(module[0]);
+            if (environment != null) {
+                Artifact moduleArtifact = environment.getModuleId();
+                if (artifact.equals(moduleArtifact)) {
+                    Trace.tracePoint("Exit ", "DependencyHelper.getDeltaKind", moduleDeltaKind);
+                    return moduleDeltaKind;
+                }
+            }
+        }
+        Trace.tracePoint("Exit ", "DependencyHelper.getDeltaKind", 0);
+        return 0;
     }
 
 
@@ -487,17 +525,18 @@ public class DependencyHelper {
      * @param parents
      * @param terminatingArtifact
      */
-    private void processParents(Set parents, Artifact terminatingArtifact) {
-        Trace.tracePoint("Enter", "DependencyHelper.processParents", parents, terminatingArtifact );
+    private void processJaxbParents(Set parents, Artifact terminatingArtifact) {
+        Trace.tracePoint("Enter", "DependencyHelper.processJaxbParents", parents, terminatingArtifact );
 
         if (parents == null) {
+            Trace.tracePoint("Exit ", "DependencyHelper.processJaxbParents", null);
             return;
         }
         for (Iterator ii = parents.iterator(); ii.hasNext();) {
             Artifact artifact = (Artifact)ii.next();
             if (dm.getParents(artifact).size() > 0 && !artifact.equals(terminatingArtifact)) {
                 // Keep processing parents (as long as no circular dependencies)
-                processParents(dm.getParents(artifact), terminatingArtifact);
+                processJaxbParents(dm.getParents(artifact), terminatingArtifact);
                 // Move self 
                 JAXBElement jaxbElement = getJaxbElement(artifact);
                 if (jaxbElement != null) {
@@ -517,7 +556,41 @@ public class DependencyHelper {
             }
         }
 
-        Trace.tracePoint("Exit ", "DependencyHelper.processParents");
+        Trace.tracePoint("Exit ", "DependencyHelper.processJaxbParents");
+    }
+
+
+    /**
+     * Returns the Environment for the given JAXBElement plan
+     * 
+     * @param jaxbElement JAXBElement plan
+     * 
+     * @return Environment
+     */
+    private Environment getEnvironment(JAXBElement jaxbElement) {
+        Trace.tracePoint("Enter", "DependencyHelper.getEnvironment", jaxbElement);
+
+        Environment environment = null;
+        Object plan = jaxbElement.getValue();
+        if (WebApp.class.isInstance(plan)) {
+            if (plan != null)
+                environment = ((WebApp)plan).getEnvironment();
+        }
+        else if (OpenejbJar.class.isInstance(plan)) {
+            if (plan != null)
+                environment = ((OpenejbJar)plan).getEnvironment();
+        }
+        else if (Application.class.isInstance(plan)) {
+            if (plan != null)
+                environment = ((Application)plan).getEnvironment();
+        }
+        else if (Connector.class.isInstance(plan)) {
+            if (plan != null)
+                environment = ((Connector)plan).getEnvironment();
+        }
+
+        Trace.tracePoint("Exit ", "DependencyHelper.getEnvironment", environment);
+        return environment;
     }
 
 
@@ -536,6 +609,7 @@ public class DependencyHelper {
             if (environment != null) {
                 Artifact jaxbArtifact = environment.getModuleId();
                 if (artifact.equals(jaxbArtifact)) {
+                    Trace.tracePoint("Exit ", "DependencyHelper.getJaxbElement", jaxbElement);
                     return jaxbElement;
                 }
             }
