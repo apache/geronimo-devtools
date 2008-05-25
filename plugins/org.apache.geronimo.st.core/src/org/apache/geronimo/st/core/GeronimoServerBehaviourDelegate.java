@@ -36,6 +36,7 @@ import javax.management.remote.JMXServiceURL;
 import org.apache.geronimo.st.core.commands.DeploymentCmdStatus;
 import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.core.commands.IDeploymentCommand;
+import org.apache.geronimo.st.core.internal.DependencyHelper;
 import org.apache.geronimo.st.core.internal.Messages;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.apache.geronimo.st.core.operations.ISharedLibEntryCreationDataModelProperties;
@@ -202,6 +203,20 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#publishModules(int, java.util.List, java.util.List, org.eclipse.core.runtime.MultiStatus, org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	protected void publishModules(int kind, List modules, List deltaKind, MultiStatus multi, IProgressMonitor monitor) {
+        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.publishModules", deltaKindToString(kind), Arrays.asList(modules).toString(), Arrays.asList(deltaKind).toString(), multi, monitor);
+
+        // 
+        // WTP publishes modules in reverse alphabetical order which does not account for possible 
+        // dependencies between modules. If necessary reorder the publish order of the modules 
+        // based on any discovered dependencies. 
+        //
+        if (modules != null && modules.size() > 0) {
+            DependencyHelper dh = new DependencyHelper();
+            List list = dh.reorderModules(modules, deltaKind);
+            modules = (List) list.get(0);
+            deltaKind = (List) list.get(1);
+        }
+
 		IStatus status = Status.OK_STATUS;
 		if (modules != null && modules.size() > 0 && getGeronimoServer().isInPlaceSharedLib()) {
 			List rootModules = new ArrayList<IModule>();
@@ -246,6 +261,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		} else {
 			multi.add(status);
 		}
+
+        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.publishModules");
 	}
 
 	/*

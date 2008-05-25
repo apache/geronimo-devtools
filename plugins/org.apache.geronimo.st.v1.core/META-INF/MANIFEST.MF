@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo V1 Server Tools Core Plug-in
 Bundle-SymbolicName: org.apache.geronimo.st.v1.core;singleton:=true
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.1
 Bundle-Activator: org.apache.geronimo.st.v1.core.Activator
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,

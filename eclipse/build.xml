@@ -23,22 +23,22 @@
 
     <target name="init">
         <property name="base_url"               value="http://www.eclipse.org/downloads/download.php?file="/>
-        <property name="europa_win32_url"       value="${base_url}/eclipse/downloads/drops/R-3.3-200706251500/"/>
-        <property name="europa_linux_url"       value="${base_url}/eclipse/downloads/drops/R-3.3-200706251500/"/>
-        <property name="europa_macos_url"       value="${base_url}/eclipse/downloads/drops/R-3.3-200706251500/"/>
+        <property name="europa_win32_url"       value="${base_url}/eclipse/downloads/drops/R-3.3.2-200802211800/"/>
+        <property name="europa_linux_url"       value="${base_url}/eclipse/downloads/drops/R-3.3.2-200802211800"/>
+        <property name="europa_macos_url"       value="${base_url}/eclipse/downloads/drops/R-3.3.2-200802211800"/>
         <property name="dtp_download_url"       value="${base_url}/datatools/downloads/1.5/"/>
-        <property name="emf_download_url"       value="${base_url}/modeling/emf/emf/downloads/drops/2.3.0/R200706262000/"/>
-        <property name="gef_download_url"       value="${base_url}/tools/gef/downloads/drops/R-3.3-200706281000/"/>
-        <property name="wtp_download_url"       value="${base_url}/webtools/downloads/drops/R2.0/R-2.0-200706260303/"/>
-        <property name="europa_jee_win32"       value="eclipse-SDK-3.3-win32.zip"/>
-        <property name="europa_jee_linux"       value="eclipse-SDK-3.3-linux-gtk.tar"/>
-        <property name="europa_jee_macos"       value="eclipse-SDK-3.3-macosx-carbon.tar"/>
+        <property name="emf_download_url"       value="${base_url}/modeling/emf/emf/downloads/drops/2.3.2/R200802051830/"/>
+        <property name="gef_download_url"       value="${base_url}/tools/gef/downloads/drops/3.3.2/R200802211602/"/>
+        <property name="wtp_download_url"       value="${base_url}/webtools/downloads/drops/R2.0//R-2.0.2-20080223205547/"/>
+        <property name="europa_jee_win32"       value="eclipse-SDK-3.3.2-win32.zip"/>
+        <property name="europa_jee_linux"       value="eclipse-SDK-3.3.2-linux-gtk.tar"/>
+        <property name="europa_jee_macos"       value="eclipse-SDK-3.3.2-macosx-carbon.tar"/>
         <property name="europa_jee_linux_gz"    value="${europa_jee_linux}.gz"/>
         <property name="europa_jee_macos_gz"    value="${europa_jee_macos}.gz"/>
-        <property name="dtp_sdk" value="dtp-sdk_1.5.zip"/>
-        <property name="emf_sdo" value="emf-sdo-xsd-SDK-2.3.0.zip"/>
-        <property name="gef_sdk" value="GEF-SDK-3.3.zip"/>
-        <property name="wtp_sdk" value="wtp-sdk-R-2.0-200706260303.zip"/>
+        <property name="dtp_sdk" value="dtp-sdk_1.5.2_022008.zip"/>
+        <property name="emf_sdo" value="emf-sdo-xsd-SDK-2.3.2.zip"/>
+        <property name="gef_sdk" value="GEF-SDK-3.3.2.zip"/>
+        <property name="wtp_sdk" value="wtp-sdk-R-2.0.2-20080223205547.zip"/>
         <property name="protocol" value="&amp;r=1&amp;protocol=http"/>
     </target>
 
