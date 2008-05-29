@@ -128,7 +128,7 @@ public class DependencyHelper {
         for (int ii=0; ii<modules.size(); ii++) {
             IModule[] module = (IModule[]) modules.get(ii);
             int moduleDeltaKind = ((Integer)deltaKind.get(ii)).intValue();
-            if (!reorderedModules.contains(module)) {
+            if (module!=null && !reorderedModules.contains(module)) {
                 // Not already moved 
                 if (moduleDeltaKind == ServerBehaviourDelegate.REMOVED) {
                     // Move module if going to be removed 
@@ -229,7 +229,7 @@ public class DependencyHelper {
                 processParents(dm.getParents(artifact), terminatingArtifact);
                 // Move self 
                 IModule[] module = getModule(artifact);
-                int moduleDeltaKind = getDeltaKind(artifact);
+                if (module!=null && !reorderedModules.contains(module)) {
                 if (!reorderedModules.contains(module)) {
                     reorderedModules.add(module);
                     reorderedKinds.add(moduleDeltaKind);
@@ -239,7 +239,7 @@ public class DependencyHelper {
                 // Move parent
                 IModule[] module = getModule(artifact);
                 int moduleDeltaKind = getDeltaKind(artifact);
-                if (!reorderedModules.contains(module)) {
+                if (module!=null && !reorderedModules.contains(module)) {
                     reorderedModules.add(module);
                     reorderedKinds.add(moduleDeltaKind);
                 }
