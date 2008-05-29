@@ -427,7 +427,7 @@ public class DependencyHelper {
      * @return Application
      */
     private ConnectorType getConnectorDeploymentPlan(IModule module) {
-        Trace.tracePoint("Enter", "DependencyHelper.getApplicationDeploymentPlan", module);
+        Trace.tracePoint("Enter", "DependencyHelper.getConnectorDeploymentPlan", module);
         
         IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
         IFile file = GeronimoUtils.getConnectorDeploymentPlanFile(comp);
@@ -436,12 +436,12 @@ public class DependencyHelper {
 			register(resourceSet, new ConnectorResourceFactoryImpl(), ConnectorPackage.eINSTANCE, ConnectorPackage.eNS_URI);
 			Resource resource = load(file, resourceSet);
 			if (resource != null) {
-				Trace.tracePoint("Exit ", "DependencyHelper.getApplicationDeploymentPlan");
+				Trace.tracePoint("Exit ", "DependencyHelper.getConnectorDeploymentPlan");
 				return ((org.apache.geronimo.xml.ns.j2ee.connector.DocumentRoot) resource.getContents().get(0)).getConnector();
 			}
 		}
 
-        Trace.tracePoint("Exit ", "DependencyHelper.getApplicationDeploymentPlan", null);
+        Trace.tracePoint("Exit ", "DependencyHelper.getConnectorDeploymentPlan", null);
         return null;
     }
     
