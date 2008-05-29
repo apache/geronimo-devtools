@@ -66,7 +66,7 @@ public class GeronimoUtils {
 	}
 
 	public static boolean isRARModule(IModule module) {
-		return "jst.connnector".equals(module.getModuleType().getId());
+		return "jst.connector".equals(module.getModuleType().getId());
 	}
 	
 	public static boolean isUtilityModule(IModule module) {

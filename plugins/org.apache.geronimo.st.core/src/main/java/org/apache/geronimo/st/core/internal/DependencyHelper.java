@@ -503,16 +503,16 @@ public class DependencyHelper {
      * @return Application
      */
     private JAXBElement<Connector> getConnectorDeploymentPlan(IModule module) {
-        Trace.tracePoint("Enter", "DependencyHelper.getApplicationDeploymentPlan", module);
+        Trace.tracePoint("Enter", "DependencyHelper.getConnectorDeploymentPlan", module);
 
         IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
         IFile file = GeronimoUtils.getConnectorDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.CONNECTOR_PLAN_NAME) && file.exists()) {
-            Trace.tracePoint("Exit ", "DependencyHelper.getApplicationDeploymentPlan", JAXBUtils.unmarshalDeploymentPlan(file));
+            Trace.tracePoint("Exit ", "DependencyHelper.getConnectorDeploymentPlan", JAXBUtils.unmarshalDeploymentPlan(file));
             return JAXBUtils.unmarshalDeploymentPlan(file);
         }
 
-        Trace.tracePoint("Exit ", "DependencyHelper.getApplicationDeploymentPlan", null);
+        Trace.tracePoint("Exit ", "DependencyHelper.getConnectorDeploymentPlan", null);
         return null;
     }
 

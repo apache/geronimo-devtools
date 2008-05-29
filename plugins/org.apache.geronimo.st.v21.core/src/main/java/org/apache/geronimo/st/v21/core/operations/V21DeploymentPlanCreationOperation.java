@@ -21,6 +21,7 @@ import javax.xml.bind.JAXBElement;
 import org.apache.geronimo.jee.application.Application;
 import org.apache.geronimo.jee.applicationclient.ApplicationClient;
 import org.apache.geronimo.jee.connector.Connector;
+import org.apache.geronimo.jee.connector.Resourceadapter;
 import org.apache.geronimo.jee.deployment.Artifact;
 import org.apache.geronimo.jee.deployment.Dependencies;
 import org.apache.geronimo.jee.deployment.Dependency;
@@ -142,8 +143,10 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 		org.apache.geronimo.jee.connector.ObjectFactory connectorFactory = new org.apache.geronimo.jee.connector.ObjectFactory();
 		Connector connector = connectorFactory.createConnector();
-
+		Resourceadapter resourceadapter = connectorFactory.createResourceadapter();
+	
 		connector.setEnvironment(getConfigEnvironment());
+		connector.getResourceadapter().add(resourceadapter);
 
 		JAXBElement jaxbElement = connectorFactory.createConnector(connector);
 		JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
