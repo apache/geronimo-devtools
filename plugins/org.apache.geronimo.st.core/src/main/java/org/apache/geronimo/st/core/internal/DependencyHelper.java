@@ -311,7 +311,8 @@ public class DependencyHelper {
         }
         for (Iterator ii = parents.iterator(); ii.hasNext();) {
             Artifact artifact = (Artifact)ii.next();
-            if (dm.getParents(artifact).size() > 0 && !artifact.equals(terminatingArtifact)) {
+            if (dm.getParents(artifact).size() > 0 && !artifact.equals(terminatingArtifact) &&
+               !dm.getParents(artifact).contains(artifact) && !dm.getChildren(artifact).contains(artifact)) {
                 // Keep processing parents (as long as no circular dependencies)
                 processParents(dm.getParents(artifact), terminatingArtifact);
                 // Move self 
@@ -534,7 +535,8 @@ public class DependencyHelper {
         }
         for (Iterator ii = parents.iterator(); ii.hasNext();) {
             Artifact artifact = (Artifact)ii.next();
-            if (dm.getParents(artifact).size() > 0 && !artifact.equals(terminatingArtifact)) {
+            if (dm.getParents(artifact).size() > 0 && !artifact.equals(terminatingArtifact) &&
+               !dm.getParents(artifact).contains(artifact) && !dm.getChildren(artifact).contains(artifact)) {
                 // Keep processing parents (as long as no circular dependencies)
                 processJaxbParents(dm.getParents(artifact), terminatingArtifact);
                 // Move self 
