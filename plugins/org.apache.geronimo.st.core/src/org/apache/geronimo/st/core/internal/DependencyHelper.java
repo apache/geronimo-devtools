@@ -224,13 +224,14 @@ public class DependencyHelper {
         }
         for (Iterator ii = parents.iterator(); ii.hasNext();) {
             ArtifactType artifact = (ArtifactType)ii.next();
-            if (dm.getParents(artifact).size() > 0 && !artifact.equals(terminatingArtifact)) {
+            if (dm.getParents(artifact).size() > 0 && !artifact.equals(terminatingArtifact) &&
+               !dm.getParents(artifact).contains(artifact) && !dm.getChildren(artifact).contains(artifact)) {
                 // Keep processing parents (as long as no circular dependencies)
                 processParents(dm.getParents(artifact), terminatingArtifact);
                 // Move self 
                 IModule[] module = getModule(artifact);
+                int moduleDeltaKind = getDeltaKind(artifact);
                 if (module!=null && !reorderedModules.contains(module)) {
-                if (!reorderedModules.contains(module)) {
                     reorderedModules.add(module);
                     reorderedKinds.add(moduleDeltaKind);
                 }
