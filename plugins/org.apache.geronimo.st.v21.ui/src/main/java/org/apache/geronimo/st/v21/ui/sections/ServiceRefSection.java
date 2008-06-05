@@ -21,6 +21,7 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.wizards.ServiceRefWizard;
 import org.apache.geronimo.jee.naming.ServiceRef;
@@ -30,76 +31,52 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class ServiceRefSection extends AbstractTableSection {
 
-	List serviceRefERef;
+    public ServiceRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List serviceRefs) {
+        super(plan, parent, toolkit, style);
+        this.objectContainer = serviceRefs;
+        COLUMN_NAMES = new String[] { CommonMessages.editorServiceRefName };
+        createClient();
+    }
 
-	private static final String[] COLUMN_NAMES = new String[] { CommonMessages.editorServiceRefName };
+    public String getTitle() {
+        return CommonMessages.editorServiceRefTitle;
+    }
 
-	public ServiceRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List serviceRefERef) {
-		super(plan, parent, toolkit, style);
-		this.serviceRefERef = serviceRefERef;
-		createClient();
-	}
+    public String getDescription() {
+        return CommonMessages.editorServiceRefDescription;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
-	 */
-	public String getTitle() {
-		return CommonMessages.editorServiceRefTitle;
-	}
+    public Wizard getWizard() {
+        return new ServiceRefWizard(this);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
-	 */
-	public String getDescription() {
-		return CommonMessages.editorServiceRefDescription;
-	}
+    public Class getTableEntryObjectType() {
+        return ServiceRef.class;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
-	 */
-	public String[] getTableColumnNames() {
-		return COLUMN_NAMES;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
+     */
+    public AdapterFactory getAdapterFactory() {
+        return new AdapterFactory() {
+            public Object[] getElements(Object inputElement) {
+                if (!JAXBElement.class.isInstance(inputElement)) {
+                    return new String[] { "" };
+                }
+                return getObjectContainer().toArray();
+            }
 
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
-//	 */
-//	public JAXBElement getEReference() {
-//		return serviceRefERef;
-//	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getWizard()
-	 */
-	public Wizard getWizard() {
-		return new ServiceRefWizard(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
-	 */
-	public Class getTableEntryObjectType() {
-		return ServiceRef.class;
-	}
-
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
-//	 */
-//	public AdapterFactory getAdapterFactory() {
-//		return EMFEditorContext.getFactory();
-//	}
+            public String getColumnText(Object element, int columnIndex) {
+                if (ServiceRef.class.isInstance(element)) {
+                    ServiceRef serviceRef = (ServiceRef)element;
+                    switch (columnIndex) {
+                    case 0: return serviceRef.getServiceRefName();
+                    }
+                }
+                return null;
+            }
+        };
+    }
 }

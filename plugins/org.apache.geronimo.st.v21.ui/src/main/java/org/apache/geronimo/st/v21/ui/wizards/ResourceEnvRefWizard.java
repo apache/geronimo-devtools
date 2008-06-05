@@ -16,63 +16,40 @@
  */
 package org.apache.geronimo.st.v21.ui.wizards;
 
+import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
+import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 
 public class ResourceEnvRefWizard extends AbstractTableWizard {
 
-	/**
-	 * @param section
-	 */
-	public ResourceEnvRefWizard(AbstractTableSection section) {
-		super(section);
-	}
+ 
+    public ResourceEnvRefWizard(AbstractTableSection section) {
+        super(section);
+    }
 
-//	public EFactory getEFactory() {
-//		return NamingFactory.eINSTANCE;
-//	}
-//
-//	public EAttribute[] getTableColumnEAttributes() {
-//		return new EAttribute[] {
-//				NamingPackage.eINSTANCE.getResourceEnvRefType_RefName(),
-//				NamingPackage.eINSTANCE.getResourceEnvRefType_MessageDestinationLink() };
-//	}
+    public JAXBObjectFactory getEFactory() {
+        return JAXBObjectFactoryImpl.getInstance();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getAddWizardWindowTitle()
-	 */
-	public String getAddWizardWindowTitle() {
-		return CommonMessages.wizardPageTitle_ResEnvRef;
-	}
+    public String[] getTableColumnEAttributes() {
+        return new String[] { "RefName", "MessageDestinationLink" };
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEditWizardWindowTitle()
-	 */
-	public String getEditWizardWindowTitle() {
-		return CommonMessages.wizardEditTitle_ResEnvRef;
-	}
+    public String getAddWizardWindowTitle() {
+        return CommonMessages.wizardPageTitle_ResEnvRef;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
-	 */
-	public String getWizardFirstPageTitle() {
-		return CommonMessages.wizardPageTitle_ResEnvRef;
-	}
+    public String getEditWizardWindowTitle() {
+        return CommonMessages.wizardEditTitle_ResEnvRef;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
-	 */
-	public String getWizardFirstPageDescription() {
-		return CommonMessages.wizardPageDescription_ResEnvRef;
-	}
+    public String getWizardFirstPageTitle() {
+        return CommonMessages.wizardPageTitle_ResEnvRef;
+    }
 
+    public String getWizardFirstPageDescription() {
+        return CommonMessages.wizardPageDescription_ResEnvRef;
+    }
 }

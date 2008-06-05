@@ -18,61 +18,121 @@ package org.apache.geronimo.st.v21.core.jaxb;
 
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
+import org.apache.geronimo.jee.application.Application;
+import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.jee.deployment.Environment;
+import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.security.Security;
 import org.apache.geronimo.jee.web.WebApp;
-import org.apache.geronimo.st.v21.core.Activator;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 
 /**
  * @version $Rev$ $Date$
  */
 public class JAXBModelUtils {
 	
-	public static Security getSecurity(JAXBElement element) {
-		Object plan = element.getValue();
-		if ( WebApp.class.isInstance( plan ) ) {
-			return ((WebApp)plan).getSecurity() == null ? null : (Security)((WebApp)plan).getSecurity().getValue();
-		}
-		return null;
-	}
-	
-	public static void setSecurity(JAXBElement element, Security security) {
-		Object plan = element.getValue();
-		if ( WebApp.class.isInstance( plan ) ) {
-			((WebApp)plan).setSecurity((new org.apache.geronimo.jee.security.ObjectFactory()).createSecurity( security ) );
-		}
-	}
-	
-	public static Environment getEnvironment(JAXBElement element) {
-		Object plan = element.getValue();
-		if ( WebApp.class.isInstance( plan ) ) {
-			System.out.println( "Element : " + ((WebApp)plan).getEnvironment() );
-			return ((WebApp)plan).getEnvironment() == null ? null : ((WebApp)plan).getEnvironment();
-		}
-		return null;
-	}
-	
-	public static List getServiceOrPersistence(JAXBElement element) {
-		Object plan = element.getValue();
-		if ( WebApp.class.isInstance( plan ) ) {
-			return ((WebApp)plan).getServiceOrPersistence() == null ? null : ((WebApp)plan).getServiceOrPersistence();
-		}
-		return null;
-	}
-	
-	public static List getGbeans(JAXBElement element) {
-		Object plan = element.getValue();
-		if ( WebApp.class.isInstance( plan ) ) {
-//			return ((WebApp)plan).getGbeans() == null ? null : ((WebApp)plan).getGbeans();
-		}
-		return null;
-	}
+    
+    public static Security getSecurity (JAXBElement element) {
+        Object plan = element.getValue();
+        if (WebApp.class.isInstance (plan)) {
+            if (((WebApp)plan).getSecurity() == null) {
+                setSecurity (element, new org.apache.geronimo.jee.security.ObjectFactory().createSecurity());
+            }
+            Security security = (Security)((WebApp)plan).getSecurity().getValue();
+            if (security.getRoleMappings() == null) {
+                security.setRoleMappings (new org.apache.geronimo.jee.security.ObjectFactory().createRoleMappings());
+            }
+            return security;
+        } else if (Application.class.isInstance (plan)) {
+            if (((Application)plan).getSecurity() == null) {
+                setSecurity (element, new org.apache.geronimo.jee.security.ObjectFactory().createSecurity());
+            }
+            Security security = (Security)((Application)plan).getSecurity().getValue();
+            if (security.getRoleMappings() == null) {
+                security.setRoleMappings (new org.apache.geronimo.jee.security.ObjectFactory().createRoleMappings());
+            }
+            return security;
+        } else if (OpenejbJar.class.isInstance (plan)) {
+            if (((OpenejbJar)plan).getSecurity() == null) {
+                setSecurity (element, new org.apache.geronimo.jee.security.ObjectFactory().createSecurity());
+            }
+            Security security = (Security)((OpenejbJar)plan).getSecurity().getValue();
+            if (security.getRoleMappings() == null) {
+                security.setRoleMappings (new org.apache.geronimo.jee.security.ObjectFactory().createRoleMappings());
+            }
+            return security;
+        }
+        return null;
+    }
+    
+    public static void setSecurity (JAXBElement element, Security security) {
+        Object plan = element.getValue();
+        if ( WebApp.class.isInstance( plan ) ) {
+            ((WebApp)plan).setSecurity((new org.apache.geronimo.jee.security.ObjectFactory()).createSecurity( security ) );
+        } else if (Application.class.isInstance(plan)) {
+            ((Application)plan).setSecurity((new org.apache.geronimo.jee.security.ObjectFactory()).createSecurity( security ) );
+        } else if (OpenejbJar.class.isInstance(plan)) {
+            ((OpenejbJar)plan).setSecurity((new org.apache.geronimo.jee.security.ObjectFactory()).createSecurity( security ) );
+        }
+    }
+    
+    public static Environment getEnvironment(JAXBElement element) {
+        Object plan = element.getValue();
+        if (WebApp.class.isInstance (plan)) {
+            return ((WebApp)plan).getEnvironment() == null ? null : ((WebApp)plan).getEnvironment();
+        }
+        else if (Application.class.isInstance (plan)) {
+            return ((Application)plan).getEnvironment() == null ? null : ((Application)plan).getEnvironment();
+        }
+        else if (OpenejbJar.class.isInstance (plan)) {
+            return ((OpenejbJar)plan).getEnvironment() == null ? null : ((OpenejbJar)plan).getEnvironment();
+        }
+        else if (Connector.class.isInstance (plan)) {
+            return ((Connector)plan).getEnvironment() == null ? null : ((Connector)plan).getEnvironment();
+        }
+        return null;
+    }
+    
+    public static void setEnvironment (JAXBElement element, Environment environment) {
+        Object plan = element.getValue();
+        if (WebApp.class.isInstance (plan)) {
+            ((WebApp)plan).setEnvironment (environment);
+        }
+        else if (Application.class.isInstance (plan)) {
+            ((Application)plan).setEnvironment (environment);
+        }
+        else if (OpenejbJar.class.isInstance (plan)) {
+            ((OpenejbJar)plan).setEnvironment (environment);
+        }
+        else if (Connector.class.isInstance (plan)) {
+            ((Connector)plan).setEnvironment (environment);
+        }
+    }
+
+    public static List getGbeans (JAXBElement element) {
+        Object plan = element.getValue();
+        if (WebApp.class.isInstance (plan)) {
+            return ((WebApp)plan).getServiceOrPersistence() == null ? null : ((WebApp)plan).getServiceOrPersistence();
+        }
+        else if (Application.class.isInstance (plan)) {
+            return ((Application)plan).getService() == null ? null : ((Application)plan).getService();
+        }
+        else if (OpenejbJar.class.isInstance (plan)) {
+            return ((OpenejbJar)plan).getService() == null ? null : ((OpenejbJar)plan).getService();
+        }
+        else if (Connector.class.isInstance (plan)) {
+            return ((Connector)plan).getService() == null ? null : ((Connector)plan).getService();
+        }
+        return null;
+    }
+
+    public static List getGbeanRefs (JAXBElement element) {
+        Object plan = element.getValue();
+        if (WebApp.class.isInstance (plan)) {
+            return ((WebApp)plan).getServiceOrPersistence() == null ? null : ((WebApp)plan).getServiceOrPersistence();
+        }
+        return null;
+    }
 
 }

@@ -16,12 +16,10 @@
  */
 package org.apache.geronimo.st.v21.ui.sections;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
@@ -35,107 +33,58 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class ResourceRefSection extends AbstractTableSection {
 
-	List resourceRefERefs;
+    public ResourceRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List resourceRefs) {
+        super(plan, parent, toolkit, style);
+        this.objectContainer = resourceRefs;
+        COLUMN_NAMES = new String[] {
+                CommonMessages.editorResRefNameTitle, CommonMessages.editorResRefLinkTitle};
+        createClient();
+    }
 
-	private static final String[] COLUMN_NAMES = new String[] {
-			CommonMessages.editorResRefNameTitle,
-			CommonMessages.editorResRefLinkTitle};
+    public String getTitle() {
+        return CommonMessages.editorResourceRefTitle;
+    }
 
-	public ResourceRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List resourceRefERefs) {
-		super(plan, parent, toolkit, style);
-		this.resourceRefERefs = resourceRefERefs;
-		createClient();
-	}
+    public String getDescription() {
+        return CommonMessages.editorResourceRefDescription;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
-	 */
-	public String getTitle() {
-		return CommonMessages.editorResourceRefTitle;
-	}
+    public Wizard getWizard() {
+        return new ResourceRefWizard(this);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
-	 */
-	public String getDescription() {
-		return CommonMessages.editorResourceRefDescription;
-	}
+    public ImageDescriptor getImageDescriptor() {
+        return Activator.imageDescriptorFromPlugin("org.eclipse.jst.j2ee", "icons/full/obj16/resourceRef_obj.gif");
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
-	 */
-	public String[] getTableColumnNames() {
-		return COLUMN_NAMES;
-	}
+    public Class getTableEntryObjectType() {
+        return ResourceRef.class;
+    }
 
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
-//	 */
-//	public JAXBElement getEReference() {
-//		return resourceRefERef;
-//	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
+     */
+    public AdapterFactory getAdapterFactory() {
+        return new AdapterFactory() {
+            public Object[] getElements(Object inputElement) {
+                if (!JAXBElement.class.isInstance(inputElement)) {
+                    return new String[] { "" };
+                }
+                return getObjectContainer().toArray();
+            }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.DynamicTableSection#getWizard()
-	 */
-	public Wizard getWizard() {
-		return new ResourceRefWizard(this);
-	}
-
-	public ImageDescriptor getImageDescriptor() {
-		return Activator.imageDescriptorFromPlugin("org.eclipse.jst.j2ee", "icons/full/obj16/resourceRef_obj.gif");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
-	 */
-	public Class getTableEntryObjectType() {
-		return ResourceRef.class;
-	}
-	
-	public List getObjectContainer() {
-		return resourceRefERefs;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
-	 */
-	public AdapterFactory getAdapterFactory() {
-		return new AdapterFactory() {
-			public Object[] getElements(Object inputElement) {
-				if (!JAXBElement.class.isInstance(inputElement)) {
-					return new String[] { "" };
-				}
-				JAXBElement plan = (JAXBElement)inputElement;
-				if (plan.getDeclaredType().equals(WebApp.class)) {
-					return ((WebApp)plan.getValue()).getResourceRef().toArray();
-				}
-				return new String[] { "" };
-			}
-			public String getColumnText(Object element, int columnIndex) {
-				if (ResourceRef.class.isInstance(element)) {
-					ResourceRef resourceRef = (ResourceRef)element;
-					switch (columnIndex) {
-					case 0: return resourceRef.getRefName();
-					case 1: return resourceRef.getResourceLink();
-					}
-				}
-				return null;
-			}
-		};
-	}
+            public String getColumnText(Object element, int columnIndex) {
+                if (ResourceRef.class.isInstance(element)) {
+                    ResourceRef resourceRef = (ResourceRef)element;
+                    switch (columnIndex) {
+                    case 0: return resourceRef.getRefName();
+                    case 1: return resourceRef.getResourceLink();
+                    }
+                }
+                return null;
+            }
+        };
+    }
 }

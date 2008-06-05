@@ -36,104 +36,83 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class DependencySection extends AbstractTableSection {
 
-	private Environment environment;
+    private Environment environment;
 
-	/**
-	 * @param plan
-	 * @param parent
-	 * @param toolkit
-	 * @param style
-	 */
-	public DependencySection(JAXBElement plan, Environment environment, Composite parent, FormToolkit toolkit, int style) {
-		super(plan, parent, toolkit, style);
-		this.environment = environment;
-		createClient();
-	}
+    /**
+     * @param plan
+     * @param parent
+     * @param toolkit
+     * @param style
+     */
+    public DependencySection(JAXBElement plan, Environment environment, Composite parent, FormToolkit toolkit, int style) {
+        super(plan, parent, toolkit, style);
+        this.environment = environment;
+        this.COLUMN_NAMES = new String[] {
+                CommonMessages.artifactId, CommonMessages.groupId, CommonMessages.version, CommonMessages.type
+        };
+        createClient();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
-	 */
-	public String getTitle() {
-		return CommonMessages.editorSectionDependenciesTitle;
-	}
+    public String getTitle() {
+        return CommonMessages.editorSectionDependenciesTitle;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
-	 */
-	public String getDescription() {
-		return CommonMessages.editorSectionDependenciesDescription;
-	}
+    public String getDescription() {
+        return CommonMessages.editorSectionDependenciesDescription;
+    }
 
-	public List getObjectContainer() {
-		if ( environment.getDependencies() == null ) {
-			Dependencies dependencies = (Dependencies)JAXBObjectFactoryImpl.getInstance().create(Dependencies.class);
-			environment.setDependencies(dependencies);
-		}
-		return environment.getDependencies().getDependency();
-	}
+    public List getObjectContainer() {
+        if (environment == null) {
+            environment = (Environment)JAXBObjectFactoryImpl.getInstance().create(Environment.class);
+        }
+        
+        if ( environment.getDependencies() == null ) {
+            Dependencies dependencies = (Dependencies)JAXBObjectFactoryImpl.getInstance().create(Dependencies.class);
+            environment.setDependencies(dependencies);
+        }
+        return environment.getDependencies().getDependency();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getWizard()
-	 */
-	public Wizard getWizard() {
-		return new DependencyWizard(this);
-	}
+    public Wizard getWizard() {
+        return new DependencyWizard(this);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#isHeaderVisible()
-	 */
-	public boolean isHeaderVisible() {
-		return false;
-	}
+    public ImageDescriptor getImageDescriptor() {
+        return Activator.imageDescriptorFromPlugin("org.eclipse.jdt.ui", "icons/full/obj16/jar_obj.gif");
+    }
 
-	public ImageDescriptor getImageDescriptor() {
-		return Activator.imageDescriptorFromPlugin("org.eclipse.jdt.ui", "icons/full/obj16/jar_obj.gif");
-	}
+    public Class getTableEntryObjectType() {
+        return Dependency.class;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
-	 */
-	public Class getTableEntryObjectType() {
-		return Dependency.class;
-	}
-
-	
-	public Object getInput() {
-		if (environment != null) {
-			return environment.getDependencies();
-		}
-		return super.getInput();
-	}
-	
-	public AdapterFactory getAdapterFactory() {
-		return new AdapterFactory() {
-			public Object[] getElements(Object inputElement) {
-				if (!Dependencies.class.isInstance(inputElement)) {
-					return new String[] { "" };
-				}
-				Dependencies plan = (Dependencies)inputElement;
-				return plan.getDependency().toArray();
-			}
-			public String getColumnText(Object element, int columnIndex) {
-				if (Dependency.class.isInstance(element)) {
-					Dependency dependency = (Dependency)element;
-					switch (columnIndex) {
-					case 0: return dependency.getGroupId();
-					case 1: return dependency.getArtifactId();
-					}
-				}
-				return null;
-			}
-		};
-	}
+    public Object getInput() {
+        if (environment != null) {
+            return environment.getDependencies();
+        }
+        return super.getInput();
+    }
+    
+    public AdapterFactory getAdapterFactory() {
+        return new AdapterFactory() {
+            public Object[] getElements(Object inputElement) {
+                if (!Dependencies.class.isInstance(inputElement)) {
+                    return new String[] { "" };
+                }
+                Dependencies plan = (Dependencies)inputElement;
+                return plan.getDependency().toArray();
+            }
+            public String getColumnText(Object element, int columnIndex) {
+                if (Dependency.class.isInstance(element)) {
+                    Dependency dependency = (Dependency)element;
+                    switch (columnIndex) {
+                    case 0: return dependency.getGroupId();
+                    case 1: return dependency.getArtifactId();
+                    case 2: return dependency.getVersion();
+                    case 3: return dependency.getType();
+                    }
+                }
+                return null;
+            }
+        };
+    }
 }

@@ -24,55 +24,31 @@ import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 
 public class ResourceRefWizard extends AbstractTableWizard {
 
-	/**
-	 * @param section
-	 */
-	public ResourceRefWizard(AbstractTableSection section) {
-		super(section);
-	}
+    public ResourceRefWizard(AbstractTableSection section) {
+        super(section);
+    }
 
-	public JAXBObjectFactory getEFactory() {
-		return JAXBObjectFactoryImpl.getInstance();
-	}
+    public JAXBObjectFactory getEFactory() {
+        return JAXBObjectFactoryImpl.getInstance();
+    }
 
-	public String[] getTableColumnEAttributes() {
-		return new String[] { "RefName", "ResourceLink" };
-	}
+    public String[] getTableColumnEAttributes() {
+        return new String[] { "RefName", "ResourceLink" };
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getAddWizardWindowTitle()
-	 */
-	public String getAddWizardWindowTitle() {
-		return CommonMessages.wizardPageTitle_ResRef;
-	}
+    public String getAddWizardWindowTitle() {
+        return CommonMessages.wizardPageTitle_ResRef;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEditWizardWindowTitle()
-	 */
-	public String getEditWizardWindowTitle() {
-		return CommonMessages.wizardEditTitle_ResRef;
-	}
+    public String getEditWizardWindowTitle() {
+        return CommonMessages.wizardEditTitle_ResRef;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
-	 */
-	public String getWizardFirstPageTitle() {
-		return CommonMessages.wizardPageTitle_ResRef;
-	}
+    public String getWizardFirstPageTitle() {
+        return CommonMessages.wizardPageTitle_ResRef;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
-	 */
-	public String getWizardFirstPageDescription() {
-		return CommonMessages.wizardPageDescription_ResRef;
-	}
-
+    public String getWizardFirstPageDescription() {
+        return CommonMessages.wizardPageDescription_ResRef;
+    }
 }

@@ -16,63 +16,65 @@
  */
 package org.apache.geronimo.st.v21.ui.wizards;
 
+import javax.xml.bind.JAXBElement;
+
+import org.apache.geronimo.jee.deployment.Gbean;
+import org.apache.geronimo.jee.deployment.ObjectFactory;
 import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
+import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 
 public class GBeanWizard extends AbstractTableWizard {
 
-	/**
-	 * @param section
-	 */
-	public GBeanWizard(AbstractTableSection section) {
-		super(section);
-	}
+    public GBeanWizard(AbstractTableSection section) {
+        super(section);
+    }
 
-	public JAXBObjectFactory getEFactory() {
-		return JAXBObjectFactoryImpl.getInstance();
-	}
-	
-	public String[] getTableColumnEAttributes() {
-		return new String[] { "Name", "Clazz" };
-	}
+    public JAXBObjectFactory getEFactory() {
+        return JAXBObjectFactoryImpl.getInstance();
+    }
+    
+    public String[] getTableColumnEAttributes() {
+        return new String[] { "Name", "Clazz" };
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getAddWizardWindowTitle()
-	 */
-	public String getAddWizardWindowTitle() {
-		return CommonMessages.wizardNewTitle_GBean;
-	}
+    public String getAddWizardWindowTitle() {
+        return CommonMessages.wizardNewTitle_GBean;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEditWizardWindowTitle()
-	 */
-	public String getEditWizardWindowTitle() {
-		return CommonMessages.wizardEditTitle_GBean;
-	}
+    public String getEditWizardWindowTitle() {
+        return CommonMessages.wizardEditTitle_GBean;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
-	 */
-	public String getWizardFirstPageTitle() {
-		return CommonMessages.wizardEditTitle_GBean;
-	}
+    public String getWizardFirstPageTitle() {
+        return CommonMessages.wizardEditTitle_GBean;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
-	 */
-	public String getWizardFirstPageDescription() {
-		return CommonMessages.wizardPageTitle_GBean;
-	}
+    public String getWizardFirstPageDescription() {
+        return CommonMessages.wizardPageTitle_GBean;
+    }
 
+    public boolean performFinish() {
+        DynamicWizardPage page = (DynamicWizardPage) getPages()[0];
+
+        if (eObject == null) {
+            eObject = getEFactory().create(Gbean.class);
+            JAXBElement plan = section.getPlan();
+
+            // add the JAXBElement of a GBean, not the GBean
+            ObjectFactory objectFactory = new ObjectFactory();
+            JAXBModelUtils.getGbeans(plan).add(objectFactory.createGbean((Gbean)eObject));
+        }
+
+        processEAttributes (page);
+
+        if (section.getTableViewer().getInput() == null) {
+            section.getTableViewer().setInput(section.getInput());
+        }
+
+        return true;
+    }
 }

@@ -16,61 +16,39 @@
  */
 package org.apache.geronimo.st.v21.ui.wizards;
 
+import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
+import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 
 public class ServiceRefWizard extends AbstractTableWizard {
 
-	/**
-	 * @param section
-	 */
-	public ServiceRefWizard(AbstractTableSection section) {
-		super(section);
-	}
-/*
-	public EFactory getEFactory() {
-		return NamingFactory.eINSTANCE;
-	}
+    public ServiceRefWizard(AbstractTableSection section) {
+        super(section);
+    }
 
-	public EAttribute[] getTableColumnEAttributes() {
-		return new EAttribute[] { NamingPackage.eINSTANCE.getServiceRefType_ServiceRefName() };
-	}
-*/
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getAddWizardWindowTitle()
-	 */
-	public String getAddWizardWindowTitle() {
-		return CommonMessages.wizardNewTitle_ServiceRef;
-	}
+    public JAXBObjectFactory getEFactory() {
+        return JAXBObjectFactoryImpl.getInstance();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEditWizardWindowTitle()
-	 */
-	public String getEditWizardWindowTitle() {
-		return CommonMessages.wizardEditTitle_ServiceRef;
-	}
+    public String[] getTableColumnEAttributes() {
+        return new String[] { "ServiceRefName" };
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
-	 */
-	public String getWizardFirstPageTitle() {
-		return CommonMessages.wizardPageTitle_ServiceRef;
-	}
+    public String getAddWizardWindowTitle() {
+        return CommonMessages.wizardNewTitle_ServiceRef;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
-	 */
-	public String getWizardFirstPageDescription() {
-		return CommonMessages.wizardPageDescription_ServiceRef;
-	}
+    public String getEditWizardWindowTitle() {
+        return CommonMessages.wizardEditTitle_ServiceRef;
+    }
 
+    public String getWizardFirstPageTitle() {
+        return CommonMessages.wizardPageTitle_ServiceRef;
+    }
+
+    public String getWizardFirstPageDescription() {
+        return CommonMessages.wizardPageDescription_ServiceRef;
+    }
 }

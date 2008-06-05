@@ -16,60 +16,78 @@
  */
 package org.apache.geronimo.st.v21.ui.wizards;
 
+import javax.xml.bind.JAXBElement;
+
+import org.apache.geronimo.jee.naming.GbeanRef;
+import org.apache.geronimo.jee.naming.ObjectFactory;
+import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
+import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
+import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
+import org.eclipse.jface.wizard.IWizardPage;
 
 public class GBeanRefWizard extends AbstractTableWizard {
 
-	public GBeanRefWizard(AbstractTableSection section) {
-		super(section);
-	}
+    public GBeanRefWizard(AbstractTableSection section) {
+        super(section);
+    }
 
-//	public EFactory getEFactory() {
-//		return NamingFactory.eINSTANCE;
-//	}
-//
-//	public EAttribute[] getTableColumnEAttributes() {
-//		return new EAttribute[] {
-//				NamingPackage.eINSTANCE.getGbeanRefType_RefName(),
-//				NamingPackage.eINSTANCE.getGbeanRefType_RefType()};
-//	}
+    public JAXBObjectFactory getEFactory() {
+        return JAXBObjectFactoryImpl.getInstance();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getAddWizardWindowTitle()
-	 */
-	public String getAddWizardWindowTitle() {
-		return CommonMessages.wizardNewTitle_GBeanRef;
-	}
+    public String[] getTableColumnEAttributes() {
+         return new String[] { "RefName", "RefType" };
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEditWizardWindowTitle()
-	 */
-	public String getEditWizardWindowTitle() {
-		return CommonMessages.wizardEditTitle_GBeanRef;
-	}
+    public String getAddWizardWindowTitle() {
+        return CommonMessages.wizardNewTitle_GBeanRef;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
-	 */
-	public String getWizardFirstPageTitle() {
-		return CommonMessages.wizardPageTitle_GBeanRef;
-	}
+    public String getEditWizardWindowTitle() {
+        return CommonMessages.wizardEditTitle_GBeanRef;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
-	 */
-	public String getWizardFirstPageDescription() {
-		return CommonMessages.wizardPageDescription_GBeanRef;
-	}
+    public String getWizardFirstPageTitle() {
+        return CommonMessages.wizardPageTitle_GBeanRef;
+    }
 
+    public String getWizardFirstPageDescription() {
+        return CommonMessages.wizardPageDescription_GBeanRef;
+    }
+
+    public boolean performFinish() {
+        DynamicWizardPage page = (DynamicWizardPage) getPages()[0];
+
+        if (eObject == null) {
+            eObject = getEFactory().create(GbeanRef.class);
+            JAXBElement plan = section.getPlan();
+
+            // add the JAXBElement of a GBean, not the GBean
+            ObjectFactory objectFactory = new ObjectFactory();
+            JAXBModelUtils.getGbeanRefs(plan).add(objectFactory.createGbeanRef((GbeanRef)eObject));
+        }
+
+        processEAttributes (page);
+
+        if (section.getTableViewer().getInput() == null) {
+            section.getTableViewer().setInput(section.getInput());
+        }
+
+        return true;
+    }
+
+    public void processEAttributes(IWizardPage page) {
+        if (page instanceof DynamicWizardPage) {
+            DynamicWizardPage dynamicPage = (DynamicWizardPage)page;
+            GbeanRef gbeanRef = (GbeanRef)eObject;
+            String value = dynamicPage.getTextEntry(0).getText();
+            gbeanRef.setRefName(value);
+
+            value = dynamicPage.getTextEntry(1).getText();
+            gbeanRef.getRefType().add(value);
+        }
+    }
 }

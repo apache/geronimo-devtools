@@ -21,6 +21,7 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.wizards.EjbLocalRefWizard;
@@ -32,82 +33,58 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class EjbLocalRefSection extends AbstractTableSection {
 
-	List ejbLocalRefERef;
+    public EjbLocalRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List ejbLocalRefs) {
+        super(plan, parent, toolkit, style);
+        this.objectContainer = ejbLocalRefs;
+        COLUMN_NAMES = new String[] {
+                CommonMessages.name, CommonMessages.editorEjbRefEjbLink };
+        createClient();
+    }
 
-	private static final String[] COLUMN_NAMES = new String[] {
-			CommonMessages.name,
-			CommonMessages.editorEjbRefEjbLink };
+    public String getTitle() {
+        return CommonMessages.editorEjbLocalRefTitle;
+    }
 
-	public EjbLocalRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List ejbLocalRefERef) {
-		super(plan, parent, toolkit, style);
-		this.ejbLocalRefERef = ejbLocalRefERef;
-		createClient();
-	}
+    public String getDescription() {
+        return CommonMessages.editorEjbLocalRefDescription;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
-	 */
-	public String getTitle() {
-		return CommonMessages.editorEjbLocalRefTitle;
-	}
+    public Wizard getWizard() {
+        return new EjbLocalRefWizard(this);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
-	 */
-	public String getDescription() {
-		return CommonMessages.editorEjbLocalRefDescription;
-	}
+    public ImageDescriptor getImageDescriptor() {
+        return Activator.imageDescriptorFromPlugin("org.eclipse.jst.j2ee", "icons/full/obj16/ejb_local_ref_obj.gif");
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
-	 */
-	public String[] getTableColumnNames() {
-		return COLUMN_NAMES;
-	}
+    public Class getTableEntryObjectType() {
+        return EjbLocalRef.class;
+    }
 
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
-//	 */
-//	public JAXBElement getEReference() {
-//		return ejbLocalRefERef;
-//	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
+     */
+    public AdapterFactory getAdapterFactory() {
+        return new AdapterFactory() {
+            public Object[] getElements(Object inputElement) {
+                if (!JAXBElement.class.isInstance(inputElement)) {
+                    return new String[] { "" };
+                }
+                return getObjectContainer().toArray();
+            }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getWizard()
-	 */
-	public Wizard getWizard() {
-		return new EjbLocalRefWizard(this);
-	}
-
-	public ImageDescriptor getImageDescriptor() {
-		return Activator.imageDescriptorFromPlugin("org.eclipse.jst.j2ee", "icons/full/obj16/ejb_local_ref_obj.gif");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
-	 */
-	public Class getTableEntryObjectType() {
-		return EjbLocalRef.class;
-	}
-
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
-//	 */
-//	public AdapterFactory getAdapterFactory() {
-//		return EMFEditorContext.getFactory();
-//	}
+            public String getColumnText(Object element, int columnIndex) {
+                if (EjbLocalRef.class.isInstance(element)) {
+                    EjbLocalRef ejbLocalRef = (EjbLocalRef)element;
+                    switch (columnIndex) {
+                    case 0: return ejbLocalRef.getRefName();
+                    case 1: return ejbLocalRef.getEjbLink();
+                    }
+                }
+                return null;
+            }
+        };
+    }
 }

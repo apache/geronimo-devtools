@@ -16,60 +16,39 @@
  */
 package org.apache.geronimo.st.v21.ui.wizards;
 
+import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
+import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 
 public class EjbLocalRefWizard extends AbstractTableWizard {
 
-	public EjbLocalRefWizard(AbstractTableSection section) {
-		super(section);
-	}
+    public EjbLocalRefWizard(AbstractTableSection section) {
+        super(section);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getAddWizardWindowTitle()
-	 */
-	public String getAddWizardWindowTitle() {
-		return CommonMessages.wizardNewTitle_EjbLocalRef;
-	}
+    public JAXBObjectFactory getEFactory() {
+        return JAXBObjectFactoryImpl.getInstance();
+    }
 
-//	public EFactory getEFactory() {
-//		return NamingFactory.eINSTANCE;
-//	}
-//
-//	public EAttribute[] getTableColumnEAttributes() {
-//		return new EAttribute[] {
-//				NamingPackage.eINSTANCE.getEjbLocalRefType_RefName(),
-//				NamingPackage.eINSTANCE.getEjbLocalRefType_EjbLink() };
-//	}
+    public String[] getTableColumnEAttributes() {
+        return new String[] { "RefName", "EjbLink" };
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEditWizardWindowTitle()
-	 */
-	public String getEditWizardWindowTitle() {
-		return CommonMessages.wizardEditTitle_EjbLocalRef;
-	}
+    public String getAddWizardWindowTitle() {
+        return CommonMessages.wizardNewTitle_EjbLocalRef;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
-	 */
-	public String getWizardFirstPageTitle() {
-		return CommonMessages.wizardPageTitle_EjbLocalRef;
-	}
+    public String getEditWizardWindowTitle() {
+        return CommonMessages.wizardEditTitle_EjbLocalRef;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
-	 */
-	public String getWizardFirstPageDescription() {
-		return CommonMessages.wizardPageDescription_EjbLocalRef;
-	}
+    public String getWizardFirstPageTitle() {
+        return CommonMessages.wizardPageTitle_EjbLocalRef;
+    }
 
+    public String getWizardFirstPageDescription() {
+        return CommonMessages.wizardPageDescription_EjbLocalRef;
+    }
 }

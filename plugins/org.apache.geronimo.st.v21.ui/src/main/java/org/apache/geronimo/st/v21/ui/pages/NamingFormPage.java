@@ -33,46 +33,51 @@ import org.eclipse.ui.forms.editor.FormEditor;
 
 public class NamingFormPage extends AbstractGeronimoFormPage {
 
-	public List resRefs;
+    public List resRefs;
 
-	public List resEnvRefs;
+    public List resEnvRefs;
 
-	public List ejbRefs;
+    public List ejbRefs;
 
-	public List ejbLocalRefs;
+    public List ejbLocalRefs;
 
-	public List gbeanRefs;
+    //ServiceOrPersistence is already handled on the Dependency Page.
+    //public List gbeanRefs;
 
-	public List serviceRefs;
+    public List serviceRefs;
 
-	public NamingFormPage(FormEditor editor, String id, String title) {
-		super(editor, id, title);
-		WebApp webapp = (WebApp)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
-		resRefs = webapp.getResourceRef();
-		serviceRefs = webapp.getServiceRef();
-	}
+    public NamingFormPage(FormEditor editor, String id, String title) {
+        super(editor, id, title);
+        WebApp webapp = (WebApp)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
+        resRefs = webapp.getResourceRef();
+        resEnvRefs = webapp.getResourceEnvRef();
+        ejbRefs = webapp.getEjbRef();
+        ejbLocalRefs = webapp.getEjbLocalRef();
+        //gbeanRefs = webapp.getServiceOrPersistence();
+        serviceRefs = webapp.getServiceRef();       
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
-	 */
-	protected void fillBody(IManagedForm managedForm) {
-		managedForm.addPart(new ResourceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), resRefs));
-		managedForm.addPart(new ResourceEnvRefSection(getDeploymentPlan(), body, toolkit, getStyle(), resEnvRefs));
-		managedForm.addPart(new EjbRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbRefs));
-		managedForm.addPart(new EjbLocalRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbLocalRefs));
-		managedForm.addPart(new GBeanRefSection(getDeploymentPlan(), body, toolkit, getStyle(), gbeanRefs));
-		managedForm.addPart(new ServiceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), serviceRefs));
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
+     */
+    protected void fillBody(IManagedForm managedForm) {
+        managedForm.addPart(new ResourceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), resRefs));
+        managedForm.addPart(new ResourceEnvRefSection(getDeploymentPlan(), body, toolkit, getStyle(), resEnvRefs));
+        managedForm.addPart(new EjbRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbRefs));
+        managedForm.addPart(new EjbLocalRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbLocalRefs));
+        //managedForm.addPart(new GBeanRefSection(getDeploymentPlan(), body, toolkit, getStyle(), gbeanRefs));
+        managedForm.addPart(new ServiceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), serviceRefs));
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getFormTitle()
-	 */
-	public String getFormTitle() {
-		return CommonMessages.namingFormPageTitle;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getFormTitle()
+     */
+    public String getFormTitle() {
+        return CommonMessages.namingFormPageTitle;
+    }
 
 }

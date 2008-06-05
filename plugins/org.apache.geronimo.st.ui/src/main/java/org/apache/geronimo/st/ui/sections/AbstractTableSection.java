@@ -54,247 +54,256 @@ import org.eclipse.ui.forms.widgets.Section;
  */
 public abstract class AbstractTableSection extends AbstractSectionPart {
 
-	private static final String[] COLUMN_NAMES = new String[] {};
+    protected String[] COLUMN_NAMES = new String[] {};
 
-	private Table table;
+    private Table table;
 
-	private TableViewer tableViewer;
+    private TableViewer tableViewer;
 
-	protected Button addButton;
+    protected Button addButton;
 
-	protected Button editButton;
+    protected Button editButton;
 
-	protected Button removeButton;
+    protected Button removeButton;
+    
+    protected List objectContainer;
 
-	public AbstractTableSection(Section section) {
-		super(section);
-	}
+    public AbstractTableSection(Section section) {
+        super(section);
+    }
 
-	/**
-	 * @param plan
-	 * @param parent
-	 * @param toolkit
-	 * @param style
-	 * 
-	 * Subclasses should call createClient() in constructor
-	 */
-	public AbstractTableSection(JAXBElement plan, Composite parent,
-			FormToolkit toolkit, int style) {
-		super(parent, toolkit, style, plan);
-	}
+    /**
+     * @param plan
+     * @param parent
+     * @param toolkit
+     * @param style
+     * 
+     * Subclasses should call createClient() in constructor
+     */
+    public AbstractTableSection(JAXBElement plan, Composite parent,
+            FormToolkit toolkit, int style) {
+        super(parent, toolkit, style, plan);
+    }
 
-	public void createClient() {
+    public void createClient() {
 
-		if (getTableEntryObjectType() == null)
-			throw new NullPointerException();
-		
+        if (getTableEntryObjectType() == null)
+            throw new NullPointerException();
+        
 
-		getSection().setText(getTitle());
-		getSection().setDescription(getDescription());
-		getSection().setLayoutData(getSectionLayoutData());
-		Composite composite = createTableComposite(getSection());
-		getSection().setClient(composite);
-		table = createTable(composite);
+        getSection().setText(getTitle());
+        getSection().setDescription(getDescription());
+        getSection().setLayoutData(getSectionLayoutData());
+        Composite composite = createTableComposite(getSection());
+        getSection().setClient(composite);
+        table = createTable(composite);
 
-		tableViewer = new TableViewer(getTable());
-		tableViewer.setContentProvider(new ContentProvider(getAdapterFactory()));
-		tableViewer.setLabelProvider(new LabelProvider(getAdapterFactory()));
-		tableViewer.setInput(getInput());
+        tableViewer = new TableViewer(getTable());
+        tableViewer.setContentProvider(new ContentProvider(getAdapterFactory()));
+        tableViewer.setLabelProvider(new LabelProvider(getAdapterFactory()));
+        tableViewer.setInput(getInput());
 
-		tableViewer.addFilter(new ViewerFilter() {
-			public boolean select(Viewer viewer, Object parentElement,
-					Object element) {
-				return AbstractTableSection.this.filter(viewer, parentElement, element);
-			}
-		});
+        tableViewer.addFilter(new ViewerFilter() {
+            public boolean select(Viewer viewer, Object parentElement,
+                    Object element) {
+                return AbstractTableSection.this.filter(viewer, parentElement, element);
+            }
+        });
 
-		if (getTableColumnNames().length > 0) {
-			tableViewer.setColumnProperties(getTableColumnNames());
-		}
+        if (getTableColumnNames().length > 0) {
+            tableViewer.setColumnProperties(getTableColumnNames());
+        }
 
-		Composite buttonComp = createButtonComposite(composite);
-		createAddButton(toolkit, buttonComp);
-		createRemoveButton(toolkit, buttonComp);
-		createEditButton(toolkit, buttonComp);
+        Composite buttonComp = createButtonComposite(composite);
+        createAddButton(toolkit, buttonComp);
+        createRemoveButton(toolkit, buttonComp);
+        createEditButton(toolkit, buttonComp);
 
-	}
+    }
 
-	public Object getInput() {
-		return getPlan();
-	}
+    public Object getInput() {
+        return getPlan();
+    }
 
-	protected boolean filter(Viewer viewer, Object parentElement, Object element) {
-		System.out.println( getTableEntryObjectType() + ":" + element );
-		return getTableEntryObjectType().isInstance(element);
-	}
+    protected boolean filter(Viewer viewer, Object parentElement, Object element) {
+        return getTableEntryObjectType().isInstance(element);
+    }
 
-	protected Composite createTableComposite(Composite parent) {
-		Composite composite = toolkit.createComposite(parent);
-		composite.setLayout(getSectionCompositeLayout());
-		composite.setLayoutData(getTableCompositeLayoutData());
-		return composite;
-	}
+    protected Composite createTableComposite(Composite parent) {
+        Composite composite = toolkit.createComposite(parent);
+        composite.setLayout(getSectionCompositeLayout());
+        composite.setLayoutData(getTableCompositeLayoutData());
+        return composite;
+    }
 
-	protected GridData getSectionLayoutData() {
-		return new GridData(SWT.FILL, SWT.FILL, false, false);
-	}
+    protected GridData getSectionLayoutData() {
+        return new GridData(SWT.FILL, SWT.FILL, false, false);
+    }
 
-	protected GridData getTableCompositeLayoutData() {
-		return new GridData(SWT.FILL, SWT.FILL, false, false);
-	}
+    protected GridData getTableCompositeLayoutData() {
+        return new GridData(SWT.FILL, SWT.FILL, false, false);
+    }
 
-	protected GridLayout getSectionCompositeLayout() {
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
-		layout.marginHeight = 5;
-		layout.marginWidth = 10;
-		layout.verticalSpacing = 5;
-		layout.horizontalSpacing = 15;
-		return layout;
-	}
+    protected GridLayout getSectionCompositeLayout() {
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 2;
+        layout.marginHeight = 5;
+        layout.marginWidth = 10;
+        layout.verticalSpacing = 5;
+        layout.horizontalSpacing = 15;
+        return layout;
+    }
 
-	protected Table createTable(Composite composite) {
-		Table table = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION
-				| SWT.V_SCROLL | SWT.SINGLE);
-		if (isHeaderVisible()) {
-			table.setHeaderVisible(true);
-		}
+    protected Table createTable(Composite composite) {
+        Table table = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION
+                | SWT.V_SCROLL | SWT.SINGLE);
+        if (isHeaderVisible()) {
+            table.setHeaderVisible(true);
+        }
 
-		GridData data = new GridData(SWT.FILL, SWT.FILL, false, false);
-		data.heightHint = 60;
-		data.widthHint = 400;
-		table.setLayoutData(data);
+        GridData data = new GridData(SWT.FILL, SWT.FILL, false, false);
+        data.heightHint = 60;
+        data.widthHint = 400;
+        table.setLayoutData(data);
 
-		TableLayout tableLayout = new TableLayout();
-		table.setLayout(tableLayout);
+        TableLayout tableLayout = new TableLayout();
+        table.setLayout(tableLayout);
 
-		for (int i = 0; i < getTableColumnNames().length; i++) {
-			tableLayout.addColumnData(new ColumnWeightData(35));
-			TableColumn tableColumn = new TableColumn(table, SWT.NONE);
-			tableColumn.setText(getTableColumnNames()[i]);
-		}
+        for (int i = 0; i < getTableColumnNames().length; i++) {
+            tableLayout.addColumnData(new ColumnWeightData(35));
+            TableColumn tableColumn = new TableColumn(table, SWT.NONE);
+            tableColumn.setText(getTableColumnNames()[i]);
+        }
 
-		return table;
-	}
+        return table;
+    }
 
-	protected Composite createButtonComposite(Composite parent) {
-		Composite buttonComp = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		layout.horizontalSpacing = 2;
-		layout.verticalSpacing = 2;
-		layout.marginWidth = 0;
-		layout.marginHeight = 0;
-		layout.numColumns = 1;
-		buttonComp.setLayout(layout);
-		buttonComp.setBackground(toolkit.getColors().getBackground());
-		buttonComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
-		return buttonComp;
-	}
+    protected Composite createButtonComposite(Composite parent) {
+        Composite buttonComp = new Composite(parent, SWT.NONE);
+        GridLayout layout = new GridLayout();
+        layout.horizontalSpacing = 2;
+        layout.verticalSpacing = 2;
+        layout.marginWidth = 0;
+        layout.marginHeight = 0;
+        layout.numColumns = 1;
+        buttonComp.setLayout(layout);
+        buttonComp.setBackground(toolkit.getColors().getBackground());
+        buttonComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+        return buttonComp;
+    }
 
-	protected void createRemoveButton(FormToolkit toolkit, Composite buttonComp) {
-		removeButton = toolkit.createButton(buttonComp, CommonMessages.remove, SWT.NONE);
-		removeButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				int[] selectedIndices = table.getSelectionIndices();
-				for (int i = 0; i < selectedIndices.length; i++) {
-					TableItem tableItem = table.getItem(selectedIndices[i]);
-					Object type = tableItem.getData();
-					table.remove(selectedIndices[i]);
-					getObjectContainer().remove(type);
-					markDirty();
-				}
-			}
-		});
-		removeButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-	}
+    protected void createRemoveButton(FormToolkit toolkit, Composite buttonComp) {
+        removeButton = toolkit.createButton(buttonComp, CommonMessages.remove, SWT.NONE);
+        removeButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                int[] selectedIndices = table.getSelectionIndices();
+                for (int i = 0; i < selectedIndices.length; i++) {
+                    TableItem tableItem = table.getItem(selectedIndices[i]);
+                    Object type = tableItem.getData();
+                    removeItem (type);
+                    table.remove(selectedIndices[i]);
+                    getTableViewer().refresh();
+                    markDirty();
+                }
+            }
+        });
+        removeButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+    }
 
-	protected void createAddButton(FormToolkit toolkit, Composite buttonComp) {
-		addButton = toolkit.createButton(buttonComp, CommonMessages.add, SWT.NONE);
+    protected void createAddButton(FormToolkit toolkit, Composite buttonComp) {
+        addButton = toolkit.createButton(buttonComp, CommonMessages.add, SWT.NONE);
 
-		addButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				Wizard wizard = getWizard();
-				if (wizard != null) {
-					WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
+        addButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                Wizard wizard = getWizard();
+                if (wizard != null) {
+                    WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
 
-					dialog.open();
+                    dialog.open();
 
-					if (dialog.getReturnCode() == Dialog.OK) {
-						markDirty();
-					}
-				}
-			}
-		});
+                    if (dialog.getReturnCode() == Dialog.OK) {
+                        getTableViewer().refresh();
+                        markDirty();
+                    }
+                }
+            }
+        });
 
-		addButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-	}
+        addButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+    }
 
-	protected void createEditButton(FormToolkit toolkit, Composite buttonComp) {
-		editButton = toolkit.createButton(buttonComp, CommonMessages.edit, SWT.NONE);
+    protected void createEditButton(FormToolkit toolkit, Composite buttonComp) {
+        editButton = toolkit.createButton(buttonComp, CommonMessages.edit, SWT.NONE);
 
-		editButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				Object o = ((StructuredSelection) getTableViewer().getSelection()).getFirstElement();
-				if (o != null) {
-					Wizard wizard = getWizard();
-					if (wizard != null) {
-						if (wizard instanceof AbstractTableWizard) {
-							((AbstractTableWizard) wizard).setEObject(o);
-						}
-						WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
-						dialog.open();
-						if (dialog.getReturnCode() == Dialog.OK) {
-							markDirty();
-							// TODO notify listeners
-						}
-					}
-				}
-			}
-		});
+        editButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                Object o = ((StructuredSelection) getTableViewer().getSelection()).getFirstElement();
+                if (o != null) {
+                    Wizard wizard = getWizard();
+                    if (wizard != null) {
+                        if (wizard instanceof AbstractTableWizard) {
+                            ((AbstractTableWizard) wizard).setEObject(o);
+                        }
+                        WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
+                        dialog.open();
+                        if (dialog.getReturnCode() == Dialog.OK) {
+                            getTableViewer().refresh();
+                            markDirty();
+                        }
+                    }
+                }
+            }
+        });
 
-		editButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-	}
+        editButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+    }
 
-	public TableViewer getTableViewer() {
-		return tableViewer;
-	}
+    public TableViewer getTableViewer() {
+        return tableViewer;
+    }
 
-	protected boolean isHeaderVisible() {
-		return true;
-	}
+    protected boolean isHeaderVisible() {
+        return true;
+    }
 
-	protected Table getTable() {
-		return table;
-	}
+    protected Table getTable() {
+        return table;
+    }
 
-	public String[] getTableColumnNames() {
-		return COLUMN_NAMES;
-	}
+    public String[] getTableColumnNames() {
+        return COLUMN_NAMES;
+    }
 
-	abstract public String getTitle();
+    abstract public String getTitle();
 
-	abstract public String getDescription();
+    abstract public String getDescription();
 
-	abstract public Wizard getWizard();
+    abstract public Wizard getWizard();
 
-//	abstract public EReference getEReference();
+    abstract public Class getTableEntryObjectType();
 
-	abstract public Class getTableEntryObjectType();
-	
-	public List getObjectContainer() {
-		return new ArrayList();
-	}
-	
-	public AdapterFactory getAdapterFactory() { 
-		return new AdapterFactory() {
-			public Object[] getElements(Object inputElement) {
-				return new String[] { "" };
-			}
-			public String getColumnText(Object element, int columnIndex) {
-				return "";
-			}
-		};
-	};
-	
+    public void removeItem (Object anItem) {
+        getObjectContainer().remove(anItem);
+    }
 
+    public List getObjectContainer() {
+        if (objectContainer == null) {
+            objectContainer = new ArrayList();
+        }
+        return objectContainer;
+    }
+
+    public AdapterFactory getAdapterFactory() { 
+        return new AdapterFactory() {
+            public Object[] getElements(Object inputElement) {
+                if (!JAXBElement.class.isInstance(inputElement)) {
+                    return new String[] { "" };
+                }
+                return getObjectContainer().toArray();
+            }
+            public String getColumnText(Object element, int columnIndex) {
+                return "";
+            }
+        };
+    };
 }

@@ -21,6 +21,7 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.wizards.EjbRefWizard;
@@ -32,88 +33,64 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class EjbRefSection extends AbstractTableSection {
 
-	List ejbRefERef;
+    /**
+     * @param plan
+     * @param parent
+     * @param toolkit
+     * @param style
+     */
+    public EjbRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List ejbRefs) {
+        super(plan, parent, toolkit, style);
+        this.objectContainer = ejbRefs;
+        COLUMN_NAMES = new String[] {
+                CommonMessages.name, CommonMessages.editorEjbRefEjbLink };
+        createClient();
+    }
 
-	private static final String[] COLUMN_NAMES = new String[] {
-			CommonMessages.name,
-			CommonMessages.editorEjbRefEjbLink };
+    public String getTitle() {
+        return CommonMessages.editorEjbRefTitle;
+    }
 
-	/**
-	 * @param plan
-	 * @param parent
-	 * @param toolkit
-	 * @param style
-	 */
-	public EjbRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List ejbRefERef) {
-		super(plan, parent, toolkit, style);
-		this.ejbRefERef = ejbRefERef;
-		createClient();
-	}
+    public String getDescription() {
+        return CommonMessages.editorEjbRefDescription;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
-	 */
-	public String getTitle() {
-		return CommonMessages.editorEjbRefTitle;
-	}
+    public Wizard getWizard() {
+        return new EjbRefWizard(this);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
-	 */
-	public String getDescription() {
-		return CommonMessages.editorEjbRefDescription;
-	}
+    public ImageDescriptor getImageDescriptor() {
+        return Activator.imageDescriptorFromPlugin("org.eclipse.jst.j2ee", "icons/full/obj16/ejbRef_obj.gif");
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
-	 */
-	public String[] getTableColumnNames() {
-		return COLUMN_NAMES;
-	}
+    public Class getTableEntryObjectType() {
+        return EjbRef.class;
+    }
 
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
-//	 */
-//	public JAXBElement getEReference() {
-//		return ejbRefERef;
-//	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
+     */
+    public AdapterFactory getAdapterFactory() {
+        return new AdapterFactory() {
+            public Object[] getElements(Object inputElement) {
+                if (!JAXBElement.class.isInstance(inputElement)) {
+                    return new String[] { "" };
+                }
+                return getObjectContainer().toArray();
+            }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getWizard()
-	 */
-	public Wizard getWizard() {
-		return new EjbRefWizard(this);
-	}
-
-	public ImageDescriptor getImageDescriptor() {
-		return Activator.imageDescriptorFromPlugin("org.eclipse.jst.j2ee", "icons/full/obj16/ejbRef_obj.gif");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
-	 */
-	public Class getTableEntryObjectType() {
-		return EjbRef.class;
-	}
-
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
-//	 */
-//	public AdapterFactory getAdapterFactory() {
-//		return EMFEditorContext.getFactory();
-//	}
+            public String getColumnText(Object element, int columnIndex) {
+                if (EjbRef.class.isInstance(element)) {
+                    EjbRef ejbRef = (EjbRef)element;
+                    switch (columnIndex) {
+                    case 0: return ejbRef.getRefName();
+                    case 1: return ejbRef.getEjbLink();
+                    }
+                }
+                return null;
+            }
+        };
+    }
 }

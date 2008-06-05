@@ -16,52 +16,51 @@
  */
 package org.apache.geronimo.st.v21.ui.pages;
 
+import org.apache.geronimo.jee.security.Security;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
+import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.ui.sections.SecurityRootSection;
 import org.apache.geronimo.st.v21.ui.sections.SecuritySection;
-import org.apache.geronimo.jee.security.Security;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
 public class SecurityPage extends AbstractGeronimoFormPage {
 
-	public Security security;
+    public SecurityPage(FormEditor editor, String id, String title) {
+        super(editor, id, title);
+    }
 
-	public SecurityPage(FormEditor editor, String id, String title, Security security) {
-		super(editor, id, title);
-		this.security = security;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
+     */
+    protected void fillBody(IManagedForm managedForm) {
+        Security security = (Security)JAXBModelUtils.getSecurity(getDeploymentPlan());
+        managedForm.addPart(new SecurityRootSection(body, toolkit, getStyle(), getDeploymentPlan(), security));
+        managedForm.addPart(new SecuritySection(getDeploymentPlan(), body, toolkit, getStyle(), security.getRoleMappings()));
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
-	 */
-	protected void fillBody(IManagedForm managedForm) {
-		managedForm.addPart(new SecurityRootSection(body, toolkit, getStyle(), getDeploymentPlan(), security));
-		managedForm.addPart(new SecuritySection(getDeploymentPlan(), body, toolkit, getStyle(), security == null ? null : security.getRoleMappings()));
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getLayout()
+     */
+    protected GridLayout getLayout() {
+        GridLayout layout = super.getLayout();
+        layout.numColumns = 1;
+        return layout;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getLayout()
-	 */
-	protected GridLayout getLayout() {
-		GridLayout layout = super.getLayout();
-		layout.numColumns = 1;
-		return layout;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getFormTitle()
-	 */
-	public String getFormTitle() {
-		return CommonMessages.securityPageTitle;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getFormTitle()
+     */
+    public String getFormTitle() {
+        return CommonMessages.securityPageTitle;
+    }
 
 }

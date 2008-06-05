@@ -21,6 +21,7 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.wizards.ResourceEnvRefWizard;
@@ -32,82 +33,59 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class ResourceEnvRefSection extends AbstractTableSection {
 
-	List resourceEnvRefERef;
 
-	private static final String[] COLUMN_NAMES = new String[] {
-			CommonMessages.editorResEnvRefNameTitle,
-			CommonMessages.editorResEnvRefMsgDestTitle };
+    public ResourceEnvRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List resourceEnvRefs) {
+        super(plan, parent, toolkit, style);
+        this.objectContainer = resourceEnvRefs;
+        COLUMN_NAMES = new String[] {
+                CommonMessages.editorResEnvRefNameTitle, CommonMessages.editorResEnvRefMsgDestTitle };
+        createClient();
+    }
 
-	public ResourceEnvRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List resourceEnvRefERef) {
-		super(plan, parent, toolkit, style);
-		this.resourceEnvRefERef = resourceEnvRefERef;
-		createClient();
-	}
+    public String getTitle() {
+        return CommonMessages.editorResourceEnvRefTitle;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
-	 */
-	public String getTitle() {
-		return CommonMessages.editorResourceEnvRefTitle;
-	}
+    public String getDescription() {
+        return CommonMessages.editorResourceEnvRefDescription;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
-	 */
-	public String getDescription() {
-		return CommonMessages.editorResourceEnvRefDescription;
-	}
+    public Wizard getWizard() {
+        return new ResourceEnvRefWizard(this);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
-	 */
-	public String[] getTableColumnNames() {
-		return COLUMN_NAMES;
-	}
+    public ImageDescriptor getImageDescriptor() {
+        return Activator.imageDescriptorFromPlugin("org.eclipse.jst.j2ee", "icons/full/obj16/res_env_ref_obj.gif");
+    }
 
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
-//	 */
-//	public JAXBElement getEReference() {
-//		return resourceEnvRefERef;
-//	}
+    public Class getTableEntryObjectType() {
+        return ResourceEnvRef.class;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getWizard()
-	 */
-	public Wizard getWizard() {
-		return new ResourceEnvRefWizard(this);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
+     */
+    public AdapterFactory getAdapterFactory() {
+        return new AdapterFactory() {
+            public Object[] getElements(Object inputElement) {
+                if (!JAXBElement.class.isInstance(inputElement)) {
+                    return new String[] { "" };
+                }
+                return getObjectContainer().toArray();
+            }
 
-	public ImageDescriptor getImageDescriptor() {
-		return Activator.imageDescriptorFromPlugin("org.eclipse.jst.j2ee", "icons/full/obj16/res_env_ref_obj.gif");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
-	 */
-	public Class getTableEntryObjectType() {
-		return ResourceEnvRef.class;
-	}
-
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
-//	 */
-//	public AdapterFactory getAdapterFactory() {
-//		return EMFEditorContext.getFactory();
-//	}
+            public String getColumnText(Object element, int columnIndex) {
+                if (ResourceEnvRef.class.isInstance(element)) {
+                    ResourceEnvRef resourceEnvRef = (ResourceEnvRef)element;
+                    switch (columnIndex) {
+                    case 0: return resourceEnvRef.getRefName();
+                    case 1: return resourceEnvRef.getMessageDestinationLink();
+                    }
+                }
+                return null;
+            }
+        };
+    }
 }

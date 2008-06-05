@@ -19,16 +19,18 @@ package org.apache.geronimo.st.v21.ui.wizards;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
+import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
+import org.apache.geronimo.st.ui.wizards.AbstractTableWizard.DynamicWizardPage;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
-import org.apache.geronimo.st.v21.ui.sections.SecuritySection;
 import org.apache.geronimo.jee.security.Description;
 import org.apache.geronimo.jee.security.RoleMappings;
 import org.apache.geronimo.jee.security.Role;
 import org.apache.geronimo.jee.security.Security;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -37,125 +39,137 @@ import org.eclipse.swt.widgets.Text;
 
 public class SecurityRoleWizard extends AbstractTableWizard {
 
-	public SecurityRoleWizard(AbstractTableSection section) {
-		super(section);
-	}
+    public SecurityRoleWizard(AbstractTableSection section) {
+        super(section);
+    }
 
-	public JAXBObjectFactory getEFactory() {
-		return JAXBObjectFactoryImpl.getInstance();
-	}
+    public JAXBObjectFactory getEFactory() {
+        return JAXBObjectFactoryImpl.getInstance();
+    }
 
-	public String[] getTableColumnEAttributes() {
-		return new String[] { "RoleName" };
-	}
+    public String[] getTableColumnEAttributes() {
+        return new String[] { "RoleName", "Description" };
+    }
 
-	public String getAddWizardWindowTitle() {
-		return CommonMessages.wizardNewTitle_SecurityRole;
-	}
+    public String getAddWizardWindowTitle() {
+        return CommonMessages.wizardNewTitle_SecurityRole;
+    }
 
-	public String getEditWizardWindowTitle() {
-		return CommonMessages.wizardEditTitle_SecurityRole;
-	}
+    public String getEditWizardWindowTitle() {
+        return CommonMessages.wizardEditTitle_SecurityRole;
+    }
 
-	public String getWizardFirstPageTitle() {
-		return CommonMessages.wizardPageTitle_SecurityRole;
-	}
+    public String getWizardFirstPageTitle() {
+        return CommonMessages.wizardPageTitle_SecurityRole;
+    }
 
-	public String getWizardFirstPageDescription() {
-		return CommonMessages.wizardPageDescription_SecurityRole;
-	}
+    public String getWizardFirstPageDescription() {
+        return CommonMessages.wizardPageDescription_SecurityRole;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#addPages()
-	 */
-	public void addPages() {
-		SecurityRoleWizardPage page = new SecurityRoleWizardPage("Page0");
-		page.setImageDescriptor(descriptor);
-		addPage(page);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.wizard.IWizard#addPages()
+     */
+    public void addPages() {
+        SecurityRoleWizardPage page = new SecurityRoleWizardPage("Page0");
+        page.setImageDescriptor(descriptor);
+        addPage(page);
+    }
 
-	public class SecurityRoleWizardPage extends DynamicWizardPage {
+    // need to extend the DynamicWizardPage only so that when the Edit dialog is shown
+    // the values are brought in properly.
+    public class SecurityRoleWizardPage extends DynamicWizardPage {
+        public SecurityRoleWizardPage(String pageName) {
+            super(pageName);
+        }
 
-		Text descriptionText;
+        public void createControl(Composite parent) {
+            Composite composite = createComposite(parent);
+            for (int i = 0; i < section.getTableColumnNames().length; i++) {
+                Label label = new Label(composite, SWT.LEFT);
+                String columnName = section.getTableColumnNames()[i];
+                if (!columnName.endsWith(":"))
+                    columnName = columnName.concat(":");
+                label.setText(columnName);
+                GridData data = new GridData();
+                data.horizontalAlignment = GridData.FILL;
+                label.setLayoutData(data);
 
-		public SecurityRoleWizardPage(String pageName) {
-			super(pageName);
-		}
+                Text text = new Text(composite, SWT.SINGLE | SWT.BORDER);
+                data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
+                        | GridData.VERTICAL_ALIGN_FILL);
+                data.grabExcessHorizontalSpace = true;
+                data.widthHint = 100;
+                text.setLayoutData(data);
+                if (eObject != null) {
+                    if (i == 1) {
+                        // get the description
+                        Role role = (Role) eObject;
+                        String value = role.getDescription().get(0).getValue();
+                        if (value != null) {
+                            text.setText(value);
+                        }                        
+                    }
+                    else
+                    {
+                        String value = (String) JAXBUtils.getValue(eObject,getTableColumnEAttributes()[i]);
+                        if (value != null) {
+                            text.setText(value);
+                        }
+                    }
+                }
+                textEntries[i] = text;
+            }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard.DynamicWizardPage#doCustom()
-		 */
-		public void doCustom(Composite parent) {
-			Label label = new Label(parent, SWT.LEFT);
-			String columnName = CommonMessages.description;
-			if (!columnName.endsWith(":"))
-				columnName = columnName.concat(":");
-			label.setText(columnName);
-			GridData data = new GridData();
-			data.horizontalAlignment = GridData.FILL;
-			label.setLayoutData(data);
+            doCustom(composite);
+            setControl(composite);
+            textEntries[0].setFocus();
+        }
+    }
+    
+    public boolean performFinish() {
+        DynamicWizardPage page = (DynamicWizardPage) getPages()[0];
 
-			descriptionText = new Text(parent, SWT.SINGLE | SWT.BORDER);
-			data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
-					| GridData.VERTICAL_ALIGN_FILL);
-			data.grabExcessHorizontalSpace = true;
-			data.widthHint = 100;
-			descriptionText.setLayoutData(data);
+        if (eObject == null) {
+            eObject = getEFactory().create(Role.class);
+            JAXBElement plan = section.getPlan();
 
-			if (eObject != null && eObject instanceof Role) {
-				Role role = (Role) eObject;
-				if (!role.getDescription().isEmpty()) {
-					Description desc = (Description) role.getDescription().get(0);
-					if (desc.getValue() != null) {
-						descriptionText.setText(desc.getValue());
-					}
-				}
-			}
-		}
-	}
+            Security security = JAXBModelUtils.getSecurity(plan);
+            if (security == null) {
+                security = (Security)getEFactory().create(Security.class);
+                JAXBModelUtils.setSecurity(plan, security);
+            }
 
-	public boolean performFinish() {
-		SecurityRoleWizardPage page = (SecurityRoleWizardPage) getPages()[0];
+            RoleMappings roleMappings = security.getRoleMappings();
+            if (roleMappings == null) {
+                roleMappings = (RoleMappings)getEFactory().create(RoleMappings.class);
+                security.setRoleMappings(roleMappings);
+            }
 
-		if (eObject == null) {
-			eObject = getEFactory().create(Role.class);
-			JAXBElement plan = section.getPlan();
+            roleMappings.getRole().add((Role)eObject);
+        }
 
-			Security security = JAXBModelUtils.getSecurity(plan);
-			if (security == null) {
-				security = (Security)getEFactory().create(Security.class);
-				JAXBModelUtils.setSecurity(plan, security);
-			}
+        // NOTE!! this replaces the call to processEAttributes (page);
+        String value = page.getTextEntry(0).getText();
+        String attribute = getTableColumnEAttributes()[0];
+        JAXBUtils.setValue(eObject, attribute, value);
 
-			RoleMappings roleMappings = security.getRoleMappings();
-			if (roleMappings == null) {
-				roleMappings = (RoleMappings)getEFactory().create(RoleMappings.class);
-				security.setRoleMappings(roleMappings);
-			}
+        Description type = null;
+        Role role = (Role) eObject;
+        if (role.getDescription().isEmpty()) {
+            type = (Description)getEFactory().create(Description.class);
+            role.getDescription().add(type);
+        } else {
+            type = (Description) role.getDescription().get(0);
+        }
+        type.setValue (page.getTextEntry(1).getText());
 
-			roleMappings.getRole().add((Role)eObject);
-		}
+        if (section.getTableViewer().getInput() == section.getPlan()) {
+            section.getTableViewer().setInput(section.getInput());
+        }
 
-		processEAttributes(page);
-
-		Description type = null;
-		Role role = (Role) eObject;
-		if (role.getDescription().isEmpty()) {
-			type = (Description)getEFactory().create(Description.class);
-			role.getDescription().add(type);
-		} else {
-			type = (Description) role.getDescription().get(0);
-		}
-		type.setValue(page.descriptionText.getText());
-		
-		if (section.getTableViewer().getInput() == section.getPlan()) {
-			section.getTableViewer().setInput(section.getInput());
-		}
-
-		return true;
-	}
+        return true;
+    }
 }

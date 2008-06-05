@@ -16,259 +16,78 @@
  */
 package org.apache.geronimo.st.v21.ui.wizards;
 
+import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
+import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
-import org.apache.geronimo.st.v21.ui.internal.Trace;
-import org.apache.geronimo.jee.deployment.Artifact;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
+import org.apache.geronimo.jee.deployment.Dependency;
+import org.apache.geronimo.jee.deployment.Dependencies;
+import org.apache.geronimo.jee.deployment.Environment;
 
 public class DependencyWizard extends AbstractTableWizard {
 
-	public static String wizardNewTitle_Dependency;
+    public DependencyWizard(AbstractTableSection section) {
+        super(section);
+    }
 
-	public static String wizardEditTitle_Dependency;
+    public JAXBObjectFactory getEFactory() {
+        return JAXBObjectFactoryImpl.getInstance();
+    }
 
-	public static String wizardPageTitle_Dependency;
+    public String[] getTableColumnEAttributes() {
+        return new String[] {"GroupId", "ArtifactId", "Version", "Type" };
+    }
 
-	public static String wizardPageDescription_Dependency;
+    public String getAddWizardWindowTitle() {
+        return CommonMessages.wizardNewTitle_Dependency;
+    }
 
-	protected Label groupIdLabel;
+    public String getEditWizardWindowTitle() {
+        return CommonMessages.wizardEditTitle_Dependency;
+    }
 
-	protected Label artifactIdLabel;
+    public String getWizardFirstPageTitle() {
+        return CommonMessages.wizardPageTitle_Dependency;
+    }
 
-	protected Label versionLabel;
-	
-	protected Label typeLabel;
+    public String getWizardFirstPageDescription() {
+        return CommonMessages.wizardPageDescription_Dependency;
+    }
+    
+    /* (non-Javadoc)
+     * @see org.apache.geronimo.st.ui.wizards.AbstractTableWizard#performFinish()
+     */
+    public boolean performFinish() {
+        DynamicWizardPage page = (DynamicWizardPage) getPages()[0];
 
-	protected Text groupIdText;
+        if (eObject == null) {
+            eObject = getEFactory().create(Dependency.class);
+            JAXBElement plan = section.getPlan();
 
-	protected Text artifactIdText;
+            Environment environment = JAXBModelUtils.getEnvironment(plan);
+            if (environment == null) {
+                environment = (Environment)getEFactory().create(Environment.class);
+                JAXBModelUtils.setEnvironment (plan, environment);
+            }
 
-	protected Text versionText;
-	
-	protected Text typeText;
+            Dependencies dependencies = environment.getDependencies();
+            if (dependencies == null) {
+                dependencies = (Dependencies)getEFactory().create(Dependencies.class);
+                environment.setDependencies (dependencies);
+            }
+            dependencies.getDependency().add((Dependency)eObject);
+        }
 
-	/**
-	 * @param section
-	 */
-	public DependencyWizard(AbstractTableSection section) {
-		super(section);
-        Trace.trace("Constructor Entry/Exit", "DependencyWizard");
-	}
+        processEAttributes (page);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEFactory()
-	 */
-	public JAXBObjectFactory getEFactory() {
-		return JAXBObjectFactoryImpl.getInstance();
-	}
+        if (section.getTableViewer().getInput() == null) {
+            section.getTableViewer().setInput(section.getInput());
+        }
 
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getTableColumnEAttributes()
-//	 */
-//	public EAttribute[] getTableColumnEAttributes() {
-//		return new EAttribute[] {};
-//	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getAddWizardWindowTitle()
-	 */
-	public String getAddWizardWindowTitle() {
-		return CommonMessages.wizardNewTitle_Dependency;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getEditWizardWindowTitle()
-	 */
-	public String getEditWizardWindowTitle() {
-		return CommonMessages.wizardEditTitle_Dependency;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageTitle()
-	 */
-	public String getWizardFirstPageTitle() {
-		return CommonMessages.wizardPageTitle_Dependency;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.DynamicAddEditWizard#getWizardFirstPageDescription()
-	 */
-	public String getWizardFirstPageDescription() {
-		return CommonMessages.wizardPageDescription_Dependency;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.wizards.AbstractTableWizard#processEAttributes(org.eclipse.jface.wizard.IWizardPage)
-	 */
-	public void processEAttributes(IWizardPage page) {
-//              Trace.trace("Entry", "DependencyWizard.processEAttributes", page);
-		
-		Artifact dt = (Artifact) eObject;
-		dt.setArtifactId(artifactIdText.getText());
-		dt.setGroupId(groupIdText.getText());
-		dt.setVersion(versionText.getText());
-		dt.setType(typeText.getText());
-		
-//              Trace.trace("Exit", "DependencyWizard.processEAttributes");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.wizard.IWizard#addPages()
-	 */
-	public void addPages() {
-//              Trace.trace("Entry", "DependencyWizard.addPages");
-		
-		WizardPage page = new DependencyWizardPage("Page0");
-		addPage(page);
-		
-//              Trace.trace("Exit", "DependencyWizard.addPages");
-	}
-
-	public class DependencyWizardPage extends WizardPage {
-		
-		public DependencyWizardPage(String pageName) {
-			super(pageName);
-           	Trace.trace("Constructor Entry", "DependencyWizardPage", pageName);
-			
-			setTitle(getWizardFirstPageTitle());
-			setDescription(getWizardFirstPageDescription());
-			
-           	Trace.trace("Constructor Exit", "DependencyWizardPage");
-		}
-
-		public DependencyWizardPage(String pageName, String title, ImageDescriptor titleImage) {
-			super(pageName, title, titleImage);
-			Trace.trace("Constructor Entry/Exit", "DependencyWizardPage", pageName, title, titleImage);
-		}
-
-		public void createControl(Composite parent) {
-//			Trace.trace("Entry", "DependencyWizardPage.createControl", parent);			
-			
-			Composite composite = new Composite(parent, SWT.NULL);
-
-			GridLayout layout = new GridLayout();
-			layout.numColumns = 2;
-			layout.horizontalSpacing = 15;
-			composite.setLayout(layout);
-			composite.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
-
-			GridData data = new GridData();
-			data = new GridData(GridData.FILL_HORIZONTAL);
-			data.horizontalSpan = 2;
-
-			groupIdLabel = new Label(composite, SWT.LEFT);
-			groupIdLabel.setText(CommonMessages.groupId);
-			groupIdLabel.setLayoutData(createLabelGridData());
-
-			groupIdText = new Text(composite, SWT.SINGLE | SWT.BORDER);
-			groupIdText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-			artifactIdLabel = new Label(composite, SWT.LEFT);
-			artifactIdLabel.setText(CommonMessages.artifactId);
-			artifactIdLabel.setLayoutData(createLabelGridData());
-
-			artifactIdText = new Text(composite, SWT.SINGLE | SWT.BORDER);
-			artifactIdText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-			versionLabel = new Label(composite, SWT.LEFT);
-			versionLabel.setText(CommonMessages.version);
-			versionLabel.setLayoutData(createLabelGridData());
-
-			versionText = new Text(composite, SWT.SINGLE | SWT.BORDER);
-			versionText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			
-			typeLabel = new Label(composite, SWT.LEFT);
-			typeLabel.setText(CommonMessages.type);
-			typeLabel.setLayoutData(createLabelGridData());
-
-			typeText = new Text(composite, SWT.SINGLE | SWT.BORDER);
-			typeText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-			if (eObject != null) {
-				Artifact artifact = (Artifact)eObject;
-				groupIdText.setText(artifact.getGroupId());
-				artifactIdText.setText(artifact.getArtifactId());
-				versionText.setText(artifact.getVersion());
-				typeText.setText(artifact.getType());
-//				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_ArtifactId())) {
-//					artifactIdText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_ArtifactId()).toString());
-//				}
-//				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_GroupId())) {
-//					groupIdText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_GroupId()).toString());
-//				}
-//				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_Version())) {
-//					versionText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_Version()).toString());
-//				}
-//				if (eObject.eIsSet(DeploymentPackage.eINSTANCE.getArtifactType_Type())) {
-//					typeText.setText(eObject.eGet(DeploymentPackage.eINSTANCE.getArtifactType_Type()).toString());
-//				}
-			}
-
-			setControl(composite);
-//			Trace.trace("Exit", "DependencyWizardPage.createControl");
-		}
-	}
-
-	public GridData createLabelGridData() {
-//		Trace.trace("Entry", "DependencyWizard.createLabelGridData");
-//		Trace.trace("Exit", "DependencyWizard.createLabelGridData", new GridData(GridData.HORIZONTAL_ALIGN_FILL));
-
-		return new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-	}
-	
-	
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.st.ui.wizards.AbstractTableWizard#performFinish()
-	 */
-//	public boolean performFinish() {		
-////		Trace.trace("Entry", "DependencyWizard.performFinish");
-//		
-//		if (eObject == null) {
-////			eObject = getEFactory().create(section.getTableEntryObjectType());
-////			EObject plan = section.getPlan();
-////			DependenciesType dependenciesType = ((EnvironmentType) plan.eGet(section.getEReference())).getDependencies();
-////			if(dependenciesType == null) {
-////				dependenciesType = DeploymentFactory.eINSTANCE.createDependenciesType();
-////				((EnvironmentType) plan.eGet(section.getEReference())).setDependencies(dependenciesType);
-////			}
-////			dependenciesType.getDependency().add(eObject);
-//		}
-//
-//		processEAttributes(getPages()[0]);
-//		
-//		if (section.getTableViewer().getInput() == null) {
-//			section.getTableViewer().setInput(section.getInput());
-//		}
-//
-////		Trace.trace("Exit", "DependencyWizard.performFinish", true);
-//		return true;
-//	}
+        return true;
+    }
 }
