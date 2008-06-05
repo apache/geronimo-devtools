@@ -56,4 +56,10 @@
     <archive path="features/org.apache.geronimo.installableruntime.tomcat.feature_2.1.1/geronimo-tomcat6-javaee5-2.1.1.zip"
              url="runtimes/geronimo-tomcat6-javaee5-2.1.1-bin.zip"/>
 
+    <archive path="features/org.apache.geronimo.installableruntime.jetty.feature_2.1.1/geronimo-jetty6-jee5-2.0.2.zip"
+             url="runtimes/geronimo-jetty6-jee5-2.0.2-bin.zip"/>
+
+    <archive path="features/org.apache.geronimo.installableruntime.tomcat.feature_2.1.1/geronimo-tomcat6-jee5-2.0.2.zip"
+             url="runtimes/geronimo-tomcat6-jee5-2.0.2-bin.zip"/>
+
 </site>

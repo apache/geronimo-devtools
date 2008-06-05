@@ -20,6 +20,8 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.geronimo.st.core.GeronimoRuntimeDelegate;
 import org.apache.geronimo.st.ui.Activator;
@@ -75,6 +77,10 @@ import org.eclipse.wst.server.ui.wizard.WizardFragment;
  * @version $Rev$ $Date$
  */
 public class GeronimoRuntimeWizardFragment extends WizardFragment {
+    
+    // serverName-N.N or serverName-N.N.N
+    public static final Pattern SERVER_NAME_VERSION_PATTERN = Pattern
+            .compile("(.*-)((\\d+\\.\\d+)(\\.(\\d+))?)");
 
     private GeronimoRuntimeDelegate geronimoRuntime;
 
@@ -229,23 +235,30 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
                                                  return true;
                                              }
 
+                                             /**
+                                              * server zips have the server name in them as the root directory.
+                                              * We need to add that to the install directory.
+                                              * The server name comes from the installableruntime definitions in org.apache.gernoimo.st.v2{0.1}.core/plugin.xml.
+                                              * A main method below is used to test this code in development.
+                                              * @param installPath
+                                              */
                                              void updateInstallDir(IPath installPath) {
-                                                 InstallableRuntime installable = (InstallableRuntime) (tomcat.getSelection() ? gWithTomcat
-                                                                                                        : gWithJetty);
-                                                 String version = installable.getFeatureVersion();
-                                                 if ( version.startsWith("2.1") ) {
-                                                     installPath = installPath.append("geronimo-" + (tomcat.getSelection() ? "tomcat6" : "jetty6") + "-javaee5-" + "2.1.1" );
-                                                 }
-                                                 else {
-                                                     if ( version.startsWith("2.0") ) {
-                                                         installPath = installPath.append("geronimo-" + (tomcat.getSelection() ? "tomcat6" : "jetty6") + "-jee5-" + version);
-                                                     }
-                                                     else {
-                                                         installPath = installPath.append("geronimo-" + (tomcat.getSelection() ? "tomcat6" : "jetty6") + "-j2ee-" + version);
-                                                     }
-                                                 }
-                                                 installDir.setText(installPath.toOSString());
-                                             }
+                    InstallableRuntime installable = (InstallableRuntime) (tomcat
+                            .getSelection() ? gWithTomcat : gWithJetty);
+                    String path = installable.getPath();
+                    Matcher matcher = SERVER_NAME_VERSION_PATTERN.matcher(path);
+                    if (matcher.find()) {
+                        String serverName = matcher.group(1);
+                        String serverVersion = matcher.group(2);
+                        installPath = installPath.append(serverName
+                                + serverVersion);
+                    } else {
+                        Trace.trace(Trace.SEVERE, "No version found in path = "
+                                + path);
+                        installPath = installPath.append(path);
+                    }
+                    installDir.setText(installPath.toOSString());
+                }
                                          });
         }
         else {
@@ -541,5 +554,27 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
      */
     protected void createChildFragments(List list) {
         list.add(new GeronimoRuntimeSourceWizardFragment());
+    }
+    
+    /**
+     * Code for testing server name determination code in the updateInstallDir(IPath) method of addInstallableRuntimeSection.
+     * @param args
+     */
+    public static void main(String[] args) {
+        Pattern SERVER_NAME_VERSION_PATTERN = Pattern
+                .compile("(.*-)((\\d+\\.\\d+)(\\.(\\d+))?)");
+        for (String path : args) {
+            StringBuffer installPath = new StringBuffer();
+            Matcher matcher = SERVER_NAME_VERSION_PATTERN.matcher(path);
+            if (matcher.find()) {
+                String serverName = matcher.group(1);
+                String serverVersion = matcher.group(2);
+                installPath = installPath.append(serverName + serverVersion);
+                System.out.println("path = " + path + ", serverVersion = "
+                        + serverVersion + ", installPath = " + installPath);
+            } else {
+                System.out.println("No version found in path = " + path);
+            }
+        }
     }
 }

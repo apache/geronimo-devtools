@@ -61,16 +61,16 @@
      -->
     <extension point="org.eclipse.wst.server.core.installableRuntimes">
         <installableRuntime id="org.apache.geronimo.runtime.tomcat.20"
-            featureVersion="2.0.1"
+            featureVersion="2.1.1"
             featureId="org.apache.geronimo.installableruntime.tomcat.feature"
             featureSite="http://people.apache.org/~mcconne/releases/2.1.1/RC1/staging_site/"
-            path="geronimo-tomcat6-jee5-2.0.1.zip">
+            path="geronimo-tomcat6-jee5-2.0.2.zip">
         </installableRuntime>
         <installableRuntime id="org.apache.geronimo.runtime.jetty.20"
-            featureVersion="2.0.1"
+            featureVersion="2.1.1"
             featureId="org.apache.geronimo.installableruntime.jetty.feature"
             featureSite="http://people.apache.org/~mcconne/releases/2.1.1/RC1/staging_site/"
-            path="geronimo-jetty6-jee5-2.0.1.zip">
+            path="geronimo-jetty6-jee5-2.0.2.zip">
         </installableRuntime>
     </extension>
     
