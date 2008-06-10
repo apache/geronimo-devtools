@@ -6,7 +6,7 @@
 Apache Geronimo Eclipse Plugin
 Copyright 2003-2007 The Apache Software Foundation
 
-Portions of the Eclipse Geronimo Server Adapter were orginally developed by
+Portions of the Eclipse Geronimo Server Adapter were originally developed by
 International Business Machines Corporation and are
 licensed to the Apache Software Foundation under the
 "Software Grant and Corporate Contribution License Agreement",
@@ -21,36 +21,15 @@ package) which was developed by the Bouncy Castle project.
 (http://www.bouncycastle.org/) 
 
      Copyright (c) 2000-2005 The Legion Of The Bouncy Castle (http://www.bouncycastle.org)
-
+     
 =========================================================================
 ==  OpenEJB Notice                                                     ==
 =========================================================================
 
-This product includes software created by the OpenEJB project (http://openejb.org/).
+This product includes software developed by the Apache OpenEJB project (http://openejb.apache.org/).
 
-     Copyright 2001-2006 (C) The OpenEJB Group. All Rights Reserved.
+Copyright 1999-2008 The Apache OpenEJB development community
 
-=========================================================================
-==  XmlBeans Notice                                                    ==
-=========================================================================
-
-Portions of this software were originally based on the following:
-  - software copyright (c) 2000-2003, BEA Systems, <http://www.bea.com/>.
-
-Aside from contributions to the Apache XMLBeans project, this
-software also includes:
-
- - one or more source files from the Apache Xerces-J and Apache Axis
-   products, Copyright (c) 1999-2003 Apache Software Foundation
-
- - W3C XML Schema documents Copyright 2001-2003 (c) World Wide Web
-   Consortium (Massachusetts Institute of Technology, European Research
-   Consortium for Informatics and Mathematics, Keio University)
-
- - resolver.jar from Apache Xml Commons project,
-   Copyright (c) 2001-2003 Apache Software Foundation
-
- - Piccolo XML Parser for Java from http://piccolo.sourceforge.net/,
-   Copyright 2002 Yuval Oren under the terms of the Apache Software 
-   License 2.0
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/). 
 
