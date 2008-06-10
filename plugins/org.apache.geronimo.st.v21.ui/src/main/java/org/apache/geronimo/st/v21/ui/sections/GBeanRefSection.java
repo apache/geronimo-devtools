@@ -16,90 +16,70 @@
  */
 package org.apache.geronimo.st.v21.ui.sections;
 
+import java.util.List;
+
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.wizards.GBeanRefWizard;
-import org.apache.geronimo.jee.deployment.Gbean;
+import org.apache.geronimo.jee.naming.EjbRef;
+import org.apache.geronimo.jee.naming.GbeanRef;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class GBeanRefSection extends AbstractTableSection {
 
-	Object gbeanERef;
-
-	private static final String[] COLUMN_NAMES = new String[] {
-			CommonMessages.editorGBeanRefName,
-			CommonMessages.editorGBeanRefType};
-
-	public GBeanRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, Object gbeanERef) {
+	public GBeanRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List gbeanRef) {
 		super(plan, parent, toolkit, style);
-		this.gbeanERef = gbeanERef;
+		this.objectContainer = gbeanRef;
+		COLUMN_NAMES = new String[] {
+		        CommonMessages.editorGBeanRefName, CommonMessages.editorGBeanRefType};
 		createClient();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTitle()
-	 */
 	public String getTitle() {
 		return CommonMessages.editorGBeanRefTitle;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getDescription()
-	 */
 	public String getDescription() {
 		return CommonMessages.editorGBeanRefDescription;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableColumnNames()
-	 */
-	public String[] getTableColumnNames() {
-		return COLUMN_NAMES;
-	}
-
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getEReference()
-//	 */
-//	public JAXBElement getEReference() {
-//		return gbeanERef;
-//	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getWizard()
-	 */
 	public Wizard getWizard() {
 		return new GBeanRefWizard(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.sections.AbstractTableSection#getTableEntryObjectType()
-	 */
 	public Class getTableEntryObjectType() {
-		return Gbean.class;
+		return GbeanRef.class;
 	}
 
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
-//	 */
-//	public AdapterFactory getAdapterFactory() {
-//		return EMFEditorContext.getFactory();
-//	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
+     */
+    public AdapterFactory getAdapterFactory() {
+        return new AdapterFactory() {
+            public Object[] getElements(Object inputElement) {
+                if (!JAXBElement.class.isInstance(inputElement)) {
+                    return new String[] { "" };
+                }
+                return getObjectContainer().toArray();
+            }
+
+            public String getColumnText(Object element, int columnIndex) {
+                if (GbeanRef.class.isInstance(element)) {
+                    GbeanRef gbeanRef = (GbeanRef)element;
+                    switch (columnIndex) {
+                    case 0: return gbeanRef.getRefName();
+                    case 1: return gbeanRef.getRefType().get(0);
+                    }
+                }
+                return null;
+            }
+        };
+    }
 }

@@ -158,6 +158,7 @@
             filenames="geronimo-web.xml,
                        geronimo-application.xml,    
                        openejb-jar.xml,
+                       geronimo-application-client.xml,
                        geronimo-ra.xml"
             icon="icons/obj16/littleG.gif"
             id="org.apache.geronimo.ui.editors.WebEditor" 

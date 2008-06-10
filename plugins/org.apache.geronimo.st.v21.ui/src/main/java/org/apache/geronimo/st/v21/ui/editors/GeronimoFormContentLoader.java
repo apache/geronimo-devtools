@@ -21,13 +21,12 @@ import java.io.IOException;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
-import org.apache.geronimo.jee.security.Security;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader;
 import org.apache.geronimo.st.v21.core.GeronimoV21Utils;
-import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
+import org.apache.geronimo.st.v21.ui.pages.AppClientGeneralPage;
 import org.apache.geronimo.st.v21.ui.pages.AppGeneralPage;
 import org.apache.geronimo.st.v21.ui.pages.ConnectorOverviewPage;
 import org.apache.geronimo.st.v21.ui.pages.DeploymentPage;
@@ -38,7 +37,6 @@ import org.apache.geronimo.st.v21.ui.pages.WebGeneralPage;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
 
 public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader {
 
@@ -50,7 +48,7 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
     public void addApplicationPlanPages(FormEditor editor) throws PartInitException {
         editor.addPage(new AppGeneralPage(editor, "appgeneralpage", CommonMessages.editorTabGeneral));
         editor.addPage(new SecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity));
-        editor.addPage(getApplicationDeploymentPage(editor));
+        editor.addPage(createDeploymentFormPage(editor));
     }
 
     /*
@@ -60,7 +58,7 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
      */
     public void addConnectorPlanPages(FormEditor editor) throws PartInitException {
         editor.addPage(new ConnectorOverviewPage(editor, "connectoroverview", CommonMessages.editorTabGeneral));
-        editor.addPage(getConnectorDeploymentPage(editor));
+        editor.addPage(createDeploymentFormPage(editor));
     }
 
     /*
@@ -69,11 +67,11 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
      * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader#addApplicationPlanPages(org.eclipse.ui.forms.editor.FormEditor)
      */
     public void addApplicationClientPlanPages(FormEditor editor) throws PartInitException {
-        editor.addPage(new AppGeneralPage(editor, "appgeneralpage", CommonMessages.editorTabGeneral));
-        editor.addPage(new SecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity));
-        editor.addPage(getApplicationDeploymentPage(editor));
+        editor.addPage(new AppClientGeneralPage(editor, "appgeneralpage", CommonMessages.editorTabGeneral));
+        editor.addPage(createNamingFormPage(editor));
+        //editor.addPage(new SecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity));
+        editor.addPage(createDeploymentFormPage(editor));
     }
-
 
     /*
      * (non-Javadoc)
@@ -84,7 +82,7 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
         editor.addPage(new EjbOverviewPage(editor, "ejboverview", CommonMessages.editorTabGeneral));
         // TODO Add naming page but broken down for each bean type
         editor.addPage(new SecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity));
-        editor.addPage(getEjbJarDeploymentPage(editor));
+        editor.addPage(createDeploymentFormPage(editor));
     }
 
     /*
@@ -96,9 +94,9 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
         AbstractGeronimoDeploymentPlanEditor geronimoEditor = (AbstractGeronimoDeploymentPlanEditor)editor;
         JAXBElement plan = geronimoEditor.getDeploymentPlan();
         editor.addPage(new WebGeneralPage(editor, "generalpage", CommonMessages.editorTabGeneral));
-        editor.addPage(getWebNamingPage(editor));
+        editor.addPage(createNamingFormPage(editor));
         editor.addPage(new SecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity));
-        editor.addPage(getWebDeploymentPage(editor));
+        editor.addPage(createDeploymentFormPage(editor));
     }
 
     /*
@@ -112,53 +110,6 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
     
     public void saveDeploymentPlan(JAXBElement deploymentPlan, IFile file) throws IOException, JAXBException {
         JAXBUtils.marshalDeploymentPlan(deploymentPlan, file);
-    }
-
-    protected FormPage getWebNamingPage(FormEditor editor) {
-        NamingFormPage formPage = createNamingFormPage(editor);
-//        WebPackage pkg = null; //WebFactory.eINSTANCE.getWebPackage();
-//        formPage.ejbLocalRef = pkg.getWebApp_EjbLocalRef();
-//        formPage.ejbRef = pkg.getWebApp_EjbRef();
-//        formPage.resEnvRef = pkg.getWebApp_ResourceEnvRef();
-//        formPage.resRef = pkg.getWebApp_ResourceRef();
-//        formPage.gbeanRef = pkg.getWebApp_GbeanRef();
-//        formPage.serviceRef = pkg.getWebApp_ServiceRef();
-        return formPage;
-    }
-
-    protected FormPage getWebDeploymentPage(FormEditor editor) {
-        DeploymentPage formPage = createDeploymentFormPage(editor);
-//        formPage.environment = WebFactory.eINSTANCE.getWebPackage().getWebApp_Environment();
-//        formPage.gbeanERef = WebFactory.eINSTANCE.getWebPackage().getWebApp_Gbean();
-        return formPage;
-    }
-
-    private FormPage getEjbJarDeploymentPage(FormEditor editor) {
-        DeploymentPage formPage = createDeploymentFormPage(editor);
-//        formPage.environment = JarFactory.eINSTANCE.getJarPackage().getOpenejbJarType_Environment();
-//        formPage.gbeanERef = JarFactory.eINSTANCE.getJarPackage().getOpenejbJarType_Gbean();
-        return formPage;
-    }
-
-    protected FormPage getApplicationDeploymentPage(FormEditor editor) {
-        DeploymentPage formPage = createDeploymentFormPage(editor);
-//        formPage.environment = ApplicationFactory.eINSTANCE.getApplicationPackage().getApplicationType_Environment();
-//        formPage.gbeanERef = ApplicationFactory.eINSTANCE.getApplicationPackage().getApplicationType_Gbean();
-        return formPage;
-    }
-
-    private FormPage getConnectorDeploymentPage(FormEditor editor) {
-        DeploymentPage formPage = createDeploymentFormPage(editor);
-//        formPage.environment = ConnectorFactory.eINSTANCE.getConnectorPackage().getConnectorType_Environment();
-//        formPage.gbeanERef = ConnectorFactory.eINSTANCE.getConnectorPackage().getConnectorType_Gbean();
-        return formPage;
-    }
-
-    protected FormPage getApplicationClientDeploymentPage(FormEditor editor) {
-        DeploymentPage formPage = createDeploymentFormPage(editor);
-//        formPage.environment = ApplicationFactory.eINSTANCE.getApplicationPackage().getApplicationType_Environment();
-//        formPage.gbeanERef = ApplicationFactory.eINSTANCE.getApplicationPackage().getApplicationType_Gbean();
-        return formPage;
     }
 
     private NamingFormPage createNamingFormPage(FormEditor editor) {

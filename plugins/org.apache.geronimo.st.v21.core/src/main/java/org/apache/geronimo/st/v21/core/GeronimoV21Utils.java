@@ -52,6 +52,8 @@ public class GeronimoV21Utils extends GeronimoUtils {
             return getWebDeploymentPlan(file);
         else if (file.getName().equals(GeronimoUtils.CONNECTOR_PLAN_NAME))
             return getConnectorDeploymentPlan(file);
+        else if (file.getName().equals(GeronimoUtils.APP_CLIENT_PLAN_NAME))
+            return getApplicationClientDeploymentPlan(file);
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getDeploymentPlan", null);
         return null;

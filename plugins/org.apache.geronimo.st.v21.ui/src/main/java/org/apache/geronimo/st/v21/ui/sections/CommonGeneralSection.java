@@ -28,7 +28,6 @@ import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.jee.deployment.ObjectFactory;
 import org.apache.geronimo.jee.application.Application;
-import org.apache.geronimo.jee.applicationclient.ApplicationClient;
 import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.st.ui.CommonMessages;
@@ -75,8 +74,8 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 
         Section section = getSection();
 
-        section.setText(CommonMessages.editorSectionGeneralTitle);
-        section.setDescription(CommonMessages.editorSectionGeneralDescription);
+        section.setText(getSectionGeneralTitle());
+        section.setDescription(getSectionGeneralDescription());
         section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
         Composite composite = toolkit.createComposite(section);
@@ -302,11 +301,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
         return null;
     }
 
-
-    //
-    // Need to support both WebApp and Connector 
-    //
-    private Environment getEnvironment(boolean create) {
+    protected Environment getEnvironment(boolean create) {
         Environment type = null;
         Object plan = getPlan().getValue();
         if (WebApp.class.isInstance(plan)) {
@@ -334,8 +329,6 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
                 ((OpenejbJar) plan).setEnvironment(type);
             }
         }
-        // TODO add support for application client
-        // figure out if this is client or server environment
 
         return type;
     }
@@ -366,7 +359,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
         return null;
     }
     
-    private org.apache.geronimo.jee.deployment.ObjectFactory getDeploymentObjectFactory() {
+    protected org.apache.geronimo.jee.deployment.ObjectFactory getDeploymentObjectFactory() {
         if ( deploymentObjectFactory == null ) {
             deploymentObjectFactory = new org.apache.geronimo.jee.deployment.ObjectFactory();
         }
@@ -375,4 +368,11 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 
     protected abstract JAXBElement getEnvironmentEReference();
 
+    protected String getSectionGeneralTitle() {
+        return CommonMessages.editorSectionGeneralTitle;
+    }
+
+    protected String getSectionGeneralDescription() {
+        return CommonMessages.editorSectionGeneralDescription;
+    }
 }

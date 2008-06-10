@@ -21,6 +21,7 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.application.Application;
+import org.apache.geronimo.jee.applicationclient.ApplicationClient;
 import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
@@ -91,6 +92,9 @@ public class JAXBModelUtils {
         else if (Connector.class.isInstance (plan)) {
             return ((Connector)plan).getEnvironment() == null ? null : ((Connector)plan).getEnvironment();
         }
+        else if (ApplicationClient.class.isInstance (plan)) {
+            return ((ApplicationClient)plan).getClientEnvironment() == null ? null : ((ApplicationClient)plan).getClientEnvironment();
+        }
         return null;
     }
     
@@ -108,6 +112,9 @@ public class JAXBModelUtils {
         else if (Connector.class.isInstance (plan)) {
             ((Connector)plan).setEnvironment (environment);
         }
+        else if (ApplicationClient.class.isInstance (plan)) {
+            ((ApplicationClient)plan).setClientEnvironment (environment);
+        }
     }
 
     public static List getGbeans (JAXBElement element) {
@@ -124,13 +131,16 @@ public class JAXBModelUtils {
         else if (Connector.class.isInstance (plan)) {
             return ((Connector)plan).getService() == null ? null : ((Connector)plan).getService();
         }
+        else if (ApplicationClient.class.isInstance (plan)) {
+            return ((ApplicationClient)plan).getService() == null ? null : ((ApplicationClient)plan).getService();
+        }
         return null;
     }
 
     public static List getGbeanRefs (JAXBElement element) {
         Object plan = element.getValue();
-        if (WebApp.class.isInstance (plan)) {
-            return ((WebApp)plan).getServiceOrPersistence() == null ? null : ((WebApp)plan).getServiceOrPersistence();
+        if (ApplicationClient.class.isInstance (plan)) {
+            return ((ApplicationClient)plan).getGbeanRef() == null ? null : ((ApplicationClient)plan).getGbeanRef();
         }
         return null;
     }

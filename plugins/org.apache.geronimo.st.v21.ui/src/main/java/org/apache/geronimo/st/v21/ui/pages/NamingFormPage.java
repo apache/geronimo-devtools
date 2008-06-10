@@ -18,6 +18,7 @@ package org.apache.geronimo.st.v21.ui.pages;
 
 import java.util.List;
 
+import org.apache.geronimo.jee.applicationclient.ApplicationClient;
 import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
@@ -41,20 +42,27 @@ public class NamingFormPage extends AbstractGeronimoFormPage {
 
     public List ejbLocalRefs;
 
-    //ServiceOrPersistence is already handled on the Dependency Page.
-    //public List gbeanRefs;
+    public List gbeanRefs;
 
     public List serviceRefs;
 
     public NamingFormPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
-        WebApp webapp = (WebApp)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
-        resRefs = webapp.getResourceRef();
-        resEnvRefs = webapp.getResourceEnvRef();
-        ejbRefs = webapp.getEjbRef();
-        ejbLocalRefs = webapp.getEjbLocalRef();
-        //gbeanRefs = webapp.getServiceOrPersistence();
-        serviceRefs = webapp.getServiceRef();       
+        if (WebApp.class.isInstance (((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue())) {
+            WebApp webapp = (WebApp)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
+            resRefs = webapp.getResourceRef();
+            resEnvRefs = webapp.getResourceEnvRef();
+            ejbRefs = webapp.getEjbRef();
+            ejbLocalRefs = webapp.getEjbLocalRef();
+            serviceRefs = webapp.getServiceRef();
+        } else if (ApplicationClient.class.isInstance (((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue())) {
+            ApplicationClient appClient = (ApplicationClient)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
+            resRefs = appClient.getResourceRef();
+            resEnvRefs = appClient.getResourceEnvRef();
+            ejbRefs = appClient.getEjbRef();
+            gbeanRefs = appClient.getGbeanRef();
+            serviceRefs = appClient.getServiceRef();
+        }
     }
 
     /*
@@ -66,8 +74,11 @@ public class NamingFormPage extends AbstractGeronimoFormPage {
         managedForm.addPart(new ResourceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), resRefs));
         managedForm.addPart(new ResourceEnvRefSection(getDeploymentPlan(), body, toolkit, getStyle(), resEnvRefs));
         managedForm.addPart(new EjbRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbRefs));
-        managedForm.addPart(new EjbLocalRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbLocalRefs));
-        //managedForm.addPart(new GBeanRefSection(getDeploymentPlan(), body, toolkit, getStyle(), gbeanRefs));
+        if (WebApp.class.isInstance (getDeploymentPlan().getValue())) {
+            managedForm.addPart(new EjbLocalRefSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbLocalRefs));
+        } else if (ApplicationClient.class.isInstance (getDeploymentPlan().getValue())){
+            managedForm.addPart(new GBeanRefSection(getDeploymentPlan(), body, toolkit, getStyle(), gbeanRefs));
+        }
         managedForm.addPart(new ServiceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), serviceRefs));
     }
 
@@ -79,5 +90,4 @@ public class NamingFormPage extends AbstractGeronimoFormPage {
     public String getFormTitle() {
         return CommonMessages.namingFormPageTitle;
     }
-
 }

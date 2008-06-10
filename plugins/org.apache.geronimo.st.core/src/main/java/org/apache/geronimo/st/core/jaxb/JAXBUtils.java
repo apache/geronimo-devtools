@@ -178,6 +178,6 @@ public class JAXBUtils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println( "============== No such method get" + name + " in class " + element.getClass().getName() );
+		System.out.println( "============== No such method set" + name + " in class " + element.getClass().getName() );
 	}
 }
