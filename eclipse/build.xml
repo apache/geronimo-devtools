@@ -20,6 +20,9 @@
  |  
  | Download Europa Eclipse artifacts and unzip them into the user's local maven repo     
  |                                                                                             
+ |                                                                                             
+ | @version $Rev$ $Date$                                                                                            
+ |                                                                                             
  -->
 <project name="EuropaArtifacts">
 
