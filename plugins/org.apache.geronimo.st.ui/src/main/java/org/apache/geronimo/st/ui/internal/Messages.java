@@ -104,7 +104,7 @@ public class Messages extends NLS {
 	}
 	
 	public static String appGeneralPageTitle;
-    public static String appClientGeneralPageTitle;
+        public static String appClientGeneralPageTitle;
 	public static String connectorOverViewPageTitle;
 	public static String deploymentPageTitle;
 	public static String namingFormPageTitle;
@@ -120,10 +120,12 @@ public class Messages extends NLS {
 	public static String editorSectionGeneralDescription;
 	public static String editorContextRoot;
 	public static String editorApplicationName;
-    public static String editorSectionServerTitle;
-    public static String editorSectionServerDescription;
-    public static String editorSectionClientTitle;
-    public static String editorSectionClientDescription;
+	public static String editorCallbackHandler;
+	public static String editorRealmName;
+        public static String editorSectionServerTitle;
+        public static String editorSectionServerDescription;
+        public static String editorSectionClientTitle;
+        public static String editorSectionClientDescription;
 	//
 	public static String editorSectionSecurityRolesTitle;
 	public static String editorSectionSecurityRolesDescription;

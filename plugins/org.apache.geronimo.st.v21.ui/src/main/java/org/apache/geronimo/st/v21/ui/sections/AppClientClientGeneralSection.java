@@ -21,27 +21,52 @@ import javax.xml.bind.JAXBElement;
 import org.apache.geronimo.jee.applicationclient.ApplicationClient;
 import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class AppClientClientGeneralSection extends CommonGeneralSection {
 
-	ApplicationClient plan;
+    protected Text callbackHandler;
+    protected Text realmName;
+    ApplicationClient plan;
 
-	public AppClientClientGeneralSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
-		super(parent, toolkit, style, plan);
-		this.plan = (ApplicationClient) plan.getValue();
-		createClient();
-	}
+    public AppClientClientGeneralSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
+        super(parent, toolkit, style, plan);
+        this.plan = (ApplicationClient) plan.getValue();
+        createClient();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.v21.ui.sections.CommonGeneralSection#getEnvironmentEReference()
-	 */
-	protected JAXBElement getEnvironmentEReference() {
-		return null; //ApplicationPackage.eINSTANCE.getApplicationType_Environment();
-	}
+    protected void createClient() {
+        super.createClient();
+        Composite composite = (Composite) getSection().getClient();
+
+        createLabel(composite, CommonMessages.editorCallbackHandler);
+
+        callbackHandler = toolkit.createText(composite, plan.getCallbackHandler(), SWT.BORDER);
+        callbackHandler.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        callbackHandler.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                plan.setCallbackHandler(callbackHandler.getText());
+                markDirty();
+            }
+        });
+
+        createLabel(composite, CommonMessages.editorRealmName);
+
+        realmName = toolkit.createText(composite, plan.getRealmName(), SWT.BORDER);
+        realmName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        realmName.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                plan.setRealmName(realmName.getText());
+                markDirty();
+            }
+        });
+    }
 
     protected Environment getEnvironment(boolean create) {
         Environment type = null;

@@ -35,8 +35,8 @@ public class AppClientGeneralPage extends AbstractGeronimoFormPage {
 	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
 	 */
 	protected void fillBody(IManagedForm managedForm) {
-		managedForm.addPart(new AppClientServerGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
         managedForm.addPart(new AppClientClientGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
+        managedForm.addPart(new AppClientServerGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
 	}
 
 	/*
