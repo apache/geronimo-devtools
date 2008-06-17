@@ -42,9 +42,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -180,19 +178,6 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
                 markDirty();
             }
         });
-    }
-
-    protected Label createLabel(Composite parent, String text) {
-        Label label = toolkit.createLabel(parent, text);
-        label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-        label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-        return label;
-    }
-
-    protected GridData createTextFieldGridData() {
-        GridData data = new GridData(SWT.FILL, SWT.CENTER, true, false);
-        data.widthHint = 150;
-        return data;
     }
 
     protected String getGroupId() {
@@ -365,8 +350,6 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
         }
         return deploymentObjectFactory;
     }
-
-    protected abstract JAXBElement getEnvironmentEReference();
 
     protected String getSectionGeneralTitle() {
         return CommonMessages.editorSectionGeneralTitle;
