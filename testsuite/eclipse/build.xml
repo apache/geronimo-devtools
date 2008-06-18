@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!--
+ |  
+ | Download Eclipse and the Eclipse test-framework for usage with the GEP testsuite
+ |                                                                                             
+ | TODO: Need to use the Eclipse/WTP version already downloaded in the user local m2 repo, but now 
+ |       the GEP testsuite only works with the Eclipse SDK
+ |                                                                                             
+ |                                                                                             
+ | @version $Rev$ $Date$                                                                                            
+ |                                                                                             
+ -->
+<project name="EuropaArtifacts">
+
+    <target name="init">
+        <property name="base_url"               value="http://www.eclipse.org/downloads/download.php?file="/>
+        <property name="europa_url"             value="${base_url}/eclipse/downloads/drops/R-3.3.2-200802211800/"/>
+        <property name="europa_jee_win32"       value="eclipse-SDK-3.3.2-win32.zip"/>
+        <property name="europa_jee_linux"       value="eclipse-SDK-3.3.2-linux-gtk.tar"/>
+        <property name="europa_jee_macos"       value="eclipse-SDK-3.3.2-macosx-carbon.tar"/>
+        <property name="europa_jee_linux_gz"    value="${europa_jee_linux}.gz"/>
+        <property name="europa_jee_macos_gz"    value="${europa_jee_macos}.gz"/>
+        <property name="protocol"               value="&amp;r=1&amp;protocol=http"/>
+        <property name="TEST_ECLIPSE"           value="${basedir}/../test-eclipse/"/>
+        <property name="TEST_FRAMEWORK_URL"     value="${base_url}/eclipse/downloads/drops/R-3.3.2-200802211800/"/>
+        <property name="TEST_FRAMEWORK"         value="eclipse-test-framework-3.3.2.zip"/>
+    </target>
+
+    <target name="win32" depends="init,common" description="Download Windows-specific artifact(s)">
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Downloading: ${europa_jee_win32}                                              </echo>                                                                            
+        <echo>##                                                                               </echo>
+        <echo>## From: ${europa_url}                                                           </echo>                                                                            <echo>##                                                                               </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
+        <get src="${europa_url}${europa_jee_win32}${protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${europa_jee_win32}" 
+             verbose="true"
+             ignoreerrors="true"
+             usetimestamp="true"/>
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Unzipping: ${europa_jee_win32}                                                </echo>                                                                            
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <mkdir dir="${TEST_ECLIPSE}"/>
+        <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${europa_jee_win32}" 
+              dest="${TEST_ECLIPSE}"/>
+    </target>
+
+    <target name="linux" depends="init,common" description="Download Linux-specific artifact(s)">
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Downloading: ${europa_jee_linux_gz}                                           </echo>
+        <echo>##                                                                               </echo>
+        <echo>## From: ${europa_url}                                                           </echo>                                                                            <echo>##                                                                               </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
+        <get src="${europa_url}${europa_jee_linux_gz}${protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${europa_jee_linux_gz}" 
+             verbose="true"
+             ignoreerrors="true"
+             usetimestamp="true"/>
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Unzipping: ${europa_jee_linux_gz}                                             </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <mkdir  dir="${TEST_ECLIPSE}"/>
+        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${europa_jee_linux_gz}"/>
+        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${europa_jee_linux}" 
+               dest="${TEST_ECLIPSE}"/>
+    </target>
+
+    <target name="macos" depends="init,common" description="Download Mac-specific artifact(s)">
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Downloading: ${europa_jee_macos_gz}                                           </echo>
+        <echo>##                                                                               </echo>
+        <echo>## From: ${europa_url}                                                           </echo>                                                                            <echo>##                                                                               </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
+        <get src="${europa_url}${europa_jee_macos_gz}${protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${europa_jee_macos_gz}" 
+             verbose="true"
+             ignoreerrors="true"
+             usetimestamp="true"/>
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Unzipping: ${europa_jee_macos_gz}                                             </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <mkdir  dir="${TEST_ECLIPSE}"/>
+        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${europa_jee_macos_gz}"/>
+        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${europa_jee_macos}" 
+               dest="${TEST_ECLIPSE}"/>
+    </target>
+
+    <target name="common" depends="init" description="Download artifacts common to all OS'es">
+        <antcall target="test-framework"/>
+    </target>
+
+    <target name="test-framework" depends="init" description="JUnit Plugin Tests and Automated Testing Framework artifact">
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Downloading: ${TEST_FRAMEWORK}                                                </echo>
+        <echo>##                                                                               </echo>
+        <echo>## From: ${TEST_FRAMEWORK_URL}                                                   </echo>                                                                            
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
+        <get src="${TEST_FRAMEWORK_URL}${TEST_FRAMEWORK}${protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${TEST_FRAMEWORK}" 
+             verbose="true"
+             ignoreerrors="true"
+             usetimestamp="true"/>
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Unzipping: ${TEST_FRAMEWORK}                                                  </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <mkdir dir="${TEST_ECLIPSE}"/>
+        <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${TEST_FRAMEWORK}"
+              dest="${TEST_ECLIPSE}"/>
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Creating: org.eclipse.test                                                    </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <mkdir dir="${TEST_ECLIPSE}/eclipse/plugins/org.eclipse.test"/>
+        <copy todir="${TEST_ECLIPSE}/eclipse/plugins/org.eclipse.test">
+            <fileset dir="${TEST_ECLIPSE}/eclipse/plugins/org.eclipse.test_3.2.0"/>
+        </copy>
+    </target>
+
+</project>
