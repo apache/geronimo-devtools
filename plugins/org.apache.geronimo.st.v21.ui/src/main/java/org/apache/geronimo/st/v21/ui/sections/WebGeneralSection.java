@@ -32,6 +32,10 @@ public class WebGeneralSection extends CommonGeneralSection {
 
 	protected Text contextRoot;
 
+    protected Text workDir;
+
+    protected Text securityRealmName;
+
 	WebApp plan;
 
 	public WebGeneralSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
@@ -46,13 +50,35 @@ public class WebGeneralSection extends CommonGeneralSection {
 
 		createLabel(composite, CommonMessages.editorContextRoot);
 
-		contextRoot = toolkit.createText(composite, plan.getContextRoot(), SWT.BORDER);
-		contextRoot.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
-		contextRoot.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				plan.setContextRoot(contextRoot.getText());
-				markDirty();
-			}
-		});
+        contextRoot = toolkit.createText(composite, plan.getContextRoot(), SWT.BORDER);
+        contextRoot.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        contextRoot.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                plan.setContextRoot(contextRoot.getText());
+                markDirty();
+            }
+        });
+
+        createLabel(composite, CommonMessages.editorWorkDir);
+
+        workDir = toolkit.createText(composite, plan.getWorkDir(), SWT.BORDER);
+        workDir.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        workDir.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                plan.setWorkDir(workDir.getText());
+                markDirty();
+            }
+        });
+
+        createLabel(composite, CommonMessages.editorSecurityRealmName);
+
+        securityRealmName = toolkit.createText(composite, plan.getSecurityRealmName(), SWT.BORDER);
+        securityRealmName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        securityRealmName.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                plan.setSecurityRealmName(securityRealmName.getText());
+                markDirty();
+            }
+        });
 	}
 }

@@ -119,6 +119,8 @@ public class Messages extends NLS {
     public static String editorSectionGeneralTitle;
     public static String editorSectionGeneralDescription;
     public static String editorContextRoot;
+    public static String editorWorkDir;
+    public static String editorSecurityRealmName;
     public static String editorApplicationName;
     public static String editorCallbackHandler;
     public static String editorRealmName;
