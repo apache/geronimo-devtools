@@ -34,15 +34,6 @@ public class AppClientServerGeneralSection extends CommonGeneralSection {
 		createClient();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.v21.ui.sections.CommonGeneralSection#getEnvironmentEReference()
-	 */
-	protected JAXBElement getEnvironmentEReference() {
-		return null; //ApplicationPackage.eINSTANCE.getApplicationType_Environment();
-	}
-
     protected Environment getEnvironment(boolean create) {
         Environment type = null;
         Object plan = getPlan().getValue();

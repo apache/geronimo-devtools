@@ -24,6 +24,8 @@ import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
+import org.apache.geronimo.st.v21.ui.sections.AppClientClientDependencySection;
+import org.apache.geronimo.st.v21.ui.sections.AppClientServerDependencySection;
 import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.jee.deployment.Dependencies;
 import org.apache.geronimo.jee.deployment.Environment;
@@ -68,10 +70,21 @@ public class DependencyWizard extends AbstractTableWizard {
             eObject = getEFactory().create(Dependency.class);
             JAXBElement plan = section.getPlan();
 
-            Environment environment = JAXBModelUtils.getEnvironment(plan);
+            Environment environment = null;
+            if (AppClientClientDependencySection.class.isInstance(section))
+            	environment = JAXBModelUtils.getClientEnvironment(plan);
+            else if (AppClientServerDependencySection.class.isInstance(section))
+            	environment = JAXBModelUtils.getServerEnvironment(plan);
+            else
+                environment = JAXBModelUtils.getEnvironment(plan);
             if (environment == null) {
                 environment = (Environment)getEFactory().create(Environment.class);
-                JAXBModelUtils.setEnvironment (plan, environment);
+                if (AppClientClientDependencySection.class.isInstance(section))
+                    JAXBModelUtils.setClientEnvironment (plan, environment);
+                else if (AppClientServerDependencySection.class.isInstance(section))
+                	JAXBModelUtils.setServerEnvironment (plan, environment);
+                else
+                    JAXBModelUtils.setEnvironment (plan, environment);
             }
 
             Dependencies dependencies = environment.getDependencies();

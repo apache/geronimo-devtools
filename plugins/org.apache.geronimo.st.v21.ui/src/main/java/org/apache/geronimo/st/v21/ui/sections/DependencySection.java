@@ -36,7 +36,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class DependencySection extends AbstractTableSection {
 
-    private Environment environment;
+    protected Environment environment;
 
     /**
      * @param plan

@@ -18,17 +18,28 @@ package org.apache.geronimo.st.v21.ui.sections;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.jee.connector.Connector;
+import org.apache.geronimo.jee.deployment.Environment;
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-public class ConnectorGeneralSection extends CommonGeneralSection {
+public class AppClientClientDependencySection extends DependencySection {
+    
+    /**
+     * @param plan
+     * @param parent
+     * @param toolkit
+     * @param style
+     */
+    public AppClientClientDependencySection(JAXBElement plan, Environment environment, Composite parent, FormToolkit toolkit, int style) {
+        super(plan, environment, parent, toolkit, style);
+    }
 
-	Connector plan;
+    public String getTitle() {
+        return CommonMessages.editorSectionClientDependenciesTitle;
+    }
 
-	public ConnectorGeneralSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
-		super(parent, toolkit, style, plan);
-		this.plan = (Connector) plan.getValue();
-		createClient();
-	}
+    public String getDescription() {
+        return CommonMessages.editorSectionClientDependenciesDescription;
+    }
 }

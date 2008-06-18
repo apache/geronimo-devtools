@@ -134,6 +134,10 @@ public class Messages extends NLS {
 	//
 	public static String editorSectionDependenciesTitle;
 	public static String editorSectionDependenciesDescription;
+	public static String editorSectionClientDependenciesTitle;
+	public static String editorSectionClientDependenciesDescription;
+	public static String editorSectionServerDependenciesTitle;
+	public static String editorSectionServerDependenciesDescription;
 	//
 	public static String editorSectionImportTitle;
 	public static String editorSectionImportDescription;

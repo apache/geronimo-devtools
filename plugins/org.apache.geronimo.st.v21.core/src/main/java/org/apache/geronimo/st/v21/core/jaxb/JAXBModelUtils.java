@@ -92,9 +92,6 @@ public class JAXBModelUtils {
         else if (Connector.class.isInstance (plan)) {
             return ((Connector)plan).getEnvironment() == null ? null : ((Connector)plan).getEnvironment();
         }
-        else if (ApplicationClient.class.isInstance (plan)) {
-            return ((ApplicationClient)plan).getClientEnvironment() == null ? null : ((ApplicationClient)plan).getClientEnvironment();
-        }
         return null;
     }
     
@@ -112,8 +109,35 @@ public class JAXBModelUtils {
         else if (Connector.class.isInstance (plan)) {
             ((Connector)plan).setEnvironment (environment);
         }
-        else if (ApplicationClient.class.isInstance (plan)) {
+    }
+
+    public static Environment getClientEnvironment(JAXBElement element) {
+    	Object plan = element.getValue();
+        if (ApplicationClient.class.isInstance (plan)) {
+            return ((ApplicationClient)plan).getClientEnvironment() == null ? null : ((ApplicationClient)plan).getClientEnvironment();
+        }
+        return null;
+    }
+    
+    public static void setClientEnvironment (JAXBElement element, Environment environment) {
+        Object plan = element.getValue();
+        if (ApplicationClient.class.isInstance (plan)) {
             ((ApplicationClient)plan).setClientEnvironment (environment);
+        }
+    }
+
+    public static Environment getServerEnvironment(JAXBElement element) {
+    	Object plan = element.getValue();
+        if (ApplicationClient.class.isInstance (plan)) {
+            return ((ApplicationClient)plan).getServerEnvironment() == null ? null : ((ApplicationClient)plan).getServerEnvironment();
+        }
+        return null;
+    }
+    
+    public static void setServerEnvironment (JAXBElement element, Environment environment) {
+        Object plan = element.getValue();
+        if (ApplicationClient.class.isInstance (plan)) {
+            ((ApplicationClient)plan).setServerEnvironment (environment);
         }
     }
 
