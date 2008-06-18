@@ -14,7 +14,8 @@ Bundle-ClassPath: lib/geronimo-common-2.1.1.jar,
  lib/geronimo-util-2.1.1.jar,
  lib/geronimo-deploy-config-2.1.1.jar,
  lib/geronimo-javaee-deployment_1.1MR3_spec-1.0.jar,
- lib/plexus-archiver-1.0-alpha-7.jar
+ lib/plexus-archiver-1.0-alpha-7.jar,
+ lib/geronimo-crypto-2.1.1.jar
 Export-Package: 
  javax.enterprise.deploy.model,
  javax.enterprise.deploy.model.exceptions,

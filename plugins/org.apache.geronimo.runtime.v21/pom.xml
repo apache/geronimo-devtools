@@ -109,6 +109,11 @@
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
                                 <artifactItem>
+                                    <groupId>org.apache.geronimo.framework</groupId>
+                                    <artifactId>geronimo-crypto</artifactId>
+                                    <version>${geronimoVersion}</version>
+                                </artifactItem>
+                                <artifactItem>
                                     <groupId>org.apache.geronimo.specs</groupId>
                                     <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
                                 </artifactItem>
