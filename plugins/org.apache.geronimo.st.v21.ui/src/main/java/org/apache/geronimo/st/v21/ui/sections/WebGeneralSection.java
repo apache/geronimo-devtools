@@ -55,13 +55,4 @@ public class WebGeneralSection extends CommonGeneralSection {
 			}
 		});
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.v21.ui.sections.CommonGeneralSection#getEnvironmentEReference()
-	 */
-	protected JAXBElement getEnvironmentEReference() {
-		return null; //WebPackage.eINSTANCE.getWebAppType_Environment();
-	}
 }

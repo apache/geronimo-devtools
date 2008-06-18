@@ -19,25 +19,81 @@ package org.apache.geronimo.st.v21.ui.sections;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.openejb.OpenejbJar;
+import org.apache.geronimo.jee.openejb.ObjectFactory;
+import org.apache.geronimo.st.ui.CommonMessages;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class OpenEjbJarGeneralSection extends CommonGeneralSection {
 
-	OpenejbJar plan;
+    protected Text ejbqlCompilerFactory;
 
-	public OpenEjbJarGeneralSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
-		super(parent, toolkit, style, plan);
-		this.plan = (OpenejbJar) plan.getValue();
-		createClient();
-	}
+    protected Text dbSyntaxFactory;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.v21.ui.sections.CommonGeneralSection#getEnvironmentEReference()
-	 */
-	protected JAXBElement getEnvironmentEReference() {
-		return null; //JarPackage.eINSTANCE.getOpenejbJarType_Environment();
-	}
+    protected Button enforceForeignKeyConstraints;
+    
+    OpenejbJar plan;
+
+    public OpenEjbJarGeneralSection(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
+        super(parent, toolkit, style, plan);
+        this.plan = (OpenejbJar) plan.getValue();
+        createClient();
+    }
+
+    protected void createClient() {
+        super.createClient();
+        Composite composite = (Composite) getSection().getClient();
+
+        createLabel(composite, CommonMessages.editorejbqlCompilerFactory);
+
+        ejbqlCompilerFactory = toolkit.createText(composite, plan.getEjbQlCompilerFactory(), SWT.BORDER);
+        ejbqlCompilerFactory.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        ejbqlCompilerFactory.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                plan.setEjbQlCompilerFactory(ejbqlCompilerFactory.getText());
+                markDirty();
+            }
+        });
+
+        createLabel(composite, CommonMessages.editordbSyntaxFactory);
+
+        dbSyntaxFactory = toolkit.createText(composite, plan.getDbSyntaxFactory(), SWT.BORDER);
+        dbSyntaxFactory.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        dbSyntaxFactory.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                plan.setDbSyntaxFactory(dbSyntaxFactory.getText());
+                markDirty();
+            }
+        });
+
+        enforceForeignKeyConstraints = toolkit.createButton(composite, CommonMessages.enforceForeignKeyConstraints, SWT.CHECK);
+        enforceForeignKeyConstraints.setSelection(plan.getEnforceForeignKeyConstraints() != null);
+        GridData data = new GridData();
+        data.horizontalSpan = 2;
+        enforceForeignKeyConstraints.setLayoutData(data);
+
+        enforceForeignKeyConstraints.addSelectionListener(new SelectionListener() {
+            public void widgetDefaultSelected(SelectionEvent e) {
+            }
+
+            public void widgetSelected(SelectionEvent e) {
+            	if (enforceForeignKeyConstraints.getSelection()) {
+            		ObjectFactory objFactory = new ObjectFactory();
+            		plan.setEnforceForeignKeyConstraints(objFactory.createEmpty());
+            	}
+            	else {
+            		plan.setEnforceForeignKeyConstraints(null);
+            	}
+                markDirty();
+            }
+        });
+    }
 }
