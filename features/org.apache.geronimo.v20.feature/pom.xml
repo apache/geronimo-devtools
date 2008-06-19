@@ -39,7 +39,7 @@
             </resource>
             <resource>
                 <targetPath>META-INF</targetPath>
-                <directory>../..</directory>
+                <directory>.</directory>
                 <includes>
                     <include>LICENSE.txt</include>
                     <include>NOTICE.txt</include>
