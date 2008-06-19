@@ -1,0 +1,24 @@
+=========================================================================
+==  NOTICE file corresponding to section 4(d) of the Apache License,   ==
+==  Version 2.0, in this case for the Apache Geronimo distribution.    ==
+=========================================================================
+
+Apache Geronimo Eclipse Plugin
+Copyright 2003-2007 The Apache Software Foundation
+
+Portions of the Eclipse Geronimo Server Adapter were originally developed by
+International Business Machines Corporation and are
+licensed to the Apache Software Foundation under the
+"Software Grant and Corporate Contribution License Agreement",
+informally known as the "Eclipse Geronimo Server Adapter CLA".
+
+=========================================================================
+==  Bouncy Castle Notice                                               ==
+=========================================================================
+
+This product includes software (the ASN1 codec in the org.apache.geronimo.asn1
+package) which was developed by the Bouncy Castle project. 
+(http://www.bouncycastle.org/) 
+
+     Copyright (c) 2000-2005 The Legion Of The Bouncy Castle (http://www.bouncycastle.org)
+     
