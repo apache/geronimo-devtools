@@ -38,7 +38,7 @@
         <property name="europa_jee_linux_gz"    value="${europa_jee_linux}.gz"/>
         <property name="europa_jee_macos_gz"    value="${europa_jee_macos}.gz"/>
         <property name="protocol"               value="&amp;r=1&amp;protocol=http"/>
-        <property name="TEST_ECLIPSE"           value="${basedir}/../test-eclipse/"/>
+        <property name="TEST_ECLIPSE"           value="${basedir}/../launcher/test-eclipse/"/>
         <property name="TEST_FRAMEWORK_URL"     value="${base_url}/eclipse/downloads/drops/R-3.3.2-200802211800/"/>
         <property name="TEST_FRAMEWORK"         value="eclipse-test-framework-3.3.2.zip"/>
     </target>
@@ -48,7 +48,7 @@
         <echo>##                                                                               </echo>
         <echo>## Downloading: ${europa_jee_win32}                                              </echo>                                                                            
         <echo>##                                                                               </echo>
-        <echo>## From: ${europa_url}                                                           </echo>                                                                            <echo>##                                                                               </echo>
+        <echo>## From: ${europa_url}                                                           </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
@@ -143,15 +143,6 @@
         <mkdir dir="${TEST_ECLIPSE}"/>
         <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${TEST_FRAMEWORK}"
               dest="${TEST_ECLIPSE}"/>
-        <echo>#################################################################################</echo>
-        <echo>##                                                                               </echo>
-        <echo>## Creating: org.eclipse.test                                                    </echo>
-        <echo>##                                                                               </echo>
-        <echo>#################################################################################</echo>
-        <mkdir dir="${TEST_ECLIPSE}/eclipse/plugins/org.eclipse.test"/>
-        <copy todir="${TEST_ECLIPSE}/eclipse/plugins/org.eclipse.test">
-            <fileset dir="${TEST_ECLIPSE}/eclipse/plugins/org.eclipse.test_3.2.0"/>
-        </copy>
     </target>
 
 </project>
