@@ -25,6 +25,8 @@ import org.apache.geronimo.jee.deployment.Gbean;
 import org.apache.geronimo.jee.naming.EjbRef;
 import org.apache.geronimo.jee.naming.EjbLocalRef;
 import org.apache.geronimo.jee.naming.GbeanRef;
+import org.apache.geronimo.jee.naming.MessageDestination;
+import org.apache.geronimo.jee.naming.Pattern;
 import org.apache.geronimo.jee.naming.ResourceEnvRef;
 import org.apache.geronimo.jee.naming.ResourceRef;
 import org.apache.geronimo.jee.naming.ServiceRef;
@@ -57,6 +59,10 @@ public class JAXBObjectFactoryImpl implements JAXBObjectFactory {
             return (new org.apache.geronimo.jee.naming.ObjectFactory()).createEjbRef();
         } else if ( type.equals( GbeanRef.class ) ) {
             return (new org.apache.geronimo.jee.naming.ObjectFactory()).createGbeanRef();
+        } else if ( type.equals( MessageDestination.class ) ) {
+            return (new org.apache.geronimo.jee.naming.ObjectFactory()).createMessageDestination();
+        } else if ( type.equals( Pattern.class ) ) {
+            return (new org.apache.geronimo.jee.naming.ObjectFactory()).createPattern();
         } else if ( type.equals( ServiceRef.class ) ) {
             return (new org.apache.geronimo.jee.naming.ObjectFactory()).createServiceRef();
         } else if ( type.equals( EjbLocalRef.class ) ) {

@@ -169,4 +169,17 @@ public class JAXBModelUtils {
         return null;
     }
 
+    public static List getMessageDestinations (JAXBElement element) {
+        Object plan = element.getValue();
+        if (WebApp.class.isInstance (plan)) {
+            return ((WebApp)plan).getMessageDestination() == null ? null : ((WebApp)plan).getMessageDestination();
+        }
+        else if (OpenejbJar.class.isInstance (plan)) {
+            return ((OpenejbJar)plan).getMessageDestination() == null ? null : ((OpenejbJar)plan).getMessageDestination();
+        }
+        else if (ApplicationClient.class.isInstance (plan)) {
+            return ((ApplicationClient)plan).getMessageDestination() == null ? null : ((ApplicationClient)plan).getMessageDestination();
+        }
+        return null;
+    }
 }

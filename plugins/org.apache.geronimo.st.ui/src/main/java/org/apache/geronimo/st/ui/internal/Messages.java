@@ -145,6 +145,9 @@ public class Messages extends NLS {
     public static String editorSectionServerDependenciesTitle;
     public static String editorSectionServerDependenciesDescription;
     //
+    public static String editorSectionMessageDestTitle;
+    public static String editorSectionMessageDestDescription;
+    //
     public static String editorSectionImportTitle;
     public static String editorSectionImportDescription;
     //
@@ -227,6 +230,9 @@ public class Messages extends NLS {
     public static String artifactId;
     public static String version;
     public static String type;
+    public static String messageDestinationName;
+    public static String adminModule;
+    public static String adminLink;
     //
     public static String wizardNewTitle_Import;
     public static String wizardEditTitle_Import;
@@ -237,6 +243,11 @@ public class Messages extends NLS {
     public static String wizardEditTitle_GBean;
     public static String wizardPageTitle_GBean;
     public static String wizardPageDescription_GBean;
+    //
+    public static String wizardNewTitle_MessageDest;
+    public static String wizardEditTitle_MessageDest;
+    public static String wizardPageTitle_MessageDest;
+    public static String wizardPageDescription_MessageDest;
     //
     public static String wizardNewTitle_SecurityRole;
     public static String wizardEditTitle_SecurityRole;

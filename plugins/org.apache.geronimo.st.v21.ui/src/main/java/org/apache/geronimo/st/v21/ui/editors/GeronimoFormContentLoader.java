@@ -82,7 +82,7 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
      */
     public void addOpenEjbPlanPages(FormEditor editor) throws PartInitException {
         editor.addPage(new EjbOverviewPage(editor, "ejboverview", CommonMessages.editorTabGeneral));
-        // TODO Add naming page but broken down for each bean type
+        editor.addPage(createNamingFormPage(editor));
         editor.addPage(new SecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity));
         editor.addPage(createDeploymentFormPage(editor));
     }
