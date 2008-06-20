@@ -26,34 +26,16 @@
     <artifactId>testsuite-launcher</artifactId>
     <packaging>pom</packaging>
     <version>2.1.1</version>
-    <name>Geronimo Devtools Testsuite :: Launcher</name>
+    <name>Geronimo Devtools Testsuite :: Equinox Launcher</name>
 
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>testsuite</artifactId>
         <version>2.1.1</version>
     </parent>
-                        
+
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <inherited>false</inherited>
-                <configuration>
-                    <failOnError>false</failOnError>
-                    <filesets>
-                        <fileset>
-                            <directory>${pom.basedir}</directory>
-                            <includes>
-                                <include>results</include>
-                                <include>test-eclipse</include>
-                                <include>workspace</include>
-                            </includes>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>

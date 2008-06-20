@@ -31,7 +31,7 @@
         <import plugin="org.eclipse.jface.text" optional="true"/>
         <import plugin="org.eclipse.ui.workbench.texteditor" optional="true"/>
         <import plugin="org.eclipse.ui.editors" optional="true"/>
-        <import plugin="org.apache.ant"/>
+<!--    <import plugin="org.apache.ant"/> -->
         <import plugin="org.junit"/>
         <import plugin="org.eclipse.core.resources"/>
         <import plugin="org.eclipse.jdt.core"/>

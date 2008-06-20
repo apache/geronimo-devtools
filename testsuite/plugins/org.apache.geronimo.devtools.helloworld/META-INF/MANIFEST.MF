@@ -27,8 +27,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.common.project.facet.core,
  org.eclipse.jdt.core,
  org.eclipse.debug.core,
- org.eclipse.wst.web,
- org.eclipse.jem.util
+ org.eclipse.wst.web
 Eclipse-LazyStart: true
 Export-Package: org.apache.geronimo.devtools.helloworld
 Import-Package: junit.framework;version="3.8.2"

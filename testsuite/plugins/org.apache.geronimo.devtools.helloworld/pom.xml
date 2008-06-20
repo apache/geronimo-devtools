@@ -66,7 +66,7 @@
 
             <!--
              |
-             | Unzip the resulting target jar into the test-eclipse directory for later usage
+             | Unzip the resulting plugin jar into the launcher eclipse directory for later usage
              |
              -->
             <plugin>
@@ -80,9 +80,9 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <mkdir dir="${basedir}/../../launcher/test-eclipse/eclipse/plugins/org.apache.geronimo.devtools.helloworld-2.1.1"/>
+                                <mkdir dir="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.devtools.helloworld-2.1.1"/>
                                 <unzip src="${project.build.directory}/org.apache.geronimo.devtools.helloworld-2.1.1.jar"
-                                      dest="${basedir}/../../launcher/test-eclipse/eclipse/plugins/org.apache.geronimo.devtools.helloworld-2.1.1"/>
+                                      dest="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.devtools.helloworld-2.1.1"/>
                             </tasks>
                         </configuration>
                     </execution>

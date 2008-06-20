@@ -15,9 +15,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-                        
+
 <!-- @version $Rev$ $Date$ -->
-                        
+
 <project>
                         
     <modelVersion>4.0.0</modelVersion>
@@ -34,10 +34,37 @@
         <version>2.1.1</version>
     </parent>
 
+    <build>
+        <plugins>
+            <!--
+             |
+             | Clean up the eclipse artifacts from previous launches
+             |
+             -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <failOnError>false</failOnError>
+                    <filesets>
+                        <fileset>
+                            <directory>${pom.basedir}</directory>
+                            <includes>
+                                <include>launcher/results</include>
+                                <include>launcher/eclipse</include>
+                                <include>launcher/workspace</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <modules>
         <module>eclipse</module>
-        <module>plugins</module> 
-        <module>launcher</module> 
+        <module>plugins</module>
+        <module>launcher</module>
     </modules>
-                        
+
 </project>
