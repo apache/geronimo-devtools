@@ -22,8 +22,8 @@ import org.apache.geronimo.jee.naming.GbeanLocator;
 import org.apache.geronimo.jee.naming.ObjectFactory;
 import org.apache.geronimo.jee.naming.Pattern;
 import org.apache.geronimo.jee.web.WebApp;
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractSectionPart;
-import org.apache.geronimo.st.v21.ui.internal.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -75,8 +75,8 @@ public class WebContainerSection extends AbstractSectionPart {
     protected void createClient() {
         Section section = getSection();
 
-        section.setText(Messages.webContainerSection);
-        section.setDescription(Messages.webContainerSectionDescription);
+        section.setText(CommonMessages.webContainerSection);
+        section.setDescription(CommonMessages.webContainerSectionDescription);
         section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
         Composite composite = toolkit.createComposite(section);
@@ -90,14 +90,14 @@ public class WebContainerSection extends AbstractSectionPart {
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         section.setClient(composite);
 
-        specifyAsLink = toolkit.createButton(composite, Messages.useGBeanLink, SWT.RADIO);
+        specifyAsLink = toolkit.createButton(composite, CommonMessages.useGBeanLink, SWT.RADIO);
         GridData data = new GridData();
         data.horizontalSpan = 2;
         specifyAsLink.setLayoutData(data);
 
         GbeanLocator wc = plan.getWebContainer();
 
-        toolkit.createLabel(composite, Messages.gBeanLink);
+        toolkit.createLabel(composite, CommonMessages.gBeanLink);
         String value = wc != null ? wc.getGbeanLink() : null;
         gBeanLink = toolkit.createText(composite, value, SWT.BORDER);
         gBeanLink.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
@@ -108,10 +108,10 @@ public class WebContainerSection extends AbstractSectionPart {
             }
         });
 
-        specifyAsPattern = toolkit.createButton(composite, Messages.useGBeanPattern, SWT.RADIO);
+        specifyAsPattern = toolkit.createButton(composite, CommonMessages.useGBeanPattern, SWT.RADIO);
         specifyAsPattern.setLayoutData(data);
 
-        toolkit.createLabel(composite, Messages.groupId);
+        toolkit.createLabel(composite, CommonMessages.groupId);
         value = wc != null && wc.getPattern() != null ? wc.getPattern().getGroupId()
                 : null;
         group = toolkit.createText(composite, value, SWT.BORDER);
@@ -123,7 +123,7 @@ public class WebContainerSection extends AbstractSectionPart {
             }
         });
 
-        toolkit.createLabel(composite, Messages.artifactId);
+        toolkit.createLabel(composite, CommonMessages.artifactId);
         value = wc != null && wc.getPattern() != null ? wc.getPattern().getArtifactId()
                 : null;
         artifact = toolkit.createText(composite, value, SWT.BORDER);
@@ -135,7 +135,7 @@ public class WebContainerSection extends AbstractSectionPart {
             }
         });
 
-        toolkit.createLabel(composite, Messages.moduleId);
+        toolkit.createLabel(composite, CommonMessages.moduleId);
         value = wc != null && wc.getPattern() != null ? wc.getPattern().getModule()
                 : null;
         module = toolkit.createText(composite, value, SWT.BORDER);
@@ -147,7 +147,7 @@ public class WebContainerSection extends AbstractSectionPart {
             }
         });
 
-        toolkit.createLabel(composite, Messages.name);
+        toolkit.createLabel(composite, CommonMessages.name);
         value = wc != null && wc.getPattern() != null ? wc.getPattern().getName()
                 : null;
         name = toolkit.createText(composite, value, SWT.BORDER);
@@ -159,7 +159,7 @@ public class WebContainerSection extends AbstractSectionPart {
             }
         });
 
-        toolkit.createLabel(composite, Messages.version);
+        toolkit.createLabel(composite, CommonMessages.version);
         value = wc != null && wc.getPattern() != null ? wc.getPattern().getVersion()
                 : null;
         version = toolkit.createText(composite, value, SWT.BORDER);

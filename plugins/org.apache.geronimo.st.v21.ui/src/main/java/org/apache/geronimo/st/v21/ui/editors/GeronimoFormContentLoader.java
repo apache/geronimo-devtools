@@ -28,6 +28,7 @@ import org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader;
 import org.apache.geronimo.st.v21.core.GeronimoV21Utils;
 import org.apache.geronimo.st.v21.ui.pages.AppClientDeploymentPage;
 import org.apache.geronimo.st.v21.ui.pages.AppClientGeneralPage;
+import org.apache.geronimo.st.v21.ui.pages.AppClientSecurityPage;
 import org.apache.geronimo.st.v21.ui.pages.AppGeneralPage;
 import org.apache.geronimo.st.v21.ui.pages.ConnectorOverviewPage;
 import org.apache.geronimo.st.v21.ui.pages.DeploymentPage;
@@ -68,9 +69,9 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
      * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader#addApplicationPlanPages(org.eclipse.ui.forms.editor.FormEditor)
      */
     public void addApplicationClientPlanPages(FormEditor editor) throws PartInitException {
-        editor.addPage(new AppClientGeneralPage(editor, "appgeneralpage", CommonMessages.editorTabGeneral));
+        editor.addPage(new AppClientGeneralPage(editor, "appclientgeneralpage", CommonMessages.editorTabGeneral));
         editor.addPage(createNamingFormPage(editor));
-        //editor.addPage(new SecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity));
+        editor.addPage(new AppClientSecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity));
         editor.addPage(new AppClientDeploymentPage(editor, "deploymentpage", CommonMessages.editorTabDeployment));
     }
 

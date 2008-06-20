@@ -32,7 +32,6 @@ import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractSectionPart;
-import org.apache.geronimo.st.v21.ui.internal.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -87,7 +86,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         section.setClient(composite);
 
-        createLabel(composite, Messages.groupId);
+        createLabel(composite, CommonMessages.groupId);
 
         groupId = toolkit.createText(composite, getGroupId(), SWT.BORDER);
         groupId.setLayoutData(createTextFieldGridData());
@@ -98,7 +97,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
             }
         });
 
-        createLabel(composite, Messages.artifactId);
+        createLabel(composite, CommonMessages.artifactId);
 
         artifactId = toolkit.createText(composite, getArtifactId(), SWT.BORDER);
         artifactId.setLayoutData(createTextFieldGridData());
@@ -109,7 +108,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
             }
         });
 
-        createLabel(composite, Messages.version);
+        createLabel(composite, CommonMessages.version);
 
         version = toolkit.createText(composite, getVersion(), SWT.BORDER);
         version.setLayoutData(createTextFieldGridData());
@@ -120,7 +119,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
             }
         });
 
-        createLabel(composite, Messages.artifactType);
+        createLabel(composite, CommonMessages.artifactType);
 
         type = toolkit.createText(composite, getArtifact(), SWT.BORDER);
         type.setLayoutData(createTextFieldGridData());
@@ -131,7 +130,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
             }
         });
 
-        inverseClassLoading = toolkit.createButton(composite, Messages.inverseClassloading, SWT.CHECK);
+        inverseClassLoading = toolkit.createButton(composite, CommonMessages.inverseClassloading, SWT.CHECK);
         inverseClassLoading.setSelection(isInverseClassloading());
         GridData data = new GridData();
         data.horizontalSpan = 2;
@@ -147,7 +146,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
             }
         });
 
-        suppressDefaultEnv = toolkit.createButton(composite, Messages.supressDefaultEnv, SWT.CHECK);
+        suppressDefaultEnv = toolkit.createButton(composite, CommonMessages.supressDefaultEnv, SWT.CHECK);
         suppressDefaultEnv.setSelection(isSuppressDefaultEnvironment());
         data = new GridData();
         data.horizontalSpan = 2;
@@ -163,7 +162,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
             }
         });
         
-        sharedLibDepends = toolkit.createButton(composite, Messages.sharedLibDepends, SWT.CHECK);
+        sharedLibDepends = toolkit.createButton(composite, CommonMessages.sharedLibDepends, SWT.CHECK);
         sharedLibDepends.setSelection(isSharedLibDependency());
         data = new GridData();
         data.horizontalSpan = 2;

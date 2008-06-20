@@ -25,7 +25,11 @@ import org.eclipse.osgi.util.NLS;
  * @version $Rev$ $Date$
  */
 public class Messages extends NLS {
-    
+
+    static {
+        NLS.initializeMessages(Activator.PLUGIN_ID + ".internal.Messages", Messages.class);
+    }
+	
     public static String editorTabSource;
     
     public static String editorSectionSecurityTitle;
@@ -99,10 +103,6 @@ public class Messages extends NLS {
     public static String portName;
     public static String portValue;
 
-    static {
-        NLS.initializeMessages(Activator.PLUGIN_ID + ".internal.Messages", Messages.class);
-    }
-    
     public static String appGeneralPageTitle;
     public static String appClientGeneralPageTitle;
     public static String connectorOverViewPageTitle;
@@ -124,6 +124,7 @@ public class Messages extends NLS {
     public static String editorApplicationName;
     public static String editorCallbackHandler;
     public static String editorRealmName;
+    public static String editorSubjectId;
     public static String editorejbqlCompilerFactory;
     public static String editordbSyntaxFactory;
 	public static String enforceForeignKeyConstraints;
@@ -249,4 +250,19 @@ public class Messages extends NLS {
     public static String editorCorrect;
     public static String editorDefault;
     public static String errorOpenDialog;
+
+    public static String gBeanLink;
+    public static String moduleId;
+    public static String seeRestrictions;
+    
+    public static String useGBeanLink;
+    public static String useGBeanPattern;
+    public static String artifactType;
+    public static String inverseClassloading;
+    public static String supressDefaultEnv;
+    public static String sharedLibDepends;
+    
+    public static String addSharedLib;
+    public static String webContainerSection;
+    public static String webContainerSectionDescription;
 }

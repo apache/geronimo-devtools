@@ -16,8 +16,8 @@
  */
 package org.apache.geronimo.st.v21.ui.wizards;
 
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.v21.core.DeploymentPlanInstallConfig;
-import org.apache.geronimo.st.v21.ui.internal.Messages;
 import org.apache.geronimo.st.v21.ui.internal.Trace;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -73,27 +73,27 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
 		composite.setLayout(new GridLayout(2, false));
 
 		Label groupLabel = new Label(composite, SWT.NONE);
-		groupLabel.setText(Messages.groupId);
+		groupLabel.setText(CommonMessages.groupId);
 
 		groupText = new Text(composite, SWT.BORDER);
 		groupText.setLayoutData(createGridData());
 		groupText.setText("default");
 		
 		Label artifactLabel = new Label(composite, SWT.NONE);
-		artifactLabel.setText(Messages.artifactId);
+		artifactLabel.setText(CommonMessages.artifactId);
 
 		artifactText = new Text(composite, SWT.BORDER);
 		artifactText.setLayoutData(createGridData());
 		
 		Label versionLabel = new Label(composite, SWT.NONE);
-		versionLabel.setText(Messages.version);
+		versionLabel.setText(CommonMessages.version);
 
 		versionText = new Text(composite, SWT.BORDER);
 		versionText.setLayoutData(createGridData());
 		versionText.setText("1.0");
 		
 		Label typeLabel = new Label(composite, SWT.NONE);
-		typeLabel.setText(Messages.artifactType);
+		typeLabel.setText(CommonMessages.artifactType);
 
 		typeText = new Text(composite, SWT.BORDER);
 		typeText.setLayoutData(createGridData());
@@ -104,7 +104,7 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
 		data.horizontalSpan = 2;
 		data.verticalIndent = 5;
 		sharedLib.setLayoutData(data);
-		sharedLib.setText(Messages.addSharedLib);
+		sharedLib.setText(CommonMessages.addSharedLib);
 		
 		setControl(composite);
 		
