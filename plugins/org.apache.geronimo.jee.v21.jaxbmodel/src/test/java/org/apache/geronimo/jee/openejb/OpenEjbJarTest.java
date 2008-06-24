@@ -27,10 +27,14 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.sax.SAXSource;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
+import org.apache.geronimo.jee.common.NamespaceFilter;
 import org.apache.geronimo.jee.common.NamespacePrefixMapperImpl;
 import org.apache.geronimo.jee.deployment.Artifact;
 import org.apache.geronimo.jee.deployment.Dependencies;
@@ -91,6 +95,13 @@ public class OpenEjbJarTest extends TestCase {
                               "openejb/openejb-jar-expected-1.xml");
         unmarshallAndMarshall("openejb/openejb-jar-example-2.xml", 
                               "openejb/openejb-jar-expected-2.xml");
+    }
+
+    public void testConvertNamespace() throws Exception {
+        convertNamespace("openejb/openejb-jar-example-3.xml", 
+                         "openejb/openejb-jar-expected-3.xml");
+        convertNamespace("openejb/openejb-jar-example-4.xml", 
+                         "openejb/openejb-jar-expected-3.xml");
     }
 
     public void testCompleteXML() throws Exception {
@@ -157,6 +168,72 @@ public class OpenEjbJarTest extends TestCase {
             throw e;            
         }
 
+    }
+
+    private void convertNamespace(String fileExample, String fileExpected) throws Exception {
+
+        // 
+        // Create unmarshaller and marshaller
+        // 
+        JAXBContext jaxbContext = JAXBContext.newInstance( 
+                                    "org.apache.geronimo.jee.openejb:" +
+                                    "org.apache.geronimo.jee.application:" +
+                                    "org.apache.geronimo.jee.deployment:" +
+                                    "org.apache.geronimo.jee.naming", getClass().getClassLoader() );
+        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+        Marshaller marshaller = jaxbContext.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+        marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapperImpl());
+
+        // 
+        // Create SAXParser
+        // 
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+        factory.setNamespaceAware(true);
+        factory.setValidating(false);
+        SAXParser parser = factory.newSAXParser();
+
+        // 
+        // Create NamespaceFilter to filter for v1.1 namespaces
+        // 
+        NamespaceFilter xmlFilter = new NamespaceFilter(parser.getXMLReader());
+
+        // 
+        // Read example and expected XML files
+        // 
+        InputStream exampleInputStream = this.getClass().getClassLoader().getResourceAsStream(fileExample);
+        InputStream expectedInputStream = this.getClass().getClassLoader().getResourceAsStream(fileExpected);
+        String example = readContent(exampleInputStream);
+        String expected = readContent(expectedInputStream);
+
+        // 
+        // Unmarshall the example file
+        // 
+        SAXSource source = new SAXSource(xmlFilter, new InputSource(new ByteArrayInputStream(example.getBytes())));
+        Object jaxbElement = unmarshaller.unmarshal(source);
+
+        // 
+        // Marshall the output of the unmarshall
+        // 
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        marshaller.marshal(jaxbElement, baos);
+        byte[] bytes = baos.toByteArray();
+        String actual = new String(bytes);
+
+        // 
+        // Compare actual and expected
+        // 
+        try {
+            Diff myDiff = new Diff(expected, actual);
+            assertTrue("Files are similar " + myDiff, myDiff.similar());
+        }
+        catch (AssertionFailedError e) {
+            System.out.println("[Example XML: " + fileExample + "] " + '\n' + example + '\n');
+            System.out.println("[Expected XML: " + fileExpected + "] " + '\n' + expected + '\n');
+            System.out.println("[Actual XML] " + '\n' + actual + '\n');
+            throw e;            
+        }
     }
 
     private void buildFullXMLFromScratch (String fileExpected) throws Exception {
