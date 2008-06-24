@@ -34,6 +34,7 @@
                     <include>plugin.xml</include>
                     <include>plugin.properties</include>
                     <include>.options</include>
+                    <include>about.html</include>
                 </includes>
             </resource>
             <resource>

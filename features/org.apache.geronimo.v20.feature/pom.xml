@@ -38,6 +38,12 @@
                 </includes>
             </resource>
             <resource>
+                <directory>..</directory>
+                <includes>
+                    <include>bigG.gif</include>
+                </includes>
+            </resource>
+            <resource>
                 <targetPath>META-INF</targetPath>
                 <directory>.</directory>
                 <includes>
@@ -46,9 +52,17 @@
                 </includes>
             </resource>
             <resource>
-                <directory>..</directory>
+                <directory>.</directory>
                 <includes>
-                    <include>bigG.gif</include>
+                    <include>license.html</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>about_files</targetPath>
+                <directory>../../plugins/org.apache.geronimo.runtime.v20</directory>
+                <includes>
+                    <include>LICENSE.txt</include>
+                    <include>NOTICE.txt</include>
                 </includes>
             </resource>
         </resources>

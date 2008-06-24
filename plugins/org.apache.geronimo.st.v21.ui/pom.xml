@@ -34,6 +34,7 @@
                     <include>plugin.xml</include>
                     <include>plugin.properties</include>
                     <include>.options</include>
+                    <include>about.html</include>
                 </includes>
             </resource>
             <resource>
@@ -51,6 +52,14 @@
                     <include>NOTICE.txt</include>
                 </includes>
             </resource>
+	    	<resource>
+	    		<targetPath>about_files</targetPath>
+	    		<directory>.</directory>
+	    		<includes>
+	    			<include>LICENSE.txt</include>
+	    			<include>NOTICE.txt</include>
+	    		</includes>
+	    	</resource>
         </resources>
         <plugins>
             <plugin>

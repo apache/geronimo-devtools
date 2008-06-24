@@ -27,11 +27,11 @@
       %description
     </description>
     
-    <copyright url="http://www.apache.org/licenses/LICENSE-2.0.txt">
+    <copyright url="license.html">
       %copyright
     </copyright>
     
-    <license url="http://www.apache.org/licenses/LICENSE-2.0.txt">
+    <license url="license.html">
       %license
     </license>
     
