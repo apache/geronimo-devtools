@@ -38,7 +38,22 @@
                 </includes>
             </resource>
             <resource>
+            <!-- The Geronimo covention puts license and notice for artifacts shipped in this jar 
+                 in the jar's meta-inf directory -->
                 <targetPath>META-INF</targetPath>
+                <directory>.</directory>
+                <includes>
+                    <include>LICENSE.txt</include>
+                    <include>NOTICE.txt</include>
+                </includes>
+            </resource>
+	        <!-- GERONIMODEVTOOLS-406 Display license and notice in Eclipse Update Manager 
+                 See also http://www.eclipse.org/legal/guidetolegaldoc.php
+                 about.html references about_files to show licenses and notices to the user
+                 at install time using Eclipse Update Manager, and after install.
+              -->
+	    	<resource>
+	    		<targetPath>about_files</targetPath>
                 <directory>.</directory>
                 <includes>
                     <include>LICENSE.txt</include>
