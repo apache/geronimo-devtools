@@ -20,21 +20,18 @@
  |  
  | Download Eclipse and the Eclipse test-framework for usage with the GEP testsuite
  |                                                                                             
- | TODO: Need to use the Eclipse/WTP version already downloaded in the user local m2 repo, but now 
- |       the GEP testsuite only works with the Eclipse SDK
- |                                                                                             
  |                                                                                             
  | @version $Rev$ $Date$                                                                                            
  |                                                                                             
  -->
-<project name="EuropaSDKArtifacts">
+<project name="EuropaTestsuiteArtifacts">
 
     <target name="init">
         <property name="base_url"               value="http://www.eclipse.org/downloads/download.php?file="/>
-        <property name="europa_url"             value="${base_url}/eclipse/downloads/drops/R-3.3.2-200802211800/"/>
-        <property name="europa_jee_win32"       value="eclipse-SDK-3.3.2-win32.zip"/>
-        <property name="europa_jee_linux"       value="eclipse-SDK-3.3.2-linux-gtk.tar"/>
-        <property name="europa_jee_macos"       value="eclipse-SDK-3.3.2-macosx-carbon.tar"/>
+        <property name="europa_url"             value="${base_url}/technology/epp/downloads/release/europa/winter/"/>
+        <property name="europa_jee_win32"       value="eclipse-jee-europa-winter-win32.zip"/>
+        <property name="europa_jee_linux"       value="eclipse-jee-europa-winter-linux-gtk.tar"/>
+        <property name="europa_jee_macos"       value="eclipse-jee-europa-winter-macosx-carbon.tar"/>
         <property name="europa_jee_linux_gz"    value="${europa_jee_linux}.gz"/>
         <property name="europa_jee_macos_gz"    value="${europa_jee_macos}.gz"/>
         <property name="protocol"               value="&amp;r=1&amp;protocol=http"/>
