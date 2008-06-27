@@ -44,7 +44,6 @@ Export-Package:
  org.apache.geronimo.kernel.config,
  org.apache.geronimo.kernel.config.xstream,
  org.apache.geronimo.kernel.lifecycle,
- org.apache.geronimo.kernel.log,
  org.apache.geronimo.kernel.management,
  org.apache.geronimo.kernel.proxy,
  org.apache.geronimo.kernel.repository,

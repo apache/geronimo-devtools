@@ -425,7 +425,10 @@ public class ApplicationClient
      *     
      */
     public void setRealmName(String value) {
-        this.realmName = value;
+        if (value == null || value.length() == 0)
+            this.realmName = null;
+        else
+            this.realmName = value;
     }
 
     /**
@@ -449,7 +452,10 @@ public class ApplicationClient
      *     
      */
     public void setCallbackHandler(String value) {
-        this.callbackHandler = value;
+        if (value == null || value.length() == 0)
+            this.callbackHandler = null;
+        else
+            this.callbackHandler = value;
     }
 
     /**

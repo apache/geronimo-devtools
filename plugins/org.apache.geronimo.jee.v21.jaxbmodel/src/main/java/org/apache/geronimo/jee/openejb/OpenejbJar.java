@@ -184,7 +184,10 @@ public class OpenejbJar
      *     
      */
     public void setEjbQlCompilerFactory(String value) {
-        this.ejbQlCompilerFactory = value;
+        if (value == null || value.length() == 0)
+            this.ejbQlCompilerFactory = null;
+        else
+            this.ejbQlCompilerFactory = value;
     }
 
     /**
@@ -208,7 +211,10 @@ public class OpenejbJar
      *     
      */
     public void setDbSyntaxFactory(String value) {
-        this.dbSyntaxFactory = value;
+        if (value == null || value.length() == 0)
+            this.dbSyntaxFactory = null;
+        else
+            this.dbSyntaxFactory = value;
     }
 
     /**

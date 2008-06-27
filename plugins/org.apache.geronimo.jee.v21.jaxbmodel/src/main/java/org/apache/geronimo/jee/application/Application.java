@@ -270,7 +270,10 @@ public class Application
      *     
      */
     public void setApplicationName(java.lang.String value) {
-        this.applicationName = value;
+        if (value == null || value.length() == 0)
+            this.applicationName = null;
+        else
+            this.applicationName = value;
     }
 
 }

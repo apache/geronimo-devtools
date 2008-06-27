@@ -198,7 +198,10 @@ public class WebApp
      *     
      */
     public void setContextRoot(String value) {
-        this.contextRoot = value;
+        if (value == null || value.length() == 0)
+            this.contextRoot = null;
+        else
+            this.contextRoot = value;
     }
 
     /**
@@ -222,7 +225,10 @@ public class WebApp
      *     
      */
     public void setWorkDir(String value) {
-        this.workDir = value;
+        if (value == null || value.length() == 0)
+            this.workDir = null;
+        else
+            this.workDir = value;
     }
 
     /**
@@ -500,7 +506,10 @@ public class WebApp
      *     
      */
     public void setSecurityRealmName(String value) {
-        this.securityRealmName = value;
+        if (value == null || value.length() == 0)
+            this.securityRealmName = null;
+        else
+            this.securityRealmName = value;
     }
 
     /**

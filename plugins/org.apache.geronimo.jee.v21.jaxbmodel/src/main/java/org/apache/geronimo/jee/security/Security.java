@@ -212,7 +212,10 @@ public class Security
      *     
      */
     public void setDefaultRole(String value) {
-        this.defaultRole = value;
+        if (value == null || value.length() == 0)
+            this.defaultRole = null;
+        else
+            this.defaultRole = value;
     }
 
     /**
