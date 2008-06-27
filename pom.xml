@@ -22,7 +22,7 @@
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>geronimo-eclipse-plugin</artifactId>
     <packaging>pom</packaging>
-    <name>${artifactId}</name>
+    <name>Geronimo Eclipse Plugin</name>
     <version>2.1.1</version>
                         
     <parent>

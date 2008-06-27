@@ -21,7 +21,7 @@
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>eclipse-features-parent</artifactId>
     <packaging>pom</packaging>
-    <name>${artifactId}</name>
+    <name>Geronimo Eclipse Plugin :: Features</name>
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>

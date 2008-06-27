@@ -26,7 +26,7 @@
     <artifactId>testsuite-eclipse</artifactId>
     <packaging>pom</packaging>
     <version>2.1.1</version>
-    <name>Geronimo Devtools Testsuite :: Eclipse Downloads</name>
+    <name>Geronimo Eclipse Plugin :: Testsuite :: Downloads</name>
                                                 
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>

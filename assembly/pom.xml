@@ -21,7 +21,7 @@
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>assembly</artifactId>
     <packaging>pom</packaging>
-    <name>${artifactId}</name>
+    <name>Geronimo Eclipse Plugin :: Assembly</name>
     <version>${org.apache.geronimo.feature_version}</version>
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
