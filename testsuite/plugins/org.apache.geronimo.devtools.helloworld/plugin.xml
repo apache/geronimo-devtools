@@ -23,7 +23,7 @@
     id="org.apache.geronimo.devtools.helloworld" 
     name="%pluginName" 
     provider-name="%providerName" 
-    version="2.1.1" 
+    version="2.1.2" 
     class="org.apache.geronimo.devtools.helloworld.HelloWorldTestPlugin">
 
     <requires>

@@ -57,6 +57,15 @@
     <feature url="features/org.apache.geronimo.v21.feature_2.1.1.jar" id="org.apache.geronimo.v21.feature" version="2.1.1">
         <category name="org.eclipse.wst.server.core.serverAdapter"/>
     </feature>
+    <feature url="features/org.apache.geronimo.feature_2.1.2.jar"     id="org.apache.geronimo.feature"     version="2.1.2">
+        <category name="org.eclipse.wst.server.core.serverAdapter"/>
+    </feature>
+    <feature url="features/org.apache.geronimo.v20.feature_2.1.2.jar" id="org.apache.geronimo.v20.feature" version="2.1.2">
+        <category name="org.eclipse.wst.server.core.serverAdapter"/>
+    </feature>
+    <feature url="features/org.apache.geronimo.v21.feature_2.1.2.jar" id="org.apache.geronimo.v21.feature" version="2.1.2">
+        <category name="org.eclipse.wst.server.core.serverAdapter"/>
+    </feature>
     
     
     <!-- 
@@ -82,6 +91,9 @@
     <feature url="features/org.apache.geronimo.installableruntime.jetty.feature_2.1.1.jar" id="org.apache.geronimo.installableruntime.jetty.feature" version="2.1.1">
         <category name="Geronimo Runtime"/>
     </feature>
+    <feature url="features/org.apache.geronimo.installableruntime.jetty.feature_2.1.2.jar" id="org.apache.geronimo.installableruntime.jetty.feature" version="2.1.2">
+        <category name="Geronimo Runtime"/>
+    </feature>
     
     <archive path="features/org.apache.geronimo.installableruntime.jetty.feature_1.0.0/geronimo-jetty-j2ee-1.0.zip"         url="../../1.0/geronimo-jetty-j2ee-1.0.zip"/>
     <archive path="features/org.apache.geronimo.installableruntime.jetty.feature_1.1.0/geronimo-jetty-j2ee-1.1.zip"         url="../../1.1/geronimo-jetty-j2ee-1.1.zip"/>
@@ -89,6 +101,7 @@
     <archive path="features/org.apache.geronimo.installableruntime.jetty.feature_2.0.1/geronimo-jetty6-jee5-2.0.1.zip"      url="../../2.0.1/geronimo-jetty6-jee5-2.0.1-bin.zip"/>
     <archive path="features/org.apache.geronimo.installableruntime.jetty.feature_2.1.0/geronimo-jetty6-javaee5-2.1.zip"     url="../../2.1/geronimo-jetty6-javaee5-2.1-bin.zip"/>
     <archive path="features/org.apache.geronimo.installableruntime.jetty.feature_2.1.1/geronimo-jetty6-javaee5-2.1.1.zip"   url="../../2.1/geronimo-jetty6-javaee5-2.1.1-bin.zip"/>
+    <archive path="features/org.apache.geronimo.installableruntime.jetty.feature_2.1.2/geronimo-jetty6-javaee5-2.1.2.zip"   url="../../2.1/geronimo-jetty6-javaee5-2.1.2-bin.zip"/>
 
     
     <!-- 
@@ -114,6 +127,9 @@
     <feature url="features/org.apache.geronimo.installableruntime.tomcat.feature_2.1.1.jar" id="org.apache.geronimo.installableruntime.tomcat.feature" version="2.1.1">
         <category name="Geronimo Runtime"/>
     </feature>
+    <feature url="features/org.apache.geronimo.installableruntime.tomcat.feature_2.1.2.jar" id="org.apache.geronimo.installableruntime.tomcat.feature" version="2.1.2">
+        <category name="Geronimo Runtime"/>
+    </feature>
 
     <archive path="features/org.apache.geronimo.installableruntime.tomcat.feature_1.0.0/geronimo-tomcat-j2ee-1.0.zip"           url="../../1.0/geronimo-tomcat-j2ee-1.0.zip"/>
     <archive path="features/org.apache.geronimo.installableruntime.tomcat.feature_1.1.0/geronimo-tomcat-j2ee-1.1.zip"           url="../../1.1/geronimo-tomcat-j2ee-1.1.zip"/>
@@ -121,5 +137,6 @@
     <archive path="features/org.apache.geronimo.installableruntime.tomcat.feature_2.0.1/geronimo-tomcat6-jee5-2.0.1.zip"        url="../../2.0.1/geronimo-tomcat6-jee5-2.0.1-bin.zip"/>
     <archive path="features/org.apache.geronimo.installableruntime.tomcat.feature_2.1.0/geronimo-tomcat6-javaee5-2.1.zip"       url="../../2.1/geronimo-tomcat6-javaee5-2.1-bin.zip"/>
     <archive path="features/org.apache.geronimo.installableruntime.tomcat.feature_2.1.1/geronimo-tomcat6-javaee5-2.1.1.zip"     url="../../2.1/geronimo-tomcat6-javaee5-2.1.1-bin.zip"/>
+    <archive path="features/org.apache.geronimo.installableruntime.tomcat.feature_2.1.2/geronimo-tomcat6-javaee5-2.1.2.zip"     url="../../2.1/geronimo-tomcat6-javaee5-2.1.2-bin.zip"/>
   
 </site>

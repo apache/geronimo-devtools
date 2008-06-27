@@ -20,8 +20,8 @@
 
 <feature
       id="org.apache.geronimo.installableruntime.jetty.feature"
-      label="Geronimo 2.1.1 (Jetty) Runtime"
-      version="2.1.1"
+      label="Geronimo 2.1.2 (Jetty) Runtime"
+      version="2.1.2"
       provider-name="%providerName"
       image="bigG.gif">
 
@@ -38,7 +38,7 @@
    </license>
    
    <data
-    id="geronimo-jetty6-javaee5-2.1.1.zip"
+    id="geronimo-jetty6-javaee5-2.1.2.zip"
     download-size="0"
     install-size="0"/>
     
