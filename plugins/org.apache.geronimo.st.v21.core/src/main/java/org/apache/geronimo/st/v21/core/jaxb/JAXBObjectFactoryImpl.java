@@ -17,7 +17,11 @@
 package org.apache.geronimo.st.v21.core.jaxb;
 
 import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
+import org.apache.geronimo.jee.application.ExtModule;
+import org.apache.geronimo.jee.application.Module;
+import org.apache.geronimo.jee.application.Path;
 import org.apache.geronimo.jee.deployment.Artifact;
+import org.apache.geronimo.jee.deployment.ClassFilter;
 import org.apache.geronimo.jee.deployment.Dependencies;
 import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.jee.deployment.Environment;
@@ -26,7 +30,6 @@ import org.apache.geronimo.jee.naming.EjbRef;
 import org.apache.geronimo.jee.naming.EjbLocalRef;
 import org.apache.geronimo.jee.naming.GbeanRef;
 import org.apache.geronimo.jee.naming.MessageDestination;
-import org.apache.geronimo.jee.naming.Pattern;
 import org.apache.geronimo.jee.naming.ResourceEnvRef;
 import org.apache.geronimo.jee.naming.ResourceRef;
 import org.apache.geronimo.jee.naming.ServiceRef;
@@ -61,7 +64,7 @@ public class JAXBObjectFactoryImpl implements JAXBObjectFactory {
             return (new org.apache.geronimo.jee.naming.ObjectFactory()).createGbeanRef();
         } else if ( type.equals( MessageDestination.class ) ) {
             return (new org.apache.geronimo.jee.naming.ObjectFactory()).createMessageDestination();
-        } else if ( type.equals( Pattern.class ) ) {
+        } else if ( type.equals( org.apache.geronimo.jee.naming.Pattern.class ) ) {
             return (new org.apache.geronimo.jee.naming.ObjectFactory()).createPattern();
         } else if ( type.equals( ServiceRef.class ) ) {
             return (new org.apache.geronimo.jee.naming.ObjectFactory()).createServiceRef();
@@ -79,12 +82,22 @@ public class JAXBObjectFactoryImpl implements JAXBObjectFactory {
             return (new org.apache.geronimo.jee.deployment.ObjectFactory()).createGbean();
         } else if ( type.equals( Artifact.class ) ) {
             return (new org.apache.geronimo.jee.deployment.ObjectFactory()).createArtifact();
+        } else if ( type.equals( ClassFilter.class ) ) {
+            return (new org.apache.geronimo.jee.deployment.ObjectFactory()).createClassFilter();
         } else if ( type.equals( Dependencies.class ) ) {
             return (new org.apache.geronimo.jee.deployment.ObjectFactory()).createDependencies();
         } else if ( type.equals( Dependency.class ) ) {
             return (new org.apache.geronimo.jee.deployment.ObjectFactory()).createDependency();
         } else if ( type.equals( Environment.class ) ) {
             return (new org.apache.geronimo.jee.deployment.ObjectFactory()).createEnvironment();
+        } else if ( type.equals( org.apache.geronimo.jee.deployment.Pattern.class ) ) {
+            return (new org.apache.geronimo.jee.deployment.ObjectFactory()).createPattern();
+        } else if ( type.equals( ExtModule.class ) ) {
+            return (new org.apache.geronimo.jee.application.ObjectFactory()).createExtModule();
+        } else if ( type.equals( Module.class ) ) {
+            return (new org.apache.geronimo.jee.application.ObjectFactory()).createModule();
+        } else if ( type.equals( Path.class ) ) {
+            return (new org.apache.geronimo.jee.application.ObjectFactory()).createPath();
         }
         
         return null;

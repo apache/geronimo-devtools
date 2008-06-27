@@ -143,8 +143,23 @@ public class Messages extends NLS {
     public static String editorSectionClientDependenciesTitle;
     public static String editorSectionClientDependenciesDescription;
     //
+    public static String editorSectionHiddenClassesTitle;
+    public static String editorSectionHiddenClassesDescription;
+    public static String editorSectionClientHiddenClassesTitle;
+    public static String editorSectionClientHiddenClassesDescription;
+    public static String editorSectionNonOverridableTitle;
+    public static String editorSectionNonOverridableDescription;
+    public static String editorSectionClientNonOverridableTitle;
+    public static String editorSectionClientNonOverridableDescription;
+    //
     public static String editorSectionMessageDestTitle;
     public static String editorSectionMessageDestDescription;
+    //
+    public static String editorSectionModuleTitle;
+    public static String editorSectionModuleDescription;
+    //
+    public static String editorSectionExtModuleTitle;
+    public static String editorSectionExtModuleDescription;
     //
     public static String editorSectionImportTitle;
     public static String editorSectionImportDescription;
@@ -247,6 +262,16 @@ public class Messages extends NLS {
     public static String wizardPageTitle_MessageDest;
     public static String wizardPageDescription_MessageDest;
     //
+    public static String wizardNewTitle_Module;
+    public static String wizardEditTitle_Module;
+    public static String wizardPageTitle_Module;
+    public static String wizardPageDescription_Module;
+    //
+    public static String wizardNewTitle_ExtModule;
+    public static String wizardEditTitle_ExtModule;
+    public static String wizardPageTitle_ExtModule;
+    public static String wizardPageDescription_ExtModule;
+    //
     public static String wizardNewTitle_SecurityRole;
     public static String wizardEditTitle_SecurityRole;
     public static String wizardPageTitle_SecurityRole;
@@ -274,4 +299,15 @@ public class Messages extends NLS {
     public static String addSharedLib;
     public static String webContainerSection;
     public static String webContainerSectionDescription;
+
+    public static String moduleType;
+    public static String path;
+    public static String internalPath;
+    public static String externalPath;
+    public static String altDD;
+    
+    public static String connector;
+    public static String ejb;
+    public static String java;
+    public static String web;
 }
