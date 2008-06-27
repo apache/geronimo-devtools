@@ -25,7 +25,7 @@ public class ImportWizard extends DependencyWizard {
 	 * @param section
 	 */
 	public ImportWizard(AbstractTableSection section) {
-		super(section);
+		super(section, true);
 	}
 
 	/*

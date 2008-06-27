@@ -77,67 +77,65 @@ public class JAXBModelUtils {
             ((OpenejbJar)plan).setSecurity((new org.apache.geronimo.jee.security.ObjectFactory()).createSecurity( security ) );
         }
     }
-    
+
     public static Environment getEnvironment(JAXBElement element) {
+        return getEnvironment (element, true);
+    }
+
+    public static Environment getEnvironment(JAXBElement element, boolean serverEnvironment) {
         Object plan = element.getValue();
-        if (WebApp.class.isInstance (plan)) {
-            return ((WebApp)plan).getEnvironment() == null ? null : ((WebApp)plan).getEnvironment();
+        if (serverEnvironment == true) {
+            if (WebApp.class.isInstance (plan)) {
+                return ((WebApp)plan).getEnvironment() == null ? null : ((WebApp)plan).getEnvironment();
+            }
+            else if (Application.class.isInstance (plan)) {
+                return ((Application)plan).getEnvironment() == null ? null : ((Application)plan).getEnvironment();
+            }
+            else if (OpenejbJar.class.isInstance (plan)) {
+                return ((OpenejbJar)plan).getEnvironment() == null ? null : ((OpenejbJar)plan).getEnvironment();
+            }
+            else if (Connector.class.isInstance (plan)) {
+                return ((Connector)plan).getEnvironment() == null ? null : ((Connector)plan).getEnvironment();
+            }
+            else if (ApplicationClient.class.isInstance (plan)) {
+                return ((ApplicationClient)plan).getServerEnvironment() == null ? null : ((ApplicationClient)plan).getServerEnvironment();
+            }
         }
-        else if (Application.class.isInstance (plan)) {
-            return ((Application)plan).getEnvironment() == null ? null : ((Application)plan).getEnvironment();
-        }
-        else if (OpenejbJar.class.isInstance (plan)) {
-            return ((OpenejbJar)plan).getEnvironment() == null ? null : ((OpenejbJar)plan).getEnvironment();
-        }
-        else if (Connector.class.isInstance (plan)) {
-            return ((Connector)plan).getEnvironment() == null ? null : ((Connector)plan).getEnvironment();
+        else {
+            if (ApplicationClient.class.isInstance (plan)) {
+                return ((ApplicationClient)plan).getClientEnvironment() == null ? null : ((ApplicationClient)plan).getClientEnvironment();
+            }
         }
         return null;
     }
-    
+
     public static void setEnvironment (JAXBElement element, Environment environment) {
-        Object plan = element.getValue();
-        if (WebApp.class.isInstance (plan)) {
-            ((WebApp)plan).setEnvironment (environment);
-        }
-        else if (Application.class.isInstance (plan)) {
-            ((Application)plan).setEnvironment (environment);
-        }
-        else if (OpenejbJar.class.isInstance (plan)) {
-            ((OpenejbJar)plan).setEnvironment (environment);
-        }
-        else if (Connector.class.isInstance (plan)) {
-            ((Connector)plan).setEnvironment (environment);
-        }
+        setEnvironment (element, environment, true);
     }
 
-    public static Environment getClientEnvironment(JAXBElement element) {
-    	Object plan = element.getValue();
-        if (ApplicationClient.class.isInstance (plan)) {
-            return ((ApplicationClient)plan).getClientEnvironment() == null ? null : ((ApplicationClient)plan).getClientEnvironment();
-        }
-        return null;
-    }
-    
-    public static void setClientEnvironment (JAXBElement element, Environment environment) {
+    public static void setEnvironment (JAXBElement element, Environment environment, boolean serverEnvironment) {
         Object plan = element.getValue();
-        if (ApplicationClient.class.isInstance (plan)) {
-            ((ApplicationClient)plan).setClientEnvironment (environment);
+        if (serverEnvironment == true) {
+            if (WebApp.class.isInstance (plan)) {
+                ((WebApp)plan).setEnvironment (environment);
+            }
+            else if (Application.class.isInstance (plan)) {
+                ((Application)plan).setEnvironment (environment);
+            }
+            else if (OpenejbJar.class.isInstance (plan)) {
+                ((OpenejbJar)plan).setEnvironment (environment);
+            }
+            else if (Connector.class.isInstance (plan)) {
+                ((Connector)plan).setEnvironment (environment);
+            }
+            else if (ApplicationClient.class.isInstance (plan)) {
+                ((ApplicationClient)plan).setServerEnvironment (environment);
+            }
         }
-    }
-
-    public static Environment getServerEnvironment(JAXBElement element) {
-    	Object plan = element.getValue();
-        if (ApplicationClient.class.isInstance (plan)) {
-            return ((ApplicationClient)plan).getServerEnvironment() == null ? null : ((ApplicationClient)plan).getServerEnvironment();
-        }
-        return null;
-    }
-    
-    public static void setServerEnvironment (JAXBElement element, Environment environment) {
-        Object plan = element.getValue();
-        if (ApplicationClient.class.isInstance (plan)) {
-            ((ApplicationClient)plan).setServerEnvironment (environment);
+        else {
+            if (ApplicationClient.class.isInstance (plan)) {
+                ((ApplicationClient)plan).setClientEnvironment (environment);
+            }
         }
     }
 

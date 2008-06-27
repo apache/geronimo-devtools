@@ -38,6 +38,8 @@ public class DependencySection extends AbstractTableSection {
 
     protected Environment environment;
 
+    protected boolean isServerEnvironment;
+
     /**
      * @param plan
      * @param parent
@@ -47,6 +49,24 @@ public class DependencySection extends AbstractTableSection {
     public DependencySection(JAXBElement plan, Environment environment, Composite parent, FormToolkit toolkit, int style) {
         super(plan, parent, toolkit, style);
         this.environment = environment;
+        this.isServerEnvironment = true;
+        this.COLUMN_NAMES = new String[] {
+                CommonMessages.artifactId, CommonMessages.groupId, CommonMessages.version, CommonMessages.type
+        };
+        createClient();
+    }
+
+    /**
+     * @param plan
+     * @param parent
+     * @param toolkit
+     * @param style
+     * @param envType
+     */
+    public DependencySection(JAXBElement plan, Environment environment, Composite parent, FormToolkit toolkit, int style, boolean isServerEnvironment) {
+        super(plan, parent, toolkit, style);
+        this.environment = environment;
+        this.isServerEnvironment = isServerEnvironment; 
         this.COLUMN_NAMES = new String[] {
                 CommonMessages.artifactId, CommonMessages.groupId, CommonMessages.version, CommonMessages.type
         };
@@ -54,11 +74,17 @@ public class DependencySection extends AbstractTableSection {
     }
 
     public String getTitle() {
-        return CommonMessages.editorSectionDependenciesTitle;
+        if (isServerEnvironment)
+            return CommonMessages.editorSectionDependenciesTitle;
+        else
+            return CommonMessages.editorSectionClientDependenciesTitle;
     }
 
     public String getDescription() {
-        return CommonMessages.editorSectionDependenciesDescription;
+        if (isServerEnvironment)
+            return CommonMessages.editorSectionDependenciesDescription;
+        else
+            return CommonMessages.editorSectionClientDependenciesDescription;
     }
 
     public List getObjectContainer() {
@@ -74,7 +100,7 @@ public class DependencySection extends AbstractTableSection {
     }
 
     public Wizard getWizard() {
-        return new DependencyWizard(this);
+        return new DependencyWizard(this, isServerEnvironment);
     }
 
     public ImageDescriptor getImageDescriptor() {
