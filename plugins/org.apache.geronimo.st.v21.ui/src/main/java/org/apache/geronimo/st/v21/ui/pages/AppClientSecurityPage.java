@@ -23,6 +23,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class AppClientSecurityPage extends AbstractGeronimoFormPage {
 
     public AppClientSecurityPage(FormEditor editor, String id, String title) {

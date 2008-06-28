@@ -16,15 +16,24 @@
  */
 package org.apache.geronimo.st.v21.ui.pages;
 
+import java.util.List;
+
+import org.apache.geronimo.jee.application.Application;
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.ui.sections.ClassFilterSection;
 import org.apache.geronimo.st.v21.ui.sections.DependencySection;
+import org.apache.geronimo.st.v21.ui.sections.ExtModuleSection;
 import org.apache.geronimo.st.v21.ui.sections.GBeanSection;
+import org.apache.geronimo.st.v21.ui.sections.ModuleSection;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
+/*
+ * @version $Rev$ $Date$
+ */
 public class DeploymentPage extends AbstractGeronimoFormPage {
     
     public DeploymentPage(FormEditor editor, String id, String title) {
@@ -41,6 +50,11 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
         managedForm.addPart(new GBeanSection(getDeploymentPlan(), JAXBModelUtils.getGbeans(getDeploymentPlan()), body, toolkit, getStyle()));
         managedForm.addPart(new ClassFilterSection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan()), body, toolkit, getStyle(), true, true));
         managedForm.addPart(new ClassFilterSection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan()), body, toolkit, getStyle(), true, false));
+        if (Application.class.isInstance(getDeploymentPlan().getValue())) {
+            Application application = (Application)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
+            managedForm.addPart(new ModuleSection(getDeploymentPlan(), body, toolkit, getStyle(), application.getModule()));
+            managedForm.addPart(new ExtModuleSection(getDeploymentPlan(), body, toolkit, getStyle(), application.getExtModule()));
+        }
     }
 
     /*

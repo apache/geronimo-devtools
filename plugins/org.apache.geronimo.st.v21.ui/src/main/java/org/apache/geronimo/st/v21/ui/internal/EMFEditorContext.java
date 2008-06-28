@@ -16,7 +16,9 @@
  */
 package org.apache.geronimo.st.v21.ui.internal;
 
-
+/**
+ * @version $Rev$ $Date$
+ */
 public class EMFEditorContext {
 	
 //	private static ComposedAdapterFactory factory;

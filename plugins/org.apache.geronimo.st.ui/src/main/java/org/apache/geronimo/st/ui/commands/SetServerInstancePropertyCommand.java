@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 
 /**
- * @version
+ * @version $Rev$ $Date$
  */
 public class SetServerInstancePropertyCommand extends ServerCommand {
 	

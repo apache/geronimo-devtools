@@ -31,6 +31,9 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class ResourceRefSection extends AbstractTableSection {
 
     public ResourceRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List resourceRefs) {

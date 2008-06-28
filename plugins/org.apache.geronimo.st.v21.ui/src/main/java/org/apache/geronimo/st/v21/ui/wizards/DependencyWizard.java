@@ -28,6 +28,9 @@ import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.jee.deployment.Dependencies;
 import org.apache.geronimo.jee.deployment.Environment;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class DependencyWizard extends AbstractTableWizard {
 
     protected boolean isServerEnvironment;

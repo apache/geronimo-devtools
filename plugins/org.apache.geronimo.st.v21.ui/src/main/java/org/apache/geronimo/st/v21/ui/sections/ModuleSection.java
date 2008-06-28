@@ -23,46 +23,39 @@ import javax.xml.bind.JAXBElement;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
-import org.apache.geronimo.st.v21.ui.Activator;
-import org.apache.geronimo.st.v21.ui.wizards.ResourceEnvRefWizard;
-import org.apache.geronimo.jee.naming.ResourceEnvRef;
-import org.eclipse.jface.resource.ImageDescriptor;
+import org.apache.geronimo.st.v21.ui.wizards.ModuleWizard;
+import org.apache.geronimo.jee.application.Module;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-/**
+/*
  * @version $Rev$ $Date$
  */
-public class ResourceEnvRefSection extends AbstractTableSection {
+public class ModuleSection extends AbstractTableSection {
 
-
-    public ResourceEnvRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List resourceEnvRefs) {
+    public ModuleSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List modules) {
         super(plan, parent, toolkit, style);
-        this.objectContainer = resourceEnvRefs;
+        this.objectContainer = modules;
         COLUMN_NAMES = new String[] {
-                CommonMessages.editorResEnvRefNameTitle, CommonMessages.editorResEnvRefMsgDestTitle };
+                CommonMessages.moduleType, CommonMessages.path, CommonMessages.altDD };
         createClient();
     }
 
     public String getTitle() {
-        return CommonMessages.editorResourceEnvRefTitle;
+        return CommonMessages.editorSectionModuleTitle;
     }
 
     public String getDescription() {
-        return CommonMessages.editorResourceEnvRefDescription;
+        return CommonMessages.editorSectionModuleDescription;
     }
 
     public Wizard getWizard() {
-        return new ResourceEnvRefWizard(this);
-    }
-
-    public ImageDescriptor getImageDescriptor() {
-        return Activator.imageDescriptorFromPlugin("org.eclipse.jst.j2ee", "icons/full/obj16/res_env_ref_obj.gif");
+        return new ModuleWizard(this);
     }
 
     public Class getTableEntryObjectType() {
-        return ResourceEnvRef.class;
+        return Module.class;
     }
 
     /*
@@ -80,11 +73,42 @@ public class ResourceEnvRefSection extends AbstractTableSection {
             }
 
             public String getColumnText(Object element, int columnIndex) {
-                if (ResourceEnvRef.class.isInstance(element)) {
-                    ResourceEnvRef resourceEnvRef = (ResourceEnvRef)element;
+                if (Module.class.isInstance(element)) {
+                    Module module = (Module)element;
                     switch (columnIndex) {
-                    case 0: return resourceEnvRef.getRefName();
-                    case 1: return resourceEnvRef.getMessageDestinationLink();
+                    case 0:
+                        if (module.getConnector() != null) {
+                            return "connector";
+                        }
+                        else if (module.getEjb() != null) {
+                            return "ejb";
+                        }
+                        else if (module.getJava() != null) {
+                            return "java";
+                        }
+                        else if (module.getWeb() != null) {
+                            return "web";
+                        }
+                        return "";
+                    case 1: 
+                        if (module.getConnector() != null) {
+                            return module.getConnector().getValue();
+                        }
+                        else if (module.getEjb() != null) {
+                            return module.getEjb().getValue();
+                        }
+                        else if (module.getJava() != null) {
+                            return module.getJava().getValue();
+                        }
+                        else if (module.getWeb() != null) {
+                            return module.getWeb().getValue();
+                        }
+                        return "";
+                    case 2:
+                        if (module.getAltDd() != null) {
+                            return module.getAltDd().getValue();
+                        }
+                        return "";
                     }
                 }
                 return null;

@@ -28,6 +28,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wst.common.project.facet.ui.AbstractFacetWizardPage;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class FacetInstallPage extends AbstractFacetWizardPage {
 
 	private DeploymentPlanInstallConfig config;

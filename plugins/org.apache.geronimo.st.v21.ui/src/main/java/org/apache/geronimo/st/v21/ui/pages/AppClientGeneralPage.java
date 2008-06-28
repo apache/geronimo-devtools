@@ -23,6 +23,9 @@ import org.apache.geronimo.st.v21.ui.sections.AppClientServerGeneralSection;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class AppClientGeneralPage extends AbstractGeronimoFormPage {
 
 	public AppClientGeneralPage(FormEditor editor, String id, String title) {

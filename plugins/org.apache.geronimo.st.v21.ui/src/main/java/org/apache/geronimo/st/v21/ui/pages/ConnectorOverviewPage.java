@@ -22,6 +22,9 @@ import org.apache.geronimo.st.v21.ui.sections.ConnectorGeneralSection;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class ConnectorOverviewPage extends AbstractGeronimoFormPage {
 
 	public ConnectorOverviewPage(FormEditor editor, String id, String title) {

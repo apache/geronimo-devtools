@@ -19,6 +19,9 @@ package org.apache.geronimo.st.v21.ui.wizards;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class ImportWizard extends DependencyWizard {
 
 	/**

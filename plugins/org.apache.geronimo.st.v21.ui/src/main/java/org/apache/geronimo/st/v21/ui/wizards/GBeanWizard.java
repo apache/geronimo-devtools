@@ -27,6 +27,9 @@ import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class GBeanWizard extends AbstractTableWizard {
 
     public GBeanWizard(AbstractTableSection section) {

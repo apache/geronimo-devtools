@@ -34,6 +34,9 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class AppClientSecuritySection extends AbstractSectionPart {
 
     protected Text realm;

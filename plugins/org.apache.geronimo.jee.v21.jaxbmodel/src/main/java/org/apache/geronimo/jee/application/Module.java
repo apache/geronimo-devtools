@@ -203,7 +203,10 @@ public class Module
      *     
      */
     public void setAltDd(Path value) {
-        this.altDd = value;
+        if (value.getValue().length() > 0)
+            this.altDd = value;
+        else
+            this.altDd = null;
     }
 
     /**

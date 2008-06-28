@@ -37,7 +37,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.wst.server.ui.editor.ServerEditorSection;
 
 /**
- * @version
+ * @version $Rev$ $Date$
  */
 public class ServerEditorStartupSection extends ServerEditorSection {
 	

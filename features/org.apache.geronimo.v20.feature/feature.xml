@@ -16,6 +16,7 @@
   ~ limitations under the License.
   -->
 
+<!-- @version $Rev$ $Date$ -->
 <feature
       id="org.apache.geronimo.v20.feature"
       label="Geronimo v2.0 Server Adapter"

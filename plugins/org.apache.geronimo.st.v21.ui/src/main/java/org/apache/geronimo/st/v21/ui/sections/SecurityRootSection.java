@@ -38,6 +38,9 @@ import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class SecurityRootSection extends AbstractSectionPart {
 
 	Security secERef;

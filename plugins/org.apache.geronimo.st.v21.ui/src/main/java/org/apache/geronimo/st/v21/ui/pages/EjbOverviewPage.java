@@ -21,6 +21,9 @@ import org.apache.geronimo.st.v21.ui.sections.OpenEjbJarGeneralSection;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class EjbOverviewPage extends AbstractGeronimoFormPage {
 
 	public EjbOverviewPage(FormEditor editor, String id, String title) {

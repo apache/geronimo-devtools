@@ -24,6 +24,9 @@ import org.apache.geronimo.st.ui.CommonMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class AppClientServerGeneralSection extends CommonGeneralSection {
 
 	ApplicationClient plan;

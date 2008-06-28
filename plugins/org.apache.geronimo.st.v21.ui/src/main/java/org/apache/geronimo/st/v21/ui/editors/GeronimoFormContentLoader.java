@@ -40,6 +40,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.FormEditor;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader {
 
     /*

@@ -32,6 +32,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class OpenEjbJarGeneralSection extends CommonGeneralSection {
 
     protected Text ejbqlCompilerFactory;

@@ -32,6 +32,7 @@ import org.eclipse.jdt.core.JavaCore;
  *
  * Helper class for ClasspathContainers support
  *
+ * @version $Rev$ $Date$
  */
 public class ClasspathContainersHelper {
 

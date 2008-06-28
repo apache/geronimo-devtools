@@ -43,6 +43,9 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.wst.server.ui.editor.ServerEditorSection;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class ServerEditorTestEnvSection extends ServerEditorSection {
 
     // SWT widget(s)

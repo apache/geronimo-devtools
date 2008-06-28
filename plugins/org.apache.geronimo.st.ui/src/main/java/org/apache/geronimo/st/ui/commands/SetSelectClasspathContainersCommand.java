@@ -19,6 +19,9 @@ package org.apache.geronimo.st.ui.commands;
 import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class SetSelectClasspathContainersCommand extends ServerCommand {
 
     boolean value;

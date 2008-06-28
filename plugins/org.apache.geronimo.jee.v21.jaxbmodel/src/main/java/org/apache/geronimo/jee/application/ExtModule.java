@@ -211,7 +211,10 @@ public class ExtModule
      *     
      */
     public void setInternalPath(java.lang.String value) {
-        this.internalPath = value;
+        if (value == null || value.length() == 0)
+            this.internalPath = null;
+        else
+            this.internalPath = value;
     }
 
     /**

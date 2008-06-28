@@ -31,6 +31,9 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class EjbRefSection extends AbstractTableSection {
 
     /**

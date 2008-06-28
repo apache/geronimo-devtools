@@ -37,6 +37,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class SecurityRoleWizard extends AbstractTableWizard {
 
     public SecurityRoleWizard(AbstractTableSection section) {

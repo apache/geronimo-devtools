@@ -34,6 +34,9 @@ import org.apache.geronimo.st.v21.ui.sections.ServiceRefSection;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class NamingFormPage extends AbstractGeronimoFormPage {
 
     public List resRefs;

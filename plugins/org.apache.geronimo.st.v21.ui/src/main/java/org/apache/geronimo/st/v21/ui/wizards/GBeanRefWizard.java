@@ -36,6 +36,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+/**
+ * @version $Rev$ $Date$
+ */
 public class GBeanRefWizard extends AbstractTableWizard {
 
     public GBeanRefWizard(AbstractTableSection section) {

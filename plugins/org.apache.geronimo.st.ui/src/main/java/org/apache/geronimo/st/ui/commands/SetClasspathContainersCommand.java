@@ -22,7 +22,9 @@ import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.ui.internal.Trace;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 
-
+/**
+ * @version $Rev$ $Date$
+ */
 public class SetClasspathContainersCommand extends ServerCommand {
 
     private List<String> newList;
