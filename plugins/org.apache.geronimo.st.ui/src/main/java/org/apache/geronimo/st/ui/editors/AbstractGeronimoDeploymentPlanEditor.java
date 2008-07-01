@@ -16,18 +16,15 @@
  */
 package org.apache.geronimo.st.ui.editors;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
 import org.apache.geronimo.st.core.operations.ImportDeploymentPlanDataModelProvider;
 import org.apache.geronimo.st.core.operations.ImportDeploymentPlanOperation;
-import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.internal.Trace;
 import org.eclipse.core.resources.IFile;
@@ -51,6 +48,7 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
+import org.eclipse.wst.sse.ui.StructuredTextEditor;
 
 /**
  * @version $Rev$ $Date$
@@ -136,7 +134,7 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
 	}
 
 	protected void addSourcePage() throws PartInitException {
-		TextEditor source = new TextEditor();
+		StructuredTextEditor source = new StructuredTextEditor();
 		int index = addPage(source, getEditorInput());
 		setPageText(index, Messages.editorTabSource);
 	}
