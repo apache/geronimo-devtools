@@ -129,7 +129,7 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
 					new String[] { getRuntime().getName(),
 							getRuntime().getRuntimeType().getVersion(),
 							detectedVersion });
-			return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+			return new Status(IStatus.WARNING, Activator.PLUGIN_ID,
 					INCORRECT_VERSION, message, null);
 		}
 
