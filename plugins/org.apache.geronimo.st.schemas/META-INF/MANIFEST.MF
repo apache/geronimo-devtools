@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Geronimo Schema Catalog Plug-in
+Bundle-SymbolicName: org.apache.geronimo.st.schemas;singleton:=true
+Bundle-Version: 2.1.2
+Require-Bundle: org.eclipse.wst.xml.core
+Bundle-Vendor: Apache.org

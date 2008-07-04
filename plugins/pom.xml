@@ -139,6 +139,7 @@
         <module>org.apache.geronimo.st.v20.core</module>
         <module>org.apache.geronimo.st.v21.core</module>
         <module>org.apache.geronimo.st.ui</module>
+        <module>org.apache.geronimo.st.schemas</module>
         <module>org.apache.geronimo.st.v20.ui</module>
         <module>org.apache.geronimo.st.v21.ui</module>
         <module>org.apache.geronimo.runtime.common</module>

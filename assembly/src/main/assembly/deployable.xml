@@ -51,6 +51,7 @@
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v21</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.core</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.ui</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.schemas</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v20.core</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v20.ui</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v21.core</include>

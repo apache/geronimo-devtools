@@ -59,6 +59,13 @@
          unpack="false"/>
     
     <plugin
+         id="org.apache.geronimo.st.schemas"
+         download-size="0"
+         install-size="0"
+         version="2.1.2"
+         unpack="false"/>
+    
+    <plugin
          id="org.apache.geronimo.runtime.common"
          download-size="0"
          install-size="0"
