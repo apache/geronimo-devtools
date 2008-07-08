@@ -408,46 +408,28 @@
                         
     <profiles>
         <profile>
-            <id>windows</id>
+            <id>default</id>
             <activation>
-                <os>
-                    <family>windows</family>
-                </os>
+                <activeByDefault>true</activeByDefault>
             </activation>
-            <properties>
-                <eclipsePlatformFamily>win32</eclipsePlatformFamily>
-            </properties>
+            <modules>
+                <module>eclipse</module>
+                <module>plugins</module>
+                <module>features</module>
+                <module>assembly</module>
+                <module>testsuite</module>
+            </modules>
         </profile>
+
         <profile>
-            <id>unix</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                </os>
-            </activation>
-            <properties>
-                <eclipsePlatformFamily>linux</eclipsePlatformFamily>
-            </properties>
-        </profile>
-        <profile>
-            <id>mac</id>
-            <activation>
-                <os>
-                    <family>mac</family>
-                </os>
-            </activation>
-            <properties>
-                <eclipsePlatformFamily>macos</eclipsePlatformFamily>
-            </properties>
+            <id>no-it</id>
+            <modules>
+                <module>eclipse</module>
+                <module>plugins</module>
+                <module>features</module>
+                <module>assembly</module>
+            </modules>
         </profile>
     </profiles>
-                        
-    <modules>
-        <module>eclipse</module>
-        <module>plugins</module>
-        <module>features</module>
-        <module>assembly</module>
-        <!-- <module>testsuite</module> -->
-    </modules>
                         
 </project>

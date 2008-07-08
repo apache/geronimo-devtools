@@ -56,4 +56,40 @@
         </plugins>
     </build>
                                                 
+    <profiles>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <properties>
+                <eclipsePlatformFamily>win32</eclipsePlatformFamily>
+            </properties>
+        </profile>
+        <profile>
+            <id>unix</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                </os>
+            </activation>
+            <properties>
+                <eclipsePlatformFamily>linux</eclipsePlatformFamily>
+            </properties>
+        </profile>
+        <profile>
+            <id>mac</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+            </activation>
+            <properties>
+                <eclipsePlatformFamily>macos</eclipsePlatformFamily>
+            </properties>
+        </profile>
+    </profiles>
+                                                
 </project>
