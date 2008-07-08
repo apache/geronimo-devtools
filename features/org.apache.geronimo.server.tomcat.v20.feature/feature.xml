@@ -20,7 +20,7 @@
 
 <feature
       id="org.apache.geronimo.server.tomcat.v20.feature"
-      label="Geronimo 2.1.2 (Tomcat) Runtime"
+      label="Geronimo v2.0 Tomcat Server"
       version="2.1.2"
       provider-name="%providerName"
       image="bigG.gif">

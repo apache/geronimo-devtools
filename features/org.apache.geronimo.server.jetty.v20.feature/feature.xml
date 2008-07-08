@@ -15,12 +15,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
-<!-- $Rev$ $Date$ -->
-
 <feature
       id="org.apache.geronimo.server.jetty.v20.feature"
-      label="Geronimo 2.1.2 (Jetty) Runtime"
+      label="Geronimo v2.0 Jetty Server"
       version="2.1.2"
       provider-name="%providerName"
       image="bigG.gif">
