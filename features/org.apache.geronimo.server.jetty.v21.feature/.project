@@ -1,0 +1,17 @@
+<projectDescription>
+  <name>org.apache.geronimo.server.jetty.v21.feature</name>
+  <comment>Apache Geronimo Eclipse Plugin and WTP Server Adapter</comment>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.pde.FeatureBuilder</name>
+    </buildCommand>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.pde.FeatureNature</nature>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>
