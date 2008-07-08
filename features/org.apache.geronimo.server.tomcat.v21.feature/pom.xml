@@ -17,9 +17,9 @@
 <!-- $Rev: 672371 $ $Date: 2008-06-27 16:14:32 -0400 (Fri, 27 Jun 2008) $ -->
 <project>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>org.apache.geronimo.server.tomcat.v20.feature</artifactId>
+    <artifactId>org.apache.geronimo.server.tomcat.v21.feature</artifactId>
     <packaging>jar</packaging>
-    <version>${org.apache.geronimo.server.tomcat.v20.feature_version}</version>
+    <version>${org.apache.geronimo.server.tomcat.v21.feature_version}</version>
     <name>${artifactId}</name>
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>

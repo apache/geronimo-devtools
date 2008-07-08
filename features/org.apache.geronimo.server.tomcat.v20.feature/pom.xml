@@ -17,9 +17,9 @@
 <!-- $Rev$ $Date$ -->
 <project>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>org.apache.geronimo.server.tomcat.v21.feature</artifactId>
+    <artifactId>org.apache.geronimo.server.tomcat.v20.feature</artifactId>
     <packaging>jar</packaging>
-    <version>${org.apache.geronimo.server.tomcat.v21.feature_version}</version>
+    <version>${org.apache.geronimo.server.tomcat.v20.feature_version}</version>
     <name>${artifactId}</name>
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
