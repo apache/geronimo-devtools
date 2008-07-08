@@ -87,8 +87,10 @@
         <org.apache.geronimo.feature_version>2.1.2</org.apache.geronimo.feature_version>
         <org.apache.geronimo.v20.feature_version>2.1.2</org.apache.geronimo.v20.feature_version>
         <org.apache.geronimo.v21.feature_version>2.1.2</org.apache.geronimo.v21.feature_version>
-        <org.apache.geronimo.installableruntime.tomcat.feature_version>2.1.2</org.apache.geronimo.installableruntime.tomcat.feature_version>
-        <org.apache.geronimo.installableruntime.jetty.feature_version>2.1.2</org.apache.geronimo.installableruntime.jetty.feature_version>
+        <org.apache.geronimo.server.jetty.v20.feature_version>2.1.2</org.apache.geronimo.server.jetty.v20.feature_version>
+        <org.apache.geronimo.server.tomcat.v20.feature_version>2.1.2</org.apache.geronimo.server.tomcat.v20.feature_version>
+        <org.apache.geronimo.server.jetty.v21.feature_version>2.1.2</org.apache.geronimo.server.jetty.v21.feature_version>
+        <org.apache.geronimo.server.tomcat.v21.feature_version>2.1.2</org.apache.geronimo.server.tomcat.v21.feature_version>
     </properties>
                         
     <dependencyManagement>
