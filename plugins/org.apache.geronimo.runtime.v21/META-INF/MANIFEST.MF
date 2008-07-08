@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.apache.geronimo.runtime.v21;singleton:=true
 Bundle-Version: 2.1.2
 Require-Bundle: org.apache.geronimo.runtime.common;visibility:=reexport
 Bundle-ClassPath: lib/geronimo-common-2.2-SNAPSHOT.jar,
- lib/geronimo-deploy-jsr88-2.2-SNAPSHOT.jar,
+ lib/geronimo-deploy-jsr88-2.1.1.jar,
  lib/geronimo-deployment-2.2-SNAPSHOT.jar,
  lib/geronimo-j2ee-schema-2.2-SNAPSHOT.jar,
  lib/geronimo-kernel-2.2-SNAPSHOT.jar,
