@@ -19,7 +19,7 @@
 <!-- $Rev$ $Date$ -->
 
 <feature
-      id="org.apache.geronimo.installableruntime.jetty.feature"
+      id="org.apache.geronimo.server.jetty.v20.feature"
       label="Geronimo 2.1.2 (Jetty) Runtime"
       version="2.1.2"
       provider-name="%providerName"
@@ -37,11 +37,6 @@
    <license url="http://www.apache.org/licenses/LICENSE-2.0.html">
       %license
    </license>
-
-   <data
-         id="geronimo-jetty6-javaee5-2.1.2.zip"
-         download-size="75780"
-         install-size="96294"/>
 
    <data
          id="geronimo-jetty6-jee5-2.0.2.zip"

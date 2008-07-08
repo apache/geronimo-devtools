@@ -19,7 +19,7 @@
 <!-- $Rev$ $Date$ -->
 
 <feature
-      id="org.apache.geronimo.installableruntime.tomcat.feature"
+      id="org.apache.geronimo.server.tomcat.v20.feature"
       label="Geronimo 2.1.2 (Tomcat) Runtime"
       version="2.1.2"
       provider-name="%providerName"
@@ -36,11 +36,6 @@
    <license url="http://www.apache.org/licenses/LICENSE-2.0.html">
         %license
    </license>
-   
-   <data
-    id="geronimo-tomcat6-javaee5-2.1.2.zip"
-    download-size="76977"
-    install-size="143977"/>
    
    <data 	 
     id="geronimo-tomcat6-jee5-2.0.2.zip" 	 

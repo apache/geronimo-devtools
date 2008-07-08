@@ -32,7 +32,9 @@
         <module>org.apache.geronimo.feature</module>
         <module>org.apache.geronimo.v20.feature</module>
         <module>org.apache.geronimo.v21.feature</module>
-        <module>org.apache.geronimo.installableruntime.jetty.feature</module>
-        <module>org.apache.geronimo.installableruntime.tomcat.feature</module>
+        <module>org.apache.geronimo.server.jetty.v20.feature</module>
+        <module>org.apache.geronimo.server.jetty.v21.feature</module>
+        <module>org.apache.geronimo.server.tomcat.v20.feature</module>
+        <module>org.apache.geronimo.server.tomcat.v21.feature</module>
     </modules>
 </project>

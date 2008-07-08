@@ -69,8 +69,10 @@
             <outputDirectory>features/</outputDirectory>
             <includes>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.feature</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.installableruntime.jetty.feature</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.installableruntime.tomcat.feature</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.server.jetty.v20.feature</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.server.tomcat.v20.feature</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.server.jetty.v21.feature</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.server.tomcat.v21.feature</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.v20.feature</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.v21.feature</include>
             </includes>
