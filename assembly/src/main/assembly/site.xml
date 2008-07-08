@@ -111,6 +111,8 @@
         <category name="Geronimo Runtime"/>
     </feature>
     <feature url="features/org.apache.geronimo.server.jetty.v20.feature_2.1.2.jar" id="org.apache.geronimo.server.jetty.v20.feature" version="2.1.2">
+        <category name="Geronimo Runtime"/>
+    </feature>
     <feature url="features/org.apache.geronimo.server.jetty.v21.feature_2.1.2.jar" id="org.apache.geronimo.server.jetty.v21.feature" version="2.1.2">
         <category name="Geronimo Runtime"/>
     </feature>
@@ -149,6 +151,8 @@
         <category name="Geronimo Runtime"/>
     </feature>
     <feature url="features/org.apache.geronimo.server.tomcat.v20.feature_2.1.2.jar" id="org.apache.geronimo.server.tomcat.v20.feature" version="2.1.2">
+        <category name="Geronimo Runtime"/>
+    </feature>
     <feature url="features/org.apache.geronimo.server.tomcat.v21.feature_2.1.2.jar" id="org.apache.geronimo.server.tomcat.v21.feature" version="2.1.2">
         <category name="Geronimo Runtime"/>
     </feature>
