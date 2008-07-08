@@ -27,7 +27,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <properties>
-        <geronimoVersion>2.2-SNAPSHOT</geronimoVersion>
+        <geronimoVersion>2.1.2-SNAPSHOT</geronimoVersion>
     </properties>
     <build>
         <resources>
@@ -92,7 +92,7 @@
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.framework</groupId>
                                     <artifactId>geronimo-deploy-jsr88</artifactId>
-                                    <version>2.1.1</version>
+                                    <version>${geronimoVersion}</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.framework</groupId>
