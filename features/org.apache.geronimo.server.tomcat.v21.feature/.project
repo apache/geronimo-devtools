@@ -1,5 +1,5 @@
 <projectDescription>
-  <name>org.apache.geronimo.server.tomcat.v20.feature</name>
+  <name>org.apache.geronimo.server.tomcat.v21.feature</name>
   <comment>Apache Geronimo Eclipse Plugin and WTP Server Adapter</comment>
   <projects/>
   <buildSpec>
