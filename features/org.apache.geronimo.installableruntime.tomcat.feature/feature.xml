@@ -39,13 +39,13 @@
    
    <data
     id="geronimo-tomcat6-javaee5-2.1.2.zip"
-    download-size="0"
-    install-size="0"/>
+    download-size="76977"
+    install-size="143977"/>
    
    <data 	 
     id="geronimo-tomcat6-jee5-2.0.2.zip" 	 
-    download-size="0" 	 
-    install-size="0"/>   
+    download-size="56882" 	 
+    install-size="114264"/>   
    
     <install-handler handler="org.eclipse.update.core.DefaultInstallHandler"/>
    

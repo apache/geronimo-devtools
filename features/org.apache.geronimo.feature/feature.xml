@@ -15,59 +15,58 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
-<!-- @version $Rev$ $Date$ -->
 <feature
       id="org.apache.geronimo.feature"
       label="Geronimo Core Feature"
       version="2.1.2"
       provider-name="%providerName"
       image="bigG.gif">
-    
-    <description url="http://geronimo.apache.org/development-tools">
+
+   <description url="http://geronimo.apache.org/development-tools">
       %description
-    </description>
-    
-    <copyright url="http://www.apache.org/licenses/LICENSE-2.0.txt">
+   </description>
+
+   <copyright url="http://www.apache.org/licenses/LICENSE-2.0.txt">
       %copyright
-    </copyright>
-    
-    <license url="license.html">
+   </copyright>
+
+   <license url="license.html">
       %license
-    </license>
-    
-    <url>
-        <update label="Apache Geronimo Eclipse Update Site" url="http://www.apache.org/dist/geronimo/eclipse/updates/"/>
-    </url>
-    
-    <requires>
-        <import feature="org.eclipse.jst" version="2.0.0" match="greaterOrEqual"/>
-    </requires>
-    
-    <plugin
+   </license>
+
+   <url>
+      <update label="Apache Geronimo Eclipse Update Site" url="http://www.apache.org/dist/geronimo/eclipse/updates/"/>
+   </url>
+
+   <requires>
+      <import feature="org.eclipse.jst" version="2.0.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
          id="org.apache.geronimo.st.core"
-         download-size="0"
-         install-size="0"
+         download-size="115"
+         install-size="115"
          version="2.1.2"
          unpack="false"/>
 
-    <plugin
+   <plugin
          id="org.apache.geronimo.st.ui"
-         download-size="0"
-         install-size="0"
+         download-size="144"
+         install-size="144"
          version="2.1.2"
          unpack="false"/>
-    
-    <plugin
+
+   <plugin
          id="org.apache.geronimo.st.schemas"
-         download-size="0"
-         install-size="0"
+         download-size="70"
+         install-size="70"
          version="2.1.2"
          unpack="false"/>
-    
-    <plugin
+
+   <plugin
          id="org.apache.geronimo.runtime.common"
-         download-size="0"
-         install-size="0"
+         download-size="1145"
+         install-size="1145"
          version="2.1.2"/>
+
 </feature>

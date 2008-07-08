@@ -24,29 +24,28 @@
       version="2.1.2"
       provider-name="%providerName"
       image="bigG.gif">
+   <install-handler handler="org.eclipse.update.core.DefaultInstallHandler"/>
 
    <description url="http://geronimo.apache.org/">
-        %description
+      %description
    </description>
 
    <copyright url="http://www.apache.org/licenses/LICENSE-2.0.html">
-        %copyright
+      %copyright
    </copyright>
 
    <license url="http://www.apache.org/licenses/LICENSE-2.0.html">
-        %license
+      %license
    </license>
-   
+
    <data
-    id="geronimo-jetty6-javaee5-2.1.2.zip"
-    download-size="0"
-    install-size="0"/>
-    
-   <data 	 
-    id="geronimo-jetty6-jee5-2.0.2.zip" 	 
-    download-size="0" 	 
-    install-size="0"/>    
-   
-    <install-handler handler="org.eclipse.update.core.DefaultInstallHandler"/>
+         id="geronimo-jetty6-javaee5-2.1.2.zip"
+         download-size="75780"
+         install-size="96294"/>
+
+   <data
+         id="geronimo-jetty6-jee5-2.0.2.zip"
+         download-size="56207"
+         install-size="67224"/>
 
 </feature>

@@ -52,28 +52,28 @@
         
     <plugin
          id="org.apache.geronimo.st.v21.core"
-         download-size="0"
-         install-size="0"
+         download-size="35"
+         install-size="35"
          version="2.1.2"
          unpack="false"/>
     
     <plugin
          id="org.apache.geronimo.st.v21.ui"
-         download-size="0"
-         install-size="0"
+         download-size="104"
+         install-size="104"
          version="2.1.2"
          unpack="false"/>
 
     <plugin
          id="org.apache.geronimo.runtime.v21"
-         download-size="0"
-         install-size="0"
+         download-size="1221"
+         install-size="1221"
          version="2.1.2"/>
 
     <plugin
          id="org.apache.geronimo.jee.v21.jaxbmodel"
-         download-size="0"
-         install-size="0"
+         download-size="132"
+         install-size="132"
          version="2.1.2"
          unpack="false"/>
     
