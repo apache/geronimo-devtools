@@ -22,7 +22,7 @@
   <extend>../../etc/project.xml</extend>
   <id>org.apache.geronimo.server.jetty.feature</id>
   <name>org.apache.geronimo.server.jetty.feature</name>
-  <currentVersion>${org.apache.geronimo.server.jetty.feature_version}</currentVersion>
+  <currentVersion>${org.apache.geronimo.server.jetty.v21.feature_version}</currentVersion>
   <build>
     <resources>
       <resource>

@@ -22,7 +22,7 @@
   <extend>../../etc/project.xml</extend>
   <id>org.apache.geronimo.server.tomcat.feature</id>
   <name>org.apache.geronimo.server.tomcat.feature</name>
-  <currentVersion>${org.apache.geronimo.server.tomcat.feature_version}</currentVersion>
+  <currentVersion>${org.apache.geronimo.server.tomcat.v20.feature_version}</currentVersion>
   <build>
     <resources>
       <resource>
