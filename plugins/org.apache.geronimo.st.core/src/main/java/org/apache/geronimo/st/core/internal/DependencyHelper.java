@@ -312,7 +312,7 @@ public class DependencyHelper {
         for (Iterator ii = parents.iterator(); ii.hasNext();) {
             Artifact artifact = (Artifact)ii.next();
             if (dm.getParents(artifact).size() > 0 && !artifact.equals(terminatingArtifact) &&
-               !dm.getParents(artifact).contains(artifact) && !dm.getChildren(artifact).contains(artifact)) {
+                !dm.getParents(artifact).contains(artifact) && !dm.getChildren(artifact).contains(artifact)) {
                 // Keep processing parents (as long as no circular dependencies)
                 processParents(dm.getParents(artifact), terminatingArtifact);
                 // Move self 
@@ -350,24 +350,32 @@ public class DependencyHelper {
 
         Environment environment = null;
         if (GeronimoUtils.isWebModule(module)) {
-            WebApp plan = getWebDeploymentPlan(module).getValue();
-            if (plan != null)
-                environment = plan.getEnvironment();
+            if (getWebDeploymentPlan(module) != null) {
+                WebApp plan = getWebDeploymentPlan(module).getValue();
+                if (plan != null)
+                    environment = plan.getEnvironment();
+            }
         }
         else if (GeronimoUtils.isEjbJarModule(module)) {
-            OpenejbJar plan = getOpenEjbDeploymentPlan(module).getValue();
-            if (plan != null)
-                environment = plan.getEnvironment();
+            if (getOpenEjbDeploymentPlan(module) != null) {
+                OpenejbJar plan = getOpenEjbDeploymentPlan(module).getValue();
+                if (plan != null)
+                    environment = plan.getEnvironment();
+            }
         }
         else if (GeronimoUtils.isEarModule(module)) {
-            Application plan = getApplicationDeploymentPlan(module).getValue();
-            if (plan != null)
-                environment = plan.getEnvironment();
+            if (getApplicationDeploymentPlan(module) != null) {
+                Application plan = getApplicationDeploymentPlan(module).getValue();
+                if (plan != null)
+                    environment = plan.getEnvironment();
+            }
         }
         else if (GeronimoUtils.isRARModule(module)) {
-            Connector plan = getConnectorDeploymentPlan(module).getValue();
-            if (plan != null)
-                environment = plan.getEnvironment();
+            if (getConnectorDeploymentPlan(module) != null) {
+                Connector plan = getConnectorDeploymentPlan(module).getValue();
+                if (plan != null)
+                    environment = plan.getEnvironment();
+            }
         }
 
         Trace.tracePoint("Exit ", "DependencyHelper.getEnvironment", environment);
@@ -536,7 +544,7 @@ public class DependencyHelper {
         for (Iterator ii = parents.iterator(); ii.hasNext();) {
             Artifact artifact = (Artifact)ii.next();
             if (dm.getParents(artifact).size() > 0 && !artifact.equals(terminatingArtifact) &&
-               !dm.getParents(artifact).contains(artifact) && !dm.getChildren(artifact).contains(artifact)) {
+                !dm.getParents(artifact).contains(artifact) && !dm.getChildren(artifact).contains(artifact)) {
                 // Keep processing parents (as long as no circular dependencies)
                 processJaxbParents(dm.getParents(artifact), terminatingArtifact);
                 // Move self 
@@ -574,21 +582,19 @@ public class DependencyHelper {
 
         Environment environment = null;
         Object plan = jaxbElement.getValue();
-        if (WebApp.class.isInstance(plan)) {
-            if (plan != null)
+        if (plan != null) {
+            if (WebApp.class.isInstance(plan)) {
                 environment = ((WebApp)plan).getEnvironment();
-        }
-        else if (OpenejbJar.class.isInstance(plan)) {
-            if (plan != null)
+            }
+            else if (OpenejbJar.class.isInstance(plan)) {
                 environment = ((OpenejbJar)plan).getEnvironment();
-        }
-        else if (Application.class.isInstance(plan)) {
-            if (plan != null)
+            }
+            else if (Application.class.isInstance(plan)) {
                 environment = ((Application)plan).getEnvironment();
-        }
-        else if (Connector.class.isInstance(plan)) {
-            if (plan != null)
+            }
+            else if (Connector.class.isInstance(plan)) {
                 environment = ((Connector)plan).getEnvironment();
+            }
         }
 
         Trace.tracePoint("Exit ", "DependencyHelper.getEnvironment", environment);
