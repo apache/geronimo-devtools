@@ -156,22 +156,6 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	}
 
 		
-	public JAXBElement createServiceDeploymentPlan(IFile dpFile) {
-  		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", dpFile);
-
-		org.apache.geronimo.jee.deployment.ObjectFactory serviceFactory = new org.apache.geronimo.jee.deployment.ObjectFactory();
-		org.apache.geronimo.jee.deployment.Module module = serviceFactory.createModule();
-
-		module.setEnvironment(getConfigEnvironment());
-
-		JAXBElement jaxbElement = serviceFactory.createModule(module);
-		JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
-
-		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createServiceDeploymentPlan", jaxbElement);
-		return jaxbElement;
-	}
-
-	
 	/*
 	 * (non-Javadoc)
 	 * 

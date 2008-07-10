@@ -46,8 +46,6 @@ public class GeronimoUtils {
 	public static final String APP_CLIENT_PLAN_NAME = "geronimo-application-client.xml";
 
 	public static final String CONNECTOR_PLAN_NAME = "geronimo-ra.xml";
-	
-	public static final String SERVICE_PLAN_NAME = "geronimo-service.xml";
 
 	public static boolean isWebModule(IModule module) {
 		return "jst.web".equals(module.getModuleType().getId());
@@ -69,10 +67,6 @@ public class GeronimoUtils {
 		return "jst.connector".equals(module.getModuleType().getId());
 	}
 	
-	public static boolean isUtilityModule(IModule module) {
-		return "jst.utility".equals(module.getModuleType().getId());
-	}
-
 	public static ModuleType getJSR88ModuleType(IModule module) {
 		if (isWebModule(module)) {
 			return ModuleType.WAR;
@@ -102,8 +96,6 @@ public class GeronimoUtils {
 			return getApplicationClientDeploymentPlanFile(comp);
 		} else if (IModuleConstants.JST_CONNECTOR_MODULE.equals(type)) {
 			return getConnectorDeploymentPlanFile(comp);
-		} else if (IModuleConstants.JST_UTILITY_MODULE.equals(type)) {
-			return getServiceDeploymentPlanFile(comp);
 		}
 		return null;
 	}
@@ -134,11 +126,6 @@ public class GeronimoUtils {
 
 	public static IFile getConnectorDeploymentPlanFile(IVirtualComponent comp) {
 		IPath deployPlanPath = comp.getRootFolder().getUnderlyingFolder().getProjectRelativePath().append("META-INF").append(CONNECTOR_PLAN_NAME);
-		return comp.getProject().getFile(deployPlanPath);
-	}
-	
-	public static IFile getServiceDeploymentPlanFile(IVirtualComponent comp) {
-		IPath deployPlanPath = comp.getRootFolder().getUnderlyingFolder().getProjectRelativePath().append("META-INF").append(SERVICE_PLAN_NAME);
 		return comp.getProject().getFile(deployPlanPath);
 	}
 

@@ -73,8 +73,6 @@ public abstract class DeploymentPlanCreationOperation extends
 			createGeronimoApplicationClientDeploymentPlan(GeronimoUtils.getApplicationClientDeploymentPlanFile(comp));
 		} else if (IModuleConstants.JST_CONNECTOR_MODULE.equals(type)) {
 			createConnectorDeploymentPlan(GeronimoUtils.getConnectorDeploymentPlanFile(comp));
-		} else if (IModuleConstants.JST_UTILITY_MODULE.equals(type)) {
-			createServiceDeploymentPlan(GeronimoUtils.getServiceDeploymentPlanFile(comp));
 		}
 	}
 
@@ -98,9 +96,4 @@ public abstract class DeploymentPlanCreationOperation extends
 	public JAXBElement createConnectorDeploymentPlan(IFile file) {
 		return null;
 	}
-	
-	public JAXBElement createServiceDeploymentPlan(IFile file) {
-		return null;
-	}
-	
 }

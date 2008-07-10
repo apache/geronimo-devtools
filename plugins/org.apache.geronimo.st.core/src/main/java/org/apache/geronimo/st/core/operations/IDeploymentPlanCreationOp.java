@@ -32,7 +32,5 @@ public interface IDeploymentPlanCreationOp {
 	public JAXBElement createGeronimoApplicationDeploymentPlan(IFile file);
 
 	public JAXBElement createConnectorDeploymentPlan(IFile file);
-	
-	public JAXBElement createServiceDeploymentPlan(IFile file);
 
 }
