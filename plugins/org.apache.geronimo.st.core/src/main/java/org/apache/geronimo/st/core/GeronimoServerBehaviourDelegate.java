@@ -321,9 +321,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	 */
 	protected void initialize(IProgressMonitor monitor) {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.initialize", monitor);
-
-		startUpdateServerStateTask();
-
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.initialize");
 	}
 
@@ -699,7 +696,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 	
 	protected abstract void stopKernel();
 
-	protected void startUpdateServerStateTask() {
+	public void startUpdateServerStateTask() {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.startUpdateServerStateTask", getServer().getName());
 
 		timer = new Timer(true);

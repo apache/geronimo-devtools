@@ -19,6 +19,7 @@ package org.apache.geronimo.st.core;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.IServerLifecycleListener;
 import org.eclipse.wst.server.core.ServerCore;
 import org.osgi.framework.BundleContext;
 
@@ -49,6 +50,32 @@ public class Activator extends Plugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		ServerCore.addServerLifecycleListener(new IServerLifecycleListener() {
+			public void serverAdded(IServer server) {
+				triggerStartUpdateServerTask(server);
+			}
+
+			public void serverChanged(IServer server) {
+				
+			}
+
+			public void serverRemoved(IServer server) {
+			}
+		});
+		IServer[] servers = ServerCore.getServers();
+		for(int i = 0; i < servers.length; i++) {
+			triggerStartUpdateServerTask(servers[i]);
+		}
+	}
+
+	private void triggerStartUpdateServerTask(IServer server) {
+		GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) server.getAdapter(GeronimoServerBehaviourDelegate.class);
+		if (delegate == null) {
+			delegate = (GeronimoServerBehaviourDelegate) server.loadAdapter(GeronimoServerBehaviourDelegate.class, null);
+		}
+		if (delegate != null) {
+			delegate.startUpdateServerStateTask();
+		}
 	}
 
 	/*
