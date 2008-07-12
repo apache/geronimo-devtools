@@ -1,6 +1,6 @@
 <projectDescription>
   <name>org.apache.geronimo.v21.feature</name>
-  <comment>Apache Geronimo Eclipse Plugin and WTP Server Adapter</comment>
+  <comment>WTP Server Adapter for the Apache Geronimo v2.1 server</comment>
   <projects/>
   <buildSpec>
     <buildCommand>

@@ -1,6 +1,6 @@
 <projectDescription>
   <name>org.apache.geronimo.server.tomcat.v20.feature</name>
-  <comment>Apache Geronimo Eclipse Plugin and WTP Server Adapter</comment>
+  <comment>Apache Geronimo v2.0 Java EE Application Server containing the Tomcat Web Container</comment>
   <projects/>
   <buildSpec>
     <buildCommand>

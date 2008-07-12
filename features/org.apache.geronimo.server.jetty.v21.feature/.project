@@ -1,6 +1,6 @@
 <projectDescription>
   <name>org.apache.geronimo.server.jetty.v21.feature</name>
-  <comment>Apache Geronimo Eclipse Plugin and WTP Server Adapter</comment>
+  <comment>Apache Geronimo v2.1 Java EE Application Server containing the Jetty Web Container</comment>
   <projects/>
   <buildSpec>
     <buildCommand>
