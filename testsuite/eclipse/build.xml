@@ -182,6 +182,30 @@
         <mkdir dir="${test_eclipse}"/>
         <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${abbot_swt}"
               dest="${test_eclipse}eclipse"/>
+        <!--
+         |  
+         | Copy the SWT jars to the local maven repo
+         |  
+         -->
+        <mkdir dir="${LOCAL_M2_REPO}/abbot/abbot.swt/0.1.0.20080305_1254"/>
+        <copy file="${test_eclipse}eclipse/plugins/abbot.swt_0.1.0.20080305_1254.jar" 
+              tofile="${LOCAL_M2_REPO}/abbot/abbot.swt/0.1.0.20080305_1254/abbot.swt-0.1.0.20080305_1254.jar" 
+              failonerror="true" />
+        <mkdir dir="${LOCAL_M2_REPO}/abbot/abbot.swt.eclipse/0.1.0.20080305_1254"/>
+        <copy file="${test_eclipse}eclipse/plugins/abbot.swt.eclipse_0.1.0.20080305_1254.jar" 
+              tofile="${LOCAL_M2_REPO}/abbot/abbot.swt.eclipse/0.1.0.20080305_1254/abbot.swt.eclipse-0.1.0.20080305_1254.jar" 
+              failonerror="true" />
+        <!--
+         |  
+         | Copy the SWT jars to the Eclipse plugins in the local maven repo
+         |  
+         -->
+        <copy file="${test_eclipse}eclipse/plugins/abbot.swt_0.1.0.20080305_1254.jar" 
+              tofile="${LOCAL_M2_REPO}/eclipse/eclipse/plugins/abbot.swt-0.1.0.20080305_1254.jar" 
+              failonerror="true" />
+        <copy file="${test_eclipse}eclipse/plugins/abbot.swt.eclipse_0.1.0.20080305_1254.jar" 
+              tofile="${LOCAL_M2_REPO}/eclipse/eclipse/plugins/abbot.swt.eclipse-0.1.0.20080305_1254.jar" 
+              failonerror="true" />
     </target>
 
     <target name="gep-plugins" depends="init" description="Copy the GEP plugins into the test_eclipse installation">

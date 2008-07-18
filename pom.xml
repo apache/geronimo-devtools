@@ -198,6 +198,17 @@
                 <version>1.4.3</version>
             </dependency>
 
+            <dependency>
+                <groupId>abbot</groupId>
+                <artifactId>abbot.swt</artifactId>
+                <version>0.1.0.20080305_1254</version>
+            </dependency>
+
+            <dependency>
+                <groupId>abbot</groupId>
+                <artifactId>abbot.swt.eclipse</artifactId>
+                <version>0.1.0.20080305_1254</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
                         

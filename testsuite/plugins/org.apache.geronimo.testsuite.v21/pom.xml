@@ -153,17 +153,11 @@
         <dependency>
             <groupId>abbot</groupId>
             <artifactId>abbot.swt</artifactId>
-            <version>0.1.0.20080305_1254</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/../../launcher/eclipse/eclipse/plugins/abbot.swt_0.1.0.20080305_1254.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>abbot</groupId>
             <artifactId>abbot.swt.eclipse</artifactId>
-            <version>0.1.0.20080305_1254</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/../../launcher/eclipse/eclipse/plugins/abbot.swt.eclipse_0.1.0.20080305_1254.jar</systemPath>
         </dependency>
     </dependencies>
 
