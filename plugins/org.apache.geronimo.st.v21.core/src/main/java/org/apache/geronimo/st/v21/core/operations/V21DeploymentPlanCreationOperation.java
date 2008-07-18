@@ -26,7 +26,6 @@ import org.apache.geronimo.jee.deployment.Artifact;
 import org.apache.geronimo.jee.deployment.Dependencies;
 import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.jee.deployment.Environment;
-import org.apache.geronimo.jee.naming.ServiceRef;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
@@ -170,15 +169,6 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
         applicationClient.setServerEnvironment(getConfigEnvironment());
         applicationClient.setClientEnvironment(getConfigEnvironment());
         
-        //
-        // Add a ServiceRef
-        //
-        org.apache.geronimo.jee.naming.ObjectFactory namingFactory = new org.apache.geronimo.jee.naming.ObjectFactory();
-        ServiceRef serviceRef = namingFactory.createServiceRef();
-        serviceRef.setServiceRefName("ServiceRefName");
-        
-        applicationClient.getServiceRef().add(serviceRef);
-
 		JAXBElement jaxbElement = applicationClientFactory.createApplicationClient(applicationClient);
 		JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
 
