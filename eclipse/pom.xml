@@ -21,7 +21,7 @@
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>eclipse</artifactId>
     <packaging>pom</packaging>
-    <name>Geronimo Eclipse Plugin :: Downloads</name>
+    <name>Geronimo Eclipse Plugin :: Eclipse</name>
                                                 
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>

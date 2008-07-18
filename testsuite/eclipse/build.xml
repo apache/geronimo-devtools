@@ -18,7 +18,9 @@
 
 <!--
  |  
- | Download Eclipse and the Eclipse test-framework for usage with the GEP testsuite
+ | Download Eclipse, the Eclipse test-framework, and the Abbot SWT for usage with the GEP testsuite
+ |                                                                                             
+ | TODO: Move many of these tasks to the antrun task in the various pom.xml files (i.e., each plugin)
  |                                                                                             
  |                                                                                             
  | @version $Rev$ $Date$                                                                                            
@@ -37,14 +39,19 @@
         <property name="test_eclipse"           value="${basedir}/../launcher/eclipse/"/>
         <property name="test_framework_url"     value="http://www.eclipse.org/downloads/download.php?file=/eclipse/downloads/drops/R-3.4-200806172000/"/>
         <property name="test_framework"         value="eclipse-test-framework-3.4.zip"/>
+        <property name="abbot_swt_url"          value="http://downloads.sourceforge.net/abbot/"/>
+        <property name="abbot_swt_version"      value="0.1.0.20080305_1254"/>
+        <property name="abbot_swt"              value="abbot.swt-${abbot_swt_version}.zip"/>
+        <property name="abbot_protocol"         value="?modtime=12047243638&amp;protocol=http"/>
+        <property name="gep_version"            value="2.1.2"/>
     </target>
 
     <target name="win32" depends="init,common" description="Download Windows-specific artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading: ${ganymede_jee_win32}                                              </echo>                                                                            
+        <echo>## Downloading: ${ganymede_jee_win32}                                            </echo>
         <echo>##                                                                               </echo>
-        <echo>## From: ${ganymede_url}                                                           </echo>
+        <echo>## From: ${ganymede_url}                                                         </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
@@ -55,7 +62,9 @@
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${ganymede_jee_win32}                                                </echo>                                                                            
+        <echo>## Unzipping: ${ganymede_jee_win32}                                              </echo>
+        <echo>##                                                                               </echo>
+        <echo>## To: ${test_eclipse}                                                           </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${test_eclipse}"/>
@@ -66,9 +75,9 @@
     <target name="linux" depends="init,common" description="Download Linux-specific artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading: ${ganymede_jee_linux_gz}                                           </echo>
+        <echo>## Downloading: ${ganymede_jee_linux_gz}                                         </echo>
         <echo>##                                                                               </echo>
-        <echo>## From: ${ganymede_url}                                                           </echo>                                                                            <echo>##                                                                               </echo>
+        <echo>## From: ${ganymede_url}                                                         </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
@@ -79,7 +88,9 @@
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${ganymede_jee_linux_gz}                                             </echo>
+        <echo>## Unzipping: ${ganymede_jee_linux_gz}                                           </echo>
+        <echo>##                                                                               </echo>
+        <echo>## To: ${test_eclipse}                                                           </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir  dir="${test_eclipse}"/>
@@ -91,9 +102,9 @@
     <target name="macos" depends="init,common" description="Download Mac-specific artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading: ${ganymede_jee_macos_gz}                                           </echo>
+        <echo>## Downloading: ${ganymede_jee_macos_gz}                                         </echo>
         <echo>##                                                                               </echo>
-        <echo>## From: ${ganymede_url}                                                           </echo>                                                                            <echo>##                                                                               </echo>
+        <echo>## From: ${ganymede_url}                                                         </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
@@ -104,7 +115,9 @@
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${ganymede_jee_macos_gz}                                             </echo>
+        <echo>## Unzipping: ${ganymede_jee_macos_gz}                                           </echo>
+        <echo>##                                                                               </echo>
+        <echo>## To: ${test_eclipse}                                                           </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir  dir="${test_eclipse}"/>
@@ -115,6 +128,8 @@
 
     <target name="common" depends="init" description="Download artifacts common to all OS'es">
         <antcall target="test-framework"/>
+        <antcall target="abbot"/>
+        <antcall target="gep-plugins"/>
     </target>
 
     <target name="test-framework" depends="init" description="JUnit Plugin Tests and Automated Testing Framework artifact">
@@ -122,7 +137,7 @@
         <echo>##                                                                               </echo>
         <echo>## Downloading: ${test_framework}                                                </echo>
         <echo>##                                                                               </echo>
-        <echo>## From: ${test_framework_url}                                                   </echo>                                                                            
+        <echo>## From: ${test_framework_url}                                                   </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
@@ -135,10 +150,67 @@
         <echo>##                                                                               </echo>
         <echo>## Unzipping: ${test_framework}                                                  </echo>
         <echo>##                                                                               </echo>
+        <echo>## To: ${test_eclipse}                                                           </echo>
+        <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${test_eclipse}"/>
         <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${test_framework}"
               dest="${test_eclipse}"/>
+    </target>
+
+    <target name="abbot" depends="init" description="Download Abbot SWT plugin artifacts">
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Downloading: ${abbot_swt}                                                     </echo>
+        <echo>##                                                                               </echo>
+        <echo>## From: ${abbot_swt_url}                                                        </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
+        <get src="${abbot_swt_url}${abbot_swt}${abbot_protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${abbot_swt}" 
+             verbose="true"
+             ignoreerrors="true"
+             usetimestamp="true"/>
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Unzipping: ${abbot_swt}                                                       </echo>
+        <echo>##                                                                               </echo>
+        <echo>## To: ${test_eclipse}eclipse                                                    </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <mkdir dir="${test_eclipse}"/>
+        <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${abbot_swt}"
+              dest="${test_eclipse}eclipse"/>
+    </target>
+
+    <target name="gep-plugins" depends="init" description="Copy the GEP plugins into the test_eclipse installation">
+        <!--
+        |  
+        | Copy the GEP plugins to the testsuite Eclipse plugins directory
+        |  
+        -->
+        <mkdir dir="${test_eclipse}"/>
+        <copy todir="${test_eclipse}eclipse/plugins">
+            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.jee.v21.jaxbmodel/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.runtime.common/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.runtime.v21/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.core/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.v21.core/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.ui/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
+        </copy>
     </target>
 
 </project>

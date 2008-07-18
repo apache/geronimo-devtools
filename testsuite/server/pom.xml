@@ -23,10 +23,10 @@
     <modelVersion>4.0.0</modelVersion>
                                                 
     <groupId>org.apache.geronimo.devtools</groupId>
-    <artifactId>testsuite-eclipse</artifactId>
+    <artifactId>testsuite-server</artifactId>
     <packaging>pom</packaging>
     <version>2.1.2</version>
-    <name>Geronimo Eclipse Plugin :: Testsuite :: Eclipse</name>
+    <name>Geronimo Eclipse Plugin :: Testsuite :: Server</name>
                                                 
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
@@ -41,14 +41,25 @@
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>create-launcher-eclipse</id>
+                        <id>create-geronimo-server</id>
                         <phase>validate</phase>
                         <configuration>
                             <tasks>
-                                <property name="LOCAL_M2_REPO" value="${settings.localRepository}"/>
-                                <ant antfile="${basedir}/build.xml">
-                                    <target name="${eclipsePlatformFamily}"></target>
-                                </ant>
+                                <!--
+                                 |
+                                 | Unzip and rename the testsuite Geronimo server
+                                 |
+                                 -->
+                                <property name="geronimo_install"       value="${basedir}/../launcher/"/>
+                                <property name="geronimo_assembly"      value="org/apache/geronimo/assemblies"/>
+                                <property name="geronimo_name"          value="geronimo-tomcat6-javaee5"/>
+                                <property name="geronimo_version"       value="2.1.2-SNAPSHOT"/>
+                                <mkdir dir="${geronimo_install}"/>
+                                <unzip src="${settings.localRepository}/${geronimo_assembly}/${geronimo_name}/${geronimo_version}/${geronimo_name}-${geronimo_version}-bin.zip"
+                                      dest="${geronimo_install}"/>
+                                <move todir="${geronimo_install}server">
+                                    <fileset dir="${geronimo_install}/${geronimo_name}-${geronimo_version}"/>
+                                </move>
                             </tasks>
                         </configuration>
                         <goals>
@@ -59,41 +70,5 @@
             </plugin>
         </plugins>
     </build>
-                                                
-    <profiles>
-        <profile>
-            <id>windows</id>
-            <activation>
-                <os>
-                    <family>windows</family>
-                </os>
-            </activation>
-            <properties>
-                <eclipsePlatformFamily>win32</eclipsePlatformFamily>
-            </properties>
-        </profile>
-        <profile>
-            <id>unix</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                </os>
-            </activation>
-            <properties>
-                <eclipsePlatformFamily>linux</eclipsePlatformFamily>
-            </properties>
-        </profile>
-        <profile>
-            <id>mac</id>
-            <activation>
-                <os>
-                    <family>mac</family>
-                </os>
-            </activation>
-            <properties>
-                <eclipsePlatformFamily>macos</eclipsePlatformFamily>
-            </properties>
-        </profile>
-    </profiles>
                                                 
 </project>

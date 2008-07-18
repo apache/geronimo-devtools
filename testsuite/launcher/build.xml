@@ -64,7 +64,7 @@
             <arg value="-Darch=x86"/>
         </java>
     </target>
-
+            
     <!--
      |  
      | Start Eclipse via the Equinox launcher (Linux)

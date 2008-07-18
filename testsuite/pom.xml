@@ -34,6 +34,20 @@
         <version>2.1.2</version>
     </parent>
 
+    <description>
+        Geronimo Eclipse Plugin Integration Testsuite
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.geronimo.assemblies</groupId>
+            <artifactId>assemblies</artifactId>
+            <version>2.1.2-SNAPSHOT</version>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <!--
@@ -50,8 +64,9 @@
                         <fileset>
                             <directory>${pom.basedir}</directory>
                             <includes>
-                                <include>launcher/results</include>
                                 <include>launcher/eclipse</include>
+                                <include>launcher/results</include>
+                                <include>launcher/server</include>
                                 <include>launcher/workspace</include>
                             </includes>
                         </fileset>
@@ -63,6 +78,7 @@
 
     <modules>
         <module>eclipse</module>
+        <module>server</module>
         <module>plugins</module>
         <module>launcher</module>
     </modules>
