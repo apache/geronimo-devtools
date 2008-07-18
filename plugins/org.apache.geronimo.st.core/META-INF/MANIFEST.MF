@@ -24,7 +24,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.wst.web,
  org.eclipse.jem.util,
  org.apache.geronimo.runtime.common,
- org.apache.geronimo.jee.v21.jaxbmodel
+ org.apache.geronimo.jee.v21.jaxbmodel,
+ org.eclipse.jst.j2ee.core,
+ org.eclipse.emf.ecore
 Eclipse-LazyStart: true
 Export-Package: org,
  org.apache,
@@ -32,6 +34,7 @@ Export-Package: org,
  org.apache.geronimo.st,
  org.apache.geronimo.st.core,
  org.apache.geronimo.st.core.commands,
+ org.apache.geronimo.st.core.descriptor,
  org.apache.geronimo.st.core.internal,
  org.apache.geronimo.st.core.jaxb,
  org.apache.geronimo.st.core.operations

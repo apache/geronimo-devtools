@@ -18,9 +18,14 @@ package org.apache.geronimo.st.ui.pages;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.st.core.DeploymentDescriptorUtils;
+import org.apache.geronimo.st.core.descriptor.AbstractDeploymentDescriptor;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
@@ -35,6 +40,8 @@ import org.eclipse.ui.forms.widgets.Section;
 public abstract class AbstractGeronimoFormPage extends FormPage {
 
 	JAXBElement deploymentPlan;
+	
+	AbstractDeploymentDescriptor deploymentDescriptor;
 
 	protected FormToolkit toolkit;
 
@@ -64,6 +71,8 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
 	 */
 	protected void createFormContent(IManagedForm managedForm) {
 		deploymentPlan = ((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan();
+		deploymentDescriptor = (AbstractDeploymentDescriptor) DeploymentDescriptorUtils
+				.getDeploymentDescriptor(getProject());
 		body = managedForm.getForm().getBody();
 		toolkit = managedForm.getToolkit();
 		ScrolledForm form = managedForm.getForm();
@@ -93,6 +102,18 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
 
 	public JAXBElement getDeploymentPlan() {
 		return deploymentPlan;
+	}
+
+	protected IProject getProject() {
+		IEditorInput editorInput = getEditorInput();
+		if (editorInput instanceof IFileEditorInput) {
+			return ((IFileEditorInput) editorInput).getFile().getProject();
+		}
+		return null;
+	}
+
+	public AbstractDeploymentDescriptor getDeploymentDescriptor() {
+		return deploymentDescriptor;
 	}
 
 	public String getFormTitle() {
