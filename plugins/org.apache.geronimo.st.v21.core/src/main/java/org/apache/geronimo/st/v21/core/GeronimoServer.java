@@ -68,6 +68,11 @@ public class GeronimoServer extends GeronimoServerDelegate {
 
     @Override
     public String getVMArgs() {
+        String superVMArgs = super.getVMArgs();
+        if (superVMArgs != null && superVMArgs.trim().length() > 0) {
+            return superVMArgs;
+        }
+
         String runtimeLocation = getServer().getRuntime().getLocation().toString();
         GeronimoRuntimeDelegate geronimoRuntimeDelegate = (GeronimoRuntimeDelegate) getServer().getRuntime().getAdapter(GeronimoRuntimeDelegate.class);
         if (geronimoRuntimeDelegate == null) {
@@ -105,14 +110,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
         //-Dorg.apache.geronimo.base.dir="GERONIMO_BASE"
         String baseDir = "-Dorg.apache.geronimo.base.dir=" + runtimeLocation;
 
-        String vmArgs = javaagent + " " + javaExtDirs + " " + javaEndorsedDirs;
-
-        String superVMArgs = super.getVMArgs();
-        if (superVMArgs != null) {
-            vmArgs += " " + superVMArgs;
-        }
-
-        return vmArgs;
+        return javaagent + " " + javaExtDirs + " " + javaEndorsedDirs;
     }
 
     /*
