@@ -204,6 +204,8 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
                                                          IRunnableWithProgress runnable = new IRunnableWithProgress() {
                                                              public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                                                                  try {
+                                                                     //String license = installable.getLicense(monitor);
+                                                                     //Trace.trace(Trace.INFO, "license = " + license);
                                                                      installable.install(installPath, monitor);
                                                                  }
                                                                  catch (CoreException e) {
