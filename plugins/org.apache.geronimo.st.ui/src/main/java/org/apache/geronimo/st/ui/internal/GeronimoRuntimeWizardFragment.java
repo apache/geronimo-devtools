@@ -77,10 +77,9 @@ import org.eclipse.wst.server.ui.wizard.WizardFragment;
  * @version $Rev$ $Date$
  */
 public class GeronimoRuntimeWizardFragment extends WizardFragment {
-    
+
     // serverName-N.N or serverName-N.N.N
-    public static final Pattern SERVER_NAME_VERSION_PATTERN = Pattern
-            .compile("(.*-)((\\d+\\.\\d+)(\\.(\\d+))?)");
+    public static final Pattern SERVER_NAME_VERSION_PATTERN = Pattern.compile("(.*-)((\\d+\\.\\d+)(\\.(\\d+))?)");
 
     private GeronimoRuntimeDelegate geronimoRuntime;
 
@@ -116,8 +115,9 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
     /*
      * (non-Javadoc)
      * 
-     * @see org.eclipse.wst.server.ui.wizard.WizardFragment#createComposite(org.eclipse.swt.widgets.Composite,
-     *      org.eclipse.wst.server.ui.wizard.IWizardHandle)
+     * @see
+     * org.eclipse.wst.server.ui.wizard.WizardFragment#createComposite(org.eclipse
+     * .swt.widgets.Composite, org.eclipse.wst.server.ui.wizard.IWizardHandle)
      */
     public Composite createComposite(Composite parent, IWizardHandle handle) {
         this.fWizard = handle;
@@ -153,8 +153,10 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 
         GeronimoRuntimeDelegate gRuntime = getGeronimoRuntime();
 
-        final IInstallableRuntime gWithTomcat = ServerPlugin.findInstallableRuntime(gRuntime.getInstallableTomcatRuntimeId());
-        final IInstallableRuntime gWithJetty = ServerPlugin.findInstallableRuntime(gRuntime.getInstallableJettyRuntimeId());
+        final IInstallableRuntime gWithTomcat = ServerPlugin.findInstallableRuntime(gRuntime
+                .getInstallableTomcatRuntimeId());
+        final IInstallableRuntime gWithJetty = ServerPlugin.findInstallableRuntime(gRuntime
+                .getInstallableJettyRuntimeId());
 
         if (gWithTomcat != null && gWithJetty != null) {
             group = new Group(composite, SWT.NONE);
@@ -191,86 +193,85 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
             String runtimeName = getRuntimeName();
             install.setToolTipText(Messages.bind(Messages.tooltipInstall, getRuntimeName()));
             install.addSelectionListener(new SelectionAdapter() {
-                                             public void widgetSelected(SelectionEvent se) {
-                                                 if (installDir != null && isValidLocation()) {
-                                                     Shell shell = installDir.getShell();
-                                                     ConfirmInstallDialog dialog = new ConfirmInstallDialog(shell, getRuntimeName(), installDir.getText());
-                                                     dialog.open();
-                                                     if (dialog.getReturnCode() == IDialogConstants.OK_ID) {
+                public void widgetSelected(SelectionEvent se) {
+                    if (installDir != null && isValidLocation()) {
+                        Shell shell = installDir.getShell();
+                        ConfirmInstallDialog dialog = new ConfirmInstallDialog(shell, getRuntimeName(), installDir
+                                .getText());
+                        dialog.open();
+                        if (dialog.getReturnCode() == IDialogConstants.OK_ID) {
 
-                                                         final IInstallableRuntime installable = tomcat.getSelection() ? gWithTomcat
-                                                         : gWithJetty;
-                                                         final Path installPath = new Path(installDir.getText());
-                                                         IRunnableWithProgress runnable = new IRunnableWithProgress() {
-                                                             public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                                                                 try {
-                                                                     //String license = installable.getLicense(monitor);
-                                                                     //Trace.trace(Trace.INFO, "license = " + license);
-                                                                     installable.install(installPath, monitor);
-                                                                 }
-                                                                 catch (CoreException e) {
-                                                                     Trace.trace(Trace.SEVERE, "Error installing runtime", e);
-                                                                 }
-                                                             }
-                                                         };
+                            final IInstallableRuntime installable = tomcat.getSelection() ? gWithTomcat : gWithJetty;
+                            final Path installPath = new Path(installDir.getText());
+                            IRunnableWithProgress runnable = new IRunnableWithProgress() {
+                                public void run(IProgressMonitor monitor) throws InvocationTargetException,
+                                        InterruptedException {
+                                    try {
+                                        // String license =
+                                        // installable.getLicense(monitor);
+                                        // Trace.trace(Trace.INFO, "license = "
+                                        // + license);
+                                        installable.install(installPath, monitor);
+                                    } catch (CoreException e) {
+                                        Trace.trace(Trace.SEVERE, "Error installing runtime", e);
+                                    }
+                                }
+                            };
 
-                                                         try {
-                                                             getWizard().run(true, false, runnable);
-                                                         }
-                                                         catch (InterruptedException e) {
-                                                             e.printStackTrace();
-                                                         }
-                                                         catch (InvocationTargetException e) {
-                                                             e.printStackTrace();
-                                                         }
-                                                         catch (Exception e) {
-                                                             Trace.trace(Trace.SEVERE, "Error installing runtime", e);
-                                                         }
+                            try {
+                                getWizard().run(true, false, runnable);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (Exception e) {
+                                Trace.trace(Trace.SEVERE, "Error installing runtime", e);
+                            }
 
-                                                         updateInstallDir(installPath);
+                            updateInstallDir(installPath);
 
-                                                     }
-                                                 }
-                                             }
+                        }
+                    }
+                }
 
-                                             boolean isValidLocation() {
-                                                 return true;
-                                             }
+                boolean isValidLocation() {
+                    return true;
+                }
 
-                                             /**
-                                              * server zips have the server name in them as the root directory.
-                                              * We need to add that to the install directory.
-                                              * The server name comes from the installableruntime definitions in org.apache.gernoimo.st.v2{0.1}.core/plugin.xml.
-                                              * A main method below is used to test this code in development.
-                                              * @param installPath
-                                              */
-                                             void updateInstallDir(IPath installPath) {
-                    InstallableRuntime installable = (InstallableRuntime) (tomcat
-                            .getSelection() ? gWithTomcat : gWithJetty);
+                /**
+                 * server zips have the server name in them as the root
+                 * directory. We need to add that to the install directory. The
+                 * server name comes from the installableruntime definitions in
+                 * org.apache.gernoimo.st.v2{0.1}.core/plugin.xml. A main method
+                 * below is used to test this code in development.
+                 * 
+                 * @param installPath
+                 */
+                void updateInstallDir(IPath installPath) {
+                    InstallableRuntime installable = (InstallableRuntime) (tomcat.getSelection() ? gWithTomcat
+                            : gWithJetty);
                     String path = installable.getPath();
                     Matcher matcher = SERVER_NAME_VERSION_PATTERN.matcher(path);
                     if (matcher.find()) {
                         String serverName = matcher.group(1);
                         String serverVersion = matcher.group(2);
-                        installPath = installPath.append(serverName
-                                + serverVersion);
+                        installPath = installPath.append(serverName + serverVersion);
                     } else {
-                        Trace.trace(Trace.SEVERE, "No version found in path = "
-                                + path);
+                        Trace.trace(Trace.SEVERE, "No version found in path = " + path);
                         installPath = installPath.append(path);
                     }
                     installDir.setText(installPath.toOSString());
                 }
-                                         });
-        }
-        else {
+            });
+        } else {
             Trace.trace(Trace.SEVERE, "Error finding installable runtime(s)");
         }
     }
 
     protected GeronimoRuntimeDelegate getGeronimoRuntime() {
         if (geronimoRuntime == null)
-            geronimoRuntime = (GeronimoRuntimeDelegate) getRuntimeDelegate().getRuntime().loadAdapter(GeronimoRuntimeDelegate.class, null);
+            geronimoRuntime = (GeronimoRuntimeDelegate) getRuntimeDelegate().getRuntime().loadAdapter(
+                    GeronimoRuntimeDelegate.class, null);
         return geronimoRuntime;
     }
 
@@ -295,24 +296,24 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
         installDir.setLayoutData(data);
         installDir.setToolTipText(tooltipLoc);
         installDir.addModifyListener(new ModifyListener() {
-                                         public void modifyText(ModifyEvent e) {
-                                             getRuntimeDelegate().getRuntimeWorkingCopy().setLocation(new Path(installDir.getText()));
-                                             validate();
-                                         }
-                                     });
+            public void modifyText(ModifyEvent e) {
+                getRuntimeDelegate().getRuntimeWorkingCopy().setLocation(new Path(installDir.getText()));
+                validate();
+            }
+        });
 
         final Composite browseComp = composite;
         Button browse = SWTUtil.createButton(composite, Messages.browse);
         browse.addSelectionListener(new SelectionAdapter() {
-                                        public void widgetSelected(SelectionEvent se) {
-                                            DirectoryDialog dialog = new DirectoryDialog(browseComp.getShell());
-                                            dialog.setMessage(Messages.installDir);
-                                            dialog.setFilterPath(installDir.getText());
-                                            String selectedDirectory = dialog.open();
-                                            if (selectedDirectory != null)
-                                                installDir.setText(selectedDirectory);
-                                        }
-                                    });
+            public void widgetSelected(SelectionEvent se) {
+                DirectoryDialog dialog = new DirectoryDialog(browseComp.getShell());
+                dialog.setMessage(Messages.installDir);
+                dialog.setFilterPath(installDir.getText());
+                String selectedDirectory = dialog.open();
+                if (selectedDirectory != null)
+                    installDir.setText(selectedDirectory);
+            }
+        });
     }
 
     protected void addJRESelection(final Composite composite) {
@@ -328,44 +329,44 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
         combo.setLayoutData(data);
 
         combo.addSelectionListener(new SelectionListener() {
-                                       public void widgetSelected(SelectionEvent e) {
-                                           // if the first item in the list is selected, then pass null
-                                           // to setVMInstall to use the default JRE.
-                                           // otherwise the array list of JRE's is one off from what is
-                                           // in the combo; subtract 1 from the selection to get the correct JRE.
-                                           int sel = combo.getSelectionIndex();
-                                           IVMInstall vmInstall = null;
-                                           if (sel > 0) {
-                                               vmInstall = (IVMInstall) installedJREs.get(sel - 1);
-                                           }
-                                           getRuntimeDelegate().setVMInstall(vmInstall);
-                                           validate();
-                                       }
+            public void widgetSelected(SelectionEvent e) {
+                // if the first item in the list is selected, then pass null
+                // to setVMInstall to use the default JRE.
+                // otherwise the array list of JRE's is one off from what is
+                // in the combo; subtract 1 from the selection to get the
+                // correct JRE.
+                int sel = combo.getSelectionIndex();
+                IVMInstall vmInstall = null;
+                if (sel > 0) {
+                    vmInstall = (IVMInstall) installedJREs.get(sel - 1);
+                }
+                getRuntimeDelegate().setVMInstall(vmInstall);
+                validate();
+            }
 
-                                       public void widgetDefaultSelected(SelectionEvent e) {
-                                           widgetSelected(e);
-                                       }
-                                   });
+            public void widgetDefaultSelected(SelectionEvent e) {
+                widgetSelected(e);
+            }
+        });
 
         Button button = SWTUtil.createButton(composite, Messages.installedJREs);
         button.addSelectionListener(new SelectionAdapter() {
-                                        public void widgetSelected(SelectionEvent e) {
-                                            String currentVM = combo.getText();
-                                            if (showPreferencePage(composite)) {
-                                                updateJREs();
-                                                combo.setItems(jreNames);
-                                                combo.setText(currentVM);
-                                                if (combo.getSelectionIndex() == -1)
-                                                    combo.select(0);
-                                            }
-                                        }
-                                    });
+            public void widgetSelected(SelectionEvent e) {
+                String currentVM = combo.getText();
+                if (showPreferencePage(composite)) {
+                    updateJREs();
+                    combo.setItems(jreNames);
+                    combo.setText(currentVM);
+                    if (combo.getSelectionIndex() == -1)
+                        combo.select(0);
+                }
+            }
+        });
 
         if (getRuntimeDelegate() != null) {
             if (getRuntimeDelegate().isUsingDefaultJRE()) {
                 combo.select(0);
-            }
-            else {
+            } else {
                 combo.setText(getRuntimeDelegate().getVMInstall().getName());
             }
         }
@@ -373,18 +374,19 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 
     protected boolean showPreferencePage(Composite composite) {
         PreferenceManager manager = PlatformUI.getWorkbench().getPreferenceManager();
-        IPreferenceNode node = manager.find("org.eclipse.jdt.ui.preferences.JavaBasePreferencePage").findSubNode("org.eclipse.jdt.debug.ui.preferences.VMPreferencePage");
+        IPreferenceNode node = manager.find("org.eclipse.jdt.ui.preferences.JavaBasePreferencePage").findSubNode(
+                "org.eclipse.jdt.debug.ui.preferences.VMPreferencePage");
         PreferenceManager manager2 = new PreferenceManager();
         manager2.addToRoot(node);
         final PreferenceDialog dialog = new PreferenceDialog(composite.getShell(), manager2);
-        final boolean[] result = new boolean[] { false};
+        final boolean[] result = new boolean[] { false };
         BusyIndicator.showWhile(composite.getDisplay(), new Runnable() {
-                                    public void run() {
-                                        dialog.create();
-                                        if (dialog.open() == Window.OK)
-                                            result[0] = true;
-                                    }
-                                });
+            public void run() {
+                dialog.create();
+                if (dialog.open() == Window.OK)
+                    result[0] = true;
+            }
+        });
         return result[0];
     }
 
@@ -418,27 +420,23 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
         if (installDir.getText() == null || installDir.getText().length() == 0) {
             // installDir field has not been entered
             wizard.setMessage(Messages.bind(Messages.installDirInfo, runtimeName), IMessageProvider.NONE);
-        }
-        else {
+        } else {
             IStatus status = runtimeWC.validate(null);
             if (status == null || status.isOK()) {
                 // a valid install found
                 wizard.setMessage(null, IMessageProvider.NONE);
                 group.setEnabled(false);
-            }
-            else if (status.getCode() == GeronimoRuntimeDelegate.INCORRECT_VERSION) {
+            } else if (status.getCode() == GeronimoRuntimeDelegate.INCORRECT_VERSION) {
                 group.setEnabled(false);
                 if (status.getSeverity() == IStatus.ERROR) {
                     wizard.setMessage(status.getMessage(), IMessageProvider.ERROR);
                     return;
                 }
                 wizard.setMessage(status.getMessage(), IMessageProvider.WARNING);
-            }
-            else if (status.getCode() == GeronimoRuntimeDelegate.PARTIAL_IMAGE) {
+            } else if (status.getCode() == GeronimoRuntimeDelegate.PARTIAL_IMAGE) {
                 wizard.setMessage(status.getMessage(), IMessageProvider.ERROR);
                 return;
-            }
-            else {
+            } else {
                 File file = new Path(installDir.getText()).toFile();
                 boolean enableGroup = file.isDirectory() && file.canWrite() ? true : false;
                 group.setEnabled(enableGroup);
@@ -446,27 +444,25 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
                     String message = file.canWrite() ? Messages.noImageFound : Messages.cannotInstallAtLocation;
                     message = Messages.bind(message, runtimeName);
                     wizard.setMessage(message, IMessageProvider.ERROR);
-                }
-                else {
+                } else {
                     wizard.setMessage(Messages.noSuchDir, IMessageProvider.ERROR);
                 }
                 return;
             }
 
             if (!isValidVM()) {
-                wizard.setMessage(Messages.bind(Messages.jvmWarning,
-                        runtimeName), IMessageProvider.WARNING);
+                wizard.setMessage(Messages.bind(Messages.jvmWarning, runtimeName), IMessageProvider.WARNING);
             }
         }
     }
 
     private boolean isValidVM() {
-		IVMInstall vmInstall = getRuntimeDelegate().getVMInstall();
-		if (vmInstall instanceof IVMInstall2) {
-			String javaVersion = ((IVMInstall2) vmInstall).getJavaVersion();
-			return javaVersion != null && javaVersion.startsWith("1.5");
-		}
-		return false;
+        IVMInstall vmInstall = getRuntimeDelegate().getVMInstall();
+        if (vmInstall instanceof IVMInstall2) {
+            String javaVersion = ((IVMInstall2) vmInstall).getJavaVersion();
+            return javaVersion != null && javaVersion.startsWith("1.5");
+        }
+        return false;
     }
 
     /*
@@ -493,7 +489,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
         IRuntimeWorkingCopy wc = (IRuntimeWorkingCopy) getTaskModel().getObject(TaskModel.TASK_RUNTIME);
         if (wc == null)
             return null;
-        return(GeronimoRuntimeDelegate) wc.loadAdapter(GeronimoRuntimeDelegate.class, new NullProgressMonitor());
+        return (GeronimoRuntimeDelegate) wc.loadAdapter(GeronimoRuntimeDelegate.class, new NullProgressMonitor());
     }
 
     private String createName() {
@@ -505,7 +501,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
         String suffixName = name;
         for (int i = 0; i < list.length; i++) {
             if ((list[i].getName().equals(name) || list[i].getName().equals(suffixName))
-                && !list[i].equals(dl.getRuntime()))
+                    && !list[i].equals(dl.getRuntime()))
                 suffix++;
             suffixName = name + " " + suffix;
         }
@@ -516,8 +512,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
     }
 
     protected String getRuntimeName() {
-        if (getRuntimeDelegate() != null
-            && getRuntimeDelegate().getRuntime() != null)
+        if (getRuntimeDelegate() != null && getRuntimeDelegate().getRuntime() != null)
             return getRuntimeDelegate().getRuntime().getName();
         return null;
     }
@@ -534,9 +529,11 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
             }
         }
 
-        // The Default JRE will always be the first item in the combo.  This is
-        // an assumption that is made by the combo selection listener and that all
-        // other installed JREs are listed afterwards in the same order that they
+        // The Default JRE will always be the first item in the combo. This is
+        // an assumption that is made by the combo selection listener and that
+        // all
+        // other installed JREs are listed afterwards in the same order that
+        // they
         // are found in the list of installed JREs
         size = installedJREs.size();
         jreNames = new String[size + 1];
@@ -551,20 +548,25 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
         return fWizard;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.wst.server.ui.wizard.WizardFragment#createChildFragments(java.util.List)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.eclipse.wst.server.ui.wizard.WizardFragment#createChildFragments(
+     * java.util.List)
      */
     protected void createChildFragments(List list) {
         list.add(new GeronimoRuntimeSourceWizardFragment());
     }
-    
+
     /**
-     * Code for testing server name determination code in the updateInstallDir(IPath) method of addInstallableRuntimeSection.
+     * Code for testing server name determination code in the
+     * updateInstallDir(IPath) method of addInstallableRuntimeSection.
+     * 
      * @param args
      */
     public static void main(String[] args) {
-        Pattern SERVER_NAME_VERSION_PATTERN = Pattern
-                .compile("(.*-)((\\d+\\.\\d+)(\\.(\\d+))?)");
+        Pattern SERVER_NAME_VERSION_PATTERN = Pattern.compile("(.*-)((\\d+\\.\\d+)(\\.(\\d+))?)");
         for (String path : args) {
             StringBuffer installPath = new StringBuffer();
             Matcher matcher = SERVER_NAME_VERSION_PATTERN.matcher(path);
@@ -572,8 +574,8 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
                 String serverName = matcher.group(1);
                 String serverVersion = matcher.group(2);
                 installPath = installPath.append(serverName + serverVersion);
-                System.out.println("path = " + path + ", serverVersion = "
-                        + serverVersion + ", installPath = " + installPath);
+                System.out.println("path = " + path + ", serverVersion = " + serverVersion + ", installPath = "
+                        + installPath);
             } else {
                 System.out.println("No version found in path = " + path);
             }
