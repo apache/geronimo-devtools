@@ -310,4 +310,12 @@ public class Messages extends NLS {
     public static String ejb;
     public static String java;
     public static String web;
+
+    public static String licenseAgreement;
+
+    public static String acceptLicenseAgreement;
+
+    public static String rejectLicenseAgreement;
+
+    public static String confirmLicenseRejection;
 }

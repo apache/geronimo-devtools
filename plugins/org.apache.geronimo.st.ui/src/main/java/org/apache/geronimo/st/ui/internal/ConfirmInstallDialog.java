@@ -18,27 +18,66 @@ package org.apache.geronimo.st.ui.internal;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * @version $Rev$ $Date$
  */
 public class ConfirmInstallDialog extends Dialog {
 
-    private String installPath = null;
-    private String runtimeName = null;
+    private String installPath;
+    private String runtimeName;
+    private Button acceptLicense;
+    private Button rejectLicense;
+    private String license;
+    private Shell parentShell;
 
-    public ConfirmInstallDialog(Shell parentShell, String runtimeName, String installPath) {
+    public ConfirmInstallDialog(Shell parentShell, String runtimeName, String installPath, String license) {
         super(parentShell);
+        this.parentShell = parentShell;
         this.installPath = installPath;
         this.runtimeName = runtimeName;
+        this.license = license;
+    }
+
+    public boolean licenseAccepted() {
+        return acceptLicense.getSelection();
+    }
+
+    /**
+     * allows the dialog to be resizable.
+     */
+    @Override
+    protected boolean isResizable() {
+        return true;
+    }
+
+    /**
+     * I wanted to disable the OK button until the license was accepted, but
+     * doing that prevented the dialog from even popping up! :-( So, I have this
+     * hokey extra confirmation dialog. :-(
+     */
+    @Override
+    protected void okPressed() {
+        if (licenseAccepted()) {
+            super.okPressed();
+        } else {
+            boolean confirmLicenseRejectionDialog = MessageDialog.openConfirm(parentShell, "Confirm license rejected",
+                    Messages.confirmLicenseRejection);
+            if (confirmLicenseRejectionDialog) {
+                super.cancelPressed();
+            }
+        }
     }
 
     /*
@@ -71,8 +110,29 @@ public class ConfirmInstallDialog extends Dialog {
         composite.setLayout(layout);
         composite.setLayoutData(new GridData(GridData.FILL_BOTH));
         composite.setFont(parent.getFont());
+        Label licenseAgreementLabel = new Label(composite, SWT.WRAP);
+        licenseAgreementLabel.setText(Messages.licenseAgreement);
+
+        Text licenseText = new Text(composite, SWT.MULTI | SWT.READ_ONLY | SWT.V_SCROLL | SWT.H_SCROLL | SWT.WRAP
+                | SWT.BORDER);
+        licenseText.setText(license);
+        licenseText.setEditable(false);
+        GridData gridData = new GridData(GridData.FILL_BOTH);
+        gridData.heightHint = 500;
+        gridData.widthHint = 600;
+        licenseText.setLayoutData(gridData);
+
+        acceptLicense = new Button(composite, SWT.RADIO);
+        acceptLicense.setSelection(false);
+        acceptLicense.setText(Messages.acceptLicenseAgreement);
+
+        rejectLicense = new Button(composite, SWT.RADIO);
+        rejectLicense.setSelection(true);
+        rejectLicense.setText(Messages.rejectLicenseAgreement);
+
         Label label = new Label(composite, SWT.WRAP);
         label.setText(NLS.bind(Messages.installMessage, new String[] { runtimeName, installPath }));
+
         GridData data = new GridData();
         data.widthHint = 400;
         label.setLayoutData(data);

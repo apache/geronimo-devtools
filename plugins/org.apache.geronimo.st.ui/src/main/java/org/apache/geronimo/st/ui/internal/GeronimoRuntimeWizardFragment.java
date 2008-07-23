@@ -193,24 +193,47 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
             String runtimeName = getRuntimeName();
             install.setToolTipText(Messages.bind(Messages.tooltipInstall, getRuntimeName()));
             install.addSelectionListener(new SelectionAdapter() {
+                private String license;
+
                 public void widgetSelected(SelectionEvent se) {
                     if (installDir != null && isValidLocation()) {
                         Shell shell = installDir.getShell();
+
+                        final IInstallableRuntime installable = tomcat.getSelection() ? gWithTomcat : gWithJetty;
+                        final Path installPath = new Path(installDir.getText());
+                        
+                        license = null;
+                        
+                        IRunnableWithProgress runnable = new IRunnableWithProgress() {
+                            public void run(IProgressMonitor monitor) throws InvocationTargetException,
+                                    InterruptedException {
+                                try {
+                                    license = installable.getLicense(monitor);
+                                } catch (CoreException e) {
+                                    Trace.trace(Trace.SEVERE, "Error installing runtime", e);
+                                }
+                            }
+                        };
+
+                        try {
+                            getWizard().run(true, false, runnable);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        } catch (Exception e) {
+                            Trace.trace(Trace.SEVERE, "Error installing runtime", e);
+                        }
+                        
                         ConfirmInstallDialog dialog = new ConfirmInstallDialog(shell, getRuntimeName(), installDir
-                                .getText());
+                                .getText(), license);
                         dialog.open();
                         if (dialog.getReturnCode() == IDialogConstants.OK_ID) {
 
-                            final IInstallableRuntime installable = tomcat.getSelection() ? gWithTomcat : gWithJetty;
-                            final Path installPath = new Path(installDir.getText());
-                            IRunnableWithProgress runnable = new IRunnableWithProgress() {
+                            runnable = new IRunnableWithProgress() {
                                 public void run(IProgressMonitor monitor) throws InvocationTargetException,
                                         InterruptedException {
                                     try {
-                                        // String license =
-                                        // installable.getLicense(monitor);
-                                        // Trace.trace(Trace.INFO, "license = "
-                                        // + license);
                                         installable.install(installPath, monitor);
                                     } catch (CoreException e) {
                                         Trace.trace(Trace.SEVERE, "Error installing runtime", e);
