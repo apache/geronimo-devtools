@@ -37,9 +37,11 @@ import abbot.swt.finder.generic.MultipleFoundException;
 import abbot.swt.finder.generic.NotFoundException;
 
 /**
+ * Tutorial5MinuteTest
+ *
  * @version $Rev$ $Date$
  */
-public class NewServerTest extends WorkbenchTestCase {
+public class Tutorial5MinuteTest extends WorkbenchTestCase {
     Shell workbenchShell;
     AbbotHelper aHelper;
     
@@ -67,7 +69,17 @@ public class NewServerTest extends WorkbenchTestCase {
             // create server from an installed instance
             server21Create();
 
+            // create some new projects
+            Tutorial5Minute tutorial = new Tutorial5Minute (workbenchShell, aHelper);
+            tutorial.createProjects ();
+
             serverTesting();
+
+            // delete the projects that have been created
+            // reverse alphabetical is a little smoother
+            deleteProject ("SampleWAR");
+            deleteProject ("SampleEJB");
+            deleteProject ("SampleEAR");
 
             // remove the server 
             server21Remove();
@@ -117,17 +129,27 @@ public class NewServerTest extends WorkbenchTestCase {
         aHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);
     }
 
+    // TODO only want to add the SampleEAR project and then test that
+    // that will include 3 different types of projects
     private void serverTesting () throws MultipleFoundException, NotFoundException {
         
     	String serverDisplay = "Apache Geronimo v2.1 Server at localhost";
     	aHelper.clickMenuItem (workbenchShell,
                 new String[] {"&Window", "Show &View", "Servers"});
         
+        Shell deployShell = aHelper.rightClickItem (workbenchShell, serverDisplay,
+                new String[] {"Add and Remove &Projects..."}, "Add and Remove Projects");
+        aHelper.clickButton (deployShell, "Add A&ll >>");
+        
+        aHelper.clickButton (deployShell, IDialogConstants.FINISH_LABEL);
+        aHelper.waitForDialogDisposal (deployShell);
+        
         aHelper.rightClickItem (workbenchShell, serverDisplay,
                 new String[] {"&Start"});
         aHelper.waitForServerStatus (workbenchShell, serverDisplay, "Started");
         
-        aHelper.waitTime( 1500 );
+        // Wait for server status to change from publishing -> synchronized
+        aHelper.waitTime( 5000 );  
         
         aHelper.rightClickItem (workbenchShell, serverDisplay,
                 new String[] {"S&top"});
@@ -135,6 +157,11 @@ public class NewServerTest extends WorkbenchTestCase {
         
         aHelper.waitTime( 1500 );
         
+        deployShell = aHelper.rightClickItem (workbenchShell, serverDisplay,
+                new String[] {"Add and Remove &Projects..."}, "Add and Remove Projects");
+        aHelper.clickButton (deployShell, "<< Re&move All");
+        aHelper.clickButton (deployShell, IDialogConstants.FINISH_LABEL);
+        aHelper.waitForDialogDisposal (deployShell);
     }
     
     // remove the server so that the test will be reset back to its original state.
@@ -170,4 +197,14 @@ public class NewServerTest extends WorkbenchTestCase {
         location = location + File.separatorChar + "server" ;
         return location;
     }  
+
+    private void deleteProject (String projectName) throws MultipleFoundException, NotFoundException {
+        Shell questionShell = aHelper.rightClickItem (workbenchShell, projectName, 
+                new String[] {"&Delete"}, "Delete Resources");
+
+        // use .* to signify use of a wildcard
+        aHelper.clickButton (questionShell, "&Delete project contents.*");
+        aHelper.clickButton (questionShell, IDialogConstants.OK_LABEL);
+        aHelper.waitForDialogDisposal (questionShell);
+    }
 }

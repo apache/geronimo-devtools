@@ -51,7 +51,9 @@
      |                                                                                             
      -->
     <target name="win32" depends="init" description="Start Equinox launcher on Windows">
-        <java classname="org.eclipse.equinox.launcher.Main" fork="true">
+        <java classname="org.eclipse.equinox.launcher.Main" 
+              failonerror="true"
+              fork="true">
             <classpath>
                 <pathelement path="${eclipse-home}/eclipse/plugins/org.eclipse.equinox.launcher.jar"/>
             </classpath>
@@ -63,15 +65,17 @@
             <arg value="-Dws=win32"/>
             <arg value="-Darch=x86"/>
         </java>
-    </target>
-            
+    </target>                                         
+
     <!--
      |  
      | Start Eclipse via the Equinox launcher (Linux)
      |                                                                                             
      -->
     <target name="linux" depends="init" description="Start Equinox launcher on Linux">
-        <java classname="org.eclipse.equinox.launcher.Main" fork="true">
+        <java classname="org.eclipse.equinox.launcher.Main" 
+              failonerror="true"
+              fork="true">
             <classpath>
                 <pathelement path="${eclipse-home}/eclipse/plugins/org.eclipse.equinox.launcher.jar"/>
             </classpath>
@@ -91,7 +95,9 @@
      |                                                                                             
      -->
     <target name="macos" depends="init" description="Start Equinox launcher on Mac">
-        <java classname="org.eclipse.equinox.launcher.Main" fork="true">
+        <java classname="org.eclipse.equinox.launcher.Main" 
+              failonerror="true"
+              fork="true">
             <classpath>
                 <pathelement path="${eclipse-home}/eclipse/plugins/org.eclipse.equinox.launcher.jar"/>
             </classpath>

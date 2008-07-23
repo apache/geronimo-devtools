@@ -43,11 +43,62 @@
         <property name="jdt-folder"
                   value="${eclipse-home}/jdt_folder"/>
         <delete dir="${jdt-folder}" quiet="true"/>
+
+        <!-- 
+         #########################################################################
+         ##                                                                     ##
+         ## Extra permgen memory required for this testsuite                    ##
+         ##                                                                     ##
+         #########################################################################
+         -->
+        <property name="extraVMargs" value="-XX:MaxPermSize=128m" />
+        <echo message="######################################################" />
+        <echo message="##                                                    " />
+        <echo message="## extraVMargs: ${extraVMargs}" />
+        <echo message="##                                                    " />
+        <echo message="######################################################" />
+
+        <!-- 
+         #########################################################################
+         ##                                                                     ##
+         ## Define new server testcase                                          ##
+         ##                                                                     ##
+         #########################################################################
+         -->
         <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
             <property name="data-dir" value="${jdt-folder}"/>
             <property name="plugin-name" value="${plugin-name}"/>
             <property name="classname"
                       value="org.apache.geronimo.testsuite.v21.ui.NewServerTest"/>
+        </ant>
+
+        <!-- 
+         #########################################################################
+         ##                                                                     ##
+         ## Copy the testsuite.v21 resources required for the 5 minute tutorial ##
+         ##                                                                     ##
+         #########################################################################
+         -->
+        <mkdir dir="${jdt-folder}/src"/>
+        <copy todir="${jdt-folder}/src">
+            <fileset dir="${eclipse-home}/../../../plugins/org.apache.geronimo.testsuite.v21/src">
+                <include name="**/*.java"/>
+                <include name="**/*.jsp"/>
+            </fileset>
+        </copy>
+
+        <!-- 
+         #########################################################################
+         ##                                                                     ##
+         ## 5 minute tutorial testcase                                          ##
+         ##                                                                     ##
+         #########################################################################
+         -->
+        <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+            <property name="data-dir" value="${jdt-folder}"/>
+            <property name="plugin-name" value="${plugin-name}"/>
+            <property name="classname"
+                      value="org.apache.geronimo.testsuite.v21.ui.Tutorial5MinuteTest"/>
         </ant>
     </target>
 	

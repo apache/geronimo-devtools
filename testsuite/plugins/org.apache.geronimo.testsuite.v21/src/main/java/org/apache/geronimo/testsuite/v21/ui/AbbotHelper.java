@@ -61,14 +61,14 @@ public class AbbotHelper {
     protected void clickButton (Shell aShell, String buttonText) throws MultipleFoundException, NotFoundException {
         Button button = (Button) finder.find (aShell, new WidgetTextMatcher (buttonText, Button.class, true));
         ButtonTester.getButtonTester().actionClick (button);        
-        waitTime( 1000 );
+        waitTime( 1500 );
     }
 
     // helper method
     protected Shell clickButton (Shell aShell, String buttonText, String newDialogName) throws MultipleFoundException, NotFoundException {
         Button button = (Button) finder.find (aShell, new WidgetTextMatcher (buttonText, Button.class));
         ButtonTester.getButtonTester().actionClick (button);  
-        waitTime( 1000 );
+        waitTime( 1500 );
         return ShellTester.waitVisible (newDialogName);
     }
 
@@ -76,7 +76,7 @@ public class AbbotHelper {
     protected Shell clickEnabledButton (Shell aShell, String buttonText, String newDialogName) throws MultipleFoundException, NotFoundException {
         Button button = (Button) finder.find (aShell, new ButtonMultiMatcher (buttonText, Button.class, true));
         ButtonTester.getButtonTester().actionClick (button);  
-        waitTime( 1000 );
+        waitTime( 1500 );
         return ShellTester.waitVisible (newDialogName);
     }
 
@@ -84,14 +84,14 @@ public class AbbotHelper {
     protected void doubleClickItem (Shell aShell, String itemText) throws MultipleFoundException, NotFoundException {
         Item item = (Item) finder.find (aShell, new WidgetTextMatcher (itemText, Item.class, true));
         ItemTester.getItemTester().actionDoubleClick(item);       
-        waitTime( 1000 );
+        waitTime( 1500 );
     }
 
     // helper method
     protected void clickItem (Shell aShell, String itemText) throws MultipleFoundException, NotFoundException {
         Item item = (Item) finder.find (aShell, new WidgetTextMatcher (itemText, Item.class, true));
         ItemTester.getItemTester().actionClick (item, 3, 3);       
-        waitTime( 1000 );
+        waitTime( 1500 );
     }
 
     // helper method    
@@ -99,7 +99,7 @@ public class AbbotHelper {
         Item item = (Item) finder.find (workbenchShell, new WidgetTextMatcher (itemText, Item.class, true));
         ItemPath anItemPath = new ItemPath (menuList);
         ItemTester.getItemTester().actionClickMenuItem (item, anItemPath);
-        waitTime( 1000 );
+        waitTime( 1500 );
         return ShellTester.waitVisible (newDialogName);
     }
 
@@ -108,7 +108,7 @@ public class AbbotHelper {
         Item item = (Item) finder.find (workbenchShell, new WidgetTextMatcher (itemText, Item.class, true));
         ItemPath anItemPath = new ItemPath (menuList);
         ItemTester.getItemTester().actionClickMenuItem (item, anItemPath);
-        waitTime( 1000 );
+        waitTime( 1500 );
     }
 
     // helper method    
@@ -116,7 +116,7 @@ public class AbbotHelper {
         ItemPath anItemPath = new ItemPath (menuList);
         Menu bar = ShellTester.getShellTester().getMenuBar (aShell);
         MenuTester.getMenuTester().actionClickItem (bar, anItemPath);
-        waitTime( 1000 );
+        waitTime( 1500 );
         return ShellTester.waitVisible (newDialogName);
     }
     
@@ -125,7 +125,7 @@ public class AbbotHelper {
         ItemPath anItemPath = new ItemPath (menuList);
         Menu bar = ShellTester.getShellTester().getMenuBar (aShell);
         MenuTester.getMenuTester().actionClickItem (bar, anItemPath);
-        waitTime( 1000 );
+        waitTime( 1500 );
     }
 
     // helper method
@@ -133,7 +133,7 @@ public class AbbotHelper {
         ItemPath anItemPath = new ItemPath (treeList);
         Tree tree = (Tree) finder.find (aShell, new WidgetClassMatcher (Tree.class));
         TreeTester.getTreeTester().actionClickItem (tree, anItemPath);
-        waitTime( 1000 );
+        waitTime( 1500 );
     }
 
     // helper method
@@ -146,14 +146,14 @@ public class AbbotHelper {
         } else {
             TextTester.getTextTester().actionKeyString (text, newText);  
         }
-        waitTime( 1000 );
+        waitTime( 1500 );
     }
 
     // helper method with a leap of faith that the cursor is
     // exactly where we want it to be.
     protected void setCursorText (String newText) {
         TextTester.getTextTester().actionKeyString (newText);
-        waitTime( 1000 );
+        waitTime( 1500 );
     }
     
     // helper method

@@ -228,10 +228,16 @@
             <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.core/${gep_version}">
                 <include name="**/*.jar"/>
             </fileset>
+            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.ui/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.schemas/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
             <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.v21.core/${gep_version}">
                 <include name="**/*.jar"/>
             </fileset>
-            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.ui/${gep_version}">
+            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.v21.ui/${gep_version}">
                 <include name="**/*.jar"/>
             </fileset>
         </copy>
