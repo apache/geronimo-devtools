@@ -32,48 +32,52 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class ConfirmInstallDialog extends Dialog {
 
-	private String installPath = null;
-	private String runtimeName = null;
+    private String installPath = null;
+    private String runtimeName = null;
 
-	public ConfirmInstallDialog(Shell parentShell, String runtimeName, String installPath) {
-		super(parentShell);
-		this.installPath = installPath;
-		this.runtimeName = runtimeName;
-	}
+    public ConfirmInstallDialog(Shell parentShell, String runtimeName, String installPath) {
+        super(parentShell);
+        this.installPath = installPath;
+        this.runtimeName = runtimeName;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
-	 */
-	protected void configureShell(Shell newShell) {
-		super.configureShell(newShell);
-		newShell.setText(Messages.installTitle);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets
+     * .Shell)
+     */
+    protected void configureShell(Shell newShell) {
+        super.configureShell(newShell);
+        newShell.setText(Messages.installTitle);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-	 */
-	protected Control createDialogArea(Composite parent) { 
-		// create a composite with standard margins and spacing
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		layout.marginHeight = convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_MARGIN);
-		layout.marginWidth = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN);
-		layout.verticalSpacing = convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_SPACING);
-		layout.horizontalSpacing = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_SPACING);
-		composite.setLayout(layout);
-		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		composite.setFont(parent.getFont());
-		Label label = new Label(composite, SWT.WRAP);
-		label.setText(NLS.bind(Messages.installMessage, new String[] { runtimeName, installPath }));
-		GridData data = new GridData();
-		data.widthHint = 400;
-		label.setLayoutData(data);
-		Dialog.applyDialogFont(composite);
-		return composite;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets
+     * .Composite)
+     */
+    protected Control createDialogArea(Composite parent) {
+        // create a composite with standard margins and spacing
+        Composite composite = new Composite(parent, SWT.NONE);
+        GridLayout layout = new GridLayout();
+        layout.marginHeight = convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_MARGIN);
+        layout.marginWidth = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN);
+        layout.verticalSpacing = convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_SPACING);
+        layout.horizontalSpacing = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_SPACING);
+        composite.setLayout(layout);
+        composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+        composite.setFont(parent.getFont());
+        Label label = new Label(composite, SWT.WRAP);
+        label.setText(NLS.bind(Messages.installMessage, new String[] { runtimeName, installPath }));
+        GridData data = new GridData();
+        data.widthHint = 400;
+        label.setLayoutData(data);
+        Dialog.applyDialogFont(composite);
+        return composite;
+    }
 
 }
