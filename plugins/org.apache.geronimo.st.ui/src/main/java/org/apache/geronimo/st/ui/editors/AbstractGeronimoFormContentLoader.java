@@ -38,6 +38,7 @@ public abstract class AbstractGeronimoFormContentLoader implements IGeronimoForm
 	 * @see org.apache.geronimo.st.ui.editors.IGeronimoFormContentLoader#doAddPages(org.eclipse.ui.forms.editor.FormEditor)
 	 */
 	public void doAddPages(FormEditor editor) throws PartInitException{
+        triggerGeronimoServerInfoUpdate();
 		IEditorInput input = editor.getEditorInput();
 		if(input instanceof IFileEditorInput) {
 			String planFileName = ((IFileEditorInput) input).getFile().getName();
@@ -54,6 +55,8 @@ public abstract class AbstractGeronimoFormContentLoader implements IGeronimoForm
 			}
 		}
 	}
+	
+	abstract public void triggerGeronimoServerInfoUpdate() throws PartInitException;
 	
 	abstract public void addWebPlanPages(FormEditor editor) throws PartInitException;
 	
