@@ -38,10 +38,6 @@ import org.apache.geronimo.st.v21.ui.pages.NamingFormPage;
 import org.apache.geronimo.st.v21.ui.pages.SecurityPage;
 import org.apache.geronimo.st.v21.ui.pages.WebGeneralPage;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.FormEditor;
 
@@ -130,14 +126,7 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
         return new DeploymentPage(editor, "deploymentpage", CommonMessages.editorTabDeployment);
     }
 
-    public void triggerGeronimoServerInfoUpdate() throws PartInitException {
-        Job job = new Job("ServeInfoGetter"){
-            protected IStatus run(IProgressMonitor arg0) {
-                GeronimoServerInfo.getInstance().updateInfo();
-                return Status.OK_STATUS;
-            }
-        };
-        job.setPriority(Job.SHORT);
-        job.schedule();
+    public void triggerGeronimoServerInfoUpdate() {
+        GeronimoServerInfo.getInstance().updateInfo();
     }
 }

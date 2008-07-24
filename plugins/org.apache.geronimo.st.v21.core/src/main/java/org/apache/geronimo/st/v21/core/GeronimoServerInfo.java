@@ -42,6 +42,10 @@ import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.v21.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 
@@ -105,15 +109,22 @@ public class GeronimoServerInfo {
     }
 
     public void updateInfo() {
-        updateKernels();
-        updateDeployedEJBs();
-        updateSecurityRealms();
-        updateJmsConnectionFactories();
-        updateJmsDestinations();
-        updateJdbcConnectionPools();
-        updateJavaMailSessions();
-        updateDeployedCredentialStores();
-        updateCommonLibs();
+        Job job = new Job("ServeInfoGetter"){
+            protected IStatus run(IProgressMonitor arg0) {
+                updateKernels();
+                updateDeployedEJBs();
+                updateSecurityRealms();
+                updateJmsConnectionFactories();
+                updateJmsDestinations();
+                updateJdbcConnectionPools();
+                updateJavaMailSessions();
+                updateDeployedCredentialStores();
+                updateCommonLibs();
+                return Status.OK_STATUS;
+            }
+        };
+        job.setPriority(Job.SHORT);
+        job.schedule();
     }
 
     private void updateKernels() {
