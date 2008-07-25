@@ -203,7 +203,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
         Trace.tracePoint("ENTRY", "GeronimoV21Utils.getApplicationDeploymentPlan", file);
 
         if (file.getName().equals(APP_PLAN_NAME) && file.exists()) {
-        	return JAXBUtils.unmarshalDeploymentPlan(file);
+        	return JAXBUtils.unmarshalFilterDeploymentPlan(file);
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getApplicationDeploymentPlan", null);
@@ -214,7 +214,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
         Trace.tracePoint("ENTRY", "GeronimoV21Utils.getApplicationClientDeploymentPlan", file);
 
         if (file.getName().equals(APP_CLIENT_PLAN_NAME) && file.exists()) {
-        	return JAXBUtils.unmarshalDeploymentPlan(file);
+        	return JAXBUtils.unmarshalFilterDeploymentPlan(file);
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getApplicationClientDeploymentPlan", null);
@@ -225,7 +225,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
         Trace.tracePoint("ENTRY", "GeronimoV21Utils.getWebDeploymentPlan", file);
 
         if (file.getName().equals(WEB_PLAN_NAME) && file.exists()) {
-        	return JAXBUtils.unmarshalDeploymentPlan(file);
+        	return JAXBUtils.unmarshalFilterDeploymentPlan(file);
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getWebDeploymentPlan", null);
@@ -236,7 +236,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
         Trace.tracePoint("ENTRY", "GeronimoV21Utils.getOpenEjbDeploymentPlan", file);
 
         if (file.getName().equals(OPENEJB_PLAN_NAME) && file.exists()) {
-        	return JAXBUtils.unmarshalDeploymentPlan(file);
+        	return JAXBUtils.unmarshalFilterDeploymentPlan(file);
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getOpenEjbDeploymentPlan", null);
@@ -247,7 +247,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
         Trace.tracePoint("ENTRY", "GeronimoV21Utils.getConnectorDeploymentPlan", file);
 
         if (file.getName().equals(CONNECTOR_PLAN_NAME) && file.exists()) {
-        	return JAXBUtils.unmarshalDeploymentPlan(file);
+        	return JAXBUtils.unmarshalFilterDeploymentPlan(file);
         }
 
         Trace.tracePoint("EXIT", "GeronimoV21Utils.getConnectorDeploymentPlan", null);

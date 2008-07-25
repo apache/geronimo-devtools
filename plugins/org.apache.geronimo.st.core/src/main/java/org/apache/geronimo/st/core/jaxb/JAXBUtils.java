@@ -89,21 +89,6 @@ public class JAXBUtils {
         }
     }
 
-    public static JAXBElement unmarshalDeploymentPlan(IFile file) {
-        try {
-            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            JAXBElement plan = (JAXBElement) unmarshaller.unmarshal(file.getContents());
-            return plan;
-        } catch (JAXBException e) {
-            Trace.tracePoint("JAXBException", "JAXBUtils.unmarshalDeploymentPlan()", file.getFullPath());
-            e.printStackTrace();
-        } catch (CoreException e) {
-            Trace.tracePoint("CoreException", "JAXBUtils.unmarshalDeploymentPlan()", file.getFullPath());
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public static JAXBElement unmarshalFilterDeploymentPlan(IFile file) {
         try {
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
