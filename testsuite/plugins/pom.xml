@@ -60,6 +60,15 @@
                             </configuration>
                         </execution>
                     </executions>
+                </plugin> 
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <configuration>
+                        <archive>
+                            <manifestFile>${basedir}/META-INF/MANIFEST.MF</manifestFile>
+                        </archive>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -101,7 +110,9 @@
         
     <modules>
         <module>org.apache.geronimo.devtools.helloworld</module> 
+        <module>org.apache.geronimo.testsuite.common</module>
         <module>org.apache.geronimo.testsuite.v21</module>
+        <module>org.apache.geronimo.testsuite.v20</module>
     </modules>
         
 </project>

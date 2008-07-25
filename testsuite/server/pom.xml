@@ -47,18 +47,34 @@
                             <tasks>
                                 <!--
                                  |
-                                 | Unzip and rename the testsuite Geronimo server
+                                 | Unzip and rename the testsuite Geronimo server v2.1.2
                                  |
                                  -->
-                                <property name="geronimo_install"       value="${basedir}/../launcher/"/>
-                                <property name="geronimo_assembly"      value="org/apache/geronimo/assemblies"/>
-                                <property name="geronimo_name"          value="geronimo-tomcat6-javaee5"/>
-                                <property name="geronimo_version"       value="2.1.2-SNAPSHOT"/>
-                                <mkdir dir="${geronimo_install}"/>
-                                <unzip src="${settings.localRepository}/${geronimo_assembly}/${geronimo_name}/${geronimo_version}/${geronimo_name}-${geronimo_version}-bin.zip"
-                                      dest="${geronimo_install}"/>
-                                <move todir="${geronimo_install}server">
-                                    <fileset dir="${geronimo_install}/${geronimo_name}-${geronimo_version}"/>
+                                <property name="geronimo_install1"       value="${basedir}/../launcher/"/>
+                                <property name="geronimo_assembly1"      value="org/apache/geronimo/assemblies"/>
+                                <property name="geronimo_name1"          value="geronimo-tomcat6-javaee5"/>
+                                <property name="geronimo_version1"       value="2.1.2-SNAPSHOT"/>
+                                <mkdir dir="${geronimo_install1}"/>
+                                <unzip src="${settings.localRepository}/${geronimo_assembly1}/${geronimo_name1}/${geronimo_version1}/${geronimo_name1}-${geronimo_version1}-bin.zip"
+                                      dest="${geronimo_install1}"/>
+                                <move todir="${geronimo_install1}server_v2.1">
+                                    <fileset dir="${geronimo_install1}/${geronimo_name1}-${geronimo_version1}"/>
+                                </move>
+                                 
+                                <!--
+                                 |
+                                 | Unzip and rename the testsuite Geronimo server v2.0
+                                 |
+                                 -->
+                                <property name="geronimo_install2"       value="${basedir}/../launcher/"/>
+                                <property name="geronimo_assembly2"      value="org/apache/geronimo/assemblies"/>
+                                <property name="geronimo_name2"          value="geronimo-tomcat6-jee5"/>
+                                <property name="geronimo_version2"       value="2.0.2"/>
+                                <mkdir dir="${geronimo_install2}"/>
+                                <unzip src="${settings.localRepository}/${geronimo_assembly2}/${geronimo_name2}/${geronimo_version2}/${geronimo_name2}-${geronimo_version2}-bin.zip"
+                                      dest="${geronimo_install2}"/>
+                                <move todir="${geronimo_install2}server_v2.0">
+                                    <fileset dir="${geronimo_install2}/${geronimo_name2}-${geronimo_version2}"/>
                                 </move>
                             </tasks>
                         </configuration>

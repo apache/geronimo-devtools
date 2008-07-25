@@ -46,6 +46,14 @@
             <type>pom</type>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.assemblies</groupId>
+            <artifactId>geronimo-tomcat6-jee5</artifactId>
+            <version>2.0.2</version>
+            <type>zip</type>
+            <classifier>bin</classifier>
+            <scope>test</scope>
+        </dependency> 
     </dependencies>
 
     <build>
@@ -66,7 +74,8 @@
                             <includes>
                                 <include>launcher/eclipse</include>
                                 <include>launcher/results</include>
-                                <include>launcher/server</include>
+                                <include>launcher/server_v2.1</include>
+                                <include>launcher/server_v2.0</include>
                                 <include>launcher/workspace</include>
                             </includes>
                         </fileset>

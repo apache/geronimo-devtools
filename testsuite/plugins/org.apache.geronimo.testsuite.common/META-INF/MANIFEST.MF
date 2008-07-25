@@ -1,9 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Geronimo v21 Server Tools Testsuite Plug-in
-Bundle-SymbolicName: org.apache.geronimo.testsuite.v21;singleton:=true
+Bundle-Name: Geronimo v21 Server Tools Testsuite Common Plug-in
+Bundle-SymbolicName: org.apache.geronimo.testsuite.common;singleton:=true
 Bundle-Version: 2.1.2
-Bundle-Activator: org.apache.geronimo.testsuite.v21.Activator
 Bundle-Vendor: Apache.org
 Bundle-Localization: plugin
 Require-Bundle: abbot.swt,
@@ -23,8 +22,7 @@ Require-Bundle: abbot.swt,
  org.eclipse.ui.editors,
  org.eclipse.ui.forms,
  org.eclipse.ui.ide,
- org.eclipse.ui.views,
- org.apache.geronimo.testsuite.common
+ org.eclipse.ui.views
 Eclipse-LazyStart: true
-Export-Package: org.apache.geronimo.testsuite.v21
+Export-Package: org.apache.geronimo.testsuite.common.ui
 Import-Package: junit.framework;version="3.8.2"

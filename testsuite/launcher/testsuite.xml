@@ -60,9 +60,14 @@
         <runTests testPlugin="org.apache.geronimo.testsuite.v21"/>
     </target>
 
+    <target name="testsuite.v20">
+        <runTests testPlugin="org.apache.geronimo.testsuite.v20"/>
+    </target>
+
     <target name="all">
         <antcall target="helloworld" />
         <antcall target="testsuite.v21" />
+        <antcall target="testsuite.v20" />
     </target>
 
 </project>
