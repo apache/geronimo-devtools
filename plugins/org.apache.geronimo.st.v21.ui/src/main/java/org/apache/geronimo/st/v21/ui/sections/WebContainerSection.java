@@ -190,7 +190,9 @@ public class WebContainerSection extends AbstractSectionPart {
         specifyAsPattern.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 if (specifyAsPattern.getSelection()) {
-                	plan.getWebContainer().setGbeanLink (null);
+                	if (plan.getWebContainer() != null) {
+                	    plan.getWebContainer().setGbeanLink (null);
+                	}
                     if (group.getText().length() > 0) {
                         getPattern().setGroupId(group.getText());
                     }
