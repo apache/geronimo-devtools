@@ -41,9 +41,10 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.geronimo.assemblies</groupId>
-            <artifactId>assemblies</artifactId>
-            <version>2.1.2-SNAPSHOT</version>
-            <type>pom</type>
+            <artifactId>geronimo-tomcat6-javaee5</artifactId>
+            <version>2.1.2</version>
+            <type>zip</type>
+            <classifier>bin</classifier>
             <scope>test</scope>
         </dependency>
         <dependency>
