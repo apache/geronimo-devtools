@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -540,9 +541,9 @@ public class DependencyHelperTest extends TestCase {
         jaxbReordered = dh.reorderJAXBElements( jaxbElements );
         assertEquals( jaxbReordered.size(),jaxbElements.size() );
         assertEquals( jaxbReordered.get(0),jaxbElements.get(4) );       // jaxbElement7
-        assertEquals( jaxbReordered.get(1),jaxbElements.get(8) );       // jaxbElement3
-        assertEquals( jaxbReordered.get(2),jaxbElements.get(7) );       // jaxbElement4
-        assertEquals( jaxbReordered.get(3),jaxbElements.get(0) );       // jaxbElement11
+        assertEquals( jaxbReordered.get(1),jaxbElements.get(0) );       // jaxbElement3
+        assertEquals( jaxbReordered.get(2),jaxbElements.get(8) );       // jaxbElement4
+        assertEquals( jaxbReordered.get(3),jaxbElements.get(7) );       // jaxbElement11
         assertEquals( jaxbReordered.get(4),jaxbElements.get(1) );       // jaxbElement10
         assertEquals( jaxbReordered.get(5),jaxbElements.get(2) );       // jaxbElement9
         assertEquals( jaxbReordered.get(6),jaxbElements.get(6) );       // jaxbElement5
@@ -800,10 +801,10 @@ public class DependencyHelperTest extends TestCase {
         jaxbElements.add( (JAXBElement)jaxbElement3 );                  // Element 5
         jaxbReordered = dh.reorderJAXBElements( jaxbElements );
         assertEquals( jaxbReordered.size(),jaxbElements.size() );
-        assertEquals( jaxbReordered.get(0),jaxbElements.get(4) );       // jaxbElement12
-        assertEquals( jaxbReordered.get(1),jaxbElements.get(1) );       // jaxbElement7
-        assertEquals( jaxbReordered.get(2),jaxbElements.get(3) );       // jaxbElement5
-        assertEquals( jaxbReordered.get(3),jaxbElements.get(2) );       // jaxbElement6
+        assertEquals( jaxbReordered.get(0),jaxbElements.get(1) );       // jaxbElement12
+        assertEquals( jaxbReordered.get(1),jaxbElements.get(3) );       // jaxbElement7
+        assertEquals( jaxbReordered.get(2),jaxbElements.get(2) );       // jaxbElement5
+        assertEquals( jaxbReordered.get(3),jaxbElements.get(4) );       // jaxbElement6
         assertEquals( jaxbReordered.get(4),jaxbElements.get(0) );       // jaxbElement13
         assertEquals( jaxbReordered.get(5),jaxbElements.get(5) );       // jaxbElement2
         jaxbElements.clear();

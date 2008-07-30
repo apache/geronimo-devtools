@@ -19,7 +19,7 @@ package org.apache.geronimo.st.core.internal;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -75,14 +75,14 @@ public class DependencyManager {
 
         Set parents = (Set) childToParentMap.get(child);
         if (parents == null) {
-            parents = new HashSet();
+            parents = new LinkedHashSet();
             childToParentMap.put(child, parents);
         }
         parents.add(parent);
 
         Set children = (Set) parentToChildMap.get(parent);
         if (children == null) {
-            children = new HashSet();
+            children = new LinkedHashSet();
             parentToChildMap.put(parent, children);
         }
         children.add(child);
@@ -151,7 +151,7 @@ public class DependencyManager {
 
         Set existingParents = (Set) childToParentMap.get(child);
         if (existingParents == null) {
-            existingParents = new HashSet(parents);
+            existingParents = new LinkedHashSet(parents);
             childToParentMap.put(child, existingParents);
         }
         else {
@@ -162,7 +162,7 @@ public class DependencyManager {
             Object startParent = i.next();
             Set children = (Set) parentToChildMap.get(startParent);
             if (children == null) {
-                children = new HashSet();
+                children = new LinkedHashSet();
                 parentToChildMap.put(startParent, children);
             }
             children.add(child);
@@ -188,7 +188,7 @@ public class DependencyManager {
         }
 
         Trace.tracePoint("Exit", "DependencyManager.getParents", parents.size() );
-        return new HashSet(parents);
+        return new LinkedHashSet(parents);
     }
 
 
@@ -208,6 +208,6 @@ public class DependencyManager {
         }
 
         Trace.tracePoint("Exit ", "DependencyManager.getChildren", children.size() );
-        return new HashSet(children);
+        return new LinkedHashSet(children);
     }
 }
