@@ -47,6 +47,7 @@ public class JAXBUtils {
 
     // JAXBContext instantiation is costly - must be done only once!
     private static final JAXBContext jaxbContext = newJAXBContext();
+    private static final MarshallerListener marshellerListener = new MarshallerListener();
     private static JAXBContext newJAXBContext() {
         try {
             return JAXBContext.newInstance( 
@@ -68,6 +69,7 @@ public class JAXBUtils {
     public static void marshalDeploymentPlan(JAXBElement jaxbElement, IFile file) {
         try {
             Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setListener(marshellerListener);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapperImpl());
