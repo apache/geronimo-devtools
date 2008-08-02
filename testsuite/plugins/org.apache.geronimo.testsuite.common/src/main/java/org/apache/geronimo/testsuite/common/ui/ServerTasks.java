@@ -77,9 +77,6 @@ public class ServerTasks {
     
     public void stopServer () throws MultipleFoundException, NotFoundException {
     	String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
-        aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&Window", "Show &View", "Servers"});
-
         aHelper.rightClickItem (workbenchShell, serverDisplay,
                 new String[] {"S&top"});
         aHelper.waitForServerStatus (workbenchShell, serverDisplay, "Stopped");
@@ -101,19 +98,6 @@ public class ServerTasks {
         
         aHelper.clickButton (questionShell, IDialogConstants.OK_LABEL);
         aHelper.clickButton (preferenceShell, IDialogConstants.OK_LABEL);
-    }
-
-    public void publishAllProjects () throws MultipleFoundException, NotFoundException {
-        String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
-        
-        aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&Window", "Show &View", "Servers"});
-        Shell deployShell = aHelper.rightClickItem (workbenchShell, serverDisplay,
-                 new String[] {"Add and Remove &Projects..."}, "Add and Remove Projects");
-        aHelper.clickButton (deployShell, "Add A&ll >>");
-        
-        aHelper.clickButton (deployShell, IDialogConstants.FINISH_LABEL);
-        aHelper.waitForDialogDisposal (deployShell);
     }
 
     private String getServerInstallDirectory() {

@@ -160,29 +160,5 @@ public class Tutorial5Minute {
         // copy over the correct contents
         aFile = aProject.getFile("src/sampleear/MyServlet.java");
         aFile.setContents(new FileInputStream (fileDir + "/MyServlet.java"), true, true, null);
-
-        // close the open file
-        aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&File", "&Close"});
-    }
-
-    public void webTesting () throws MultipleFoundException, NotFoundException {
-        aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&Window", "Web Browser", "&0 Internal Web Browser"});
-        Shell openShell = aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&Window", "Show &View", "&Other..."}, "Show View");
-        aHelper.clickTreeItem (openShell, 
-                new String[] {"General", "Internal Web Browser"});
-        aHelper.clickButton (openShell, IDialogConstants.OK_LABEL);
-
-        aHelper.setCombo (workbenchShell, "http://localhost:8080/SampleWAR/");
-        aHelper.clickToolItem (workbenchShell, "Go to the selected URL");
-        aHelper.waitTime (15000);
-
-        // TODO fill in a name and click the Process button
-        // This is a problem, HTML objects are not the same as SWT objects and 
-        // Abbot cannot find these
-        //aHelper.setTextField(workbenchShell, "", "MyName");
-        //aHelper.clickButton (workbenchShell, "Press me!");
     }
 }

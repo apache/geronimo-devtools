@@ -20,12 +20,10 @@ package org.apache.geronimo.testsuite.common.ui;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
@@ -38,13 +36,11 @@ import abbot.swt.finder.matchers.TextMultiMatcher;
 import abbot.swt.finder.matchers.WidgetClassMatcher;
 import abbot.swt.finder.matchers.WidgetTextMatcher;
 import abbot.swt.tester.ButtonTester;
-import abbot.swt.tester.ComboTester;
 import abbot.swt.tester.ItemPath;
 import abbot.swt.tester.ItemTester;
 import abbot.swt.tester.MenuTester;
 import abbot.swt.tester.ShellTester;
 import abbot.swt.tester.TextTester;
-import abbot.swt.tester.ToolItemTester;
 import abbot.swt.tester.TreeItemTester;
 import abbot.swt.tester.TreeTester;
 
@@ -123,19 +119,11 @@ public class AbbotHelper {
         return ShellTester.waitVisible (newDialogName);
     }
     
-    // helper method    
+ // helper method    
     public void clickMenuItem (Shell aShell, String[] menuList) throws MultipleFoundException, NotFoundException {
         ItemPath anItemPath = new ItemPath (menuList);
         Menu bar = ShellTester.getShellTester().getMenuBar (aShell);
         MenuTester.getMenuTester().actionClickItem (bar, anItemPath);
-        waitTime( 1500 );
-    }
-
-    // helper method
-    // find the tool item by its tool tip text
-    public void clickToolItem (Shell aShell, String toolTipText) throws MultipleFoundException, NotFoundException {
-        ToolItem toolItem = (ToolItem) finder.find (aShell, new WidgetToolTipMatcher (toolTipText, ToolItem.class, true));
-        ToolItemTester.getToolItemTester().actionClick (toolItem);
         waitTime( 1500 );
     }
 
@@ -157,14 +145,6 @@ public class AbbotHelper {
         } else {
             TextTester.getTextTester().actionKeyString (text, newText);  
         }
-        waitTime( 1500 );
-    }
-    
-    // helper method
-    public void setCombo (Shell aShell, String newText) throws MultipleFoundException, NotFoundException {
-        Combo combo = (Combo) finder.find (aShell, new WidgetClassMatcher (Combo.class, true));
-        ComboTester.getComboTester().actionClick(combo);
-        ComboTester.getComboTester().actionKeyString(newText);
         waitTime( 1500 );
     }
 
@@ -205,25 +185,6 @@ public class AbbotHelper {
         ShellTester.getShellTester().actionDelay (time);
     }
 
-    // helper inner class
-    // Since Tool Items do not have text, the regular Widget Text Matcher won't work.
-    // This is a simple matcher to do the search for the tool tip.
-    // Theoretically, as Abbot gets better, then this code will be moved into Abbot
-    // and can be removed here
-    final class WidgetToolTipMatcher extends WidgetTextMatcher {
-        public WidgetToolTipMatcher (String text, Class clazz, boolean mustBeShowing) {
-            super (text, clazz, mustBeShowing);
-        }
-
-        protected String getText(Widget widget) {
-            if (widget instanceof ToolItem)
-                return ToolItemTester.getToolItemTester().getToolTipText((ToolItem) widget);
-
-            return null;
-        }
-    }
-    
-    // helper inner class
     final class ButtonMultiMatcher extends TextMultiMatcher {
         public ButtonMultiMatcher(String text, Class clazz, boolean mustBeShowing) {
             super(text, clazz, mustBeShowing);
