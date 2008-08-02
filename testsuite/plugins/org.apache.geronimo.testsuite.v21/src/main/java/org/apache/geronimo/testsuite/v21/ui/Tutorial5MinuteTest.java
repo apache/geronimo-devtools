@@ -64,9 +64,6 @@ public class Tutorial5MinuteTest extends WorkbenchTestCase {
             workbenchShell = WorkbenchUtilities.getWorkbenchWindow().getShell();
             aHelper = new AbbotHelper (workbenchShell);
             
-            workbenchShell = WorkbenchUtilities.getWorkbenchWindow().getShell();
-            aHelper = new AbbotHelper (workbenchShell);
-            
             ServerTasks serverTasks = new ServerTasks(workbenchShell, aHelper, Constants.SERVER_V21 );
             WorkbenchTasks workbenchTasks = new WorkbenchTasks(workbenchShell, aHelper);
             ProjectTasks projectTasks = new ProjectTasks(workbenchShell, aHelper, Constants.SERVER_V21 );
@@ -77,9 +74,14 @@ public class Tutorial5MinuteTest extends WorkbenchTestCase {
             // create server from an installed instance
             serverTasks.createServer();
 
-            serverTasks.startServer();
             Tutorial5Minute tutorial = new Tutorial5Minute (workbenchShell, aHelper);
             tutorial.createProjects ();
+
+            serverTasks.publishAllProjects();
+            serverTasks.startServer();
+
+            tutorial.webTesting();
+
             serverTasks.stopServer();
 
             // delete the projects that have been created
