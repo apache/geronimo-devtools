@@ -18,7 +18,10 @@ package org.apache.geronimo.st.core.jaxb;
 
 import javax.xml.bind.Marshaller;
 
+import org.apache.geronimo.jee.naming.GbeanLocator;
+import org.apache.geronimo.jee.naming.Pattern;
 import org.apache.geronimo.jee.security.Security;
+import org.apache.geronimo.jee.web.WebApp;
 
 public class MarshallerListener extends Marshaller.Listener{
 
@@ -29,6 +32,30 @@ public class MarshallerListener extends Marshaller.Listener{
 			if (security.getRoleMappings() != null && security.getRoleMappings().getRole().size() == 0) {
 				security.setRoleMappings(null);
 			}
+		} else if (source instanceof WebApp) {
+			WebApp webapp = (WebApp)source;
+			GbeanLocator gbeanlocator = webapp.getWebContainer();
+			if (isEmpty(gbeanlocator.getGbeanLink()) && isEmpty(gbeanlocator.getPattern())) {
+				webapp.setWebContainer(null);
+			}
 		}
+	}
+	
+	private boolean isEmpty(Pattern pattern) {
+		if ( pattern == null ) {
+			return true;
+		}
+		if ( ( pattern.getGroupId() == null || pattern.getGroupId().trim().equals("") ) &&
+			 ( pattern.getArtifactId() == null || pattern.getArtifactId().trim().equals("") ) &&
+			 ( pattern.getModule() == null || pattern.getModule().trim().equals("") ) &&
+			 ( pattern.getName() == null || pattern.getName().trim().equals("") ) &&
+			 ( pattern.getVersion() == null || pattern.getVersion().trim().equals("") ) ) {
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean isEmpty(String value) {
+		return (value == null || value.trim().equals(""));
 	}
 }
