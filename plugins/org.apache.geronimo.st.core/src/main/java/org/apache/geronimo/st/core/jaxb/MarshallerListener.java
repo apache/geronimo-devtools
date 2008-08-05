@@ -35,7 +35,7 @@ public class MarshallerListener extends Marshaller.Listener{
 		} else if (source instanceof WebApp) {
             WebApp webapp = (WebApp)source;
             GbeanLocator gbeanlocator = webapp.getWebContainer();
-            if (isEmpty(gbeanlocator.getGbeanLink()) && isEmpty(gbeanlocator.getPattern())) {
+            if (gbeanlocator != null && isEmpty(gbeanlocator.getGbeanLink()) && isEmpty(gbeanlocator.getPattern())) {
                 webapp.setWebContainer(null);
             }
         }
