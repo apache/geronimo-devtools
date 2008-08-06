@@ -107,7 +107,7 @@
             <arg value="all"/>
             <arg value="-Dos=macosx"/>
             <arg value="-Dws=carbon"/>
-            <arg value="-Darch=ppc"/>
+            <arg value="-Darch=x86"/>
         </java>
     </target>
 
