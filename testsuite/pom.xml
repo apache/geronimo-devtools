@@ -27,7 +27,7 @@
     <packaging>pom</packaging>
     <version>2.1.2</version>
     <name>Geronimo Eclipse Plugin :: Testsuite</name>
-                        
+
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
@@ -39,6 +39,11 @@
     </description>
 
     <dependencies>
+        <!--
+         |
+         | Geronimo server v2.1
+         |
+         -->
         <dependency>
             <groupId>org.apache.geronimo.assemblies</groupId>
             <artifactId>geronimo-tomcat6-javaee5</artifactId>
@@ -46,7 +51,64 @@
             <type>zip</type>
             <classifier>bin</classifier>
             <scope>test</scope>
+            <!--
+             |
+             | Exclude server dependencies not used by the GEP
+             |
+             -->
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.xml.ws</groupId>
+                    <artifactId>jaxws-tools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.xml.ws</groupId>
+                    <artifactId>jaxws-rt</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>catalina</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>jasper</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-portal-driver</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-portal-driver-impl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-container</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-taglib</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-descriptor-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-descriptor-impl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>juddi</groupId>
+                    <artifactId>juddi</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+
+        <!--
+         |
+         | Geronimo server v2.0
+         |
+         -->
         <dependency>
             <groupId>org.apache.geronimo.assemblies</groupId>
             <artifactId>geronimo-tomcat6-jee5</artifactId>
@@ -54,7 +116,7 @@
             <type>zip</type>
             <classifier>bin</classifier>
             <scope>test</scope>
-        </dependency> 
+        </dependency>
     </dependencies>
 
     <build>
