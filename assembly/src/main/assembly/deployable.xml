@@ -69,7 +69,6 @@
             <outputDirectory>eclipse/features/</outputDirectory>
             <unpack>true</unpack>
             <includes>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.feature</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.server.jetty.v20.feature</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.server.tomcat.v20.feature</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.server.jetty.v21.feature</include>

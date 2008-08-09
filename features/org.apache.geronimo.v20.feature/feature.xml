@@ -44,10 +44,32 @@
         <import feature="org.eclipse.jst" version="2.0.0" match="greaterOrEqual"/>
     </requires>
     
-    <includes
-        id="org.apache.geronimo.feature"
-        version="2.1.2"
-        name="Geronimo Core Feature"/>
+    <plugin
+         id="org.apache.geronimo.st.core"
+         download-size="115"
+         install-size="115"
+         version="2.1.2"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.geronimo.st.ui"
+         download-size="144"
+         install-size="144"
+         version="2.1.2"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.geronimo.st.schemas"
+         download-size="70"
+         install-size="70"
+         version="2.1.2"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.geronimo.runtime.common"
+         download-size="1145"
+         install-size="1145"
+         version="2.1.2"/>
         
     <plugin
          id="org.apache.geronimo.st.v20.core"
