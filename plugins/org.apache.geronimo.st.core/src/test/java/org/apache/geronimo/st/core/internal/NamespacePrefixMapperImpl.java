@@ -15,9 +15,9 @@
  *  limitations under the License.
  */
 
-package org.apache.geronimo.st.core.jaxb;
+package org.apache.geronimo.st.core.internal;
 
-import com.sun.xml.internal.bind.marshaller.NamespacePrefixMapper;
+import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 
 import java.util.HashMap;
 import java.util.Map;

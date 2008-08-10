@@ -217,7 +217,6 @@
                         
         <pluginManagement>
             <plugins>
-                
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-antrun-plugin</artifactId>
@@ -270,7 +269,6 @@
                         <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     </configuration>
                 </plugin>
-
             </plugins>
         </pluginManagement>
                 
@@ -280,10 +278,20 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.0.2</version>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <!--
+                     |
+                     | Have to specify compiler arguments here since using the <scope>system</scope> 
+                     | tag does not work with maven 2.0.9 on Windows with a space in the ${java.home}
+                     |
+                     -->
+                    <compilerArguments>
+                        <bootclasspath>${java.home}/lib/rt.jar</bootclasspath>
+                    </compilerArguments>
                 </configuration>
             </plugin>
+                
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
@@ -299,6 +307,7 @@
                     </filesets>
                 </configuration>
             </plugin>
+                
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
