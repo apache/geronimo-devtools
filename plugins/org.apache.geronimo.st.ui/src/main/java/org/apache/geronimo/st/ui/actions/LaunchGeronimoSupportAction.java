@@ -19,7 +19,7 @@ import org.eclipse.wst.server.core.IServer;
  */
 public class LaunchGeronimoSupportAction implements IActionDelegate {
 
-	public static final String WASCE_SERVER_PREFIX = "com.ibm.wasce";
+	public static final String GERONIMO_SERVER_PREFIX = "org.apache.geronimo";
 
 	private IServer server;
 
@@ -42,7 +42,7 @@ public class LaunchGeronimoSupportAction implements IActionDelegate {
 	public void run(IAction action) {
 
 		try {
-			int style = IWorkbenchBrowserSupport.AS_EDITOR
+			int style = IWorkbenchBrowserSupport.AS_EXTERNAL
 					| IWorkbenchBrowserSupport.STATUS;
 			IWebBrowser browser = WorkbenchBrowserSupport.getInstance()
 					.createBrowser(
@@ -73,7 +73,7 @@ public class LaunchGeronimoSupportAction implements IActionDelegate {
                 server = (IServer) ((StructuredSelection) selection).getFirstElement();
 
                 boolean enable = server != null
-                                && server.getServerType().getId().startsWith(WASCE_SERVER_PREFIX);
+                                && server.getServerType().getId().startsWith(GERONIMO_SERVER_PREFIX);
 
                 action.setEnabled(enable);
 
