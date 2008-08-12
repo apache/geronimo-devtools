@@ -57,6 +57,9 @@ public class Messages extends NLS {
     public static String password;
     public static String console;
     public static String consoleTooltip;
+    public static String supportWebPage;
+    public static String supportWebPageTooltip;
+    public static String supportWebPageURL;
     public static String pingDelay;
     public static String pingInterval;
     public static String maxPings;
