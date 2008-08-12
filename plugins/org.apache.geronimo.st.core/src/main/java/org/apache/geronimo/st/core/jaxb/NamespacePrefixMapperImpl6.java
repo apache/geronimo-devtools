@@ -20,20 +20,20 @@ package org.apache.geronimo.st.core.jaxb;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
+import com.sun.xml.internal.bind.marshaller.NamespacePrefixMapper;
 import org.apache.geronimo.st.core.internal.Trace;
 
 /**
- * <strong>NamespacePrefixMapperImpl</strong> is used to map XML namespaces to a set of 
- * predetermined values for a Jave 1.5 runtime, which uses the reference implementation (RI) JAXB
+ * <strong>NamespacePrefixMapperImpl6</strong> is used to map XML namespaces 
+ * to a set of predetermined values for a Jave 1.6 runtime, which uses the internal JAXB 
  * implementation. 
  * 
  * If this class changes, then the test version in org.apache.geronimo.jee.common
- * needs to be updated to be kept in sync, as well as the Java 1.6 runtime version
+ * needs to be updated to be kept in sync, as well as the Java 1.5 runtime version
  * 
- * @version $Rev$ $Date$
+ * @version $Rev$ $Date$ 
  */
-public class NamespacePrefixMapperImpl extends NamespacePrefixMapper {
+public class NamespacePrefixMapperImpl6 extends NamespacePrefixMapper {
 
     private static Map<String, String> prefixMap = new HashMap<String, String>();
 
@@ -51,12 +51,12 @@ public class NamespacePrefixMapperImpl extends NamespacePrefixMapper {
     }
 
     public String getPreferredPrefix(String namespaceUri, String suggestion, boolean requirePrefix) {
-        Trace.tracePoint("Entry", "NamespacePrefixMapperImpl.getPreferredPrefix", namespaceUri, suggestion, requirePrefix);
+        Trace.tracePoint("Entry", "NamespacePrefixMapperImpl6.getPreferredPrefix", namespaceUri, suggestion, requirePrefix);
 
         if (prefixMap.containsKey(namespaceUri))
             return prefixMap.get(namespaceUri);
 
-        Trace.tracePoint("Exit", "NamespacePrefixMapperImpl.getPreferredPrefix", namespaceUri, suggestion, requirePrefix);
+        Trace.tracePoint("Exit", "NamespacePrefixMapperImpl6.getPreferredPrefix", namespaceUri, suggestion, requirePrefix);
         return suggestion;
     }
     

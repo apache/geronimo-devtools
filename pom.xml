@@ -288,6 +288,23 @@
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
+                    <!--
+                     |
+                     | If using a JDK 1.6 this entry will point to the rt.jar without any changes.
+                     | For example:
+                     |
+                     |  <bootclasspath>${java.home}/lib/rt.jar</bootclasspath>
+                     |
+                     | If using a JDK 1.5 this entry must be modified to point to a 1.6 rt.jar 
+                     | on your system, which means it must be either manually downloaded or 
+                     | installed. For example:
+                     |
+                     |  <bootclasspath>C:/Program Files/Java/jre1.6.0_07/lib/rt.jar</bootclasspath>
+                     |
+                     -->
+                    <compilerArguments>
+                        <bootclasspath>${java.home}/lib/rt.jar</bootclasspath>
+                    </compilerArguments>
                 </configuration>
             </plugin>
             <plugin>
