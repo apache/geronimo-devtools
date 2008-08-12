@@ -17,11 +17,10 @@
 
 package org.apache.geronimo.st.core.jaxb;
 
-import com.sun.xml.internal.bind.marshaller.NamespacePrefixMapper;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 import org.apache.geronimo.st.core.internal.Trace;
 
 /**

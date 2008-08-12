@@ -33,6 +33,7 @@ import javax.xml.bind.Unmarshaller;
 
 import junit.framework.TestCase;
 
+import org.apache.geronimo.st.core.jaxb.NamespacePrefixMapperImpl;
 import org.xml.sax.InputSource;
 
 /**

@@ -72,7 +72,7 @@ public class JAXBUtils {
             marshaller.setListener(marshellerListener);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-            marshaller.setProperty("com.sun.xml.internal.bind.namespacePrefixMapper", new NamespacePrefixMapperImpl());
+            marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapperImpl());
             ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
             marshaller.marshal(jaxbElement, outBuffer);
             ByteArrayInputStream inBuffer = new ByteArrayInputStream(outBuffer.toByteArray());

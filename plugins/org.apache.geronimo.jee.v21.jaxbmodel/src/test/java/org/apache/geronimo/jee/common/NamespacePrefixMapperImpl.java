@@ -17,10 +17,10 @@
 
 package org.apache.geronimo.jee.common;
 
-import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 
 /**
  * <strong>NamespacePrefixMapperImpl</strong> is used to map XML namespaces 
