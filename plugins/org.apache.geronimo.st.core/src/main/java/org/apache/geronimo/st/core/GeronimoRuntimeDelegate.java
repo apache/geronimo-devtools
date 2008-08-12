@@ -125,12 +125,19 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
 
         if (!detectedVersion.startsWith(getRuntime().getRuntimeType()
 				.getVersion())) {
+        	String runtimeVersion = getRuntime().getRuntimeType().getVersion();
 			String message = NLS.bind(Messages.incorrectVersion,
 					new String[] { getRuntime().getName(),
-							getRuntime().getRuntimeType().getVersion(),
+					        runtimeVersion,
 							detectedVersion });
-			return new Status(IStatus.WARNING, Activator.PLUGIN_ID,
-					INCORRECT_VERSION, message, null);
+            // GD332 allow version > if it's a SNAPSHOT
+            int severity = IStatus.ERROR;
+            if (detectedVersion.endsWith("-SNAPSHOT")
+                    && detectedVersion.compareTo(runtimeVersion) >= 0) {
+                severity = IStatus.WARNING;
+            }
+            return new Status(severity, Activator.PLUGIN_ID, INCORRECT_VERSION,
+                    message, null);
 		}
 
         return Status.OK_STATUS;
