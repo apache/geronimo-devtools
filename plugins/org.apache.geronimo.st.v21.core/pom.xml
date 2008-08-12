@@ -30,6 +30,7 @@
         <resources>
             <resource>
                 <directory>.</directory>
+                <filtering>true</filtering>
                 <includes>
                     <include>plugin.xml</include>
                     <include>plugin.properties</include>

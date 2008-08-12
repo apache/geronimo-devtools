@@ -30,10 +30,13 @@
         <resources>
             <resource>
                 <directory>.</directory>
+                <filtering>true</filtering>
                 <includes>
                     <include>plugin.xml</include>
                     <include>plugin.properties</include>
                     <include>.options</include>
+                    <include>about.ini</include>
+                    <include>G-logo-32x32.gif</include>
                     <include>about.html</include>
                 </includes>
             </resource>
