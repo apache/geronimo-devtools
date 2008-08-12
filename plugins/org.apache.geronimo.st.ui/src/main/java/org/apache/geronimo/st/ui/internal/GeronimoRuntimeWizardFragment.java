@@ -17,7 +17,8 @@
 package org.apache.geronimo.st.ui.internal;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -25,9 +26,7 @@ import java.util.regex.Pattern;
 
 import org.apache.geronimo.st.core.GeronimoRuntimeDelegate;
 import org.apache.geronimo.st.ui.Activator;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -35,9 +34,7 @@ import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMInstall2;
 import org.eclipse.jdt.launching.IVMInstallType;
 import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.IPreferenceNode;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
@@ -55,19 +52,21 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.browser.IWebBrowser;
+import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
+import org.eclipse.ui.forms.events.HyperlinkAdapter;
+import org.eclipse.ui.forms.events.HyperlinkEvent;
+import org.eclipse.ui.forms.widgets.FormText;
+import org.eclipse.ui.internal.browser.WorkbenchBrowserSupport;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeType;
 import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.TaskModel;
-import org.eclipse.wst.server.core.internal.IInstallableRuntime;
-import org.eclipse.wst.server.core.internal.InstallableRuntime;
-import org.eclipse.wst.server.core.internal.ServerPlugin;
 import org.eclipse.wst.server.core.model.RuntimeDelegate;
 import org.eclipse.wst.server.ui.internal.SWTUtil;
 import org.eclipse.wst.server.ui.wizard.IWizardHandle;
@@ -84,12 +83,6 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
     private GeronimoRuntimeDelegate geronimoRuntime;
 
     protected Text installDir;
-
-    private Button tomcat;
-
-    private Button jetty;
-
-    protected Group group;
 
     private IWizardHandle fWizard;
 
@@ -129,7 +122,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
         handle.setImageDescriptor(Activator.getImageDescriptor((Activator.IMG_WIZ_GERONIMO)));
         handle.setTitle(Messages.bind(Messages.runtimeWizardTitle, getRuntimeName()));
         String name = getGeronimoRuntime().getRuntime().getRuntimeType().getName();
-        handle.setDescription(Messages.bind(Messages.runtimeWizardDescription, name));
+        //handle.setDescription(Messages.bind(Messages.runtimeWizardDescription, name));
         createContent(container, handle);
         return container;
     }
@@ -143,153 +136,40 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 
         addJRESelection(composite);
         addInstallDirSection(composite);
-        addInstallableRuntimeSection(composite);
+        addDownloadServerSection(composite);
     }
 
-    protected void addInstallableRuntimeSection(Composite composite) {
-        GridData data = new GridData();
-        data = new GridData(GridData.FILL_BOTH);
-        data.horizontalSpan = 3;
-
-        GeronimoRuntimeDelegate gRuntime = getGeronimoRuntime();
-
-        final IInstallableRuntime gWithTomcat = ServerPlugin.findInstallableRuntime(gRuntime
-                .getInstallableTomcatRuntimeId());
-        final IInstallableRuntime gWithJetty = ServerPlugin.findInstallableRuntime(gRuntime
-                .getInstallableJettyRuntimeId());
-
-        if (gWithTomcat != null && gWithJetty != null) {
-            group = new Group(composite, SWT.NONE);
-            group.setText(Messages.downloadOptions);
-            group.setLayoutData(data);
-            group.setLayout(composite.getLayout());
-            group.setEnabled(false);
-
-            Label webContainer = new Label(group, SWT.NONE);
-            webContainer.setText(Messages.chooseWebContainer);
-            data = new GridData();
-            data.horizontalSpan = 3;
-            webContainer.setLayoutData(data);
-
-            tomcat = new Button(group, SWT.RADIO);
-            tomcat.setSelection(true);
-            tomcat.setText(Messages.gWithTomcat);
-            data = new GridData();
-            data.horizontalSpan = 3;
-            tomcat.setLayoutData(data);
-            tomcat.setToolTipText(Messages.tooltipTomcat);
-
-            jetty = new Button(group, SWT.RADIO);
-            jetty.setText(Messages.gWithJetty);
-            data = new GridData();
-            data.horizontalSpan = 3;
-            jetty.setLayoutData(data);
-            jetty.setToolTipText(Messages.tooltipJetty);
-
-            Button install = SWTUtil.createButton(group, Messages.install);
-            data = new GridData();
-            data.horizontalSpan = 3;
-            install.setLayoutData(data);
-            String runtimeName = getRuntimeName();
-            install.setToolTipText(Messages.bind(Messages.tooltipInstall, getRuntimeName()));
-            install.addSelectionListener(new SelectionAdapter() {
-                private String license;
-
-                public void widgetSelected(SelectionEvent se) {
-                    if (installDir != null && isValidLocation()) {
-                        Shell shell = installDir.getShell();
-
-                        final IInstallableRuntime installable = tomcat.getSelection() ? gWithTomcat : gWithJetty;
-                        final Path installPath = new Path(installDir.getText());
-                        
-                        license = null;
-                        
-                        IRunnableWithProgress runnable = new IRunnableWithProgress() {
-                            public void run(IProgressMonitor monitor) throws InvocationTargetException,
-                                    InterruptedException {
-                                try {
-                                    license = installable.getLicense(monitor);
-                                } catch (CoreException e) {
-                                    Trace.trace(Trace.SEVERE, "Error installing runtime", e);
-                                }
-                            }
-                        };
-
-                        try {
-                            getWizard().run(true, false, runnable);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (InvocationTargetException e) {
-                            e.printStackTrace();
-                        } catch (Exception e) {
-                            Trace.trace(Trace.SEVERE, "Error installing runtime", e);
-                        }
-                        
-                        ConfirmInstallDialog dialog = new ConfirmInstallDialog(shell, getRuntimeName(), installDir
-                                .getText(), license);
-                        dialog.open();
-                        if (dialog.getReturnCode() == IDialogConstants.OK_ID) {
-
-                            runnable = new IRunnableWithProgress() {
-                                public void run(IProgressMonitor monitor) throws InvocationTargetException,
-                                        InterruptedException {
-                                    try {
-                                        installable.install(installPath, monitor);
-                                    } catch (CoreException e) {
-                                        Trace.trace(Trace.SEVERE, "Error installing runtime", e);
-                                    }
-                                }
-                            };
-
-                            try {
-                                getWizard().run(true, false, runnable);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            } catch (InvocationTargetException e) {
-                                e.printStackTrace();
-                            } catch (Exception e) {
-                                Trace.trace(Trace.SEVERE, "Error installing runtime", e);
-                            }
-
-                            updateInstallDir(installPath);
-
-                        }
-                    }
-                }
-
-                boolean isValidLocation() {
-                    return true;
-                }
-
-                /**
-                 * server zips have the server name in them as the root
-                 * directory. We need to add that to the install directory. The
-                 * server name comes from the installableruntime definitions in
-                 * org.apache.gernoimo.st.v2{0.1}.core/plugin.xml. A main method
-                 * below is used to test this code in development.
-                 * 
-                 * @param installPath
-                 */
-                void updateInstallDir(IPath installPath) {
-                    InstallableRuntime installable = (InstallableRuntime) (tomcat.getSelection() ? gWithTomcat
-                            : gWithJetty);
-                    String path = installable.getPath();
-                    Matcher matcher = SERVER_NAME_VERSION_PATTERN.matcher(path);
-                    if (matcher.find()) {
-                        String serverName = matcher.group(1);
-                        String serverVersion = matcher.group(2);
-                        installPath = installPath.append(serverName + serverVersion);
-                    } else {
-                        Trace.trace(Trace.SEVERE, "No version found in path = " + path);
-                        installPath = installPath.append(path);
-                    }
-                    installDir.setText(installPath.toOSString());
-                }
-            });
-        } else {
-            Trace.trace(Trace.SEVERE, "Error finding installable runtime(s)");
-        }
-    }
+    protected void addDownloadServerSection(final Composite composite) {
+		FormText downloadServerText = new FormText(composite, SWT.WRAP);
+		IRuntime runtime = getRuntimeDelegate().getRuntime();
+		String runtimeName = runtime.getRuntimeType().getName();
+		String text = "<form>"
+				+ Messages.bind(Messages.DownloadServerText,
+						Messages.DownloadServerURL, runtimeName) + "</form>";
+		downloadServerText.setText(text, true, true);
+		GridData data = new GridData();
+		data.horizontalSpan = 3;
+		downloadServerText.setLayoutData(data);
+		downloadServerText.addHyperlinkListener(new HyperlinkAdapter() {
+			@Override
+			public void linkActivated(HyperlinkEvent hyperlinkEvent) {
+				String url = hyperlinkEvent.getHref().toString();
+				Trace.trace(Trace.INFO, "Hyperlink " + url + ".");
+				try {
+					int style = IWorkbenchBrowserSupport.AS_EXTERNAL
+							| IWorkbenchBrowserSupport.STATUS;
+					IWebBrowser browser = WorkbenchBrowserSupport.getInstance()
+							.createBrowser(style, "download server",
+									"get server", "tool tip");
+					browser.openURL(new URL(url));
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (PartInitException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
     protected GeronimoRuntimeDelegate getGeronimoRuntime() {
         if (geronimoRuntime == null)
@@ -447,10 +327,8 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
             IStatus status = runtimeWC.validate(null);
             if (status == null || status.isOK()) {
                 // a valid install found
-                wizard.setMessage(null, IMessageProvider.NONE);
-                group.setEnabled(false);
+                wizard.setMessage(Messages.bind(Messages.serverDetected, runtimeName), IMessageProvider.NONE);
             } else if (status.getCode() == GeronimoRuntimeDelegate.INCORRECT_VERSION) {
-                group.setEnabled(false);
                 if (status.getSeverity() == IStatus.ERROR) {
                     wizard.setMessage(status.getMessage(), IMessageProvider.ERROR);
                     return;
@@ -461,8 +339,6 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
                 return;
             } else {
                 File file = new Path(installDir.getText()).toFile();
-                boolean enableGroup = file.isDirectory() && file.canWrite() ? true : false;
-                group.setEnabled(enableGroup);
                 if (file.isDirectory()) {
                     String message = file.canWrite() ? Messages.noImageFound : Messages.cannotInstallAtLocation;
                     message = Messages.bind(message, runtimeName);
