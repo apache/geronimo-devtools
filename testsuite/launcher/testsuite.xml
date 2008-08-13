@@ -52,10 +52,6 @@
         <style style="${eclipse-home}/plugins/org.eclipse.test/JUNIT.XSL" basedir="${results}/xml" destdir="${results}/html" />
     </target>
 
-    <target name="helloworld">
-        <runTests testPlugin="org.apache.geronimo.devtools.helloworld" />
-    </target>
-
     <target name="testsuite.v21">
         <runTests testPlugin="org.apache.geronimo.testsuite.v21"/>
     </target>
@@ -65,7 +61,6 @@
     </target>
 
     <target name="all">
-        <antcall target="helloworld" />
         <antcall target="testsuite.v21" />
         <antcall target="testsuite.v20" />
     </target>

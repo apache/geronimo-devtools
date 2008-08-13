@@ -109,7 +109,6 @@
     </build>
         
     <modules>
-        <module>org.apache.geronimo.devtools.helloworld</module> 
         <module>org.apache.geronimo.testsuite.common</module>
         <module>org.apache.geronimo.testsuite.v21</module>
         <module>org.apache.geronimo.testsuite.v20</module>
