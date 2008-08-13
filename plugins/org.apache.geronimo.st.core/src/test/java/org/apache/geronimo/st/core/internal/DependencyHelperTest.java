@@ -22,18 +22,15 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import junit.framework.TestCase;
 
-import org.apache.geronimo.st.core.jaxb.NamespacePrefixMapperImpl;
 import org.xml.sax.InputSource;
 
 /**
@@ -90,15 +87,10 @@ public class DependencyHelperTest extends TestCase {
     // 
     public void setUp() throws Exception {
 
-
         // 
-        // Create unmarshaller and marshaller
+        // Create unmarshaller 
         // 
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-        Marshaller marshaller = jaxbContext.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-        marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapperImpl());
 
         // 
         // Read XML files 

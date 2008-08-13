@@ -18,6 +18,8 @@ package org.apache.geronimo.st.core.jaxb;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -26,10 +28,20 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.internal.Trace;
@@ -37,6 +49,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
+import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -47,7 +60,7 @@ public class JAXBUtils {
 
     // JAXBContext instantiation is costly - must be done only once!
     private static final JAXBContext jaxbContext = newJAXBContext();
-    private static final MarshallerListener marshellerListener = new MarshallerListener();
+    private static final MarshallerListener marshallerListener = new MarshallerListener();
     private static JAXBContext newJAXBContext() {
         try {
             return JAXBContext.newInstance( 
@@ -69,18 +82,32 @@ public class JAXBUtils {
     public static void marshalDeploymentPlan(JAXBElement jaxbElement, IFile file) {
         try {
             Marshaller marshaller = jaxbContext.createMarshaller();
-            marshaller.setListener(marshellerListener);
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-            Trace.tracePoint("JAXBUtils", "JAXBUtils.marshalDeploymentPlan()", System.getProperty("java.runtime.version"));
-            if ( System.getProperty("java.runtime.version").startsWith("1.6") ) {
-                marshaller.setProperty("com.sun.xml.internal.bind.namespacePrefixMapper", new NamespacePrefixMapperImpl6());
+            marshaller.setListener(marshallerListener);
+
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(true);
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.newDocument(); 
+
+            marshaller.marshal(jaxbElement, doc);
+
+            TransformerFactory xf = TransformerFactory.newInstance();
+            try {
+            	xf.setAttribute("indent-number", new Integer(4));
+            } catch (IllegalArgumentException iae) {
+                //ignore this. http://forums.sun.com/thread.jspa?threadID=562510&messageID=2841867
             }
-            else {
-                marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new NamespacePrefixMapperImpl());
-            }
+            Transformer xformer = xf.newTransformer();
+            xformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            xformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            xformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            xformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", "4"); 
+
             ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
-            marshaller.marshal(jaxbElement, outBuffer);
+            Result out = new StreamResult(new OutputStreamWriter(outBuffer,"UTF-8"));
+            NamespacePrefix.processPrefix( doc );
+
+            xformer.transform(new DOMSource(doc), out);
             ByteArrayInputStream inBuffer = new ByteArrayInputStream(outBuffer.toByteArray());
             if(file.exists()) {
                 file.setContents(inBuffer, true, false, null);
@@ -94,7 +121,19 @@ public class JAXBUtils {
         } catch (CoreException coreException) {
             Trace.tracePoint("CoreException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
             coreException.printStackTrace();
-        }
+        } catch (ParserConfigurationException e) {
+        	Trace.tracePoint("ParserConfigurationException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
+			e.printStackTrace();
+		} catch (TransformerConfigurationException e) {
+			Trace.tracePoint("TransformerConfigurationException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			Trace.tracePoint("UnsupportedEncodingException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			Trace.tracePoint("TransformerException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
+			e.printStackTrace();
+		}
     }
 
     public static JAXBElement unmarshalFilterDeploymentPlan(IFile file) {

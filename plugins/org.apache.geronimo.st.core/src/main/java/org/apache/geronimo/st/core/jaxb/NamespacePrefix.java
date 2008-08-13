@@ -17,23 +17,20 @@
 
 package org.apache.geronimo.st.core.jaxb;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
-import org.apache.geronimo.st.core.internal.Trace;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
- * <strong>NamespacePrefixMapperImpl</strong> is used to map XML namespaces to a set of 
- * predetermined values for a Jave 1.5 runtime, which uses the reference implementation (RI) JAXB
- * implementation. 
- * 
- * If this class changes, then the test version in org.apache.geronimo.jee.common
- * needs to be updated to be kept in sync, as well as the Java 1.6 runtime version
- * 
- * @version $Rev$ $Date$
+ * @version $Rev$ $Date$ 
  */
-public class NamespacePrefixMapperImpl extends NamespacePrefixMapper {
+public class NamespacePrefix {
 
     private static Map<String, String> prefixMap = new HashMap<String, String>();
 
@@ -49,15 +46,50 @@ public class NamespacePrefixMapperImpl extends NamespacePrefixMapper {
         prefixMap.put("http://geronimo.apache.org/xml/ns/security-2.0", "sec");
         prefixMap.put("http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1", "web");
     }
+	
+	public static void processPrefix( Node parent ) {
+		NodeList nl = parent.getChildNodes();
+		
+		if ( parent instanceof Element ) {
+			updatePrefix( (Element)parent );
+		}
+		
+		for ( int i = 0; i <= nl.getLength(); i ++ ) {
+			Node node = nl.item(i);
+			if ( node instanceof Element ) {
+				processPrefix( node );
+			}
+		}
 
-    public String getPreferredPrefix(String namespaceUri, String suggestion, boolean requirePrefix) {
-        Trace.tracePoint("Entry", "NamespacePrefixMapperImpl.getPreferredPrefix", namespaceUri, suggestion, requirePrefix);
+	}
+	
+	private static void updatePrefix( Element element ) {
+		NamedNodeMap mnm = element.getAttributes();
+		
+		ArrayList<Attr> attributes = new ArrayList<Attr>();
+		for ( int j = 0; j <= mnm.getLength(); j ++ ) { 
+			Attr attr = (Attr)mnm.item(j);
+			if ( attr != null && attr.getOwnerElement() != null && getPrefix( attr.getNodeValue() ) != null ) {
+				attributes.add((Attr)attr.cloneNode(false));
+			}
+		}
+		for ( int j = 0; j < attributes.size(); j ++ ) {
+			Attr tempAttr = attributes.get(j);
+			Attr attr = element.getAttributeNode(tempAttr.getName());
+			Element owner = (Element)attr.getOwnerElement();
+			owner.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:" + getPrefix( attr.getNodeValue() ), attr.getNodeValue());
+			owner.removeAttributeNode(attr);
+		}
+		String prefix = getPrefix( element.getNamespaceURI() );
+		if ( prefix != null ) {
+		    element.setPrefix( prefix );
+		}
+	}
 
-        if (prefixMap.containsKey(namespaceUri))
-            return prefixMap.get(namespaceUri);
+	private static String getPrefix(String namespaceURI) {
+        if (prefixMap.containsKey(namespaceURI))
+            return prefixMap.get(namespaceURI);
+		return null;
+	}
 
-        Trace.tracePoint("Exit", "NamespacePrefixMapperImpl.getPreferredPrefix", namespaceUri, suggestion, requirePrefix);
-        return suggestion;
-    }
-    
 }
