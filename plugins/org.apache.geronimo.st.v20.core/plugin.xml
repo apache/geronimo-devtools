@@ -47,33 +47,6 @@
         </serverType>
     </extension>
     
-    
-    <!--
-     |
-     | Extend WTP installableRuntimes so that the new Geronimo server or runtime type          
-     | can be discovered via the GeronimoRuntimeWizardFragment extension. Note that 
-     | the featureSite tag should be one of the following:
-     |
-     |  1. featureSite="http://www.apache.org/dist/geronimo/eclipse/updates/"
-     |  2. featureSite="http://people.apache.org/~mcconne/releases/2.1.2/RC1/staging_site/"
-     |
-     -->
-    <extension point="org.eclipse.wst.server.core.installableRuntimes">
-        <installableRuntime id="org.apache.geronimo.runtime.tomcat.20"
-            featureVersion="2.1.2"
-            featureId="org.apache.geronimo.server.tomcat.v20.feature"
-            featureSite="http://people.apache.org/~tkirby/releases/2.1.2/RC1/staging_site/eclipse/updates/"
-            path="geronimo-tomcat6-jee5-2.0.2.zip">
-        </installableRuntime>
-        <installableRuntime id="org.apache.geronimo.runtime.jetty.20"
-            featureVersion="2.1.2"
-            featureId="org.apache.geronimo.server.jetty.v20.feature"
-            featureSite="http://people.apache.org/~tkirby/releases/2.1.2/RC1/staging_site/eclipse/updates/"
-            path="geronimo-jetty6-jee5-2.0.2.zip">
-        </installableRuntime>
-    </extension>
-    
-    
     <extension point="org.eclipse.jst.server.core.runtimeFacetMappings">
         <runtimeFacetMapping
             runtimeTypeId="org.apache.geronimo.runtime.20"
