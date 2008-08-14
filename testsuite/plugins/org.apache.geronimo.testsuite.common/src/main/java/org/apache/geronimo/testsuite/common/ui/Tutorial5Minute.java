@@ -19,6 +19,8 @@ package org.apache.geronimo.testsuite.common.ui;
 
 import java.io.FileInputStream;
 
+import org.apache.geronimo.testsuite.common.AssertUtil;
+import org.apache.geronimo.testsuite.common.selenium.EclipseSelenium;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -166,23 +168,20 @@ public class Tutorial5Minute {
                 new String[] {"&File", "&Close"});
     }
 
-    public void webTesting () throws MultipleFoundException, NotFoundException {
-        aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&Window", "Web Browser", "&0 Internal Web Browser"});
-        Shell openShell = aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&Window", "Show &View", "&Other..."}, "Show View");
-        aHelper.clickTreeItem (openShell, 
-                new String[] {"General", "Internal Web Browser"});
-        aHelper.clickButton (openShell, IDialogConstants.OK_LABEL);
 
-        aHelper.setCombo (workbenchShell, "http://localhost:8080/SampleWAR/");
-        aHelper.clickToolItem (workbenchShell, "Go to the selected URL");
-        aHelper.waitTime (15000);
+    public void webTesting () throws Exception {
+    	EclipseSelenium selenium = new EclipseSelenium();
+   		selenium.open( "http://localhost:8080/SampleWAR/");
+   		selenium.type("name", "Tom");
+   		selenium.click("submit");
+   		selenium.waitForPageToLoad( "3000" );
+   		AssertUtil.assertTrue(selenium.getHtmlSource().indexOf( "says hello to" ) > 0);
 
         // TODO fill in a name and click the Process button
         // This is a problem, HTML objects are not the same as SWT objects and 
         // Abbot cannot find these
         //aHelper.setTextField(workbenchShell, "", "MyName");
         //aHelper.clickButton (workbenchShell, "Press me!");
+   		selenium.stop();
     }
 }
