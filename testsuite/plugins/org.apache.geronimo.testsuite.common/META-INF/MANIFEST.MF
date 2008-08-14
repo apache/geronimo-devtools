@@ -23,6 +23,11 @@ Require-Bundle: abbot.swt;resolution:=optional,
  org.eclipse.ui.forms,
  org.eclipse.ui.ide,
  org.eclipse.ui.views
-Eclipse-LazyStart: true
-Export-Package: org.apache.geronimo.testsuite.common.ui
+Bundle-ActivationPolicy: lazy
+Export-Package: com.thoughtworks.selenium,
+ org.apache.geronimo.testsuite.common,
+ org.apache.geronimo.testsuite.common.selenium,
+ org.apache.geronimo.testsuite.common.ui
 Import-Package: junit.framework;version="3.8.2"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Eclipse-LazyStart: true

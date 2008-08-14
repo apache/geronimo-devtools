@@ -17,23 +17,19 @@
 
 package org.apache.geronimo.testsuite.v21.ui;
 
-import java.io.File;
-
+import org.apache.geronimo.testsuite.common.selenium.EclipseSelenium;
+import org.apache.geronimo.testsuite.common.selenium.EclipseSeleniumServer;
 import org.apache.geronimo.testsuite.common.ui.AbbotHelper;
 import org.apache.geronimo.testsuite.common.ui.Constants;
 import org.apache.geronimo.testsuite.common.ui.ServerTasks;
 import org.apache.geronimo.testsuite.common.ui.WorkbenchTasks;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.swt.widgets.Shell;
 
 import abbot.swt.eclipse.junit.extensions.WorkbenchTestCase;
 import abbot.swt.eclipse.utils.Preferences;
 import abbot.swt.eclipse.utils.WorkbenchUtilities;
 import abbot.swt.eclipse.utils.Preferences.Mode;
-import abbot.swt.finder.generic.MultipleFoundException;
-import abbot.swt.finder.generic.NotFoundException;
 
 /**
  * @version $Rev$ $Date$
@@ -59,21 +55,39 @@ public class NewServerTest extends WorkbenchTestCase {
         try {
             workbenchShell = WorkbenchUtilities.getWorkbenchWindow().getShell();
             aHelper = new AbbotHelper (workbenchShell);
-            
+
+
             ServerTasks serverTasks = new ServerTasks(workbenchShell, aHelper, Constants.SERVER_V21 );
             WorkbenchTasks workbenchTasks = new WorkbenchTasks(workbenchShell, aHelper);
             
             // so we are sure that we are looking in the desired perspective
             workbenchTasks.showJEEPerspective();
+       		
+
 
             // create server from an installed instance
             serverTasks.createServer();
 
             serverTasks.startServer();
+
+            
+            EclipseSelenium selenium = new EclipseSelenium();
+        	selenium.start();
+            
+            selenium.open( "http://localhost:8080/console/" );
+            selenium.waitForPageToLoad( "2000" );
+            selenium.type("j_username", "system");
+            selenium.type("j_password", "manager");
+            selenium.click("submit");
+            
+            
             serverTasks.stopServer();
 
             // remove the server 
             serverTasks.removeServer();
+            
+            selenium.stop();
+
 
             success = true;
         }

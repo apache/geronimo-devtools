@@ -17,9 +17,15 @@
 
 package org.apache.geronimo.testsuite.v20;
 
+import org.apache.geronimo.testsuite.common.selenium.EclipseSeleniumServer;
+import org.apache.geronimo.testsuite.common.ui.AbbotHelper;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.widgets.Shell;
 import org.osgi.framework.BundleContext;
+
+import abbot.swt.eclipse.utils.WorkbenchUtilities;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -34,6 +40,8 @@ public class Activator extends Plugin {
 	// The shared instance
 	private static Activator plugin;
 
+	private EclipseSeleniumServer seleniumServer;
+	
 	/**
 	 * The constructor
 	 */
@@ -48,6 +56,16 @@ public class Activator extends Plugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+	    Shell workbenchShell = WorkbenchUtilities.getWorkbenchWindow().getShell();
+	    AbbotHelper aHelper = new AbbotHelper (workbenchShell);
+    	seleniumServer = new EclipseSeleniumServer(aHelper, workbenchShell);
+		try {
+			SafeRunner.run( seleniumServer );
+			Thread.sleep(5000);
+//			new Exception("sdsfsdf").printStackTrace();
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -58,6 +76,7 @@ public class Activator extends Plugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
+		seleniumServer.stop();
 	}
 
 	/**
