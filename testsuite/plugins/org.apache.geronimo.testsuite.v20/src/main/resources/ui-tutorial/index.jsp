@@ -26,7 +26,7 @@
   </head>
   <body>
     <form action="${pageContext.request.contextPath}/sayHello">
-      <input type="text" name="name" /><input type="submit" value="Press me!" />
+      <input type="text" name="name" /><input type="submit" name="submit" value="Press me!" />
     </form>
   </body>
 </html>
