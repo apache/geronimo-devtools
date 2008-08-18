@@ -24,8 +24,7 @@ Require-Bundle: abbot.swt;resolution:=optional,
  org.eclipse.ui.ide,
  org.eclipse.ui.views
 Bundle-ActivationPolicy: lazy
-Export-Package: com.thoughtworks.selenium,
- org.apache.geronimo.testsuite.common,
+Export-Package: org.apache.geronimo.testsuite.common,
  org.apache.geronimo.testsuite.common.selenium,
  org.apache.geronimo.testsuite.common.ui
 Import-Package: junit.framework;version="3.8.2"
