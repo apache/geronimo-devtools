@@ -22,6 +22,7 @@
       label="Geronimo v2.0 Server Adapter"
       version="2.1.2"
       provider-name="%providerName"
+      plugin="org.apache.geronimo.st.v20.core"
       image="bigG.gif">
     
     <description url="http://geronimo.apache.org/development-tools">
