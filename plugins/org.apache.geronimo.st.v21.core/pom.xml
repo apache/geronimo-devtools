@@ -36,8 +36,19 @@
                     <include>plugin.properties</include>
                     <include>.options</include>
                     <include>about.ini</include>
-                    <include>G-logo-32x32.gif</include>
                     <include>about.html</include>
+                </includes>
+            </resource>
+            <!--
+             |
+             | GERONIMODEVTOOLS-482: Ensure filtering is not used on a binary resource 
+             | as it may get inadvertently altered
+             |
+             -->
+            <resource>
+                <directory>.</directory>
+                <includes>
+                    <include>G-logo-32x32.gif</include>
                 </includes>
             </resource>
             <!-- The Geronimo covention puts license and notice for artifacts shipped in this jar 
