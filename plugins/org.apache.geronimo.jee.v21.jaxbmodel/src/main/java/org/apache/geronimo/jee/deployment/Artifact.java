@@ -168,7 +168,10 @@ public class Artifact
      *     
      */
     public void setVersion(String value) {
-        this.version = value;
+        if (value == null || value.length() == 0)
+            this.version = null;
+        else
+            this.version = value;
     }
 
     /**
@@ -192,7 +195,10 @@ public class Artifact
      *     
      */
     public void setType(String value) {
-        this.type = value;
+        if (value == null || value.length() == 0)
+            this.type = null;
+        else
+            this.type = value;
     }
 
 
