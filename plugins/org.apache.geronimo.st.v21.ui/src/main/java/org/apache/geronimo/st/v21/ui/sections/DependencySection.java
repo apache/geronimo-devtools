@@ -54,7 +54,7 @@ public class DependencySection extends AbstractTableSection {
         this.environment = environment;
         this.isServerEnvironment = true;
         this.COLUMN_NAMES = new String[] {
-                CommonMessages.artifactId, CommonMessages.groupId, CommonMessages.version, CommonMessages.type
+                CommonMessages.groupId, CommonMessages.artifactId, CommonMessages.version, CommonMessages.type
         };
         createClient();
     }
@@ -71,7 +71,7 @@ public class DependencySection extends AbstractTableSection {
         this.environment = environment;
         this.isServerEnvironment = isServerEnvironment; 
         this.COLUMN_NAMES = new String[] {
-                CommonMessages.artifactId, CommonMessages.groupId, CommonMessages.version, CommonMessages.type
+                CommonMessages.groupId, CommonMessages.artifactId, CommonMessages.version, CommonMessages.type
         };
         createClient();
     }
