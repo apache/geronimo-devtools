@@ -743,11 +743,12 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		Map map = new HashMap();
 		String user = getGeronimoServer().getAdminID();
 		String password = getGeronimoServer().getAdminPassword();
+		String port = getGeronimoServer().getRMINamingPort();
 		map.put("jmx.remote.credentials", new String[] { user, password });
 		map.put("java.naming.factory.initial", "com.sun.jndi.rmi.registry.RegistryContextFactory");
 		map.put("java.naming.factory.url.pkgs", "org.apache.geronimo.naming");
 		map.put("java.naming.provider.url", "rmi://" + getServer().getHost()
-				+ ":1099");
+				+ ":" + port);
 
 		String url = getGeronimoServer().getJMXServiceURL();
 		if (url != null) {
