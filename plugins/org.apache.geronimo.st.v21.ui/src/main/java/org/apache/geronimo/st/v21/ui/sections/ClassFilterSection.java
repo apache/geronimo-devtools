@@ -20,15 +20,16 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.jee.deployment.ClassFilter;
+import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.wizards.ClassFilterWizard;
-import org.apache.geronimo.jee.deployment.ClassFilter;
-import org.apache.geronimo.jee.deployment.Environment;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.IContentProvider;
+import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -131,20 +132,28 @@ public class ClassFilterSection extends AbstractTableSection {
         return super.getInput();
     }
     
-    public AdapterFactory getAdapterFactory() {
-        return new AdapterFactory() {
+    @Override
+    public IContentProvider getContentProvider() {
+        return new ContentProvider() {
+            @Override
             public Object[] getElements(Object inputElement) {
                 if (!ClassFilter.class.isInstance(inputElement)) {
                     return new String[] { "" };
                 }
-                ClassFilter plan = (ClassFilter)inputElement;
-                return plan.getFilter().toArray();
+                return ((ClassFilter) inputElement).getFilter().toArray();
             }
+        };
+    }
+
+    @Override
+    public ITableLabelProvider getLabelProvider() {
+        return new LabelProvider() {
+            @Override
             public String getColumnText(Object element, int columnIndex) {
                 if (String.class.isInstance(element)) {
-                    String clazz = (String)element;
                     switch (columnIndex) {
-                    case 0: return clazz;
+                    case 0:
+                        return (String) element;
                     }
                 }
                 return null;

@@ -20,11 +20,11 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.jee.application.ExtModule;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.wizards.ExtModuleWizard;
-import org.apache.geronimo.jee.application.ExtModule;
+import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -59,49 +59,33 @@ public class ExtModuleSection extends AbstractTableSection {
         return ExtModule.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
-     */
-    public AdapterFactory getAdapterFactory() {
-        return new AdapterFactory() {
-            public Object[] getElements(Object inputElement) {
-                if (!JAXBElement.class.isInstance(inputElement)) {
-                    return new String[] { "" };
-                }
-                return getObjectContainer().toArray();
-            }
-
+    @Override
+    public ITableLabelProvider getLabelProvider() {
+        return new LabelProvider() {
+            @Override
             public String getColumnText(Object element, int columnIndex) {
                 if (ExtModule.class.isInstance(element)) {
-                    ExtModule extModule = (ExtModule)element;
+                    ExtModule extModule = (ExtModule) element;
                     switch (columnIndex) {
                     case 0:
                         if (extModule.getConnector() != null) {
                             return "connector";
-                        }
-                        else if (extModule.getEjb() != null) {
+                        } else if (extModule.getEjb() != null) {
                             return "ejb";
-                        }
-                        else if (extModule.getJava() != null) {
+                        } else if (extModule.getJava() != null) {
                             return "java";
-                        }
-                        else if (extModule.getWeb() != null) {
+                        } else if (extModule.getWeb() != null) {
                             return "web";
                         }
                         return "";
-                    case 1: 
+                    case 1:
                         if (extModule.getConnector() != null) {
                             return extModule.getConnector().getValue();
-                        }
-                        else if (extModule.getEjb() != null) {
+                        } else if (extModule.getEjb() != null) {
                             return extModule.getEjb().getValue();
-                        }
-                        else if (extModule.getJava() != null) {
+                        } else if (extModule.getJava() != null) {
                             return extModule.getJava().getValue();
-                        }
-                        else if (extModule.getWeb() != null) {
+                        } else if (extModule.getWeb() != null) {
                             return extModule.getWeb().getValue();
                         }
                         return "";

@@ -20,16 +20,17 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.providers.AdapterFactory;
-import org.apache.geronimo.st.ui.sections.AbstractTableSection;
-import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
-import org.apache.geronimo.st.v21.ui.Activator;
-import org.apache.geronimo.st.v21.ui.wizards.DependencyWizard;
 import org.apache.geronimo.jee.deployment.Dependencies;
 import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.jee.deployment.Environment;
+import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.sections.AbstractTableSection;
+import org.apache.geronimo.st.v21.ui.Activator;
+import org.apache.geronimo.st.v21.ui.wizards.DependencyAddWizard;
+import org.apache.geronimo.st.v21.ui.wizards.DependencyWizard;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.IContentProvider;
+import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -43,29 +44,10 @@ public class DependencySection extends AbstractTableSection {
 
     protected boolean isServerEnvironment;
 
-    /**
-     * @param plan
-     * @param parent
-     * @param toolkit
-     * @param style
-     */
     public DependencySection(JAXBElement plan, Environment environment, Composite parent, FormToolkit toolkit, int style) {
-        super(plan, parent, toolkit, style);
-        this.environment = environment;
-        this.isServerEnvironment = true;
-        this.COLUMN_NAMES = new String[] {
-                CommonMessages.groupId, CommonMessages.artifactId, CommonMessages.version, CommonMessages.type
-        };
-        createClient();
+        this(plan, environment, parent, toolkit, style, true);
     }
 
-    /**
-     * @param plan
-     * @param parent
-     * @param toolkit
-     * @param style
-     * @param envType
-     */
     public DependencySection(JAXBElement plan, Environment environment, Composite parent, FormToolkit toolkit, int style, boolean isServerEnvironment) {
         super(plan, parent, toolkit, style);
         this.environment = environment;
@@ -77,31 +59,41 @@ public class DependencySection extends AbstractTableSection {
     }
 
     public String getTitle() {
-        if (isServerEnvironment)
+        if (isServerEnvironment) {
             return CommonMessages.editorSectionDependenciesTitle;
-        else
+        } else {
             return CommonMessages.editorSectionClientDependenciesTitle;
+        }
     }
 
     public String getDescription() {
-        if (isServerEnvironment)
+        if (isServerEnvironment) {
             return CommonMessages.editorSectionDependenciesDescription;
-        else
+        } else {
             return CommonMessages.editorSectionClientDependenciesDescription;
+        }
     }
 
     public List getObjectContainer() {
-        if (environment == null) {
-            environment = (Environment)JAXBObjectFactoryImpl.getInstance().create(Environment.class);
-        }
-        
-        if ( environment.getDependencies() == null ) {
-            Dependencies dependencies = (Dependencies)JAXBObjectFactoryImpl.getInstance().create(Dependencies.class);
-            environment.setDependencies(dependencies);
-        }
-        return environment.getDependencies().getDependency();
+        return getDependencies().getDependency();
     }
 
+    private Dependencies getDependencies() {
+        if (environment == null) {
+            environment = new Environment();
+        }
+        if (environment.getDependencies() == null) {
+            environment.setDependencies(new Dependencies());
+        }
+        return environment.getDependencies();
+    }
+
+    @Override
+    public Wizard getAddWizard() {
+        return new DependencyAddWizard(this);
+    }
+
+    @Override
     public Wizard getWizard() {
         return new DependencyWizard(this, isServerEnvironment);
     }
@@ -115,32 +107,41 @@ public class DependencySection extends AbstractTableSection {
     }
 
     public Object getInput() {
-        if (environment != null) {
-            return environment.getDependencies();
-        }
-        return super.getInput();
+        return getDependencies();
     }
-    
-    public AdapterFactory getAdapterFactory() {
-        return new AdapterFactory() {
+
+    @Override
+    public IContentProvider getContentProvider() {
+        return new ContentProvider() {
+            @Override
             public Object[] getElements(Object inputElement) {
                 if (!Dependencies.class.isInstance(inputElement)) {
                     return new String[] { "" };
                 }
-                Dependencies plan = (Dependencies)inputElement;
-                return plan.getDependency().toArray();
+                return ((Dependencies) inputElement).getDependency().toArray();
             }
+        };
+    }
+
+    @Override
+    public ITableLabelProvider getLabelProvider() {
+        return new LabelProvider() {
+            @Override
             public String getColumnText(Object element, int columnIndex) {
                 if (Dependency.class.isInstance(element)) {
-                    Dependency dependency = (Dependency)element;
+                    Dependency dependency = (Dependency) element;
                     switch (columnIndex) {
-                    case 0: return dependency.getGroupId();
-                    case 1: return dependency.getArtifactId();
-                    case 2: return dependency.getVersion();
-                    case 3: return dependency.getType();
+                    case 0:
+                        return dependency.getGroupId();
+                    case 1:
+                        return dependency.getArtifactId();
+                    case 2:
+                        return dependency.getVersion();
+                    case 3:
+                        return dependency.getType();
                     }
                 }
-                return null;
+                return "";
             }
         };
     }

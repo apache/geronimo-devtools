@@ -20,12 +20,11 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.jee.naming.GbeanRef;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.wizards.GBeanRefWizard;
-import org.apache.geronimo.jee.naming.EjbRef;
-import org.apache.geronimo.jee.naming.GbeanRef;
+import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -59,26 +58,18 @@ public class GBeanRefSection extends AbstractTableSection {
 		return GbeanRef.class;
 	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
-     */
-    public AdapterFactory getAdapterFactory() {
-        return new AdapterFactory() {
-            public Object[] getElements(Object inputElement) {
-                if (!JAXBElement.class.isInstance(inputElement)) {
-                    return new String[] { "" };
-                }
-                return getObjectContainer().toArray();
-            }
-
+    @Override
+    public ITableLabelProvider getLabelProvider() {
+        return new LabelProvider() {
+            @Override
             public String getColumnText(Object element, int columnIndex) {
                 if (GbeanRef.class.isInstance(element)) {
-                    GbeanRef gbeanRef = (GbeanRef)element;
+                    GbeanRef gbeanRef = (GbeanRef) element;
                     switch (columnIndex) {
-                    case 0: return gbeanRef.getRefName();
-                    case 1: return gbeanRef.getRefType().get(0);
+                    case 0:
+                        return gbeanRef.getRefName();
+                    case 1:
+                        return gbeanRef.getRefType().get(0);
                     }
                 }
                 return null;

@@ -20,62 +20,75 @@ import java.util.List;
 
 import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
-import org.apache.geronimo.st.ui.Activator;
-import org.apache.geronimo.st.ui.sections.AbstractTableSection;
-import org.eclipse.jface.resource.ImageDescriptor;
+import org.apache.geronimo.st.ui.sections.AbstractListSection;
 import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
  * @version $Rev$ $Date$
  */
-public abstract class AbstractTableWizard extends Wizard implements TableWizard {
+public abstract class AbstractTableWizard extends AbstractWizard {
 
-    protected AbstractTableSection section;
-
-    protected Object eObject;
-
-    protected ImageDescriptor descriptor = Activator.imageDescriptorFromPlugin("org.apache.geronimo.ui", "icons/bigG.gif");
-
-    /**
-     * 
-     */
-    public AbstractTableWizard(AbstractTableSection section) {
-        super();
-        this.section = section;
-        setWindowTitle(getAddWizardWindowTitle());
+    public AbstractTableWizard(AbstractListSection section) {
+        super(section);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#performFinish()
-     */
-    public boolean performFinish() {
+    public abstract JAXBObjectFactory getEFactory();
 
+    public abstract String[] getTableColumnEAttributes();
+
+    public class DynamicWizardPage extends AbstractWizardPage {
+        protected Text[] textEntries = new Text[getTableColumnEAttributes().length];
+
+        public DynamicWizardPage(String pageName) {
+            super(pageName);
+        }
+
+        public void createControl(Composite parent) {
+            Composite composite = createComposite(parent);
+            doCustom(composite);
+            setControl(composite);
+            textEntries[0].setFocus();
+        }
+
+        public void createEditFields(Composite composite) {
+            for (int i = 0; i < section.getTableColumnNames().length; i++) {
+                createLabel(composite, section.getTableColumnNames()[i]);
+                String initialValue = "";
+                if (eObject != null) {
+                    initialValue = (String) JAXBUtils.getValue(eObject, getTableColumnEAttributes()[i]);
+                }
+                textEntries[i] = createTextFeild(composite, initialValue);
+            }
+        }
+
+        public void doCustom(Composite parent) {
+        }
+
+        public Text getTextEntry(int object) {
+            return textEntries[object];
+        }
+    }
+
+    @Override
+    public void addPages() {
+        addPage(new DynamicWizardPage("Page0"));
+    }
+
+    @Override
+    public boolean performFinish() {
         if (eObject == null) {
             eObject = getEFactory().create(section.getTableEntryObjectType());
             List objectContainer = section.getObjectContainer();
             objectContainer.add(eObject);
         }
-
         processEAttributes(getPages()[0]);
-        
-        if (section.getTableViewer().getInput() == null) {
-            section.getTableViewer().setInput(section.getInput());
+        if (section.getViewer().getInput() == null) {
+            section.getViewer().setInput(section.getInput());
         }
-        
         return true;
     }
-
-    public abstract String[] getTableColumnEAttributes();
 
     public void processEAttributes(IWizardPage page) {
         if (page instanceof DynamicWizardPage) {
@@ -87,97 +100,26 @@ public abstract class AbstractTableWizard extends Wizard implements TableWizard 
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.IWizard#addPages()
-     */
-    public void addPages() {
-        WizardPage page = new DynamicWizardPage("Page0");
-        page.setImageDescriptor(descriptor);
-        addPage(page);
+    @Override
+    protected String getWizardPageTitle() {
+        return getWizardFirstPageTitle();
     }
 
-    /**
-     * @param section
-     */
-    public void setSection(AbstractTableSection section) {
-        this.section = section;
+    @Override
+    protected String getWizardPageDescription() {
+        return getWizardFirstPageDescription();
     }
 
-    /**
-     * @param object
-     */
-    public void setEObject(Object object) {
-        eObject = object;
+    @Override
+    protected String getWizardWindowTitle() {
+        return getAddWizardWindowTitle();
     }
 
-    public class DynamicWizardPage extends WizardPage {
+    public abstract String getAddWizardWindowTitle();
 
-        protected Text[] textEntries = new Text[getTableColumnEAttributes().length];
+    public abstract String getEditWizardWindowTitle();
 
-        public DynamicWizardPage(String pageName) {
-            super(pageName);
-            setTitle(getWizardFirstPageTitle());
-            setDescription(getWizardFirstPageDescription());
-        }
+    public abstract String getWizardFirstPageTitle();
 
-        public DynamicWizardPage(String pageName, String title,
-                ImageDescriptor titleImage) {
-            super(pageName, title, titleImage);
-        }
-
-        public void createControl(Composite parent) {
-            Composite composite = createComposite(parent);
-            for (int i = 0; i < section.getTableColumnNames().length; i++) {
-                Label label = new Label(composite, SWT.LEFT);
-                String columnName = section.getTableColumnNames()[i];
-                if (!columnName.endsWith(":"))
-                    columnName = columnName.concat(":");
-                label.setText(columnName);
-                GridData data = new GridData();
-                data.horizontalAlignment = GridData.FILL;
-                label.setLayoutData(data);
-
-                Text text = new Text(composite, SWT.SINGLE | SWT.BORDER);
-                data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
-                        | GridData.VERTICAL_ALIGN_FILL);
-                data.grabExcessHorizontalSpace = true;
-                data.widthHint = 100;
-                text.setLayoutData(data);
-                if (eObject != null) {
-                    String value = (String) JAXBUtils.getValue(eObject,getTableColumnEAttributes()[i]);
-                    if (value != null) {
-                        text.setText(value);
-                    }
-                }
-                textEntries[i] = text;
-            }
-
-            doCustom(composite);
-            setControl(composite);
-            textEntries[0].setFocus();
-        }
-
-        public Composite createComposite(Composite parent) {
-            Composite composite = new Composite(parent, SWT.NULL);
-            GridLayout layout = new GridLayout();
-            layout.numColumns = 2;
-            composite.setLayout(layout);
-            GridData data = new GridData();
-            data.verticalAlignment = GridData.FILL;
-            data.horizontalAlignment = GridData.FILL;
-            data.widthHint = 300;
-            composite.setLayoutData(data);
-            return composite;
-        }
-
-        public void doCustom(Composite parent) {
-
-        }
-
-        public Text getTextEntry (int object) {
-            return textEntries[object];
-        }   
-    }
+    public abstract String getWizardFirstPageDescription();
 }

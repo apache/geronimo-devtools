@@ -16,33 +16,23 @@
  */
 package org.apache.geronimo.st.ui.sections;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.providers.AdapterFactory;
-import org.apache.geronimo.st.ui.providers.ContentProvider;
-import org.apache.geronimo.st.ui.providers.LabelProvider;
-import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.eclipse.jface.dialogs.Dialog;
+import org.apache.geronimo.st.core.descriptor.AbstractDeploymentDescriptor;
+import org.apache.geronimo.st.ui.SortListener;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -52,31 +42,17 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  * @version $Rev$ $Date$
  */
-public abstract class AbstractTableSection extends AbstractSectionPart {
+public abstract class AbstractTableSection extends AbstractListSection {
 
-    protected String[] COLUMN_NAMES = new String[] {};
+    protected Table table;
 
-    private Table table;
-
-    private TableViewer tableViewer;
-
-    protected Button addButton;
-
-    protected Button editButton;
-
-    protected Button removeButton;
-    
-    protected List objectContainer;
+    public Listener sortListener = null;
 
     public AbstractTableSection(Section section) {
         super(section);
     }
 
     /**
-     * @param plan
-     * @param parent
-     * @param toolkit
-     * @param style
      * 
      * Subclasses should call createClient() in constructor
      */
@@ -85,225 +61,85 @@ public abstract class AbstractTableSection extends AbstractSectionPart {
         super(parent, toolkit, style, plan);
     }
 
-    public void createClient() {
-
-        if (getTableEntryObjectType() == null)
-            throw new NullPointerException();
-        
-
-        getSection().setText(getTitle());
-        getSection().setDescription(getDescription());
-        getSection().setLayoutData(getSectionLayoutData());
-        Composite composite = createTableComposite(getSection());
-        getSection().setClient(composite);
-        table = createTable(composite);
-
-        tableViewer = new TableViewer(getTable());
-        tableViewer.setContentProvider(new ContentProvider(getAdapterFactory()));
-        tableViewer.setLabelProvider(new LabelProvider(getAdapterFactory()));
-        tableViewer.setInput(getInput());
-
-        tableViewer.addFilter(new ViewerFilter() {
-            public boolean select(Viewer viewer, Object parentElement,
-                    Object element) {
-                return AbstractTableSection.this.filter(viewer, parentElement, element);
-            }
-        });
-
-        if (getTableColumnNames().length > 0) {
-            tableViewer.setColumnProperties(getTableColumnNames());
-        }
-
-        Composite buttonComp = createButtonComposite(composite);
-        createAddButton(toolkit, buttonComp);
-        createRemoveButton(toolkit, buttonComp);
-        createEditButton(toolkit, buttonComp);
-
+    public AbstractTableSection(JAXBElement plan, AbstractDeploymentDescriptor descriptor,
+            Composite parent, FormToolkit toolkit, int style) {
+        super(parent, toolkit, style, plan, descriptor);
     }
 
-    public Object getInput() {
-        return getPlan();
-    }
-
-    protected boolean filter(Viewer viewer, Object parentElement, Object element) {
-        return getTableEntryObjectType().isInstance(element);
-    }
-
-    protected Composite createTableComposite(Composite parent) {
-        Composite composite = toolkit.createComposite(parent);
-        composite.setLayout(getSectionCompositeLayout());
-        composite.setLayoutData(getTableCompositeLayoutData());
-        return composite;
-    }
-
-    protected GridData getSectionLayoutData() {
-        return new GridData(SWT.FILL, SWT.FILL, false, false);
-    }
-
-    protected GridData getTableCompositeLayoutData() {
-        return new GridData(SWT.FILL, SWT.FILL, false, false);
-    }
-
-    protected GridLayout getSectionCompositeLayout() {
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        layout.marginHeight = 5;
-        layout.marginWidth = 10;
-        layout.verticalSpacing = 5;
-        layout.horizontalSpacing = 15;
-        return layout;
-    }
-
-    protected Table createTable(Composite composite) {
-        Table table = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION
-                | SWT.V_SCROLL | SWT.SINGLE);
+    public void createViewer(Composite composite) {
+        table = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.MULTI);
         if (isHeaderVisible()) {
             table.setHeaderVisible(true);
         }
 
-        GridData data = new GridData(SWT.FILL, SWT.FILL, false, false);
+        GridData data = new GridData(SWT.FILL, SWT.FILL, false, true);
         data.heightHint = 60;
-        data.widthHint = 400;
+        data.widthHint = 330;
+        //data.grabExcessVerticalSpace = true;
         table.setLayoutData(data);
 
         TableLayout tableLayout = new TableLayout();
         table.setLayout(tableLayout);
 
+        sortListener = new SortListener(table, COLUMN_NAMES);
         for (int i = 0; i < getTableColumnNames().length; i++) {
             tableLayout.addColumnData(new ColumnWeightData(35));
             TableColumn tableColumn = new TableColumn(table, SWT.NONE);
             tableColumn.setText(getTableColumnNames()[i]);
+            tableColumn.addListener(SWT.Selection, sortListener);
         }
 
-        return table;
-    }
-
-    protected Composite createButtonComposite(Composite parent) {
-        Composite buttonComp = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout();
-        layout.horizontalSpacing = 2;
-        layout.verticalSpacing = 2;
-        layout.marginWidth = 0;
-        layout.marginHeight = 0;
-        layout.numColumns = 1;
-        buttonComp.setLayout(layout);
-        buttonComp.setBackground(toolkit.getColors().getBackground());
-        buttonComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
-        return buttonComp;
-    }
-
-    protected void createRemoveButton(FormToolkit toolkit, Composite buttonComp) {
-        removeButton = toolkit.createButton(buttonComp, CommonMessages.remove, SWT.NONE);
-        removeButton.addSelectionListener(new SelectionAdapter() {
+        table.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
-                int[] selectedIndices = table.getSelectionIndices();
-                for (int i = 0; i < selectedIndices.length; i++) {
-                    TableItem tableItem = table.getItem(selectedIndices[i]);
-                    Object type = tableItem.getData();
-                    removeItem (type);
-                    table.remove(selectedIndices[i]);
-                    getTableViewer().refresh();
-                    markDirty();
-                }
-            }
-        });
-        removeButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-    }
-
-    protected void createAddButton(FormToolkit toolkit, Composite buttonComp) {
-        addButton = toolkit.createButton(buttonComp, CommonMessages.add, SWT.NONE);
-
-        addButton.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent e) {
-                Wizard wizard = getWizard();
-                if (wizard != null) {
-                    WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
-
-                    dialog.open();
-
-                    if (dialog.getReturnCode() == Dialog.OK) {
-                        getTableViewer().refresh();
-                        markDirty();
-                    }
-                }
+                activateButtons();
             }
         });
 
-        addButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-    }
-
-    protected void createEditButton(FormToolkit toolkit, Composite buttonComp) {
-        editButton = toolkit.createButton(buttonComp, CommonMessages.edit, SWT.NONE);
-
-        editButton.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent e) {
-                Object o = ((StructuredSelection) getTableViewer().getSelection()).getFirstElement();
-                if (o != null) {
-                    Wizard wizard = getWizard();
-                    if (wizard != null) {
-                        if (wizard instanceof AbstractTableWizard) {
-                            ((AbstractTableWizard) wizard).setEObject(o);
-                        }
-                        WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
-                        dialog.open();
-                        if (dialog.getReturnCode() == Dialog.OK) {
-                            getTableViewer().refresh();
-                            markDirty();
-                        }
-                    }
-                }
+        viewer = new TableViewer(table);
+        viewer.addFilter(new ViewerFilter() {
+            public boolean select(Viewer viewer, Object parentElement, Object element) {
+                return AbstractTableSection.this.filter(viewer, parentElement, element);
             }
         });
-
-        editButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-    }
-
-    public TableViewer getTableViewer() {
-        return tableViewer;
+        if (getTableColumnNames().length > 0) {
+            viewer.setColumnProperties(getTableColumnNames());
+        }
     }
 
     protected boolean isHeaderVisible() {
         return true;
     }
 
-    protected Table getTable() {
-        return table;
+    protected boolean filter(Viewer viewer, Object parentElement, Object element) {
+        return getTableEntryObjectType().isInstance(element);
     }
 
-    public String[] getTableColumnNames() {
-        return COLUMN_NAMES;
-    }
-
-    abstract public String getTitle();
-
-    abstract public String getDescription();
-
-    abstract public Wizard getWizard();
-
-    abstract public Class getTableEntryObjectType();
-
-    public void removeItem (Object anItem) {
-        getObjectContainer().remove(anItem);
-    }
-
-    public List getObjectContainer() {
-        if (objectContainer == null) {
-            objectContainer = new ArrayList();
+    public void handleDelete() {
+        TableItem[] selectedItems = table.getSelection();
+        for (int i = 0; i < selectedItems.length; i++) {
+            TableItem tableItem = selectedItems[i];
+            removeItem(tableItem.getData());
         }
-        return objectContainer;
     }
 
-    public AdapterFactory getAdapterFactory() { 
-        return new AdapterFactory() {
-            public Object[] getElements(Object inputElement) {
-                if (!JAXBElement.class.isInstance(inputElement)) {
-                    return new String[] { "" };
-                }
-                return getObjectContainer().toArray();
-            }
-            public String getColumnText(Object element, int columnIndex) {
-                return "";
-            }
-        };
-    };
+    protected void removeItem (Object selectedItem) {
+        getObjectContainer().remove(selectedItem);
+    }
+
+    protected void activateButton(Button button) {
+        boolean selected = table.getSelectionCount() > 0;
+        button.setEnabled(selected);
+    }
+
+    @Override
+    public Wizard getAddWizard() {
+        return getWizard();
+    }
+
+    @Override
+    public Wizard getEditWizard() {
+        return getWizard();
+    }
+
+    protected abstract Wizard getWizard();
 }

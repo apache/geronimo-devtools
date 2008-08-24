@@ -22,6 +22,7 @@ import org.apache.geronimo.jee.application.Application;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
+import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.ui.sections.ClassFilterSection;
 import org.apache.geronimo.st.v21.ui.sections.DependencySection;
@@ -64,6 +65,11 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
      */
     public String getFormTitle() {
         return CommonMessages.deploymentPageTitle;
+    }
+
+    @Override
+    protected void triggerGeronimoServerInfoUpdate() {
+        GeronimoServerInfo.getInstance().updateInfo();
     }
 
 }

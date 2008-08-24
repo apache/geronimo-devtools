@@ -132,7 +132,7 @@ public class Messages extends NLS {
     public static String editorSubjectId;
     public static String editorejbqlCompilerFactory;
     public static String editordbSyntaxFactory;
-	public static String enforceForeignKeyConstraints;
+    public static String enforceForeignKeyConstraints;
     public static String editorSectionServerTitle;
     public static String editorSectionServerDescription;
     public static String editorSectionClientTitle;
@@ -140,6 +140,8 @@ public class Messages extends NLS {
     //
     public static String editorSectionSecurityRolesTitle;
     public static String editorSectionSecurityRolesDescription;
+    public static String editorSectionSecurityAdvancedTitle;
+    public static String editorSectionSecurityAdvancedDescription;
     public static String name;
     public static String description;
     //
@@ -242,6 +244,8 @@ public class Messages extends NLS {
     public static String wizardEditTitle_Dependency;
     public static String wizardPageTitle_Dependency;
     public static String wizardPageDescription_Dependency;
+    public static String wizardTabManual_Dependency;
+    public static String wizardTabServer_Dependency;
     public static String dependencyGroupLabel;
 
     public static String groupId;
@@ -282,10 +286,17 @@ public class Messages extends NLS {
     public static String wizardPageTitle_SecurityRole;
     public static String wizardPageDescription_SecurityRole;
     //
-    public static String doasCurrentCaller;
-    public static String useContextHandler;
-    public static String defaultRole;
-    
+    public static String securityCredentialStore;
+    public static String securityDefaultSubject;
+    public static String securityDefaultSubjectRealmName;
+    public static String securityDefaultSubjectId;
+    public static String securityDoasCurrentCaller;
+    public static String securityUseContextHandler;
+    public static String securityRunAsSubjects;
+    public static String securityRunAsSubjectRole;
+    public static String securityRunAsSubjectRealm;
+    public static String securityRunAsSubjectId;    
+
     public static String editorCorrect;
     public static String editorDefault;
     public static String errorOpenDialog;

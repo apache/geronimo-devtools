@@ -20,11 +20,11 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.jee.application.Module;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.wizards.ModuleWizard;
-import org.apache.geronimo.jee.application.Module;
+import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -58,49 +58,33 @@ public class ModuleSection extends AbstractTableSection {
         return Module.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
-     */
-    public AdapterFactory getAdapterFactory() {
-        return new AdapterFactory() {
-            public Object[] getElements(Object inputElement) {
-                if (!JAXBElement.class.isInstance(inputElement)) {
-                    return new String[] { "" };
-                }
-                return getObjectContainer().toArray();
-            }
-
+    @Override
+    public ITableLabelProvider getLabelProvider() {
+        return new LabelProvider() {
+            @Override
             public String getColumnText(Object element, int columnIndex) {
                 if (Module.class.isInstance(element)) {
-                    Module module = (Module)element;
+                    Module module = (Module) element;
                     switch (columnIndex) {
                     case 0:
                         if (module.getConnector() != null) {
                             return "connector";
-                        }
-                        else if (module.getEjb() != null) {
+                        } else if (module.getEjb() != null) {
                             return "ejb";
-                        }
-                        else if (module.getJava() != null) {
+                        } else if (module.getJava() != null) {
                             return "java";
-                        }
-                        else if (module.getWeb() != null) {
+                        } else if (module.getWeb() != null) {
                             return "web";
                         }
                         return "";
-                    case 1: 
+                    case 1:
                         if (module.getConnector() != null) {
                             return module.getConnector().getValue();
-                        }
-                        else if (module.getEjb() != null) {
+                        } else if (module.getEjb() != null) {
                             return module.getEjb().getValue();
-                        }
-                        else if (module.getJava() != null) {
+                        } else if (module.getJava() != null) {
                             return module.getJava().getValue();
-                        }
-                        else if (module.getWeb() != null) {
+                        } else if (module.getWeb() != null) {
                             return module.getWeb().getValue();
                         }
                         return "";

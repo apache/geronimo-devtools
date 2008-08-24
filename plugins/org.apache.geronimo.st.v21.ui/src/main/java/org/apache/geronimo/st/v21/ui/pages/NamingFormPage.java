@@ -24,6 +24,7 @@ import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
+import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v21.ui.sections.EjbLocalRefSection;
 import org.apache.geronimo.st.v21.ui.sections.EjbRefSection;
 import org.apache.geronimo.st.v21.ui.sections.GBeanRefSection;
@@ -113,5 +114,10 @@ public class NamingFormPage extends AbstractGeronimoFormPage {
      */
     public String getFormTitle() {
         return CommonMessages.namingFormPageTitle;
+    }
+
+    @Override
+    protected void triggerGeronimoServerInfoUpdate() {
+        GeronimoServerInfo.getInstance().updateInfo();
     }
 }

@@ -16,17 +16,12 @@
  */
 package org.apache.geronimo.st.v21.ui.wizards;
 
-import javax.xml.bind.JAXBElement;
-
+import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
-import org.apache.geronimo.jee.deployment.Dependency;
-import org.apache.geronimo.jee.deployment.Dependencies;
-import org.apache.geronimo.jee.deployment.Environment;
 
 /**
  * @version $Rev$ $Date$
@@ -34,7 +29,7 @@ import org.apache.geronimo.jee.deployment.Environment;
 public class DependencyWizard extends AbstractTableWizard {
 
     protected boolean isServerEnvironment;
-    
+
     public DependencyWizard(AbstractTableSection section, boolean isServerEnvironment) {
         super(section);
         this.isServerEnvironment = isServerEnvironment;
@@ -45,7 +40,16 @@ public class DependencyWizard extends AbstractTableWizard {
     }
 
     public String[] getTableColumnEAttributes() {
-        return new String[] {"GroupId", "ArtifactId", "Version", "Type" };
+        return new String[] { "GroupId", "ArtifactId", "Version", "Type" };
+    }
+
+    protected String[] dependencyToStringArray(Dependency dependency) {
+        String[] stringArray = new String[getTableColumnEAttributes().length];
+        stringArray[0] = dependency.getGroupId();
+        stringArray[1] = dependency.getArtifactId();
+        stringArray[2] = dependency.getVersion();
+        stringArray[3] = dependency.getType();
+        return stringArray;
     }
 
     public String getAddWizardWindowTitle() {
@@ -62,39 +66,5 @@ public class DependencyWizard extends AbstractTableWizard {
 
     public String getWizardFirstPageDescription() {
         return CommonMessages.wizardPageDescription_Dependency;
-    }
-    
-    /* (non-Javadoc)
-     * @see org.apache.geronimo.st.ui.wizards.AbstractTableWizard#performFinish()
-     */
-    public boolean performFinish() {
-        DynamicWizardPage page = (DynamicWizardPage) getPages()[0];
-
-        if (eObject == null) {
-            eObject = getEFactory().create(Dependency.class);
-            JAXBElement plan = section.getPlan();
-
-            Environment environment = null;
-          	environment = JAXBModelUtils.getEnvironment(plan, isServerEnvironment);
-            if (environment == null) {
-                environment = (Environment)getEFactory().create(Environment.class);
-                JAXBModelUtils.setEnvironment (plan, environment, isServerEnvironment);
-            }
-
-            Dependencies dependencies = environment.getDependencies();
-            if (dependencies == null) {
-                dependencies = (Dependencies)getEFactory().create(Dependencies.class);
-                environment.setDependencies (dependencies);
-            }
-            dependencies.getDependency().add((Dependency)eObject);
-        }
-
-        processEAttributes (page);
-
-        if (section.getTableViewer().getInput() == null) {
-            section.getTableViewer().setInput(section.getInput());
-        }
-
-        return true;
     }
 }

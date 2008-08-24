@@ -74,8 +74,8 @@ public class GBeanWizard extends AbstractTableWizard {
 
         processEAttributes (page);
 
-        if (section.getTableViewer().getInput() == null) {
-            section.getTableViewer().setInput(section.getInput());
+        if (section.getViewer().getInput() == null) {
+            section.getViewer().setInput(section.getInput());
         }
 
         return true;

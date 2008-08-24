@@ -93,8 +93,8 @@ public class ClassFilterWizard extends AbstractTableWizard {
             filter.getFilter().set(filter.getFilter().indexOf(eObject), page.getTextEntry(0).getText());
         }
 
-        if (section.getTableViewer().getInput() == null) {
-            section.getTableViewer().setInput(section.getInput());
+        if (section.getViewer().getInput() == null) {
+            section.getViewer().setInput(section.getInput());
         }
 
         return true;

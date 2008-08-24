@@ -23,10 +23,11 @@ import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.deployment.Gbean;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v21.ui.wizards.GBeanWizard;
+import org.eclipse.jface.viewers.IContentProvider;
+import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -100,30 +101,33 @@ public class GBeanSection extends AbstractTableSection {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
-     */
-    public AdapterFactory getAdapterFactory() {
-        return new AdapterFactory() {
+    @Override
+    public IContentProvider getContentProvider() {
+        return new ContentProvider() {
+            @Override
             public Object[] getElements(Object inputElement) {
                 if (!List.class.isInstance(inputElement)) {
                     return new String[] { "" };
                 }
                 // convert the list of JAXBElements into regular GBeans
-                List elementList = (List)inputElement;
+                List elementList = (List) inputElement;
                 ArrayList gbeanList = new ArrayList();
                 JAXBElement element;
                 Gbean gbean;
                 for (int i = 0; i < elementList.size(); i++) {
-                    element = (JAXBElement)elementList.get(i);
-                    gbean = (Gbean)element.getValue();
+                    element = (JAXBElement) elementList.get(i);
+                    gbean = (Gbean) element.getValue();
                     gbeanList.add(gbean);
                 }
                 return gbeanList.toArray();
             }
+        };
+    }
 
+    @Override
+    public ITableLabelProvider getLabelProvider() {
+        return new LabelProvider() {
+            @Override
             public String getColumnText(Object element, int columnIndex) {
                 if (Gbean.class.isInstance(element)) {
                     Gbean gbean = (Gbean)element;

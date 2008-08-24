@@ -18,6 +18,7 @@ package org.apache.geronimo.st.v21.ui.pages;
 
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
+import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v21.ui.sections.WebContainerSection;
 import org.apache.geronimo.st.v21.ui.sections.WebGeneralSection;
 import org.eclipse.ui.forms.IManagedForm;
@@ -49,5 +50,10 @@ public class WebGeneralPage extends AbstractGeronimoFormPage {
 	 */
 	public String getFormTitle() {
 		return CommonMessages.webGeneralPageTitle;
+	}
+
+	@Override
+	protected void triggerGeronimoServerInfoUpdate() {
+		GeronimoServerInfo.getInstance().updateInfo();
 	}
 }

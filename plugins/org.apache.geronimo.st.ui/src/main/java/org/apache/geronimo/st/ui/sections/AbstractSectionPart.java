@@ -16,11 +16,9 @@
  */
 package org.apache.geronimo.st.ui.sections;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.st.core.descriptor.AbstractDeploymentDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -39,24 +37,24 @@ public abstract class AbstractSectionPart extends SectionPart {
 
     private JAXBElement plan;
 
-    /**
-     * @param section
-     */
+    private AbstractDeploymentDescriptor descriptor;
+
     public AbstractSectionPart(Section section) {
         super(section);
     }
 
-    /**
-     * @param parent
-     * @param toolkit
-     * @param style
-     * @param plan
-     */
-    public AbstractSectionPart(Composite parent, FormToolkit toolkit,
-            int style, JAXBElement plan) {
+    public AbstractSectionPart(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
         super(parent, toolkit, style);
         this.toolkit = toolkit;
         this.plan = plan;
+    }
+
+    public AbstractSectionPart(Composite parent, FormToolkit toolkit, int style, JAXBElement plan,
+            AbstractDeploymentDescriptor descriptor) {
+        super(parent, toolkit, style);
+        this.toolkit = toolkit;
+        this.plan = plan;
+        this.descriptor = descriptor;
     }
 
     /*
@@ -75,12 +73,16 @@ public abstract class AbstractSectionPart extends SectionPart {
         }
     }
 
+    public FormToolkit getToolkit() {
+        return toolkit;
+    }
+
     public JAXBElement getPlan() {
         return plan;
     }
 
-    public FormToolkit getToolkit() {
-        return toolkit;
+    public AbstractDeploymentDescriptor getDescriptor() {
+        return descriptor;
     }
 
     protected Label createLabel(Composite parent, String text) {

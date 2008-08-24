@@ -20,12 +20,17 @@ import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.core.DeploymentDescriptorUtils;
 import org.apache.geronimo.st.core.descriptor.AbstractDeploymentDescriptor;
+import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
@@ -75,13 +80,53 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
 				.getDeploymentDescriptor(getProject());
 		body = managedForm.getForm().getBody();
 		toolkit = managedForm.getToolkit();
-		ScrolledForm form = managedForm.getForm();
+		final ScrolledForm form = managedForm.getForm();
 		form.setText(getFormTitle());
 		// managedForm.addPart(new BannerPart(form.getBody(), toolkit,
 		// SWT.NONE));
 		form.getBody().setLayout(getLayout());
 		fillBody(managedForm);
+
+		// header with help button
+		toolkit.decorateFormHeading(form.getForm());
+		IToolBarManager manager = form.getToolBarManager();
+
+		Action serverInfoRefresh = new Action("serverInfo") { //$NON-NLS-1$
+			public void run() {
+				BusyIndicator.showWhile(form.getDisplay(), new Runnable() {
+					public void run() {
+						triggerGeronimoServerInfoUpdate();
+					}
+				});
+			}
+		};
+		serverInfoRefresh.setToolTipText("Trigger update of GeronimoServerInfo");
+		serverInfoRefresh.setImageDescriptor(Activator.imageDescriptorFromPlugin("org.apache.geronimo.st.ui",
+				"icons/obj16/update.gif"));
+		manager.add(serverInfoRefresh);
+
+		Action helpAction = new Action("help") { //$NON-NLS-1$
+			public void run() {
+				BusyIndicator.showWhile(form.getDisplay(), new Runnable() {
+					public void run() {
+						PlatformUI.getWorkbench().getHelpSystem().displayHelpResource(getHelpResource());
+					}
+				});
+			}
+		};
+		helpAction.setToolTipText("help");
+		helpAction.setImageDescriptor(Activator.imageDescriptorFromPlugin("org.apache.geronimo.st.ui",
+				"icons/obj16/help.gif"));
+		manager.add(helpAction);
+
+		manager.update(true);
 		form.reflow(true);
+	}
+
+	protected abstract void triggerGeronimoServerInfoUpdate();
+
+	protected String getHelpResource() {
+		return "http://geronimo.apache.org/development-tools.html";
 	}
 
 	protected GridLayout getLayout() {

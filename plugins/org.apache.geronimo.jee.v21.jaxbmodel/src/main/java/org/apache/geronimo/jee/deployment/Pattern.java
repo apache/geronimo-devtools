@@ -220,4 +220,8 @@ public class Pattern implements Serializable
         this.customFoo = value;
     }
 
+    @Override
+    public String toString() {
+        return customFoo + "(" + groupId + "/" + artifactId + "/" + version + "/" + module + ")"; 
+    }
 }

@@ -109,7 +109,7 @@ public class GeronimoServerInfo {
     }
 
     public void updateInfo() {
-        Job job = new Job("ServeInfoGetter"){
+        Job job = new Job("Getting Dynamic Information from Server"){
             protected IStatus run(IProgressMonitor arg0) {
                 updateKernels();
                 updateDeployedEJBs();

@@ -75,9 +75,7 @@ public class MessageDestWizard extends AbstractTableWizard {
      * @see org.eclipse.jface.wizard.IWizard#addPages()
      */
     public void addPages() {
-        MessageDestWizardPage page = new MessageDestWizardPage("Page0");
-        page.setImageDescriptor(descriptor);
-        addPage(page);
+        addPage(new MessageDestWizardPage("Page0"));
     }
 
     // need to extend the DynamicWizardPage only so that when the Edit dialog is shown
@@ -163,8 +161,8 @@ public class MessageDestWizard extends AbstractTableWizard {
                 JAXBUtils.setValue(msgPattern, attribute, value);
         }
         
-        if (section.getTableViewer().getInput() == section.getPlan()) {
-            section.getTableViewer().setInput(section.getInput());
+        if (section.getViewer().getInput() == section.getPlan()) {
+            section.getViewer().setInput(section.getInput());
         }
 
         return true;

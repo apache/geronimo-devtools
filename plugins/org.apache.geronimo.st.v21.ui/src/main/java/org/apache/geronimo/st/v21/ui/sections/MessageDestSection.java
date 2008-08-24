@@ -20,11 +20,11 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.jee.naming.MessageDestination;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.providers.AdapterFactory;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.wizards.MessageDestWizard;
-import org.apache.geronimo.jee.naming.MessageDestination;
+import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -60,32 +60,30 @@ public class MessageDestSection extends AbstractTableSection {
         return MessageDestination.class;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.geronimo.st.ui.sections.AbstractTableSection#getAdapterFactory()
-     */
-    public AdapterFactory getAdapterFactory() {
-        return new AdapterFactory() {
-            public Object[] getElements(Object inputElement) {
-                if (!JAXBElement.class.isInstance(inputElement)) {
-                    return new String[] { "" };
-                }
-                return getObjectContainer().toArray();
-            }
-
+    @Override
+    public ITableLabelProvider getLabelProvider() {
+        return new LabelProvider() {
+            @Override
             public String getColumnText(Object element, int columnIndex) {
                 if (MessageDestination.class.isInstance(element)) {
-                    MessageDestination msgDest = (MessageDestination)element;
+                    MessageDestination msgDest = (MessageDestination) element;
                     switch (columnIndex) {
-                    case 0: return msgDest.getMessageDestinationName();
-                    case 1: return msgDest.getAdminObjectModule();
-                    case 2: return msgDest.getAdminObjectLink();
-                    case 3: return msgDest.getPattern().getGroupId();
-                    case 4: return msgDest.getPattern().getArtifactId();
-                    case 5: return msgDest.getPattern().getVersion();
-                    case 6: return msgDest.getPattern().getModule();
-                    case 7: return msgDest.getPattern().getName();
+                    case 0:
+                        return msgDest.getMessageDestinationName();
+                    case 1:
+                        return msgDest.getAdminObjectModule();
+                    case 2:
+                        return msgDest.getAdminObjectLink();
+                    case 3:
+                        return msgDest.getPattern().getGroupId();
+                    case 4:
+                        return msgDest.getPattern().getArtifactId();
+                    case 5:
+                        return msgDest.getPattern().getVersion();
+                    case 6:
+                        return msgDest.getPattern().getModule();
+                    case 7:
+                        return msgDest.getPattern().getName();
                     }
                 }
                 return null;

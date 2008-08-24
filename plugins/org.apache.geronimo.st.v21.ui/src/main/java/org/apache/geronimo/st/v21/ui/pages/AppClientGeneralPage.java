@@ -18,6 +18,7 @@ package org.apache.geronimo.st.v21.ui.pages;
 
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
+import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v21.ui.sections.AppClientClientGeneralSection;
 import org.apache.geronimo.st.v21.ui.sections.AppClientServerGeneralSection;
 import org.eclipse.ui.forms.IManagedForm;
@@ -38,8 +39,8 @@ public class AppClientGeneralPage extends AbstractGeronimoFormPage {
 	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
 	 */
 	protected void fillBody(IManagedForm managedForm) {
-        managedForm.addPart(new AppClientClientGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
-        managedForm.addPart(new AppClientServerGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
+		managedForm.addPart(new AppClientClientGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
+		managedForm.addPart(new AppClientServerGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
 	}
 
 	/*
@@ -49,6 +50,11 @@ public class AppClientGeneralPage extends AbstractGeronimoFormPage {
 	 */
 	public String getFormTitle() {
 		return CommonMessages.appClientGeneralPageTitle;
+	}
+
+	@Override
+	protected void triggerGeronimoServerInfoUpdate() {
+		GeronimoServerInfo.getInstance().updateInfo();
 	}
 
 }

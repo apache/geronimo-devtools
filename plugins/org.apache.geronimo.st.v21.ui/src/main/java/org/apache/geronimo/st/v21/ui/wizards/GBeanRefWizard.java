@@ -75,9 +75,7 @@ public class GBeanRefWizard extends AbstractTableWizard {
      * @see org.eclipse.jface.wizard.IWizard#addPages()
      */
     public void addPages() {
-        GbeanRefWizardPage page = new GbeanRefWizardPage("Page0");
-        page.setImageDescriptor(descriptor);
-        addPage(page);
+        addPage(new GbeanRefWizardPage("Page0"));
     }
 
     // need to extend the DynamicWizardPage only so that when the Edit dialog is shown
@@ -154,8 +152,8 @@ public class GBeanRefWizard extends AbstractTableWizard {
         GbeanRef gbeanRef = (GbeanRef) eObject;
         gbeanRef.getRefType().add(page.getTextEntry(1).getText());
 
-        if (section.getTableViewer().getInput() == section.getPlan()) {
-            section.getTableViewer().setInput(section.getInput());
+        if (section.getViewer().getInput() == section.getPlan()) {
+            section.getViewer().setInput(section.getInput());
         }
 
         return true;
