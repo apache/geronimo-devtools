@@ -29,4 +29,3 @@ Export-Package: org.apache.geronimo.testsuite.common,
  org.apache.geronimo.testsuite.common.ui
 Import-Package: junit.framework;version="3.8.2"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Eclipse-LazyStart: true

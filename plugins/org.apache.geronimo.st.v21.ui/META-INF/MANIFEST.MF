@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.common.project.facet.ui,
  org.apache.geronimo.jee.v21.jaxbmodel,
  org.apache.geronimo.runtime.common
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Apache.org
 Export-Package: org.apache.geronimo.st.v21.ui,
  org.apache.geronimo.st.v21.ui.editors,

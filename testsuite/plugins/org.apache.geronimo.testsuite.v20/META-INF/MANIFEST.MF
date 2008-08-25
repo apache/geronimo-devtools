@@ -25,6 +25,6 @@ Require-Bundle: abbot.swt,
  org.eclipse.ui.ide,
  org.eclipse.ui.views,
  org.apache.geronimo.testsuite.common
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Export-Package: org.apache.geronimo.testsuite.v20
 Import-Package: junit.framework;version="3.8.2"

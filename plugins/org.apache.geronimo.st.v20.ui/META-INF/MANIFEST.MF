@@ -15,5 +15,5 @@ Require-Bundle: org.eclipse.ui,
  org.apache.geronimo.st.v21.ui,
  org.apache.geronimo.runtime.common,
  org.apache.geronimo.jee.v21.jaxbmodel
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Apache.org
