@@ -47,6 +47,7 @@ public abstract class AbstractTableWizard extends AbstractWizard {
 
         public void createControl(Composite parent) {
             Composite composite = createComposite(parent);
+            createEditFields(composite);
             doCustom(composite);
             setControl(composite);
             textEntries[0].setFocus();
