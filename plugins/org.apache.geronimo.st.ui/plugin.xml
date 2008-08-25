@@ -22,6 +22,7 @@
 <plugin>
 
  	<extension-point id="loader" name="Source Path Computer Mapping" schema="schema/loader.exsd"/>
+ 	<extension-point id="actionURLs" name="Action ID and URL" schema="schema/actionURLs.exsd"/>
  	
  	
     <!-- ======================================================================================= -->
@@ -77,24 +78,6 @@
             class="org.apache.geronimo.st.ui.internal.GeronimoServerWizardFragment"/>
     </extension>
 
-	<extension point="org.eclipse.ui.popupMenus">
-		<objectContribution
-	      		adaptable="true"
-	      		id="org.apache.geronimo.ui.serveractions"
-	      		objectClass="org.eclipse.wst.server.core.IServer">
-	      	<enablement>
-	        	<test forcePluginActivation="true"
-	            	property="org.eclipse.wst.server.ui.serverType"
-	           		value="org.apache.geronimo.*" />
-	      	</enablement>
-	        <action id="org.apache.geronimo.ui.launchconsole"
-	        	label="%PopupMenus.launchconsole" icon="icons/obj16/littleG.gif"
-	            class="org.apache.geronimo.st.ui.actions.LaunchGeronimoConsoleAction"
-	           	enablesFor="1">
-	        </action>
-    	</objectContribution>
-    </extension>
-
     <extension point="org.eclipse.ui.popupMenus">
 		<objectContribution
 	      		adaptable="true"
@@ -108,6 +91,24 @@
 	        <action id="org.apache.geronimo.ui.launchSupport"
 	        	label="%PopupMenus.launchSupport" icon="icons/obj16/littleG.gif"
 	            class="org.apache.geronimo.st.ui.actions.LaunchGeronimoSupportAction"
+	           	enablesFor="1">
+	        </action>
+    	</objectContribution>
+    </extension>
+
+	<extension point="org.eclipse.ui.popupMenus">
+		<objectContribution
+	      		adaptable="true"
+	      		id="org.apache.geronimo.ui.serveractions"
+	      		objectClass="org.eclipse.wst.server.core.IServer">
+	      	<enablement>
+	        	<test forcePluginActivation="true"
+	            	property="org.eclipse.wst.server.ui.serverType"
+	           		value="org.apache.geronimo.*" />
+	      	</enablement>
+	        <action id="org.apache.geronimo.ui.launchconsole"
+	        	label="%PopupMenus.launchconsole" icon="icons/obj16/littleG.gif"
+	            class="org.apache.geronimo.st.ui.actions.LaunchGeronimoConsoleAction"
 	           	enablesFor="1">
 	        </action>
     	</objectContribution>
@@ -199,6 +200,16 @@
       		class="org.apache.geronimo.st.ui.internal.GeronimoLaunchConfigurationTabGroup">
     	</launchConfigurationTabGroup>
   	</extension>
+  	
+  	
+   <extension
+         point="org.apache.geronimo.st.ui.actionURLs">
+         <server_prefix>org.apache.geronimo.</server_prefix>
+         <action_URL class="org.apache.geronimo.st.ui.actions.LaunchGeronimoSupportAction"
+                     URL="http://geronimo.apache.org/" />
+   </extension>
+   
     
 </plugin>
+
  

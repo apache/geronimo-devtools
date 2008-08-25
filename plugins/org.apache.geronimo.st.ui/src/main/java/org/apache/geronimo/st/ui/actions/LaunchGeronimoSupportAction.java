@@ -20,6 +20,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.geronimo.st.ui.internal.Messages;
+import org.apache.geronimo.st.ui.internal.Trace;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -34,18 +38,40 @@ import org.eclipse.wst.server.core.IServer;
  * @version $Rev$ $Date: 2006-11-05 17:47:11 -0500 (Sun, 05 Nov 2006) $
  */
 public class LaunchGeronimoSupportAction implements IActionDelegate {
-
-    public static final String GERONIMO_SERVER_PREFIX = "org.apache.geronimo";
+    
+    private String serverPrefix;
+    
+    private String supportURL;
     
     private IServer server;
     
     public LaunchGeronimoSupportAction() {
         super();
+        IExtensionRegistry reg = Platform.getExtensionRegistry();
+        IConfigurationElement[] extensions = reg
+                .getConfigurationElementsFor("org.apache.geronimo.st.ui.actionURLs");
+        for (IConfigurationElement element : extensions) {
+            Trace.trace(Trace.INFO, element.getName() + " = "
+                    + element.getValue() + ".");
+            if (element.getName().equals("server_prefix")) {
+                serverPrefix = element.getValue();
+                Trace
+                        .trace(Trace.INFO, "server_prefix = " + serverPrefix
+                                + ".");
+            } else if (element.getName().equals("action_URL")
+                    && element
+                            .getAttribute("class")
+                            .equals(
+                                    "org.apache.geronimo.st.ui.actions.LaunchGeronimoSupportAction")) {
+                supportURL = element.getAttribute("URL");
+                Trace.trace(Trace.INFO, "support URL = " + supportURL + ".");
+            }
+        }
     }
 
     public URL getConsoleUrl() throws MalformedURLException {
         if (server != null) {
-            return new URL(Messages.supportWebPageURL);
+            return new URL(supportURL);
         }
         return null;
     }
@@ -64,7 +90,7 @@ public class LaunchGeronimoSupportAction implements IActionDelegate {
                     .createBrowser(
                             style,
                             "supportWebPage",
-                            Messages.bind(Messages.supportWebPage, server.getName()),
+                            supportURL,
                             Messages.bind(Messages.supportWebPageTooltip, server
                                     .getName()));
             URL url = getConsoleUrl();
@@ -89,7 +115,7 @@ public class LaunchGeronimoSupportAction implements IActionDelegate {
         server = (IServer) ((StructuredSelection) selection).getFirstElement();
 
         boolean enable = server != null
-                         && server.getServerType().getId().startsWith(GERONIMO_SERVER_PREFIX);
+                         && server.getServerType().getId().startsWith(serverPrefix);
 
         action.setEnabled(enable);
 

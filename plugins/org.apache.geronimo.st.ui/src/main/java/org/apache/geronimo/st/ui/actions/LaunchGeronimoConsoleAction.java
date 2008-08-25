@@ -21,6 +21,10 @@ import java.net.URL;
 
 import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.ui.internal.Messages;
+import org.apache.geronimo.st.ui.internal.Trace;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -36,13 +40,26 @@ import org.eclipse.wst.server.core.IServer;
  */
 public class LaunchGeronimoConsoleAction implements IActionDelegate {
 
-	public static final String G_SERVER_PREFIX = "org.apache.geronimo";
-
 	private IServer server;
 
+	private String serverPrefix;
+
 	public LaunchGeronimoConsoleAction() {
-		super();
-	}
+        super();
+        IExtensionRegistry reg = Platform.getExtensionRegistry();
+        IConfigurationElement[] extensions = reg
+                .getConfigurationElementsFor("org.apache.geronimo.st.ui.actionURLs");
+        for (IConfigurationElement element : extensions) {
+            Trace.trace(Trace.INFO, element.getName() + " = "
+                    + element.getValue() + ".");
+            if (element.getName().equals("server_prefix")) {
+                serverPrefix = element.getValue();
+                Trace
+                        .trace(Trace.INFO, "server_prefix = " + serverPrefix
+                                + ".");
+            }
+        }
+    }
 
 	public URL getConsoleUrl() throws MalformedURLException {
 		if (server != null) {
@@ -89,7 +106,7 @@ public class LaunchGeronimoConsoleAction implements IActionDelegate {
 		server = (IServer) ((StructuredSelection) selection).getFirstElement();
 
 		boolean enable = server != null
-				&& server.getServerType().getId().startsWith(G_SERVER_PREFIX)
+				&& server.getServerType().getId().startsWith(serverPrefix)
 				&& server.getServerState() == IServer.STATE_STARTED;
 
 		action.setEnabled(enable);
