@@ -3,22 +3,24 @@ Release Notes -- Apache Geronimo Eclipse Plugin -- Version 2.1.2
 
 Helpful URLs
 ------------
-Eclipse IDE for Java EE Developers:         http://www.eclipse.org/downloads/
-Geronimo Devtools:                          http://geronimo.apache.org/devtools.html
-Geronimo Eclipse Update Site:               http://geronimo.apache.org/devtools
+Geronimo Devtools:                          http://geronimo.apache.org/development-tools.html
+Geronimo Eclipse Update Site:               http://www.apache.org/dist/geronimo/eclipse/updates
+Bug Tracking:                               http://issues.apache.org/jira/browse/GERONIMODEVTOOLS
 Quick start - fast and easy development:    http://cwiki.apache.org/GMOxDOC21/quick-start-fast-and-easy-development.html
-Sun's J2SE 5.0 Downloads site:              http://java.sun.com/javase/downloads/index_jdk5.jsp
 5-minute Tutorial using GEP:                http://cwiki.apache.org/GMOxDOC21/5-minute-tutorial-on-enterprise-application-development-with-eclipse-and-geronimo.html
-
 
 
 System Requirements
 -------------------
-1. Sun JDK 5.0+ (J2SE 1.5)
+1. Java J2SE 1.5.0 or greater, and a platform that supports it
 
 2. Eclipse IDE for Java EE Developers (Ganymede or Europa), which is platform-specific
 
+   -- Get Eclipse from http://www.eclipse.org/downloads/
+
 3. Geronimo server (2.0.x or 2.1.x)
+
+   -- Get a Geronimo server from http://geronimo.apache.org/downloads.html
 
 
 
@@ -72,7 +74,7 @@ available.
 
      b. Select "Download addtional server adapters
 
-     c. Select the "Geronimo v2.1 Server Adapter 2.1.2" adapter
+     c. Select the "Geronimo v2.1 Server Adapter 2.1.3" adapter
 
      d. Select Next --> Accept the license agreement --> Next --> Finish
 
@@ -178,7 +180,7 @@ done this before the steps are fairly straightforward:
 1 -- Download the GEP and unzip into your /eclipse directory. You can 
      download the plugin from here: 
 
-     http://apache.org/dist/geronimo/eclipse/2.1.2/
+     http://apache.org/dist/geronimo/eclipse/2.1.3/
 
 2 -- Invoke the eclipse executable from your /eclipse directory. Select or
      accept the default workspace. 
