@@ -330,3 +330,4 @@ GERONIMODEVTOOLS-482    missing image for GEP features in "About Eclipse Platfor
 
 GERONIMODEVTOOLS-484    Fix missing source license headers
 
+@version $Rev$ $Date$
