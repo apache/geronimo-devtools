@@ -17,6 +17,10 @@
 package org.apache.geronimo.st.core;
 
 import org.apache.geronimo.st.core.descriptor.AbstractDeploymentDescriptor;
+import org.apache.geronimo.st.core.descriptor.ApplicationJ2EEDeploymentDescriptor;
+import org.apache.geronimo.st.core.descriptor.ApplicationJavaEEDeploymentDescriptor;
+import org.apache.geronimo.st.core.descriptor.EjbJ2EEDeploymentDescriptor;
+import org.apache.geronimo.st.core.descriptor.EjbJavaEEDeploymentDescriptor;
 import org.apache.geronimo.st.core.descriptor.WebJ2EEDeploymentDescriptor;
 import org.apache.geronimo.st.core.descriptor.WebJavaEEDeploymentDescriptor;
 import org.eclipse.core.resources.IProject;
@@ -35,8 +39,20 @@ public class DeploymentDescriptorUtils {
         if (obj instanceof org.eclipse.jst.j2ee.webapplication.WebApp) {
             return (new WebJ2EEDeploymentDescriptor((org.eclipse.jst.j2ee.webapplication.WebApp) obj));
         }
-        if (obj instanceof org.eclipse.jst.javaee.web.WebApp) {
+        else if (obj instanceof org.eclipse.jst.javaee.web.WebApp) {
             return (new WebJavaEEDeploymentDescriptor((org.eclipse.jst.javaee.web.WebApp) obj));
+        }
+        else if (obj instanceof org.eclipse.jst.j2ee.application.Application) {
+            return (new ApplicationJ2EEDeploymentDescriptor((org.eclipse.jst.j2ee.application.Application) obj));
+        }
+        else if (obj instanceof org.eclipse.jst.javaee.application.Application) {
+            return (new ApplicationJavaEEDeploymentDescriptor((org.eclipse.jst.javaee.application.Application) obj));
+        }
+        else if (obj instanceof org.eclipse.jst.j2ee.ejb.EJBJar) {
+            return (new EjbJ2EEDeploymentDescriptor((org.eclipse.jst.j2ee.ejb.EJBJar) obj));
+        }
+        else if (obj instanceof org.eclipse.jst.javaee.ejb.EJBJar) {
+            return (new EjbJavaEEDeploymentDescriptor((org.eclipse.jst.javaee.ejb.EJBJar) obj));
         }
         return null;
     }

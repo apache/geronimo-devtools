@@ -29,6 +29,8 @@ import org.apache.geronimo.jee.security.Role;
 import org.apache.geronimo.jee.security.RoleMappings;
 import org.apache.geronimo.jee.security.Security;
 import org.apache.geronimo.st.core.descriptor.AbstractDeploymentDescriptor;
+import org.apache.geronimo.st.core.descriptor.ApplicationDeploymentDescriptor;
+import org.apache.geronimo.st.core.descriptor.EjbDeploymentDescriptor;
 import org.apache.geronimo.st.core.descriptor.WebDeploymentDescriptor;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
@@ -174,8 +176,18 @@ public class SecurityRoleMappingsSection extends AbstractTreeSection {
     }
 
     protected boolean addRolesFromDeploymentDescriptor() {
-        List<String> declaredRoleNames = ((WebDeploymentDescriptor) getDescriptor()).getSecurityRoles();
-        if (declaredRoleNames.size() <= 0) {
+        List<String> declaredRoleNames = null;
+        if (WebDeploymentDescriptor.class.isInstance(getDescriptor())) {
+            declaredRoleNames = ((WebDeploymentDescriptor)getDescriptor()).getSecurityRoles();
+        }
+        else if (ApplicationDeploymentDescriptor.class.isInstance(getDescriptor())) {
+            declaredRoleNames = ((ApplicationDeploymentDescriptor)getDescriptor()).getSecurityRoles();
+        }
+        else if (EjbDeploymentDescriptor.class.isInstance(getDescriptor())) {
+            declaredRoleNames = ((EjbDeploymentDescriptor)getDescriptor()).getSecurityRoles();
+        }
+        
+        if (declaredRoleNames == null || declaredRoleNames.size() <= 0) {
             return false;
         }
         List<Role> definedRoles = getRoles(getPlan(), true);
