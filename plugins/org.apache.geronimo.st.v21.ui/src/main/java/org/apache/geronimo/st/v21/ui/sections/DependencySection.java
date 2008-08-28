@@ -56,6 +56,7 @@ public class DependencySection extends AbstractTableSection {
                 CommonMessages.groupId, CommonMessages.artifactId, CommonMessages.version, CommonMessages.type
         };
         createClient();
+        getSection().setExpanded(false);
     }
 
     public String getTitle() {

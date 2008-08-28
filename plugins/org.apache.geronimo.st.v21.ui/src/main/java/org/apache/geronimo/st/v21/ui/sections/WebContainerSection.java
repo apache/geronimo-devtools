@@ -103,7 +103,7 @@ public class WebContainerSection extends AbstractSectionPart {
         toolkit.createLabel(composite, CommonMessages.gBeanLink);
         String value = wc != null ? wc.getGbeanLink() : null;
         gBeanLink = toolkit.createText(composite, value, SWT.BORDER);
-        gBeanLink.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        gBeanLink.setLayoutData(createTextFieldGridData());
         gBeanLink.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
                 getGBeanLocator().setGbeanLink(gBeanLink.getText());
@@ -118,7 +118,7 @@ public class WebContainerSection extends AbstractSectionPart {
         value = wc != null && wc.getPattern() != null ? wc.getPattern().getGroupId()
                 : null;
         group = toolkit.createText(composite, value, SWT.BORDER);
-        group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        group.setLayoutData(createTextFieldGridData());
         group.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
                 getPattern().setGroupId(group.getText());
@@ -130,7 +130,7 @@ public class WebContainerSection extends AbstractSectionPart {
         value = wc != null && wc.getPattern() != null ? wc.getPattern().getArtifactId()
                 : null;
         artifact = toolkit.createText(composite, value, SWT.BORDER);
-        artifact.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        artifact.setLayoutData(createTextFieldGridData());
         artifact.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
                 getPattern().setArtifactId(artifact.getText());
@@ -142,7 +142,7 @@ public class WebContainerSection extends AbstractSectionPart {
         value = wc != null && wc.getPattern() != null ? wc.getPattern().getModule()
                 : null;
         module = toolkit.createText(composite, value, SWT.BORDER);
-        module.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        module.setLayoutData(createTextFieldGridData());
         module.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
                 getPattern().setModule(module.getText());
@@ -154,7 +154,7 @@ public class WebContainerSection extends AbstractSectionPart {
         value = wc != null && wc.getPattern() != null ? wc.getPattern().getName()
                 : null;
         name = toolkit.createText(composite, value, SWT.BORDER);
-        name.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        name.setLayoutData(createTextFieldGridData());
         name.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
                 getPattern().setName(name.getText());
@@ -166,7 +166,7 @@ public class WebContainerSection extends AbstractSectionPart {
         value = wc != null && wc.getPattern() != null ? wc.getPattern().getVersion()
                 : null;
         version = toolkit.createText(composite, value, SWT.BORDER);
-        version.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        version.setLayoutData(createTextFieldGridData());
         version.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
                 getPattern().setVersion(version.getText());

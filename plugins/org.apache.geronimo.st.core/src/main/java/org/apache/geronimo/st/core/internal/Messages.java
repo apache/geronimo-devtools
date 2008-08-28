@@ -25,29 +25,29 @@ import org.eclipse.osgi.util.NLS;
  */
 public class Messages extends NLS {
 
-	static {
-		NLS.initializeMessages("org.apache.geronimo.st.core.internal.Messages", Messages.class);
-	}
+    static {
+        NLS.initializeMessages("org.apache.geronimo.st.core.internal.Messages", Messages.class);
+    }
 
-	public static String DISTRIBUTE_FAIL;
-	public static String START_FAIL;
-	public static String STOP_FAIL;
-	public static String UNDEPLOY_FAIL;
-	public static String REDEPLOY_FAIL;
-	public static String DM_CONNECTION_FAIL;
-	
-	public static String errorJRE;
-	
-	public static String target20runtime;
-	public static String target21runtime;
-	public static String target22runtime;
-	
-	public static String incorrectVersion;
-	public static String noVersion;
-	public static String missingContent;
-	public static String errorPortInUse;
-	public static String missingServer;
-	
-	public static String errorNoProfiler;
+    public static String DISTRIBUTE_FAIL;
+    public static String START_FAIL;
+    public static String STOP_FAIL;
+    public static String UNDEPLOY_FAIL;
+    public static String REDEPLOY_FAIL;
+    public static String DM_CONNECTION_FAIL;
+    
+    public static String errorJRE;
+    
+    public static String target20runtime;
+    public static String target21runtime;
+    public static String target22runtime;
+    
+    public static String incorrectVersion;
+    public static String noVersion;
+    public static String missingContent;
+    public static String errorPortInUse;
+    public static String missingServer;
+    
+    public static String errorNoProfiler;
 
 }

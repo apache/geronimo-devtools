@@ -92,6 +92,7 @@ public abstract class AbstractListSection extends AbstractSectionPart {
         getSection().setText(getTitle());
         getSection().setDescription(getDescription());
         getSection().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        getSection().setExpanded(false);
         Composite clientComposite = createComposite(getSection(), 2);
         getSection().setClient(clientComposite);
 

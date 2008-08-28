@@ -29,6 +29,7 @@ import org.apache.geronimo.st.v21.ui.sections.DependencySection;
 import org.apache.geronimo.st.v21.ui.sections.ExtModuleSection;
 import org.apache.geronimo.st.v21.ui.sections.GBeanSection;
 import org.apache.geronimo.st.v21.ui.sections.ModuleSection;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
@@ -56,6 +57,13 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
             managedForm.addPart(new ModuleSection(getDeploymentPlan(), body, toolkit, getStyle(), application.getModule()));
             managedForm.addPart(new ExtModuleSection(getDeploymentPlan(), body, toolkit, getStyle(), application.getExtModule()));
         }
+    }
+    
+    protected GridLayout getLayout() {
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 1;
+        layout.horizontalSpacing = 20;
+        return layout;
     }
 
     /*

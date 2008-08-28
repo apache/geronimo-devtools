@@ -39,6 +39,7 @@ public class ServiceRefSection extends AbstractTableSection {
         this.objectContainer = serviceRefs;
         COLUMN_NAMES = new String[] { CommonMessages.editorServiceRefName };
         createClient();
+        getSection().setExpanded(false);
     }
 
     public String getTitle() {

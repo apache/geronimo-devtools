@@ -48,6 +48,7 @@ public class EjbRefSection extends AbstractTableSection {
         COLUMN_NAMES = new String[] {
                 CommonMessages.name, CommonMessages.editorEjbRefEjbLink };
         createClient();
+        getSection().setExpanded(false);
     }
 
     public String getTitle() {

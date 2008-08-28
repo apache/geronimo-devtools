@@ -21,6 +21,7 @@ import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.ui.sections.ClassFilterSection;
 import org.apache.geronimo.st.v21.ui.sections.DependencySection;
 import org.apache.geronimo.st.v21.ui.sections.GBeanSection;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
@@ -28,7 +29,7 @@ import org.eclipse.ui.forms.editor.FormEditor;
  * @version $Rev$ $Date$
  */
 public class AppClientDeploymentPage extends DeploymentPage {
-	
+
     public AppClientDeploymentPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
     }
@@ -46,6 +47,13 @@ public class AppClientDeploymentPage extends DeploymentPage {
         managedForm.addPart(new ClassFilterSection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan(), true), body, toolkit, getStyle(), true, false));
         managedForm.addPart(new ClassFilterSection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan(), false), body, toolkit, getStyle(), false, false));
         managedForm.addPart(new GBeanSection(getDeploymentPlan(), JAXBModelUtils.getGbeans(getDeploymentPlan()), body, toolkit, getStyle()));
+    }
+    
+    protected GridLayout getLayout() {
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 1;
+        layout.horizontalSpacing = 20;
+        return layout;
     }
 
     /*

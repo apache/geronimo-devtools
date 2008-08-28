@@ -42,6 +42,7 @@ public class ResourceRefSection extends AbstractTableSection {
         COLUMN_NAMES = new String[] {
                 CommonMessages.editorResRefNameTitle, CommonMessages.editorResRefLinkTitle};
         createClient();
+        getSection().setExpanded(false);
     }
 
     public String getTitle() {
