@@ -29,6 +29,13 @@
     <build>
         <resources>
             <resource>
+                <directory>..</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>about.html</include>
+                </includes>
+            </resource>
+            <resource>
                 <directory>.</directory>
                 <filtering>true</filtering>
                 <includes>
@@ -36,7 +43,6 @@
                     <include>plugin.properties</include>
                     <include>.options</include>
                     <include>about.ini</include>
-                    <include>about.html</include>
                 </includes>
             </resource>
             <!--

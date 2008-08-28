@@ -29,12 +29,18 @@
     <build>
         <resources>
             <resource>
+                <directory>..</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>about.html</include>
+                </includes>
+            </resource>
+            <resource>
                 <directory>.</directory>
                 <includes>
                     <include>.options</include>
                     <include>plugin.xml</include>
                     <include>plugin.properties</include>
-                    <include>about.html</include>
                 </includes>
             </resource>
             <resource>

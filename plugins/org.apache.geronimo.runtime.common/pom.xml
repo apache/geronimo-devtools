@@ -29,10 +29,16 @@
     <build>
         <resources>
             <resource>
+                <directory>..</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>about.html</include>
+                </includes>
+            </resource>
+            <resource>
                 <directory>.</directory>
                 <includes>
                     <include>plugin.xml</include>
-                    <include>about.html</include>
                 </includes>
             </resource>
             <resource>

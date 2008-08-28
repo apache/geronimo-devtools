@@ -70,7 +70,6 @@
             <outputDirectory>eclipse/features/</outputDirectory>
             <unpack>true</unpack>
             <includes>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.v20.feature</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.v21.feature</include>
             </includes>
         </dependencySet>

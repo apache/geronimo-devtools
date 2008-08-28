@@ -61,13 +61,14 @@
               -->
             <resource>
                 <directory>.</directory>
+                <filtering>true</filtering>
                 <includes>
                     <include>license.html</include>
                 </includes>
             </resource>
             <resource>
                 <targetPath>about_files</targetPath>
-                <directory>../../plugins/org.apache.geronimo.runtime.v21</directory>
+                <directory>../..</directory>
                 <includes>
                     <include>LICENSE.txt</include>
                     <include>NOTICE.txt</include>
