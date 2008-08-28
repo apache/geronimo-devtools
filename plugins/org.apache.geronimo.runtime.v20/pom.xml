@@ -77,6 +77,7 @@
 	    	<resource>
 	    		<targetPath>about_files</targetPath>
 	    		<directory>../..</directory>
+                <filtering>true</filtering>
 	    		<includes>
                     <include>PLUGIN_RELEASE-NOTES-${pom.version}.txt</include>
 	    		</includes>
