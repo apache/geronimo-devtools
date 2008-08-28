@@ -84,6 +84,13 @@
 	    			<include>NOTICE.txt</include>
 	    		</includes>
 	    	</resource>
+	    	<resource>
+	    		<targetPath>about_files</targetPath>
+	    		<directory>../..</directory>
+	    		<includes>
+                    <include>PLUGIN_RELEASE-NOTES-${pom.version}.txt</include>
+	    		</includes>
+	    	</resource>
             <!-- The Geronimo covention puts license and notice for artifacts shipped in this jar 
                  in the jar's meta-inf directory -->
 	    	<resource>

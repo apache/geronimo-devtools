@@ -30,7 +30,7 @@
             <includes>
                 <include>LICENSE.txt</include>
                 <include>NOTICE.txt</include>
-                <include>PLUGIN_RELEASE-NOTES-2.1.3.txt</include>
+                <include>PLUGIN_RELEASE-NOTES-${pom.version}.txt</include>
             </includes>
         </fileSet>
     </fileSets>

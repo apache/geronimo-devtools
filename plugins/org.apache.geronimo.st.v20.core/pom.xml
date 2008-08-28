@@ -73,6 +73,13 @@
                     <include>NOTICE.txt</include>
                 </includes>
             </resource>
+	    	<resource>
+	    		<targetPath>about_files</targetPath>
+	    		<directory>../..</directory>
+	    		<includes>
+                    <include>PLUGIN_RELEASE-NOTES-${pom.version}.txt</include>
+	    		</includes>
+	    	</resource>
         </resources>
         <plugins>
             <plugin>
