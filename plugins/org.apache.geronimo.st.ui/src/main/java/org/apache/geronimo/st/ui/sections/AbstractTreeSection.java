@@ -82,7 +82,6 @@ public abstract class AbstractTreeSection extends AbstractListSection {
     }
 
     protected void activateButton(Button button) {
-        boolean Selected = tree.getSelectionCount() > 0;
-        button.setEnabled(Selected);
+        button.setEnabled(tree.getSelectionCount() > 0);
     }
 }

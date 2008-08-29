@@ -39,7 +39,7 @@ public class ExtModuleSection extends AbstractTableSection {
         this.objectContainer = extModules;
         COLUMN_NAMES = new String[] {
                 CommonMessages.moduleType, CommonMessages.path, CommonMessages.internalPath,
-                CommonMessages.groupId, CommonMessages.artifactId, CommonMessages.version, CommonMessages.type };
+                CommonMessages.groupId, CommonMessages.artifactId, CommonMessages.version, CommonMessages.artifactType };
         createClient();
     }
 

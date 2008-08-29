@@ -26,7 +26,6 @@ import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.Activator;
-import org.apache.geronimo.st.v21.ui.wizards.DependencyAddWizard;
 import org.apache.geronimo.st.v21.ui.wizards.DependencyWizard;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IContentProvider;
@@ -40,9 +39,8 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  */
 public class DependencySection extends AbstractTableSection {
 
+    boolean isServerEnvironment;
     protected Environment environment;
-
-    protected boolean isServerEnvironment;
 
     public DependencySection(JAXBElement plan, Environment environment, Composite parent, FormToolkit toolkit, int style) {
         this(plan, environment, parent, toolkit, style, true);
@@ -53,7 +51,7 @@ public class DependencySection extends AbstractTableSection {
         this.environment = environment;
         this.isServerEnvironment = isServerEnvironment; 
         this.COLUMN_NAMES = new String[] {
-                CommonMessages.groupId, CommonMessages.artifactId, CommonMessages.version, CommonMessages.type
+                CommonMessages.groupId, CommonMessages.artifactId, CommonMessages.version, CommonMessages.artifactType
         };
         createClient();
         getSection().setExpanded(false);
@@ -90,13 +88,8 @@ public class DependencySection extends AbstractTableSection {
     }
 
     @Override
-    public Wizard getAddWizard() {
-        return new DependencyAddWizard(this);
-    }
-
-    @Override
     public Wizard getWizard() {
-        return new DependencyWizard(this, isServerEnvironment);
+        return new DependencyWizard(this);
     }
 
     public ImageDescriptor getImageDescriptor() {

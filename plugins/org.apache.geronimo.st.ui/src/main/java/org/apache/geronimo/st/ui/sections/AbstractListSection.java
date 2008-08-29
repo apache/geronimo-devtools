@@ -199,7 +199,7 @@ public abstract class AbstractListSection extends AbstractSectionPart {
         addButton = toolkit.createButton(buttonComp, CommonMessages.add, SWT.NONE);
         addButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
-                Wizard wizard = getAddWizard();
+                Wizard wizard = getWizard();
                 if (wizard != null) {
                     WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
                     dialog.open();
@@ -219,7 +219,7 @@ public abstract class AbstractListSection extends AbstractSectionPart {
             public void widgetSelected(SelectionEvent e) {
                 Object selectedObject = ((StructuredSelection) getViewer().getSelection()).getFirstElement();
                 if (selectedObject != null) {
-                    Wizard wizard = getEditWizard();
+                    Wizard wizard = getWizard();
                     if (wizard != null) {
                         if (wizard instanceof AbstractWizard) {
                             ((AbstractWizard) wizard).setEObject(selectedObject);
@@ -262,9 +262,7 @@ public abstract class AbstractListSection extends AbstractSectionPart {
 
     abstract public String getDescription();
 
-    abstract public Wizard getAddWizard();
-
-    abstract public Wizard getEditWizard();
+    abstract protected Wizard getWizard();
 
     abstract public Class getTableEntryObjectType();
 

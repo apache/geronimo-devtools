@@ -131,15 +131,5 @@ public abstract class AbstractTableSection extends AbstractListSection {
         button.setEnabled(selected);
     }
 
-    @Override
-    public Wizard getAddWizard() {
-        return getWizard();
-    }
-
-    @Override
-    public Wizard getEditWizard() {
-        return getWizard();
-    }
-
-    protected abstract Wizard getWizard();
+    abstract protected Wizard getWizard();
 }

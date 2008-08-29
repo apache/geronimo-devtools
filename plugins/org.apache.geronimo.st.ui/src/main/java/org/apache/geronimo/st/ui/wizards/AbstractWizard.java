@@ -16,6 +16,7 @@
  */
 package org.apache.geronimo.st.ui.wizards;
 
+import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.ui.sections.AbstractListSection;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -41,11 +42,12 @@ public abstract class AbstractWizard extends Wizard {
     public AbstractWizard(AbstractListSection section) {
         super();
         this.section = section;
-        setWindowTitle(getWizardWindowTitle());
+        setWindowTitle(getAddWizardWindowTitle());
     }
 
     public void setEObject(Object object) {
         eObject = object;
+        setWindowTitle(getEditWizardWindowTitle());
     }
 
     public abstract class AbstractWizardPage extends WizardPage {
@@ -82,7 +84,7 @@ public abstract class AbstractWizard extends Wizard {
             return label;
         }
 
-        protected Text createTextFeild(Composite composite, String initialValue) {
+        protected Text createTextField(Composite composite, String initialValue) {
             Text text = new Text(composite, SWT.SINGLE | SWT.BORDER);
             GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.VERTICAL_ALIGN_FILL);
             data.grabExcessHorizontalSpace = true;
@@ -107,12 +109,14 @@ public abstract class AbstractWizard extends Wizard {
         }
     }
 
-    protected abstract String getWizardWindowTitle();
-
     protected abstract String getWizardPageTitle();
 
     protected abstract String getWizardPageDescription();
 
+    protected abstract String getAddWizardWindowTitle();
+
+    protected abstract String getEditWizardWindowTitle();
+    
     protected ImageDescriptor getImageDescriptor() {
         return Activator.imageDescriptorFromPlugin("org.apache.geronimo.ui", "icons/bigG.gif");
     }

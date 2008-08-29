@@ -21,11 +21,13 @@ import org.apache.geronimo.jee.application.ExtModule;
 import org.apache.geronimo.jee.application.Module;
 import org.apache.geronimo.jee.application.Path;
 import org.apache.geronimo.jee.deployment.Artifact;
+import org.apache.geronimo.jee.deployment.Attribute;
 import org.apache.geronimo.jee.deployment.ClassFilter;
 import org.apache.geronimo.jee.deployment.Dependencies;
 import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.jee.deployment.Gbean;
+import org.apache.geronimo.jee.deployment.Reference;
 import org.apache.geronimo.jee.naming.EjbRef;
 import org.apache.geronimo.jee.naming.EjbLocalRef;
 import org.apache.geronimo.jee.naming.GbeanRef;
@@ -34,6 +36,10 @@ import org.apache.geronimo.jee.naming.ResourceEnvRef;
 import org.apache.geronimo.jee.naming.ResourceRef;
 import org.apache.geronimo.jee.naming.ServiceRef;
 import org.apache.geronimo.jee.security.Description;
+import org.apache.geronimo.jee.security.DistinguishedName;
+import org.apache.geronimo.jee.security.LoginDomainPrincipal;
+import org.apache.geronimo.jee.security.Principal;
+import org.apache.geronimo.jee.security.RealmPrincipal;
 import org.apache.geronimo.jee.security.RoleMappings;
 import org.apache.geronimo.jee.security.Role;
 import org.apache.geronimo.jee.security.Security;
@@ -78,6 +84,14 @@ public class JAXBObjectFactoryImpl implements JAXBObjectFactory {
             return (new org.apache.geronimo.jee.security.ObjectFactory()).createDescription();
         } else if ( type.equals( Role.class ) ) {
             return (new org.apache.geronimo.jee.security.ObjectFactory()).createRole();
+        } else if ( type.equals( DistinguishedName.class ) ) {
+            return (new org.apache.geronimo.jee.security.ObjectFactory()).createDistinguishedName();
+        } else if ( type.equals( Principal.class ) ) {
+            return (new org.apache.geronimo.jee.security.ObjectFactory()).createPrincipal();
+        } else if ( type.equals( LoginDomainPrincipal.class ) ) {
+            return (new org.apache.geronimo.jee.security.ObjectFactory()).createLoginDomainPrincipal();
+        } else if ( type.equals( RealmPrincipal.class ) ) {
+            return (new org.apache.geronimo.jee.security.ObjectFactory()).createRealmPrincipal();
         } else if ( type.equals( Gbean.class ) ) {
             return (new org.apache.geronimo.jee.deployment.ObjectFactory()).createGbean();
         } else if ( type.equals( Artifact.class ) ) {
@@ -92,6 +106,10 @@ public class JAXBObjectFactoryImpl implements JAXBObjectFactory {
             return (new org.apache.geronimo.jee.deployment.ObjectFactory()).createEnvironment();
         } else if ( type.equals( org.apache.geronimo.jee.deployment.Pattern.class ) ) {
             return (new org.apache.geronimo.jee.deployment.ObjectFactory()).createPattern();
+        } else if ( type.equals( Attribute.class ) ) {
+            return (new org.apache.geronimo.jee.deployment.ObjectFactory()).createAttribute();
+        } else if ( type.equals( Reference.class ) ) {
+            return (new org.apache.geronimo.jee.deployment.ObjectFactory()).createReference();
         } else if ( type.equals( ExtModule.class ) ) {
             return (new org.apache.geronimo.jee.application.ObjectFactory()).createExtModule();
         } else if ( type.equals( Module.class ) ) {

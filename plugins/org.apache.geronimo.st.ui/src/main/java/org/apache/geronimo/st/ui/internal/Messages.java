@@ -29,7 +29,7 @@ public class Messages extends NLS {
     static {
         NLS.initializeMessages(Activator.PLUGIN_ID + ".internal.Messages", Messages.class);
     }
-	
+    
     public static String editorTabSource;
     
     public static String editorSectionSecurityTitle;
@@ -127,6 +127,7 @@ public class Messages extends NLS {
     public static String editorSecurityRealmName;
     public static String editorApplicationName;
     public static String editorCallbackHandler;
+    public static String editorDomainName;
     public static String editorRealmName;
     public static String editorSubjectId;
     public static String editorejbqlCompilerFactory;
@@ -239,6 +240,16 @@ public class Messages extends NLS {
     public static String wizardPageTitle_EjbLocalRef;
     public static String wizardPageDescription_EjbLocalRef;
     //
+    public static String wizardNewTitle_RoleMapping;
+    public static String wizardEditTitle_RoleMapping;
+    public static String wizardPageTitle_RoleMapping;
+    public static String wizardPageDescription_RoleMapping;
+    //
+    public static String wizardNewTitle_RunAsSubject;
+    public static String wizardEditTitle_RunAsSubject;
+    public static String wizardPageTitle_RunAsSubject;
+    public static String wizardPageDescription_RunAsSubject;
+    //
     public static String wizardNewTitle_Dependency;
     public static String wizardEditTitle_Dependency;
     public static String wizardPageTitle_Dependency;
@@ -251,6 +262,9 @@ public class Messages extends NLS {
     public static String artifactId;
     public static String version;
     public static String type;
+    public static String element;
+    public static String customName;
+    public static String value;
     public static String messageDestinationName;
     public static String adminModule;
     public static String adminLink;
@@ -294,7 +308,8 @@ public class Messages extends NLS {
     public static String securityRunAsSubjects;
     public static String securityRunAsSubjectRole;
     public static String securityRunAsSubjectRealm;
-    public static String securityRunAsSubjectId;    
+    public static String securityRunAsSubjectId;  
+    public static String securityRefreshRoles;
 
     public static String editorCorrect;
     public static String editorDefault;
@@ -327,10 +342,7 @@ public class Messages extends NLS {
     public static String web;
 
     public static String licenseAgreement;
-
     public static String acceptLicenseAgreement;
-
     public static String rejectLicenseAgreement;
-
     public static String confirmLicenseRejection;
 }

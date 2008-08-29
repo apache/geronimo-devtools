@@ -37,8 +37,7 @@ import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.ui.Activator;
-import org.apache.geronimo.st.v21.ui.wizards.SecurityRoleMappingsAddWizard;
-import org.apache.geronimo.st.v21.ui.wizards.SecurityRoleMappingsEditWizard;
+import org.apache.geronimo.st.v21.ui.wizards.SecurityRoleMappingWizard;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -51,14 +50,14 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 /**
  * @version $Rev$ $Date$
  */
-public class SecurityRoleMappingsSection extends AbstractTreeSection {
+public class SecurityRoleMappingSection extends AbstractTreeSection {
 
-    public SecurityRoleMappingsSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style) {
+    public SecurityRoleMappingSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style) {
         super(plan, parent, toolkit, style);
         createClient();
     }
 
-    public SecurityRoleMappingsSection(JAXBElement plan, AbstractDeploymentDescriptor descriptor, Composite parent,
+    public SecurityRoleMappingSection(JAXBElement plan, AbstractDeploymentDescriptor descriptor, Composite parent,
             FormToolkit toolkit, int style) {
         super(plan, descriptor, parent, toolkit, style);
         createClient();
@@ -71,7 +70,7 @@ public class SecurityRoleMappingsSection extends AbstractTreeSection {
 
     @Override
     protected IAction getSyncAction() {
-        return new SyncAction("Refresh Roles from Deployment Descriptor/Annotations") {
+        return new SyncAction(CommonMessages.securityRefreshRoles) {
             @Override
             public void run() {
                 if( addRolesFromDeploymentDescriptor() ) {
@@ -131,13 +130,8 @@ public class SecurityRoleMappingsSection extends AbstractTreeSection {
     }
 
     @Override
-    public Wizard getAddWizard() {
-        return new SecurityRoleMappingsAddWizard(this);
-    }
-
-    @Override
-    public Wizard getEditWizard() {
-        return new SecurityRoleMappingsEditWizard(this);
+    public Wizard getWizard() {
+        return new SecurityRoleMappingWizard(this);
     }
 
     @Override
@@ -254,35 +248,31 @@ public class SecurityRoleMappingsSection extends AbstractTreeSection {
         return new LabelProvider() {
             @Override
             public String getText(Object element) {
-                String str = "";
                 if (Role.class.isInstance(element)) {
                     Role role = (Role) element;
-                    str += "role-name = " + "\"" + role.getRoleName() + "\"";
-                    return str;
+                    return "Role: role-name = \"" + role.getRoleName() + "\"";
                 }
-
-                if (element instanceof DistinguishedName) {
+                else if (element instanceof DistinguishedName) {
                     DistinguishedName object = (DistinguishedName) element;
-                    str = "DistinguishedName: name = " + "\"" + object.getName() + "\"";
-                    return str;
-                } else if (element instanceof RealmPrincipal) {
+                    return "DistinguishedName: name = \"" + object.getName() + "\"";
+                }
+                else if (element instanceof RealmPrincipal) {
                     RealmPrincipal object = (RealmPrincipal) element;
-                    str += "RealmPrincipal: realm-name = " + "\"" + object.getRealmName() + "\""
-                            + ", domain-name = " + "\"" + object.getDomainName() + "\"" + ", name = "
-                            + "\"" + object.getName() + "\"" + ", class = " + "\"" + object.getClazz()
-                            + "\"";
-                    return str;
-                } else if (element instanceof LoginDomainPrincipal) {
+                    return "RealmPrincipal: name = \"" + object.getName() +
+                            "\", class = \"" + object.getClazz() +
+                            "\", domain-name = \"" + object.getDomainName() +
+                            "\", realm-name = \"" + object.getRealmName() +"\"";
+                }
+                else if (element instanceof LoginDomainPrincipal) {
                     LoginDomainPrincipal object = (LoginDomainPrincipal) element;
-                    str += "LoginDomainPrincipal: domain-name = " + "\"" + object.getDomainName()
-                            + "\"" + ", name = " + "\"" + object.getName() + "\"" + ", class = " + "\""
-                            + object.getClazz() + "\"";
-                    return str;
-                } else if (element instanceof Principal) {
+                    return "LoginDomainPrincipal: name = \"" + object.getName() +
+                            "\", class = \"" + object.getClazz() +
+                            "\", domain-name = \"" + object.getDomainName() +"\"";
+                }
+                else if (element instanceof Principal) {
                     Principal object = (Principal) element;
-                    str += "Principal: name = " + "\"" + object.getName() + "\"" + ", class = " + "\""
-                            + object.getClazz() + "\"";
-                    return str;
+                    return "Principal: name = \"" + object.getName() +
+                            "\", class = \"" + object.getClazz() + "\"";
                 }
 
                 return null;

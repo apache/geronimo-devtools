@@ -16,7 +16,9 @@
  */
 package org.apache.geronimo.st.v21.ui.wizards;
 
+import org.apache.geronimo.jee.security.Role;
 import org.apache.geronimo.jee.security.SubjectInfo;
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractWizard;
 import org.apache.geronimo.st.v21.ui.sections.SecurityAdvancedSection;
@@ -25,14 +27,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * @version $Rev$ $Date$
+ *  @version $Rev$ $Date$
  */
-public class SecurityRunAsSubjectAddWizard extends AbstractWizard {
+public class SecurityRunAsSubjectWizard extends AbstractWizard {
     protected Combo role;
     protected Text realm;
     protected Text id;
 
-    public SecurityRunAsSubjectAddWizard(AbstractTableSection section) {
+    public SecurityRunAsSubjectWizard(AbstractTableSection section) {
         super(section);
     }
 
@@ -43,12 +45,18 @@ public class SecurityRunAsSubjectAddWizard extends AbstractWizard {
 
         public void createControl(Composite parent) {
             Composite composite = createComposite(parent);
-            createLabel(composite, "Role");
+            createLabel(composite, CommonMessages.securityRunAsSubjectRole);
             role = createCombo(composite, ((SecurityAdvancedSection) section).getRolesWithoutRunAsSubject(), false);
-            createLabel(composite, "Realm");
-            realm = createTextFeild(composite, "");
-            createLabel(composite, "Id");
-            id = createTextFeild(composite, "");
+            createLabel(composite, CommonMessages.securityRunAsSubjectRealm);
+            realm = createTextField(composite, "");
+            createLabel(composite, CommonMessages.securityRunAsSubjectId);
+            id = createTextField(composite, "");
+            if (eObject != null) {
+                //TODO  role.setText (((SecurityAdvancedSection) section).);
+                role.setEnabled(false);
+                realm.setText (((Role)eObject).getRunAsSubject().getRealm());
+                id.setText(((Role)eObject).getRunAsSubject().getId());
+            }
             setControl(composite);
         }
     }
@@ -63,26 +71,38 @@ public class SecurityRunAsSubjectAddWizard extends AbstractWizard {
         if (isEmpty(realm.getText()) || isEmpty(id.getText())) {
             return false;
         }
-        SubjectInfo subjectInfo = new SubjectInfo();
-        subjectInfo.setRealm(realm.getText());
-        subjectInfo.setId(id.getText());
-        ((SecurityAdvancedSection) section).getRole(role.getText()).setRunAsSubject(subjectInfo);
-        ((SecurityAdvancedSection) section).activateAddButton();
+        if (eObject == null) {
+            SubjectInfo subjectInfo = new SubjectInfo();
+            subjectInfo.setRealm(realm.getText());
+            subjectInfo.setId(id.getText());
+            ((SecurityAdvancedSection) section).getRole(role.getText()).setRunAsSubject(subjectInfo);
+            ((SecurityAdvancedSection) section).activateAddButton();
+        }
+        else {
+            ((Role)eObject).getRunAsSubject().setRealm(realm.getText());
+            ((Role)eObject).getRunAsSubject().setId(id.getText());
+        }
+
         return true;
     }
 
     @Override
-    protected String getWizardWindowTitle() {
-        return "Add Run-As Subject";
+    protected String getAddWizardWindowTitle() {
+        return CommonMessages.wizardNewTitle_RunAsSubject;
+    }
+
+    @Override
+    protected String getEditWizardWindowTitle() {
+        return CommonMessages.wizardNewTitle_RunAsSubject;
     }
 
     @Override
     protected String getWizardPageTitle() {
-        return "New Security Run-As Subject";
+        return CommonMessages.wizardPageTitle_RunAsSubject;
     }
 
     @Override
     protected String getWizardPageDescription() {
-        return "Specify details for this run-as-subject";
+        return CommonMessages.wizardPageDescription_RunAsSubject;
     }
 }

@@ -60,7 +60,7 @@ public abstract class AbstractTableWizard extends AbstractWizard {
                 if (eObject != null) {
                     initialValue = (String) JAXBUtils.getValue(eObject, getTableColumnEAttributes()[i]);
                 }
-                textEntries[i] = createTextFeild(composite, initialValue);
+                textEntries[i] = createTextField(composite, initialValue);
             }
         }
 
@@ -110,15 +110,6 @@ public abstract class AbstractTableWizard extends AbstractWizard {
     protected String getWizardPageDescription() {
         return getWizardFirstPageDescription();
     }
-
-    @Override
-    protected String getWizardWindowTitle() {
-        return getAddWizardWindowTitle();
-    }
-
-    public abstract String getAddWizardWindowTitle();
-
-    public abstract String getEditWizardWindowTitle();
 
     public abstract String getWizardFirstPageTitle();
 

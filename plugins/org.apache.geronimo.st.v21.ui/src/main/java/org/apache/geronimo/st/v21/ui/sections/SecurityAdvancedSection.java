@@ -30,8 +30,7 @@ import org.apache.geronimo.jee.security.SubjectInfo;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
-import org.apache.geronimo.st.v21.ui.wizards.SecurityRunAsSubjectAddWizard;
-import org.apache.geronimo.st.v21.ui.wizards.SecurityRunAsSubjectEditWizard;
+import org.apache.geronimo.st.v21.ui.wizards.SecurityRunAsSubjectWizard;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
@@ -230,7 +229,7 @@ public class SecurityAdvancedSection extends AbstractTableSection {
 
     @Override
     public Object getInput() {
-        return SecurityRoleMappingsSection.getRoleMappings(getPlan(), false);
+        return SecurityRoleMappingSection.getRoleMappings(getPlan(), false);
     }
 
     @Override
@@ -285,13 +284,8 @@ public class SecurityAdvancedSection extends AbstractTableSection {
     }
 
     @Override
-    public Wizard getAddWizard() {
-        return new SecurityRunAsSubjectAddWizard(this);
-    }
-
-    @Override
     protected Wizard getWizard() {
-        return new SecurityRunAsSubjectEditWizard(this);
+        return new SecurityRunAsSubjectWizard(this);
     }
 
     @Override
@@ -305,7 +299,7 @@ public class SecurityAdvancedSection extends AbstractTableSection {
     }
 
     public Role getRole(String roleName) {
-        List<Role> roles = SecurityRoleMappingsSection.getRoles(getPlan(), false);
+        List<Role> roles = SecurityRoleMappingSection.getRoles(getPlan(), false);
         for (int i = 0; i < roles.size(); i++) {
             Role role = roles.get(i);
             if (role.getRoleName().equals(roleName)) {
@@ -316,7 +310,7 @@ public class SecurityAdvancedSection extends AbstractTableSection {
     }
 
     public String[] getRolesWithoutRunAsSubject() {
-        List<Role> roles = SecurityRoleMappingsSection.getRoles(getPlan(), false);
+        List<Role> roles = SecurityRoleMappingSection.getRoles(getPlan(), false);
         List<Role> rolesWithoutRunAsSubject = new ArrayList<Role>();
         for (int i = 0; i < roles.size(); i++) {
             Role role = roles.get(i);
