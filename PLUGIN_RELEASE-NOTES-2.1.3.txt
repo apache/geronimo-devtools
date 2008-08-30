@@ -61,13 +61,30 @@ Bug Fixes and New Features
 --------------------------
 GERONIMODEVTOOLS-129 Enhanced Editor Support for specifying GBeans in all the deployment editors
 
+GERONIMODEVTOOLS-171 Add extension point to remove hard-coded org.apache.geronimo name from launch console action check
+
+GERONIMODEVTOOLS-414 Provide an option to Add Dependencies from Server
+
 GERONIMODEVTOOLS-422 Reduce the clutter of open sections in the GEP deployment plan editors.
+
+GERONIMODEVTOOLS-423 Add more options to the Security Section in Geronimo Deployment Plan Editor
+
+GERONIMODEVTOOLS-430 Provide editor support to configure Advanced Security Settings
+
+GERONIMODEVTOOLS-465 Replace depracated Eclipse-LazyStart in plugin manifests
+
+GERONIMODEVTOOLS-499 Only installing Geronimo v2.0 server adapter in GEP 2.1.2 does not work for Ganymede
+
+GERONIMODEVTOOLS-501 Adding server in eclipse suggests "Apache Geronimo V2.1 is currently only certified on a 1.5 JVM. Use of any other version is not currently supported."
+
+GERONIMODEVTOOLS-502 Fix NPE when adding references to naming page of deployment plan editors
 
 GERONIMODEVTOOLS-503 Read security info from deployment descriptor(s).
 
 GERONIMODEVTOOLS-505 PLUGIN_RELEASE-NOTES-2.1.2.txt missing from distribution
 
 GERONIMODEVTOOLS-507 Ship only one feature that provides v20 and v21 server support
+
 
 
 Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
