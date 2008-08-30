@@ -30,10 +30,19 @@
             <includes>
                 <include>LICENSE.txt</include>
                 <include>NOTICE.txt</include>
-                <include>PLUGIN_RELEASE-NOTES-${pom.version}.txt</include>
             </includes>
         </fileSet>
     </fileSets>
+    <files>
+        <file>
+            <source>../features/org.apache.geronimo.v21.feature/target/classes/about_files/PLUGIN_RELEASE-NOTES-${pom.version}.txt</source>
+            <outputDirectory>eclipse</outputDirectory>
+            <!--  <filtered>true</filtered>
+                 ${pom.version} does not get expanded by this filtering :-(
+                 so I take a filtered version from earlier in the build for GERONIMODEVTOOLS-505
+              -->
+        </file>
+    </files>
     <dependencySets>
 
         <!-- 
