@@ -20,57 +20,160 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
+
+import org.apache.geronimo.jee.naming.Port;
+import org.apache.geronimo.jee.naming.PortCompletion;
 import org.apache.geronimo.jee.naming.ServiceRef;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.sections.AbstractTableSection;
+import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
+import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.wizards.ServiceRefWizard;
-import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 /**
  * @version $Rev$ $Date$
  */
-public class ServiceRefSection extends AbstractTableSection {
-
+public class ServiceRefSection extends AbstractTreeSection {
     public ServiceRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List serviceRefs) {
         super(plan, parent, toolkit, style);
         this.objectContainer = serviceRefs;
-        COLUMN_NAMES = new String[] { CommonMessages.editorServiceRefName };
         createClient();
-        getSection().setExpanded(false);
     }
 
+    @Override
     public String getTitle() {
         return CommonMessages.editorServiceRefTitle;
     }
 
+    @Override
     public String getDescription() {
         return CommonMessages.editorServiceRefDescription;
     }
 
+    @Override
     public Wizard getWizard() {
         return new ServiceRefWizard(this);
     }
 
+    @Override
     public Class getTableEntryObjectType() {
         return ServiceRef.class;
     }
 
     @Override
-    public ITableLabelProvider getLabelProvider() {
+    protected void activateAddButton() {
+        if (tree.getSelectionCount() == 0 || tree.getSelection()[0].getParentItem() == null) {
+            addButton.setEnabled(true);
+        } else {
+            addButton.setEnabled(false);
+        }
+    }
+
+    public ServiceRef getSelectedServiceRef () {
+        if (tree.getSelection().length == 0) {
+            return null;
+        }
+        return (ServiceRef)tree.getSelection()[0].getData();
+    }
+    
+    @Override
+    public void removeItem(Object anItem) {
+        if (ServiceRef.class.isInstance(anItem)) {
+            getObjectContainer().remove(anItem);
+        }
+        else if (Port.class.isInstance(anItem)) {
+            ServiceRef serviceRef = (ServiceRef)tree.getSelection()[0].getParentItem().getData();
+            serviceRef.getPort().remove(anItem);
+        }
+        else if (PortCompletion.class.isInstance(anItem)) {
+            ServiceRef serviceRef = (ServiceRef)tree.getSelection()[0].getParentItem().getData();
+            serviceRef.getServiceCompletion().getPortCompletion().remove(anItem);
+        }
+    }
+    
+    @Override
+    public Object getInput() {
+        if (objectContainer != null) {
+            return objectContainer;
+        }
+        return super.getInput();
+    }
+
+    @Override
+    public ITreeContentProvider getContentProvider() {
+        return new ContentProvider() {
+            @Override
+            public Object[] getElements(Object inputElement) {
+                return getChildren(inputElement);
+            }
+
+            @Override
+            public Object[] getChildren(Object parentElement) {
+                if (List.class.isInstance(parentElement)) {
+                    return ((List)parentElement).toArray();
+                }
+                if (ServiceRef.class.isInstance(parentElement)) {
+                    ServiceRef serviceRef = (ServiceRef)parentElement;
+                    Object[] portList = serviceRef.getPort().toArray();
+                    Object[] compList = new Object[0];
+                    if (serviceRef.getServiceCompletion() != null) {
+                        compList = serviceRef.getServiceCompletion().getPortCompletion().toArray();
+                    }
+                    Object[] fullList = new Object[portList.length + compList.length];
+                    System.arraycopy(portList, 0, fullList, 0, portList.length);
+                    System.arraycopy(compList, 0, fullList, portList.length, compList.length);
+                    return fullList;
+                }
+                return new String[] {};
+            }
+        };
+    }
+
+    @Override
+    public ILabelProvider getLabelProvider() {
         return new LabelProvider() {
             @Override
-            public String getColumnText(Object element, int columnIndex) {
+            public String getText(Object element) {
                 if (ServiceRef.class.isInstance(element)) {
-                    ServiceRef serviceRef = (ServiceRef) element;
-                    switch (columnIndex) {
-                    case 0:
-                        return serviceRef.getServiceRefName();
-                    }
+                    ServiceRef serviceRef = (ServiceRef)element;
+                        String retString = "Service Ref: name = \"" + serviceRef.getServiceRefName() + "\"";
+                        if (serviceRef.getServiceCompletion() != null) {
+                            retString += ", service completion name = \"" + serviceRef.getServiceCompletion().getServiceName() + "\"";
+                        }
+                        return retString;
                 }
+                else if (Port.class.isInstance(element)) {
+                    Port port = (Port)element;
+                    return "Port: name = \"" + port.getPortName() + 
+                            "\", protocol = \"" + port.getProtocol() + 
+                            "\", host = \"" + port.getHost() + 
+                            "\", port = \"" + port.getPort() + 
+                            "\", uri = \"" + port.getUri() + 
+                            "\", credential = \"" + port.getCredentialsName() + "\"";
+                }
+                else if (PortCompletion.class.isInstance(element)) {
+                    PortCompletion portComp = (PortCompletion)element;
+                    return "Port Completion: name = \"" + portComp.getPort().getPortName() + 
+                            "\", protocol = \"" + portComp.getPort().getProtocol() + 
+                            "\", host = \"" + portComp.getPort().getHost() + 
+                            "\", port = \"" + portComp.getPort().getPort() + 
+                            "\", uri = \"" + portComp.getPort().getUri() + 
+                            "\", credential = \"" + portComp.getPort().getCredentialsName() +
+                            "\", binding name = \"" + portComp.getBindingName() + "\"";
+                }
+
                 return null;
+            }
+
+            @Override
+            public Image getImage(Object arg0) {
+                return Activator.imageDescriptorFromPlugin("org.eclipse.jst.j2ee",
+                        "icons/full/obj16/module_web_obj.gif").createImage();
             }
         };
     }

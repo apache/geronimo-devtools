@@ -16,7 +16,6 @@
  */
 package org.apache.geronimo.st.ui.wizards;
 
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.ui.sections.AbstractListSection;
 import org.eclipse.jface.resource.ImageDescriptor;

@@ -32,6 +32,9 @@ import org.apache.geronimo.jee.naming.EjbRef;
 import org.apache.geronimo.jee.naming.EjbLocalRef;
 import org.apache.geronimo.jee.naming.GbeanRef;
 import org.apache.geronimo.jee.naming.MessageDestination;
+import org.apache.geronimo.jee.naming.Port;
+import org.apache.geronimo.jee.naming.PortCompletion;
+import org.apache.geronimo.jee.naming.ServiceCompletion;
 import org.apache.geronimo.jee.naming.ResourceEnvRef;
 import org.apache.geronimo.jee.naming.ResourceRef;
 import org.apache.geronimo.jee.naming.ServiceRef;
@@ -72,6 +75,12 @@ public class JAXBObjectFactoryImpl implements JAXBObjectFactory {
             return (new org.apache.geronimo.jee.naming.ObjectFactory()).createMessageDestination();
         } else if ( type.equals( org.apache.geronimo.jee.naming.Pattern.class ) ) {
             return (new org.apache.geronimo.jee.naming.ObjectFactory()).createPattern();
+        } else if ( type.equals( Port.class ) ) {
+            return (new org.apache.geronimo.jee.naming.ObjectFactory()).createPort();
+        } else if ( type.equals( PortCompletion.class ) ) {
+            return (new org.apache.geronimo.jee.naming.ObjectFactory()).createPortCompletion();
+        } else if ( type.equals( ServiceCompletion.class ) ) {
+            return (new org.apache.geronimo.jee.naming.ObjectFactory()).createServiceCompletion();
         } else if ( type.equals( ServiceRef.class ) ) {
             return (new org.apache.geronimo.jee.naming.ObjectFactory()).createServiceRef();
         } else if ( type.equals( EjbLocalRef.class ) ) {

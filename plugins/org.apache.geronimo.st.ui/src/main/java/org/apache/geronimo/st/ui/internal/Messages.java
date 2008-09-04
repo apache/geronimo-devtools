@@ -335,6 +335,12 @@ public class Messages extends NLS {
     public static String internalPath;
     public static String externalPath;
     public static String altDD;
+
+    public static String serviceCompletionName;
+    public static String protocol;
+    public static String credential;
+    public static String bindingName;
+    public static String uri;
     
     public static String connector;
     public static String ejb;

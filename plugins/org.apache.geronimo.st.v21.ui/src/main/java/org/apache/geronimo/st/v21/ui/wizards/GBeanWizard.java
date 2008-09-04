@@ -16,7 +16,6 @@
  */
 package org.apache.geronimo.st.v21.ui.wizards;
 
-import java.util.ArrayList;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.deployment.Attribute;
@@ -27,65 +26,36 @@ import org.apache.geronimo.jee.deployment.Reference;
 import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
-import org.apache.geronimo.st.ui.wizards.AbstractWizard;
+import org.apache.geronimo.st.ui.wizards.AbstractTreeWizard;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v21.ui.sections.GBeanSection;
-import org.apache.geronimo.st.v21.ui.wizards.SecurityRoleMappingWizard.SecurityRoleMappingsWizardPage;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * @version $Rev$ $Date$
  */
-public class GBeanWizard extends AbstractWizard {
+public class GBeanWizard extends AbstractTreeWizard {
 
     private final int GBEAN = 0;
     private final int ATTRIBUTE = 1;
     private final int DEPENDENCY = 2;
     private final int REFERENCE = 3;
-    private final String[] ELEMENT_TYPES = {
-            "GBean", "Attribute", "Dependency", "Reference" };
-
-    protected Combo element;
-    protected ArrayList<Text> textList;
 
     public GBeanWizard(AbstractTreeSection section) {
-        super(section);
-        textList = new ArrayList<Text>(7);
+        super(section, 4, 7);
+        elementTypes[GBEAN] = "GBean";
+        elementTypes[ATTRIBUTE] = "Attribute";
+        elementTypes[DEPENDENCY] = "Dependency";
+        elementTypes[REFERENCE] = "Reference";
     }
 
-    public class GBeanWizardPage extends AbstractWizardPage {
-        protected ArrayList<Label> labelList;
-        protected Composite composite;
+    public class GBeanWizardPage extends AbstractTreeWizardPage {
 
         public GBeanWizardPage(String pageName) {
             super(pageName);
-            labelList = new ArrayList<Label>(7);
         }
 
-        public void createControl(Composite parent) {
-            Label label;
-            Text text;
-            composite = createComposite(parent);
-            createLabel(composite, CommonMessages.element);
-            element = createCombo(composite, ELEMENT_TYPES, false);
-            for (int i = 0; i < 7; i++) {
-                label = createLabel(composite, "");
-                labelList.add(label);
-                text = createTextField(composite, "");
-                textList.add(text);
-            }
-            element.addSelectionListener(new SelectionAdapter() {
-                public void widgetSelected(SelectionEvent arg0) {
-                    toggleFields();
-                }
-            });
-
+        protected void initControl() {
             if (eObject == null) {
                 element.select(GBEAN);
                 if (((GBeanSection)section).getSelectedGbean() == null) {
@@ -127,17 +97,18 @@ public class GBeanWizard extends AbstractWizard {
                 }
                 element.setEnabled(false);
             }
-            toggleFields();
-            setControl(composite);
         }
         
-        private void toggleFields () {
+        protected void toggleFields (boolean clearFields) {
             int selection = element.getSelectionIndex();
             switch (selection) {
             case GBEAN:
-                for (int i = 0; i < 7; i++) {
+                for (int i = 0; i < maxTextFields; i++) {
                     labelList.get(i).setVisible(i < 2 ? true : false);
                     textList.get(i).setVisible(i < 2 ? true : false);
+                    if (clearFields == true) {
+                        textList.get(i).setText("");
+                    }
                 }
                 labelList.get(0).setText(CommonMessages.name);
                 labelList.get(1).setText(CommonMessages.className);
@@ -150,18 +121,24 @@ public class GBeanWizard extends AbstractWizard {
                 labelList.get(6).setText(CommonMessages.customName);
                 break;
             case ATTRIBUTE:
-                for (int i = 0; i < 7; i++) {
+                for (int i = 0; i < maxTextFields; i++) {
                     labelList.get(i).setVisible(i < 3 ? true : false);
                     textList.get(i).setVisible(i < 3 ? true : false);
+                    if (clearFields == true) {
+                        textList.get(i).setText("");
+                    }
                 }
                 labelList.get(0).setText(CommonMessages.name);
                 labelList.get(1).setText(CommonMessages.type);
                 labelList.get(2).setText(CommonMessages.value);
                 break;
             case DEPENDENCY:
-                for (int i = 0; i < 7; i++) {
+                for (int i = 0; i < maxTextFields; i++) {
                     labelList.get(i).setVisible(i < 6 ? true : false);
                     textList.get(i).setVisible(i < 6 ? true : false);
+                    if (clearFields == true) {
+                        textList.get(i).setText("");
+                    }
                 }
                 labelList.get(0).setText(CommonMessages.groupId);
                 labelList.get(1).setText(CommonMessages.artifactId);
@@ -171,9 +148,12 @@ public class GBeanWizard extends AbstractWizard {
                 labelList.get(5).setText(CommonMessages.customName);
                 break;
             case REFERENCE:
-                for (int i = 0; i < 7; i++) {
+                for (int i = 0; i < maxTextFields; i++) {
                     labelList.get(i).setVisible(true);
                     textList.get(i).setVisible(true);
+                    if (clearFields == true) {
+                        textList.get(i).setText("");
+                    }
                 }
                 labelList.get(0).setText(CommonMessages.name);
                 labelList.get(1).setText(CommonMessages.groupId);

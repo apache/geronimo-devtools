@@ -173,7 +173,7 @@ public class GBeanSection extends AbstractTreeSection {
             @Override
             public Image getImage(Object arg0) {
                 return Activator.imageDescriptorFromPlugin("org.eclipse.jst.j2ee",
-                        "icons/full/obj16/security_role.gif").createImage();
+                        "icons/full/obj16/accessbean_obj.gif").createImage();
             }
         };
     }

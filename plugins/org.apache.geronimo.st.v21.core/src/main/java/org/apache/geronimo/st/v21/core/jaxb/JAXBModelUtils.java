@@ -167,6 +167,14 @@ public class JAXBModelUtils {
         return null;
     }
 
+    public static List getServiceRefs (JAXBElement element) {
+        Object plan = element.getValue();
+        if (WebApp.class.isInstance (plan)) {
+            return ((WebApp)plan).getServiceRef() == null ? null : ((WebApp)plan).getServiceRef();
+        }
+        return null;
+    }
+
     public static List getMessageDestinations (JAXBElement element) {
         Object plan = element.getValue();
         if (WebApp.class.isInstance (plan)) {
