@@ -54,11 +54,14 @@ Geronimo Eclipse Plugin Version ${pom.version} Enhancements
 Installation Instructions
 -------------------------
 
-See http://cwiki.apache.org/GMOxDOC21/quick-start-fast-and-easy-development.html#Quickstart-fastandeasydevelopment-InstallingGeronimoEclipsePlugin
+See http://cwiki.apache.org/GMOxDOC21/how-to-install-geronimo-eclipse-plugin-v213.html
 
 
 Bug Fixes and New Features
 --------------------------
+
+GERONIMODEVTOOLS-128 Add usabilty enhancements for Web Service References in geronimo-web.xml deployment plan editor.
+
 GERONIMODEVTOOLS-129 Enhanced Editor Support for specifying GBeans in all the deployment editors
 
 GERONIMODEVTOOLS-171 Add extension point to remove hard-coded org.apache.geronimo name from launch console action check
