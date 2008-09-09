@@ -18,12 +18,10 @@
 package org.apache.geronimo.testsuite.v21.ui;
 
 import org.apache.geronimo.testsuite.common.selenium.EclipseSelenium;
-import org.apache.geronimo.testsuite.common.selenium.EclipseSeleniumServer;
 import org.apache.geronimo.testsuite.common.ui.AbbotHelper;
 import org.apache.geronimo.testsuite.common.ui.Constants;
 import org.apache.geronimo.testsuite.common.ui.ServerTasks;
 import org.apache.geronimo.testsuite.common.ui.WorkbenchTasks;
-import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.swt.widgets.Shell;
 
 import abbot.swt.eclipse.junit.extensions.WorkbenchTestCase;

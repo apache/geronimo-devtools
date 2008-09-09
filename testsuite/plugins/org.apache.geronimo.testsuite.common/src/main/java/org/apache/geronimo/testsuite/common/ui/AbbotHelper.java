@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
@@ -43,10 +44,12 @@ import abbot.swt.tester.ItemPath;
 import abbot.swt.tester.ItemTester;
 import abbot.swt.tester.MenuTester;
 import abbot.swt.tester.ShellTester;
+import abbot.swt.tester.TabItemTester;
 import abbot.swt.tester.TextTester;
 import abbot.swt.tester.ToolItemTester;
 import abbot.swt.tester.TreeItemTester;
 import abbot.swt.tester.TreeTester;
+import abbot.swt.utilities.ExtendedComparator;
 
 /**
  * @version $Rev: 679174 $ $Date: 2008-07-23 12:52:55 -0700 (Wed, 23 Jul 2008) $
@@ -138,6 +141,14 @@ public class AbbotHelper {
         ToolItemTester.getToolItemTester().actionClick (toolItem);
         waitTime( 1500 );
     }
+    
+    //helper method to find the button by its tool tip text
+    public Shell clickImageButton (Shell aShell, String toolTipText, String newDialogName) throws MultipleFoundException, NotFoundException {
+        Button button = (Button) finder.find (aShell, new WidgetToolTipMatcher (toolTipText, Button.class, true));
+        ButtonTester.getButtonTester().actionClick (button);
+        waitTime( 1500 );
+        return ShellTester.waitVisible(newDialogName);
+    }
 
     // helper method
     public void clickTreeItem (Shell aShell, String[] treeList) throws MultipleFoundException, NotFoundException {
@@ -147,12 +158,28 @@ public class AbbotHelper {
         waitTime( 1500 );
     }
 
+    //helper method to check a box present in a tree
+    public void checkTreeItem (Shell aShell, String[] treeList) throws MultipleFoundException, NotFoundException {
+        ItemPath anItemPath = new ItemPath (treeList);
+        Tree tree = (Tree) finder.find (aShell, new WidgetClassMatcher (Tree.class));
+        TreeTester.getTreeTester().actionCheckItem(tree, anItemPath, true);
+        waitTime( 1500 );
+    }
+
     // helper method
     public void setCombo (Shell aShell, String newText) throws MultipleFoundException, NotFoundException {
         Combo combo = (Combo) finder.find (aShell, new WidgetClassMatcher (Combo.class, true));
         ComboTester.getComboTester().actionClick(combo);
         ComboTester.getComboTester().actionKeyString(newText);
         waitTime( 1500 );
+    }
+    
+    //helper method to select a Tab 
+    public void selectTabItem(Shell aShell, String newText)throws MultipleFoundException,NotFoundException
+    {
+        TabItem tabitem=(TabItem) finder.find (aShell, new WidgetTabMatcher (newText, TabItem.class, true));
+        TabItemTester.getTabItemTester().actionClick(tabitem);      
+        waitTime(1500);
     }
     
     // helper method
@@ -174,7 +201,7 @@ public class AbbotHelper {
         TextTester.getTextTester().actionKeyString (newText);
         waitTime( 1500 );
     }
-    
+       
     // helper method
     public void waitForDialogDisposal (Shell aShell) {
         while (!ShellTester.getShellTester().isDisposed (aShell))
@@ -204,6 +231,38 @@ public class AbbotHelper {
     public void waitTime (long time) {
         ShellTester.getShellTester().actionDelay (time);
     }
+    
+    // TabMatcher has bugs currently with abbot. This is a inner class
+    // for tab selection. This code can be removed once abbot has
+    //our code
+    final class WidgetTabMatcher extends WidgetTextMatcher{
+        protected final String text;
+        public WidgetTabMatcher(String text, Class clazz, boolean mustBeShowing) {
+            super(text,clazz, mustBeShowing);
+            if (text == null)
+                throw new IllegalArgumentException("text is null");
+            this.text = text;
+        }
+        
+        public boolean matches(Widget widget) {      
+            // If the widget's text is scalar and it matches our text then return true.
+            String widgetText = getText(widget);
+            if (widgetText != null && ExtendedComparator.stringsMatch(text, widgetText))
+                return true;
+
+            // If the widget has an array of texts and any of them match then return true.
+            String[] widgetTextArray = getTextArray(widget);
+            if (widgetTextArray != null && widgetTextArray.length > 0) {
+                for (int i = 0; i < widgetTextArray.length; i++) {
+                    if (ExtendedComparator.stringsMatch(text, widgetTextArray[i]))
+                        return true;
+                }
+            }
+            
+            // If we got here then no match.
+            return false;
+        }
+    }
 
     // helper inner class
     // Since Tool Items do not have text, the regular Widget Text Matcher won't work.
@@ -218,7 +277,8 @@ public class AbbotHelper {
         protected String getText(Widget widget) {
             if (widget instanceof ToolItem)
                 return ToolItemTester.getToolItemTester().getToolTipText((ToolItem) widget);
-
+            if (widget instanceof Button)
+                return ButtonTester.getButtonTester().getToolTipText((Button)widget);
             return null;
         }
     }

@@ -58,6 +58,20 @@
         <echo message="##                                                    " />
         <echo message="######################################################" />
 
+        <!--
+         #########################################################################
+         ##                                                                     ##
+         ## Check UI Installation testcase                                      ##
+         ##                                                                     ##
+         #########################################################################
+         -->
+        <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+        <property name="data-dir" value="${jdt-folder}"/>
+        <property name="plugin-name" value="${plugin-name}"/>
+        <property name="classname"
+                  value="org.apache.geronimo.testsuite.v21.ui.EclipseUITest"/>
+        </ant>
+
         <!-- 
          #########################################################################
          ##                                                                     ##
@@ -101,7 +115,7 @@
                       value="org.apache.geronimo.testsuite.v21.ui.Tutorial5MinuteTest"/>
         </ant>
     </target>
-	
+
     <!-- This target holds code to cleanup the testing environment after -->
     <!-- after all of the tests have been run. You can use this target to -->
     <!-- delete temporary files that have been created. -->
