@@ -74,7 +74,11 @@ GERONIMODEVTOOLS-423 Add more options to the Security Section in Geronimo Deploy
 
 GERONIMODEVTOOLS-430 Provide editor support to configure Advanced Security Settings
 
+GERONIMODEVTOOLS-461 Documentation updates
+
 GERONIMODEVTOOLS-465 Replace depracated Eclipse-LazyStart in plugin manifests
+
+GERONIMODEVTOOLS-485 new Abbot testcase added.
 
 GERONIMODEVTOOLS-499 Only installing Geronimo v2.0 server adapter in GEP 2.1.2 does not work for Ganymede
 
