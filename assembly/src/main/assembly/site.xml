@@ -18,7 +18,7 @@
 
 <!-- @version $Rev$ $Date$ -->
 
-<site>
+<site mirrorsURL="http://geronimo.apache.org/devtools/geronimo-eclipse-update--xml.cgi">
 
     <description>Apache Geronimo Eclipse Update Site</description>
     
