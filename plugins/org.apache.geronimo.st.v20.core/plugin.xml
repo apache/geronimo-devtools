@@ -30,6 +30,7 @@
             <moduleType types="jst.ejb" versions="1.1, 2.0, 2.1, 3.0"/>
             <moduleType types="jst.connector" versions="1.0, 1.5"/>
             <moduleType types="jst.ear" versions="1.2, 1.3, 1.4, 5.0"/>
+            <moduleType types="jst.utility" versions="1.0"/>
         </runtimeType>
     </extension>
     
@@ -88,6 +89,7 @@
                     <requires facet="jst.web" version="2.3"/>
                     <requires facet="jst.web" version="2.4"/>
                     <requires facet="jst.web" version="2.5"/>
+                    <requires facet="jst.utility" version="1.0"/>
                 </or>
             </constraint>
         </project-facet-version>
