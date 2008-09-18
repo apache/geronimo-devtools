@@ -92,6 +92,9 @@ GERONIMODEVTOOLS-505 PLUGIN_RELEASE-NOTES-2.1.2.txt missing from distribution
 
 GERONIMODEVTOOLS-507 Ship only one feature that provides v20 and v21 server support
 
+GERONIMODEVTOOLS-513 We should not have removed support for utility projects -- added back
+
+GERONIMODEVTOOLS-515 Restore Mirroring to the GEP Eclipse Update Site
 
 
 Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
