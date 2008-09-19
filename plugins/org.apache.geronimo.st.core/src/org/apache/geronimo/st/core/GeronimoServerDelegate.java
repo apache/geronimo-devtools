@@ -86,13 +86,15 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	 *      org.eclipse.wst.server.core.IModule[])
 	 */
 	public IStatus canModifyModules(IModule[] add, IModule[] remove) {
-        for (int i = 0; i < add.length; i++) {
-            IModule module = add[i];
-            if (module.getProject() != null) {
-                IStatus status = FacetUtil.verifyFacets(module.getProject(),
-                        getServer());
-                if (status != null && !status.isOK())
-                    return status;
+        if (add != null) {
+            for (int i = 0; i < add.length; i++) {
+                IModule module = add[i];
+                if (module.getProject() != null) {
+                    IStatus status = FacetUtil.verifyFacets(
+                            module.getProject(), getServer());
+                    if (status != null && !status.isOK())
+                        return status;
+                }
             }
         }
         return Status.OK_STATUS;
