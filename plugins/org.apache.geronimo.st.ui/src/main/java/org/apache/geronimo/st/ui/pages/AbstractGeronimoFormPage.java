@@ -126,7 +126,7 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
 	protected abstract void triggerGeronimoServerInfoUpdate();
 
 	protected String getHelpResource() {
-		return "http://cwiki.apache.org/GMOxDOC21/apache-geronimo-development-tools-project.html";
+		return "http://geronimo.apache.org/development-tools.html";
 	}
 
 	protected GridLayout getLayout() {

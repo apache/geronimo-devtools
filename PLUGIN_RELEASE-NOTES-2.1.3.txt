@@ -3,7 +3,7 @@ Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${b
 
 Helpful URLs
 ------------
-Geronimo Devtools:                          http://cwiki.apache.org/GMOxDOC21/apache-geronimo-development-tools-project.html
+Geronimo Devtools:                          http://geronimo.apache.org/development-tools.html
 Geronimo Eclipse Update Site:               http://www.apache.org/dist/geronimo/eclipse/updates
 Bug Tracking:                               http://issues.apache.org/jira/browse/GERONIMODEVTOOLS
 Quick start - fast and easy development:    http://cwiki.apache.org/GMOxDOC21/quick-start-fast-and-easy-development.html
