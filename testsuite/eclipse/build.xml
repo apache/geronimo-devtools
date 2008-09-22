@@ -134,9 +134,10 @@
         <antcall target="test-framework"/>
         <antcall target="abbot"/>
         <antcall target="gep-plugins"/>
+        <antcall target="gep-features"/>
     </target>
 
-    <target name="cleanup" depends="init" description="Cleanup from previos invocatins of the testsuite">
+    <target name="cleanup" depends="init" description="Cleanup from previous invocatins of the testsuite">
         <!--
         ##############################################################################################   
         ##                                                                                          ##
@@ -226,7 +227,7 @@
               failonerror="true" />
     </target>
 
-    <target name="gep-plugins" depends="init" description="Copy the GEP plugins into the test_eclipse installation">
+    <target name="gep-plugins" depends="init" description="Copy the GEP plugin(s) into the test_eclipse installation">
         <!--
         |  
         | Copy the GEP plugins to the testsuite Eclipse plugins directory
@@ -268,6 +269,18 @@
                 <include name="**/*.jar"/>
             </fileset>
         </copy>
+    </target>
+
+    <target name="gep-features" depends="init" description="Copy the GEP feature(s) into the test_eclipse installation">
+        <!--
+        |  
+        | Unzip the GEP feature(s) to the testsuite Eclipse features directory
+        |  
+        -->
+        <mkdir dir="${test_eclipse}"/>
+        <unzip src="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.v21.feature/${gep_version}/org.apache.geronimo.v21.feature-${gep_version}.jar"
+               dest="${test_eclipse}eclipse/features/org.apache.geronimo.v21.feature_${gep_version}"
+               overwrite="true"/>
     </target>
 
 </project>
