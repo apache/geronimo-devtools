@@ -170,19 +170,19 @@ public class Tutorial5Minute {
 
 
     public void webTesting () throws Exception {
-    	EclipseSelenium selenium = new EclipseSelenium();
+        EclipseSelenium selenium = new EclipseSelenium();
         selenium.start();
-   		selenium.open( "http://localhost:8080/SampleWAR/");
-   		selenium.type("name", "Tom");
-	   	selenium.click("submit");
-   		selenium.waitForPageToLoad( "3000" );
-	   	AssertUtil.assertTrue(selenium.getHtmlSource().indexOf( "says hello to" ) > 0);
+        selenium.open( "http://localhost:8080/SampleWAR/");
+        selenium.type("name", "Tom");
+        selenium.click("submit");
+        selenium.waitForPageToLoad( "3000" );
+        AssertUtil.assertTrue(selenium.getHtmlSource().indexOf( "says hello to" ) > 0);
 
         // TODO fill in a name and click the Process button
         // This is a problem, HTML objects are not the same as SWT objects and 
         // Abbot cannot find these
         //aHelper.setTextField(workbenchShell, "", "MyName");
         //aHelper.clickButton (workbenchShell, "Press me!");
-   		selenium.stop();
+        selenium.stop();
     }
 }

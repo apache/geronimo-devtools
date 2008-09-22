@@ -66,7 +66,7 @@ public class NewServerTest extends WorkbenchTestCase {
             serverTasks.startServer();
             
             EclipseSelenium selenium = new EclipseSelenium();
-        	selenium.start();
+            selenium.start();
             
             selenium.open( "http://localhost:8080/console/" );
             selenium.waitForPageToLoad( "2000" );

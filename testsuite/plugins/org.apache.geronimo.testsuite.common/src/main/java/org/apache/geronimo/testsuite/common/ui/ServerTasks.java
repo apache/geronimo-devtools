@@ -64,8 +64,8 @@ public class ServerTasks {
     }
 
     public void startServer () throws MultipleFoundException, NotFoundException {
-    	String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
-    	aHelper.clickMenuItem (workbenchShell,
+        String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
+        aHelper.clickMenuItem (workbenchShell,
                 new String[] {"&Window", "Show &View", "Servers"});
         
         aHelper.rightClickItem (workbenchShell, serverDisplay,
@@ -76,7 +76,7 @@ public class ServerTasks {
     }
     
     public void stopServer () throws MultipleFoundException, NotFoundException {
-    	String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
+        String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
         aHelper.clickMenuItem (workbenchShell,
                 new String[] {"&Window", "Show &View", "Servers"});
 

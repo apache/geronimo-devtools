@@ -24,9 +24,9 @@ package org.apache.geronimo.testsuite.common;
  */
 public class AssertUtil {
 
-	public static void assertTrue( boolean value ) throws Exception {
-		if ( !value ) {
-			throw new Exception( "Error" );
-		}
-	}
+    public static void assertTrue( boolean value ) throws Exception {
+        if ( !value ) {
+            throw new Exception( "Error" );
+        }
+    }
 }

@@ -34,10 +34,10 @@ public class WorkbenchTasks {
     
     public void showJEEPerspective() throws MultipleFoundException, NotFoundException {
 
-    	aHelper.clickMenuItem (workbenchShell,
+        aHelper.clickMenuItem (workbenchShell,
                 new String[] {"&Window", "&Close Perspective"});
-    	
-    	Shell perspectiveShell = aHelper.clickMenuItem (workbenchShell,
+        
+        Shell perspectiveShell = aHelper.clickMenuItem (workbenchShell,
               new String[] {"&Window", "&Open Perspective", "&Other..." },
               "Open Perspective");
         aHelper.clickItem (perspectiveShell, "Java EE (default)");

@@ -35,38 +35,38 @@ import org.openqa.selenium.server.browserlaunchers.BrowserLauncherFactory;
  */
 public class EclipseSeleniumServer implements ISafeRunnable{
 
-	public static EclipseSeleniumServer INSTANCE;
-	private SeleniumServer server;
-	private AbbotHelper aHelper;
-	private Shell shell;
-	
-	public EclipseSeleniumServer( AbbotHelper aHelper, Shell shell ) {
-		this.aHelper = aHelper;
-		this.shell = shell;
-		INSTANCE = this;
-	}
-	
-	public void stop() {
-		server.stop();
-	}
-	
-	public AbbotHelper getAHelper() {
-		return aHelper;
-	}
+    public static EclipseSeleniumServer INSTANCE;
+    private SeleniumServer server;
+    private AbbotHelper aHelper;
+    private Shell shell;
+    
+    public EclipseSeleniumServer( AbbotHelper aHelper, Shell shell ) {
+        this.aHelper = aHelper;
+        this.shell = shell;
+        INSTANCE = this;
+    }
+    
+    public void stop() {
+        server.stop();
+    }
+    
+    public AbbotHelper getAHelper() {
+        return aHelper;
+    }
 
-	public Shell getShell() {
-		return shell;
-	}
+    public Shell getShell() {
+        return shell;
+    }
 
-	public void handleException(Throwable arg0) {
+    public void handleException(Throwable arg0) {
 
-	}
+    }
 
-	public void run() throws Exception {
-		BrowserLauncherFactory.addBrowserLauncher("EclipseBrowser", EclipseBrowserLauncher.class);
-		SeleniumServer.setDebugMode( true );
-		server = new SeleniumServer();
-		server.start();
-	}
+    public void run() throws Exception {
+        BrowserLauncherFactory.addBrowserLauncher("EclipseBrowser", EclipseBrowserLauncher.class);
+        SeleniumServer.setDebugMode( true );
+        server = new SeleniumServer();
+        server.start();
+    }
 
 }

@@ -43,7 +43,7 @@
         <property name="abbot_swt_version"      value="0.1.0.20080305_1254"/>
         <property name="abbot_swt"              value="abbot.swt-${abbot_swt_version}.zip"/>
         <property name="abbot_protocol"         value="?modtime=12047243638&amp;protocol=http"/>
-        <property name="gep_version"            value="2.1.3"/>
+        <property name="gep_version"            value="2.2.0"/>
     </target>
 
     <target name="win32" depends="init,common" description="Download Windows-specific artifact(s)">

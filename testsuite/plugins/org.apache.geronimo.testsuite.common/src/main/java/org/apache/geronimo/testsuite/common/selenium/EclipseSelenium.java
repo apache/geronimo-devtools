@@ -30,13 +30,13 @@ import com.thoughtworks.selenium.Selenium;
  */
 public class EclipseSelenium extends DefaultSelenium {
 
-	private static String serverHost = "localhost";
-	private static int serverPort = 4444;
-	private static String browserStartCommand = "*EclipseBrowser";
-	private static String browserURL = "http://localhost:4444";
-	
-	public EclipseSelenium() {
-		super(serverHost, serverPort, browserStartCommand, browserURL);
-	}
+    private static String serverHost = "localhost";
+    private static int serverPort = 4444;
+    private static String browserStartCommand = "*EclipseBrowser";
+    private static String browserURL = "http://localhost:4444";
+    
+    public EclipseSelenium() {
+        super(serverHost, serverPort, browserStartCommand, browserURL);
+    }
 
 }

@@ -60,7 +60,7 @@ public class NewServerTest extends WorkbenchTestCase {
             
             // so we are sure that we are looking in the desired perspective
             workbenchTasks.showJEEPerspective();
-       		
+            
 
 
             // create server from an installed instance
@@ -70,7 +70,7 @@ public class NewServerTest extends WorkbenchTestCase {
 
             
             EclipseSelenium selenium = new EclipseSelenium();
-        	selenium.start();
+            selenium.start();
             
             selenium.open( "http://localhost:8080/console/" );
             selenium.waitForPageToLoad( "2000" );

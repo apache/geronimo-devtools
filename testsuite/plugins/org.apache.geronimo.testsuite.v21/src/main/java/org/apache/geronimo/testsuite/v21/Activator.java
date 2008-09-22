@@ -34,60 +34,60 @@ import abbot.swt.eclipse.utils.WorkbenchUtilities;
  */
 public class Activator extends Plugin {
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = "org.apache.geronimo.st.v21.core";
+    // The plug-in ID
+    public static final String PLUGIN_ID = "org.apache.geronimo.st.v21.core";
 
-	// The shared instance
-	private static Activator plugin;
+    // The shared instance
+    private static Activator plugin;
 
-	private EclipseSeleniumServer seleniumServer;
-	/**
-	 * The constructor
-	 */
-	public Activator() {
-		plugin = this;
-	}
+    private EclipseSeleniumServer seleniumServer;
+    /**
+     * The constructor
+     */
+    public Activator() {
+        plugin = this;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
-	 */
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-	    Shell workbenchShell = WorkbenchUtilities.getWorkbenchWindow().getShell();
-	    AbbotHelper aHelper = new AbbotHelper (workbenchShell);
-    	seleniumServer = new EclipseSeleniumServer(aHelper, workbenchShell);
-		try {
-			SafeRunner.run( seleniumServer );
-			Thread.sleep(5000);
-//			new Exception("sdsfsdf").printStackTrace();
-		} catch ( Exception e ) {
-			e.printStackTrace();
-		}
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
+     */
+    public void start(BundleContext context) throws Exception {
+        super.start(context);
+        Shell workbenchShell = WorkbenchUtilities.getWorkbenchWindow().getShell();
+        AbbotHelper aHelper = new AbbotHelper (workbenchShell);
+        seleniumServer = new EclipseSeleniumServer(aHelper, workbenchShell);
+        try {
+            SafeRunner.run( seleniumServer );
+            Thread.sleep(5000);
+//          new Exception("sdsfsdf").printStackTrace();
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
-		seleniumServer.stop();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+     */
+    public void stop(BundleContext context) throws Exception {
+        plugin = null;
+        super.stop(context);
+        seleniumServer.stop();
+    }
 
-	/**
-	 * Returns the shared instance
-	 * 
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
-		return plugin;
-	}
-	
-	public static void log(int severity, String message, Throwable throwable) {
-		plugin.getLog().log(new Status(severity, PLUGIN_ID, 0, message, throwable));
-	}
+    /**
+     * Returns the shared instance
+     * 
+     * @return the shared instance
+     */
+    public static Activator getDefault() {
+        return plugin;
+    }
+    
+    public static void log(int severity, String message, Throwable throwable) {
+        plugin.getLog().log(new Status(severity, PLUGIN_ID, 0, message, throwable));
+    }
 }

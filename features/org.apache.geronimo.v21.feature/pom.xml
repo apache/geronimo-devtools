@@ -78,7 +78,7 @@
             </resource>
         </resources>
 
-	    <plugins>
+        <plugins>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <configuration>
