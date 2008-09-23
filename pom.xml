@@ -85,6 +85,7 @@
     <properties>
         <eclipseInstall>${settings.localRepository}/eclipse</eclipseInstall>
         <org.apache.geronimo.v21.feature_version>2.2.0</org.apache.geronimo.v21.feature_version>
+        <org.apache.geronimo.v22.feature_version>2.2.0</org.apache.geronimo.v22.feature_version>
     </properties>
                         
     <dependencyManagement>

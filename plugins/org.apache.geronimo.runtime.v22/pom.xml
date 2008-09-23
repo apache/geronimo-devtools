@@ -17,7 +17,7 @@
 <!-- $Rev: 610511 $ $Date: 2008-01-09 13:50:47 -0500 (Wed, 09 Jan 2008) $ -->
 <project>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>org.apache.geronimo.runtime.v21</artifactId>
+    <artifactId>org.apache.geronimo.runtime.v22</artifactId>
     <packaging>jar</packaging>
     <name>${artifactId}</name>
     <parent>
@@ -27,7 +27,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <properties>
-        <geronimoVersion>2.1.3</geronimoVersion>
+        <geronimoVersion>2.2-SNAPSHOT</geronimoVersion>
     </properties>
     <build>
         <resources>

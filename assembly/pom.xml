@@ -22,7 +22,7 @@
     <artifactId>assembly</artifactId>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin :: Assembly</name>
-    <version>${org.apache.geronimo.v21.feature_version}</version>
+    <version>${org.apache.geronimo.v22.feature_version}</version>
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
@@ -85,6 +85,12 @@
            
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.runtime.v22</artifactId>
+            <version>${version}</version>
+        </dependency>
+           
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.core</artifactId>
             <version>${version}</version>
         </dependency>
@@ -125,6 +131,18 @@
             <version>${version}</version>
         </dependency>
            
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.st.v22.core</artifactId>
+            <version>${version}</version>
+        </dependency>
+           
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.st.v22.ui</artifactId>
+            <version>${version}</version>
+        </dependency>
+           
         <!-- 
          |
          | Features
@@ -133,6 +151,12 @@
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.v21.feature</artifactId>
+            <version>${version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.v22.feature</artifactId>
             <version>${version}</version>
         </dependency>
            

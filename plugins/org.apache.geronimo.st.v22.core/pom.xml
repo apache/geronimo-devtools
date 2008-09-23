@@ -14,10 +14,10 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<!-- $Rev: 609739 $ $Date: 2008-01-07 13:54:14 -0500 (Mon, 07 Jan 2008) $ -->
+<!-- $Rev: 697956 $ $Date: 2008-09-22 15:29:47 -0400 (Mon, 22 Sep 2008) $ -->
 <project>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>org.apache.geronimo.st.v21.core</artifactId>
+    <artifactId>org.apache.geronimo.st.v22.core</artifactId>
     <packaging>jar</packaging>
     <name>${artifactId}</name>
     <parent>
@@ -42,7 +42,6 @@
                     <include>plugin.xml</include>
                     <include>plugin.properties</include>
                     <include>.options</include>
-                    <include>about.ini</include>
                 </includes>
             </resource>
             <!--
@@ -52,14 +51,8 @@
              |
              -->
             <resource>
-                <directory>.</directory>
-                <includes>
-                    <include>G-logo-32x32.gif</include>
-                </includes>
-            </resource>
             <!-- The Geronimo covention puts license and notice for artifacts shipped in this jar 
                  in the jar's meta-inf directory -->
-            <resource>
                 <targetPath>META-INF</targetPath>
                 <directory>.</directory>
                 <includes>
@@ -74,12 +67,12 @@
               -->
 	    	<resource>
 	    		<targetPath>about_files</targetPath>
-	    		<directory>.</directory>
-	    		<includes>
-	    			<include>LICENSE.txt</include>
-	    			<include>NOTICE.txt</include>
-	    		</includes>
-	    	</resource>
+                <directory>.</directory>
+                <includes>
+                    <include>LICENSE.txt</include>
+                    <include>NOTICE.txt</include>
+                </includes>
+            </resource>
 	    	<resource>
 	    		<targetPath>about_files</targetPath>
 	    		<directory>../..</directory>
@@ -103,6 +96,19 @@
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
             </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${pom.basedir}</directory>
+                            <includes>
+                                <include>bin</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
@@ -119,7 +125,12 @@
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.runtime.v21</artifactId>
+            <artifactId>org.apache.geronimo.runtime.v22</artifactId>
+            <version>${version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.st.v21.core</artifactId>
             <version>${version}</version>
         </dependency>
         <dependency>

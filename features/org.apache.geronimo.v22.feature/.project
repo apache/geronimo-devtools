@@ -1,0 +1,17 @@
+<projectDescription>
+  <name>org.apache.geronimo.v22.feature</name>
+  <comment>WTP Server Adapter for the Apache Geronimo v2.2 server</comment>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.pde.FeatureBuilder</name>
+    </buildCommand>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.pde.FeatureNature</nature>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>

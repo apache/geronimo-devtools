@@ -15,21 +15,12 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
 <!-- $Rev$ $Date$ -->
-<project>
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.apache.geronimo.devtools</groupId>
-    <artifactId>eclipse-features-parent</artifactId>
-    <packaging>pom</packaging>
-    <name>Geronimo Eclipse Plugin :: Features</name>
-    <parent>
-        <groupId>org.apache.geronimo.devtools</groupId>
-        <artifactId>geronimo-eclipse-plugin</artifactId>
-        <version>2.2.0</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
-    <modules>
-        <module>org.apache.geronimo.v21.feature</module>
-        <module>org.apache.geronimo.v22.feature</module>
-    </modules>
-</project>
+
+<classpath>
+#set($libs = $libDir.listFiles() )
+#foreach( $lib in $libs )
+	<classpathentry exported="true" kind="lib" path="lib/$lib.getName()"/>
+#end
+</classpath>
