@@ -29,31 +29,31 @@ import org.eclipse.ui.forms.editor.FormEditor;
  */
 public class WebGeneralPage extends AbstractGeronimoFormPage {
 
-	public WebGeneralPage(FormEditor editor, String id, String title) {
-		super(editor, id, title);
-	}
+    public WebGeneralPage(FormEditor editor, String id, String title) {
+        super(editor, id, title);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
-	 */
-	protected void fillBody(IManagedForm managedForm) {
-		managedForm.addPart(new WebGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
-		managedForm.addPart(new WebContainerSection(body, toolkit, getStyle(), getDeploymentPlan()));
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
+     */
+    protected void fillBody(IManagedForm managedForm) {
+        managedForm.addPart(new WebGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
+        managedForm.addPart(new WebContainerSection(body, toolkit, getStyle(), getDeploymentPlan()));
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getFormTitle()
-	 */
-	public String getFormTitle() {
-		return CommonMessages.webGeneralPageTitle;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#getFormTitle()
+     */
+    public String getFormTitle() {
+        return CommonMessages.webGeneralPageTitle;
+    }
 
-	@Override
-	protected void triggerGeronimoServerInfoUpdate() {
-		GeronimoServerInfo.getInstance().updateInfo();
-	}
+    @Override
+    protected void triggerGeronimoServerInfoUpdate() {
+        GeronimoServerInfo.getInstance().updateInfo();
+    }
 }

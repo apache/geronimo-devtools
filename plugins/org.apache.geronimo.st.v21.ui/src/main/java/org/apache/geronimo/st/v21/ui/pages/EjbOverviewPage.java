@@ -18,6 +18,7 @@ package org.apache.geronimo.st.v21.ui.pages;
 
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
+import org.apache.geronimo.st.v21.ui.sections.OpenEjbJarCMPSection;
 import org.apache.geronimo.st.v21.ui.sections.OpenEjbJarGeneralSection;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
@@ -27,22 +28,22 @@ import org.eclipse.ui.forms.editor.FormEditor;
  */
 public class EjbOverviewPage extends AbstractGeronimoFormPage {
 
-	public EjbOverviewPage(FormEditor editor, String id, String title) {
-		super(editor, id, title);
-	}
+    public EjbOverviewPage(FormEditor editor, String id, String title) {
+        super(editor, id, title);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
-	 */
-	protected void fillBody(IManagedForm managedForm) {
-		managedForm.addPart(new OpenEjbJarGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
+     */
+    protected void fillBody(IManagedForm managedForm) {
+        managedForm.addPart(new OpenEjbJarGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
+        managedForm.addPart(new OpenEjbJarCMPSection(body, toolkit, getStyle(), getDeploymentPlan()));
+    }
 
     @Override
-	protected void triggerGeronimoServerInfoUpdate() {
-		GeronimoServerInfo.getInstance().updateInfo();
-	}
-
+    protected void triggerGeronimoServerInfoUpdate() {
+        GeronimoServerInfo.getInstance().updateInfo();
+    }
 }

@@ -325,10 +325,18 @@ public class Messages extends NLS {
     public static String inverseClassloading;
     public static String supressDefaultEnv;
     public static String sharedLibDepends;
+
+    public static String useResourceLink;
+    public static String useUrl;
+    public static String useResourcePattern;
+    public static String resourceLink;
+    public static String url;
     
     public static String addSharedLib;
     public static String webContainerSection;
     public static String webContainerSectionDescription;
+    public static String cmpConnectionSection;
+    public static String cmpConnectionSectionDescription;
 
     public static String moduleType;
     public static String path;

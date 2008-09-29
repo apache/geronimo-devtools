@@ -16,8 +16,6 @@
  */
 package org.apache.geronimo.st.v21.ui.pages;
 
-import java.util.List;
-
 import org.apache.geronimo.jee.application.Application;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;

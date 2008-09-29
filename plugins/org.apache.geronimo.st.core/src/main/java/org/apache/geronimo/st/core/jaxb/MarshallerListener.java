@@ -20,6 +20,8 @@ import javax.xml.bind.Marshaller;
 
 import org.apache.geronimo.jee.naming.GbeanLocator;
 import org.apache.geronimo.jee.naming.Pattern;
+import org.apache.geronimo.jee.naming.ResourceLocator;
+import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.security.Security;
 import org.apache.geronimo.jee.web.WebApp;
 
@@ -37,6 +39,12 @@ public class MarshallerListener extends Marshaller.Listener{
             GbeanLocator gbeanlocator = webapp.getWebContainer();
             if (gbeanlocator != null && isEmpty(gbeanlocator.getGbeanLink()) && isEmpty(gbeanlocator.getPattern())) {
                 webapp.setWebContainer(null);
+            }
+        } else if (source instanceof OpenejbJar) {
+            OpenejbJar openejb = (OpenejbJar)source;
+            ResourceLocator locator = openejb.getCmpConnectionFactory();
+            if (locator != null && isEmpty(locator.getResourceLink()) && isEmpty(locator.getUrl()) && isEmpty(locator.getPattern())) {
+                openejb.setCmpConnectionFactory(null);
             }
         }
 	}
