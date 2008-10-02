@@ -54,21 +54,17 @@ public class NewServerTest extends WorkbenchTestCase {
             workbenchShell = WorkbenchUtilities.getWorkbenchWindow().getShell();
             aHelper = new AbbotHelper (workbenchShell);
 
-
             ServerTasks serverTasks = new ServerTasks(workbenchShell, aHelper, Constants.SERVER_V21 );
             WorkbenchTasks workbenchTasks = new WorkbenchTasks(workbenchShell, aHelper);
             
             // so we are sure that we are looking in the desired perspective
             workbenchTasks.showJEEPerspective();
             
-
-
             // create server from an installed instance
             serverTasks.createServer();
 
             serverTasks.startServer();
 
-            
             EclipseSelenium selenium = new EclipseSelenium();
             selenium.start();
             
@@ -77,15 +73,13 @@ public class NewServerTest extends WorkbenchTestCase {
             selenium.type("j_username", "system");
             selenium.type("j_password", "manager");
             selenium.click("submit");
-            
-            
+
             serverTasks.stopServer();
 
             // remove the server 
             serverTasks.removeServer();
-            
-            selenium.stop();
 
+            selenium.stop();
 
             success = true;
         }
@@ -94,5 +88,4 @@ public class NewServerTest extends WorkbenchTestCase {
         }
         assertTrue (success);
     }
-
 }
