@@ -26,7 +26,7 @@
     <property name="eclipse-home" value="${basedir}\..\.."/>
     <property name="plugin-name" value="org.apache.geronimo.testsuite.v20"/>
     <property name="library-file"
-              value="${eclipse-home}/plugins/org.eclipse.test/library.xml"/>
+              value="${eclipse-home}/../../../plugins/org.apache.geronimo.testsuite.common/library.xml"/>
  
     <!-- This target holds all initialization code that needs to be done for -->
     <!-- all tests that are to be run. Initialization for individual tests -->

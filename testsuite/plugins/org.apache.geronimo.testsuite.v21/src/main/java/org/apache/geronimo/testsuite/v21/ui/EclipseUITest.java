@@ -43,6 +43,7 @@ public class EclipseUITest extends WorkbenchTestCase {
 
     public void testEclipseUI()
     {
+        boolean success = false;
         try {
             // About Eclipse Test Case. There are three Shell newShell, nextShell and nextNextShell 
             //used because we need to save the states for newShell and nextShell
@@ -52,8 +53,6 @@ public class EclipseUITest extends WorkbenchTestCase {
             Shell newShell = aHelper.clickMenuItem(aShell, new String[]{"&Help","&About Eclipse Platform"},"About Eclipse Platform");
             Shell nextShell = aHelper.clickImageButton(newShell, "Apache.org - Geronimo v21 Server Tools Core Plug-in","About Eclipse Platform Features");
             Shell nextNextShell = aHelper.clickButton(nextShell, "&Plug-in Details", "Feature Plug-ins");
-            aHelper.clickButton(nextNextShell, IDialogConstants.OK_LABEL);
-            nextNextShell = aHelper.clickButton(nextShell, "&Columns...","Configure Columns");
             aHelper.clickButton(nextNextShell, IDialogConstants.OK_LABEL);
             aHelper.clickButton(nextShell, IDialogConstants.OK_LABEL);
             aHelper.clickButton(newShell, IDialogConstants.OK_LABEL);
@@ -74,10 +73,13 @@ public class EclipseUITest extends WorkbenchTestCase {
             //aHelper.waitForDialogDisposal(nextShell);
             aHelper.clickButton(newShell, "&Next");
             //aHelper.clickItem(newShell, "Geronimo v2.1 Server Adapter");*/
+
+            success = true;
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
+        assertTrue (success);
     }
 }
