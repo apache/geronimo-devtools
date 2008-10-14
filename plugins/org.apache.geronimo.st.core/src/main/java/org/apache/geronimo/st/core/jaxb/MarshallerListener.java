@@ -20,6 +20,7 @@ import javax.xml.bind.Marshaller;
 
 import org.apache.geronimo.jee.naming.GbeanLocator;
 import org.apache.geronimo.jee.naming.Pattern;
+import org.apache.geronimo.jee.naming.PersistenceContextRef;
 import org.apache.geronimo.jee.naming.ResourceLocator;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.security.Security;
@@ -27,14 +28,14 @@ import org.apache.geronimo.jee.web.WebApp;
 
 public class MarshallerListener extends Marshaller.Listener{
 
-	@Override
-	public void beforeMarshal(Object source) {
-		if (source instanceof Security) {
-			Security security = (Security)source;
-			if (security.getRoleMappings() != null && security.getRoleMappings().getRole().size() == 0) {
-				security.setRoleMappings(null);
+    @Override
+    public void beforeMarshal(Object source) {
+        if (source instanceof Security) {
+            Security security = (Security)source;
+            if (security.getRoleMappings() != null && security.getRoleMappings().getRole().size() == 0) {
+                security.setRoleMappings(null);
             } 
-		} else if (source instanceof WebApp) {
+        } else if (source instanceof WebApp) {
             WebApp webapp = (WebApp)source;
             GbeanLocator gbeanlocator = webapp.getWebContainer();
             if (gbeanlocator != null && isEmpty(gbeanlocator.getGbeanLink()) && isEmpty(gbeanlocator.getPattern())) {
@@ -46,24 +47,29 @@ public class MarshallerListener extends Marshaller.Listener{
             if (locator != null && isEmpty(locator.getResourceLink()) && isEmpty(locator.getUrl()) && isEmpty(locator.getPattern())) {
                 openejb.setCmpConnectionFactory(null);
             }
+        } else if (source instanceof PersistenceContextRef) {
+            PersistenceContextRef contextRef = (PersistenceContextRef)source;
+            if (contextRef.getPattern() != null && isEmpty(contextRef.getPattern())) {
+                contextRef.setPattern(null);
+            }
         }
-	}
-		
-	private boolean isEmpty(Pattern pattern) {
-		if ( pattern == null ) {
-			return true;
-		}
-		if ( isEmpty(pattern.getGroupId()) && isEmpty(pattern.getArtifactId()) &&
-				isEmpty(pattern.getModule()) && isEmpty(pattern.getName()) &&
-				isEmpty(pattern.getVersion()) ) {
-			return true;
-		}
-		return false;
-	}
-	
-	private boolean isEmpty(String value) {
-		
-		return (value == null || value.trim().equals(""));
-	}
+    }
+        
+    private boolean isEmpty(Pattern pattern) {
+        if ( pattern == null ) {
+            return true;
+        }
+        if ( isEmpty(pattern.getGroupId()) && isEmpty(pattern.getArtifactId()) &&
+                isEmpty(pattern.getModule()) && isEmpty(pattern.getName()) &&
+                isEmpty(pattern.getVersion()) ) {
+            return true;
+        }
+        return false;
+    }
+    
+    private boolean isEmpty(String value) {
+        
+        return (value == null || value.trim().equals(""));
+    }
 
 }

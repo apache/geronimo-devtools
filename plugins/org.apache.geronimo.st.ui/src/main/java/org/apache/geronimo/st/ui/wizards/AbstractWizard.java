@@ -24,6 +24,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -89,7 +90,9 @@ public abstract class AbstractWizard extends Wizard {
             data.grabExcessHorizontalSpace = true;
             data.widthHint = 100;
             text.setLayoutData(data);
-            text.setText(initialValue);
+            if (initialValue != null) {
+                text.setText(initialValue);
+            }
             return text;
         }
 
@@ -105,6 +108,15 @@ public abstract class AbstractWizard extends Wizard {
             combo.setLayoutData(data);
             combo.setItems(items);
             return combo;
+        }
+
+        protected Button createButton(Composite composite, String buttonString) {
+            Button button = new Button(composite, SWT.RADIO);
+            button.setText(buttonString);
+            GridData data = new GridData();
+            data.horizontalSpan = 2;
+            button.setLayoutData(data);
+            return button;
         }
     }
 

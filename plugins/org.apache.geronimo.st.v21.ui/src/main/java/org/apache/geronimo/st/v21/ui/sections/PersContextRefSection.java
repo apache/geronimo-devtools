@@ -21,14 +21,13 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.jee.naming.GbeanRef;
-import org.apache.geronimo.jee.naming.Pattern;
-import org.apache.geronimo.jee.web.WebApp;
+import org.apache.geronimo.jee.naming.PersistenceContextRef;
+import org.apache.geronimo.jee.naming.Property;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.ui.Activator;
-import org.apache.geronimo.st.v21.ui.wizards.GBeanRefWizard;
+import org.apache.geronimo.st.v21.ui.wizards.PersContextRefWizard;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.wizard.Wizard;
@@ -39,41 +38,37 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 /**
  * @version $Rev$ $Date$
  */
-public class GBeanRefSection extends AbstractTreeSection {
-
-	public GBeanRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List gbeanRef) {
+public class PersContextRefSection extends AbstractTreeSection {
+    
+	public PersContextRefSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List persContextRefs) {
 		super(plan, parent, toolkit, style);
-		//this.objectContainer = gbeanRef;
-	      this.objectContainer = new ArrayList(gbeanRef.size());
-	        for (int i = 0; i < gbeanRef.size(); i++) {
-	            if (GbeanRef.class.isInstance(gbeanRef.get(i))) {
-	                this.objectContainer.add(gbeanRef.get(i));
-	            }
-	            else if (GbeanRef.class.isInstance(((JAXBElement)gbeanRef.get(i)).getValue())) {
-	                this.objectContainer.add(gbeanRef.get(i));
-	            }
-	        }
+		this.objectContainer = new ArrayList(persContextRefs.size());
+		for (int i = 0; i < persContextRefs.size(); i++) {
+		    if (PersistenceContextRef.class.isInstance(((JAXBElement)persContextRefs.get(i)).getValue())) {
+		        this.objectContainer.add(persContextRefs.get(i));
+		    }
+		}
 		createClient();
 	}
 
     @Override
 	public String getTitle() {
-		return CommonMessages.editorGBeanRefTitle;
+		return CommonMessages.editorPersContextRefTitle;
 	}
 
     @Override
 	public String getDescription() {
-		return CommonMessages.editorGBeanRefDescription;
+		return CommonMessages.editorPersContextRefDescription;
 	}
 
     @Override
 	public Wizard getWizard() {
-		return new GBeanRefWizard(this);
+		return new PersContextRefWizard(this);
 	}
 
     @Override
 	public Class getTableEntryObjectType() {
-		return GbeanRef.class;
+		return PersistenceContextRef.class;
 	}
 
     @Override
@@ -93,7 +88,7 @@ public class GBeanRefSection extends AbstractTreeSection {
         }
     }
 
-    public GbeanRef getSelectedGbeanRef () {
+    public PersistenceContextRef getSelectedPersContext () {
         if (tree.getSelection().length == 0) {
             return null;
         }
@@ -104,37 +99,18 @@ public class GBeanRefSection extends AbstractTreeSection {
         else {
             object = tree.getSelection()[0].getParentItem().getData();
         }
-        if (GbeanRef.class.isInstance(object)) {
-            return (GbeanRef)object;
-        }
-        else {
-            return (GbeanRef)((JAXBElement)object).getValue();
-        }
+        return (PersistenceContextRef)((JAXBElement)object).getValue();
     }
     
     @Override
     public void removeItem(Object anItem) {
-        if (GbeanRef.class.isInstance(anItem) || JAXBElement.class.isInstance(anItem)) {
+        if (JAXBElement.class.isInstance(anItem)) {
             getObjectContainer().remove(anItem);
             JAXBModelUtils.getGbeanRefs(getPlan()).remove(anItem);
         }
-        else if (String.class.isInstance(anItem)) {
+        else if (Property.class.isInstance(anItem)) {
             Object object = tree.getSelection()[0].getParentItem().getData();
-            if (GbeanRef.class.isInstance(object)) {
-                ((GbeanRef)object).getRefType().remove(anItem);
-            }
-            else {
-                ((GbeanRef)((JAXBElement)object).getValue()).getRefType().remove(anItem);
-            }
-        }
-        else if (Pattern.class.isInstance(anItem)) {
-            Object object = tree.getSelection()[0].getParentItem().getData();
-            if (GbeanRef.class.isInstance(object)) {
-                ((GbeanRef)object).getPattern().remove(anItem);
-            }
-            else {
-                ((GbeanRef)((JAXBElement)object).getValue()).getPattern().remove(anItem);
-            }
+            ((PersistenceContextRef)((JAXBElement)object).getValue()).getProperty().remove(anItem);
         }
     }
 
@@ -152,16 +128,7 @@ public class GBeanRefSection extends AbstractTreeSection {
                     return ((List)parentElement).toArray();
                 }
                 if (JAXBElement.class.isInstance(parentElement)) {
-                    parentElement = ((JAXBElement)parentElement).getValue();
-                }
-                if (GbeanRef.class.isInstance(parentElement)) {
-                    GbeanRef gbeanRef = (GbeanRef)parentElement;
-                    Object[] typeList = gbeanRef.getRefType().toArray();
-                    Object[] patternList = gbeanRef.getPattern().toArray();
-                    Object[] fullList = new Object[typeList.length + patternList.length];
-                    System.arraycopy(typeList, 0, fullList, 0, typeList.length);
-                    System.arraycopy(patternList, 0, fullList, typeList.length, patternList.length);
-                    return fullList;
+                    return ((PersistenceContextRef)((JAXBElement)parentElement).getValue()).getProperty().toArray();
                 }
                 return new String[] {};
             }
@@ -174,22 +141,28 @@ public class GBeanRefSection extends AbstractTreeSection {
             @Override
             public String getText(Object element) {
                 if (JAXBElement.class.isInstance(element)) {
-                    element = ((JAXBElement)element).getValue();
+                    PersistenceContextRef contextRef = (PersistenceContextRef)((JAXBElement)element).getValue();
+                    String temp = "Persistence Context Ref: name = \"" + contextRef.getPersistenceContextRefName() +
+                                  "\", type = \"" + contextRef.getPersistenceContextType().value();
+                    if (contextRef.getPersistenceUnitName() != null)
+                        temp += "\", unit name = \"" + contextRef.getPersistenceUnitName();
+                    if (contextRef.getPattern() != null && contextRef.getPattern().getName() != null)
+                        temp += "\", pattern name = \"" + contextRef.getPattern().getName();
+                    if (contextRef.getPattern() != null && contextRef.getPattern().getGroupId() != null)
+                        temp += "\", pattern group = \"" + contextRef.getPattern().getGroupId();
+                    if (contextRef.getPattern() != null && contextRef.getPattern().getArtifactId() != null)
+                        temp += "\", pattern artifact = \"" + contextRef.getPattern().getArtifactId();
+                    if (contextRef.getPattern() != null && contextRef.getPattern().getVersion() != null)
+                        temp += "\", pattern version = \"" + contextRef.getPattern().getVersion();
+                    if (contextRef.getPattern() != null && contextRef.getPattern().getModule() != null)
+                        temp += "\", pattern module = \"" + contextRef.getPattern().getModule();
+                    temp += "\"";
+                    return temp;
                 }
-                if (GbeanRef.class.isInstance(element)) {
-                    GbeanRef gbeanRef = (GbeanRef)element;
-                    return "Gbean Ref: name = \"" + gbeanRef.getRefName() + "\"";
-                }
-                else if (String.class.isInstance(element)) {
-                    return "Gbean type: name = \"" + (String)element + "\"";
-                }
-                else if (Pattern.class.isInstance(element)) {
-                    Pattern pattern = (Pattern)element;
-                    return "Pattern: name = \"" + pattern.getName() + 
-                            "\", group = \"" + pattern.getGroupId() + 
-                            "\", artifact = \"" + pattern.getArtifactId() + 
-                            "\", version = \"" + pattern.getVersion() + 
-                            "\", module = \"" + pattern.getModule() + "\"";
+                else if (Property.class.isInstance(element)) {
+                    Property property = (Property)element;
+                    return "Property: key = \"" + property.getKey() + 
+                            "\", value = \"" + property.getValue() + "\"";
                 }
 
                 return null;

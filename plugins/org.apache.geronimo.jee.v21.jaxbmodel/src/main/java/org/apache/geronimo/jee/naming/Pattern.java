@@ -89,7 +89,10 @@ public class Pattern
      *     
      */
     public void setGroupId(String value) {
-        this.groupId = value;
+        if (value == null || value.length() == 0)
+            this.groupId = null;
+        else
+            this.groupId = value;
     }
 
     /**
@@ -113,7 +116,10 @@ public class Pattern
      *     
      */
     public void setArtifactId(String value) {
-        this.artifactId = value;
+        if (value == null || value.length() == 0)
+            this.artifactId = null;
+        else
+            this.artifactId = value;
     }
 
     /**
@@ -137,7 +143,10 @@ public class Pattern
      *     
      */
     public void setVersion(String value) {
-        this.version = value;
+        if (value == null || value.length() == 0)
+            this.version = null;
+        else
+            this.version = value;
     }
 
     /**
@@ -161,7 +170,10 @@ public class Pattern
      *     
      */
     public void setModule(String value) {
-        this.module = value;
+        if (value == null || value.length() == 0)
+            this.module = null;
+        else
+            this.module = value;
     }
 
     /**
