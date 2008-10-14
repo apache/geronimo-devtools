@@ -20,6 +20,7 @@ import javax.xml.bind.Marshaller;
 
 import org.apache.geronimo.jee.naming.GbeanLocator;
 import org.apache.geronimo.jee.naming.Pattern;
+import org.apache.geronimo.jee.naming.PersistenceContextRef;
 import org.apache.geronimo.jee.naming.ResourceLocator;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.security.Security;
@@ -45,6 +46,11 @@ public class MarshallerListener extends Marshaller.Listener{
             ResourceLocator locator = openejb.getCmpConnectionFactory();
             if (locator != null && isEmpty(locator.getResourceLink()) && isEmpty(locator.getUrl()) && isEmpty(locator.getPattern())) {
                 openejb.setCmpConnectionFactory(null);
+            }
+        } else if (source instanceof PersistenceContextRef) {
+            PersistenceContextRef contextRef = (PersistenceContextRef)source;
+            if (contextRef.getPattern() != null && isEmpty(contextRef.getPattern())) {
+                contextRef.setPattern(null);
             }
         }
 	}

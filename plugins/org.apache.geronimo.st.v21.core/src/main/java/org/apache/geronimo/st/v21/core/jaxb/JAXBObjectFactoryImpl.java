@@ -32,8 +32,11 @@ import org.apache.geronimo.jee.naming.EjbRef;
 import org.apache.geronimo.jee.naming.EjbLocalRef;
 import org.apache.geronimo.jee.naming.GbeanRef;
 import org.apache.geronimo.jee.naming.MessageDestination;
+import org.apache.geronimo.jee.naming.PersistenceContextRef;
+import org.apache.geronimo.jee.naming.PersistenceUnitRef;
 import org.apache.geronimo.jee.naming.Port;
 import org.apache.geronimo.jee.naming.PortCompletion;
+import org.apache.geronimo.jee.naming.Property;
 import org.apache.geronimo.jee.naming.ServiceCompletion;
 import org.apache.geronimo.jee.naming.ResourceEnvRef;
 import org.apache.geronimo.jee.naming.ResourceRef;
@@ -71,6 +74,10 @@ public class JAXBObjectFactoryImpl implements JAXBObjectFactory {
             return (new org.apache.geronimo.jee.naming.ObjectFactory()).createEjbRef();
         } else if ( type.equals( GbeanRef.class ) ) {
             return (new org.apache.geronimo.jee.naming.ObjectFactory()).createGbeanRef();
+        } else if ( type.equals( PersistenceContextRef.class ) ) {
+            return (new org.apache.geronimo.jee.naming.ObjectFactory()).createPersistenceContextRef();
+        } else if ( type.equals( PersistenceUnitRef.class ) ) {
+            return (new org.apache.geronimo.jee.naming.ObjectFactory()).createPersistenceUnitRef();
         } else if ( type.equals( MessageDestination.class ) ) {
             return (new org.apache.geronimo.jee.naming.ObjectFactory()).createMessageDestination();
         } else if ( type.equals( org.apache.geronimo.jee.naming.Pattern.class ) ) {
@@ -79,6 +86,8 @@ public class JAXBObjectFactoryImpl implements JAXBObjectFactory {
             return (new org.apache.geronimo.jee.naming.ObjectFactory()).createPort();
         } else if ( type.equals( PortCompletion.class ) ) {
             return (new org.apache.geronimo.jee.naming.ObjectFactory()).createPortCompletion();
+        } else if ( type.equals( Property.class ) ) {
+            return (new org.apache.geronimo.jee.naming.ObjectFactory()).createProperty();
         } else if ( type.equals( ServiceCompletion.class ) ) {
             return (new org.apache.geronimo.jee.naming.ObjectFactory()).createServiceCompletion();
         } else if ( type.equals( ServiceRef.class ) ) {

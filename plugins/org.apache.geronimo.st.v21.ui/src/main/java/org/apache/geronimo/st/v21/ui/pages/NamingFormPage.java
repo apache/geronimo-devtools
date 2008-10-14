@@ -27,6 +27,8 @@ import org.apache.geronimo.st.v21.ui.sections.EjbLocalRefSection;
 import org.apache.geronimo.st.v21.ui.sections.EjbRefSection;
 import org.apache.geronimo.st.v21.ui.sections.GBeanRefSection;
 import org.apache.geronimo.st.v21.ui.sections.MessageDestSection;
+import org.apache.geronimo.st.v21.ui.sections.PersContextRefSection;
+import org.apache.geronimo.st.v21.ui.sections.PersUnitRefSection;
 import org.apache.geronimo.st.v21.ui.sections.ResourceEnvRefSection;
 import org.apache.geronimo.st.v21.ui.sections.ResourceRefSection;
 import org.apache.geronimo.st.v21.ui.sections.ServiceRefSection;
@@ -56,6 +58,9 @@ public class NamingFormPage extends AbstractGeronimoFormPage {
             managedForm.addPart(new ServiceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), webapp.getServiceRef()));
             managedForm.addPart(new ResourceEnvRefSection(getDeploymentPlan(), body, toolkit, getStyle(), webapp.getResourceEnvRef()));
             managedForm.addPart(new EjbLocalRefSection(getDeploymentPlan(), body, toolkit, getStyle(), webapp.getEjbLocalRef()));
+            managedForm.addPart(new GBeanRefSection(getDeploymentPlan(), body, toolkit, getStyle(), webapp.getAbstractNamingEntry()));
+            managedForm.addPart(new PersContextRefSection(getDeploymentPlan(), body, toolkit, getStyle(), webapp.getAbstractNamingEntry()));
+            managedForm.addPart(new PersUnitRefSection(getDeploymentPlan(), body, toolkit, getStyle(), webapp.getAbstractNamingEntry()));
             managedForm.addPart(new MessageDestSection(getDeploymentPlan(), body, toolkit, getStyle(), webapp.getMessageDestination()));
         }
         else if (ApplicationClient.class.isInstance (getDeploymentPlan().getValue())){

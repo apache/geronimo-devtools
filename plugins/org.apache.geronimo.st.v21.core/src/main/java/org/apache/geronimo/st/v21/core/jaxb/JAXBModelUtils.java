@@ -164,6 +164,9 @@ public class JAXBModelUtils {
         if (ApplicationClient.class.isInstance (plan)) {
             return ((ApplicationClient)plan).getGbeanRef() == null ? null : ((ApplicationClient)plan).getGbeanRef();
         }
+        else if (WebApp.class.isInstance (plan)) {
+            return ((WebApp)plan).getAbstractNamingEntry() == null ? null : ((WebApp)plan).getAbstractNamingEntry();
+        }
         return null;
     }
 

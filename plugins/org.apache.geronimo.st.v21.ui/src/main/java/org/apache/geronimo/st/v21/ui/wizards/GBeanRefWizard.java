@@ -16,41 +16,38 @@
  */
 package org.apache.geronimo.st.v21.ui.wizards;
 
-
-import java.util.List;
-
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.naming.GbeanRef;
-import org.apache.geronimo.jee.security.Description;
+import org.apache.geronimo.jee.naming.ObjectFactory;
+import org.apache.geronimo.jee.naming.Pattern;
+import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
-import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.sections.AbstractTableSection;
-import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
+import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
+import org.apache.geronimo.st.ui.wizards.AbstractTreeWizard;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
+import org.apache.geronimo.st.v21.ui.sections.GBeanRefSection;
 
 /**
  * @version $Rev$ $Date$
  */
-public class GBeanRefWizard extends AbstractTableWizard {
+public class GBeanRefWizard extends AbstractTreeWizard {
 
-    public GBeanRefWizard(AbstractTableSection section) {
-        super(section);
+    private final int GBEAN_REF = 0;
+    private final int GBEAN_TYPE = 1;
+    private final int PATTERN = 2;
+    
+    public GBeanRefWizard(AbstractTreeSection section) {
+        super(section, 3, 5);
+        elementTypes[GBEAN_REF] = "GBean Reference";
+        elementTypes[GBEAN_TYPE] = "Gbean type";
+        elementTypes[PATTERN] = "Pattern";
     }
 
     public JAXBObjectFactory getEFactory() {
         return JAXBObjectFactoryImpl.getInstance();
-    }
-
-    public String[] getTableColumnEAttributes() {
-         return new String[] { "RefName", "RefType" };
     }
 
     public String getAddWizardWindowTitle() {
@@ -61,11 +58,11 @@ public class GBeanRefWizard extends AbstractTableWizard {
         return CommonMessages.wizardEditTitle_GBeanRef;
     }
 
-    public String getWizardFirstPageTitle() {
+    public String getWizardPageTitle() {
         return CommonMessages.wizardPageTitle_GBeanRef;
     }
 
-    public String getWizardFirstPageDescription() {
+    public String getWizardPageDescription() {
         return CommonMessages.wizardPageDescription_GBeanRef;
     }
  
@@ -80,82 +77,125 @@ public class GBeanRefWizard extends AbstractTableWizard {
 
     // need to extend the DynamicWizardPage only so that when the Edit dialog is shown
     // the values are brought in properly.
-    public class GbeanRefWizardPage extends DynamicWizardPage {
+    public class GbeanRefWizardPage extends AbstractTreeWizardPage {
         public GbeanRefWizardPage(String pageName) {
             super(pageName);
         }
 
-        public void createControl(Composite parent) {
-            Composite composite = createComposite(parent);
-            for (int i = 0; i < section.getTableColumnNames().length; i++) {
-                Label label = new Label(composite, SWT.LEFT);
-                String columnName = section.getTableColumnNames()[i];
-                if (!columnName.endsWith(":"))
-                    columnName = columnName.concat(":");
-                label.setText(columnName);
-                GridData data = new GridData();
-                data.horizontalAlignment = GridData.FILL;
-                label.setLayoutData(data);
-
-                Text text = new Text(composite, SWT.SINGLE | SWT.BORDER);
-                data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
-                        | GridData.VERTICAL_ALIGN_FILL);
-                data.grabExcessHorizontalSpace = true;
-                data.widthHint = 100;
-                text.setLayoutData(data);
-                if (eObject != null) {
-                    if (i == 1) {
-                        // get the description
-                        GbeanRef gbeanRef = (GbeanRef) eObject;
-                        String value = gbeanRef.getRefType().get(0);
-                        if (value != null) {
-                            text.setText(value);
-                        }                        
-                    }
-                    else
-                    {
-                        String value = (String) JAXBUtils.getValue(eObject,getTableColumnEAttributes()[i]);
-                        if (value != null) {
-                            text.setText(value);
-                        }
-                    }
+        protected void initControl () {
+            if (eObject == null) {
+                element.select(GBEAN_REF);
+                GbeanRef gbeanRef = ((GBeanRefSection)section).getSelectedGbeanRef();
+                if (gbeanRef == null) {
+                    element.setEnabled(false);
                 }
-                textEntries[i] = text;
             }
-
-            doCustom(composite);
-            setControl(composite);
-            textEntries[0].setFocus();
+            else {
+                if (JAXBElement.class.isInstance(eObject)) {
+                    eObject = ((JAXBElement)eObject).getValue();
+                }
+                if (GbeanRef.class.isInstance(eObject)) {
+                    textList.get(0).setText(((GbeanRef)eObject).getRefName());
+                    element.select(GBEAN_REF);
+                }
+                else if (String.class.isInstance(eObject)) {
+                    textList.get(0).setText(((String)eObject));
+                    element.select(GBEAN_TYPE);
+                }
+                else if (Pattern.class.isInstance(eObject)) {
+                    textList.get(0).setText(((Pattern)eObject).getName());
+                    textList.get(1).setText(((Pattern)eObject).getGroupId());
+                    textList.get(2).setText(((Pattern)eObject).getArtifactId());
+                    textList.get(3).setText(((Pattern)eObject).getVersion());
+                    textList.get(4).setText(((Pattern)eObject).getModule());
+                    element.select(PATTERN);
+                }
+                element.setEnabled(false);
+            }
+        }
+        
+        protected void toggleFields (boolean clearFields) {
+            for (int i = 0; i < maxTextFields; i++) {
+                labelList.get(i).setVisible(i < 1 ? true : false);
+                textList.get(i).setVisible(i < 1 ? true : false);
+                if (clearFields == true) {
+                    textList.get(i).setText("");
+                }
+            }
+            if (element.getText().equals(elementTypes[GBEAN_TYPE])) {
+                labelList.get(0).setText(CommonMessages.type);
+            }
+            else {
+                labelList.get(0).setText(CommonMessages.name);
+            }
+            labelList.get(1).setText(CommonMessages.groupId);
+            labelList.get(2).setText(CommonMessages.artifactId);
+            labelList.get(3).setText(CommonMessages.version);
+            labelList.get(4).setText(CommonMessages.moduleId);
+            for (int i = 1; i < maxTextFields; i++) {
+                labelList.get(i).setVisible(element.getText().equals(elementTypes[PATTERN]));
+                textList.get(i).setVisible(element.getText().equals(elementTypes[PATTERN]));
+                if (clearFields == true) {
+                    textList.get(i).setText("");
+                }
+            }
         }
     }
-    
+
+    @Override
     public boolean performFinish() {
-        DynamicWizardPage page = (DynamicWizardPage) getPages()[0];
-
-        if (eObject == null) {
-            eObject = getEFactory().create(GbeanRef.class);
-            JAXBElement plan = section.getPlan();
-
-            List gbeanRefList = JAXBModelUtils.getGbeanRefs(plan); 
-            if (gbeanRefList == null) {
-                gbeanRefList = (List)getEFactory().create(GbeanRef.class);
+        GbeanRef gbeanRef;
+        if (element.getText().equals(elementTypes[GBEAN_REF])) {
+            if (isEmpty(textList.get(0).getText())) {
+                return false;
             }
-            gbeanRefList.add(eObject);
+            gbeanRef = (GbeanRef)eObject;
+            if (gbeanRef == null) {
+                gbeanRef = (GbeanRef)getEFactory().create(GbeanRef.class);
+                JAXBElement plan = section.getPlan();
+
+                // if we have a WebApp, add the JAXBElement of the GBeanRef, not the GBeanRef
+                if (WebApp.class.isInstance(plan.getValue())) {
+                    ObjectFactory objectFactory = new ObjectFactory();
+                    JAXBModelUtils.getGbeanRefs(plan).add(objectFactory.createGbeanRef(gbeanRef));
+                    section.getObjectContainer().add(objectFactory.createGbeanRef(gbeanRef));
+                }
+                else {
+                    JAXBModelUtils.getGbeanRefs(plan).add(gbeanRef);
+                    section.getObjectContainer().add(gbeanRef);
+                }
+            }
+            gbeanRef.setRefName(textList.get(0).getText());
         }
-
-        // NOTE!! this replaces the call to processEAttributes (page);
-        String value = page.getTextEntry(0).getText();
-        String attribute = getTableColumnEAttributes()[0];
-        JAXBUtils.setValue(eObject, attribute, value);
-
-        Description type = null;
-        GbeanRef gbeanRef = (GbeanRef) eObject;
-        gbeanRef.getRefType().add(page.getTextEntry(1).getText());
-
-        if (section.getViewer().getInput() == section.getPlan()) {
-            section.getViewer().setInput(section.getInput());
+        else if (element.getText().equals(elementTypes[GBEAN_TYPE])) {
+            if (isEmpty(textList.get(0).getText())) {
+                return false;
+            }
+            String type = (String)eObject;
+            gbeanRef = ((GBeanRefSection)section).getSelectedGbeanRef();
+            if (type == null) {
+                gbeanRef.getRefType().add(textList.get(0).getText());
+            }
+            else {
+                gbeanRef.getRefType().set(gbeanRef.getRefType().indexOf(type), textList.get(0).getText());
+            }
         }
-
+        else if (element.getText().equals(elementTypes[PATTERN])) { 
+            if (isEmpty(textList.get(0).getText())) {
+                return false;
+            }
+            Pattern pattern = (Pattern)eObject;
+            if (pattern == null) {
+                pattern = (Pattern)getEFactory().create(Pattern.class);
+                gbeanRef = ((GBeanRefSection)section).getSelectedGbeanRef();
+                gbeanRef.getPattern().add(pattern);
+            }
+            pattern.setName(textList.get(0).getText());
+            pattern.setGroupId(textList.get(1).getText());
+            pattern.setArtifactId(textList.get(2).getText());
+            pattern.setVersion(textList.get(3).getText());
+            pattern.setModule(textList.get(4).getText());
+        }
         return true;
     }
 }

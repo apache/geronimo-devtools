@@ -189,6 +189,12 @@ public class Messages extends NLS {
     public static String editorGBeanRefTargetName;
     public static String editorGBeanRefProxyType;
     //
+    //
+    public static String editorPersContextRefTitle;
+    public static String editorPersContextRefDescription;
+    public static String editorPersUnitRefTitle;
+    public static String editorPersUnitRefDescription;
+    //
     public static String editorServiceRefDescription;
     public static String editorServiceRefTitle;
     public static String editorServiceRefName;
@@ -220,6 +226,11 @@ public class Messages extends NLS {
     public static String wizardPageTitle_GBeanRef;
     public static String wizardPageDescription_GBeanRef;
     //
+    public static String wizardNewTitle_PersContextRef;
+    public static String wizardEditTitle_PersContextRef;
+    public static String wizardPageTitle_PersContextRef;
+    public static String wizardPageDescription_PersContextRef;
+    //
     public static String wizardNewTitle_ServiceRef;
     public static String wizardEditTitle_ServiceRef;
     public static String wizardPageTitle_ServiceRef;
@@ -239,6 +250,11 @@ public class Messages extends NLS {
     public static String wizardEditTitle_EjbLocalRef;
     public static String wizardPageTitle_EjbLocalRef;
     public static String wizardPageDescription_EjbLocalRef;
+    //
+    public static String wizardNewTitle_PersUnitRef;
+    public static String wizardEditTitle_PersUnitRef;
+    public static String wizardPageTitle_PersUnitRef;
+    public static String wizardPageDescription_PersUnitRef;
     //
     public static String wizardNewTitle_RoleMapping;
     public static String wizardEditTitle_RoleMapping;
@@ -268,6 +284,9 @@ public class Messages extends NLS {
     public static String messageDestinationName;
     public static String adminModule;
     public static String adminLink;
+    public static String contextName;
+    public static String unitRefName;
+    public static String unitName;
     //
     public static String wizardNewTitle_Import;
     public static String wizardEditTitle_Import;
@@ -326,6 +345,8 @@ public class Messages extends NLS {
     public static String supressDefaultEnv;
     public static String sharedLibDepends;
 
+    public static String useUnitName;
+    public static String usePattern;
     public static String useResourceLink;
     public static String useUrl;
     public static String useResourcePattern;
