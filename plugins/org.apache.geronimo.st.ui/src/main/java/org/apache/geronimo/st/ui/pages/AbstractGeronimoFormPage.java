@@ -22,6 +22,8 @@ import org.apache.geronimo.st.core.DeploymentDescriptorUtils;
 import org.apache.geronimo.st.core.descriptor.AbstractDeploymentDescriptor;
 import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.apache.geronimo.st.ui.internal.Messages;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
@@ -44,125 +46,135 @@ import org.eclipse.ui.forms.widgets.Section;
  */
 public abstract class AbstractGeronimoFormPage extends FormPage {
 
-	JAXBElement deploymentPlan;
-	
-	AbstractDeploymentDescriptor deploymentDescriptor;
+    JAXBElement deploymentPlan;
+    
+    AbstractDeploymentDescriptor deploymentDescriptor;
 
-	protected FormToolkit toolkit;
+    protected FormToolkit toolkit;
 
-	protected Composite body;
+    protected Composite body;
 
-	/**
-	 * @param editor
-	 * @param id
-	 * @param title
-	 */
-	public AbstractGeronimoFormPage(FormEditor editor, String id, String title) {
-		super(editor, id, title);
-	}
+    /**
+     * @param editor
+     * @param id
+     * @param title
+     */
+    public AbstractGeronimoFormPage(FormEditor editor, String id, String title) {
+        super(editor, id, title);
+    }
 
-	/**
-	 * @param id
-	 * @param title
-	 */
-	public AbstractGeronimoFormPage(String id, String title) {
-		super(id, title);
-	}
+    /**
+     * @param id
+     * @param title
+     */
+    public AbstractGeronimoFormPage(String id, String title) {
+        super(id, title);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
-	 */
-	protected void createFormContent(IManagedForm managedForm) {
-		deploymentPlan = ((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan();
-		deploymentDescriptor = (AbstractDeploymentDescriptor) DeploymentDescriptorUtils
-				.getDeploymentDescriptor(getProject());
-		body = managedForm.getForm().getBody();
-		toolkit = managedForm.getToolkit();
-		final ScrolledForm form = managedForm.getForm();
-		form.setText(getFormTitle());
-		// managedForm.addPart(new BannerPart(form.getBody(), toolkit,
-		// SWT.NONE));
-		form.getBody().setLayout(getLayout());
-		fillBody(managedForm);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
+     */
+    protected void createFormContent(IManagedForm managedForm) {
+        deploymentPlan = ((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan();
+        deploymentDescriptor = (AbstractDeploymentDescriptor) DeploymentDescriptorUtils
+                .getDeploymentDescriptor(getProject());
+        body = managedForm.getForm().getBody();
+        toolkit = managedForm.getToolkit();
+        final ScrolledForm form = managedForm.getForm();
+        form.setText(getFormTitle());
+        // managedForm.addPart(new BannerPart(form.getBody(), toolkit,
+        // SWT.NONE));
+        form.getBody().setLayout(getLayout());
+        fillBody(managedForm);
 
-		// header with help button
-		toolkit.decorateFormHeading(form.getForm());
-		IToolBarManager manager = form.getToolBarManager();
+        // header with help button
+        toolkit.decorateFormHeading(form.getForm());
+        IToolBarManager manager = form.getToolBarManager();
 
-		Action serverInfoRefresh = new Action("serverInfo") { //$NON-NLS-1$
-			public void run() {
-				BusyIndicator.showWhile(form.getDisplay(), new Runnable() {
-					public void run() {
-						triggerGeronimoServerInfoUpdate();
-					}
-				});
-			}
-		};
-		serverInfoRefresh.setToolTipText("Trigger update of GeronimoServerInfo");
-		serverInfoRefresh.setImageDescriptor(Activator.imageDescriptorFromPlugin("org.apache.geronimo.st.ui",
-				"icons/obj16/update.gif"));
-		manager.add(serverInfoRefresh);
+        Action serverInfoRefresh = new Action("serverInfo") { //$NON-NLS-1$
+            public void run() {
+                BusyIndicator.showWhile(form.getDisplay(), new Runnable() {
+                    public void run() {
+                        triggerGeronimoServerInfoUpdate();
+                    }
+                });
+            }
+        };
+        serverInfoRefresh.setToolTipText("Trigger update of GeronimoServerInfo");
+        serverInfoRefresh.setImageDescriptor(Activator.imageDescriptorFromPlugin("org.apache.geronimo.st.ui",
+                "icons/obj16/update.gif"));
+        manager.add(serverInfoRefresh);
 
-		Action helpAction = new Action("help") { //$NON-NLS-1$
-			public void run() {
-				BusyIndicator.showWhile(form.getDisplay(), new Runnable() {
-					public void run() {
-						PlatformUI.getWorkbench().getHelpSystem().displayHelpResource(getHelpResource());
-					}
-				});
-			}
-		};
-		helpAction.setToolTipText("help");
-		helpAction.setImageDescriptor(Activator.imageDescriptorFromPlugin("org.apache.geronimo.st.ui",
-				"icons/obj16/help.gif"));
-		manager.add(helpAction);
+        Action helpAction = new Action("help") { //$NON-NLS-1$
+            public void run() {
+                BusyIndicator.showWhile(form.getDisplay(), new Runnable() {
+                    public void run() {
+                        PlatformUI.getWorkbench().getHelpSystem().displayHelpResource(getHelpResource());
+                    }
+                });
+            }
+        };
+        helpAction.setToolTipText("help");
+        helpAction.setImageDescriptor(Activator.imageDescriptorFromPlugin("org.apache.geronimo.st.ui",
+                "icons/obj16/help.gif"));
+        manager.add(helpAction);
 
-		manager.update(true);
-		form.reflow(true);
-	}
+        manager.update(true);
+        form.reflow(true);
+    }
 
-	protected abstract void triggerGeronimoServerInfoUpdate();
+    protected abstract void triggerGeronimoServerInfoUpdate();
 
-	protected String getHelpResource() {
-		return "http://geronimo.apache.org/development-tools.html";
-	}
+    protected String getHelpResource() {
+        return "http://geronimo.apache.org/development-tools.html";
+    }
 
-	protected GridLayout getLayout() {
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
-		layout.horizontalSpacing = 20;
-		layout.makeColumnsEqualWidth = true;
-		return layout;
-	}
+    protected GridLayout getLayout() {
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 2;
+        layout.horizontalSpacing = 20;
+        layout.makeColumnsEqualWidth = true;
+        return layout;
+    }
 
-	protected int getStyle() {
-		return ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
-				| ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
-				| ExpandableComposite.FOCUS_TITLE;
-	}
+    protected int getStyle() {
+        return ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
+                | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
+                | ExpandableComposite.FOCUS_TITLE;
+    }
 
-	abstract protected void fillBody(IManagedForm managedForm);
+    abstract protected void fillBody(IManagedForm managedForm);
 
-	public JAXBElement getDeploymentPlan() {
-		return deploymentPlan;
-	}
+    public JAXBElement getDeploymentPlan() {
+        return deploymentPlan;
+    }
 
-	protected IProject getProject() {
-		IEditorInput editorInput = getEditorInput();
-		if (editorInput instanceof IFileEditorInput) {
-			return ((IFileEditorInput) editorInput).getFile().getProject();
-		}
-		return null;
-	}
+    protected IProject getProject() {
+        IEditorInput editorInput = getEditorInput();
+        if (editorInput instanceof IFileEditorInput) {
+            return ((IFileEditorInput) editorInput).getFile().getProject();
+        }
+        return null;
+    }
 
-	public AbstractDeploymentDescriptor getDeploymentDescriptor() {
-		return deploymentDescriptor;
-	}
+    public AbstractDeploymentDescriptor getDeploymentDescriptor() {
+        return deploymentDescriptor;
+    }
 
-	public String getFormTitle() {
-		return getTitle();
-	}
+    public String getFormTitle() {
+        return getTitle();
+    }
 
+    // Do not allow the user to go to the source page if data has not been saved.
+    @Override
+    public boolean canLeaveThePage() {
+        if (getEditor().isDirty() && 
+            getEditor().getActivePageInstance() == getEditor().findPage(Messages.editorTabSource)) {
+            MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), Messages.savePageTitle, Messages.savePageMessage);
+            return false;
+        }
+        return true;
+    }
 }
