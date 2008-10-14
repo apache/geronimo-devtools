@@ -380,4 +380,7 @@ public class Messages extends NLS {
     public static String acceptLicenseAgreement;
     public static String rejectLicenseAgreement;
     public static String confirmLicenseRejection;
+
+    public static String savePageTitle;
+    public static String savePageMessage;
 }
