@@ -25,6 +25,7 @@ import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v21.ui.sections.EjbLocalRefSection;
 import org.apache.geronimo.st.v21.ui.sections.EjbRefSection;
+import org.apache.geronimo.st.v21.ui.sections.EjbRelationSection;
 import org.apache.geronimo.st.v21.ui.sections.GBeanRefSection;
 import org.apache.geronimo.st.v21.ui.sections.MessageDestSection;
 import org.apache.geronimo.st.v21.ui.sections.PersContextRefSection;
@@ -74,6 +75,7 @@ public class NamingFormPage extends AbstractGeronimoFormPage {
         }
         else if (OpenejbJar.class.isInstance (getDeploymentPlan().getValue())){
             OpenejbJar ejbJar = (OpenejbJar)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
+            managedForm.addPart(new EjbRelationSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbJar.getRelationships()));
             managedForm.addPart(new MessageDestSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbJar.getMessageDestination()));
         }
     }

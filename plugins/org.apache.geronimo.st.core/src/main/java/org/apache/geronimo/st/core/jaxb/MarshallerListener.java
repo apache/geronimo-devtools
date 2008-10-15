@@ -22,7 +22,9 @@ import org.apache.geronimo.jee.naming.GbeanLocator;
 import org.apache.geronimo.jee.naming.Pattern;
 import org.apache.geronimo.jee.naming.PersistenceContextRef;
 import org.apache.geronimo.jee.naming.ResourceLocator;
+import org.apache.geronimo.jee.openejb.EjbRelationshipRole;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
+import org.apache.geronimo.jee.openejb.Relationships;
 import org.apache.geronimo.jee.security.Security;
 import org.apache.geronimo.jee.web.WebApp;
 
@@ -47,10 +49,19 @@ public class MarshallerListener extends Marshaller.Listener{
             if (locator != null && isEmpty(locator.getResourceLink()) && isEmpty(locator.getUrl()) && isEmpty(locator.getPattern())) {
                 openejb.setCmpConnectionFactory(null);
             }
+            Relationships relationships = openejb.getRelationships();
+            if (relationships != null && relationships.getEjbRelation().size() == 0) {
+                openejb.setRelationships(null);
+            }
         } else if (source instanceof PersistenceContextRef) {
             PersistenceContextRef contextRef = (PersistenceContextRef)source;
             if (contextRef.getPattern() != null && isEmpty(contextRef.getPattern())) {
                 contextRef.setPattern(null);
+            }
+        } else if (source instanceof EjbRelationshipRole) {
+            EjbRelationshipRole role = (EjbRelationshipRole)source;
+            if (role.getRoleMapping() != null && role.getRoleMapping().getCmrFieldMapping().size() == 0) {
+                role.setRoleMapping(null);
             }
         }
     }
