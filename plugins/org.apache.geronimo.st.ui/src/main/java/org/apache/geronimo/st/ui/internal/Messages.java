@@ -211,6 +211,8 @@ public class Messages extends NLS {
     //
     public static String editorEjbRefDescription;
     public static String editorEjbRefTitle;
+    public static String editorEjbRelationDescription;
+    public static String editorEjbRelationTitle;
     // Buttons
     public static String add;
     public static String remove;
@@ -245,6 +247,11 @@ public class Messages extends NLS {
     public static String wizardEditTitle_EjbRef;
     public static String wizardPageTitle_EjbRef;
     public static String wizardPageDescription_EjbRef;
+    //
+    public static String wizardNewTitle_EjbRelation;
+    public static String wizardEditTitle_EjbRelation;
+    public static String wizardPageTitle_EjbRelation;
+    public static String wizardPageDescription_EjbRelation;
     //
     public static String wizardNewTitle_EjbLocalRef;
     public static String wizardEditTitle_EjbLocalRef;
@@ -287,6 +294,11 @@ public class Messages extends NLS {
     public static String contextName;
     public static String unitRefName;
     public static String unitName;
+    public static String mtmTableName;
+    public static String ejbSourceName;
+    public static String cmrFieldName;
+    public static String keyColumn;
+    public static String foreignKeyColumn;
     //
     public static String wizardNewTitle_Import;
     public static String wizardEditTitle_Import;

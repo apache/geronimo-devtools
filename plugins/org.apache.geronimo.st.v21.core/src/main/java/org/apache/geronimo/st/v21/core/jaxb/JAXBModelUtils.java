@@ -25,6 +25,7 @@ import org.apache.geronimo.jee.applicationclient.ApplicationClient;
 import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
+import org.apache.geronimo.jee.openejb.Relationships;
 import org.apache.geronimo.jee.security.Security;
 import org.apache.geronimo.jee.web.WebApp;
 
@@ -178,6 +179,21 @@ public class JAXBModelUtils {
         return null;
     }
 
+    public static List getEjbRelationships (JAXBElement element) {
+        Object plan = element.getValue();
+        if (OpenejbJar.class.isInstance (plan)) {
+            return ((OpenejbJar)plan).getRelationships() == null ? null : ((OpenejbJar)plan).getRelationships().getEjbRelation();
+        }
+        return null;
+    }
+    
+    public static void setEjbRelationships (JAXBElement element, Relationships relationships ) {
+        Object plan = element.getValue();
+        if (OpenejbJar.class.isInstance (plan)) {
+            ((OpenejbJar)plan).setRelationships(relationships);
+        }
+    }
+    
     public static List getMessageDestinations (JAXBElement element) {
         Object plan = element.getValue();
         if (WebApp.class.isInstance (plan)) {

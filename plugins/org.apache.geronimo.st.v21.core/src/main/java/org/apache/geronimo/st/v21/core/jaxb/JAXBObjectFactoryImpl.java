@@ -41,6 +41,9 @@ import org.apache.geronimo.jee.naming.ServiceCompletion;
 import org.apache.geronimo.jee.naming.ResourceEnvRef;
 import org.apache.geronimo.jee.naming.ResourceRef;
 import org.apache.geronimo.jee.naming.ServiceRef;
+import org.apache.geronimo.jee.openejb.EjbRelation;
+import org.apache.geronimo.jee.openejb.EjbRelationshipRole;
+import org.apache.geronimo.jee.openejb.Relationships;
 import org.apache.geronimo.jee.security.Description;
 import org.apache.geronimo.jee.security.DistinguishedName;
 import org.apache.geronimo.jee.security.LoginDomainPrincipal;
@@ -134,6 +137,20 @@ public class JAXBObjectFactoryImpl implements JAXBObjectFactory {
             return (new org.apache.geronimo.jee.application.ObjectFactory()).createModule();
         } else if ( type.equals( Path.class ) ) {
             return (new org.apache.geronimo.jee.application.ObjectFactory()).createPath();
+        } else if ( type.equals( EjbRelation.class ) ) {
+            return (new org.apache.geronimo.jee.openejb.ObjectFactory()).createEjbRelation();
+        } else if ( type.equals( EjbRelationshipRole.class ) ) {
+            return (new org.apache.geronimo.jee.openejb.ObjectFactory()).createEjbRelationshipRole();
+        } else if ( type.equals( EjbRelationshipRole.RelationshipRoleSource.class ) ) {
+            return (new org.apache.geronimo.jee.openejb.ObjectFactory()).createEjbRelationshipRoleRelationshipRoleSource();
+        } else if ( type.equals( EjbRelationshipRole.CmrField.class ) ) {
+            return (new org.apache.geronimo.jee.openejb.ObjectFactory()).createEjbRelationshipRoleCmrField();
+        } else if ( type.equals( EjbRelationshipRole.RoleMapping.CmrFieldMapping.class ) ) {
+            return (new org.apache.geronimo.jee.openejb.ObjectFactory()).createEjbRelationshipRoleRoleMappingCmrFieldMapping();
+        } else if ( type.equals( EjbRelationshipRole.RoleMapping.class ) ) {
+            return (new org.apache.geronimo.jee.openejb.ObjectFactory()).createEjbRelationshipRoleRoleMapping();
+        } else if ( type.equals( Relationships.class ) ) {
+            return (new org.apache.geronimo.jee.openejb.ObjectFactory()).createRelationships();
         }
         
         return null;
