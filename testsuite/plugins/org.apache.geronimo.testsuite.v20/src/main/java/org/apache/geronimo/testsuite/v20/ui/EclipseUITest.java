@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.testsuite.v21.ui;
+package org.apache.geronimo.testsuite.v20.ui;
 
 import org.apache.geronimo.testsuite.common.ui.AbbotHelper;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -26,7 +26,7 @@ import abbot.swt.eclipse.utils.WorkbenchUtilities;
 import abbot.swt.eclipse.utils.Preferences.Mode;
 
 /*
- * @version $Rev$ $Date$ 
+ * @version $Rev$ $Date$
  */
 public class EclipseUITest extends WorkbenchTestCase {
     Shell aShell;
