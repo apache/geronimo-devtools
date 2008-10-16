@@ -271,10 +271,10 @@
         </copy>
     </target>
 
-    <target name="gep-features" depends="init" description="Unzip the GEP feature(s) into the test_eclipse installation">
+    <target name="gep-features" depends="init" description="Unzip the GEP latest feature to the launcher Eclipse features directory">
         <!--
         |  
-        | Unzip the GEP feature(s) to the launcher Eclipse features directory (for branding testcases)
+        | Unzip the GEP latest feature to the launcher Eclipse features directory (for one branding testcase)
         |  
         -->
         <mkdir dir="${test_eclipse}"/>
