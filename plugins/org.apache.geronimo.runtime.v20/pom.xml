@@ -61,27 +61,27 @@
                     <include>NOTICE.txt</include>
                 </includes>
             </resource>
-	        <!-- GERONIMODEVTOOLS-406 Display license and notice in Eclipse Update Manager 
+            <!-- GERONIMODEVTOOLS-406 Display license and notice in Eclipse Update Manager 
                  See also http://www.eclipse.org/legal/guidetolegaldoc.php
                  about.html references about_files to show licenses and notices to the user
                  at install time using Eclipse Update Manager, and after install.
               -->
-	    	<resource>
-	    		<targetPath>about_files</targetPath>
-	    		<directory>.</directory>
-	    		<includes>
-	    			<include>LICENSE.txt</include>
-	    			<include>NOTICE.txt</include>
-	    		</includes>
-	    	</resource>
-	    	<resource>
-	    		<targetPath>about_files</targetPath>
-	    		<directory>../..</directory>
+            <resource>
+                <targetPath>about_files</targetPath>
+                <directory>.</directory>
+                <includes>
+                    <include>LICENSE.txt</include>
+                    <include>NOTICE.txt</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>about_files</targetPath>
+                <directory>../..</directory>
                 <filtering>true</filtering>
-	    		<includes>
+                <includes>
                     <include>PLUGIN_RELEASE-NOTES-${pom.version}.txt</include>
-	    		</includes>
-	    	</resource>
+                </includes>
+            </resource>
         </resources>
         <plugins>
             <plugin>

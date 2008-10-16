@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.testsuite.v21.ui;
+package org.apache.geronimo.testsuite.v22.ui;
 
 import org.apache.geronimo.testsuite.common.ui.AbbotHelper;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -26,7 +26,7 @@ import abbot.swt.eclipse.utils.WorkbenchUtilities;
 import abbot.swt.eclipse.utils.Preferences.Mode;
 
 /*
- * @version $Rev$ $Date$ 
+ * @version $Rev$ $Date$
  */
 public class EclipseUITest extends WorkbenchTestCase {
     Shell aShell;
@@ -45,6 +45,18 @@ public class EclipseUITest extends WorkbenchTestCase {
     {
         boolean success = false;
         try {
+            // About Eclipse Test Case. There are three Shell newShell, nextShell and nextNextShell 
+            //used because we need to save the states for newShell and nextShell
+            //newShell->nextShell->nextNextShell this is the order in which shell comes up
+            aShell = WorkbenchUtilities.getWorkbenchWindow().getShell();
+            aHelper = new AbbotHelper(aShell);
+            Shell newShell = aHelper.clickMenuItem(aShell, new String[]{"&Help","&About Eclipse Platform"},"About Eclipse Platform");
+            Shell nextShell = aHelper.clickImageButton(newShell, "Apache.org - Geronimo v22 Server Tools Core Plug-in","About Eclipse Platform Features");
+            Shell nextNextShell = aHelper.clickButton(nextShell, "&Plug-in Details", "Feature Plug-ins");
+            aHelper.clickButton(nextNextShell, IDialogConstants.OK_LABEL);
+            aHelper.clickButton(nextShell, IDialogConstants.OK_LABEL);
+            aHelper.clickButton(newShell, IDialogConstants.OK_LABEL);
+
             success = true;
         }
         catch(Exception e)

@@ -35,6 +35,7 @@
                     <include>about.html</include>
                 </includes>
             </resource>
+
             <resource>
                 <directory>.</directory>
                 <filtering>true</filtering>
@@ -42,8 +43,10 @@
                     <include>plugin.xml</include>
                     <include>plugin.properties</include>
                     <include>.options</include>
+                    <include>about.ini</include>
                 </includes>
             </resource>
+
             <!--
              |
              | GERONIMODEVTOOLS-482: Ensure filtering is not used on a binary resource 
@@ -51,8 +54,15 @@
              |
              -->
             <resource>
+                <directory>.</directory>
+                <includes>
+                    <include>G-logo-32x32.gif</include>
+                </includes>
+            </resource>
+
             <!-- The Geronimo covention puts license and notice for artifacts shipped in this jar 
                  in the jar's meta-inf directory -->
+            <resource>
                 <targetPath>META-INF</targetPath>
                 <directory>.</directory>
                 <includes>
@@ -60,27 +70,29 @@
                     <include>NOTICE.txt</include>
                 </includes>
             </resource>
-	        <!-- GERONIMODEVTOOLS-406 Display license and notice in Eclipse Update Manager 
-                 See also http://www.eclipse.org/legal/guidetolegaldoc.php
-                 about.html references about_files to show licenses and notices to the user
-                 at install time using Eclipse Update Manager, and after install.
-              -->
-	    	<resource>
-	    		<targetPath>about_files</targetPath>
+
+            <!-- GERONIMODEVTOOLS-406 Display license and notice in Eclipse Update Manager 
+                   See also http://www.eclipse.org/legal/guidetolegaldoc.php
+                   about.html references about_files to show licenses and notices to the user
+                   at install time using Eclipse Update Manager, and after install.
+                -->
+            <resource>
+                <targetPath>about_files</targetPath>
                 <directory>.</directory>
                 <includes>
                     <include>LICENSE.txt</include>
                     <include>NOTICE.txt</include>
                 </includes>
             </resource>
-	    	<resource>
-	    		<targetPath>about_files</targetPath>
-	    		<directory>../..</directory>
+
+            <resource>
+                <targetPath>about_files</targetPath>
+                <directory>../..</directory>
                 <filtering>true</filtering>
-	    		<includes>
+                <includes>
                     <include>PLUGIN_RELEASE-NOTES-${pom.version}.txt</include>
-	    		</includes>
-	    	</resource>
+                </includes>
+            </resource>
         </resources>
         <plugins>
             <plugin>

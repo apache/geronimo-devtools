@@ -38,7 +38,78 @@
         Geronimo Eclipse Plugin Integration Testsuite
     </description>
 
+    <properties>
+        <geronimoVersion_1>2.2-SNAPSHOT</geronimoVersion_1>
+        <geronimoVersion_2>2.1.4-SNAPSHOT</geronimoVersion_2>
+        <geronimoVersion_3>2.0.2</geronimoVersion_3>
+    </properties>
+
     <dependencies>
+        <!--
+         |
+         | Geronimo server v2.2
+         |
+         -->
+        <dependency>
+            <groupId>org.apache.geronimo.assemblies</groupId>
+            <artifactId>geronimo-tomcat6-javaee5</artifactId>
+            <version>${geronimoVersion_1}</version>
+            <type>zip</type>
+            <classifier>bin</classifier>
+            <scope>test</scope>
+            <!--
+             |
+             | Exclude server dependencies not used by the GEP
+             |
+             -->
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.xml.ws</groupId>
+                    <artifactId>jaxws-tools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.xml.ws</groupId>
+                    <artifactId>jaxws-rt</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>catalina</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>jasper</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-portal-driver</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-portal-driver-impl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-container</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-taglib</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-descriptor-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-descriptor-impl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>juddi</groupId>
+                    <artifactId>juddi</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!--
          |
          | Geronimo server v2.1
@@ -47,7 +118,7 @@
         <dependency>
             <groupId>org.apache.geronimo.assemblies</groupId>
             <artifactId>geronimo-tomcat6-javaee5</artifactId>
-            <version>2.1.3</version>
+            <version>${geronimoVersion_2}</version>
             <type>zip</type>
             <classifier>bin</classifier>
             <scope>test</scope>
@@ -112,7 +183,7 @@
         <dependency>
             <groupId>org.apache.geronimo.assemblies</groupId>
             <artifactId>geronimo-tomcat6-jee5</artifactId>
-            <version>2.0.2</version>
+            <version>${geronimoVersion_3}</version>
             <type>zip</type>
             <classifier>bin</classifier>
             <scope>test</scope>
@@ -137,6 +208,7 @@
                             <includes>
                                 <include>launcher/eclipse</include>
                                 <include>launcher/results</include>
+                                <include>launcher/server_v2.2</include>
                                 <include>launcher/server_v2.1</include>
                                 <include>launcher/server_v2.0</include>
                                 <include>launcher/workspace</include>

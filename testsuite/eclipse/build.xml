@@ -230,7 +230,7 @@
     <target name="gep-plugins" depends="init" description="Copy the GEP plugin(s) into the test_eclipse installation">
         <!--
         |  
-        | Copy the GEP plugins to the testsuite Eclipse plugins directory
+        | Copy the GEP plugins to the launcher Eclipse plugins directory
         |  
         -->
         <mkdir dir="${test_eclipse}"/>
@@ -239,6 +239,9 @@
                 <include name="**/*.jar"/>
             </fileset>
             <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.runtime.common/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.runtime.v22/${gep_version}">
                 <include name="**/*.jar"/>
             </fileset>
             <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.runtime.v21/${gep_version}">
@@ -256,6 +259,12 @@
             <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.schemas/${gep_version}">
                 <include name="**/*.jar"/>
             </fileset>
+            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.v22.core/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.v22.ui/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
             <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.v21.core/${gep_version}">
                 <include name="**/*.jar"/>
             </fileset>
@@ -271,15 +280,15 @@
         </copy>
     </target>
 
-    <target name="gep-features" depends="init" description="Copy the GEP feature(s) into the test_eclipse installation">
+    <target name="gep-features" depends="init" description="Unzip the GEP latest feature to the launcher Eclipse features directory">
         <!--
         |  
-        | Unzip the GEP feature(s) to the testsuite Eclipse features directory
+        | Unzip the GEP latest feature to the launcher Eclipse features directory (for one branding testcase)
         |  
         -->
         <mkdir dir="${test_eclipse}"/>
-        <unzip src="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.v21.feature/${gep_version}/org.apache.geronimo.v21.feature-${gep_version}.jar"
-               dest="${test_eclipse}eclipse/features/org.apache.geronimo.v21.feature_${gep_version}"
+        <unzip src="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.v22.feature/${gep_version}/org.apache.geronimo.v22.feature-${gep_version}.jar"
+               dest="${test_eclipse}eclipse/features/org.apache.geronimo.v22.feature_${gep_version}"
                overwrite="true"/>
     </target>
 

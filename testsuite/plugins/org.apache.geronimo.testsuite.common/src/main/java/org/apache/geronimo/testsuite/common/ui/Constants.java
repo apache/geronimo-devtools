@@ -21,6 +21,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 public final class Constants {
+    public final static String SERVER_V22 = "v22";
     public final static String SERVER_V21 = "v21";
     public final static String SERVER_V20 = "v20";
     
@@ -33,15 +34,19 @@ public final class Constants {
     private final static Map constants;
     static {
         constants = new Hashtable();
+        addConstant( SERVER_V22, SERVERNAME, "Apache Geronimo v2.2 Server" );
         addConstant( SERVER_V21, SERVERNAME, "Apache Geronimo v2.1 Server" );
         addConstant( SERVER_V20, SERVERNAME, "Apache Geronimo v2.0 Server" );
         
+        addConstant( SERVER_V22, SERVERDISPLAY, "Apache Geronimo v2.2 Server at localhost" );
         addConstant( SERVER_V21, SERVERDISPLAY, "Apache Geronimo v2.1 Server at localhost" );
         addConstant( SERVER_V20, SERVERDISPLAY, "Apache Geronimo v2.0 Server at localhost" );
         
+        addConstant( SERVER_V22, SERVERRUNTIME, "Apache Geronimo v2.2" );
         addConstant( SERVER_V21, SERVERRUNTIME, "Apache Geronimo v2.1" );
         addConstant( SERVER_V20, SERVERRUNTIME, "Apache Geronimo v2.0" );
         
+        addConstant( SERVER_V22, SERVERPATH, "server_v2.2" );
         addConstant( SERVER_V21, SERVERPATH, "server_v2.1" );
         addConstant( SERVER_V20, SERVERPATH, "server_v2.0" );
 
