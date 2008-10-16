@@ -70,7 +70,7 @@ public class JAXBModelUtils {
     
     public static void setSecurity (JAXBElement element, Security security) {
         Object plan = element.getValue();
-        if ( WebApp.class.isInstance( plan ) ) {
+        if (WebApp.class.isInstance (plan)) {
             ((WebApp)plan).setSecurity((new org.apache.geronimo.jee.security.ObjectFactory()).createSecurity( security ) );
         } else if (Application.class.isInstance(plan)) {
             ((Application)plan).setSecurity((new org.apache.geronimo.jee.security.ObjectFactory()).createSecurity( security ) );
@@ -87,24 +87,19 @@ public class JAXBModelUtils {
         Object plan = element.getValue();
         if (serverEnvironment == true) {
             if (WebApp.class.isInstance (plan)) {
-                return ((WebApp)plan).getEnvironment() == null ? null : ((WebApp)plan).getEnvironment();
+                return ((WebApp)plan).getEnvironment();
+            } else if (Application.class.isInstance (plan)) {
+                return ((Application)plan).getEnvironment();
+            } else if (OpenejbJar.class.isInstance (plan)) {
+                return ((OpenejbJar)plan).getEnvironment();
+            } else if (Connector.class.isInstance (plan)) {
+                return ((Connector)plan).getEnvironment();
+            } else if (ApplicationClient.class.isInstance (plan)) {
+                return ((ApplicationClient)plan).getServerEnvironment();
             }
-            else if (Application.class.isInstance (plan)) {
-                return ((Application)plan).getEnvironment() == null ? null : ((Application)plan).getEnvironment();
-            }
-            else if (OpenejbJar.class.isInstance (plan)) {
-                return ((OpenejbJar)plan).getEnvironment() == null ? null : ((OpenejbJar)plan).getEnvironment();
-            }
-            else if (Connector.class.isInstance (plan)) {
-                return ((Connector)plan).getEnvironment() == null ? null : ((Connector)plan).getEnvironment();
-            }
-            else if (ApplicationClient.class.isInstance (plan)) {
-                return ((ApplicationClient)plan).getServerEnvironment() == null ? null : ((ApplicationClient)plan).getServerEnvironment();
-            }
-        }
-        else {
+        } else {
             if (ApplicationClient.class.isInstance (plan)) {
-                return ((ApplicationClient)plan).getClientEnvironment() == null ? null : ((ApplicationClient)plan).getClientEnvironment();
+                return ((ApplicationClient)plan).getClientEnvironment();
             }
         }
         return null;
@@ -119,21 +114,16 @@ public class JAXBModelUtils {
         if (serverEnvironment == true) {
             if (WebApp.class.isInstance (plan)) {
                 ((WebApp)plan).setEnvironment (environment);
-            }
-            else if (Application.class.isInstance (plan)) {
+            } else if (Application.class.isInstance (plan)) {
                 ((Application)plan).setEnvironment (environment);
-            }
-            else if (OpenejbJar.class.isInstance (plan)) {
+            } else if (OpenejbJar.class.isInstance (plan)) {
                 ((OpenejbJar)plan).setEnvironment (environment);
-            }
-            else if (Connector.class.isInstance (plan)) {
+            } else if (Connector.class.isInstance (plan)) {
                 ((Connector)plan).setEnvironment (environment);
-            }
-            else if (ApplicationClient.class.isInstance (plan)) {
+            } else if (ApplicationClient.class.isInstance (plan)) {
                 ((ApplicationClient)plan).setServerEnvironment (environment);
             }
-        }
-        else {
+        } else {
             if (ApplicationClient.class.isInstance (plan)) {
                 ((ApplicationClient)plan).setClientEnvironment (environment);
             }
@@ -143,19 +133,15 @@ public class JAXBModelUtils {
     public static List getGbeans (JAXBElement element) {
         Object plan = element.getValue();
         if (WebApp.class.isInstance (plan)) {
-            return ((WebApp)plan).getServiceOrPersistence() == null ? null : ((WebApp)plan).getServiceOrPersistence();
-        }
-        else if (Application.class.isInstance (plan)) {
-            return ((Application)plan).getService() == null ? null : ((Application)plan).getService();
-        }
-        else if (OpenejbJar.class.isInstance (plan)) {
-            return ((OpenejbJar)plan).getService() == null ? null : ((OpenejbJar)plan).getService();
-        }
-        else if (Connector.class.isInstance (plan)) {
-            return ((Connector)plan).getService() == null ? null : ((Connector)plan).getService();
-        }
-        else if (ApplicationClient.class.isInstance (plan)) {
-            return ((ApplicationClient)plan).getService() == null ? null : ((ApplicationClient)plan).getService();
+            return ((WebApp)plan).getServiceOrPersistence();
+        } else if (Application.class.isInstance (plan)) {
+            return ((Application)plan).getService();
+        } else if (OpenejbJar.class.isInstance (plan)) {
+            return ((OpenejbJar)plan).getService();
+        } else if (Connector.class.isInstance (plan)) {
+            return ((Connector)plan).getService();
+        } else if (ApplicationClient.class.isInstance (plan)) {
+            return ((ApplicationClient)plan).getService();
         }
         return null;
     }
@@ -163,10 +149,9 @@ public class JAXBModelUtils {
     public static List getGbeanRefs (JAXBElement element) {
         Object plan = element.getValue();
         if (ApplicationClient.class.isInstance (plan)) {
-            return ((ApplicationClient)plan).getGbeanRef() == null ? null : ((ApplicationClient)plan).getGbeanRef();
-        }
-        else if (WebApp.class.isInstance (plan)) {
-            return ((WebApp)plan).getAbstractNamingEntry() == null ? null : ((WebApp)plan).getAbstractNamingEntry();
+            return ((ApplicationClient)plan).getGbeanRef();
+        } else if (WebApp.class.isInstance (plan)) {
+            return ((WebApp)plan).getAbstractNamingEntry();
         }
         return null;
     }
@@ -174,7 +159,7 @@ public class JAXBModelUtils {
     public static List getServiceRefs (JAXBElement element) {
         Object plan = element.getValue();
         if (WebApp.class.isInstance (plan)) {
-            return ((WebApp)plan).getServiceRef() == null ? null : ((WebApp)plan).getServiceRef();
+            return ((WebApp)plan).getServiceRef();
         }
         return null;
     }
@@ -197,13 +182,11 @@ public class JAXBModelUtils {
     public static List getMessageDestinations (JAXBElement element) {
         Object plan = element.getValue();
         if (WebApp.class.isInstance (plan)) {
-            return ((WebApp)plan).getMessageDestination() == null ? null : ((WebApp)plan).getMessageDestination();
-        }
-        else if (OpenejbJar.class.isInstance (plan)) {
-            return ((OpenejbJar)plan).getMessageDestination() == null ? null : ((OpenejbJar)plan).getMessageDestination();
-        }
-        else if (ApplicationClient.class.isInstance (plan)) {
-            return ((ApplicationClient)plan).getMessageDestination() == null ? null : ((ApplicationClient)plan).getMessageDestination();
+            return ((WebApp)plan).getMessageDestination();
+        } else if (OpenejbJar.class.isInstance (plan)) {
+            return ((OpenejbJar)plan).getMessageDestination();
+        } else if (ApplicationClient.class.isInstance (plan)) {
+            return ((ApplicationClient)plan).getMessageDestination();
         }
         return null;
     }
