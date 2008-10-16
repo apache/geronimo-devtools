@@ -20,6 +20,9 @@ import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.jee.application.ExtModule;
 import org.apache.geronimo.jee.application.Module;
 import org.apache.geronimo.jee.application.Path;
+import org.apache.geronimo.jee.connector.Adminobject;
+import org.apache.geronimo.jee.connector.AdminobjectInstance;
+import org.apache.geronimo.jee.connector.ConfigPropertySetting;
 import org.apache.geronimo.jee.deployment.Artifact;
 import org.apache.geronimo.jee.deployment.Attribute;
 import org.apache.geronimo.jee.deployment.ClassFilter;
@@ -151,6 +154,12 @@ public class JAXBObjectFactoryImpl implements JAXBObjectFactory {
             return (new org.apache.geronimo.jee.openejb.ObjectFactory()).createEjbRelationshipRoleRoleMapping();
         } else if ( type.equals( Relationships.class ) ) {
             return (new org.apache.geronimo.jee.openejb.ObjectFactory()).createRelationships();
+        } else if ( type.equals( Adminobject.class ) ) {
+            return (new org.apache.geronimo.jee.connector.ObjectFactory()).createAdminobject();
+        } else if ( type.equals( AdminobjectInstance.class ) ) {
+            return (new org.apache.geronimo.jee.connector.ObjectFactory()).createAdminobjectInstance();
+        } else if ( type.equals( ConfigPropertySetting.class ) ) {
+            return (new org.apache.geronimo.jee.connector.ObjectFactory()).createConfigPropertySetting();
         }
         
         return null;

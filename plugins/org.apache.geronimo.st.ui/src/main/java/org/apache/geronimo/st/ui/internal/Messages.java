@@ -159,6 +159,8 @@ public class Messages extends NLS {
     public static String editorSectionClientNonOverridableTitle;
     public static String editorSectionClientNonOverridableDescription;
     //
+    public static String editorSectionAdminObjectTitle;
+    public static String editorSectionAdminObjectDescription;
     public static String editorSectionMessageDestTitle;
     public static String editorSectionMessageDestDescription;
     //
@@ -174,6 +176,7 @@ public class Messages extends NLS {
     public static String editorSectionGBeanTitle;
     public static String editorSectionGBeanDescription;
     public static String className;
+    public static String interfaceName;
     public static String GbeanName;
     //
     public static String editorResourceRefDescription;
@@ -222,6 +225,11 @@ public class Messages extends NLS {
     public static String wizardEditTitle_ResRef;
     public static String wizardPageTitle_ResRef;
     public static String wizardPageDescription_ResRef;
+    //
+    public static String wizardNewTitle_AdminObject;
+    public static String wizardEditTitle_AdminObject;
+    public static String wizardPageTitle_AdminObject;
+    public static String wizardPageDescription_AdminObject;
     //
     public static String wizardNewTitle_GBeanRef;
     public static String wizardEditTitle_GBeanRef;

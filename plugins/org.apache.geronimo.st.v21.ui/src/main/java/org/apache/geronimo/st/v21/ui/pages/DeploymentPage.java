@@ -17,11 +17,13 @@
 package org.apache.geronimo.st.v21.ui.pages;
 
 import org.apache.geronimo.jee.application.Application;
+import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
+import org.apache.geronimo.st.v21.ui.sections.AdminObjectSection;
 import org.apache.geronimo.st.v21.ui.sections.ClassFilterSection;
 import org.apache.geronimo.st.v21.ui.sections.DependencySection;
 import org.apache.geronimo.st.v21.ui.sections.ExtModuleSection;
@@ -54,6 +56,10 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
             Application application = (Application)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
             managedForm.addPart(new ModuleSection(getDeploymentPlan(), body, toolkit, getStyle(), application.getModule()));
             managedForm.addPart(new ExtModuleSection(getDeploymentPlan(), body, toolkit, getStyle(), application.getExtModule()));
+        }
+        if (Connector.class.isInstance(getDeploymentPlan().getValue())) {
+            Connector connector = (Connector)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
+            managedForm.addPart(new AdminObjectSection(getDeploymentPlan(), body, toolkit, getStyle(), connector.getAdminobject()));
         }
     }
     
