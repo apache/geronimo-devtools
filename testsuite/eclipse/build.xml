@@ -43,7 +43,7 @@
         <property name="abbot_swt_version"      value="0.1.0.20080305_1254"/>
         <property name="abbot_swt"              value="abbot.swt-${abbot_swt_version}.zip"/>
         <property name="abbot_protocol"         value="?modtime=12047243638&amp;protocol=http"/>
-        <property name="gep_version"            value="2.1.3"/>
+        <property name="gep_version"            value="2.1.4"/>
     </target>
 
     <target name="win32" depends="init,common" description="Download Windows-specific artifact(s)">
@@ -134,6 +134,7 @@
         <antcall target="test-framework"/>
         <antcall target="abbot"/>
         <antcall target="gep-plugins"/>
+        <antcall target="gep-features"/>
     </target>
 
     <target name="cleanup" depends="init" description="Cleanup from previos invocatins of the testsuite">
@@ -229,7 +230,7 @@
     <target name="gep-plugins" depends="init" description="Copy the GEP plugins into the test_eclipse installation">
         <!--
         |  
-        | Copy the GEP plugins to the testsuite Eclipse plugins directory
+        | Copy the GEP plugins to the launcher Eclipse plugins directory
         |  
         -->
         <mkdir dir="${test_eclipse}"/>
@@ -268,6 +269,18 @@
                 <include name="**/*.jar"/>
             </fileset>
         </copy>
+    </target>
+
+    <target name="gep-features" depends="init" description="Unzip the GEP feature(s) into the test_eclipse installation">
+        <!--
+        |  
+        | Unzip the GEP feature(s) to the launcher Eclipse features directory (for branding testcases)
+        |  
+        -->
+        <mkdir dir="${test_eclipse}"/>
+        <unzip src="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.v21.feature/${gep_version}/org.apache.geronimo.v21.feature-${gep_version}.jar"
+               dest="${test_eclipse}eclipse/features/org.apache.geronimo.v21.feature_${gep_version}"
+               overwrite="true"/>
     </target>
 
 </project>

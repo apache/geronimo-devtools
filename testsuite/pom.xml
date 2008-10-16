@@ -38,6 +38,11 @@
         Geronimo Eclipse Plugin Integration Testsuite
     </description>
 
+    <properties>
+        <geronimoVersion_1>2.1.4-SNAPSHOT</geronimoVersion_1>
+        <geronimoVersion_2>2.0.2</geronimoVersion_2>
+    </properties>
+
     <dependencies>
         <!--
          |
@@ -47,7 +52,7 @@
         <dependency>
             <groupId>org.apache.geronimo.assemblies</groupId>
             <artifactId>geronimo-tomcat6-javaee5</artifactId>
-            <version>2.1.2</version>
+            <version>${geronimoVersion_1}</version>
             <type>zip</type>
             <classifier>bin</classifier>
             <scope>test</scope>
@@ -112,7 +117,7 @@
         <dependency>
             <groupId>org.apache.geronimo.assemblies</groupId>
             <artifactId>geronimo-tomcat6-jee5</artifactId>
-            <version>2.0.2</version>
+            <version>${geronimoVersion_2}</version>
             <type>zip</type>
             <classifier>bin</classifier>
             <scope>test</scope>
