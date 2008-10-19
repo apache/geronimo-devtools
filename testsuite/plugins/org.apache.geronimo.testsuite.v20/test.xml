@@ -75,6 +75,35 @@
         <!-- 
          #########################################################################
          ##                                                                     ##
+         ## Copy the testsuite.v20 resources required for the SharedLib project ##
+         ##                                                                     ##
+         #########################################################################
+         -->
+        <mkdir dir="${jdt-folder}/src"/>
+        <copy todir="${jdt-folder}/src">
+            <fileset dir="${eclipse-home}/../../../plugins/org.apache.geronimo.testsuite.v20/src">
+                <include name="**/*.java"/>
+                <include name="**/*.jsp"/>
+            </fileset>
+        </copy>
+        
+        <!--
+         #########################################################################                                                                     ##
+         ##                                                                     ##
+         ## Shared Lib Pojo testcase                                            ##
+         ##                                                                     ##
+         #########################################################################
+         -->
+        <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+            <property name="data-dir" value="${jdt-folder}"/>
+            <property name="plugin-name" value="${plugin-name}"/>
+            <property name="classname"
+             value="org.apache.geronimo.testsuite.v20.ui.SharedLibPojoTest"/>
+        </ant>
+    
+        <!-- 
+         #########################################################################
+         ##                                                                     ##
          ## Define new server testcase                                          ##
          ##                                                                     ##
          #########################################################################

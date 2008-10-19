@@ -63,6 +63,13 @@ public class ServerTasks {
         aHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);
     }
 
+    public void editServer()throws MultipleFoundException, NotFoundException { 
+        String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
+        aHelper.clickMenuItem (workbenchShell,
+                new String[] {"&Window", "Show &View", "Servers"});
+         aHelper.doubleClickItem(workbenchShell, serverDisplay);
+    }
+
     public void startServer () throws MultipleFoundException, NotFoundException {
         String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
         aHelper.clickMenuItem (workbenchShell,

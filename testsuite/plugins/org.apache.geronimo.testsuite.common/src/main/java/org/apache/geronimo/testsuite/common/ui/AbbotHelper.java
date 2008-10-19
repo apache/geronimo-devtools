@@ -174,6 +174,19 @@ public class AbbotHelper {
         waitTime( 1500 );
     }
     
+    //helper method when there are multiple text boxes
+    public void setTextFieldForMulti (Shell aShell, String oldText, String newText) throws MultipleFoundException, NotFoundException {
+        Text text = (Text) finder.find (aShell, new TextMultipleMatcher(oldText, Text.class, true));
+        if (oldText.length() > 0)
+        {
+            TextTester.getTextTester().actionSelect (text, 0, oldText.length());
+            TextTester.getTextTester().actionKeyString (newText);
+        } else {
+            TextTester.getTextTester().actionKeyString (text, newText);  
+        }
+        waitTime( 1500 );
+    }
+    
     //helper method to select a Tab 
     public void selectTabItem(Shell aShell, String newText)throws MultipleFoundException,NotFoundException
     {
@@ -206,8 +219,8 @@ public class AbbotHelper {
     public void waitForDialogDisposal (Shell aShell) {
         while (!ShellTester.getShellTester().isDisposed (aShell))
             ShellTester.getShellTester().actionDelay (1000);
-        // wait an extra 2 seconds
-        ShellTester.getShellTester().actionDelay (2000);
+        // wait an extra 4 seconds
+        ShellTester.getShellTester().actionDelay (4000);
     }
 
     // helper method
@@ -229,7 +242,11 @@ public class AbbotHelper {
     }
     
     public void waitTime (long time) {
-        ShellTester.getShellTester().actionDelay (time);
+        try {
+            ShellTester.getShellTester().actionDelay (time);
+        }
+        catch (Exception e) {
+        }
     }
     
     // TabMatcher has bugs currently with abbot. This is a inner class
@@ -283,6 +300,45 @@ public class AbbotHelper {
         }
     }
     
+    //helper inner class for multiple text boxes
+    final class TextMultipleMatcher extends TextMultiMatcher{
+        public TextMultipleMatcher(String text, Class clazz, boolean mustBeShowing) {
+            super(text, clazz, mustBeShowing);
+        }
+
+        /**
+         * Constructs a new {@link TextMultiMatcher}.
+         */
+        public TextMultipleMatcher(String text, boolean mustBeShowing) {
+            this(text, Widget.class, mustBeShowing);
+        }
+
+        /**
+         * Constructs a new {@link TextMultiMatcher}.
+         */
+        public TextMultipleMatcher(String text, Class clazz) {
+            this(text, clazz, false);
+        }
+
+        /**
+         * Constructs a new {@link TextMultiMatcher}.
+         */
+        public TextMultipleMatcher(String text) {
+            this(text, Widget.class, false);
+        }
+
+        public Widget bestMatch(List<Widget> candidates)
+                throws MultipleFoundException {
+            Text text = null;
+            for (int i = 0; i < candidates.size(); i++) {
+                text = (Text)candidates.get(i);
+                    if (TextTester.getTextTester().getText(text).equals(candidates))
+                        return text;
+            }
+            return text;
+        }
+        
+    }
     // helper inner class
     final class ButtonMultiMatcher extends TextMultiMatcher {
         public ButtonMultiMatcher(String text, Class clazz, boolean mustBeShowing) {
