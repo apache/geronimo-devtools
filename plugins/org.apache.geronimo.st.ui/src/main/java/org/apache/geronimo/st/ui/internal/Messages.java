@@ -281,6 +281,11 @@ public class Messages extends NLS {
     public static String wizardPageTitle_RunAsSubject;
     public static String wizardPageDescription_RunAsSubject;
     //
+    public static String wizardNewTitle_ServerCustomAssembly;
+    public static String wizardEditTitle_ServerCustomAssembly;
+    public static String wizardPageTitle_ServerCustomAssembly;
+    public static String wizardPageDescription_ServerCustomAssembly;
+    //
     public static String wizardNewTitle_Dependency;
     public static String wizardEditTitle_Dependency;
     public static String wizardPageTitle_Dependency;
@@ -395,6 +400,7 @@ public class Messages extends NLS {
     public static String ejb;
     public static String java;
     public static String web;
+    public static String plugin;
 
     public static String licenseAgreement;
     public static String acceptLicenseAgreement;

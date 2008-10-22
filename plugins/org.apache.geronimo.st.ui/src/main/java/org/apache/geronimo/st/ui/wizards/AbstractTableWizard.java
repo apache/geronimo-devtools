@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
-import org.apache.geronimo.st.ui.sections.AbstractListSection;
+import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -30,8 +30,11 @@ import org.eclipse.swt.widgets.Text;
  */
 public abstract class AbstractTableWizard extends AbstractWizard {
 
-    public AbstractTableWizard(AbstractListSection section) {
-        super(section);
+    protected AbstractTableSection section;
+    
+    public AbstractTableWizard(AbstractTableSection section) {
+        super();
+        this.section = section;
     }
 
     public abstract JAXBObjectFactory getEFactory();

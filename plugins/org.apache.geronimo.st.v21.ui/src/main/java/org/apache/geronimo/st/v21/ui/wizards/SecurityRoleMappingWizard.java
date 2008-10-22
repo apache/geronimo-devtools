@@ -52,6 +52,7 @@ public class SecurityRoleMappingWizard extends AbstractWizard {
     private final String[] ROLE_MAPPING_TYPES = {
             "Distinguished Name", "Principal", "Login Domain Principal", "Realm Principal" };
 
+    protected AbstractTreeSection section;
     protected Combo type;
     protected Text name;
     protected Combo clazz;
@@ -59,7 +60,8 @@ public class SecurityRoleMappingWizard extends AbstractWizard {
     protected Combo realmName;
     
     public SecurityRoleMappingWizard(AbstractTreeSection section) {
-        super(section);
+        super();
+        this.section = section;
     }
 
     protected static String[] getSecurityRealms() {

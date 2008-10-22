@@ -33,9 +33,11 @@ public class SecurityRunAsSubjectWizard extends AbstractWizard {
     protected Combo role;
     protected Text realm;
     protected Text id;
+    protected AbstractTableSection section;
 
     public SecurityRunAsSubjectWizard(AbstractTableSection section) {
-        super(section);
+        super();
+        this.section = section;
     }
 
     public class SecurityRunAsSubjectAddWizardPage extends AbstractWizardPage {
