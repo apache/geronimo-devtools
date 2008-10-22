@@ -17,7 +17,6 @@
 package org.apache.geronimo.st.ui.wizards;
 
 import org.apache.geronimo.st.ui.Activator;
-import org.apache.geronimo.st.ui.sections.AbstractListSection;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
@@ -35,13 +34,10 @@ import org.eclipse.swt.widgets.Text;
  */
 public abstract class AbstractWizard extends Wizard {
 
-    protected AbstractListSection section;
-
     protected Object eObject;
 
-    public AbstractWizard(AbstractListSection section) {
+    public AbstractWizard() {
         super();
-        this.section = section;
         setWindowTitle(getAddWizardWindowTitle());
     }
 

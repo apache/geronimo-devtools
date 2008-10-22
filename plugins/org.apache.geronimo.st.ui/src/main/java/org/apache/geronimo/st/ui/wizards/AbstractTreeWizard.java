@@ -32,6 +32,8 @@ import org.eclipse.swt.widgets.Text;
  */
 public abstract class AbstractTreeWizard extends AbstractWizard {
 
+    protected AbstractTreeSection section;
+    
     protected String[] elementTypes = null;
     protected int maxTextFields;
 
@@ -49,7 +51,8 @@ public abstract class AbstractTreeWizard extends AbstractWizard {
      * to allow the appropriate fields to be used.
      */
     public AbstractTreeWizard(AbstractTreeSection section, int elementTypeCount, int maxTextFields) {
-        super(section);
+        super();
+        this.section = section;
         elementTypes = new String[elementTypeCount];
         this.maxTextFields = maxTextFields;
         textList = new ArrayList<Text>(maxTextFields);
