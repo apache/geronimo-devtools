@@ -75,7 +75,7 @@ public class GBeanSection extends AbstractTreeSection {
         }
     }
 
-    public Gbean getSelectedGbean () {
+    public Gbean getSelectedObject () {
         if (tree.getSelection().length == 0) {
             return null;
         }

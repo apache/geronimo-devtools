@@ -29,7 +29,6 @@ import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTreeWizard;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
-import org.apache.geronimo.st.v21.ui.sections.PersContextRefSection;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -141,7 +140,7 @@ public class PersContextRefWizard extends AbstractTreeWizard {
         protected void initControl () {
             if (eObject == null) {
                 element.select(CONTEXT);
-                PersistenceContextRef contextRef = ((PersContextRefSection)section).getSelectedPersContext();
+                PersistenceContextRef contextRef = (PersistenceContextRef)section.getSelectedObject();
                 if (contextRef == null) {
                     element.setEnabled(false);
                 }
@@ -258,7 +257,7 @@ public class PersContextRefWizard extends AbstractTreeWizard {
             Property property = (Property)eObject;
             if (property == null) {
                 property = (Property)getEFactory().create(Property.class);
-                contextRef = ((PersContextRefSection)section).getSelectedPersContext();
+                contextRef = (PersistenceContextRef)section.getSelectedObject();
                 contextRef.getProperty().add(property);
             }
             property.setKey(textList.get(0).getText());

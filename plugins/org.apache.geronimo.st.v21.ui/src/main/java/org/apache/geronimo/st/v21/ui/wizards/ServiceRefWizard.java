@@ -28,7 +28,6 @@ import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTreeWizard;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
-import org.apache.geronimo.st.v21.ui.sections.ServiceRefSection;
 
 /**
  * @version $Rev$ $Date$
@@ -55,7 +54,7 @@ public class ServiceRefWizard extends AbstractTreeWizard {
         protected void initControl () {
             if (eObject == null) {
                 element.select(SERVICE_REF);
-                ServiceRef serviceRef = ((ServiceRefSection)section).getSelectedServiceRef();
+                ServiceRef serviceRef = (ServiceRef)section.getSelectedObject();
                 // use of ports and port completions are mutually exclusive
                 if (serviceRef == null) {
                     element.setEnabled(false);
@@ -187,7 +186,7 @@ public class ServiceRefWizard extends AbstractTreeWizard {
             Port port = (Port)eObject;
             if (port == null) {
                 port = (Port)getEFactory().create(Port.class);
-                serviceRef = ((ServiceRefSection)section).getSelectedServiceRef();
+                serviceRef = (ServiceRef)section.getSelectedObject();
                 serviceRef.getPort().add(port);
             }
             port.setPortName(textList.get(0).getText());
@@ -205,7 +204,7 @@ public class ServiceRefWizard extends AbstractTreeWizard {
             PortCompletion portComp = (PortCompletion)eObject;
             if (portComp == null) {
                 portComp = (PortCompletion)getEFactory().create(PortCompletion.class);
-                serviceRef = ((ServiceRefSection)section).getSelectedServiceRef();
+                serviceRef = (ServiceRef)section.getSelectedObject();
                 serviceRef.getServiceCompletion().getPortCompletion().add(portComp);
                 Port port = (Port)getEFactory().create(Port.class);
                 portComp.setPort (port);

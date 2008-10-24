@@ -164,8 +164,6 @@ public abstract class AbstractListSection extends AbstractSectionPart {
         return composite;
     }
 
-    protected abstract void createViewer(Composite composite);
-
     protected Composite createButtonComposite(Composite parent) {
         Composite buttonComp = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout();
@@ -192,8 +190,6 @@ public abstract class AbstractListSection extends AbstractSectionPart {
         });
         removeButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
     }
-
-    protected abstract void handleDelete();
 
     protected void createAddButton(FormToolkit toolkit, Composite buttonComp) {
         addButton = toolkit.createButton(buttonComp, CommonMessages.add, SWT.NONE);
@@ -254,22 +250,6 @@ public abstract class AbstractListSection extends AbstractSectionPart {
 
     protected void activateRemoveButton() {
         activateButton(removeButton);
-    }
-
-    protected abstract void activateButton(Button button);
-
-    abstract public String getTitle();
-
-    abstract public String getDescription();
-
-    abstract protected Wizard getWizard();
-
-    abstract public Class getTableEntryObjectType();
-
-    protected String[] COLUMN_NAMES = new String[] {};
-
-    public String[] getTableColumnNames() {
-        return COLUMN_NAMES;
     }
 
     public ColumnViewer getViewer() {
@@ -352,4 +332,18 @@ public abstract class AbstractListSection extends AbstractSectionPart {
     public IBaseLabelProvider getLabelProvider() {
         return new LabelProvider();
     }
+
+    abstract protected void createViewer(Composite composite);
+
+    abstract protected void handleDelete();
+
+    abstract protected void activateButton(Button button);
+
+    abstract public String getTitle();
+
+    abstract public String getDescription();
+
+    abstract protected Wizard getWizard();
+
+    abstract public Class getTableEntryObjectType();
 }

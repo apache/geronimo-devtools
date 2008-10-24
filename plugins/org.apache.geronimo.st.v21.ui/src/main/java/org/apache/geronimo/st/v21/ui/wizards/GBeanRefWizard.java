@@ -28,7 +28,6 @@ import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTreeWizard;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
-import org.apache.geronimo.st.v21.ui.sections.GBeanRefSection;
 
 /**
  * @version $Rev$ $Date$
@@ -85,7 +84,7 @@ public class GBeanRefWizard extends AbstractTreeWizard {
         protected void initControl () {
             if (eObject == null) {
                 element.select(GBEAN_REF);
-                GbeanRef gbeanRef = ((GBeanRefSection)section).getSelectedGbeanRef();
+                GbeanRef gbeanRef = (GbeanRef)section.getSelectedObject();
                 if (gbeanRef == null) {
                     element.setEnabled(false);
                 }
@@ -172,7 +171,7 @@ public class GBeanRefWizard extends AbstractTreeWizard {
                 return false;
             }
             String type = (String)eObject;
-            gbeanRef = ((GBeanRefSection)section).getSelectedGbeanRef();
+            gbeanRef = (GbeanRef)section.getSelectedObject();
             if (type == null) {
                 gbeanRef.getRefType().add(textList.get(0).getText());
             }
@@ -187,7 +186,7 @@ public class GBeanRefWizard extends AbstractTreeWizard {
             Pattern pattern = (Pattern)eObject;
             if (pattern == null) {
                 pattern = (Pattern)getEFactory().create(Pattern.class);
-                gbeanRef = ((GBeanRefSection)section).getSelectedGbeanRef();
+                gbeanRef = (GbeanRef)section.getSelectedObject();
                 gbeanRef.getPattern().add(pattern);
             }
             pattern.setName(textList.get(0).getText());

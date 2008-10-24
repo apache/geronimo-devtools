@@ -29,7 +29,6 @@ import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.ui.wizards.AbstractWizard;
 import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
-import org.apache.geronimo.st.v21.ui.sections.SecurityRoleMappingSection;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Combo;
@@ -154,7 +153,7 @@ public class SecurityRoleMappingWizard extends AbstractWizard {
             DistinguishedName distinguishedName = (DistinguishedName)eObject;
             if (distinguishedName == null) {
                 distinguishedName = (DistinguishedName)getEFactory().create(DistinguishedName.class);
-                Role role = ((SecurityRoleMappingSection) section).getSelectedRoleDuringAdd();
+                Role role = (Role) section.getSelectedObject();
                 role.getDistinguishedName().add(distinguishedName);
             }
             distinguishedName.setName(name.getText());
@@ -167,7 +166,7 @@ public class SecurityRoleMappingWizard extends AbstractWizard {
             Principal principal = (Principal)eObject;
             if (principal == null) {
                 principal = (Principal)getEFactory().create(Principal.class);
-                Role role = ((SecurityRoleMappingSection) section).getSelectedRoleDuringAdd();
+                Role role = (Role) section.getSelectedObject();
                 role.getPrincipal().add(principal);
             }
             principal.setName(name.getText());
@@ -181,7 +180,7 @@ public class SecurityRoleMappingWizard extends AbstractWizard {
             LoginDomainPrincipal loginDomainPrincipal = (LoginDomainPrincipal)eObject;
             if (loginDomainPrincipal == null) {
                 loginDomainPrincipal = (LoginDomainPrincipal)getEFactory().create(LoginDomainPrincipal.class);
-                Role role = ((SecurityRoleMappingSection) section).getSelectedRoleDuringAdd();
+                Role role = (Role) section.getSelectedObject();
                 role.getLoginDomainPrincipal().add(loginDomainPrincipal);
             }
             loginDomainPrincipal.setName(name.getText());
@@ -197,7 +196,7 @@ public class SecurityRoleMappingWizard extends AbstractWizard {
             RealmPrincipal realmPrincipal = (RealmPrincipal)eObject;
             if (realmPrincipal == null) {
                 realmPrincipal = (RealmPrincipal)getEFactory().create(RealmPrincipal.class);
-                Role role = ((SecurityRoleMappingSection) section).getSelectedRoleDuringAdd();
+                Role role = (Role) section.getSelectedObject();
                 role.getRealmPrincipal().add(realmPrincipal);
             }
             realmPrincipal.setName(name.getText());

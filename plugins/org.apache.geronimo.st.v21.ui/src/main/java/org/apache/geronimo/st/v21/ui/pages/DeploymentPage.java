@@ -17,6 +17,7 @@
 package org.apache.geronimo.st.v21.ui.pages;
 
 import org.apache.geronimo.jee.application.Application;
+import org.apache.geronimo.jee.applicationclient.ApplicationClient;
 import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
@@ -52,14 +53,20 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
         managedForm.addPart(new GBeanSection(getDeploymentPlan(), JAXBModelUtils.getGbeans(getDeploymentPlan()), body, toolkit, getStyle()));
         managedForm.addPart(new ClassFilterSection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan()), body, toolkit, getStyle(), true, true));
         managedForm.addPart(new ClassFilterSection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan()), body, toolkit, getStyle(), true, false));
+
         if (Application.class.isInstance(getDeploymentPlan().getValue())) {
             Application application = (Application)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
             managedForm.addPart(new ModuleSection(getDeploymentPlan(), body, toolkit, getStyle(), application.getModule()));
             managedForm.addPart(new ExtModuleSection(getDeploymentPlan(), body, toolkit, getStyle(), application.getExtModule()));
-        }
+        } 
         if (Connector.class.isInstance(getDeploymentPlan().getValue())) {
             Connector connector = (Connector)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
             managedForm.addPart(new AdminObjectSection(getDeploymentPlan(), body, toolkit, getStyle(), connector.getAdminobject()));
+        }
+        if (ApplicationClient.class.isInstance(getDeploymentPlan().getValue())) {
+            managedForm.addPart(new DependencySection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan(), false), body, toolkit, getStyle(), false));
+            managedForm.addPart(new ClassFilterSection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan(), false), body, toolkit, getStyle(), false, true));
+            managedForm.addPart(new ClassFilterSection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan(), false), body, toolkit, getStyle(), false, false));
         }
     }
     

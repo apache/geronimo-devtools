@@ -88,7 +88,7 @@ public class PersContextRefSection extends AbstractTreeSection {
         }
     }
 
-    public PersistenceContextRef getSelectedPersContext () {
+    public PersistenceContextRef getSelectedObject () {
         if (tree.getSelection().length == 0) {
             return null;
         }
