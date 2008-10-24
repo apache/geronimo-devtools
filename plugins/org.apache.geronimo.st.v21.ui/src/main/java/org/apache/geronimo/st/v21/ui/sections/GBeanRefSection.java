@@ -93,7 +93,7 @@ public class GBeanRefSection extends AbstractTreeSection {
         }
     }
 
-    public GbeanRef getSelectedGbeanRef () {
+    public GbeanRef getSelectedObject () {
         if (tree.getSelection().length == 0) {
             return null;
         }

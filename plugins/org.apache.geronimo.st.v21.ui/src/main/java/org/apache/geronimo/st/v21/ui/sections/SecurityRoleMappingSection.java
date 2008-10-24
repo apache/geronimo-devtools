@@ -115,7 +115,7 @@ public class SecurityRoleMappingSection extends AbstractTreeSection {
         ((ArrayList) JAXBUtils.getValue(role, selectedObject.getClass().getSimpleName())).remove(selectedObject);
     }
 
-    public Role getSelectedRoleDuringAdd() {
+    public Role getSelectedObject() {
         return (Role) tree.getSelection()[0].getData();
     }
 

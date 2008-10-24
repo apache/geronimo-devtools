@@ -27,7 +27,6 @@ import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader;
 import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v21.core.GeronimoV21Utils;
-import org.apache.geronimo.st.v21.ui.pages.AppClientDeploymentPage;
 import org.apache.geronimo.st.v21.ui.pages.AppClientGeneralPage;
 import org.apache.geronimo.st.v21.ui.pages.AppClientSecurityPage;
 import org.apache.geronimo.st.v21.ui.pages.AppGeneralPage;
@@ -76,7 +75,7 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
         editor.addPage(new AppClientGeneralPage(editor, "appclientgeneralpage", CommonMessages.editorTabGeneral));
         editor.addPage(createNamingFormPage(editor));
         editor.addPage(new AppClientSecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity));
-        editor.addPage(new AppClientDeploymentPage(editor, "deploymentpage", CommonMessages.editorTabDeployment));
+        editor.addPage(createDeploymentFormPage(editor));
     }
 
     /*

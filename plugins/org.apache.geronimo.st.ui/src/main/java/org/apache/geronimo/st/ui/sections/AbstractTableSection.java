@@ -25,7 +25,6 @@ import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -46,8 +45,10 @@ public abstract class AbstractTableSection extends AbstractListSection {
 
     protected Table table;
 
-    public Listener sortListener = null;
+    protected String[] COLUMN_NAMES = new String[] {};
 
+    public Listener sortListener = null;
+    
     public AbstractTableSection(Section section) {
         super(section);
     }
@@ -131,5 +132,7 @@ public abstract class AbstractTableSection extends AbstractListSection {
         button.setEnabled(selected);
     }
 
-    abstract protected Wizard getWizard();
+    public String[] getTableColumnNames() {
+        return COLUMN_NAMES;
+    }
 }

@@ -74,7 +74,7 @@ public class ServiceRefSection extends AbstractTreeSection {
         }
     }
 
-    public ServiceRef getSelectedServiceRef () {
+    public ServiceRef getSelectedObject () {
         if (tree.getSelection().length == 0) {
             return null;
         }

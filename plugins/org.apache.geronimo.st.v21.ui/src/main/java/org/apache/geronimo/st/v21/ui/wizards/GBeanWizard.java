@@ -29,7 +29,6 @@ import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTreeWizard;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
-import org.apache.geronimo.st.v21.ui.sections.GBeanSection;
 
 /**
  * @version $Rev$ $Date$
@@ -58,7 +57,7 @@ public class GBeanWizard extends AbstractTreeWizard {
         protected void initControl() {
             if (eObject == null) {
                 element.select(GBEAN);
-                if (((GBeanSection)section).getSelectedGbean() == null) {
+                if (section.getSelectedObject() == null) {
                     element.setEnabled(false);
                 }
             }
@@ -200,7 +199,7 @@ public class GBeanWizard extends AbstractTreeWizard {
             Attribute attribute = (Attribute)eObject;
             if (attribute == null) {
                 attribute = (Attribute)getEFactory().create(Attribute.class);
-                gbean = ((GBeanSection)section).getSelectedGbean();
+                gbean = (Gbean)section.getSelectedObject();
                 
                 // add the JAXBElement of an Attribute, not the Attribute
                 ObjectFactory objectFactory = new ObjectFactory();
@@ -218,7 +217,7 @@ public class GBeanWizard extends AbstractTreeWizard {
             Pattern dependency = (Pattern)eObject;
             if (dependency == null) {
                 dependency = (Pattern)getEFactory().create(Pattern.class);
-                gbean = ((GBeanSection)section).getSelectedGbean();
+                gbean = (Gbean)section.getSelectedObject();
 
                 // add the JAXBElement of a Dependency, not the Dependency
                 ObjectFactory objectFactory = new ObjectFactory();
@@ -240,7 +239,7 @@ public class GBeanWizard extends AbstractTreeWizard {
             Reference reference = (Reference)eObject;
             if (reference == null) {
                 reference = (Reference)getEFactory().create(Reference.class);
-                gbean = ((GBeanSection)section).getSelectedGbean();
+                gbean = (Gbean)section.getSelectedObject();
 
                 // add the JAXBElement of a Dependency, not the Dependency
                 ObjectFactory objectFactory = new ObjectFactory();
