@@ -83,7 +83,7 @@ public class Tutorial5Minute {
                 new String[] {"EJB", "EJB Project"});
         aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
         aHelper.setTextField(wizardShell, "", "SampleEJB");
-        aHelper.clickButton (wizardShell, "Add project to an EAR");
+        aHelper.clickButton (wizardShell, "Add &project to an EAR");
         aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
         aHelper.clickButton (wizardShell, "Create an EJB Client JAR module to hold the client interfaces and classes.");
         aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
@@ -94,6 +94,7 @@ public class Tutorial5Minute {
         
         aHelper.waitForDialogDisposal (wizardShell);
         
+        aHelper.doubleClickItem(workbenchShell, "SampleEJB");
         aHelper.doubleClickItem(workbenchShell, "ejbModule");
         aHelper.doubleClickItem(workbenchShell, "META-INF");
         Shell questionShell = aHelper.rightClickItem(workbenchShell, "openejb-jar.xml",
@@ -111,7 +112,7 @@ public class Tutorial5Minute {
                 new String[] {"Web", "Dynamic Web Project"});
         aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
         aHelper.setTextField(wizardShell, "", "SampleWAR");
-        aHelper.clickButton (wizardShell, "Add project to an EAR");
+        aHelper.clickButton (wizardShell, "Add &project to an EAR");
         aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
         aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
         aHelper.setTextField(wizardShell, "default", "sampleear");

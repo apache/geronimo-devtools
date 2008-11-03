@@ -29,10 +29,10 @@
 <project name="TestsuiteArtifacts">
 
     <target name="init">
-        <property name="ganymede_url"           value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/ganymede/R/"/>
-        <property name="ganymede_jee_win32"     value="eclipse-jee-ganymede-win32.zip"/>
-        <property name="ganymede_jee_linux"     value="eclipse-jee-ganymede-linux-gtk.tar"/>
-        <property name="ganymede_jee_macos"     value="eclipse-jee-ganymede-macosx-carbon.tar"/>
+        <property name="ganymede_url"           value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/ganymede/SR1/"/>
+        <property name="ganymede_jee_win32"     value="eclipse-jee-ganymede-SR1-win32.zip"/>
+        <property name="ganymede_jee_linux"     value="eclipse-jee-ganymede-SR1-linux-gtk.tar"/>
+        <property name="ganymede_jee_macos"     value="eclipse-jee-ganymede-SR1-macosx-carbon.tar"/>
         <property name="ganymede_jee_linux_gz"  value="${ganymede_jee_linux}.gz"/>
         <property name="ganymede_jee_macos_gz"  value="${ganymede_jee_macos}.gz"/>
         <property name="protocol"               value="&amp;r=1&amp;protocol=http"/>
