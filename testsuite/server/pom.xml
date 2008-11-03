@@ -63,7 +63,7 @@
                                  
                                 <!--
                                  |
-                                 | Unzip and rename the testsuite Geronimo server v2.0
+                                 | Unzip and rename the testsuite Geronimo server v2.0.2
                                  |
                                  -->
                                 <property name="geronimo_install2"       value="${basedir}/../launcher/"/>
