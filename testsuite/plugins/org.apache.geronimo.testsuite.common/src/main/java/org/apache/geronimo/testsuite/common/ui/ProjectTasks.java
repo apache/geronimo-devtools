@@ -19,6 +19,8 @@ package org.apache.geronimo.testsuite.common.ui;
 
 import java.io.FileInputStream;
 
+import org.apache.geronimo.testsuite.common.AssertUtil;
+import org.apache.geronimo.testsuite.common.selenium.EclipseSelenium;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -157,6 +159,10 @@ public class ProjectTasks {
         // copy over the correct contents
         aFile = aProject.getFile("src/sampleear/MyServlet.java");
         aFile.setContents(new FileInputStream (fileDir + "/MyServlet.java"), true, true, null);
+
+        // close the open file
+        aHelper.clickMenuItem (workbenchShell,
+                new String[] {"&File", "&Close"});
     }
     
     public void deleteProject (String projectName) throws MultipleFoundException, NotFoundException {
@@ -169,4 +175,20 @@ public class ProjectTasks {
         aHelper.waitForDialogDisposal (questionShell);
     }
 
+    public void webTesting () throws Exception {
+        EclipseSelenium selenium = new EclipseSelenium();
+        selenium.start();
+        selenium.open( "http://localhost:8080/SampleWAR/");
+        selenium.type("name", "Tom");
+        selenium.click("submit");
+        selenium.waitForPageToLoad( "3000" );
+        AssertUtil.assertTrue(selenium.getHtmlSource().indexOf( "says hello to" ) > 0);
+
+        // TODO fill in a name and click the Process button
+        // This is a problem, HTML objects are not the same as SWT objects and 
+        // Abbot cannot find these
+        //aHelper.setTextField(workbenchShell, "", "MyName");
+        //aHelper.clickButton (workbenchShell, "Press me!");
+        selenium.stop();
+    }
 }

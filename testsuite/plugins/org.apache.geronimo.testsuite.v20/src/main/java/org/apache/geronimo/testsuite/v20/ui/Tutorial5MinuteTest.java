@@ -21,7 +21,6 @@ import org.apache.geronimo.testsuite.common.ui.AbbotHelper;
 import org.apache.geronimo.testsuite.common.ui.Constants;
 import org.apache.geronimo.testsuite.common.ui.ProjectTasks;
 import org.apache.geronimo.testsuite.common.ui.ServerTasks;
-import org.apache.geronimo.testsuite.common.ui.Tutorial5Minute;
 import org.apache.geronimo.testsuite.common.ui.WorkbenchTasks;
 import org.eclipse.swt.widgets.Shell;
 
@@ -67,13 +66,12 @@ public class Tutorial5MinuteTest extends WorkbenchTestCase {
             // create server from an installed instance
             serverTasks.createServer();
 
-            Tutorial5Minute tutorial = new Tutorial5Minute (workbenchShell, aHelper);
-            tutorial.createProjects ();
+            projectTasks.createProjects ();
 
             serverTasks.publishAllProjects();
             serverTasks.startServer();
 
-            tutorial.webTesting();
+            projectTasks.webTesting();
 
             serverTasks.stopServer();
 
