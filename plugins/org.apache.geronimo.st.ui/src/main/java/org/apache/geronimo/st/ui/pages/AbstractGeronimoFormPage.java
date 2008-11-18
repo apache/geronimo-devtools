@@ -22,14 +22,13 @@ import org.apache.geronimo.st.core.DeploymentDescriptorUtils;
 import org.apache.geronimo.st.core.descriptor.AbstractDeploymentDescriptor;
 import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
-import org.apache.geronimo.st.ui.internal.Messages;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
@@ -69,6 +68,16 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
      */
     public AbstractGeronimoFormPage(String id, String title) {
         super(id, title);
+    }
+
+    public void refresh() {
+        // clear the old composite and tool bar
+        Control[] controls = body.getChildren();
+        for (int i = 0; i < controls.length; i++) {
+            controls[i].dispose();
+        }
+        getManagedForm().getForm().getToolBarManager().removeAll();
+        createFormContent(getManagedForm());
     }
 
     /*
@@ -165,16 +174,5 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
 
     public String getFormTitle() {
         return getTitle();
-    }
-
-    // Do not allow the user to go to the source page if data has not been saved.
-    @Override
-    public boolean canLeaveThePage() {
-        if (getEditor().isDirty() && 
-            getEditor().getActivePageInstance() == getEditor().findPage(Messages.editorTabSource)) {
-            MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), Messages.savePageTitle, Messages.savePageMessage);
-            return false;
-        }
-        return true;
     }
 }
