@@ -47,12 +47,22 @@ public class ResourceEnvRefWizard extends AbstractTableWizard {
     public String getEditWizardWindowTitle() {
         return CommonMessages.wizardEditTitle_ResEnvRef;
     }
-
-    public String getWizardFirstPageTitle() {
-        return CommonMessages.wizardPageTitle_ResEnvRef;
+    
+    public void addPages() {
+        addPage(new ResourceEnvRefWizardPage("Page0"));
     }
 
-    public String getWizardFirstPageDescription() {
-        return CommonMessages.wizardPageDescription_ResEnvRef;
+    public class ResourceEnvRefWizardPage extends AbstractTableWizardPage {
+        public ResourceEnvRefWizardPage(String pageName) {
+            super(pageName);
+        }
+
+        public String getWizardPageTitle() {
+            return CommonMessages.wizardPageTitle_ResEnvRef;
+        }
+
+        public String getWizardPageDescription() {
+            return CommonMessages.wizardPageDescription_ResEnvRef;
+        }
     }
 }

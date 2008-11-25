@@ -128,6 +128,14 @@ public class EjbRelationWizard extends AbstractTreeWizard {
                 labelList.get(1).setText(CommonMessages.foreignKeyColumn);
             }
         }
+
+        public String getWizardPageTitle() {
+            return CommonMessages.wizardPageTitle_EjbRelation;
+        }
+
+        public String getWizardPageDescription() {
+            return CommonMessages.wizardPageDescription_EjbRelation;
+        }
     }
 
     @Override
@@ -211,13 +219,5 @@ public class EjbRelationWizard extends AbstractTreeWizard {
 
     public String getEditWizardWindowTitle() {
         return CommonMessages.wizardEditTitle_EjbRelation;
-    }
-
-    public String getWizardPageTitle() {
-        return CommonMessages.wizardPageTitle_EjbRelation;
-    }
-
-    public String getWizardPageDescription() {
-        return CommonMessages.wizardPageDescription_EjbRelation;
     }
 }

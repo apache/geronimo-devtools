@@ -117,6 +117,14 @@ public class AdminObjectWizard extends AbstractTreeWizard {
                 labelList.get(1).setText(CommonMessages.value);
             }
         }
+
+        public String getWizardPageTitle() {
+            return CommonMessages.wizardPageTitle_AdminObject;
+        }
+
+        public String getWizardPageDescription() {
+            return CommonMessages.wizardPageDescription_AdminObject;
+        }
     }
 
     @Override
@@ -178,13 +186,5 @@ public class AdminObjectWizard extends AbstractTreeWizard {
 
     public String getEditWizardWindowTitle() {
         return CommonMessages.wizardEditTitle_AdminObject;
-    }
-
-    public String getWizardPageTitle() {
-        return CommonMessages.wizardPageTitle_AdminObject;
-    }
-
-    public String getWizardPageDescription() {
-        return CommonMessages.wizardPageDescription_AdminObject;
     }
 }

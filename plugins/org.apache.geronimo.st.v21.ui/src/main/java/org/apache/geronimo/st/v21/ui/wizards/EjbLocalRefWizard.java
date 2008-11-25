@@ -46,12 +46,22 @@ public class EjbLocalRefWizard extends AbstractTableWizard {
     public String getEditWizardWindowTitle() {
         return CommonMessages.wizardEditTitle_EjbLocalRef;
     }
-
-    public String getWizardFirstPageTitle() {
-        return CommonMessages.wizardPageTitle_EjbLocalRef;
+    
+    public void addPages() {
+        addPage(new EjbLocalRefWizardPage("Page0"));
     }
 
-    public String getWizardFirstPageDescription() {
-        return CommonMessages.wizardPageDescription_EjbLocalRef;
+    public class EjbLocalRefWizardPage extends AbstractTableWizardPage {
+        public EjbLocalRefWizardPage(String pageName) {
+            super(pageName);
+        }
+
+        public String getWizardPageTitle() {
+            return CommonMessages.wizardPageTitle_EjbLocalRef;
+        }
+
+        public String getWizardPageDescription() {
+            return CommonMessages.wizardPageDescription_EjbLocalRef;
+        }
     }
 }

@@ -41,10 +41,12 @@ public abstract class AbstractTableWizard extends AbstractWizard {
 
     public abstract String[] getTableColumnEAttributes();
 
-    public class DynamicWizardPage extends AbstractWizardPage {
+    public abstract void addPages();
+
+    public abstract class AbstractTableWizardPage extends AbstractWizardPage {
         protected Text[] textEntries = new Text[getTableColumnEAttributes().length];
 
-        public DynamicWizardPage(String pageName) {
+        public AbstractTableWizardPage(String pageName) {
             super(pageName);
         }
 
@@ -73,11 +75,12 @@ public abstract class AbstractTableWizard extends AbstractWizard {
         public Text getTextEntry(int object) {
             return textEntries[object];
         }
-    }
 
-    @Override
-    public void addPages() {
-        addPage(new DynamicWizardPage("Page0"));
+        @Override
+        protected abstract String getWizardPageTitle();
+
+        @Override
+        protected abstract String getWizardPageDescription();
     }
 
     @Override
@@ -95,26 +98,12 @@ public abstract class AbstractTableWizard extends AbstractWizard {
     }
 
     public void processEAttributes(IWizardPage page) {
-        if (page instanceof DynamicWizardPage) {
+        if (page instanceof AbstractTableWizardPage) {
             for (int i = 0; i < getTableColumnEAttributes().length; i++) {
-                String value = ((DynamicWizardPage) page).textEntries[i].getText();
+                String value = ((AbstractTableWizardPage) page).textEntries[i].getText();
                 String attribute = getTableColumnEAttributes()[i];
                 JAXBUtils.setValue(eObject, attribute, value);
             }
         }
     }
-
-    @Override
-    protected String getWizardPageTitle() {
-        return getWizardFirstPageTitle();
-    }
-
-    @Override
-    protected String getWizardPageDescription() {
-        return getWizardFirstPageDescription();
-    }
-
-    public abstract String getWizardFirstPageTitle();
-
-    public abstract String getWizardFirstPageDescription();
 }

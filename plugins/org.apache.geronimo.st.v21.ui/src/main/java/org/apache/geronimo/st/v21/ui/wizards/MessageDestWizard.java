@@ -61,14 +61,6 @@ public class MessageDestWizard extends AbstractTableWizard {
         return CommonMessages.wizardEditTitle_MessageDest;
     }
 
-    public String getWizardFirstPageTitle() {
-        return CommonMessages.wizardPageTitle_MessageDest;
-    }
-
-    public String getWizardFirstPageDescription() {
-        return CommonMessages.wizardPageDescription_MessageDest;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -80,7 +72,7 @@ public class MessageDestWizard extends AbstractTableWizard {
 
     // need to extend the DynamicWizardPage only so that when the Edit dialog is shown
     // the values are brought in properly.
-    public class MessageDestWizardPage extends DynamicWizardPage {
+    public class MessageDestWizardPage extends AbstractTableWizardPage {
         public MessageDestWizardPage(String pageName) {
             super(pageName);
         }
@@ -127,10 +119,18 @@ public class MessageDestWizard extends AbstractTableWizard {
             setControl(composite);
             textEntries[0].setFocus();
         }
+
+        public String getWizardPageTitle() {
+            return CommonMessages.wizardPageTitle_MessageDest;
+        }
+
+        public String getWizardPageDescription() {
+            return CommonMessages.wizardPageDescription_MessageDest;
+        }
     }
     
     public boolean performFinish() {
-        DynamicWizardPage page = (DynamicWizardPage) getPages()[0];
+        AbstractTableWizardPage page = (AbstractTableWizardPage) getPages()[0];
         Pattern msgPattern;
         MessageDestination messageDest;
 

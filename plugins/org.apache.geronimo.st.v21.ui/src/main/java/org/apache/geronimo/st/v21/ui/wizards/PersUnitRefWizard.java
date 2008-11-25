@@ -57,14 +57,6 @@ public class PersUnitRefWizard extends AbstractTreeWizard {
     public String getEditWizardWindowTitle() {
         return CommonMessages.wizardEditTitle_PersUnitRef;
     }
-
-    public String getWizardPageTitle() {
-        return CommonMessages.wizardPageTitle_PersUnitRef;
-    }
-
-    public String getWizardPageDescription() {
-        return CommonMessages.wizardPageDescription_PersUnitRef;
-    }
  
     /*
      * (non-Javadoc)
@@ -152,6 +144,14 @@ public class PersUnitRefWizard extends AbstractTreeWizard {
             for (int i = 2; i < maxTextFields; i++) {
                 textList.get(i).setEnabled(specifyPattern.getSelection());
             }
+        }
+
+        public String getWizardPageTitle() {
+            return CommonMessages.wizardPageTitle_PersUnitRef;
+        }
+
+        public String getWizardPageDescription() {
+            return CommonMessages.wizardPageDescription_PersUnitRef;
         }
     }
 

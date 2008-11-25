@@ -164,6 +164,14 @@ public class GBeanWizard extends AbstractTreeWizard {
                 break;
             }
         }
+
+        public String getWizardPageTitle() {
+            return CommonMessages.wizardEditTitle_GBean;
+        }
+
+        public String getWizardPageDescription() {
+            return CommonMessages.wizardPageTitle_GBean;
+        }
     }
 
     @Override
@@ -267,13 +275,5 @@ public class GBeanWizard extends AbstractTreeWizard {
 
     public String getEditWizardWindowTitle() {
         return CommonMessages.wizardEditTitle_GBean;
-    }
-
-    public String getWizardPageTitle() {
-        return CommonMessages.wizardEditTitle_GBean;
-    }
-
-    public String getWizardPageDescription() {
-        return CommonMessages.wizardPageTitle_GBean;
     }
 }

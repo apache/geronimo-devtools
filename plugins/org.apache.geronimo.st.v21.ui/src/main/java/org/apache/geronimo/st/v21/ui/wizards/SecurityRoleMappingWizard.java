@@ -136,6 +136,16 @@ public class SecurityRoleMappingWizard extends AbstractWizard {
             realmNameLabel.setVisible (selection == REALM_PRINCIPAL ? true : false);
             realmName.setVisible (selection == REALM_PRINCIPAL ? true : false);
         }
+
+        @Override
+        protected String getWizardPageTitle() {
+            return CommonMessages.wizardPageTitle_RoleMapping;
+        }
+
+        @Override
+        protected String getWizardPageDescription() {
+            return CommonMessages.wizardPageDescription_RoleMapping;
+        }
     }
 
     @Override
@@ -220,15 +230,5 @@ public class SecurityRoleMappingWizard extends AbstractWizard {
     @Override
     protected String getEditWizardWindowTitle() {
         return CommonMessages.wizardEditTitle_RoleMapping;
-    }
-
-    @Override
-    protected String getWizardPageTitle() {
-        return CommonMessages.wizardPageTitle_RoleMapping;
-    }
-
-    @Override
-    protected String getWizardPageDescription() {
-        return CommonMessages.wizardPageDescription_RoleMapping;
     }
 }

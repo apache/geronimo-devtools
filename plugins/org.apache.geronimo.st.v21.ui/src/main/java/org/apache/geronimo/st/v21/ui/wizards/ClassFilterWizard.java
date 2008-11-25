@@ -48,6 +48,10 @@ public class ClassFilterWizard extends AbstractTableWizard {
         return new String[] { "Value" };
     }
 
+    public void addPages() {
+        addPage(new ClassFilterWizardPage("Page0"));
+    }
+    
     public String getAddWizardWindowTitle() {
         return CommonMessages.wizardNewTitle_Dependency;
     }
@@ -56,19 +60,25 @@ public class ClassFilterWizard extends AbstractTableWizard {
         return CommonMessages.wizardEditTitle_Dependency;
     }
 
-    public String getWizardFirstPageTitle() {
-        return CommonMessages.wizardPageTitle_Dependency;
-    }
+    public class ClassFilterWizardPage extends AbstractTableWizardPage {
+        public ClassFilterWizardPage(String pageName) {
+            super(pageName);
+        }
 
-    public String getWizardFirstPageDescription() {
-        return CommonMessages.wizardPageDescription_Dependency;
+        public String getWizardPageTitle() {
+            return CommonMessages.wizardPageTitle_Dependency;
+        }
+
+        public String getWizardPageDescription() {
+            return CommonMessages.wizardPageDescription_Dependency;
+        }
     }
     
     /* (non-Javadoc)
      * @see org.apache.geronimo.st.ui.wizards.AbstractTableWizard#performFinish()
      */
     public boolean performFinish() {
-        DynamicWizardPage page = (DynamicWizardPage) getPages()[0];
+        AbstractTableWizardPage page = (AbstractTableWizardPage) getPages()[0];
 
         if (eObject == null) {
             eObject = new String();
