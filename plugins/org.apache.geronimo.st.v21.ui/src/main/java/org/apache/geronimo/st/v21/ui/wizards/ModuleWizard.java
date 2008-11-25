@@ -62,14 +62,6 @@ public class ModuleWizard extends AbstractTableWizard {
         return CommonMessages.wizardEditTitle_Module;
     }
 
-    public String getWizardFirstPageTitle() {
-        return CommonMessages.wizardPageTitle_Module;
-    }
-
-    public String getWizardFirstPageDescription() {
-        return CommonMessages.wizardPageDescription_Module;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -81,7 +73,7 @@ public class ModuleWizard extends AbstractTableWizard {
 
     // need to extend the DynamicWizardPage only so that when the Edit dialog is shown
     // the values are brought in properly.
-    public class ModuleWizardPage extends DynamicWizardPage {
+    public class ModuleWizardPage extends AbstractTableWizardPage {
         protected Button[] buttonList = new Button[4];
         
         public ModuleWizardPage(String pageName) {
@@ -162,10 +154,18 @@ public class ModuleWizard extends AbstractTableWizard {
             setControl(composite);
             textEntries[0].setFocus();
         }
+
+        public String getWizardPageTitle() {
+            return CommonMessages.wizardPageTitle_Module;
+        }
+
+        public String getWizardPageDescription() {
+            return CommonMessages.wizardPageDescription_Module;
+        }
     }
 
     public boolean performFinish() {
-        DynamicWizardPage page = (DynamicWizardPage) getPages()[0];
+        AbstractTableWizardPage page = (AbstractTableWizardPage) getPages()[0];
         Path path;
         Module module;
 

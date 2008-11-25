@@ -67,14 +67,6 @@ public class ExtModuleWizard extends AbstractTableWizard {
         return CommonMessages.wizardEditTitle_ExtModule;
     }
 
-    public String getWizardFirstPageTitle() {
-        return CommonMessages.wizardPageTitle_ExtModule;
-    }
-
-    public String getWizardFirstPageDescription() {
-        return CommonMessages.wizardPageDescription_ExtModule;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -86,7 +78,7 @@ public class ExtModuleWizard extends AbstractTableWizard {
 
     // need to extend the DynamicWizardPage only so that when the Edit dialog is shown
     // the values are brought in properly.
-    public class ModuleWizardPage extends DynamicWizardPage {
+    public class ModuleWizardPage extends AbstractTableWizardPage {
         protected Button[] buttonList = new Button[6];
         
         public ModuleWizardPage(String pageName) {
@@ -259,6 +251,14 @@ public class ExtModuleWizard extends AbstractTableWizard {
             textEntries[3].setEnabled(buttonList[5].getSelection());
             textEntries[4].setEnabled(buttonList[5].getSelection());
             textEntries[5].setEnabled(buttonList[5].getSelection());
+        }
+
+        public String getWizardPageTitle() {
+            return CommonMessages.wizardPageTitle_ExtModule;
+        }
+
+        public String getWizardPageDescription() {
+            return CommonMessages.wizardPageDescription_ExtModule;
         }
     }
     

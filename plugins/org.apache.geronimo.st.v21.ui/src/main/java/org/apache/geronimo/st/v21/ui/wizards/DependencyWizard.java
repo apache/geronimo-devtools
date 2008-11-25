@@ -21,7 +21,6 @@ import java.util.List;
 import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.SortListener;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
 import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
@@ -29,11 +28,9 @@ import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 /**
@@ -69,7 +66,7 @@ public class DependencyWizard extends AbstractTableWizard {
         addPage(new DependencyWizardPage("AddDependencyPage"));
     }
 
-    public class DependencyWizardPage extends DynamicWizardPage {
+    public class DependencyWizardPage extends AbstractTableWizardPage {
 
         public DependencyWizardPage(String pageName) {
             super(pageName);
@@ -91,7 +88,8 @@ public class DependencyWizard extends AbstractTableWizard {
             if (eObject == null) {
                 TabItem item2 = new TabItem(tabFolder, SWT.NONE);
                 item2.setText(CommonMessages.wizardTabServer_Dependency);
-                createTable(tabFolder);
+                int columnWidths[] = { 80, 220, 50, 65 };
+                dependencyTable = createTable(tabFolder, section.getTableColumnNames(), columnWidths);
                 populateTable();
                 item2.setControl(dependencyTable);
             }
@@ -111,33 +109,6 @@ public class DependencyWizard extends AbstractTableWizard {
             return data;
         }
 
-        private void createTable(Composite composite) {
-            int style = SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.FULL_SELECTION | SWT.HIDE_SELECTION;
-
-            dependencyTable = new Table(composite, style);
-            GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.VERTICAL_ALIGN_FILL);
-            data.grabExcessHorizontalSpace = true;
-            data.grabExcessVerticalSpace = true;
-            data.horizontalSpan = 2;
-            data.horizontalAlignment = GridData.FILL;
-            data.heightHint = 60;
-            data.widthHint = 400;
-            dependencyTable.setLayoutData(data);
-            dependencyTable.setLinesVisible(false);
-            dependencyTable.setHeaderVisible(true);
-
-            String[] columnNames = section.getTableColumnNames();
-            final TableColumn[] column = new TableColumn[columnNames.length];
-            int columnWidth[] = { 80, 220, 50, 65 };
-            Listener sortListener = new SortListener(dependencyTable, columnNames);
-            for (int i = 0; i < columnNames.length; ++i) {
-                column[i] = new TableColumn(dependencyTable, SWT.LEFT, i);
-                column[i].setText(columnNames[i]);
-                column[i].setWidth(columnWidth[i]);
-                column[i].addListener(SWT.Selection, sortListener);
-            }
-        }
-
         public void populateTable() {
             List<Dependency> serverList = GeronimoServerInfo.getInstance().getCommonLibs();
             List<Dependency> alreadyAddedDependencies = (List<Dependency>) section.getObjectContainer();
@@ -148,6 +119,14 @@ public class DependencyWizard extends AbstractTableWizard {
                 tabItem.setData(dependency);
                 tabItem.setText(dependencyToStringArray(dependency));
             }
+        }
+
+        public String getWizardPageTitle() {
+            return CommonMessages.wizardPageTitle_Dependency;
+        }
+
+        public String getWizardPageDescription() {
+            return CommonMessages.wizardPageDescription_Dependency;
         }
     }
 
@@ -183,13 +162,5 @@ public class DependencyWizard extends AbstractTableWizard {
 
     public String getEditWizardWindowTitle() {
         return CommonMessages.wizardEditTitle_Dependency;
-    }
-
-    public String getWizardFirstPageTitle() {
-        return CommonMessages.wizardPageTitle_Dependency;
-    }
-
-    public String getWizardFirstPageDescription() {
-        return CommonMessages.wizardPageDescription_Dependency;
     }
 }

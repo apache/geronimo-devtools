@@ -146,6 +146,14 @@ public class ServiceRefWizard extends AbstractTreeWizard {
                 labelList.get(6).setText(CommonMessages.bindingName);
             }
         }
+
+        public String getWizardPageTitle() {
+            return CommonMessages.wizardPageTitle_ServiceRef;
+        }
+
+        public String getWizardPageDescription() {
+            return CommonMessages.wizardPageDescription_ServiceRef;
+        }
     }
 
     @Override
@@ -230,13 +238,5 @@ public class ServiceRefWizard extends AbstractTreeWizard {
 
     public String getEditWizardWindowTitle() {
         return CommonMessages.wizardEditTitle_ServiceRef;
-    }
-
-    public String getWizardPageTitle() {
-        return CommonMessages.wizardPageTitle_ServiceRef;
-    }
-
-    public String getWizardPageDescription() {
-        return CommonMessages.wizardPageDescription_ServiceRef;
     }
 }

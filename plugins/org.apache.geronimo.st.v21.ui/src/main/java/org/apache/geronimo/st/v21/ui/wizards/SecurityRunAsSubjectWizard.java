@@ -61,6 +61,16 @@ public class SecurityRunAsSubjectWizard extends AbstractWizard {
             }
             setControl(composite);
         }
+
+        @Override
+        protected String getWizardPageTitle() {
+            return CommonMessages.wizardPageTitle_RunAsSubject;
+        }
+
+        @Override
+        protected String getWizardPageDescription() {
+            return CommonMessages.wizardPageDescription_RunAsSubject;
+        }
     }
 
     @Override
@@ -96,15 +106,5 @@ public class SecurityRunAsSubjectWizard extends AbstractWizard {
     @Override
     protected String getEditWizardWindowTitle() {
         return CommonMessages.wizardNewTitle_RunAsSubject;
-    }
-
-    @Override
-    protected String getWizardPageTitle() {
-        return CommonMessages.wizardPageTitle_RunAsSubject;
-    }
-
-    @Override
-    protected String getWizardPageDescription() {
-        return CommonMessages.wizardPageDescription_RunAsSubject;
     }
 }

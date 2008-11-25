@@ -68,14 +68,6 @@ public class PersContextRefWizard extends AbstractTreeWizard {
     public String getEditWizardWindowTitle() {
         return CommonMessages.wizardEditTitle_PersContextRef;
     }
-
-    public String getWizardPageTitle() {
-        return CommonMessages.wizardPageTitle_PersContextRef;
-    }
-
-    public String getWizardPageDescription() {
-        return CommonMessages.wizardPageDescription_PersContextRef;
-    }
  
     /*
      * (non-Javadoc)
@@ -209,6 +201,14 @@ public class PersContextRefWizard extends AbstractTreeWizard {
                     textList.get(i).setText("");
                 }
             }
+        }
+
+        public String getWizardPageTitle() {
+            return CommonMessages.wizardPageTitle_PersContextRef;
+        }
+
+        public String getWizardPageDescription() {
+            return CommonMessages.wizardPageDescription_PersContextRef;
         }
     }
 

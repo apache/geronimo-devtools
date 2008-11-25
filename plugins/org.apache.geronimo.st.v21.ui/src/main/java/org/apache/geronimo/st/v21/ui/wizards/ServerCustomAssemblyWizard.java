@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Text;
 public class ServerCustomAssemblyWizard extends AbstractWizard {
 
     private Table pluginTable;
-    
+
     protected Text group;
     protected Text artifact;
     protected Text version;
@@ -113,13 +113,23 @@ public class ServerCustomAssemblyWizard extends AbstractWizard {
 
         public void populateTable() {
             List<String> pluginList = customAssembly.getPluginList();
-             
+
             for (int i = 0; i < pluginList.size(); ++i) {
                 TableItem tableItem = new TableItem(pluginTable, SWT.NONE);
                 String tableEntry = pluginList.get(i);
                 tableItem.setData(tableEntry);
                 tableItem.setText(new String[] {tableEntry});
             }
+        }
+
+        @Override
+        protected String getWizardPageTitle() {
+            return CommonMessages.wizardPageTitle_ServerCustomAssembly;
+        }
+
+        @Override
+        protected String getWizardPageDescription() {
+            return CommonMessages.wizardPageDescription_ServerCustomAssembly;
         }
     }
 
@@ -129,7 +139,7 @@ public class ServerCustomAssemblyWizard extends AbstractWizard {
             isEmpty(serverPath.getText()) || pluginTable.getSelectionCount() == 0) {
             return false;
         }
-        customAssembly.assembleServer(group.getText(), artifact.getText(), version.getText(), type.getText(), 
+        customAssembly.assembleServer(group.getText(), artifact.getText(), version.getText(), type.getText(),
                 serverPath.getText(), pluginTable.getSelectionIndices());
         return true;
     }
@@ -142,15 +152,5 @@ public class ServerCustomAssemblyWizard extends AbstractWizard {
     @Override
     protected String getEditWizardWindowTitle() {
         return CommonMessages.wizardNewTitle_ServerCustomAssembly;
-    }
-
-    @Override
-    protected String getWizardPageTitle() {
-        return CommonMessages.wizardPageTitle_ServerCustomAssembly;
-    }
-
-    @Override
-    protected String getWizardPageDescription() {
-        return CommonMessages.wizardPageDescription_ServerCustomAssembly;
     }
 }

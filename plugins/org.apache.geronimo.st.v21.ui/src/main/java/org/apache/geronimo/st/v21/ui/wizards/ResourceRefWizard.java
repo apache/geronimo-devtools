@@ -46,12 +46,22 @@ public class ResourceRefWizard extends AbstractTableWizard {
     public String getEditWizardWindowTitle() {
         return CommonMessages.wizardEditTitle_ResRef;
     }
-
-    public String getWizardFirstPageTitle() {
-        return CommonMessages.wizardPageTitle_ResRef;
+    
+    public void addPages() {
+        addPage(new ResourceRefWizardPage("Page0"));
     }
 
-    public String getWizardFirstPageDescription() {
-        return CommonMessages.wizardPageDescription_ResRef;
+    public class ResourceRefWizardPage extends AbstractTableWizardPage {
+        public ResourceRefWizardPage(String pageName) {
+            super(pageName);
+        }
+
+        public String getWizardPageTitle() {
+            return CommonMessages.wizardPageTitle_ResRef;
+        }
+
+        public String getWizardPageDescription() {
+            return CommonMessages.wizardPageDescription_ResRef;
+        }
     }
 }

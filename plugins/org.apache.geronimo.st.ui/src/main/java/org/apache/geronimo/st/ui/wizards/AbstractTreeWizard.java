@@ -94,10 +94,6 @@ public abstract class AbstractTreeWizard extends AbstractWizard {
         protected abstract void toggleFields(boolean clearFields);
     }
 
-    protected abstract String getWizardPageTitle();
-
-    protected abstract String getWizardPageDescription();
-
     protected abstract String getAddWizardWindowTitle();
 
     protected abstract String getEditWizardWindowTitle();
