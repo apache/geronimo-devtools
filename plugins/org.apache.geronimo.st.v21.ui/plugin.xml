@@ -47,7 +47,7 @@
 	           		value="org.apache.geronimo.*" />
 	      	</enablement>
 	        <action id="org.apache.geronimo.ui.launchServerAssembly"
-        	label="Launch Custom Server Assembly" icon="icons/obj16/littleG.gif"
+        	label="%PopupMenus.launchCustom" icon="icons/obj16/littleG.gif"
 	            class="org.apache.geronimo.st.v21.ui.actions.LaunchGeronimoServerAssemblyAction"
 	           	enablesFor="1">
 	        </action>
