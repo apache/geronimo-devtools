@@ -39,10 +39,18 @@
             class="org.apache.geronimo.st.core.GeronimoSourcePathComputerDelegate"/>
     </extension>
       
+
+    <!-- 
+     |                                                                                           
+     | This extension point provides a way for a server to support the "Run on Server" scenario. 
+     | The id specifies a unique identifier for this extension point, and the class specifies the 
+     | fully qualified name of the Java class that extends LaunchableAdapterDelegate. 
+     |                                                                                           
+     --> 
     <extension point="org.eclipse.wst.server.core.launchableAdapters">
         <launchableAdapter
             class="org.apache.geronimo.st.core.GeronimoLaunchableAdapterDelegate"
-            id="org.eclipse.jst.server.generic.web"/>
+            id="org.eclipse.jst.server.geronimo.web"/>
     </extension>
 
 
