@@ -4,6 +4,7 @@ Bundle-Name: Geronimo Server Tools V21 UI Plug-in
 Bundle-SymbolicName: org.apache.geronimo.st.v21.ui;singleton:=true
 Bundle-Version: 2.1.4
 Bundle-Activator: org.apache.geronimo.st.v21.ui.Activator
+Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.commands,
