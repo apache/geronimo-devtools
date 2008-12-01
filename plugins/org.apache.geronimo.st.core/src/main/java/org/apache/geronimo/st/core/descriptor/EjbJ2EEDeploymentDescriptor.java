@@ -16,11 +16,13 @@
  */
 package org.apache.geronimo.st.core.descriptor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.eclipse.jst.j2ee.common.SecurityRole;
+import org.eclipse.jst.j2ee.ejb.AssemblyDescriptor;
 import org.eclipse.jst.j2ee.ejb.EJBJar;
-import org.eclipse.jst.j2ee.ejb.EnterpriseBean;
 
 /**
  * @version $Rev$ $Date$
@@ -38,12 +40,17 @@ public class EjbJ2EEDeploymentDescriptor extends AbstractDeploymentDescriptor im
     }
 
     public List<String> getSecurityRoles() {
-        /*  TODO Not as easy as the others, need to work on this some more
-        requiredInfo.put("infoGetter", "getSecurityRoles");
-        requiredInfo.put("implClass", "org.eclipse.jst.j2ee.common.internal.impl.SecurityRoleImpl");
-        requiredInfo.put("nameGetter", "getRoleName");
-        return getDeploymentDescriptorInfo(requiredInfo);
-        */
+        EJBJar ejb = (EJBJar)this.obj;
+        AssemblyDescriptor ad = ejb.getAssemblyDescriptor();
+        
+        if (ad != null) {
+            List<SecurityRole> roles = ad.getSecurityRoles();
+            ArrayList<String> result = new ArrayList<String>();
+            for (SecurityRole role: roles) {
+                result.add(role.getRoleName());
+            }
+            return result;
+        }
         return null;
     }
 }

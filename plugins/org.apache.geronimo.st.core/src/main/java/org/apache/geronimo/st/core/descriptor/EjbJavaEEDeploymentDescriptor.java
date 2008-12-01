@@ -16,9 +16,12 @@
  */
 package org.apache.geronimo.st.core.descriptor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.eclipse.jst.javaee.core.SecurityRole;
+import org.eclipse.jst.javaee.ejb.AssemblyDescriptor;
 import org.eclipse.jst.javaee.ejb.EJBJar;
 
 /**
@@ -35,12 +38,17 @@ public class EjbJavaEEDeploymentDescriptor extends AbstractDeploymentDescriptor 
         requiredInfo.put("class", "org.eclipse.jst.javaee.ejb.EJBJar");
     }
     public List<String> getSecurityRoles() {
-        /*  TODO Not as easy as the others, need to work on this some more
-        requiredInfo.put("infoGetter", "getSecurityRoles");
-        requiredInfo.put("implClass", "org.eclipse.jst.javaee.core.internal.impl.SecurityRoleImpl");
-        requiredInfo.put("nameGetter", "getRoleName");
-        return getDeploymentDescriptorInfo(requiredInfo);
-        */
+        EJBJar ejb = (EJBJar)this.obj;
+        AssemblyDescriptor ad = ejb.getAssemblyDescriptor();
+        
+        if (ad != null) {
+            List<SecurityRole> roles = ad.getSecurityRoles();
+            ArrayList<String> result = new ArrayList<String>();
+            for (SecurityRole role: roles) {
+                result.add(role.getRoleName());
+            }
+            return result;
+        }
         return null;
     }
 }
