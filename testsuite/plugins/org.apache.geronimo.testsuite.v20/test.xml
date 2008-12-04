@@ -44,6 +44,7 @@
                   value="${eclipse-home}/jdt_folder"/>
         <delete dir="${jdt-folder}" quiet="true"/>
 
+
         <!-- 
          #########################################################################
          ##                                                                     ##
@@ -52,12 +53,24 @@
          #########################################################################
          -->
         <property name="extraVMargs" value="-XX:MaxPermSize=128m" />
-        <echo message="######################################################" />
-        <echo message="##                                                    " />
-        <echo message="## extraVMargs: ${extraVMargs}" />
-        <echo message="##                                                    " />
-        <echo message="######################################################" />
 
+
+        <!-- 
+         #########################################################################
+         ##                                                                     ##
+         ## Copy the resources required for this testsuite                      ##
+         ##                                                                     ##
+         #########################################################################
+         -->
+        <mkdir dir="${jdt-folder}/src"/>
+        <copy todir="${jdt-folder}/src">
+            <fileset dir="${eclipse-home}/../../../plugins/org.apache.geronimo.testsuite.v20/src">
+                <include name="**/*.java"/>
+                <include name="**/*.jsp"/>
+            </fileset>
+        </copy>
+        
+        
         <!--
          #########################################################################
          ##                                                                     ##
@@ -72,21 +85,22 @@
                       value="org.apache.geronimo.testsuite.v20.ui.EclipseUITest"/>
         </ant>
 
-        <!-- 
+
+        <!--
          #########################################################################
          ##                                                                     ##
-         ## Copy the testsuite.v20 resources required for the SharedLib project ##
+         ## Run on Server testcase                                              ##
          ##                                                                     ##
          #########################################################################
          -->
-        <mkdir dir="${jdt-folder}/src"/>
-        <copy todir="${jdt-folder}/src">
-            <fileset dir="${eclipse-home}/../../../plugins/org.apache.geronimo.testsuite.v20/src">
-                <include name="**/*.java"/>
-                <include name="**/*.jsp"/>
-            </fileset>
-        </copy>
-        
+        <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+            <property name="data-dir" value="${jdt-folder}"/>
+            <property name="plugin-name" value="${plugin-name}"/>
+            <property name="classname"
+                      value="org.apache.geronimo.testsuite.v20.ui.RunOnServerTest"/>
+        </ant>
+
+
         <!--
          #########################################################################                                                                     ##
          ##                                                                     ##
@@ -100,6 +114,7 @@
             <property name="classname"
              value="org.apache.geronimo.testsuite.v20.ui.SharedLibPojoTest"/>
         </ant>
+    
     
         <!-- 
          #########################################################################
@@ -115,20 +130,6 @@
                       value="org.apache.geronimo.testsuite.v20.ui.NewServerTest"/>
         </ant>
 
-        <!-- 
-         #########################################################################
-         ##                                                                     ##
-         ## Copy the testsuite.v20 resources required for the 5 minute tutorial ##
-         ##                                                                     ##
-         #########################################################################
-         -->
-        <mkdir dir="${jdt-folder}/src"/>
-        <copy todir="${jdt-folder}/src">
-            <fileset dir="${eclipse-home}/../../../plugins/org.apache.geronimo.testsuite.v20/src">
-                <include name="**/*.java"/>
-                <include name="**/*.jsp"/>
-            </fileset>
-        </copy>
 
         <!-- 
          #########################################################################
@@ -143,6 +144,8 @@
             <property name="classname"
                       value="org.apache.geronimo.testsuite.v20.ui.Tutorial5MinuteTest"/>
         </ant>
+
+
     </target>
     
     <!-- This target holds code to cleanup the testing environment after -->

@@ -59,7 +59,7 @@ public class SharedLibPojoTest extends WorkbenchTestCase {
         createPojoProject();
         copyCodeToPojoProject();
         createHelloWorldProject();
-        copyCodeToHellowWorldProject();
+        copyCodeToHelloWorldProject();
         modifyHelloWorldBuildPath();
         deployHelloWorldProject();
         addSharedLibSupport();
@@ -148,7 +148,7 @@ public class SharedLibPojoTest extends WorkbenchTestCase {
         }
 
     }
-    public void copyCodeToHellowWorldProject()
+    public void copyCodeToHelloWorldProject()
     {
         try {
             IWorkspaceRoot aWSRoot = ResourcesPlugin.getWorkspace().getRoot();

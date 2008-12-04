@@ -100,6 +100,13 @@ public class AbbotHelper {
         waitTime( 1500 );
     }
 
+    // helper method
+    public void clickCombo(Shell aShell, String itemText) throws MultipleFoundException, NotFoundException {
+        Combo combo = (Combo) finder.find (aShell, new WidgetTextMatcher (itemText, Combo.class, true));
+        ComboTester.getComboTester().actionClick (combo);      
+        waitTime( 1500 );
+    }
+
     // helper method    
     public Shell rightClickItem (Shell aShell, String itemText, String[] menuList, String newDialogName) throws MultipleFoundException, NotFoundException {
         Item item = (Item) finder.find (workbenchShell, new WidgetTextMatcher (itemText, Item.class, true));
