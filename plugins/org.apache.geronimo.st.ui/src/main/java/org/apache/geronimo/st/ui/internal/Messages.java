@@ -328,6 +328,16 @@ public class Messages extends NLS {
     public static String wizardPageTitle_MessageDest;
     public static String wizardPageDescription_MessageDest;
     //
+    public static String wizardNewTitle_License;
+    public static String wizardEditTitle_License;
+    public static String wizardPageTitle_License;
+    public static String wizardPageDescription_License;
+    //
+    public static String wizardNewTitle_Prerequisite;
+    public static String wizardEditTitle_Prerequisite;
+    public static String wizardPageTitle_Prerequisite;
+    public static String wizardPageDescription_Prerequisite;
+    //
     public static String wizardNewTitle_Module;
     public static String wizardEditTitle_Module;
     public static String wizardPageTitle_Module;
@@ -406,7 +416,37 @@ public class Messages extends NLS {
     public static String acceptLicenseAgreement;
     public static String rejectLicenseAgreement;
     public static String confirmLicenseRejection;
+    public static String license;
+    public static String osiApproved;
 
     public static String savePageTitle;
     public static String savePageMessage;
+
+    //
+    public static String wizardTitle_PluginManager;
+    public static String wizardPage0Title_PluginManager;
+    public static String wizardPage0Description_PluginManager;
+    public static String wizardPage1Title_PluginManager;
+    public static String wizardPage1Description_PluginManager;
+    public static String wizardPage2Title_PluginManager;
+    public static String wizardPage2Description_PluginManager;
+    public static String wizardPage3Title_PluginManager;
+    public static String wizardPage3Description_PluginManager;
+    public static String wizardPage4Title_PluginManager;
+    public static String wizardPage4Description_PluginManager;
+    public static String localPluginRepo;
+    public static String failedToSave;
+    public static String savedSuccess;
+    public static String createPlugin;
+    public static String installPlugins;
+    public static String id;
+    public static String downloadRepos;
+    public static String category;
+    public static String pluginURL;
+    public static String author;
+    public static String geronimoVersions;
+    public static String jvmVersions;
+    public static String dependencies;
+    public static String obsoletes;
+    public static String installable;
 }

@@ -186,6 +186,32 @@ public abstract class AbstractWizard extends Wizard {
             return table;
         }
 
+        protected Table createEditableTable(Composite composite, String[] columnNames, int[] columnWidths) {
+            int style = SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION | SWT.HIDE_SELECTION;
+
+            Table table = new Table(composite, style);
+            GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.VERTICAL_ALIGN_FILL);
+            data.grabExcessHorizontalSpace = true;
+            data.grabExcessVerticalSpace = true;
+            data.horizontalSpan = 1;
+            data.horizontalAlignment = GridData.FILL;
+            data.heightHint = 250;
+            data.widthHint = 350;
+            table.setLayoutData(data);
+            table.setLinesVisible(false);
+            table.setHeaderVisible(true);
+
+            final TableColumn[] column = new TableColumn[columnNames.length];
+            Listener sortListener = new SortListener(table, columnNames);
+            for (int i = 0; i < columnNames.length; ++i) {
+                column[i] = new TableColumn(table, SWT.LEFT, i);
+                column[i].setText(columnNames[i]);
+                column[i].setWidth(columnWidths[i]);
+                column[i].addListener(SWT.Selection, sortListener);
+            }
+            return table;
+        }
+        
         protected abstract String getWizardPageTitle();
 
         protected abstract String getWizardPageDescription();

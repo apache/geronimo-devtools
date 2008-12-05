@@ -35,19 +35,34 @@ public class Messages extends NLS {
     public static String UNDEPLOY_FAIL;
     public static String REDEPLOY_FAIL;
     public static String DM_CONNECTION_FAIL;
-    
+
     public static String errorJRE;
-    
+
     public static String target20runtime;
     public static String target21runtime;
     public static String target22runtime;
-    
+
     public static String incorrectVersion;
     public static String noVersion;
     public static String missingContent;
     public static String errorPortInUse;
     public static String missingServer;
-    
+
     public static String errorNoProfiler;
 
+    // errors for GeronimoServerPluginManager
+    public static String badConfigId;
+    public static String errorDeletePlugin;
+    public static String errorMovePlugin;
+    public static String badPlugin;
+    public static String errorCreateMetadata;
+    public static String errorUpdateMetadata;
+    public static String errorReadConfig;
+    public static String errorReadSerFile;
+    public static String errorNoSerFile;
+    public static String errorLoadClass;
+    public static String requires;
+    public static String installed;
+    public static String configSizeMismatch;
+    public static String noDefaultServer;
 }

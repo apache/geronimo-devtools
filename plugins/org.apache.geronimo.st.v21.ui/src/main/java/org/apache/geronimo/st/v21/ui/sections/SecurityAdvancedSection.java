@@ -203,9 +203,9 @@ public class SecurityAdvancedSection extends AbstractTableSection {
         viewer.setInput(getInput());
 
         Composite buttonComposite = createButtonComposite(clientComposite);
-        createAddButton(toolkit, buttonComposite);
-        createRemoveButton(toolkit, buttonComposite);
-        createEditButton(toolkit, buttonComposite);
+        createAddButton(buttonComposite);
+        createRemoveButton(buttonComposite);
+        createEditButton(buttonComposite);
         activateButtons();
 
         section.setExpanded(false);

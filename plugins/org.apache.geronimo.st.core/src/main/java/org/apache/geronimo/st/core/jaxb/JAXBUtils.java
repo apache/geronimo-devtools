@@ -18,6 +18,9 @@ package org.apache.geronimo.st.core.jaxb;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
@@ -60,7 +63,9 @@ public class JAXBUtils {
 
     // JAXBContext instantiation is costly - must be done only once!
     private static final JAXBContext jaxbContext = newJAXBContext();
+    private static final JAXBContext jaxbPluginContext = newJAXBPluginContext();
     private static final MarshallerListener marshallerListener = new MarshallerListener();
+
     private static JAXBContext newJAXBContext() {
         try {
             return JAXBContext.newInstance( 
@@ -71,7 +76,8 @@ public class JAXBUtils {
                     "org.apache.geronimo.jee.applicationclient:" +
                     "org.apache.geronimo.jee.deployment:" +
                     "org.apache.geronimo.jee.naming:" +
-                    "org.apache.geronimo.jee.security", Activator.class.getClassLoader() );
+                    "org.apache.geronimo.jee.security:" +
+                    "org.apache.geronimo.jee.plugin", Activator.class.getClassLoader() );
         } catch (JAXBException e) {
             Trace.tracePoint("JAXBException", "JAXBContext.newInstance");
             e.printStackTrace();
@@ -79,6 +85,17 @@ public class JAXBUtils {
         return null;
     }
 
+    private static JAXBContext newJAXBPluginContext() {
+        try {
+            return JAXBContext.newInstance( 
+                    "org.apache.geronimo.jee.plugin", Activator.class.getClassLoader() );
+        } catch (JAXBException e) {
+            Trace.tracePoint("JAXBException", "JAXBContext.newInstance");
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     public static void marshalDeploymentPlan(JAXBElement jaxbElement, IFile file) {
         try {
             Marshaller marshaller = jaxbContext.createMarshaller();
@@ -105,7 +122,7 @@ public class JAXBUtils {
 
             ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
             Result out = new StreamResult(new OutputStreamWriter(outBuffer,"UTF-8"));
-            NamespacePrefix.processPrefix( doc );
+            NamespacePrefix.processPrefix(doc);
 
             xformer.transform(new DOMSource(doc), out);
             ByteArrayInputStream inBuffer = new ByteArrayInputStream(outBuffer.toByteArray());
@@ -144,7 +161,7 @@ public class JAXBUtils {
             factory.setValidating(false);
             SAXParser parser = factory.newSAXParser();
             NamespaceFilter xmlFilter = new NamespaceFilter(parser.getXMLReader());
-            SAXSource source = new SAXSource(xmlFilter, new InputSource( file.getContents()));
+            SAXSource source = new SAXSource(xmlFilter, new InputSource(file.getContents()));
             JAXBElement plan = (JAXBElement) unmarshaller.unmarshal(source);
             return plan;
         } catch (JAXBException e) {
@@ -158,6 +175,77 @@ public class JAXBUtils {
             e.printStackTrace();
         } catch (SAXException e) {
             Trace.tracePoint("SAXException", "JAXBUtils.unmarshalFilterDeploymentPlan()", file.getFullPath());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void marshalPlugin(JAXBElement jaxbElement, OutputStream outputStream) {
+        try {
+            Marshaller marshaller = jaxbPluginContext.createMarshaller();
+            marshaller.setListener(marshallerListener);
+
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.newDocument(); 
+
+            marshaller.marshal(jaxbElement, doc);
+
+            TransformerFactory xf = TransformerFactory.newInstance();
+            try {
+                xf.setAttribute("indent-number", new Integer(4));
+            } catch (IllegalArgumentException iae) {
+                //ignore this. http://forums.sun.com/thread.jspa?threadID=562510&messageID=2841867
+            }
+            Transformer xformer = xf.newTransformer();
+            xformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            xformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            xformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            xformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", "4"); 
+
+            ByteArrayOutputStream outBuffer = new ByteArrayOutputStream();
+            Result out = new StreamResult(new OutputStreamWriter(outBuffer,"UTF-8"));
+
+            xformer.transform(new DOMSource(doc), out);
+            ByteArrayInputStream inBuffer = new ByteArrayInputStream(outBuffer.toByteArray());
+            outputStream.write(outBuffer.toByteArray());
+        } catch (JAXBException jaxbException) {
+            Trace.tracePoint("JAXBException", "JAXBUtils.marshalDeploymentPlan()");
+            jaxbException.printStackTrace();
+        } catch (IOException coreException) {
+            Trace.tracePoint("IOException", "JAXBUtils.marshalDeploymentPlan()");
+            coreException.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            Trace.tracePoint("ParserConfigurationException", "JAXBUtils.marshalDeploymentPlan()");
+            e.printStackTrace();
+        } catch (TransformerConfigurationException e) {
+            Trace.tracePoint("TransformerConfigurationException", "JAXBUtils.marshalDeploymentPlan()");
+            e.printStackTrace();
+        } catch (TransformerException e) {
+            Trace.tracePoint("TransformerException", "JAXBUtils.marshalDeploymentPlan()");
+            e.printStackTrace();
+        }
+    }
+
+    public static JAXBElement unmarshalPlugin(InputStream inputStream) {
+        try {
+            Unmarshaller unmarshaller = jaxbPluginContext.createUnmarshaller();
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            factory.setNamespaceAware(true);
+            factory.setValidating(false);
+            SAXParser parser = factory.newSAXParser();
+            NamespaceFilter xmlFilter = new NamespaceFilter(parser.getXMLReader());
+            SAXSource source = new SAXSource(xmlFilter, new InputSource(inputStream));
+            JAXBElement plan = (JAXBElement) unmarshaller.unmarshal(source);
+            return plan;
+        } catch (JAXBException e) {
+            Trace.tracePoint("JAXBException", "JAXBUtils.unmarshalFilterDeploymentPlan()");
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            Trace.tracePoint("ParserConfigurationException", "JAXBUtils.unmarshalFilterDeploymentPlan()");
+            e.printStackTrace();
+        } catch (SAXException e) {
+            Trace.tracePoint("SAXException", "JAXBUtils.unmarshalFilterDeploymentPlan()");
             e.printStackTrace();
         }
         return null;
