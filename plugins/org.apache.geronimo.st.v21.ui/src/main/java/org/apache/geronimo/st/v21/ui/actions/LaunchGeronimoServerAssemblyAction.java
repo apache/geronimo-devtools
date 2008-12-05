@@ -16,7 +16,7 @@
  */
 package org.apache.geronimo.st.v21.ui.actions;
 
-import org.apache.geronimo.st.v21.core.operations.GeronimoCustomServerAssembly;
+import org.apache.geronimo.st.v21.core.operations.GeronimoServerPluginManager;
 import org.apache.geronimo.st.ui.internal.Trace;
 import org.apache.geronimo.st.v21.ui.wizards.ServerCustomAssemblyWizard;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -35,7 +35,7 @@ import org.eclipse.ui.IActionDelegate;
  */
 public class LaunchGeronimoServerAssemblyAction implements IActionDelegate {
 
-    private GeronimoCustomServerAssembly customAssembly;
+    private GeronimoServerPluginManager customAssembly;
 
     private String serverPrefix;
 
@@ -58,7 +58,7 @@ public class LaunchGeronimoServerAssemblyAction implements IActionDelegate {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
      */
     public void run(IAction action) {
@@ -68,19 +68,19 @@ public class LaunchGeronimoServerAssemblyAction implements IActionDelegate {
         WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
         dialog.open();
         if (dialog.getReturnCode() == Dialog.OK) {
-            
+
         }
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
      *      org.eclipse.jface.viewers.ISelection)
      */
     public void selectionChanged(IAction action, ISelection selection) {
 
-        customAssembly = new GeronimoCustomServerAssembly();
+        customAssembly = new GeronimoServerPluginManager();
         boolean enable = customAssembly.serverChanged (((StructuredSelection) selection).getFirstElement(), serverPrefix);
 
         action.setEnabled(enable);
