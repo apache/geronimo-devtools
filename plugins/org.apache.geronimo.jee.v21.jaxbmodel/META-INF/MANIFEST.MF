@@ -16,6 +16,7 @@ Export-Package: org,
  org.apache.geronimo.jee.naming,
  org.apache.geronimo.jee.openejb,
  org.apache.geronimo.jee.persistence,
+ org.apache.geronimo.jee.plugin,
  org.apache.geronimo.jee.security,
  org.apache.geronimo.jee.web
 Import-Package: junit.framework;version="3.8.2"

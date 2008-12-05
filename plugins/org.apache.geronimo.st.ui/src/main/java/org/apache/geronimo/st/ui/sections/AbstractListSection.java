@@ -102,9 +102,9 @@ public abstract class AbstractListSection extends AbstractSectionPart {
         viewer.setInput(getInput());
 
         Composite buttonComposite = createButtonComposite(clientComposite);
-        createAddButton(toolkit, buttonComposite);
-        createRemoveButton(toolkit, buttonComposite);
-        createEditButton(toolkit, buttonComposite);
+        createAddButton(buttonComposite);
+        createRemoveButton(buttonComposite);
+        createEditButton(buttonComposite);
         activateButtons();
 
         if (isRequiredSyncToolbarAction()) {
@@ -178,8 +178,9 @@ public abstract class AbstractListSection extends AbstractSectionPart {
         return buttonComp;
     }
 
-    protected void createRemoveButton(FormToolkit toolkit, Composite buttonComp) {
+    protected void createRemoveButton(Composite buttonComp) {
         removeButton = toolkit.createButton(buttonComp, CommonMessages.remove, SWT.NONE);
+
         removeButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
                 handleDelete();
@@ -191,7 +192,7 @@ public abstract class AbstractListSection extends AbstractSectionPart {
         removeButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
     }
 
-    protected void createAddButton(FormToolkit toolkit, Composite buttonComp) {
+    protected void createAddButton(Composite buttonComp) {
         addButton = toolkit.createButton(buttonComp, CommonMessages.add, SWT.NONE);
         addButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
@@ -209,7 +210,7 @@ public abstract class AbstractListSection extends AbstractSectionPart {
         addButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
     }
 
-    protected void createEditButton(FormToolkit toolkit, Composite buttonComp) {
+    protected void createEditButton(Composite buttonComp) {
         editButton = toolkit.createButton(buttonComp, CommonMessages.edit, SWT.NONE);
         editButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {

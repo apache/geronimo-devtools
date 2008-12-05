@@ -18,7 +18,8 @@ package org.apache.geronimo.st.v21.ui.actions;
 
 import org.apache.geronimo.st.v21.core.operations.GeronimoServerPluginManager;
 import org.apache.geronimo.st.ui.internal.Trace;
-import org.apache.geronimo.st.v21.ui.wizards.ServerCustomAssemblyWizard;
+import org.apache.geronimo.st.v21.ui.wizards.ServerPluginManagerDialog;
+import org.apache.geronimo.st.v21.ui.wizards.ServerPluginManagerWizard;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
@@ -26,20 +27,19 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IActionDelegate;
 
 /**
  * @version $Rev$ $Date$
  */
-public class LaunchGeronimoServerAssemblyAction implements IActionDelegate {
+public class LaunchGeronimoPluginManagerAction implements IActionDelegate {
 
-    private GeronimoServerPluginManager customAssembly;
+    private GeronimoServerPluginManager pluginManager;
 
     private String serverPrefix;
 
-    public LaunchGeronimoServerAssemblyAction() {
+    public LaunchGeronimoPluginManagerAction() {
         super();
         IExtensionRegistry reg = Platform.getExtensionRegistry();
         IConfigurationElement[] extensions = reg
@@ -64,8 +64,8 @@ public class LaunchGeronimoServerAssemblyAction implements IActionDelegate {
     public void run(IAction action) {
 
         // bring up new dialog
-        ServerCustomAssemblyWizard wizard = new ServerCustomAssemblyWizard (customAssembly);
-        WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
+        ServerPluginManagerWizard wizard = new ServerPluginManagerWizard (pluginManager);
+        ServerPluginManagerDialog dialog = new ServerPluginManagerDialog(Display.getCurrent().getActiveShell(), wizard);
         dialog.open();
         if (dialog.getReturnCode() == Dialog.OK) {
             
@@ -80,8 +80,8 @@ public class LaunchGeronimoServerAssemblyAction implements IActionDelegate {
      */
     public void selectionChanged(IAction action, ISelection selection) {
 
-        customAssembly = new GeronimoServerPluginManager();
-        boolean enable = customAssembly.serverChanged (((StructuredSelection) selection).getFirstElement(), serverPrefix);
+        pluginManager = new GeronimoServerPluginManager();
+        boolean enable = pluginManager.serverChanged (((StructuredSelection) selection).getFirstElement(), serverPrefix);
 
         action.setEnabled(enable);
     }
