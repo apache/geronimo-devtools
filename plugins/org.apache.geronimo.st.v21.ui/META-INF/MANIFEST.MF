@@ -23,3 +23,4 @@ Export-Package: org.apache.geronimo.st.v21.ui,
  org.apache.geronimo.st.v21.ui.pages,
  org.apache.geronimo.st.v21.ui.sections,
  org.apache.geronimo.st.v21.ui.wizards
+Import-Package: org.apache.geronimo.system.plugin.model
