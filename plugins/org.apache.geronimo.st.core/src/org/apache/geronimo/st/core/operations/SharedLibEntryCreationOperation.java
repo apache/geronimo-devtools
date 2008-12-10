@@ -292,7 +292,7 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 		}
 		
 		if(includeOutputLocations) {
-			String path = project.getLocation().removeLastSegments(1).append(jp.getOutputLocation()).addTrailingSeparator().toOSString();
+            String path = project.getLocation().append(jp.getOutputLocation().removeFirstSegments(1)).addTrailingSeparator().toOSString();
 			addEntry(entries, path);
 		}
 	}
