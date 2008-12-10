@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo v11 Server Tools Core Plug-in
 Bundle-SymbolicName: org.apache.geronimo.st.v11.core;singleton:=true
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.2
 Bundle-Activator: org.apache.geronimo.st.v11.core.Activator
 Bundle-Vendor: Apache.org
 Bundle-Localization: plugin
@@ -14,6 +14,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.debug.core,
  org.eclipse.jst.j2ee,
  org.eclipse.wst.common.project.facet.core,
+ org.eclipse.emf.common,
  org.eclipse.jst.common.frameworks
 Eclipse-LazyStart: true
 Export-Package: org,
