@@ -30,83 +30,85 @@ import org.osgi.framework.BundleContext;
  */
 public class Activator extends Plugin {
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = "org.apache.geronimo.st.core";
+    // The plug-in ID
+    public static final String PLUGIN_ID = "org.apache.geronimo.st.core";
 
-	// The shared instance
-	private static Activator plugin;
+    // The shared instance
+    private static Activator plugin;
 
-	/**
-	 * The constructor
-	 */
-	public Activator() {
-		plugin = this;
-	}
+    /**
+     * The constructor
+     */
+    public Activator() {
+        plugin = this;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
-	 */
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		ServerCore.addServerLifecycleListener(new IServerLifecycleListener() {
-			public void serverAdded(IServer server) {
-				triggerStartUpdateServerTask(server);
-			}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
+     */
+    public void start(BundleContext context) throws Exception {
+        super.start(context);
+        ServerCore.addServerLifecycleListener(new IServerLifecycleListener() {
+            public void serverAdded(IServer server) {
+                triggerStartUpdateServerTask(server);
+            }
 
-			public void serverChanged(IServer server) {
-				
-			}
+            public void serverChanged(IServer server) {
 
-			public void serverRemoved(IServer server) {
-			}
-		});
-		IServer[] servers = ServerCore.getServers();
-		for(int i = 0; i < servers.length; i++) {
-			triggerStartUpdateServerTask(servers[i]);
-		}
-	}
+            }
 
-	private void triggerStartUpdateServerTask(IServer server) {
-		GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) server.getAdapter(GeronimoServerBehaviourDelegate.class);
-		if (delegate == null) {
-			delegate = (GeronimoServerBehaviourDelegate) server.loadAdapter(GeronimoServerBehaviourDelegate.class, null);
-		}
-		if (delegate != null) {
-			delegate.startUpdateServerStateTask();
-		}
-	}
+            public void serverRemoved(IServer server) {
+            }
+        });
+        IServer[] servers = ServerCore.getServers();
+        for(int i = 0; i < servers.length; i++) {
+            triggerStartUpdateServerTask(servers[i]);
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
-	public void stop(BundleContext context) throws Exception {
-		IServer[] servers = ServerCore.getServers();
-		for(int i = 0; i < servers.length; i++) {
-			GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) servers[i].getAdapter(GeronimoServerBehaviourDelegate.class);
-			if(delegate != null) {
-				delegate.stopUpdateServerStateTask();
-			}
-		}
-		ModuleArtifactMapper.getInstance().save();
-		super.stop(context);
-		plugin = null;
-	}
+    private void triggerStartUpdateServerTask(IServer server) {
+        GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) server.getAdapter(GeronimoServerBehaviourDelegate.class);
+        if (delegate == null) {
+            delegate = (GeronimoServerBehaviourDelegate) server.loadAdapter(GeronimoServerBehaviourDelegate.class, null);
+        }
+        if (delegate != null) {
+            delegate.startUpdateServerStateTask();
+        }
+    }
 
-	/**
-	 * Returns the shared instance
-	 * 
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
-		return plugin;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
+     */
+    public void stop(BundleContext context) throws Exception {
+        IServer[] servers = ServerCore.getServers();
+        for(int i = 0; i < servers.length; i++) {
+            GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) servers[i].getAdapter(GeronimoServerBehaviourDelegate.class);
+            if(delegate != null) {
+                delegate.stopUpdateServerStateTask();
+            }
+        }
+        ModuleArtifactMapper.getInstance().save();
+        super.stop(context);
+        plugin = null;
+    }
 
-	public static void log(int severity, String message, Throwable throwable) {
-		plugin.getLog().log(new Status(severity, PLUGIN_ID, 0, message, throwable));
-	}
+    /**
+     * Returns the shared instance
+     *
+     * @return the shared instance
+     */
+    public static Activator getDefault() {
+        return plugin;
+    }
+
+    public static void log(int severity, String message, Throwable throwable) {
+        if (plugin != null && plugin.getLog() != null) {
+            plugin.getLog().log(new Status(severity, PLUGIN_ID, 0, message, throwable));
+        }
+    }
 
 }
