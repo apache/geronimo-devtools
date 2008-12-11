@@ -34,7 +34,6 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.util.List;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import javax.management.MBeanServerConnection;
 import javax.xml.bind.JAXBElement;
@@ -286,19 +285,42 @@ public class GeronimoServerPluginManager {
 
         Artifact artifact = Artifact.create(configId);
         String filename = createDirectoryStructure (localRepoDir, artifact);
-        filename = addFilename (filename, artifact);
+        File outputDir = new File (filename);
 
-        ConfigurationManager mgr = getConfigurationManager();
-        FileOutputStream outputStream = new FileOutputStream(filename);
         File serverArtifact = new File(getArtifactLocation (artifact));
-        ZipOutputStream out = new ZipOutputStream(outputStream);
-        byte[] buf = new byte[10240];
-        writeToZip(serverArtifact, out, "", buf);
-        out.closeEntry();
-        out.finish();
-        out.flush();
+        writeToDirectory(serverArtifact, outputDir);
 
         Trace.tracePoint("Exit", "GeronimoServerPluginManager.exportCAR");
+    }
+
+    private void writeToDirectory(File inputDir, File outputDir) throws Exception {
+        Trace.tracePoint("Entry", "GeronimoServerPluginManager.writeToZip", inputDir);
+
+        outputDir.mkdirs();
+        File[] all = inputDir.listFiles();
+        for (File file : all) {
+            if (file.isDirectory()) {
+                String oDir = outputDir.getAbsolutePath() + File.separator + file.getName();
+                File temp = new File (oDir);
+                writeToDirectory(file, temp);
+            } else {
+                File entry = new File(outputDir + File.separator + file.getName());
+                FileOutputStream out = new FileOutputStream (entry);
+                FileInputStream in = new FileInputStream(file);
+                byte[] buf = new byte[10240];
+                int count;
+                try {
+                    while ((count = in.read(buf, 0, buf.length)) > -1) {
+                        out.write(buf, 0, count);
+                    }
+                } finally {
+                    in.close();
+                    out.flush();
+                    out.close();
+                }
+            }
+        }
+        Trace.tracePoint("Exit", "GeronimoServerPluginManager.writeToZip");
     }
 
     public void updatePluginList (String localRepoDir, PluginType metadata) throws Exception {
@@ -551,8 +573,9 @@ public class GeronimoServerPluginManager {
     }
 
     private String getArtifactLocation (Artifact artifact) {
-        String temp = server.getRuntime().getLocation().toOSString() + "/repository/";
-        temp += artifact.getGroupId().replaceAll("[.]", "/") + "/" + artifact.getArtifactId() + "/" + artifact.getVersion() + "/";
+        String ch = File.separator;
+        String temp = server.getRuntime().getLocation().toOSString() + ch + "repository" + ch;
+        temp += artifact.getGroupId().replaceAll("[.]", ch) + ch + artifact.getArtifactId() + ch + artifact.getVersion() + ch;
         return temp;
     }
     
@@ -577,38 +600,6 @@ public class GeronimoServerPluginManager {
 
         return fileName;
     }
-
-    private void writeToZip(File dir, ZipOutputStream out, String prefix, byte[] buf) throws Exception {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.writeToZip", dir);
-
-        File[] all = dir.listFiles();
-        for (File file : all) {
-            if (file.isDirectory()) {
-                writeToZip(file, out, prefix + file.getName() + "/", buf);
-            } else {
-                ZipEntry entry = new ZipEntry(prefix + file.getName());
-                out.putNextEntry(entry);
-                writeToZipStream(file, out, buf);
-            }
-        }
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.writeToZip");
-    }
-
-    private void writeToZipStream(File file, OutputStream out, byte[] buf) throws Exception {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.writeToZipStream", file);
-
-        FileInputStream in = new FileInputStream(file);
-        int count;
-        try {
-            while ((count = in.read(buf, 0, buf.length)) > -1) {
-                out.write(buf, 0, count);
-            }
-        } finally {
-            in.close();
-        }
-
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.writeToZipStream", file);
-    }
     
     private ConfigurationManager getConfigurationManager () {
         Trace.tracePoint("Entry", "GeronimoServerPluginManager.getConfigurationManager");
@@ -631,7 +622,7 @@ public class GeronimoServerPluginManager {
         }
         if (kernel != null) {
             Trace.tracePoint("Exit", "GeronimoServerPluginManager.getConfigurationManager");
-            return ConfigurationUtil.getConfigurationManager(kernel);
+            return ConfigurationUtil.getEditableConfigurationManager(kernel);
         }
 
         Trace.tracePoint("Exit", "GeronimoServerPluginManager.getConfigurationManager");
@@ -692,7 +683,7 @@ public class GeronimoServerPluginManager {
     public boolean validatePlugin (PluginType plugin) {
         Trace.tracePoint("Entry", "GeronimoServerPluginManager.validatePlugin", plugin);
 
-        boolean valid = false;
+        boolean valid = true;
         String serverVersion = null;
         GeronimoRuntimeDelegate rd = (GeronimoRuntimeDelegate)server.getRuntime().getAdapter(GeronimoRuntimeDelegate.class);
         if (rd == null)
@@ -704,6 +695,7 @@ public class GeronimoServerPluginManager {
         // check the Geronimo and JVM versions for validity
         PluginArtifactType metadata = plugin.getPluginArtifact().get(0);
         if (metadata.getGeronimoVersion().size() > 0) {
+            valid = false;
             for (String gerVersion : metadata.getGeronimoVersion()) {
                 valid = gerVersion.equals(serverVersion);
                 if (valid) {
@@ -715,9 +707,10 @@ public class GeronimoServerPluginManager {
             Trace.tracePoint("Exit", "GeronimoServerPluginManager.validatePlugin", valid);
             return valid;
         }
-        valid = false;
+
         String jvmSystem = System.getProperty("java.version");
         if (metadata.getJvmVersion().size() > 0) {
+            valid = false;
             for (String jvmVersion : metadata.getJvmVersion()) {
                 valid = jvmSystem.startsWith(jvmVersion);
                 if (valid) {
@@ -761,7 +754,7 @@ public class GeronimoServerPluginManager {
             List<PluginType> toInstall = new ArrayList<PluginType>();
             for (PluginType metadata : pluginList) {
                 try {
-                    validatePlugin(metadata);
+                    //validatePlugin(metadata);
                     verifyPrerequisites(metadata);
 
                     PluginArtifactType instance = metadata.getPluginArtifact().get(0);
@@ -803,6 +796,9 @@ public class GeronimoServerPluginManager {
                     //for (Artifact artifact : artifacts) {
                         if (!configManager.isRunning(artifact)) {
                             if (!configManager.isLoaded(artifact)) {
+                                File serverArtifact = new File(getArtifactLocation (artifact));
+                                File localDir = new File (createDirectoryStructure(localRepoDir, artifact));
+                                writeToDirectory(localDir, serverArtifact);
                                 configManager.loadConfiguration(artifact);
                             }
                             configManager.startConfiguration(artifact);
