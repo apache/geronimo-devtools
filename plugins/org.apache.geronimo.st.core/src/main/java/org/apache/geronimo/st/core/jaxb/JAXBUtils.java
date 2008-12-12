@@ -76,8 +76,7 @@ public class JAXBUtils {
                     "org.apache.geronimo.jee.applicationclient:" +
                     "org.apache.geronimo.jee.deployment:" +
                     "org.apache.geronimo.jee.naming:" +
-                    "org.apache.geronimo.jee.security:" +
-                    "org.apache.geronimo.jee.plugin", Activator.class.getClassLoader() );
+                    "org.apache.geronimo.jee.security:", Activator.class.getClassLoader() );
         } catch (JAXBException e) {
             Trace.tracePoint("JAXBException", "JAXBContext.newInstance");
             e.printStackTrace();
@@ -88,7 +87,7 @@ public class JAXBUtils {
     private static JAXBContext newJAXBPluginContext() {
         try {
             return JAXBContext.newInstance( 
-                    "org.apache.geronimo.jee.plugin", Activator.class.getClassLoader() );
+                    "org.apache.geronimo.system.plugin.model", Activator.class.getClassLoader() );
         } catch (JAXBException e) {
             Trace.tracePoint("JAXBException", "JAXBContext.newInstance");
             e.printStackTrace();

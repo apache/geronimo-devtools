@@ -78,17 +78,17 @@ public class GeronimoServerPluginManager {
     private PluginListType data;
     private List<String> pluginList;
     private Kernel kernel;
-    
+
     public GeronimoServerPluginManager () {
         kernel = null;
         Trace.tracePoint("Constructor", "GeronimoServerPluginManager");
     }
-    
+
     public boolean serverChanged (Object aServer, String serverPrefix) {
         Trace.tracePoint("Entry", "GeronimoServerPluginManager.serverChanged", aServer, serverPrefix);
         server = (IServer)aServer;
 
-        boolean enabled = server != null && 
+        boolean enabled = server != null &&
                 server.getServerType().getId().startsWith(serverPrefix) &&
                 server.getServerState() == IServer.STATE_STARTED;
 
@@ -138,7 +138,7 @@ public class GeronimoServerPluginManager {
         PluginListType selectedPlugins = new PluginListType();
         String name;
         boolean found;
-        
+
         for (int i = 0; i < selected.length; i++) {
             name = pluginList.get(selected[i]);
             found = false;
@@ -149,7 +149,7 @@ public class GeronimoServerPluginManager {
                 }
             }
         }
-        
+
         try {
             remoteDM.installPluginList("repository", relativeServerPath, selectedPlugins);
             remoteDM.archive(relativeServerPath, "var/temp", new Artifact(group, artifact, (String)version, format));
@@ -192,14 +192,14 @@ public class GeronimoServerPluginManager {
         }
         return metadata;
     }
-    
+
     // mimics org.apache.geronimo.system.plugin.PluginInstallerGBean.updatePluginMetadata
     public void savePluginXML (String configId, PluginType metadata) {
         Trace.tracePoint("Entry", "GeronimoServerPluginManager.savePluginXML", configId, metadata);
 
         Artifact artifact = Artifact.create(configId);
         File dir = new File (getArtifactLocation(artifact));
-        
+
         if (!dir.isDirectory()) { // must be a packed (JAR-formatted) plugin
             try {
                 File temp = new File(dir.getParentFile(), dir.getName() + ".temp");
@@ -380,7 +380,7 @@ public class GeronimoServerPluginManager {
                         in.close();
                     } catch (Exception e) {}
                 }
-            }   
+            }
         }
         if (pluginList == null) {
             ObjectFactory factory = new ObjectFactory();
@@ -390,7 +390,7 @@ public class GeronimoServerPluginManager {
         Trace.tracePoint("Exit", "GeronimoServerPluginManager.readPluginList", pluginList);
         return pluginList;
     }
-    
+
     // mimics org.apache.geronimo.system.plugin.GeronimoSourceRepository.extractPluginMetadata
     private PluginType extractPluginMetadata (File dir) {
         Trace.tracePoint("Entry", "GeronimoServerPluginManager.extractPluginMetadata", dir);
@@ -448,7 +448,7 @@ public class GeronimoServerPluginManager {
         }
         catch (Exception e) {
         }
-        
+
         PluginType metadata = new PluginType();
         PluginArtifactType instance = new PluginArtifactType();
         metadata.getPluginArtifact().add(instance);
@@ -530,8 +530,7 @@ public class GeronimoServerPluginManager {
     public PluginListType loadPluginList (InputStream in) {
         try {
             JAXBElement pluginListElement = JAXBUtils.unmarshalPlugin(in);
-            org.apache.geronimo.jee.plugin.PluginListType pl = (org.apache.geronimo.jee.plugin.PluginListType)pluginListElement.getValue();
-            return PluginConverter.jeeToModelPluginListType(pl);
+            return (PluginListType)pluginListElement.getValue();
         }
         catch (Throwable e) {
             e.printStackTrace();
@@ -541,20 +540,20 @@ public class GeronimoServerPluginManager {
 
     private void writePluginList (PluginListType pluginList, OutputStream out) {
         try {
-            JAXBElement element = PluginConverter.pluginListTypeToJAXB(PluginConverter.modelToJeePluginListType (pluginList));
+            ObjectFactory jeeFactory = new ObjectFactory();
+            JAXBElement element = jeeFactory.createGeronimoPluginList(pluginList);
             JAXBUtils.marshalPlugin(element, out);
         }
         catch (Throwable e) {
             e.printStackTrace();
         }
     }
-    
+
     //mimic org.apache.geronimo.system.plugin.PluginXmlUtil.loadPluginMetadata(in);
     private PluginType loadPluginMetadata (InputStream in) {
         try {
             JAXBElement pluginElement = JAXBUtils.unmarshalPlugin(in);
-            org.apache.geronimo.jee.plugin.PluginType pt = (org.apache.geronimo.jee.plugin.PluginType)pluginElement.getValue();
-            return PluginConverter.jeeToModelPluginType(pt);
+            return (PluginType)pluginElement.getValue();
         }
         catch (Throwable e) {
             e.printStackTrace();
@@ -564,7 +563,8 @@ public class GeronimoServerPluginManager {
 
     private void writePluginMetadata (PluginType metadata, OutputStream out) {
         try {
-            JAXBElement element = PluginConverter.pluginTypeToJAXB(PluginConverter.modelToJeePluginType (metadata));
+            ObjectFactory jeeFactory = new ObjectFactory();
+            JAXBElement element = jeeFactory.createGeronimoPlugin(metadata);
             JAXBUtils.marshalPlugin(element, out);
         }
         catch (Throwable e) {
@@ -578,7 +578,7 @@ public class GeronimoServerPluginManager {
         temp += artifact.getGroupId().replaceAll("[.]", ch) + ch + artifact.getArtifactId() + ch + artifact.getVersion() + ch;
         return temp;
     }
-    
+
     private String addFilename (String path, Artifact artifact) {
         if (!path.endsWith("/") && !path.endsWith("\\")) {
             path += "/";
@@ -600,7 +600,7 @@ public class GeronimoServerPluginManager {
 
         return fileName;
     }
-    
+
     private ConfigurationManager getConfigurationManager () {
         Trace.tracePoint("Entry", "GeronimoServerPluginManager.getConfigurationManager");
 
@@ -628,11 +628,11 @@ public class GeronimoServerPluginManager {
         Trace.tracePoint("Exit", "GeronimoServerPluginManager.getConfigurationManager");
         return null;
     }
-    
+
     public ArtifactType toArtifactType(String configId) {
         return toArtifactType (Artifact.create(configId));
     }
-    
+
     public ArtifactType toArtifactType(Artifact id) {
         ArtifactType artifact = new ArtifactType();
         artifact.setGroupId(id.getGroupId());
@@ -641,11 +641,11 @@ public class GeronimoServerPluginManager {
         artifact.setType(id.getType());
         return artifact;
     }
-    
+
     public Artifact toArtifact(ArtifactType id) {
         return new Artifact (id.getGroupId(), id.getArtifactId(), id.getVersion(), id.getType());
     }
-    
+
     public void addGeronimoDependencies(ConfigurationData data, List<DependencyType> deps, boolean includeVersion) {
         processDependencyList(data.getEnvironment().getDependencies(), deps, includeVersion);
         Map<String, ConfigurationData> children = data.getChildConfigurations();
@@ -666,7 +666,7 @@ public class GeronimoServerPluginManager {
     public DependencyType toDependencyType(String configId) {
         return toDependencyType(new Dependency(Artifact.create(configId), ImportType.ALL), true);
     }
-    
+
     public DependencyType toDependencyType(Dependency dep, boolean includeVersion) {
         Artifact id = dep.getArtifact();
         DependencyType dependency = new DependencyType();
@@ -888,4 +888,5 @@ public class GeronimoServerPluginManager {
         }
         return repos;
     }
+
 }
