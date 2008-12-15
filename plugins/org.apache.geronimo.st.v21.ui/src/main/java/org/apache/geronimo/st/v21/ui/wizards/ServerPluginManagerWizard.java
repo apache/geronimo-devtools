@@ -118,12 +118,22 @@ public class ServerPluginManagerWizard extends AbstractWizard {
                 }
                 break;
             case 1:
-                metadata = pluginManager.getPluginMetadata(createPluginCombo.getItem(createPluginCombo.getSelectionIndex()));
-                page2.loadMetadata (metadata);
+                try {
+                    metadata = pluginManager.getPluginMetadata(createPluginCombo.getItem(createPluginCombo.getSelectionIndex()));
+                    page2.loadMetadata (metadata);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
                 pageVisible++;
                 break;
             case 2:
-                page3.loadMetadata (metadata);
+                try {
+                    page3.loadMetadata (metadata);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
                 pageVisible++;
                 break;
             case 3:
