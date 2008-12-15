@@ -575,7 +575,13 @@ public class GeronimoServerPluginManager {
     private String getArtifactLocation (Artifact artifact) {
         String ch = File.separator;
         String temp = server.getRuntime().getLocation().toOSString() + ch + "repository" + ch;
-        temp += artifact.getGroupId().replaceAll("[.]", ch) + ch + artifact.getArtifactId() + ch + artifact.getVersion() + ch;
+        String group = artifact.getGroupId();
+		int pos = group.indexOf(".");
+		while (pos > -1) {
+		    group = group.substring(0, pos) + ch + group.substring(pos + 1);
+		    pos = group.indexOf(".");
+        }
+        temp += group + ch + artifact.getArtifactId() + ch + artifact.getVersion() + ch;
         return temp;
     }
 
@@ -592,7 +598,13 @@ public class GeronimoServerPluginManager {
             fileName += "/";
         }
 
-        fileName += artifact.getGroupId().replaceAll("[.]", "/") + "/" + artifact.getArtifactId() + "/" + artifact.getVersion() + "/";
+        String group = artifact.getGroupId();
+        int pos = group.indexOf(".");
+        while (pos > -1) {
+            group = group.substring(0, pos) + File.separator + group.substring(pos + 1);
+            pos = group.indexOf(".");
+        }
+        fileName += group + "/" + artifact.getArtifactId() + "/" + artifact.getVersion() + "/";
         File temp = new File (fileName);
         if (!temp.exists()) {
             temp.mkdirs();

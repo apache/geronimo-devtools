@@ -14,7 +14,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources,
  org.eclipse.wst.common.project.facet.ui,
  org.apache.geronimo.jee.v21.jaxbmodel,
- org.apache.geronimo.runtime.common
+ org.apache.geronimo.runtime.common,
+ org.apache.geronimo.runtime.v21
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Apache.org
 Export-Package: org.apache.geronimo.st.v21.ui,
@@ -23,4 +24,3 @@ Export-Package: org.apache.geronimo.st.v21.ui,
  org.apache.geronimo.st.v21.ui.pages,
  org.apache.geronimo.st.v21.ui.sections,
  org.apache.geronimo.st.v21.ui.wizards
-Import-Package: org.apache.geronimo.system.plugin.model
