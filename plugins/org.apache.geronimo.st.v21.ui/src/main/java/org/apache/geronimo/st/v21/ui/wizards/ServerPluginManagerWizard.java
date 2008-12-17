@@ -71,6 +71,7 @@ public class ServerPluginManagerWizard extends AbstractWizard {
     protected ServerPluginManagerWizardPage2 page2;
     protected ServerPluginManagerWizardPage3 page3;
     protected ServerPluginManagerWizardPage4 page4;
+    protected ServerPluginManagerWizardPage5 page5;
 
     // pageVisible is used to keep track of exactly which page we are viewing
     protected int pageVisible;
@@ -93,6 +94,8 @@ public class ServerPluginManagerWizard extends AbstractWizard {
         addPage(page3);
         page4 = new ServerPluginManagerWizardPage4("page4");
         addPage(page4);
+        page5 = new ServerPluginManagerWizardPage5("page5");
+        addPage(page5);
     }
 
     public void backPressed () {
@@ -112,8 +115,10 @@ public class ServerPluginManagerWizard extends AbstractWizard {
                     page1.setPageComplete(true);
                     page2.setPageComplete(true);
                     page3.setPageComplete(true);
+                    page5.setPageComplete(false);
                     pageVisible = 4;
                 } else {
+                    page5.setPageComplete(true);
                     pageVisible = 1;
                 }
                 break;
@@ -161,6 +166,12 @@ public class ServerPluginManagerWizard extends AbstractWizard {
                     pluginCreatedStatus.setForeground(color);
                 }
                 pageVisible = 0;
+                break;
+            case 4:
+                ArrayList<String> eventList = page4.installPlugins();
+                page5.setEventList (eventList);
+                page5.setPageComplete(true);
+                pageVisible++;
                 break;
         }
     }
@@ -387,7 +398,7 @@ public class ServerPluginManagerWizard extends AbstractWizard {
                 buf.append(artifactToString(artifactType));
             }
             return buf.toString();
-         }
+        }
 
         private String artifactToString(ArtifactType artifact) {
             StringBuffer buffer = new StringBuffer();
@@ -696,7 +707,6 @@ public class ServerPluginManagerWizard extends AbstractWizard {
                         setPageComplete(false);
                     }
                 }
-
             });
 
             setPageComplete(false);
@@ -721,6 +731,16 @@ public class ServerPluginManagerWizard extends AbstractWizard {
             }
         }
 
+        // install selected plugins to the server
+        public ArrayList<String> installPlugins() {
+            // take each selected object in the pluginLoadTable and install and start
+            List<PluginType> pluginList = new ArrayList<PluginType>();
+            for (int i = 0; i < pluginLoadTable.getSelectionCount(); i++) {
+                pluginList.add ((PluginType)pluginLoadTable.getItem(pluginLoadTable.getSelectionIndices()[i]).getData());
+            }
+            return pluginManager.installPlugins(localRepoPath.getText(), pluginList);
+        }
+
         private String[] pluginToStringArray (PluginType plugin) {
             String[] stringArray = new String[pluginLoadTable.getColumnCount()];
             stringArray[0] = plugin.getName();
@@ -741,14 +761,48 @@ public class ServerPluginManagerWizard extends AbstractWizard {
         }
     }
 
-    public boolean performFinish() {
-        // take each selected object in the pluginLoadTable and install and start
-        List<PluginType> pluginList = new ArrayList<PluginType>();
-        for (int i = 0; i < pluginLoadTable.getSelectionCount(); i++) {
-            pluginList.add ((PluginType)pluginLoadTable.getItem(pluginLoadTable.getSelectionIndices()[i]).getData());
-        }
-        pluginManager.installPlugins(localRepoPath.getText(), pluginList);
+    public class ServerPluginManagerWizardPage5 extends AbstractWizardPage {
+        Table eventTable;
 
+        public ServerPluginManagerWizardPage5(String pageName) {
+            super(pageName);
+        }
+
+        public void createControl(Composite parent) {
+            parent.setLayoutData(createGridData(400, 300));
+            Composite composite = createComposite(parent);
+
+            String[] columnNames = {CommonMessages.event};
+            int[] columnWidths = {400};
+            eventTable = this.createTable(composite, columnNames, columnWidths);
+
+            setPageComplete(true);
+            setControl(composite);
+        }
+
+        protected void setEventList (ArrayList<String> eventList) {
+            eventTable.clearAll();
+            for (int i = 0; i < eventList.size(); i++) {
+                TableItem tabItem = new TableItem (eventTable, SWT.NONE);
+                String event = eventList.get(i);
+                tabItem.setData(event);
+                tabItem.setText(event);
+            }
+        }
+
+        @Override
+        protected String getWizardPageTitle() {
+            return CommonMessages.wizardPage5Title_PluginManager;
+        }
+
+        @Override
+        protected String getWizardPageDescription() {
+            return CommonMessages.wizardPage5Description_PluginManager;
+        }
+    }
+
+    // everything already done, simply close everything down
+    public boolean performFinish() {
         return true;
     }
 
