@@ -434,6 +434,8 @@ public class Messages extends NLS {
     public static String wizardPage3Description_PluginManager;
     public static String wizardPage4Title_PluginManager;
     public static String wizardPage4Description_PluginManager;
+    public static String wizardPage5Title_PluginManager;
+    public static String wizardPage5Description_PluginManager;
     public static String localPluginRepo;
     public static String failedToSave;
     public static String savedSuccess;
@@ -449,4 +451,5 @@ public class Messages extends NLS {
     public static String dependencies;
     public static String obsoletes;
     public static String installable;
+    public static String event;
 }

@@ -754,8 +754,9 @@ public class GeronimoServerPluginManager {
     }
 
     // mimics org.apache.geronimo.system.plugin.PluginInstallerGbean.install
-    public void installPlugins (String localRepoDir, List<PluginType> pluginList) {
+    public ArrayList<String> installPlugins (String localRepoDir, List<PluginType> pluginList) {
         Trace.tracePoint("Entry", "GeronimoServerPluginManager.installPlugins", localRepoDir, pluginList);
+        ArrayList<String> eventLog = new ArrayList<String>();
 
         //List<Artifact> downloadedArtifacts = new ArrayList<Artifact>();
         try {
@@ -788,6 +789,7 @@ public class GeronimoServerPluginManager {
                     if (configManager.isLoaded(obsolete)) {
                         if (configManager.isRunning(obsolete)) {
                             configManager.stopConfiguration(obsolete);
+                            eventLog.add(obsolete.toString() + " stopped");
                         }
                         configManager.unloadConfiguration(obsolete);
                         obsoletes.add(obsolete);
@@ -804,17 +806,16 @@ public class GeronimoServerPluginManager {
             if (configManager.isOnline()) {
                 for (int i = 0; i < toInstall.size(); i++) {
                     Artifact artifact = toArtifact(toInstall.get(i).getPluginArtifact().get(0).getModuleId());
-                    //for (Artifact artifact : artifacts) {
-                        if (!configManager.isRunning(artifact)) {
-                            if (!configManager.isLoaded(artifact)) {
-                                File serverArtifact = new File(getArtifactLocation (artifact));
-                                File localDir = new File (createDirectoryStructure(localRepoDir, artifact));
-                                writeToDirectory(localDir, serverArtifact);
-                                configManager.loadConfiguration(artifact);
-                            }
-                            configManager.startConfiguration(artifact);
+                    if (!configManager.isRunning(artifact)) {
+                        if (!configManager.isLoaded(artifact)) {
+                            File serverArtifact = new File(getArtifactLocation (artifact));
+                            File localDir = new File (createDirectoryStructure(localRepoDir, artifact));
+                            writeToDirectory(localDir, serverArtifact);
+                            configManager.loadConfiguration(artifact);
                         }
-                    //}
+                        configManager.startConfiguration(artifact);
+                        eventLog.add(artifact.toString() + " started");
+                    }
                 }
             }
 
@@ -822,7 +823,8 @@ public class GeronimoServerPluginManager {
             e.printStackTrace();
         }
 
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.installPlugins");
+        Trace.tracePoint("Exit", "GeronimoServerPluginManager.installPlugins", eventLog.toString());
+        return eventLog;
     }
 
     // mimics org.apache.geronimo.system.plugin.PluginInstallerGbean.verifyPrerequisistes
