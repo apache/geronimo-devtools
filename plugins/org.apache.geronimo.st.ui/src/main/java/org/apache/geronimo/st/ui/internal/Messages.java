@@ -29,9 +29,9 @@ public class Messages extends NLS {
     static {
         NLS.initializeMessages(Activator.PLUGIN_ID + ".internal.Messages", Messages.class);
     }
-    
+
     public static String editorTabSource;
-    
+
     public static String editorSectionSecurityTitle;
     public static String editorSectionSecurityDescription;
     public static String editorSectionPortsTitle;
@@ -42,13 +42,13 @@ public class Messages extends NLS {
     public static String editorSectionVMArgsDescription;
     public static String editorSectionStartupTitle;
     public static String editorSectionStartupDescription;
-    
+
     public static String editorSectionTestEnvTitle;
     public static String editorSectionTestEnvDescription;
     public static String editorSectionRunFromWorkspace;
     public static String editorSectionSharedLibrariesInPlace;
     public static String editorSectionSelectClasspathContainers;
-    
+
     public static String info;
     public static String debug;
     public static String httpPort;
@@ -65,14 +65,14 @@ public class Messages extends NLS {
     public static String pingDelayTooltip;
     public static String pingIntervalTooltip;
     public static String maxPingsTooltip;
-    
+
     public static String newServerWizardTitle;
     public static String newServerWizardDescription;
-    
+
     public static String installedJRE;
     public static String installedJREs;
     public static String runtimeDefaultJRE;
-    public static String runtimeWizardTitle; 
+    public static String runtimeWizardTitle;
     public static String browse;
     public static String installDir;
     public static String installDirInfo;
@@ -94,12 +94,12 @@ public class Messages extends NLS {
     public static String tooltipInstall;
     public static String tooltipJetty;
     public static String tooltipTomcat;
-    
+
     public static String sourceLocWizTitle;
     public static String sourceLocWizDescription;
     public static String sourceZipFile;
     public static String browseSrcDialog;
-    
+
     public static String hostName;
     public static String adminId;
     public static String adminPassword;
@@ -362,7 +362,7 @@ public class Messages extends NLS {
     public static String securityRunAsSubjects;
     public static String securityRunAsSubjectRole;
     public static String securityRunAsSubjectRealm;
-    public static String securityRunAsSubjectId;  
+    public static String securityRunAsSubjectId;
     public static String securityRefreshRoles;
 
     public static String editorCorrect;
@@ -372,7 +372,7 @@ public class Messages extends NLS {
     public static String gBeanLink;
     public static String moduleId;
     public static String seeRestrictions;
-    
+
     public static String useGBeanLink;
     public static String useGBeanPattern;
     public static String artifactType;
@@ -387,7 +387,7 @@ public class Messages extends NLS {
     public static String useResourcePattern;
     public static String resourceLink;
     public static String url;
-    
+
     public static String addSharedLib;
     public static String webContainerSection;
     public static String webContainerSectionDescription;
@@ -405,7 +405,7 @@ public class Messages extends NLS {
     public static String credential;
     public static String bindingName;
     public static String uri;
-    
+
     public static String connector;
     public static String ejb;
     public static String java;
@@ -452,4 +452,5 @@ public class Messages extends NLS {
     public static String obsoletes;
     public static String installable;
     public static String event;
+    public static String prerequisites;
 }

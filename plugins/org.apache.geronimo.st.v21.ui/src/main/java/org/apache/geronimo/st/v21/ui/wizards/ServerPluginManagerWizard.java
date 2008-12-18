@@ -472,8 +472,10 @@ public class ServerPluginManagerWizard extends AbstractWizard {
             parent.setLayoutData(createGridData(400, 300));
             Composite composite = createComposite(parent);
 
+            createLabel(composite, CommonMessages.license);
+            createLabel(composite, "");
             String[] lColumnNames = {CommonMessages.license, CommonMessages.osiApproved};
-            int[] lColumnWidths = {300, 100};
+            int[] lColumnWidths = {275, 100};
             licenseTable = createEditableTable(composite, lColumnNames, lColumnWidths);
             licenseTable.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(SelectionEvent arg0) {
@@ -527,6 +529,8 @@ public class ServerPluginManagerWizard extends AbstractWizard {
                 }
             });
 
+            createLabel(composite, CommonMessages.prerequisites);
+            createLabel(composite, "");
             String[] pColumnNames = {CommonMessages.groupId, CommonMessages.artifactId, CommonMessages.version, CommonMessages.type, CommonMessages.description};
             int[] pColumnWidths = {50, 50, 50, 50, 200};
             prereqTable = createEditableTable(composite, pColumnNames, pColumnWidths);
