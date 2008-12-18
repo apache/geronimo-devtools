@@ -175,7 +175,7 @@ public class ServerPluginManagerWizard extends AbstractWizard {
                 break;
         }
     }
-    
+
     public class ServerPluginManagerWizardPage0 extends AbstractWizardPage {
 
         public ServerPluginManagerWizardPage0(String pageName) {
@@ -279,7 +279,7 @@ public class ServerPluginManagerWizard extends AbstractWizard {
         Text name, downloadRepos, category, description, pluginURL, author;
         Text geronimoVersions, jvmVersions, dependencies, obsoletes;
         Label id;
-        
+
         public ServerPluginManagerWizardPage2(String pageName) {
             super(pageName);
         }
@@ -399,7 +399,7 @@ public class ServerPluginManagerWizard extends AbstractWizard {
             }
             return buf.toString();
          }
-        
+
         private String artifactToString(ArtifactType artifact) {
             StringBuffer buffer = new StringBuffer();
 
@@ -423,7 +423,7 @@ public class ServerPluginManagerWizard extends AbstractWizard {
             }
             return buffer.toString();
         }
-        
+
         private void setText (Text text, String value) {
             if (value != null) {
                 text.setText(value);
@@ -463,7 +463,7 @@ public class ServerPluginManagerWizard extends AbstractWizard {
         protected Button addLicenseButton, editLicenseButton, removeLicenseButton;
         protected Button addPrereqButton, editPrereqButton, removePrereqButton;
         protected PluginType pluginType;
-        
+
         public ServerPluginManagerWizardPage3(String pageName) {
             super(pageName);
         }
@@ -472,8 +472,10 @@ public class ServerPluginManagerWizard extends AbstractWizard {
             parent.setLayoutData(createGridData(400, 300));
             Composite composite = createComposite(parent);
 
+            createLabel(composite, CommonMessages.license);
+            createLabel(composite, "");
             String[] lColumnNames = {CommonMessages.license, CommonMessages.osiApproved};
-            int[] lColumnWidths = {300, 100};
+            int[] lColumnWidths = {275, 100};
             licenseTable = createEditableTable(composite, lColumnNames, lColumnWidths);
             licenseTable.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(SelectionEvent arg0) {
@@ -527,6 +529,8 @@ public class ServerPluginManagerWizard extends AbstractWizard {
                 }
             });
 
+            createLabel(composite, CommonMessages.prerequisites);
+            createLabel(composite, "");
             String[] pColumnNames = {CommonMessages.groupId, CommonMessages.artifactId, CommonMessages.version, CommonMessages.type, CommonMessages.description};
             int[] pColumnWidths = {50, 50, 50, 50, 200};
             prereqTable = createEditableTable(composite, pColumnNames, pColumnWidths);
@@ -591,7 +595,7 @@ public class ServerPluginManagerWizard extends AbstractWizard {
             editPrereqButton.setEnabled(prereqTable.getSelectionCount() > 0);
             removePrereqButton.setEnabled(prereqTable.getSelectionCount() > 0);
         }
-        
+
         protected Composite createButtonComposite(Composite parent) {
             Composite buttonComp = new Composite(parent, SWT.NONE);
             GridLayout layout = new GridLayout();
@@ -647,14 +651,14 @@ public class ServerPluginManagerWizard extends AbstractWizard {
             }
             return metadata;
         }
-        
+
         private String[] licenseToStringArray (LicenseType license) {
             String[] stringArray = new String[licenseTable.getColumnCount()];
             stringArray[0] = license.getValue();
             stringArray[1] = String.valueOf(license.isOsiApproved());
             return stringArray;
         }
-        
+
         private String[] prereqToStringArray (PrerequisiteType prereq) {
             String[] stringArray = new String[prereqTable.getColumnCount()];
             if (prereq.getId() != null) {
@@ -707,9 +711,9 @@ public class ServerPluginManagerWizard extends AbstractWizard {
                         setPageComplete(false);
                     }
                 }
-                
+
             });
-            
+
             setPageComplete(false);
             setControl(composite);
         }
@@ -718,7 +722,7 @@ public class ServerPluginManagerWizard extends AbstractWizard {
         public IWizardPage getPreviousPage() {
             return getPages()[0];
         }
-        
+
         public void populateTable (PluginListType pluginList) {
             String[] pluginValues;
             pluginLoadTable.removeAll();
@@ -734,14 +738,14 @@ public class ServerPluginManagerWizard extends AbstractWizard {
 
         // install selected plugins to the server
         public ArrayList<String> installPlugins() {
-            // take each selected object in the pluginLoadTable and install and start 
+            // take each selected object in the pluginLoadTable and install and start
             List<PluginType> pluginList = new ArrayList<PluginType>();
             for (int i = 0; i < pluginLoadTable.getSelectionCount(); i++) {
                 pluginList.add ((PluginType)pluginLoadTable.getItem(pluginLoadTable.getSelectionIndices()[i]).getData());
             }
             return pluginManager.installPlugins(localRepoPath.getText(), pluginList);
         }
-        
+
         private String[] pluginToStringArray (PluginType plugin) {
             String[] stringArray = new String[pluginLoadTable.getColumnCount()];
             stringArray[0] = plugin.getName();
@@ -764,7 +768,7 @@ public class ServerPluginManagerWizard extends AbstractWizard {
 
     public class ServerPluginManagerWizardPage5 extends AbstractWizardPage {
         Table eventTable;
-        
+
         public ServerPluginManagerWizardPage5(String pageName) {
             super(pageName);
         }
