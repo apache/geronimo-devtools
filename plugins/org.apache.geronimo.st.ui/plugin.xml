@@ -127,6 +127,14 @@
     </extension>
     
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.publishAdvanced" order="10"
+            insertionId="org.eclipse.wst.server.editor.overview.right"
+            typeIds="org.apache.geronimo.server.*"
+            class="org.apache.geronimo.st.ui.sections.ServerEditorPublishAdvancedSection">
+        </section>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.port" order="10"
             insertionId="org.eclipse.wst.server.editor.overview.right"
             typeIds="org.apache.geronimo.server.*"
@@ -203,16 +211,11 @@
             class="org.apache.geronimo.st.ui.internal.GeronimoLaunchConfigurationTabGroup">
         </launchConfigurationTabGroup>
     </extension>
-    
-    
-   <extension
-         point="org.apache.geronimo.st.ui.actionURLs">
-         <server_prefix>org.apache.geronimo.</server_prefix>
-         <action_URL class="org.apache.geronimo.st.ui.actions.LaunchGeronimoSupportAction"
-                     URL="http://geronimo.apache.org/" />
-   </extension>
-   
-    
-</plugin>
 
+    <extension point="org.apache.geronimo.st.ui.actionURLs">
+        <server_prefix>org.apache.geronimo.</server_prefix>
+        <action_URL class="org.apache.geronimo.st.ui.actions.LaunchGeronimoSupportAction"
+                    URL="http://geronimo.apache.org/" />
+    </extension>
  
+</plugin>

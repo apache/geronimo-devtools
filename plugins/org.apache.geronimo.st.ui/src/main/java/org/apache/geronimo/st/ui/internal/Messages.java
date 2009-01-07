@@ -48,7 +48,10 @@ public class Messages extends NLS {
     public static String editorSectionRunFromWorkspace;
     public static String editorSectionSharedLibrariesInPlace;
     public static String editorSectionSelectClasspathContainers;
+    public static String editorSectionPublishAdvancedTitle;
+    public static String editorSectionPublishAdvancedDescription;
 
+    public static String publishingTimeout;
     public static String info;
     public static String debug;
     public static String httpPort;
