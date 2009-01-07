@@ -19,7 +19,6 @@ package org.apache.geronimo.st.ui.sections;
 import java.util.List;
 
 import org.apache.geronimo.st.core.ClasspathContainersHelper;
-import org.apache.geronimo.st.core.IGeronimoServer;
 import org.apache.geronimo.st.ui.commands.SetInPlaceSharedLibCommand;
 import org.apache.geronimo.st.ui.commands.SetRunFromWorkspaceCommand;
 import org.apache.geronimo.st.ui.commands.SetClasspathContainersCommand;
@@ -41,12 +40,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.wst.server.ui.editor.ServerEditorSection;
 
 /**
  * @version $Rev$ $Date$
  */
-public class ServerEditorTestEnvSection extends ServerEditorSection {
+public class ServerEditorTestEnvSection extends AbstractServerEditorSection {
 
     // SWT widget(s)
     private Button runFromWorkspace;
@@ -59,8 +57,6 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 
     // JFace viewer(s)
     private CheckboxTableViewer checkbox;
-
-    private IGeronimoServer gs;
 
     /*
      * (non-Javadoc)
@@ -94,9 +90,6 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         section.setClient(composite);
 
-        gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
-
-
         //
         // inPlaceSharedLib Button
         //
@@ -112,7 +105,6 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
             }
 
         });
-
 
         //
         // runFromWorkspace Button
@@ -130,7 +122,6 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
             }
 
         });
-
 
         //
         // selectClasspathContainers Button
@@ -164,9 +155,7 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 
             public void widgetDefaultSelected(SelectionEvent e) { 
             } 
-
         }); 
-
 
         //
         // checkbox CheckboxTableViewer
@@ -197,7 +186,6 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
         Trace.tracePoint("EXIT", "ServerEditorTestEnvSection.createSection");
     }
 
-
     //
     // CheckboxTableViewer: checkbox
     //
@@ -218,7 +206,6 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
                 public void checkStateChanged(CheckStateChangedEvent event) {
                     execute(new SetClasspathContainersCommand(server, checkbox.getCheckedElements()));
                 }
-
             }); 
 
             checkbox.setLabelProvider( new LabelProvider() {
@@ -226,10 +213,8 @@ public class ServerEditorTestEnvSection extends ServerEditorSection {
 
             checkbox.setContentProvider( new ArrayContentProvider() {
             });
-
         }
 
         Trace.tracePoint("EXIT", "ServerEditorTestEnvSection.createCheckbox");
 	}
-
 }
