@@ -16,10 +16,8 @@
  */
 package org.apache.geronimo.st.ui.sections;
 
-import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.ui.commands.SetVMArgsCommand;
 import org.apache.geronimo.st.ui.internal.Messages;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.jdt.internal.debug.ui.launcher.LauncherMessages;
@@ -33,35 +31,20 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.wst.server.ui.editor.ServerEditorSection;
 
 /**
  * @version $Rev$ $Date$
  */
-public class ServerVMArgsSection extends ServerEditorSection {
+public class ServerVMArgsSection extends AbstractServerEditorSection {
 	
 	protected Text fVMArgumentsText;
 	private Button fPgrmArgVariableButton;
-	GeronimoServerDelegate gs;
 
 	public ServerVMArgsSection() {
 		super();
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.wst.server.ui.editor.ServerEditorSection#init(org.eclipse.ui.IEditorSite, org.eclipse.ui.IEditorInput)
-	 */
-	public void init(IEditorSite site, IEditorInput input) {
-		super.init(site, input);
-		gs = (GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class);
-		if (gs == null) {
-			gs = (GeronimoServerDelegate) server.loadAdapter(GeronimoServerDelegate.class, new NullProgressMonitor());
-		}
 	}
 	
 	/* (non-Javadoc)

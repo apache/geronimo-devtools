@@ -19,35 +19,27 @@ package org.apache.geronimo.st.ui.sections;
 import org.apache.geronimo.st.core.IGeronimoServer;
 import org.apache.geronimo.st.ui.commands.SetServerInstancePropertyCommand;
 import org.apache.geronimo.st.ui.internal.Messages;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.wst.server.ui.editor.ServerEditorSection;
 
 /**
  * @version $Rev$ $Date$
  */
-public class ServerEditorStartupSection extends ServerEditorSection {
+public class ServerEditorStartupSection extends AbstractServerEditorSection {
 	
 	Text pingDelay;
 
 	Text pingInterval;
 	
 	Text maxPings;
-	
-	IGeronimoServer gs;
 	
 	public ServerEditorStartupSection() {
 		super();
@@ -118,31 +110,8 @@ public class ServerEditorStartupSection extends ServerEditorSection {
 				execute(new SetServerInstancePropertyCommand(server, value, "setMaxPings", Integer.class, IGeronimoServer.class));
 			}
 		});
-
 	}
 
-	protected Label createLabel(Composite parent, String text,
-			FormToolkit toolkit) {
-		Label label = toolkit.createLabel(parent, text);
-		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-		return label;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.wst.server.ui.editor.ServerEditorSection#init(org.eclipse.ui.IEditorSite,
-	 *      org.eclipse.ui.IEditorInput)
-	 */
-	public void init(IEditorSite site, IEditorInput input) {
-		super.init(site, input);
-		gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
-		if (gs == null) {
-			gs = (IGeronimoServer) server.loadAdapter(IGeronimoServer.class, new NullProgressMonitor());
-		}
-	}
-	
 	public String getMaxPings() {
 		if (gs != null) {
 			return Integer.toString(gs.getMaxPings());
@@ -163,5 +132,4 @@ public class ServerEditorStartupSection extends ServerEditorSection {
 		}
 		return "";
 	}
-
 }

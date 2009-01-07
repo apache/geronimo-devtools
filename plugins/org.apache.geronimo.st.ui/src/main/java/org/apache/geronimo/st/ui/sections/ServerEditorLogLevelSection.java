@@ -34,7 +34,7 @@ import org.eclipse.wst.server.ui.editor.ServerEditorSection;
 /**
  * @version $Rev$ $Date$
  */
-public class ServerEditorLogLevelSection extends ServerEditorSection {
+public class ServerEditorLogLevelSection extends AbstractServerEditorSection {
 
 	Button info;
 
@@ -89,7 +89,6 @@ public class ServerEditorLogLevelSection extends ServerEditorSection {
 
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
-
 		});
 
 		debug.addSelectionListener(new SelectionListener() {
@@ -102,9 +101,6 @@ public class ServerEditorLogLevelSection extends ServerEditorSection {
 
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
-
 		});
-
 	}
-
 }
