@@ -97,7 +97,7 @@ public class GeronimoServerPluginManager {
                     if (connection != null) {
                         kernel = new KernelDelegate(connection);
                     }
-                    pluginInstaller = kernel.getGBean(PluginInstaller.class);
+                    pluginInstaller = (PluginInstaller)kernel.getGBean(PluginInstaller.class);
                 }
             }
         } catch (Throwable e) {
@@ -545,7 +545,7 @@ public class GeronimoServerPluginManager {
         Trace.tracePoint("Entry", "GeronimoServerPluginManager.validatePlugin", plugin);
         boolean valid = true;
         try {
-            valid = pluginInstaller.validatePlugin(plugin);
+            pluginInstaller.validatePlugin(plugin);
         } catch (Exception e) {
             e.printStackTrace();
             valid = false;
