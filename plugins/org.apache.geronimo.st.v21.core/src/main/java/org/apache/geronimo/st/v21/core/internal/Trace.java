@@ -87,38 +87,25 @@ public class Trace {
      * @param classDotMethod
      *            The class name + method name (e.g., "Class.method()")
      *            
-     * @param parm1,2,3,4,5
-     *            Method parameters if the trace point is an "Entry"
+     * @param parms
+     *            Method parameter(s) if the trace point is an "Entry"
      *            or
      *            Return value if the trace point is an "Exit"
      */
     public static void tracePoint(String tracePoint, String classDotMethod) {
         trace(Trace.INFO, tracePoint + ": " + classDotMethod + "()" );
     }   
-    public static void tracePoint(String tracePoint, String classDotMethod, Object parm1) {
-        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "] )" );
-    }
-
-    public static void tracePoint(String tracePoint, String classDotMethod, Object parm1, Object parm2) {
-        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "], " +
-                                                                 "parm2=[" + (parm2 == null ? null : parm2.toString()) + "] )" );
-    }
-    public static void tracePoint(String tracePoint, String classDotMethod, Object parm1, Object parm2, Object parm3) {
-        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "], " +
-                                                                 "parm2=[" + (parm2 == null ? null : parm2.toString()) + "], " +
-                                                                 "parm3=[" + (parm3 == null ? null : parm3.toString()) + "] )" );
-    }
-    public static void tracePoint(String tracePoint, String classDotMethod, Object parm1, Object parm2, Object parm3, Object parm4) {
-        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "], " +
-                                                                 "parm2=[" + (parm2 == null ? null : parm2.toString()) + "], " +
-                                                                 "parm3=[" + (parm3 == null ? null : parm3.toString()) + "], " +
-                                                                 "parm4=[" + (parm4 == null ? null : parm4.toString()) + "] )" );
-    }
-    public static void tracePoint(String tracePoint, String classDotMethod, Object parm1, Object parm2, Object parm3, Object parm4, Object parm5) {
-        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "], " +
-                                                                 "parm2=[" + (parm2 == null ? null : parm2.toString()) + "], " +
-                                                                 "parm3=[" + (parm3 == null ? null : parm3.toString()) + "], " +
-                                                                 "parm4=[" + (parm4 == null ? null : parm4.toString()) + "], " +
-                                                                 "parm5=[" + (parm5 == null ? null : parm5.toString()) + "] )" );
-    }
+    public static void tracePoint(String tracePoint, String classDotMethod, Object... parms) {
+        if ( parms == null ) {
+            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( null )" );
+        }
+        else {
+            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "(" );
+            for ( int ii=0; ii<parms.length; ii++) {
+                Object parm = parms[ii];
+                trace(Trace.INFO, "    parm" + (ii+1) + "=[" + (parm == null ? null : parm.toString()) + "]" );
+            }
+            trace(Trace.INFO, ")" );
+        }
+    }   
 }
