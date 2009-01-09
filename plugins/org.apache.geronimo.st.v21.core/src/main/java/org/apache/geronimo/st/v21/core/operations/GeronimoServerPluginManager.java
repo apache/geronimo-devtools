@@ -27,19 +27,18 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
-import java.util.List;
-import java.util.zip.ZipEntry;
 
 import javax.management.MBeanServerConnection;
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.gbean.AbstractName;
 import org.apache.geronimo.deployment.plugin.jmx.RemoteDeploymentManager;
+import org.apache.geronimo.gbean.AbstractName;
 import org.apache.geronimo.kernel.Kernel;
 import org.apache.geronimo.kernel.config.ConfigurationData;
 import org.apache.geronimo.kernel.config.ConfigurationInfo;
@@ -48,16 +47,12 @@ import org.apache.geronimo.kernel.config.ConfigurationUtil;
 import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.kernel.repository.Dependency;
 import org.apache.geronimo.kernel.repository.ImportType;
-import org.apache.geronimo.kernel.repository.Version;
 import org.apache.geronimo.st.core.CommonMessages;
-import org.apache.geronimo.st.core.GeronimoConnectionFactory;
-import org.apache.geronimo.st.core.GeronimoRuntimeDelegate;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.v21.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
-import org.apache.geronimo.system.plugin.SourceRepository;
-import org.apache.geronimo.system.plugin.SourceRepositoryFactory;
+import org.apache.geronimo.system.plugin.PluginInstaller;
 import org.apache.geronimo.system.plugin.model.ArtifactType;
 import org.apache.geronimo.system.plugin.model.DependencyType;
 import org.apache.geronimo.system.plugin.model.ObjectFactory;
@@ -65,7 +60,6 @@ import org.apache.geronimo.system.plugin.model.PluginArtifactType;
 import org.apache.geronimo.system.plugin.model.PluginListType;
 import org.apache.geronimo.system.plugin.model.PluginType;
 import org.apache.geronimo.system.plugin.model.PrerequisiteType;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.server.core.IServer;
 
 /**
@@ -78,9 +72,11 @@ public class GeronimoServerPluginManager {
     private PluginListType data;
     private List<String> pluginList;
     private Kernel kernel;
+    private PluginInstaller pluginInstaller;
 
     public GeronimoServerPluginManager () {
         kernel = null;
+
         Trace.tracePoint("Constructor", "GeronimoServerPluginManager");
     }
 
@@ -92,37 +88,55 @@ public class GeronimoServerPluginManager {
                 server.getServerType().getId().startsWith(serverPrefix) &&
                 server.getServerState() == IServer.STATE_STARTED;
 
+        try {
+            if (server !=null) {
+                GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) server
+                    .getAdapter(GeronimoServerBehaviourDelegate.class);
+                if (delegate != null) {
+                    MBeanServerConnection connection = delegate.getServerConnection();
+                    if (connection != null) {
+                        kernel = new KernelDelegate(connection);
+                    }
+                    pluginInstaller = kernel.getGBean(PluginInstaller.class);
+                }
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+            Trace.trace(Trace.WARNING, "Kernel connection failed. "
+                + e.getMessage());
+        }
+
         Trace.tracePoint("Exit", "GeronimoServerPluginManager.serverChanged", enabled);
         return enabled;
     }
 
-    // mimics org.apache.geronimo.console.car.AssemblyListHandler.renderView
     public List<String> getPluginList () {
         Trace.tracePoint("Entry", "GeronimoServerPluginManager.getPluginList");
 
         String name;
         boolean added;
-        try {
-            GeronimoConnectionFactory gcFactory = GeronimoConnectionFactory.getInstance();
-            remoteDM = (RemoteDeploymentManager)gcFactory.getDeploymentManager(server);
-            data = remoteDM.createPluginListForRepositories(null);
-            List<PluginType> aList = data.getPlugin();
-            pluginList = new ArrayList<String>(aList.size());
-            for (int i = 0; i < aList.size(); i++) {
-                name = aList.get(i).getName();
-                added = false;
-                for (int j = 0; j < pluginList.size() && added == false; j++) {
-                    if (name.compareTo(pluginList.get(j)) < 0) {
-                        pluginList.add(j, name);
-                        added = true;
+        if (pluginInstaller != null){
+            try {
+                data = pluginInstaller.createPluginListForRepositories(null);
+
+                List<PluginType> aList = data.getPlugin();
+                pluginList = new ArrayList<String>(aList.size());
+                for (int i = 0; i < aList.size(); i++) {
+                    name = aList.get(i).getName();
+                    added = false;
+                    for (int j = 0; j < pluginList.size() && added == false; j++) {
+                        if (name.compareTo(pluginList.get(j)) < 0) {
+                            pluginList.add(j, name);
+                            added = true;
+                        }
+                    }
+                    if (added == false) {
+                        pluginList.add(name);
                     }
                 }
-                if (added == false) {
-                    pluginList.add(name);
-                }
+            } catch (Throwable e) {
+                e.printStackTrace();
             }
-        } catch (Throwable e) {
-            e.printStackTrace();
         }
 
         Trace.tracePoint("Exit", "GeronimoServerPluginManager.getPluginList", pluginList);
@@ -185,15 +199,14 @@ public class GeronimoServerPluginManager {
 
     public PluginType getPluginMetadata (String configId) {
         Artifact artifact = Artifact.create(configId);
-        File dir = new File (addFilename(getArtifactLocation(artifact), artifact));
-        PluginType metadata = extractPluginMetadata (dir);
-        if (metadata == null) {
-            metadata = createDefaultMetadata (artifact);
-        }
+        PluginType metadata = null;
+        if (pluginInstaller != null)
+            metadata = pluginInstaller.getPluginMetadata(artifact);
         return metadata;
     }
 
     // mimics org.apache.geronimo.system.plugin.PluginInstallerGBean.updatePluginMetadata
+    // but puts the metadata in our local directory
     public void savePluginXML (String configId, PluginType metadata) {
         Trace.tracePoint("Entry", "GeronimoServerPluginManager.savePluginXML", configId, metadata);
 
@@ -276,6 +289,7 @@ public class GeronimoServerPluginManager {
                 }
             }
         }
+
         Trace.tracePoint("Exit", "GeronimoServerPluginManager.savePluginXML");
     }
 
@@ -391,142 +405,6 @@ public class GeronimoServerPluginManager {
         return pluginList;
     }
 
-    // mimics org.apache.geronimo.system.plugin.GeronimoSourceRepository.extractPluginMetadata
-    private PluginType extractPluginMetadata (File dir) {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.extractPluginMetadata", dir);
-
-        try {
-            if (dir.isDirectory()) {
-                File meta = new File(dir, "META-INF");
-                if (!meta.isDirectory() || !meta.canRead()) {
-                    return null;
-                }
-                File xml = new File(meta, "geronimo-plugin.xml");
-                if (!xml.isFile() || !xml.canRead() || xml.length() == 0) {
-                    return null;
-                }
-                InputStream in = new FileInputStream(xml);
-                try {
-                    return loadPluginMetadata(in);
-                } finally {
-                    in.close();
-                }
-            } else {
-                if (!dir.isFile() || !dir.canRead()) {
-                    throw new IllegalStateException(CommonMessages.bind(CommonMessages.errorReadConfig, dir.getAbsolutePath()));
-                }
-                JarFile jar = new JarFile(dir);
-                try {
-                    ZipEntry entry = jar.getEntry("META-INF/geronimo-plugin.xml");
-                    if (entry == null) {
-                        return null;
-                    }
-                    InputStream in = jar.getInputStream(entry);
-                    try {
-                        return loadPluginMetadata(in);
-                    } finally {
-                        in.close();
-                    }
-                } finally {
-                    jar.close();
-                }
-            }
-        } catch (Exception e) {
-            //ignore
-        }
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.extractPluginMetadata", dir);
-        return null;
-    }
-
-    // mimics org.apache.geronimo.system.plugin.PluginInstallerGBean.createDefaultMetadata
-    private PluginType createDefaultMetadata (Artifact moduleId) {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.createDefaultMetadata", moduleId);
-
-        ConfigurationData data = null;
-        try {
-            data = this.loadConfiguration(moduleId);
-        }
-        catch (Exception e) {
-        }
-
-        PluginType metadata = new PluginType();
-        PluginArtifactType instance = new PluginArtifactType();
-        metadata.getPluginArtifact().add(instance);
-        metadata.setName(toArtifactType(moduleId).getArtifactId());
-        instance.setModuleId(toArtifactType(moduleId));
-        metadata.setCategory("Unknown");
-        GeronimoRuntimeDelegate rd = (GeronimoRuntimeDelegate)server.getRuntime().getAdapter(GeronimoRuntimeDelegate.class);
-        if (rd == null)
-            rd = (GeronimoRuntimeDelegate) server.getRuntime().loadAdapter(GeronimoRuntimeDelegate.class, new NullProgressMonitor());
-        if (rd != null) {
-            instance.getGeronimoVersion().add(rd.detectVersion());
-        }
-        instance.getObsoletes().add(toArtifactType(new Artifact(moduleId.getGroupId(),
-                moduleId.getArtifactId(),
-                (Version) null,
-                moduleId.getType())));
-        List<DependencyType> deps = instance.getDependency();
-        addGeronimoDependencies(data, deps, true);
-
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.createDefaultMetadata", metadata);
-        return metadata;
-    }
-
-    // mimics org.apache.geronimo.system.configuration.RepositoryConfigurationStore.loadConfiguration
-    private ConfigurationData loadConfiguration (Artifact artifact) throws Exception {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.loadConfiguration", artifact);
-
-        String temp = getArtifactLocation(artifact);
-        File location = new File (this.addFilename(temp, artifact));
-
-        ConfigurationData configurationData;
-        try {
-            if (location.isDirectory()) {
-                File serFile = new File(location, "META-INF");
-                serFile = new File(serFile, "config.ser");
-
-                if (!serFile.exists()) {
-                    throw new Exception(CommonMessages.bind(CommonMessages.errorNoSerFile, serFile));
-                } else if (!serFile.canRead()) {
-                    throw new Exception(CommonMessages.bind(CommonMessages.errorReadSerFile, serFile));
-                }
-
-                //ConfigurationStoreUtil.verifyChecksum(serFile);
-
-                InputStream in = new FileInputStream(serFile);
-                try {
-                    configurationData = ConfigurationUtil.readConfigurationData(in);
-                } finally {
-                    in.close();
-                }
-            } else {
-                JarFile jarFile = new JarFile(location);
-                InputStream in = null;
-                try {
-                    ZipEntry entry = jarFile.getEntry("META-INF/config.ser");
-                    in = jarFile.getInputStream(entry);
-                    configurationData = ConfigurationUtil.readConfigurationData(in);
-                } finally {
-                    in.close();
-                    jarFile.close();
-                }
-            }
-        } catch (ClassNotFoundException e) {
-            String message = CommonMessages.bind(CommonMessages.errorLoadClass, artifact);
-            Trace.tracePoint("Throw", "GeronimoServerPluginManager.loadConfiguration", message);
-            throw new Exception(message, e);
-        }
-
-        configurationData.setConfigurationDir(location);
-//        if (kernel != null) {
-//            configurationData.setNaming(kernel.getNaming());
-//        }
-
-
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.loadConfiguration", configurationData);
-        return configurationData;
-    }
-
     public PluginListType loadPluginList (InputStream in) {
         try {
             JAXBElement pluginListElement = JAXBUtils.unmarshalPlugin(in);
@@ -549,18 +427,6 @@ public class GeronimoServerPluginManager {
         }
     }
 
-    //mimic org.apache.geronimo.system.plugin.PluginXmlUtil.loadPluginMetadata(in);
-    private PluginType loadPluginMetadata (InputStream in) {
-        try {
-            JAXBElement pluginElement = JAXBUtils.unmarshalPlugin(in);
-            return (PluginType)pluginElement.getValue();
-        }
-        catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     private void writePluginMetadata (PluginType metadata, OutputStream out) {
         try {
             ObjectFactory jeeFactory = new ObjectFactory();
@@ -576,12 +442,12 @@ public class GeronimoServerPluginManager {
         String ch = File.separator;
         String temp = server.getRuntime().getLocation().toOSString() + ch + "repository" + ch;
         String group = artifact.getGroupId();
-		int pos = group.indexOf(".");
-		while (pos > -1) {
-		    group = group.substring(0, pos) + ch + group.substring(pos + 1);
-		    pos = group.indexOf(".");
+        int pos = group.indexOf(".");
+        while (pos > -1) {
+            group = group.substring(0, pos) + ch + group.substring(pos + 1);
+            pos = group.indexOf(".");
         }
-        temp += group + ch + artifact.getArtifactId() + ch + artifact.getVersion() + ch;
+        temp += group + ch + artifact.getArtifactId() + ch + artifact.getVersion().toString() + ch;
         return temp;
     }
 
@@ -616,28 +482,12 @@ public class GeronimoServerPluginManager {
     private ConfigurationManager getConfigurationManager () {
         Trace.tracePoint("Entry", "GeronimoServerPluginManager.getConfigurationManager");
 
-        if (kernel == null) {
-            try {
-                GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) server
-                    .getAdapter(GeronimoServerBehaviourDelegate.class);
-                if (delegate != null) {
-                    MBeanServerConnection connection = delegate
-                        .getServerConnection();
-                    if (connection != null) {
-                        kernel = new KernelDelegate(connection);
-                    }
-                }
-            } catch (Exception e) {
-                Trace.trace(Trace.WARNING, "Kernel connection failed. "
-                    + e.getMessage());
-            }
-        }
         if (kernel != null) {
             Trace.tracePoint("Exit", "GeronimoServerPluginManager.getConfigurationManager");
             return ConfigurationUtil.getEditableConfigurationManager(kernel);
         }
 
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.getConfigurationManager");
+        Trace.tracePoint("Exit", "GeronimoServerPluginManager.getConfigurationManager returns null");
         return null;
     }
 
@@ -691,70 +541,21 @@ public class GeronimoServerPluginManager {
         return dependency;
     }
 
-    // mimics org.apache.geronimo.system.plugin.PluginInstallerGbean.validatePlugin
     public boolean validatePlugin (PluginType plugin) {
         Trace.tracePoint("Entry", "GeronimoServerPluginManager.validatePlugin", plugin);
-
         boolean valid = true;
-        String serverVersion = null;
-        GeronimoRuntimeDelegate rd = (GeronimoRuntimeDelegate)server.getRuntime().getAdapter(GeronimoRuntimeDelegate.class);
-        if (rd == null)
-            rd = (GeronimoRuntimeDelegate) server.getRuntime().loadAdapter(GeronimoRuntimeDelegate.class, new NullProgressMonitor());
-        if (rd != null) {
-            serverVersion = rd.detectVersion();
-        }
-
-        // check the Geronimo and JVM versions for validity
-        PluginArtifactType metadata = plugin.getPluginArtifact().get(0);
-        if (metadata.getGeronimoVersion().size() > 0) {
+        try {
+            valid = pluginInstaller.validatePlugin(plugin);
+        } catch (Exception e) {
+            e.printStackTrace();
             valid = false;
-            for (String gerVersion : metadata.getGeronimoVersion()) {
-                valid = gerVersion.equals(serverVersion);
-                if (valid) {
-                    break;
-                }
-            }
         }
-        if (valid == false) {
-            Trace.tracePoint("Exit", "GeronimoServerPluginManager.validatePlugin", valid);
-            return valid;
-        }
-
-        String jvmSystem = System.getProperty("java.version");
-        if (metadata.getJvmVersion().size() > 0) {
-            valid = false;
-            for (String jvmVersion : metadata.getJvmVersion()) {
-                valid = jvmSystem.startsWith(jvmVersion);
-                if (valid) {
-                    break;
-                }
-            }
-        }
-        if (valid == false) {
-            Trace.tracePoint("Exit", "GeronimoServerPluginManager.validatePlugin", valid);
-            return valid;
-        }
-
-        // check that it's not already installed
-        if (metadata.getModuleId() != null) {
-            Artifact artifact = toArtifact (metadata.getModuleId());
-            if (getConfigurationManager().isInstalled(artifact)) {
-                valid = false;
-                for (ArtifactType obsolete : metadata.getObsoletes()) {
-                    Artifact test = toArtifact(obsolete);
-                    if (test.matches(artifact)) {
-                        valid = true;
-                        break;
-                    }
-                }
-            }
-        }
-
         Trace.tracePoint("Exit", "GeronimoServerPluginManager.validatePlugin", valid);
         return valid;
     }
 
     // mimics org.apache.geronimo.system.plugin.PluginInstallerGbean.install
+    // but uses our local directory to get the plugins
     public ArrayList<String> installPlugins (String localRepoDir, List<PluginType> pluginList) {
         Trace.tracePoint("Entry", "GeronimoServerPluginManager.installPlugins", localRepoDir, pluginList);
         ArrayList<String> eventLog = new ArrayList<String>();
@@ -767,7 +568,7 @@ public class GeronimoServerPluginManager {
             List<PluginType> toInstall = new ArrayList<PluginType>();
             for (PluginType metadata : pluginList) {
                 try {
-                    //validatePlugin(metadata);
+                    validatePlugin(metadata);
                     verifyPrerequisites(metadata);
 
                     PluginArtifactType instance = metadata.getPluginArtifact().get(0);
@@ -881,26 +682,4 @@ public class GeronimoServerPluginManager {
         Trace.tracePoint("Exit", "GeronimoServerPluginManager.getMissingPrerequisites", missingPrereqs);
         return missingPrereqs;
     }
-
-    // mimics org.apache.geronimo.system.plugin.PluginInstallerGbean.getRepos
-    private List<SourceRepository> getRepos(PluginListType pluginsToInstall, SourceRepository defaultRepository, boolean restrictToDefaultRepository, PluginArtifactType instance) {
-        List<SourceRepository> repos = new ArrayList<SourceRepository>();
-        if (defaultRepository != null) {
-            repos.add(defaultRepository);
-        }
-        if (!restrictToDefaultRepository) {
-            List<String> repoLocations;
-            if (!instance.getSourceRepository().isEmpty()) {
-                repoLocations = instance.getSourceRepository();
-            } else {
-                repoLocations = pluginsToInstall.getDefaultRepository();
-            }
-            for (String repoLocation : repoLocations) {
-                SourceRepository repo = SourceRepositoryFactory.getSourceRepository(repoLocation);
-                repos.add(repo);
-            }
-        }
-        return repos;
-    }
-
 }
