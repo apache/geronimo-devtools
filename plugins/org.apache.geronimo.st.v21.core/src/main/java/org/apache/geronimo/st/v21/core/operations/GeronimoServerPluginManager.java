@@ -48,6 +48,7 @@ import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.kernel.repository.Dependency;
 import org.apache.geronimo.kernel.repository.ImportType;
 import org.apache.geronimo.st.core.CommonMessages;
+import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.v21.core.internal.Trace;
@@ -61,6 +62,7 @@ import org.apache.geronimo.system.plugin.model.PluginListType;
 import org.apache.geronimo.system.plugin.model.PluginType;
 import org.apache.geronimo.system.plugin.model.PrerequisiteType;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 
 /**
  * @version $Rev$ $Date$
@@ -68,28 +70,17 @@ import org.eclipse.wst.server.core.IServer;
 public class GeronimoServerPluginManager {
 
     private IServer server;
-    private RemoteDeploymentManager remoteDM;
     private PluginListType data;
     private List<String> pluginList;
     private Kernel kernel;
     private PluginInstaller pluginInstaller;
 
-    public GeronimoServerPluginManager () {
-        kernel = null;
-
-        Trace.tracePoint("Constructor", "GeronimoServerPluginManager");
-    }
-
-    public boolean serverChanged (Object aServer, String serverPrefix) {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.serverChanged", aServer, serverPrefix);
-        server = (IServer)aServer;
-
-        boolean enabled = server != null &&
-                server.getServerType().getId().startsWith(serverPrefix) &&
-                server.getServerState() == IServer.STATE_STARTED;
-
+    // The ServerWorkingCopy is passed in, not the IServer itself
+    public GeronimoServerPluginManager (IServer aServer) {
+        ServerWorkingCopy copy = (ServerWorkingCopy)aServer;
+        server = copy.getOriginal();
         try {
-            if (server !=null) {
+            if (server != null) {
                 GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) server
                     .getAdapter(GeronimoServerBehaviourDelegate.class);
                 if (delegate != null) {
@@ -100,14 +91,12 @@ public class GeronimoServerPluginManager {
                     pluginInstaller = (PluginInstaller)kernel.getGBean(PluginInstaller.class);
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             e.printStackTrace();
             Trace.trace(Trace.WARNING, "Kernel connection failed. "
                 + e.getMessage());
         }
-
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.serverChanged", enabled);
-        return enabled;
+        Trace.tracePoint("Constructor", "GeronimoServerPluginManager");
     }
 
     public List<String> getPluginList () {
@@ -165,6 +154,8 @@ public class GeronimoServerPluginManager {
         }
 
         try {
+            GeronimoConnectionFactory gcFactory = GeronimoConnectionFactory.getInstance();
+            RemoteDeploymentManager remoteDM = (RemoteDeploymentManager)gcFactory.getDeploymentManager(server);
             remoteDM.installPluginList("repository", relativeServerPath, selectedPlugins);
             remoteDM.archive(relativeServerPath, "var/temp", new Artifact(group, artifact, (String)version, format));
         }
