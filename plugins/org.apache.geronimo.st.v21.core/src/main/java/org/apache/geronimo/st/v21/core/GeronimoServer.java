@@ -79,7 +79,6 @@ public class GeronimoServer extends GeronimoServerDelegate {
             geronimoRuntimeDelegate = (GeronimoRuntimeDelegate) getServer().getRuntime().loadAdapter(GeronimoRuntimeDelegate.class,new NullProgressMonitor());
         }
         IVMInstall vmInstall = geronimoRuntimeDelegate.getVMInstall();
-        String vmInstallLocation = vmInstall.getInstallLocation().getAbsolutePath() + "/jre";
 
         LibraryLocation[] libLocations = JavaRuntime.getLibraryLocations(vmInstall);
         IPath vmLibDir = null;
@@ -107,10 +106,10 @@ public class GeronimoServer extends GeronimoServerDelegate {
         //-Djava.endorsed.dirs="GERONIMO_BASE/lib/endorsed;JRE_HOME/lib/endorsed"
         String javaEndorsedDirs = "-Djava.endorsed.dirs=\"" + runtimeLocation + "/lib/endorsed" + cp + vmLibDir.append("endorsed").toOSString() + "\"";
 
-        //-Dorg.apache.geronimo.base.dir="GERONIMO_BASE"
-        String baseDir = "-Dorg.apache.geronimo.base.dir=" + runtimeLocation;
+        // Specify the minimum memory options for the Geronimo server
+        String memoryOpts = "-Xms256m -Xmx512m -XX:MaxPermSize=128m";
 
-        return javaagent + " " + javaExtDirs + " " + javaEndorsedDirs;
+        return javaagent + " " + javaExtDirs + " " + javaEndorsedDirs + " " + memoryOpts;
     }
 
     /*
