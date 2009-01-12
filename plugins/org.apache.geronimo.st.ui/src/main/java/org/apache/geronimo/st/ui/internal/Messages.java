@@ -370,7 +370,9 @@ public class Messages extends NLS {
 
     public static String editorCorrect;
     public static String editorDefault;
+    public static String serverNotStarted;
     public static String errorOpenDialog;
+    public static String errorOpenWizard;
 
     public static String gBeanLink;
     public static String moduleId;
@@ -414,6 +416,9 @@ public class Messages extends NLS {
     public static String java;
     public static String web;
     public static String plugin;
+    public static String pluginActions;
+    public static String createCustomAssembly;
+    public static String convertAppsToPlugins;
 
     public static String licenseAgreement;
     public static String acceptLicenseAgreement;

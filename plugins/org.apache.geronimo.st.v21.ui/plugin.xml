@@ -34,37 +34,22 @@
         <wizard-pages action="geronimo.plan.install.v21">
             <page class="org.apache.geronimo.st.v21.ui.wizards.FacetInstallPage"/>
         </wizard-pages>
-    </extension>  
-
-    <extension point="org.eclipse.ui.popupMenus">
-        <objectContribution adaptable="true" id="org.apache.geronimo.ui.serveractions"
-                            objectClass="org.eclipse.wst.server.core.IServer">
-            <enablement>
-                <test forcePluginActivation="true" property="org.eclipse.wst.server.ui.serverType"
-                      value="org.apache.geronimo.*" />
-            </enablement>
-            <action id="org.apache.geronimo.ui.launchServerAssembly"
-                    label="%PopupMenus.launchServerAssembly" icon="icons/obj16/littleG.gif"
-                    class="org.apache.geronimo.st.v21.ui.actions.LaunchGeronimoServerAssemblyAction"
-                    enablesFor="1">
-            </action>
-        </objectContribution>
     </extension>
 
-    <extension point="org.eclipse.ui.popupMenus">
-        <objectContribution adaptable="true" id="org.apache.geronimo.ui.serveractions"
-                            objectClass="org.eclipse.wst.server.core.IServer">
-            <enablement>
-                <test forcePluginActivation="true"
-                      property="org.eclipse.wst.server.ui.serverType"
-                      value="org.apache.geronimo.*" />
-            </enablement>
-            <action id="org.apache.geronimo.ui.launchPluginManager"
-                    label="%PopupMenus.launchPluginManager" icon="icons/obj16/littleG.gif"
-                    class="org.apache.geronimo.st.v21.ui.actions.LaunchGeronimoPluginManagerAction"
-                    enablesFor="1">
-            </action>
-        </objectContribution>
+    <extension point="org.eclipse.wst.server.ui.editorPages">
+        <page id="org.eclipse.wst.server.editor.plugins" order="10"
+              name="%serverEditorPluginPage"
+              typeIds="*"
+              insertionIds="org.eclipse.wst.server.editor.plugins"
+              class="org.apache.geronimo.st.v21.ui.pages.ServerPluginPage"/>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.plugins" order="10"
+            insertionId="org.eclipse.wst.server.editor.plugins"
+            typeIds="org.apache.geronimo.server.*"
+            class="org.apache.geronimo.st.v21.ui.sections.ServerPluginSection">
+        </section>
     </extension>
 
 </plugin>
