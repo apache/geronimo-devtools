@@ -86,6 +86,12 @@
         <eclipseInstall>${settings.localRepository}/eclipse</eclipseInstall>
         <org.apache.geronimo.v21.feature_version>2.2.0</org.apache.geronimo.v21.feature_version>
         <org.apache.geronimo.v22.feature_version>2.2.0</org.apache.geronimo.v22.feature_version>
+        <keystoreAlias>devtools</keystoreAlias> 
+        <keystoreFile>keystore</keystoreFile> 
+        <keystoreDname>cn=http://geronimo.apache.org</keystoreDname> 
+        <keystoreKeypass>devtools</keystoreKeypass> 
+        <keystoreStorepass>geronimo</keystoreStorepass> 
+        <keystoreValDays>1000</keystoreValDays>
     </properties>
                         
     <dependencyManagement>
@@ -341,6 +347,28 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>keytool-maven-plugin</artifactId>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>clean</goal>
+                            <goal>genkey</goal>
+                       </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <alias>${keystoreAlias}</alias>
+                    <keystore>${keystoreFile}</keystore>
+                    <dname>${keystoreDname}</dname>
+                    <keypass>${keystoreKeypass}</keypass>
+                    <storepass>${keystoreStorepass}</storepass>
+                    <valDays>${keystoreValDays}</valDays>
+                </configuration>
             </plugin>
         </plugins>
     </build>
