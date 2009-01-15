@@ -118,6 +118,8 @@ public class ServerPluginManagerWizard extends AbstractWizard {
                     page5.setPageComplete(false);
                     pageVisible = 4;
                 } else {
+                    // refresh the list of available plugins
+                    page1.refreshPluginList();
                     page5.setPageComplete(true);
                     pageVisible = 1;
                 }
@@ -254,6 +256,7 @@ public class ServerPluginManagerWizard extends AbstractWizard {
             String[] strArray = new String[strList.size()];
             strArray = strList.toArray(strArray);
             createPluginCombo = createCombo(composite, strArray, false);
+            createPluginCombo.setVisibleItemCount(20);
             createPluginCombo.addSelectionListener(new SelectionAdapter() {
                 public void widgetSelected(SelectionEvent arg0) {
                     setPageComplete(createPluginCombo.getSelectionIndex() > -1);
@@ -262,6 +265,14 @@ public class ServerPluginManagerWizard extends AbstractWizard {
 
             setPageComplete(false);
             setControl(composite);
+        }
+
+        public void refreshPluginList () {
+            List<String> strList = pluginManager.getConfigurationList();
+            String[] strArray = new String[strList.size()];
+            strArray = strList.toArray(strArray);
+            createPluginCombo.removeAll();
+            createPluginCombo.setItems(strArray);
         }
 
         @Override
@@ -398,7 +409,7 @@ public class ServerPluginManagerWizard extends AbstractWizard {
                 buf.append(artifactToString(artifactType));
             }
             return buf.toString();
-         }
+        }
 
         private String artifactToString(ArtifactType artifact) {
             StringBuffer buffer = new StringBuffer();
@@ -711,7 +722,6 @@ public class ServerPluginManagerWizard extends AbstractWizard {
                         setPageComplete(false);
                     }
                 }
-
             });
 
             setPageComplete(false);
