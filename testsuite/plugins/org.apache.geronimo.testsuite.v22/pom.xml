@@ -104,6 +104,20 @@
                 </configuration>
              </plugin>
 
+             <plugin>
+                 <artifactId>maven-clean-plugin</artifactId>
+                 <configuration>
+                     <filesets>
+                         <fileset>
+                             <directory>${pom.basedir}</directory>
+                             <includes>
+                                 <include>activemq-data</include>
+                             </includes>
+                         </fileset>
+                     </filesets>
+                 </configuration>
+             </plugin>
+
         </plugins>
     </build>
 
