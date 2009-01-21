@@ -140,6 +140,7 @@
                         <fileset>
                             <directory>${pom.basedir}</directory>
                             <includes>
+                                <include>launcher/.metadata</include>
                                 <include>launcher/eclipse</include>
                                 <include>launcher/results</include>
                                 <include>launcher/server_v2.1</include>

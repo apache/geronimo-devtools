@@ -87,10 +87,10 @@
         <org.apache.geronimo.v21.feature_version>2.1.4</org.apache.geronimo.v21.feature_version>
         <keystoreAlias>devtools</keystoreAlias> 
         <keystoreFile>keystore</keystoreFile> 
-        <keystoreDname>cn=http://geronimo.apache.org</keystoreDname> 
+        <keystoreDname>CN=http://geronimo.apache.org,OU=Geronimo,O=Apache,L=Geronimo,S=Apache,C=US</keystoreDname> 
         <keystoreKeypass>devtools</keystoreKeypass> 
         <keystoreStorepass>geronimo</keystoreStorepass> 
-        <keystoreValDays>1000</keystoreValDays>
+        <keystoreValDays>3650</keystoreValDays>
     </properties>
                         
     <dependencyManagement>
@@ -319,6 +319,7 @@
                             <directory>${pom.basedir}</directory>
                             <includes>
                                 <include>*.log</include>
+                                <include>keystore</include>
                             </includes>
                         </fileset>
                     </filesets>
@@ -366,7 +367,7 @@
                     <dname>${keystoreDname}</dname>
                     <keypass>${keystoreKeypass}</keypass>
                     <storepass>${keystoreStorepass}</storepass>
-                    <valDays>${keystoreValDays}</valDays>
+                    <validity>${keystoreValDays}</validity>
                 </configuration>
             </plugin>
         </plugins>
