@@ -74,7 +74,7 @@
         <!--
          #########################################################################
          ##                                                                     ##
-         ## Check UI Installation testcase                                      ##
+         ## Run all test case plugins                                           ##
          ##                                                                     ##
          #########################################################################
          -->
@@ -84,67 +84,6 @@
             <property name="classname"
                       value="org.apache.geronimo.testsuite.v22.ui.EclipseUITest"/>
         </ant>
-
-
-        <!--
-         #########################################################################
-         ##                                                                     ##
-         ## Run on Server testcase                                              ##
-         ##                                                                     ##
-         #########################################################################
-         -->
-        <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
-            <property name="data-dir" value="${jdt-folder}"/>
-            <property name="plugin-name" value="${plugin-name}"/>
-            <property name="classname"
-                      value="org.apache.geronimo.testsuite.v22.ui.RunOnServerTest"/>
-        </ant>
-
-
-        <!--
-         #########################################################################                                                                     ##
-         ##                                                                     ##
-         ## Shared Lib Pojo testcase                                            ##
-         ##                                                                     ##
-         #########################################################################
-         -->
-        <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
-            <property name="data-dir" value="${jdt-folder}"/>
-            <property name="plugin-name" value="${plugin-name}"/>
-            <property name="classname"
-             value="org.apache.geronimo.testsuite.v22.ui.SharedLibPojoTest"/>
-        </ant>
-    
-    
-        <!-- 
-         #########################################################################
-         ##                                                                     ##
-         ## Define new server testcase                                          ##
-         ##                                                                     ##
-         #########################################################################
-         -->
-        <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
-            <property name="data-dir" value="${jdt-folder}"/>
-            <property name="plugin-name" value="${plugin-name}"/>
-            <property name="classname"
-                      value="org.apache.geronimo.testsuite.v22.ui.NewServerTest"/>
-        </ant>
-
-
-        <!-- 
-         #########################################################################
-         ##                                                                     ##
-         ## 5 minute tutorial testcase                                          ##
-         ##                                                                     ##
-         #########################################################################
-         -->
-        <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
-            <property name="data-dir" value="${jdt-folder}"/>
-            <property name="plugin-name" value="${plugin-name}"/>
-            <property name="classname"
-                      value="org.apache.geronimo.testsuite.v22.ui.Tutorial5MinuteTest"/>
-        </ant>
-
 
     </target>
 

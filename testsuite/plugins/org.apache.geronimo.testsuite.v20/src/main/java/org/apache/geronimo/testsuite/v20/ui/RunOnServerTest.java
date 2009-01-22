@@ -19,8 +19,6 @@ package org.apache.geronimo.testsuite.v20.ui;
 
 import java.io.FileInputStream;
 
-import org.apache.geronimo.testsuite.common.AssertUtil;
-import org.apache.geronimo.testsuite.common.selenium.EclipseSelenium;
 import org.apache.geronimo.testsuite.common.ui.AbbotHelper;
 import org.apache.geronimo.testsuite.common.ui.Constants;
 import org.apache.geronimo.testsuite.common.ui.ProjectTasks;
@@ -75,7 +73,6 @@ public class RunOnServerTest extends WorkbenchTestCase {
             workbenchTasks.showJEEPerspective();
             ServerTasks serverTasks = new ServerTasks(workbenchShell, abbotHelper, Constants.SERVER_V20 );
             serverTasks.createServer();
-            serverTasks.startServer();
             success = true;
         }
         catch (Exception e) {
@@ -89,6 +86,7 @@ public class RunOnServerTest extends WorkbenchTestCase {
         success = false;
         try {
             ServerTasks serverTasks = new ServerTasks(workbenchShell, abbotHelper, Constants.SERVER_V20 );
+            serverTasks.startServer();
             success = true;
         }
         catch (Exception e) {
@@ -158,7 +156,7 @@ public class RunOnServerTest extends WorkbenchTestCase {
     private void deleteProject() {
         success = false;
         try {
-            ProjectTasks projectTasks = new ProjectTasks(workbenchShell, abbotHelper, Constants.SERVER_V20 );
+            ProjectTasks projectTasks = new ProjectTasks(workbenchShell, abbotHelper);
             projectTasks.deleteProject ("DynamicWebProject");
             success = true;
         }

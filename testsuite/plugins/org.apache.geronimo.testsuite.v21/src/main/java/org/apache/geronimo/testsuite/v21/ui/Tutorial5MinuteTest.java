@@ -17,24 +17,17 @@
 
 package org.apache.geronimo.testsuite.v21.ui;
 
-import java.io.File;
-
 import org.apache.geronimo.testsuite.common.ui.AbbotHelper;
 import org.apache.geronimo.testsuite.common.ui.Constants;
 import org.apache.geronimo.testsuite.common.ui.ProjectTasks;
 import org.apache.geronimo.testsuite.common.ui.ServerTasks;
 import org.apache.geronimo.testsuite.common.ui.WorkbenchTasks;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.widgets.Shell;
 
 import abbot.swt.eclipse.junit.extensions.WorkbenchTestCase;
 import abbot.swt.eclipse.utils.Preferences;
 import abbot.swt.eclipse.utils.WorkbenchUtilities;
 import abbot.swt.eclipse.utils.Preferences.Mode;
-import abbot.swt.finder.generic.MultipleFoundException;
-import abbot.swt.finder.generic.NotFoundException;
 
 /**
  * Tutorial5MinuteTest
@@ -65,7 +58,7 @@ public class Tutorial5MinuteTest extends WorkbenchTestCase {
             
             ServerTasks serverTasks = new ServerTasks(workbenchShell, aHelper, Constants.SERVER_V21 );
             WorkbenchTasks workbenchTasks = new WorkbenchTasks(workbenchShell, aHelper);
-            ProjectTasks projectTasks = new ProjectTasks(workbenchShell, aHelper, Constants.SERVER_V21 );
+            ProjectTasks projectTasks = new ProjectTasks(workbenchShell, aHelper);
             
             // so we are sure that we are looking in the desired perspective
             workbenchTasks.showJEEPerspective();

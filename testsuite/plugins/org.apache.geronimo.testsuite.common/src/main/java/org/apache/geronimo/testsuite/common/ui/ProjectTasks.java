@@ -34,15 +34,32 @@ import abbot.swt.finder.generic.NotFoundException;
 
 public class ProjectTasks {
     Shell workbenchShell;
-    AbbotHelper aHelper;
-    String serverVersion;
+    AbbotHelper abbotHelper;
 
-    public ProjectTasks (Shell shell, AbbotHelper helper, String serverVersion) {
+    public ProjectTasks (Shell shell, AbbotHelper helper) {
         workbenchShell = shell;
-        aHelper = helper;
-        this.serverVersion = serverVersion;
+        abbotHelper = helper;
     }
     
+    public boolean deleteProject (String projectName) {
+        boolean success = true;
+        try {
+            Shell questionShell = abbotHelper.rightClickItem (workbenchShell, projectName, 
+                    new String[] {"&Delete"}, "Delete Resources");
+
+            // use .* to signify use of a wildcard
+            abbotHelper.clickButton (questionShell, "&Delete project contents.*");
+            abbotHelper.clickButton (questionShell, IDialogConstants.OK_LABEL);
+            abbotHelper.waitForDialogDisposal (questionShell);
+        } catch (Exception e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
+    }
+
+    //TODO all methods from here down are specific to Tutorial5MinuteTest v20 and v21 and should not be here
+    // would be nice to have some createXXXProjects that just do the basics
     public void createProjects() throws Exception {
         createEARProject ();
         createEJBProject ();
@@ -51,83 +68,83 @@ public class ProjectTasks {
     }
 
     private void createEARProject() throws MultipleFoundException, NotFoundException {
-        Shell wizardShell = aHelper.clickMenuItem (workbenchShell,
+        Shell wizardShell = abbotHelper.clickMenuItem (workbenchShell,
                 new String[] {"&File", "&New\tAlt+Shift+N", "&Other..."},
                 "New");
 
-        aHelper.clickTreeItem (wizardShell,
+        abbotHelper.clickTreeItem (wizardShell,
                 new String[] {"Java EE", "Enterprise Application Project"});
-        aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-        aHelper.setTextField(wizardShell, "", "SampleEAR");
-        aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-        aHelper.clickButton (wizardShell, "Generate Deployment Descriptor");
-        aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-        aHelper.setTextField(wizardShell, "default", "sampleear");
-        aHelper.setTextField(wizardShell, "", "sample-ear");
-        aHelper.setTextField(wizardShell, "car", "ear");
-        aHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);
+        abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+        abbotHelper.setTextField(wizardShell, "", "SampleEAR");
+        abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+        abbotHelper.clickButton (wizardShell, "Generate Deployment Descriptor");
+        abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+        abbotHelper.setTextField(wizardShell, "default", "sampleear");
+        abbotHelper.setTextField(wizardShell, "", "sample-ear");
+        abbotHelper.setTextField(wizardShell, "car", "ear");
+        abbotHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);
 
-        aHelper.waitForDialogDisposal (wizardShell);
+        abbotHelper.waitForDialogDisposal (wizardShell);
     }
 
     private void createEJBProject() throws MultipleFoundException, NotFoundException {
-        Shell wizardShell = aHelper.clickMenuItem (workbenchShell,
+        Shell wizardShell = abbotHelper.clickMenuItem (workbenchShell,
                 new String[] {"&File", "&New\tAlt+Shift+N", "&Other..."},
                 "New");
 
-        aHelper.clickTreeItem (wizardShell,
+        abbotHelper.clickTreeItem (wizardShell,
                 new String[] {"EJB", "EJB Project"});
-        aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-        aHelper.setTextField(wizardShell, "", "SampleEJB");
-        aHelper.clickButton (wizardShell, "Add &project to an EAR");
-        aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-        aHelper.clickButton (wizardShell, "Create an EJB Client JAR module to hold the client interfaces and classes.");
-        aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-        aHelper.setTextField(wizardShell, "default", "sampleear");
-        aHelper.setTextField(wizardShell, "", "sample-ejb");
-        aHelper.setTextField(wizardShell, "car", "ejb");
-        aHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);
+        abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+        abbotHelper.setTextField(wizardShell, "", "SampleEJB");
+        abbotHelper.clickButton (wizardShell, "Add &project to an EAR");
+        abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+        abbotHelper.clickButton (wizardShell, "Create an EJB Client JAR module to hold the client interfaces and classes.");
+        abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+        abbotHelper.setTextField(wizardShell, "default", "sampleear");
+        abbotHelper.setTextField(wizardShell, "", "sample-ejb");
+        abbotHelper.setTextField(wizardShell, "car", "ejb");
+        abbotHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);
         
-        aHelper.waitForDialogDisposal (wizardShell);
+        abbotHelper.waitForDialogDisposal (wizardShell);
         
-        aHelper.doubleClickItem(workbenchShell, "SampleEJB");
-        aHelper.doubleClickItem(workbenchShell, "ejbModule");
-        aHelper.doubleClickItem(workbenchShell, "META-INF");
-        Shell questionShell = aHelper.rightClickItem(workbenchShell, "openejb-jar.xml",
+        abbotHelper.doubleClickItem(workbenchShell, "SampleEJB");
+        abbotHelper.doubleClickItem(workbenchShell, "ejbModule");
+        abbotHelper.doubleClickItem(workbenchShell, "META-INF");
+        Shell questionShell = abbotHelper.rightClickItem(workbenchShell, "openejb-jar.xml",
                 new String[] {"&Delete"}, "Delete Resources");
-        aHelper.clickButton (questionShell, IDialogConstants.OK_LABEL);
-        aHelper.waitForDialogDisposal (questionShell);
+        abbotHelper.clickButton (questionShell, IDialogConstants.OK_LABEL);
+        abbotHelper.waitForDialogDisposal (questionShell);
     }
 
     private void createWARProject() throws MultipleFoundException, NotFoundException {
-        Shell wizardShell = aHelper.clickMenuItem (workbenchShell,
+        Shell wizardShell = abbotHelper.clickMenuItem (workbenchShell,
                 new String[] {"&File", "&New\tAlt+Shift+N", "&Other..."},
                 "New");
 
-        aHelper.clickTreeItem (wizardShell,
+        abbotHelper.clickTreeItem (wizardShell,
                 new String[] {"Web", "Dynamic Web Project"});
-        aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-        aHelper.setTextField(wizardShell, "", "SampleWAR");
-        aHelper.clickButton (wizardShell, "Add &project to an EAR");
-        aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-        aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-        aHelper.setTextField(wizardShell, "default", "sampleear");
-        aHelper.setTextField(wizardShell, "", "sample-war");
-        aHelper.setTextField(wizardShell, "car", "war");
-        aHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);
+        abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+        abbotHelper.setTextField(wizardShell, "", "SampleWAR");
+        abbotHelper.clickButton (wizardShell, "Add &project to an EAR");
+        abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+        abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+        abbotHelper.setTextField(wizardShell, "default", "sampleear");
+        abbotHelper.setTextField(wizardShell, "", "sample-war");
+        abbotHelper.setTextField(wizardShell, "car", "war");
+        abbotHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);
         
-        aHelper.waitForDialogDisposal (wizardShell);
+        abbotHelper.waitForDialogDisposal (wizardShell);
     }
     
     private void copyCode () throws Exception {
-        aHelper.clickItem (workbenchShell, "SampleWAR");
-        Shell propShell = aHelper.clickMenuItem (workbenchShell,
+        abbotHelper.clickItem (workbenchShell, "SampleWAR");
+        Shell propShell = abbotHelper.clickMenuItem (workbenchShell,
                 new String[] {"&Project", "&Properties"},
                 "Properties for SampleWAR");
-        aHelper.clickItem (propShell, "Java EE Module Dependencies");
-        aHelper.clickButton (propShell, "Select &All");
-        aHelper.clickButton (propShell, "&Apply");
-        aHelper.clickButton (propShell, IDialogConstants.OK_LABEL);
+        abbotHelper.clickItem (propShell, "Java EE Module Dependencies");
+        abbotHelper.clickButton (propShell, "Select &All");
+        abbotHelper.clickButton (propShell, "&Apply");
+        abbotHelper.clickButton (propShell, IDialogConstants.OK_LABEL);
 
         IWorkspaceRoot aWSRoot = ResourcesPlugin.getWorkspace().getRoot();
         IProject aProject = aWSRoot.getProject ("SampleEJB");
@@ -145,34 +162,24 @@ public class ProjectTasks {
         aFile = aProject.getFile("WebContent/index.jsp");
         aFile.create(new FileInputStream (fileDir + "/index.jsp"), true, null);
         // have to go through Servlet Creation dialog to make the web.xml correct
-        Shell servletShell = aHelper.rightClickItem(workbenchShell, "SampleWAR",
+        Shell servletShell = abbotHelper.rightClickItem(workbenchShell, "SampleWAR",
                 new String [] {"&New", "Servlet"}, "Create Servlet");
-        aHelper.setCursorText("MyServlet");
-        aHelper.setTextField(servletShell, "", "sampleear");
-        aHelper.clickButton (servletShell, IDialogConstants.NEXT_LABEL);
-        aHelper.clickItem(servletShell, "/MyServlet");
-        Shell urlShell = aHelper.clickEnabledButton (servletShell, "Edit...", "URL Mappings");
-        aHelper.setTextField(urlShell, "/MyServlet", "/sayHello");
-        aHelper.clickButton (urlShell, IDialogConstants.OK_LABEL);
-        aHelper.clickButton (servletShell, IDialogConstants.FINISH_LABEL);
+        abbotHelper.setCursorText("MyServlet");
+        abbotHelper.setTextField(servletShell, "", "sampleear");
+        abbotHelper.clickButton (servletShell, IDialogConstants.NEXT_LABEL);
+        abbotHelper.clickItem(servletShell, "/MyServlet");
+        Shell urlShell = abbotHelper.clickEnabledButton (servletShell, "Edit...", "URL Mappings");
+        abbotHelper.setTextField(urlShell, "/MyServlet", "/sayHello");
+        abbotHelper.clickButton (urlShell, IDialogConstants.OK_LABEL);
+        abbotHelper.clickButton (servletShell, IDialogConstants.FINISH_LABEL);
 
         // copy over the correct contents
         aFile = aProject.getFile("src/sampleear/MyServlet.java");
         aFile.setContents(new FileInputStream (fileDir + "/MyServlet.java"), true, true, null);
 
         // close the open file
-        aHelper.clickMenuItem (workbenchShell,
+        abbotHelper.clickMenuItem (workbenchShell,
                 new String[] {"&File", "&Close"});
-    }
-    
-    public void deleteProject (String projectName) throws MultipleFoundException, NotFoundException {
-        Shell questionShell = aHelper.rightClickItem (workbenchShell, projectName, 
-                new String[] {"&Delete"}, "Delete Resources");
-
-        // use .* to signify use of a wildcard
-        aHelper.clickButton (questionShell, "&Delete project contents.*");
-        aHelper.clickButton (questionShell, IDialogConstants.OK_LABEL);
-        aHelper.waitForDialogDisposal (questionShell);
     }
 
     public void webTesting () throws Exception {
@@ -184,11 +191,6 @@ public class ProjectTasks {
         selenium.waitForPageToLoad( "3000" );
         AssertUtil.assertTrue(selenium.getHtmlSource().indexOf( "says hello to" ) > 0);
 
-        // TODO fill in a name and click the Process button
-        // This is a problem, HTML objects are not the same as SWT objects and 
-        // Abbot cannot find these
-        //aHelper.setTextField(workbenchShell, "", "MyName");
-        //aHelper.clickButton (workbenchShell, "Press me!");
         selenium.stop();
     }
 }

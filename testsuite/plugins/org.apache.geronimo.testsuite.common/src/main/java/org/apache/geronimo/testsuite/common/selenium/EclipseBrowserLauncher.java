@@ -36,22 +36,20 @@ public class EclipseBrowserLauncher extends AbstractBrowserLauncher {
     @Override
     protected void launch(String url) {
         try {
-            
-            AbbotHelper aHelper = EclipseSeleniumServer.INSTANCE.getAHelper();
-            Shell shell = EclipseSeleniumServer.INSTANCE.getShell();
+            AbbotHelper abbotHelper = EclipseSeleniumServer.INSTANCE.getAHelper();
+            Shell workbenchShell = EclipseSeleniumServer.INSTANCE.getShell();
 
-            aHelper.clickMenuItem (shell,
+            abbotHelper.clickMenuItem (workbenchShell,
                     new String[] {"&Window", "Web Browser", "&0 Internal Web Browser"});
-            Shell openShell = aHelper.clickMenuItem (shell,
+            Shell openShell = abbotHelper.clickMenuItem (workbenchShell,
                     new String[] {"&Window", "Show &View", "&Other..."}, "Show View");
-            aHelper.clickTreeItem (openShell, 
+            abbotHelper.clickTreeItem (openShell, 
                     new String[] {"General", "Internal Web Browser"});
-            aHelper.clickButton (openShell, IDialogConstants.OK_LABEL);
+            abbotHelper.clickButton (openShell, IDialogConstants.OK_LABEL);
             
-            aHelper.setCombo (shell, url);
-            aHelper.clickToolItem (shell, "Go to the selected URL");
-            aHelper.waitTime (15000);
-
+            abbotHelper.setCombo (workbenchShell, url);
+            abbotHelper.clickToolItem (workbenchShell, "Go to the selected URL");
+            abbotHelper.waitTime (AbbotHelper.WAIT_LONG);
         } catch ( Exception e ) {
             e.printStackTrace();
         }

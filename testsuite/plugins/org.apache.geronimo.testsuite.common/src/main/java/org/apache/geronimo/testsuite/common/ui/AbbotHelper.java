@@ -55,9 +55,12 @@ import abbot.swt.utilities.ExtendedComparator;
  * @version $Rev: 679174 $ $Date: 2008-07-23 12:52:55 -0700 (Wed, 23 Jul 2008) $
  */
 public class AbbotHelper {
-    Shell workbenchShell;
-    WidgetFinder finder;
-
+    private Shell workbenchShell;
+    private WidgetFinder finder;
+    public static long WAIT_STANDARD = 1500;
+    public static long WAIT_MEDIUM = 5000;
+    public static long WAIT_LONG = 15000;
+    
     public AbbotHelper (Shell aShell) {
         finder = WidgetFinderImpl.getDefault();
         workbenchShell = aShell;
@@ -67,14 +70,14 @@ public class AbbotHelper {
     public void clickButton (Shell aShell, String buttonText) throws MultipleFoundException, NotFoundException {
         Button button = (Button) finder.find (aShell, new WidgetTextMatcher (buttonText, Button.class, true));
         ButtonTester.getButtonTester().actionClick (button);        
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
     }
 
     // helper method
     public Shell clickButton (Shell aShell, String buttonText, String newDialogName) throws MultipleFoundException, NotFoundException {
         Button button = (Button) finder.find (aShell, new WidgetTextMatcher (buttonText, Button.class));
         ButtonTester.getButtonTester().actionClick (button);  
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
         return ShellTester.waitVisible (newDialogName);
     }
 
@@ -82,7 +85,7 @@ public class AbbotHelper {
     public Shell clickEnabledButton (Shell aShell, String buttonText, String newDialogName) throws MultipleFoundException, NotFoundException {
         Button button = (Button) finder.find (aShell, new ButtonMultiMatcher (buttonText, Button.class, true));
         ButtonTester.getButtonTester().actionClick (button);  
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
         return ShellTester.waitVisible (newDialogName);
     }
 
@@ -90,21 +93,21 @@ public class AbbotHelper {
     public void doubleClickItem (Shell aShell, String itemText) throws MultipleFoundException, NotFoundException {
         Item item = (Item) finder.find (aShell, new WidgetTextMatcher (itemText, Item.class, true));
         ItemTester.getItemTester().actionDoubleClick(item);       
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
     }
 
     // helper method
     public void clickItem (Shell aShell, String itemText) throws MultipleFoundException, NotFoundException {
         Item item = (Item) finder.find (aShell, new WidgetTextMatcher (itemText, Item.class, true));
         ItemTester.getItemTester().actionClick (item, 3, 3);       
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
     }
 
     // helper method
     public void clickCombo(Shell aShell, String itemText) throws MultipleFoundException, NotFoundException {
         Combo combo = (Combo) finder.find (aShell, new WidgetTextMatcher (itemText, Combo.class, true));
         ComboTester.getComboTester().actionClick (combo);      
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
     }
 
     // helper method    
@@ -112,7 +115,7 @@ public class AbbotHelper {
         Item item = (Item) finder.find (workbenchShell, new WidgetTextMatcher (itemText, Item.class, true));
         ItemPath anItemPath = new ItemPath (menuList);
         ItemTester.getItemTester().actionClickMenuItem (item, anItemPath);
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
         return ShellTester.waitVisible (newDialogName);
     }
 
@@ -121,7 +124,7 @@ public class AbbotHelper {
         Item item = (Item) finder.find (workbenchShell, new WidgetTextMatcher (itemText, Item.class, true));
         ItemPath anItemPath = new ItemPath (menuList);
         ItemTester.getItemTester().actionClickMenuItem (item, anItemPath);
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
     }
 
     // helper method    
@@ -129,7 +132,7 @@ public class AbbotHelper {
         ItemPath anItemPath = new ItemPath (menuList);
         Menu bar = ShellTester.getShellTester().getMenuBar (aShell);
         MenuTester.getMenuTester().actionClickItem (bar, anItemPath);
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
         return ShellTester.waitVisible (newDialogName);
     }
     
@@ -138,7 +141,7 @@ public class AbbotHelper {
         ItemPath anItemPath = new ItemPath (menuList);
         Menu bar = ShellTester.getShellTester().getMenuBar (aShell);
         MenuTester.getMenuTester().actionClickItem (bar, anItemPath);
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
     }
 
     // helper method
@@ -146,14 +149,14 @@ public class AbbotHelper {
     public void clickToolItem (Shell aShell, String toolTipText) throws MultipleFoundException, NotFoundException {
         ToolItem toolItem = (ToolItem) finder.find (aShell, new WidgetToolTipMatcher (toolTipText, ToolItem.class, true));
         ToolItemTester.getToolItemTester().actionClick (toolItem);
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
     }
     
     //helper method to find the button by its tool tip text
     public Shell clickImageButton (Shell aShell, String toolTipText, String newDialogName) throws MultipleFoundException, NotFoundException {
         Button button = (Button) finder.find (aShell, new WidgetToolTipMatcher (toolTipText, Button.class, true));
         ButtonTester.getButtonTester().actionClick (button);
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
         return ShellTester.waitVisible(newDialogName);
     }
 
@@ -162,7 +165,7 @@ public class AbbotHelper {
         ItemPath anItemPath = new ItemPath (treeList);
         Tree tree = (Tree) finder.find (aShell, new WidgetClassMatcher (Tree.class));
         TreeTester.getTreeTester().actionClickItem (tree, anItemPath);
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
     }
 
     //helper method to check a box present in a tree
@@ -170,7 +173,7 @@ public class AbbotHelper {
         ItemPath anItemPath = new ItemPath (treeList);
         Tree tree = (Tree) finder.find (aShell, new WidgetClassMatcher (Tree.class));
         TreeTester.getTreeTester().actionCheckItem(tree, anItemPath, true);
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
     }
 
     // helper method
@@ -178,7 +181,7 @@ public class AbbotHelper {
         Combo combo = (Combo) finder.find (aShell, new WidgetClassMatcher (Combo.class, true));
         ComboTester.getComboTester().actionClick(combo);
         ComboTester.getComboTester().actionKeyString(newText);
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
     }
     
     //helper method when there are multiple text boxes
@@ -191,7 +194,7 @@ public class AbbotHelper {
         } else {
             TextTester.getTextTester().actionKeyString (text, newText);  
         }
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
     }
     
     //helper method to select a Tab 
@@ -199,7 +202,7 @@ public class AbbotHelper {
     {
         TabItem tabitem=(TabItem) finder.find (aShell, new WidgetTabMatcher (newText, TabItem.class, true));
         TabItemTester.getTabItemTester().actionClick(tabitem);      
-        waitTime(1500);
+        waitTime (WAIT_STANDARD);
     }
     
     // helper method
@@ -212,29 +215,29 @@ public class AbbotHelper {
         } else {
             TextTester.getTextTester().actionKeyString (text, newText);  
         }
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
     }
 
     // helper method with a leap of faith that the cursor is
     // exactly where we want it to be.
     public void setCursorText (String newText) {
         TextTester.getTextTester().actionKeyString (newText);
-        waitTime( 1500 );
+        waitTime (WAIT_STANDARD);
     }
        
     // helper method
     public void waitForDialogDisposal (Shell aShell) {
         while (!ShellTester.getShellTester().isDisposed (aShell))
-            ShellTester.getShellTester().actionDelay (1000);
+            ShellTester.getShellTester().actionDelay (WAIT_STANDARD);
         // wait an extra 4 seconds
-        ShellTester.getShellTester().actionDelay (4000);
+        ShellTester.getShellTester().actionDelay (WAIT_MEDIUM);
     }
 
     // helper method
     public void waitForServerStatus (Shell aShell, String itemText, String desiredState) throws MultipleFoundException, NotFoundException {
         // will wait up to 2 minutes for status to change
         boolean statusGood = false;
-        int countdown = 120;
+        int countdown = 180;
 
         while (statusGood == false && countdown > 0) {
             TreeItem item = (TreeItem) finder.find (aShell, new WidgetTextMatcher (itemText, TreeItem.class));
@@ -242,7 +245,7 @@ public class AbbotHelper {
                 statusGood = true;
             
             countdown--;
-            ShellTester.getShellTester().actionDelay (1000);
+            ShellTester.getShellTester().actionDelay (WAIT_STANDARD);
         }
         if (statusGood == false)
             throw new NotFoundException ("Unable to start or stop the server");

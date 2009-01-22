@@ -19,12 +19,8 @@ package org.apache.geronimo.testsuite.v22.ui;
 
 import java.io.FileInputStream;
 
-import org.apache.geronimo.testsuite.common.AssertUtil;
 import org.apache.geronimo.testsuite.common.selenium.EclipseSelenium;
 import org.apache.geronimo.testsuite.common.ui.AbbotHelper;
-import org.apache.geronimo.testsuite.common.ui.Constants;
-import org.apache.geronimo.testsuite.common.ui.ProjectTasks;
-import org.apache.geronimo.testsuite.common.ui.ServerTasks;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -32,239 +28,232 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.widgets.Shell;
 
-import abbot.swt.eclipse.junit.extensions.WorkbenchTestCase;
 import abbot.swt.eclipse.utils.WorkbenchUtilities;
 
 /*
  * @version $Rev$ $Date$
  */
-public class SharedLibPojoTest extends WorkbenchTestCase {
-
-    Shell aShell;
-    AbbotHelper aHelper;
-    boolean success = false;
-
-    protected void setUp() throws Exception {
-        super.setUp();
+public class SharedLibPojoTest extends AbstractTestCase {
+    
+    @Override
+    public boolean buildTestCase() {
+        boolean success = createPojoProject();
+        if (success == true) {
+            success = copyCodeToPojoProject();
+        }
+        if (success == true) {
+            success = createHelloWorldProject();
+        }
+        if (success == true) {
+            success = copyCodeToHelloWorldProject();
+        }
+        if (success == true) {
+            success = modifyHelloWorldBuildPath();
+        }
+        return success;
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        deleteProjects();
-        deleteServer();
+    @Override
+    public boolean runTestCase() {
+        boolean success = deployHelloWorldProject();
+        if (success == true) {
+            success = toggleSharedLibSupport();
+        }
+        if (success == true) {
+            success = displayApplication();
+        }
+        return success;
     }
 
-    public void testSharedLib()
-    {
-        createPojoProject();
-        copyCodeToPojoProject();
-        createHelloWorldProject();
-        copyCodeToHelloWorldProject();
-        modifyHelloWorldBuildPath();
-        deployHelloWorldProject();
-        addSharedLibSupport();
-        displayApplication();    
+    @Override
+    public boolean cleanupTestCase() {
+        boolean success = serverTasks.removeAllProjects();
+        if (success == true) {
+            success = projectTasks.deleteProject ("HelloWorld");
+        }
+        if (success == true) {
+            success = projectTasks.deleteProject ("CurrencyConverterPojo");
+        }
+        if (success == true) {
+            success = toggleSharedLibSupport();
+        }
+
+        return success;
     }
 
-    public void createPojoProject()
-    {
+    public boolean createPojoProject() {
+        boolean success = true;
         try {
-            aShell = WorkbenchUtilities.getWorkbenchWindow().getShell();
-            aHelper = new AbbotHelper(aShell);
-            ServerTasks serverTasks = new ServerTasks(aShell, aHelper, Constants.SERVER_V22 );
-            serverTasks.createServer();
-            aHelper.clickMenuItem (aShell,new String[] {"&Window", "&Close Perspective"});
-            Shell perspectiveShell = aHelper.clickMenuItem (aShell,
+            workbenchShell = WorkbenchUtilities.getWorkbenchWindow().getShell();
+            abbotHelper = new AbbotHelper(workbenchShell);
+
+            abbotHelper.clickMenuItem (workbenchShell,new String[] {"&Window", "&Close Perspective"});
+            Shell perspectiveShell = abbotHelper.clickMenuItem (workbenchShell,
                                                             new String[] {"&Window", "&Open Perspective", "&Other..."},
                                                             "Open Perspective");
-            aHelper.clickItem (perspectiveShell, "Java");
-            aHelper.clickButton (perspectiveShell, IDialogConstants.OK_LABEL);  
+            abbotHelper.clickItem (perspectiveShell, "Java");
+            abbotHelper.clickButton (perspectiveShell, IDialogConstants.OK_LABEL);  
 
-            Shell wizardShell = aHelper.clickMenuItem (aShell,
+            Shell wizardShell = abbotHelper.clickMenuItem (workbenchShell,
                                                        new String[] {"&File", "&New\tAlt+Shift+N", "&Other..."},
                                                        "New");
-            aHelper.clickTreeItem (wizardShell,
+            abbotHelper.clickTreeItem (wizardShell,
                                    new String[] {"Java", "Java Project"});
-            aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-            aHelper.setTextField(wizardShell,"", "CurrencyConverterPojo");
-            aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-            aHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);
-            aHelper.doubleClickItem(aShell, "CurrencyConverterPojo");
+            abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+            abbotHelper.setTextField(wizardShell,"", "CurrencyConverterPojo");
+            abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+            abbotHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);
+            abbotHelper.doubleClickItem(workbenchShell, "CurrencyConverterPojo");
 
-            wizardShell=aHelper.clickMenuItem (aShell,
+            wizardShell = abbotHelper.clickMenuItem (workbenchShell,
                                                new String[] {"&File", "&New\tAlt+Shift+N", "&Other..."},
                                                "New");
-            aHelper.clickTreeItem (wizardShell,
+            abbotHelper.clickTreeItem (wizardShell,
                                    new String[] {"Java", "Package"});
-            aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-            aHelper.setTextField(wizardShell,"", "myPackage");
-            aHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);           
+            abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+            abbotHelper.setTextField(wizardShell,"", "myPackage");
+            abbotHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);           
         }
         catch (Exception e) {
             e.printStackTrace();
+            success = false;
         }
+        return success;
     }
 
-    public void copyCodeToPojoProject()
-    {
+    public boolean copyCodeToPojoProject() {
+        boolean success = true;
         try {
             IWorkspaceRoot aWSRoot = ResourcesPlugin.getWorkspace().getRoot();
             IProject aProject = aWSRoot.getProject ("CurrencyConverterPojo");
-            String fileDir =aWSRoot.getLocation().toOSString()+ "/src/main/resources/sharedlib";
+            String fileDir = aWSRoot.getLocation().toOSString()+ "/src/main/resources/sharedlib";
             IFile aFile = aProject.getFile("src/myPackage/CurrencyConverter.java");
             aFile.create(new FileInputStream (fileDir + "/CurrencyConverter.java"), true, null);
-            aHelper.waitTime(1500);
+            abbotHelper.waitTime(AbbotHelper.WAIT_STANDARD);
         }
         catch (Exception e) {
             e.printStackTrace();
+            success = false;
         }
+        return success;
     }
 
-    public void createHelloWorldProject()
-    {
+    public boolean createHelloWorldProject() {
+        boolean success = true;
         try {
-            aHelper.clickMenuItem (aShell,
+            abbotHelper.clickMenuItem (workbenchShell,
                                    new String[] {"&Window", "&Close Perspective"});
-            Shell perspectiveShell = aHelper.clickMenuItem (aShell,
+            Shell perspectiveShell = abbotHelper.clickMenuItem (workbenchShell,
                                                             new String[] {"&Window", "&Open Perspective", "&Other..."},
                                                             "Open Perspective");
-            aHelper.clickItem (perspectiveShell, "Java EE (default)");
-            aHelper.clickButton (perspectiveShell, IDialogConstants.OK_LABEL);  
-            Shell wizardShell = aHelper.clickMenuItem (aShell,
+            abbotHelper.clickItem (perspectiveShell, "Java EE (default)");
+            abbotHelper.clickButton (perspectiveShell, IDialogConstants.OK_LABEL);  
+            Shell wizardShell = abbotHelper.clickMenuItem (workbenchShell,
                                                        new String[] {"&File", "&New\tAlt+Shift+N", "&Other..."},
                                                        "New");
-            aHelper.clickTreeItem (wizardShell,
+            abbotHelper.clickTreeItem (wizardShell,
                                    new String[] {"Web", "Dynamic Web Project"});
-            aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-            aHelper.setTextField(wizardShell,"", "HelloWorld");
-            aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-            aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-            aHelper.clickButton(wizardShell, "Add a runtime dependency to Geronimo's shared library");
-            aHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);
-            aHelper.waitForDialogDisposal(wizardShell);
+            abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+            abbotHelper.setTextField(wizardShell,"", "HelloWorld");
+            abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+            abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+            abbotHelper.clickButton(wizardShell, "Add a runtime dependency to Geronimo's shared library");
+            abbotHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);
+            abbotHelper.waitForDialogDisposal(wizardShell);
         }
         catch (Exception e) {
             e.printStackTrace();
+            success = false;
         }
-
+        return success;
     }
-    public void copyCodeToHelloWorldProject()
-    {
+
+    public boolean copyCodeToHelloWorldProject() {
+        boolean success = true;
         try {
             IWorkspaceRoot aWSRoot = ResourcesPlugin.getWorkspace().getRoot();
             IProject aProject = aWSRoot.getProject ("HelloWorld");
             String fileDir =aWSRoot.getLocation().toOSString()+"/src/main/resources/sharedlib";
             IFile aFile = aProject.getFile("WebContent/index.jsp");
             aFile.create(new FileInputStream (fileDir + "/index.jsp"), true, null);
-            aHelper.waitTime(1500);
+            abbotHelper.waitTime(AbbotHelper.WAIT_STANDARD);
         }
         catch (Exception e) {
             e.printStackTrace();
+            success = false;
         }
+        return success;
     }
 
-    public void modifyHelloWorldBuildPath()
-    {
+    public boolean modifyHelloWorldBuildPath() {
+        boolean success = true;
         try {
-            Shell wizardShell=aHelper.clickMenuItem (aShell,
+            Shell wizardShell = abbotHelper.clickMenuItem (workbenchShell,
                                                      new String[] {"&Project","&Properties"},
                                                      "Properties for HelloWorld");
-            aHelper.clickItem(wizardShell,"Java Build Path");
-            aHelper.selectTabItem(wizardShell,"&Projects");
-            Shell newShell=aHelper.clickButton(wizardShell, "&Add...","Required Project Selection");
-            aHelper.clickButton(newShell, "&Select All");
-            aHelper.clickButton(newShell, IDialogConstants.OK_LABEL);
-            aHelper.clickButton(wizardShell, IDialogConstants.OK_LABEL);
-            newShell=aHelper.clickMenuItem(aShell, new String[]{"&Project","Clea&n..."}, "Clean");
-            aHelper.clickButton(newShell, IDialogConstants.OK_LABEL);               
+            abbotHelper.clickItem(wizardShell,"Java Build Path");
+            abbotHelper.selectTabItem(wizardShell,"&Projects");
+            Shell newShell=abbotHelper.clickButton(wizardShell, "&Add...","Required Project Selection");
+            abbotHelper.clickButton(newShell, "&Select All");
+            abbotHelper.clickButton(newShell, IDialogConstants.OK_LABEL);
+            abbotHelper.clickButton(wizardShell, IDialogConstants.OK_LABEL);
+            newShell = abbotHelper.clickMenuItem(workbenchShell, new String[]{"&Project","Clea&n..."}, "Clean");
+            abbotHelper.clickButton(newShell, IDialogConstants.OK_LABEL);               
         }
         catch (Exception e) {
             e.printStackTrace();
+            success = false;
         }
+        return success;
     }
 
-    public void addSharedLibSupport()
-    {
+    public boolean toggleSharedLibSupport() {
+        boolean success = true;
         try {
-            ServerTasks serverTasks = new ServerTasks(aShell, aHelper, Constants.SERVER_V22 );
-            serverTasks.editServer();
-            aHelper.clickButton(aShell, "Enable in-place shared library support.");
-            aHelper.clickMenuItem(aShell,new String[]{"&File","&Save"});
-            aHelper.clickMenuItem(aShell, new String[]{"&File","C&lose All"});
-            serverTasks.startServer();
+            serverTasks.showServerOverview();
+            abbotHelper.clickButton(workbenchShell, "Enable in-place shared library support.");
+            abbotHelper.clickMenuItem(workbenchShell,new String[]{"&File","&Save"});
+            abbotHelper.clickMenuItem(workbenchShell, new String[]{"&File","C&lose All"});
+            // restart the server to pick up the change
+            serverTasks.startServer (true);
         }
         catch (Exception e) {
-            e.printStackTrace();        
+            e.printStackTrace();
+            success = false;
         }
+        return success;
     }
 
-    public void deployHelloWorldProject()
-    {
+    public boolean deployHelloWorldProject() {
+        boolean success = true;
         try {
-            aHelper.clickMenuItem (aShell,
-                                   new String[] {"&Window", "&Close Perspective"});
-            Shell perspectiveShell = aHelper.clickMenuItem (aShell,
-                                                            new String[] {"&Window", "&Open Perspective", "&Other..."},
-                                                            "Open Perspective");
-            aHelper.clickItem (perspectiveShell, "Java EE (default)");
-            aHelper.clickButton (perspectiveShell, IDialogConstants.OK_LABEL);  
-            ServerTasks serverTasks = new ServerTasks(aShell, aHelper, Constants.SERVER_V22 );
             serverTasks.publishAllProjects();   
         }
         catch (Exception e) {
             e.printStackTrace();
+            success = false;
         }
+        return success;
     }
 
-    public void displayApplication()
-    {
+    public boolean displayApplication() {
+        boolean success = true;
         try {
             EclipseSelenium selenium = new EclipseSelenium();
             selenium.start();
-            selenium.open("http://localhost:8080/HelloWorld/index.jsp");
-            selenium.waitForPageToLoad("60000");
-            AssertUtil.assertTrue(selenium.getHtmlSource().indexOf( "Hello World!!" ) > 0);
-            AssertUtil.assertTrue(selenium.getHtmlSource().indexOf( "100 USD = 3938.81 INR" ) > 0);
-            aHelper.waitTime(1500);
+            selenium.open ("http://localhost:8080/HelloWorld/index.jsp");
+            selenium.waitForPageToLoad ("60000");
+            success = (selenium.getHtmlSource().indexOf ("Hello World!!") > 0);
+            if (success == true) {
+                success = (selenium.getHtmlSource().indexOf ("100 USD = 3938.81 INR") > 0);
+            }
+            abbotHelper.waitTime (AbbotHelper.WAIT_STANDARD);
             selenium.stop();
-            success=true;
         }
         catch (Exception e) {
             e.printStackTrace();
+            success = false;
         }
-        assertTrue(success);
+        return success;
     }
-
-    public void deleteProjects()
-    {
-        try {
-            ProjectTasks projectTasks = new ProjectTasks(aShell, aHelper, Constants.SERVER_V22 );
-            // delete the projects that have been created
-            // reverse alphabetical is a little smoother
-            projectTasks.deleteProject ("HelloWorld");
-            projectTasks.deleteProject ("CurrencyConverterPojo");
-            success=true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        assertTrue(success);
-    }
-
-    public void deleteServer()
-    {
-        try {
-            ServerTasks serverTasks = new ServerTasks(aShell, aHelper, Constants.SERVER_V22 );
-            // stop the server 
-            serverTasks.stopServer();
-            // remove the server 
-            serverTasks.removeServer();
-            success=true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        assertTrue(success);
-    }
-
 }

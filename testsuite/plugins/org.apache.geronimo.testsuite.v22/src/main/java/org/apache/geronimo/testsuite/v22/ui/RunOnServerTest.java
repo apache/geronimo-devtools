@@ -19,13 +19,7 @@ package org.apache.geronimo.testsuite.v22.ui;
 
 import java.io.FileInputStream;
 
-import org.apache.geronimo.testsuite.common.AssertUtil;
-import org.apache.geronimo.testsuite.common.selenium.EclipseSelenium;
 import org.apache.geronimo.testsuite.common.ui.AbbotHelper;
-import org.apache.geronimo.testsuite.common.ui.Constants;
-import org.apache.geronimo.testsuite.common.ui.ProjectTasks;
-import org.apache.geronimo.testsuite.common.ui.ServerTasks;
-import org.apache.geronimo.testsuite.common.ui.WorkbenchTasks;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -33,74 +27,20 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.widgets.Shell;
 
-import abbot.swt.eclipse.junit.extensions.WorkbenchTestCase;
-import abbot.swt.eclipse.utils.WorkbenchUtilities;
-
 /*
  * @version $Rev$ $Date$
  */
-public class RunOnServerTest extends WorkbenchTestCase {
+public class RunOnServerTest extends AbstractTestCase {
 
-    Shell workbenchShell = WorkbenchUtilities.getWorkbenchWindow().getShell();
-    AbbotHelper abbotHelper = new AbbotHelper(workbenchShell);
-    boolean success = false;
-
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    public RunOnServerTest() {
+        super ();
     }
 
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        deleteProject();
-        deleteServer();
-    }
-
-
-    public void testRunOnServer() {
-        createServer();
-        startServer();
-        createProject();
-        copyCodeToProject();
-        deployProject();
-    }
-
-
-    private void createServer() {
-        success = false;
+    @Override
+    public boolean buildTestCase() {
+        boolean success = true;
         try {
-            WorkbenchTasks workbenchTasks = new WorkbenchTasks(workbenchShell, abbotHelper);
-            // so we are sure that we are looking in the desired perspective
-            workbenchTasks.showJEEPerspective();
-            ServerTasks serverTasks = new ServerTasks(workbenchShell, abbotHelper, Constants.SERVER_V22 );
-            serverTasks.createServer();
-            serverTasks.startServer();
-            success = true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        assertTrue( success );
-    }
-
-
-    private void startServer() {
-        success = false;
-        try {
-            ServerTasks serverTasks = new ServerTasks(workbenchShell, abbotHelper, Constants.SERVER_V22 );
-            success = true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        assertTrue( success );
-    }
-
-
-    private void createProject() {
-        success = false;
-        try {
+            // create the project
             Shell wizardShell = abbotHelper.clickMenuItem (workbenchShell,
                                                            new String[] {"&File", "&New\tAlt+Shift+N", "&Other..."},
                                                            "New");
@@ -110,77 +50,55 @@ public class RunOnServerTest extends WorkbenchTestCase {
             abbotHelper.setTextField(wizardShell,"", "DynamicWebProject");
             abbotHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);
             abbotHelper.waitForDialogDisposal(wizardShell);
-            success = true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        assertTrue( success );
-    }
 
-
-    private void copyCodeToProject() {
-        success = false;
-        try {
+            // copy the code to the project
             IWorkspaceRoot aWSRoot = ResourcesPlugin.getWorkspace().getRoot();
             IProject aProject = aWSRoot.getProject ("DynamicWebProject");
             String fileDir = aWSRoot.getLocation().toOSString() + "/src/main/resources/run-on-server";
             IFile aFile = aProject.getFile("WebContent/index.jsp");
             aFile.create(new FileInputStream (fileDir + "/index.jsp"), true, null);
-            abbotHelper.waitTime( 1500 );
-            success = true;
+            abbotHelper.waitTime (AbbotHelper.WAIT_STANDARD);
         }
         catch (Exception e) {
             e.printStackTrace();
+            success = false;
         }
-        assertTrue( success );
+        return success;
     }
 
-
-    private void deployProject() {
-        success = false;
+    @Override
+    public boolean runTestCase() {
+        boolean success = true;
         try {
+            // deploy the project
             Shell deployShell = abbotHelper.rightClickItem(workbenchShell, "DynamicWebProject",
                                                            new String [] {"&Run As", "&1 Run on Server\tAlt+Shift+X, R"}, 
                                                            "Run On Server");
             abbotHelper.clickButton (deployShell, IDialogConstants.FINISH_LABEL);
-            abbotHelper.waitTime( 10000 );
-            abbotHelper.clickCombo( workbenchShell, "http://localhost:8080/DynamicWebProject/");
-            success = true;
+            // sometimes publish takes a while
+            abbotHelper.waitTime (AbbotHelper.WAIT_LONG + AbbotHelper.WAIT_LONG);
+            abbotHelper.clickCombo (workbenchShell, "http://localhost:8080/DynamicWebProject/");
         }
         catch (Exception e) {
             e.printStackTrace();
+            success = false;
         }
-        assertTrue( success );
+        return success;
     }
 
-
-    private void deleteProject() {
-        success = false;
+    @Override
+    public boolean cleanupTestCase() {
+        boolean success = true;
         try {
-            ProjectTasks projectTasks = new ProjectTasks(workbenchShell, abbotHelper, Constants.SERVER_V22 );
-            projectTasks.deleteProject ("DynamicWebProject");
-            success = true;
+            abbotHelper.clickMenuItem (workbenchShell,
+                    new String[] {"&File", "&Close"});
+            success = serverTasks.removeAllProjects();
+            if (success == true) {
+                success = projectTasks.deleteProject ("DynamicWebProject");
+            }
+        } catch (Exception e) {
+            success = false;
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        assertTrue( success );
+        return success;
     }
-
-
-    private void deleteServer() {
-        success = false;
-        try {
-            ServerTasks serverTasks = new ServerTasks(workbenchShell, abbotHelper, Constants.SERVER_V22 );
-            serverTasks.stopServer();
-            serverTasks.removeServer();
-            success = true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        assertTrue( success );
-    }
-
 }

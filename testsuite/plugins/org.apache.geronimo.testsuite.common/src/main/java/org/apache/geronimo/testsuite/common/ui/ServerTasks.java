@@ -19,108 +19,189 @@ package org.apache.geronimo.testsuite.common.ui;
 
 import java.io.File;
 
+import org.apache.geronimo.testsuite.common.selenium.EclipseSelenium;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.widgets.Shell;
 
-import abbot.swt.finder.generic.MultipleFoundException;
-import abbot.swt.finder.generic.NotFoundException;
-
 public class ServerTasks {
     Shell workbenchShell;
-    AbbotHelper aHelper;
+    AbbotHelper abbotHelper;
     String serverVersion;
 
     public ServerTasks (Shell shell, AbbotHelper helper, String serverVersion) {
         workbenchShell = shell;
-        aHelper = helper;
+        abbotHelper = helper;
         this.serverVersion = serverVersion;
     }
     
     // just getting through this with no exceptions is success.
-    public void createServer() throws MultipleFoundException, NotFoundException {
-        // Launch the New Project wizard and aHelper.wait for it to open.
-        Shell wizardShell = aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&File", "&New\tAlt+Shift+N", "&Other..."},
-                "New");
+    public boolean createServer(){
+        boolean success = true;
+        try {
+            // Launch the New Project wizard and aHelper.wait for it to open.
+            Shell wizardShell = abbotHelper.clickMenuItem (workbenchShell,
+                    new String[] {"&File", "&New\tAlt+Shift+N", "&Other..."},
+                    "New");
 
-        // Having 2 tree items with the same name is not very good design
-        aHelper.clickTreeItem (wizardShell, 
-                new String[] {"Server", "Server"});
-        aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+            // Having 2 tree items with the same name is not very good design
+            abbotHelper.clickTreeItem (wizardShell, 
+                    new String[] {"Server", "Server"});
+            abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
 
-        // Select the proper Server. why do we have this in there twice?
-        aHelper.clickItem (wizardShell, Constants.getConstant(serverVersion, Constants.SERVERNAME));
-        aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+            // Select the proper Server. why do we have this in there twice?
+            abbotHelper.clickItem (wizardShell, Constants.getConstant(serverVersion, Constants.SERVERNAME));
+            abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
 
-        //TODO would be nice to install the server instead of have to know where it is in advance
-        aHelper.setTextField (wizardShell, "", getServerInstallDirectory());
+            // TODO would be nice to install the server instead of have to know where it is in advance
+            abbotHelper.setTextField (wizardShell, "", getServerInstallDirectory());
 
-        aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-        aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-        aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
-        aHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);
+            abbotHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
     }
 
-    public void editServer()throws MultipleFoundException, NotFoundException { 
-        String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
-        aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&Window", "Show &View", "Servers"});
-         aHelper.doubleClickItem(workbenchShell, serverDisplay);
+    public boolean showServerOverview() { 
+        boolean success = true;
+        try {
+            String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
+            abbotHelper.clickMenuItem (workbenchShell,
+                    new String[] {"&Window", "Show &View", "Servers"});
+            abbotHelper.doubleClickItem(workbenchShell, serverDisplay);
+        } catch (Exception e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
     }
 
-    public void startServer () throws MultipleFoundException, NotFoundException {
-        String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
-        aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&Window", "Show &View", "Servers"});
-        
-        aHelper.rightClickItem (workbenchShell, serverDisplay,
-                new String[] {"&Start"});
-        aHelper.waitForServerStatus (workbenchShell, serverDisplay, "Started");
-        
-        aHelper.waitTime( 1500 );
+    public boolean startServer () {
+        return startServer (false);
     }
     
-    public void stopServer () throws MultipleFoundException, NotFoundException {
-        String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
-        aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&Window", "Show &View", "Servers"});
-
-        aHelper.rightClickItem (workbenchShell, serverDisplay,
-                new String[] {"S&top"});
-        aHelper.waitForServerStatus (workbenchShell, serverDisplay, "Stopped");
+    public boolean startServer (boolean restart) {
+        boolean success = true;
+        try {
+            String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
+            abbotHelper.clickMenuItem (workbenchShell,
+                    new String[] {"&Window", "Show &View", "Servers"});
         
-        aHelper.waitTime( 1500 );
+            if (restart == true) {
+                abbotHelper.rightClickItem (workbenchShell, serverDisplay,
+                        new String[] {"&Restart"});                
+            } else {
+                abbotHelper.rightClickItem (workbenchShell, serverDisplay,
+                        new String[] {"&Start"});
+            }
+            abbotHelper.waitForServerStatus (workbenchShell, serverDisplay, "Started");
+        
+            abbotHelper.waitTime (AbbotHelper.WAIT_STANDARD);
+
+            // if starting the server for the first time, do a quick sanity check
+            if (restart == false) {
+                EclipseSelenium selenium = new EclipseSelenium();
+                selenium.start();
+
+                selenium.open( "http://localhost:8080/console/" );
+                selenium.waitForPageToLoad( "2000" );
+                selenium.type("j_username", "system");
+                selenium.type("j_password", "manager");
+                selenium.click("submit");
+
+                selenium.stop();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
+    }
+    
+    public boolean stopServer () {
+        boolean success = true;
+        try {
+            String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
+            abbotHelper.clickMenuItem (workbenchShell,
+                    new String[] {"&Window", "Show &View", "Servers"});
+
+            abbotHelper.rightClickItem (workbenchShell, serverDisplay,
+                    new String[] {"S&top"});
+            abbotHelper.waitForServerStatus (workbenchShell, serverDisplay, "Stopped");
+        
+            abbotHelper.waitTime (AbbotHelper.WAIT_STANDARD);
+        } catch (Exception e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
     }
 
     
     // remove the server so that the test will be reset back to its original state.
-    public void removeServer () throws MultipleFoundException, NotFoundException {
-        Shell preferenceShell = aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&Window", "&Preferences"},
-                "Preferences");
+    public boolean removeServer () {
+        boolean success = true;
+        try {
+            Shell preferenceShell = abbotHelper.clickMenuItem (workbenchShell,
+                    new String[] {"&Window", "&Preferences"},
+                    "Preferences");
 
-        aHelper.clickTreeItem (preferenceShell,
-                new String[] {"Server", "Runtime Environments"});
-        aHelper.clickItem (preferenceShell, Constants.getConstant(serverVersion, Constants.SERVERRUNTIME));
-        Shell questionShell = aHelper.clickButton (preferenceShell, "&Remove", "Server");
+            abbotHelper.clickTreeItem (preferenceShell,
+                    new String[] {"Server", "Runtime Environments"});
+            abbotHelper.clickItem (preferenceShell, Constants.getConstant(serverVersion, Constants.SERVERRUNTIME));
+            Shell questionShell = abbotHelper.clickButton (preferenceShell, "&Remove", "Server");
         
-        aHelper.clickButton (questionShell, IDialogConstants.OK_LABEL);
-        aHelper.clickButton (preferenceShell, IDialogConstants.OK_LABEL);
+            abbotHelper.clickButton (questionShell, IDialogConstants.OK_LABEL);
+            abbotHelper.clickButton (preferenceShell, IDialogConstants.OK_LABEL);
+        } catch (Exception e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
     }
 
-    public void publishAllProjects () throws MultipleFoundException, NotFoundException {
-        String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
+    public boolean publishAllProjects () {
+        boolean success = true;
+        try {
+            String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
         
-        aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&Window", "Show &View", "Servers"});
-        Shell deployShell = aHelper.rightClickItem (workbenchShell, serverDisplay,
-                 new String[] {"Add and Remove &Projects..."}, "Add and Remove Projects");
-        aHelper.clickButton (deployShell, "Add A&ll >>");
+            abbotHelper.clickMenuItem (workbenchShell,
+                    new String[] {"&Window", "Show &View", "Servers"});
+            Shell deployShell = abbotHelper.rightClickItem (workbenchShell, serverDisplay,
+                    new String[] {"Add and Remove &Projects..."}, "Add and Remove Projects");
+            abbotHelper.clickButton (deployShell, "Add A&ll >>");
         
-        aHelper.clickButton (deployShell, IDialogConstants.FINISH_LABEL);
-        aHelper.waitForDialogDisposal (deployShell);
+            abbotHelper.clickButton (deployShell, IDialogConstants.FINISH_LABEL);
+            abbotHelper.waitForDialogDisposal (deployShell);
+        } catch (Exception e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
+    }
+
+    public boolean removeAllProjects () {
+        boolean success = true;
+        try {
+            String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
+        
+            abbotHelper.clickMenuItem (workbenchShell,
+                    new String[] {"&Window", "Show &View", "Servers"});
+            Shell deployShell = abbotHelper.rightClickItem (workbenchShell, serverDisplay,
+                    new String[] {"Add and Remove &Projects..."}, "Add and Remove Projects");
+            abbotHelper.clickButton (deployShell, "<< Re&move All");
+        
+            abbotHelper.clickButton (deployShell, IDialogConstants.FINISH_LABEL);
+            abbotHelper.waitForDialogDisposal (deployShell);
+        } catch (Exception e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
     }
 
     private String getServerInstallDirectory() {

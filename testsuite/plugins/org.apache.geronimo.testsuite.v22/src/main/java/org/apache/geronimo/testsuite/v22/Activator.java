@@ -35,7 +35,7 @@ import abbot.swt.eclipse.utils.WorkbenchUtilities;
 public class Activator extends Plugin {
 
     // The plug-in ID
-    public static final String PLUGIN_ID = "org.apache.geronimo.st.v22.core";
+    public static final String PLUGIN_ID = "org.apache.geronimo.testsuite.v22";
 
     // The shared instance
     private static Activator plugin;

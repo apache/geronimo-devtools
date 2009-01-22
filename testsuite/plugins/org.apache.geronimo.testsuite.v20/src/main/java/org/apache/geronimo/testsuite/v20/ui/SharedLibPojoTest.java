@@ -187,7 +187,7 @@ public class SharedLibPojoTest extends WorkbenchTestCase {
     {
         try {
             ServerTasks serverTasks = new ServerTasks(aShell, aHelper, Constants.SERVER_V20 );
-            serverTasks.editServer();
+            serverTasks.showServerOverview();
             aHelper.clickButton(aShell, "Enable in-place shared library support.");
             aHelper.clickMenuItem(aShell,new String[]{"&File","&Save"});
             aHelper.clickMenuItem(aShell, new String[]{"&File","C&lose All"});
@@ -238,7 +238,7 @@ public class SharedLibPojoTest extends WorkbenchTestCase {
     public void deleteProjects()
     {
         try {
-            ProjectTasks projectTasks = new ProjectTasks(aShell, aHelper, Constants.SERVER_V20 );
+            ProjectTasks projectTasks = new ProjectTasks(aShell, aHelper);
             // delete the projects that have been created
             // reverse alphabetical is a little smoother
             projectTasks.deleteProject ("HelloWorld");

@@ -87,7 +87,7 @@ public class ModuleArtifactMapper {
 
 	public String resolve(IServer server, IModule module) {
 		Map artifactEntries = (Map) serverEntries.get(server.getRuntime().getLocation().toFile());
-		if (artifactEntries != null) {
+		if (artifactEntries != null && module != null && module.getProject() != null) {
 			return (String) artifactEntries.get(module.getProject().getName());
 		}
 		return null;

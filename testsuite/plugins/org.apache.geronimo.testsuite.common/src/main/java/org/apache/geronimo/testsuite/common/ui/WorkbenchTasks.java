@@ -20,27 +20,69 @@ package org.apache.geronimo.testsuite.common.ui;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.widgets.Shell;
 
-import abbot.swt.finder.generic.MultipleFoundException;
-import abbot.swt.finder.generic.NotFoundException;
-
 public class WorkbenchTasks {
     Shell workbenchShell;
-    AbbotHelper aHelper;
+    AbbotHelper abbotHelper;
 
     public WorkbenchTasks (Shell shell, AbbotHelper helper) {
         workbenchShell = shell;
-        aHelper = helper;
+        abbotHelper = helper;
     }
     
-    public void showJEEPerspective() throws MultipleFoundException, NotFoundException {
-
-        aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&Window", "&Close Perspective"});
+    public boolean showJEEPerspective() {
+        boolean success = true;
+        try {
+            abbotHelper.clickMenuItem (workbenchShell,
+                    new String[] {"&Window", "&Close Perspective"});
         
-        Shell perspectiveShell = aHelper.clickMenuItem (workbenchShell,
-              new String[] {"&Window", "&Open Perspective", "&Other..." },
-              "Open Perspective");
-        aHelper.clickItem (perspectiveShell, "Java EE (default)");
-        aHelper.clickButton (perspectiveShell, IDialogConstants.OK_LABEL);        
+            Shell perspectiveShell = abbotHelper.clickMenuItem (workbenchShell,
+                    new String[] {"&Window", "&Open Perspective", "&Other..." },
+                    "Open Perspective");
+            abbotHelper.clickItem (perspectiveShell, "Java EE (default)");
+            abbotHelper.clickButton (perspectiveShell, IDialogConstants.OK_LABEL);    
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
+    }
+    
+    public boolean checkValidInstallation (String version) {
+        boolean success = true;
+        try {
+            // About Eclipse Test Case. There are three Shell newShell, nextShell and nextNextShell 
+            //used because we need to save the states for newShell and nextShell
+            //newShell->nextShell->nextNextShell this is the order in which shell comes up
+            Shell newShell = abbotHelper.clickMenuItem(workbenchShell, new String[]{"&Help","&About Eclipse Platform"},"About Eclipse Platform");
+            Shell nextShell = abbotHelper.clickImageButton(newShell, "Apache.org - Geronimo " + version + " Server Tools Core Plug-in","About Eclipse Platform Features");
+            Shell nextNextShell = abbotHelper.clickButton(nextShell, "&Plug-in Details", "Feature Plug-ins");
+            abbotHelper.clickButton(nextNextShell, IDialogConstants.OK_LABEL);
+            abbotHelper.clickButton(nextShell, IDialogConstants.OK_LABEL);
+            abbotHelper.clickButton(newShell, IDialogConstants.OK_LABEL);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
+    }
+    
+    public boolean openInternalBrowser () {
+        boolean success = true;
+        try {
+            abbotHelper.clickMenuItem (workbenchShell,
+                    new String[] {"&Window", "Web Browser", "&0 Internal Web Browser"});
+            Shell openShell = abbotHelper.clickMenuItem (workbenchShell,
+                    new String[] {"&Window", "Show &View", "&Other..."}, "Show View");
+            abbotHelper.clickTreeItem (openShell,
+                    new String[] {"General", "Internal Web Browser"});
+            abbotHelper.clickButton (openShell, IDialogConstants.OK_LABEL);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            success = false;
+        }
+        return success;
     }
 }

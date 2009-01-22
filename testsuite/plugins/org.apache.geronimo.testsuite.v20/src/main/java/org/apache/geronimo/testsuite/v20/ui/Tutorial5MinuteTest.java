@@ -58,7 +58,7 @@ public class Tutorial5MinuteTest extends WorkbenchTestCase {
             
             ServerTasks serverTasks = new ServerTasks(workbenchShell, aHelper, Constants.SERVER_V20 );
             WorkbenchTasks workbenchTasks = new WorkbenchTasks(workbenchShell, aHelper);
-            ProjectTasks projectTasks = new ProjectTasks(workbenchShell, aHelper, Constants.SERVER_V20 );
+            ProjectTasks projectTasks = new ProjectTasks(workbenchShell, aHelper);
             
             // so we are sure that we are looking in the desired perspective
             workbenchTasks.showJEEPerspective();
