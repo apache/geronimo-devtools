@@ -109,7 +109,10 @@ public class GeronimoServer extends GeronimoServerDelegate {
         // Specify the minimum memory options for the Geronimo server
         String memoryOpts = "-Xms256m -Xmx512m -XX:MaxPermSize=128m";
 
-        return javaagent + " " + javaExtDirs + " " + javaEndorsedDirs + " " + memoryOpts;
+        // Specify GERONIMO_BASE
+        String homeDirectory = "-Dorg.apache.geronimo.home.dir=\"" + runtimeLocation;
+
+        return javaagent + " " + javaExtDirs + " " + javaEndorsedDirs + " " + memoryOpts + " " + homeDirectory;
     }
 
     /*
