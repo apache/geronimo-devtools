@@ -39,17 +39,17 @@ public class EclipseSeleniumServer implements ISafeRunnable{
     private SeleniumServer server;
     private AbbotHelper aHelper;
     private Shell shell;
-    
+
     public EclipseSeleniumServer( AbbotHelper aHelper, Shell shell ) {
         this.aHelper = aHelper;
         this.shell = shell;
         INSTANCE = this;
     }
-    
+
     public void stop() {
         server.stop();
     }
-    
+
     public AbbotHelper getAHelper() {
         return aHelper;
     }
@@ -63,10 +63,17 @@ public class EclipseSeleniumServer implements ISafeRunnable{
     }
 
     public void run() throws Exception {
-        BrowserLauncherFactory.addBrowserLauncher("EclipseBrowser", EclipseBrowserLauncher.class);
-        SeleniumServer.setDebugMode( true );
-        server = new SeleniumServer();
-        server.start();
+        try {
+            BrowserLauncherFactory.addBrowserLauncher("EclipseBrowser", EclipseBrowserLauncher.class);
+            SeleniumServer.setDebugMode (true);
+            server = new SeleniumServer();
+            server.start();
+        } catch (Throwable th) {
+            th.printStackTrace();
+            Exception e = new Exception("unable to start Selenium server");
+            e.initCause(th);
+            throw (e);
+        }
     }
 
 }

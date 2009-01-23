@@ -91,7 +91,7 @@ public class EclipseUITest extends WorkbenchTestCase {
     private boolean installServer() {
         boolean success = serverTasks.createServer();
         if (success == true) {
-            serverTasks.startServer (false);
+            success = serverTasks.startServer (false);
         }
         return success;
     }

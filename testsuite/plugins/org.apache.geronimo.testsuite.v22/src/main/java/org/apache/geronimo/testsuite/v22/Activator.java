@@ -50,26 +50,26 @@ public class Activator extends Plugin {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
      */
-    public void start(BundleContext context) throws Exception {
-        super.start(context);
+    public void start (BundleContext context) throws Exception {
+        super.start (context);
         Shell workbenchShell = WorkbenchUtilities.getWorkbenchWindow().getShell();
         AbbotHelper aHelper = new AbbotHelper (workbenchShell);
-        seleniumServer = new EclipseSeleniumServer(aHelper, workbenchShell);
+        seleniumServer = new EclipseSeleniumServer (aHelper, workbenchShell);
         try {
-            SafeRunner.run( seleniumServer );
+            SafeRunner.run (seleniumServer);
             Thread.sleep(5000);
 //          new Exception("sdsfsdf").printStackTrace();
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
      */
     public void stop(BundleContext context) throws Exception {
@@ -80,13 +80,13 @@ public class Activator extends Plugin {
 
     /**
      * Returns the shared instance
-     * 
+     *
      * @return the shared instance
      */
     public static Activator getDefault() {
         return plugin;
     }
-    
+
     public static void log(int severity, String message, Throwable throwable) {
         plugin.getLog().log(new Status(severity, PLUGIN_ID, 0, message, throwable));
     }

@@ -35,7 +35,7 @@ public class ServerTasks {
         abbotHelper = helper;
         this.serverVersion = serverVersion;
     }
-    
+
     // just getting through this with no exceptions is success.
     public boolean createServer(){
         boolean success = true;
@@ -46,7 +46,7 @@ public class ServerTasks {
                     "New");
 
             // Having 2 tree items with the same name is not very good design
-            abbotHelper.clickTreeItem (wizardShell, 
+            abbotHelper.clickTreeItem (wizardShell,
                     new String[] {"Server", "Server"});
             abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
 
@@ -66,7 +66,7 @@ public class ServerTasks {
         return success;
     }
 
-    public boolean showServerOverview() { 
+    public boolean showServerOverview() {
         boolean success = true;
         try {
             String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
@@ -83,23 +83,23 @@ public class ServerTasks {
     public boolean startServer () {
         return startServer (false);
     }
-    
+
     public boolean startServer (boolean restart) {
         boolean success = true;
         try {
             String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
             abbotHelper.clickMenuItem (workbenchShell,
                     new String[] {"&Window", "Show &View", "Servers"});
-        
+
             if (restart == true) {
                 abbotHelper.rightClickItem (workbenchShell, serverDisplay,
-                        new String[] {"&Restart"});                
+                        new String[] {"&Restart"});
             } else {
                 abbotHelper.rightClickItem (workbenchShell, serverDisplay,
                         new String[] {"&Start"});
             }
             abbotHelper.waitForServerStatus (workbenchShell, serverDisplay, "Started");
-        
+
             abbotHelper.waitTime (AbbotHelper.WAIT_STANDARD);
 
             // if starting the server for the first time, do a quick sanity check
@@ -107,11 +107,11 @@ public class ServerTasks {
                 EclipseSelenium selenium = new EclipseSelenium();
                 selenium.start();
 
-                selenium.open( "http://localhost:8080/console/" );
-                selenium.waitForPageToLoad( "2000" );
-                selenium.type("j_username", "system");
-                selenium.type("j_password", "manager");
-                selenium.click("submit");
+                selenium.open ("http://localhost:8080/console/");
+                selenium.waitForPageToLoad ("2000");
+                selenium.type ("j_username", "system");
+                selenium.type ("j_password", "manager");
+                selenium.click ("submit");
 
                 selenium.stop();
             }
@@ -121,7 +121,7 @@ public class ServerTasks {
         }
         return success;
     }
-    
+
     public boolean stopServer () {
         boolean success = true;
         try {
@@ -132,7 +132,7 @@ public class ServerTasks {
             abbotHelper.rightClickItem (workbenchShell, serverDisplay,
                     new String[] {"S&top"});
             abbotHelper.waitForServerStatus (workbenchShell, serverDisplay, "Stopped");
-        
+
             abbotHelper.waitTime (AbbotHelper.WAIT_STANDARD);
         } catch (Exception e) {
             e.printStackTrace();
@@ -141,7 +141,7 @@ public class ServerTasks {
         return success;
     }
 
-    
+
     // remove the server so that the test will be reset back to its original state.
     public boolean removeServer () {
         boolean success = true;
@@ -154,7 +154,7 @@ public class ServerTasks {
                     new String[] {"Server", "Runtime Environments"});
             abbotHelper.clickItem (preferenceShell, Constants.getConstant(serverVersion, Constants.SERVERRUNTIME));
             Shell questionShell = abbotHelper.clickButton (preferenceShell, "&Remove", "Server");
-        
+
             abbotHelper.clickButton (questionShell, IDialogConstants.OK_LABEL);
             abbotHelper.clickButton (preferenceShell, IDialogConstants.OK_LABEL);
         } catch (Exception e) {
@@ -168,13 +168,13 @@ public class ServerTasks {
         boolean success = true;
         try {
             String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
-        
+
             abbotHelper.clickMenuItem (workbenchShell,
                     new String[] {"&Window", "Show &View", "Servers"});
             Shell deployShell = abbotHelper.rightClickItem (workbenchShell, serverDisplay,
                     new String[] {"Add and Remove &Projects..."}, "Add and Remove Projects");
             abbotHelper.clickButton (deployShell, "Add A&ll >>");
-        
+
             abbotHelper.clickButton (deployShell, IDialogConstants.FINISH_LABEL);
             abbotHelper.waitForDialogDisposal (deployShell);
         } catch (Exception e) {
@@ -188,13 +188,13 @@ public class ServerTasks {
         boolean success = true;
         try {
             String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
-        
+
             abbotHelper.clickMenuItem (workbenchShell,
                     new String[] {"&Window", "Show &View", "Servers"});
             Shell deployShell = abbotHelper.rightClickItem (workbenchShell, serverDisplay,
                     new String[] {"Add and Remove &Projects..."}, "Add and Remove Projects");
             abbotHelper.clickButton (deployShell, "<< Re&move All");
-        
+
             abbotHelper.clickButton (deployShell, IDialogConstants.FINISH_LABEL);
             abbotHelper.waitForDialogDisposal (deployShell);
         } catch (Exception e) {
@@ -221,5 +221,5 @@ public class ServerTasks {
         }
         location = location + File.separatorChar + Constants.getConstant(serverVersion, Constants.SERVERPATH); ;
         return location;
-    }  
+    }
 }
