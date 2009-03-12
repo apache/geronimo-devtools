@@ -42,8 +42,18 @@
     </url>
     
     <requires>
-        <import feature="org.eclipse.jst" version="2.0.0" match="greaterOrEqual"/>
+  	<import feature="org.eclipse.jst.common_core.feature" version="2.0.0.v200706041905-1007w311817231426" 
+		match="greaterOrEqual"/>     	
+	<import feature="org.eclipse.jst.server_ui.feature" version="2.0.2.v200802150100-77-CT9yJXEkuiKVeQrclqTHQ3648"
+		match="greaterOrEqual"/>
+	<import feature="org.eclipse.jst.server_adapters.feature" version="2.0.2.v200802150100-787KE8iDUUEF6GwKwpHEQ"
+		match="greaterOrEqual"/>
+	<import feature="org.eclipse.jst.web_ui.feature" version="2.0.2.v200802150100-7B1DzCkuNa_RPevwkwB1iJ6z-0RH" 
+		match="greaterOrEqual"/>
+  	<import feature="org.eclipse.jst.enterprise_ui.feature" version="2.0.2.v200802150100-7b7_Es8EU6AXOV9QLJSees1SQoYQ"
+		match="greaterOrEqual"/>
     </requires>
+
     
     <plugin
          id="org.apache.geronimo.st.core"
