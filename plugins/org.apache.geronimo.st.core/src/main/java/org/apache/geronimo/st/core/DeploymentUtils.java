@@ -150,7 +150,7 @@ public class DeploymentUtils {
 		} else if (IModuleConstants.JST_CONNECTOR_MODULE.equals(type)) {
 			return DataModelFactory.createDataModel(new ConnectorComponentExportDataModelProvider());
 		} else if (IModuleConstants.JST_APPCLIENT_MODULE.equals(type)) {
-			DataModelFactory.createDataModel(new AppClientComponentExportDataModelProvider());
+			return DataModelFactory.createDataModel(new AppClientComponentExportDataModelProvider());
 		}
 		return null;
 	}
