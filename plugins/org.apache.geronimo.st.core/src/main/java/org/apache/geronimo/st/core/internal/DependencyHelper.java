@@ -25,6 +25,7 @@ import java.util.Set;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.application.Application;
+import org.apache.geronimo.jee.applicationclient.ApplicationClient;
 import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.jee.deployment.Artifact;
 import org.apache.geronimo.jee.deployment.Dependencies;
@@ -376,6 +377,12 @@ public class DependencyHelper {
                 if (plan != null)
                     environment = plan.getEnvironment();
             }
+        }else if (GeronimoUtils.isAppClientModule(module)) {
+            if (getAppClientDeploymentPlan(module) != null) {
+                ApplicationClient plan = getAppClientDeploymentPlan(module).getValue();
+                if (plan != null)
+                    environment = plan.getServerEnvironment();
+            }
         }
 
         Trace.tracePoint("Exit ", "DependencyHelper.getEnvironment", environment);
@@ -502,6 +509,27 @@ public class DependencyHelper {
         Trace.tracePoint("Exit ", "DependencyHelper.getApplicationDeploymentPlan", null);
         return null;
     }
+    
+    /**
+     * Returns the ApplicationClient for the given IModule
+     * 
+     * @param module IModule to be published
+     * 
+     * @return ApplicationClient
+     */
+    private JAXBElement<ApplicationClient> getAppClientDeploymentPlan(IModule module) {
+    	Trace.tracePoint("Enter", "DependencyHelper.getWebDeploymentPlan", module);
+
+        IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
+        IFile file = GeronimoUtils.getApplicationClientDeploymentPlanFile(comp);
+        if (file.getName().equals(GeronimoUtils.APP_CLIENT_PLAN_NAME) && file.exists()) {
+            Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan", JAXBUtils.unmarshalFilterDeploymentPlan(file));
+            return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+        }
+
+        Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan", null);
+        return null;
+	}
 
 
     /**

@@ -33,6 +33,7 @@ import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
+import org.apache.geronimo.deployment.plugin.factories.BaseDeploymentFactory;
 import org.apache.geronimo.st.core.commands.DeploymentCmdStatus;
 import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.core.commands.IDeploymentCommand;
@@ -749,6 +750,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		map.put("java.naming.factory.url.pkgs", "org.apache.geronimo.naming");
 		map.put("java.naming.provider.url", "rmi://" + getServer().getHost()
 				+ ":" + port);
+		map.put(JMXConnectorFactory.DEFAULT_CLASS_LOADER, BaseDeploymentFactory.class.getClassLoader());
 
 		String url = getGeronimoServer().getJMXServiceURL();
 		if (url != null) {
