@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -29,16 +30,20 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import javax.management.MBeanServerConnection;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.deployment.plugin.jmx.RemoteDeploymentManager;
 import org.apache.geronimo.gbean.AbstractName;
+import org.apache.geronimo.gbean.AbstractNameQuery;
 import org.apache.geronimo.kernel.Kernel;
 import org.apache.geronimo.kernel.config.ConfigurationData;
 import org.apache.geronimo.kernel.config.ConfigurationInfo;
@@ -88,7 +93,7 @@ public class GeronimoServerPluginManager {
                     if (connection != null) {
                         kernel = new KernelDelegate(connection);
                     }
-                    pluginInstaller = (PluginInstaller)kernel.getGBean(PluginInstaller.class);
+                    pluginInstaller = getPluginInstaller();                
                 }
             }
         } catch (Exception e) {
@@ -98,7 +103,15 @@ public class GeronimoServerPluginManager {
         }
         Trace.tracePoint("Constructor", "GeronimoServerPluginManager");
     }
-
+    
+    private PluginInstaller getPluginInstaller() {
+        Set<AbstractName> set = kernel.listGBeans(new AbstractNameQuery(PluginInstaller.class.getName()));
+        for (AbstractName name : set) {
+            return (PluginInstaller) kernel.getProxyManager().createProxy(name, PluginInstaller.class);
+        }
+        throw new IllegalStateException("No plugin installer found");
+    }
+    
     public List<String> getPluginList () {
         Trace.tracePoint("Entry", "GeronimoServerPluginManager.getPluginList");
 
@@ -575,26 +588,30 @@ public class GeronimoServerPluginManager {
             // Step 2: everything is valid, do the installation
             for (PluginType metadata : toInstall) {
                 // 2. Unload obsoleted configurations
-                PluginArtifactType instance = metadata.getPluginArtifact().get(0);
-                List<Artifact> obsoletes = new ArrayList<Artifact>();
-                for (ArtifactType obs : instance.getObsoletes()) {
-                    Artifact obsolete = toArtifact(obs);
-                    if (configManager.isLoaded(obsolete)) {
-                        if (configManager.isRunning(obsolete)) {
-                            configManager.stopConfiguration(obsolete);
-                            eventLog.add(obsolete.toString() + " stopped");
+                if (!validatePlugin(metadata)) {
+                    // metadata exists
+                    PluginArtifactType instance = metadata.getPluginArtifact()
+                            .get(0);
+                    List<Artifact> obsoletes = new ArrayList<Artifact>();
+                    for (ArtifactType obs : instance.getObsoletes()) {
+                        Artifact obsolete = toArtifact(obs);
+                        if (configManager.isLoaded(obsolete)) {
+                            if (configManager.isRunning(obsolete)) {
+                                configManager.stopConfiguration(obsolete);
+                                eventLog.add(obsolete.toString() + " stopped");
+                            }
+                            configManager.unloadConfiguration(obsolete);
+                            obsoletes.add(obsolete);
                         }
-                        configManager.unloadConfiguration(obsolete);
-                        obsoletes.add(obsolete);
+                    }
+
+                    // 4. Uninstall obsolete configurations
+                    for (Artifact artifact : obsoletes) {
+                        configManager.uninstallConfiguration(artifact);
                     }
                 }
-
-                // 4. Uninstall obsolete configurations
-                for (Artifact artifact : obsoletes) {
-                    configManager.uninstallConfiguration(artifact);
-                }
             }
-
+            
             // Step 3: Start anything that's marked accordingly
             if (configManager.isOnline()) {
                 for (int i = 0; i < toInstall.size(); i++) {
@@ -603,7 +620,7 @@ public class GeronimoServerPluginManager {
                         if (!configManager.isLoaded(artifact)) {
                             File serverArtifact = new File(getArtifactLocation (artifact));
                             File localDir = new File (createDirectoryStructure(localRepoDir, artifact));
-                            writeToDirectory(localDir, serverArtifact);
+                            writeToRepository(localDir, serverArtifact);
                             configManager.loadConfiguration(artifact);
                         }
                         configManager.startConfiguration(artifact);
@@ -672,5 +689,70 @@ public class GeronimoServerPluginManager {
 
         Trace.tracePoint("Exit", "GeronimoServerPluginManager.getMissingPrerequisites", missingPrereqs);
         return missingPrereqs;
+    }
+    
+    //Extract the car file
+    private void writeToRepository(File inputDir, File outputDir) throws Exception {
+        Trace.tracePoint("Entry", "GeronimoServerPluginManager.writeToRepository", inputDir,outputDir);
+
+        outputDir.mkdirs();
+        File[] all = inputDir.listFiles();
+        for (File file : all) {
+            if (file.isDirectory()) {
+                String oDir = outputDir.getAbsolutePath() + File.separator + file.getName();
+                File temp = new File (oDir);
+                writeToRepository(file, temp);
+            }else if(file.getName().toLowerCase().endsWith(".car"))
+            {
+               String oDir = outputDir.getAbsolutePath() + File.separator + file.getName();
+                File temp = new File (oDir);
+                
+                ZipInputStream in=new ZipInputStream(new FileInputStream(file));            
+                try {
+                    byte[] buffer = new byte[10240];
+                    for (ZipEntry entry = in.getNextEntry(); entry != null; entry = in.getNextEntry()) {
+                        File zipFile = new File(temp, entry.getName());
+                        if (entry.isDirectory()) {
+                           zipFile.mkdirs();
+                        } else {
+                            if (!entry.getName().equals("META-INF/startup-jar")) {
+                               zipFile.getParentFile().mkdirs();
+                                OutputStream out = new FileOutputStream(zipFile);
+                                try {
+                                    int count;
+                                    while ((count = in.read(buffer)) > 0) {
+                                        out.write(buffer, 0, count);                                    
+                                    }
+                                } finally {                                 
+                                    out.close();
+                                }
+                                in.closeEntry();
+                            }
+                        }
+                    }
+                } catch (IOException e) {               
+                    throw e;
+                } finally {
+                    in.close();          
+                }
+            }
+            else {
+                File entry = new File(outputDir + File.separator + file.getName());
+                FileOutputStream out = new FileOutputStream (entry);
+                FileInputStream in = new FileInputStream(file);
+                byte[] buf = new byte[10240];
+                int count;
+                try {
+                    while ((count = in.read(buf, 0, buf.length)) > -1) {
+                        out.write(buf, 0, count);
+                    }
+                } finally {
+                    in.close();
+                    out.flush();
+                    out.close();
+                }
+            }
+        }
+        Trace.tracePoint("Exit", "GeronimoServerPluginManager.writeToRepository");
     }
 }
