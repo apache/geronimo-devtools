@@ -5,20 +5,20 @@ Bundle-SymbolicName: org.apache.geronimo.st.v21.ui;singleton:=true
 Bundle-Version: 2.1.4
 Bundle-Activator: org.apache.geronimo.st.v21.ui.Activator
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.ui,
+Require-Bundle: org.apache.geronimo.st.v21.core,
+ org.apache.geronimo.st.ui,
+ org.apache.geronimo.jee.v21.jaxbmodel,
+ org.apache.geronimo.runtime.common,
+ org.apache.geronimo.runtime.v21,
+ org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.commands,
  org.eclipse.debug.ui,
- org.apache.geronimo.st.v21.core,
- org.apache.geronimo.st.ui,
  org.eclipse.ui.forms,
  org.eclipse.core.resources,
  org.eclipse.wst.common.project.facet.ui,
  org.eclipse.wst.server.core,
- org.eclipse.wst.server.ui,
- org.apache.geronimo.jee.v21.jaxbmodel,
- org.apache.geronimo.runtime.common,
- org.apache.geronimo.runtime.v21
+ org.eclipse.wst.server.ui
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Apache.org
 Export-Package: org.apache.geronimo.st.v21.ui,

@@ -4,16 +4,16 @@ Bundle-Name: Geronimo Server Tools V20 UI Plug-in
 Bundle-SymbolicName: org.apache.geronimo.st.v20.ui;singleton:=true
 Bundle-Version: 2.1.4
 Bundle-Activator: org.apache.geronimo.st.v21.ui.Activator
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- org.eclipse.core.commands,
- org.apache.geronimo.st.v21.core,
+Require-Bundle: org.apache.geronimo.st.v21.core,
  org.apache.geronimo.st.ui,
- org.eclipse.ui.forms,
- org.eclipse.core.resources,
- org.eclipse.wst.common.project.facet.ui,
  org.apache.geronimo.st.v21.ui,
  org.apache.geronimo.runtime.common,
- org.apache.geronimo.jee.v21.jaxbmodel
+ org.apache.geronimo.jee.v21.jaxbmodel,
+ org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.commands,
+ org.eclipse.ui.forms,
+ org.eclipse.core.resources,
+ org.eclipse.wst.common.project.facet.ui
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Apache.org
