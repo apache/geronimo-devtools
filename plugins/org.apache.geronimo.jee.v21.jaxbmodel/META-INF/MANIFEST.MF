@@ -6,10 +6,9 @@ Bundle-Version: 2.2.0
 Bundle-ClassPath: .
 Bundle-Vendor: Apache.org
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.core.runtime,
- org.apache.geronimo.runtime.common
-Export-Package: org,
- org.apache.geronimo.jee.application,
+Require-Bundle: org.apache.geronimo.runtime.common,
+ org.eclipse.core.runtime 
+Export-Package: org.apache.geronimo.jee.application,
  org.apache.geronimo.jee.applicationclient,
  org.apache.geronimo.jee.connector,
  org.apache.geronimo.jee.deployment,

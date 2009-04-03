@@ -6,7 +6,10 @@ Bundle-Version: 2.2.0
 Bundle-Activator: org.apache.geronimo.st.core.Activator
 Bundle-Vendor: Apache.org
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.core.runtime,
+Require-Bundle: org.apache.geronimo.runtime.common,
+ org.apache.geronimo.runtime.v22,
+ org.apache.geronimo.jee.v21.jaxbmodel,
+ org.eclipse.core.runtime,
  org.eclipse.wst.server.core,
  org.eclipse.jst.j2ee,
  org.eclipse.jst.j2ee.web,
@@ -23,17 +26,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.debug.core,
  org.eclipse.wst.web,
  org.eclipse.jem.util,
- org.apache.geronimo.runtime.common,
- org.apache.geronimo.runtime.v22,
- org.apache.geronimo.jee.v21.jaxbmodel,
  org.eclipse.jst.j2ee.core,
  org.eclipse.emf.ecore
 Bundle-ActivationPolicy: lazy
-Export-Package: org,
- org.apache,
- org.apache.geronimo,
- org.apache.geronimo.st,
- org.apache.geronimo.st.core,
+Export-Package: org.apache.geronimo.st.core,
  org.apache.geronimo.st.core.commands,
  org.apache.geronimo.st.core.descriptor,
  org.apache.geronimo.st.core.internal,
