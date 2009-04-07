@@ -48,53 +48,84 @@ Geronimo Eclipse Plugin Version ${pom.version} Enhancements
 
 1. Numerous enhancements to the Geronimo deployment plan editors
 
-2. GEP is packaged as a single feature that provides v20 and v21 server support
+2. Custom Geronimo server assembly support 
+
+3. Geronimo server plugin support 
+
+4. GEP is packaged as a single feature that provides v20 and v21 server support
 
 
 Installation Instructions
 -------------------------
 
-See http://cwiki.apache.org/GMOxDOC21/how-to-install-geronimo-eclipse-plugin-v213.html
-
+See http://cwiki.apache.org/GMOxDOC21/how-to-install-geronimo-eclipse-plugin-v214.html
 
 Bug Fixes and New Features
 --------------------------
 
-GERONIMODEVTOOLS-128 Add usabilty enhancements for Web Service References in geronimo-web.xml deployment plan editor.
+GERONIMODEVTOOLS-350 Update "Source" view with unsaved changes in Deployment Plan Editor, or prompt user to save before switching to "Source" view
 
-GERONIMODEVTOOLS-129 Enhanced Editor Support for specifying GBeans in all the deployment editors
+GERONIMODEVTOOLS-365 Application deployment plan editor improvements
 
-GERONIMODEVTOOLS-171 Add extension point to remove hard-coded org.apache.geronimo name from launch console action check
+GERONIMODEVTOOLS-377 Need way to manage the adminobject list
 
-GERONIMODEVTOOLS-414 Provide an option to Add Dependencies from Server
+GERONIMODEVTOOLS-384 Unable to set relationships
 
-GERONIMODEVTOOLS-422 Reduce the clutter of open sections in the GEP deployment plan editors.
+GERONIMODEVTOOLS-385 Web application deployment plan editor improvements
 
-GERONIMODEVTOOLS-423 Add more options to the Security Section in Geronimo Deployment Plan Editor
+GERONIMODEVTOOLS-521 Sign features so the eclipse update manager recognizes them as signed
 
-GERONIMODEVTOOLS-430 Provide editor support to configure Advanced Security Settings
+GERONIMODEVTOOLS-522 Feature.properties has a trailing backslash in it
 
-GERONIMODEVTOOLS-461 Documentation updates
+GERONIMODEVTOOLS-524 Need ability to perform Custom Server Assembly
 
-GERONIMODEVTOOLS-465 Replace depracated Eclipse-LazyStart in plugin manifests
+GERONIMODEVTOOLS-526 st.v21.ui plugin.xml needs internationalization
 
-GERONIMODEVTOOLS-485 new Abbot testcase added.
+GERONIMODEVTOOLS-528 Refactor common testsuite plugin to reduce duplicate code
 
-GERONIMODEVTOOLS-499 Only installing Geronimo v2.0 server adapter in GEP 2.1.2 does not work for Ganymede
+GERONIMODEVTOOLS-530 Faile to show EJB Security Role in security UI
 
-GERONIMODEVTOOLS-501 Adding server in eclipse suggests "Apache Geronimo V2.1 is currently only certified on a 1.5 JVM. Use of any other version is not currently supported."
+GERONIMODEVTOOLS-532 Surface the publish timeout time in the server properties tab like all the other publishing attributes (e.g., publishing interval)
 
-GERONIMODEVTOOLS-502 Fix NPE when adding references to naming page of deployment plan editors
+GERONIMODEVTOOLS-535 Add support for installing from update site for IBM RAD v7.5
 
-GERONIMODEVTOOLS-503 Read security info from deployment descriptor(s).
+GERONIMODEVTOOLS-536 Fail to launch browser when run a dynamic web application on server via GEP
 
-GERONIMODEVTOOLS-505 PLUGIN_RELEASE-NOTES-2.1.2.txt missing from distribution
+GERONIMODEVTOOLS-539 Run as --> Run on Server testcase for dynamic web application
 
-GERONIMODEVTOOLS-507 Ship only one feature that provides v20 and v21 server support
+GERONIMODEVTOOLS-543 Investigate and determine if the JVM arguments that are used for Eclipse should be the same ones used for the Geronimo server
 
-GERONIMODEVTOOLS-513 We should not have removed support for utility projects -- added back
+GERONIMODEVTOOLS-544 Add wizard for converting applications into Geronimo plugins
 
-GERONIMODEVTOOLS-515 Restore Mirroring to the GEP Eclipse Update Site
+GERONIMODEVTOOLS-545 Initial version of the Server Plugin Manager code
+
+GERONIMODEVTOOLS-546 Add summary page to Server Plugin Manager
+
+GERONIMODEVTOOLS-547 Code cleanup on Server Plugin Manager
+
+GERONIMODEVTOOLS-548 Combine Custom Server Assembly and the Plugin Server Manager into one wizard.
+
+GERONIMODEVTOOLS-549 Write documentation for the Plugin Server Manager
+
+GERONIMODEVTOOLS-550 Sharedlib problems when root directory of the project in the Eclipse workspace is different than project name
+
+GERONIMODEVTOOLS-551 Update copyright years for 2009
+
+GERONIMODEVTOOLS-554 Warning message about supported JDK version is wrong
+
+GERONIMODEVTOOLS-555 Generated  geronimo-plugin.xml file is empy after converting application to plugin
+
+GERONIMODEVTOOLS-556 Applications List Refresh during create geronimo plugin in GEP
+
+GERONIMODEVTOOLS-558 Testsuite not able to find DefaultSelenium class
+
+GERONIMODEVTOOLS-559 GEP signed feature jar(s) should not display nulls when asking the user if they "trust" the certificate(s)
+
+GERONIMODEVTOOLS-560 Can't Add or Remove AppClient Project via GEP
+
+GERONIMODEVTOOLS-562 Can't install plugin via GEP
+
+GERONIMODEVTOOLS-564 Fail to create plugin via GEP
 
 
 Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
