@@ -60,6 +60,8 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 	protected Button suppressDefaultEnv;
 	
 	protected Button sharedLibDepends;
+	
+	
 
 	public CommonGeneralSection(Composite parent, FormToolkit toolkit, int style, EObject plan) {
 		super(parent, toolkit, style, plan);
@@ -267,7 +269,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 	protected void setSharedLibDependency(boolean enable) {
 		if (enable) {
 			DependenciesType deptype = getDependenciesType(true);
-			ArtifactType sharedLib = V11DeploymentPlanCreationOperation.createDependencyType("geronimo", "sharedlib", null, "car");
+			ArtifactType sharedLib = V11DeploymentPlanCreationOperation.createDependencyType("org.apache.geronimo.configs", "sharedlib", null, "car");
 			deptype.getDependency().add(sharedLib);
 		} else {
 			DependenciesType deptype = getDependenciesType(false);
@@ -286,7 +288,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 		Iterator i = dependencies.iterator();
 		while(i.hasNext()) {
 			ArtifactType artifact = (ArtifactType) i.next();
-			if("geronimo".equals(artifact.getGroupId()) && "sharedlib".equals(artifact.getArtifactId()) && "car".equals(artifact.getType())) {
+			if("org.apache.geronimo.configs".equals(artifact.getGroupId()) && "sharedlib".equals(artifact.getArtifactId()) && "car".equals(artifact.getType())) {
 				return artifact;
 			}
 		}
