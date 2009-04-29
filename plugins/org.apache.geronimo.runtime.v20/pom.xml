@@ -27,7 +27,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <properties>
-        <geronimoVersion>2.0.1</geronimoVersion>
+        <geronimoVersion>2.0.2</geronimoVersion>
     </properties>
     <build>
         <resources>
@@ -250,6 +250,13 @@
             <groupId>org.apache.geronimo.modules</groupId>
             <artifactId>geronimo-openejb-builder</artifactId>
             <version>${geronimoVersion}</version>
+            <exclusions>
+			        <exclusion>
+			          <groupId>org.apache.ws.scout</groupId>
+			          <artifactId>jaxr-api</artifactId>
+			        </exclusion>
+			      </exclusions>
+
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.modules</groupId>

@@ -39,7 +39,8 @@
         <property name="emf_sdo" value="emf-sdo-xsd-SDK-2.3.0.zip"/>
         <property name="gef_sdk" value="GEF-SDK-3.3.zip"/>
         <property name="wtp_sdk" value="wtp-sdk-R-2.0-200706260303.zip"/>
-        <property name="protocol" value="&amp;r=1&amp;protocol=http"/>
+        <!-- property name="protocol" value="&amp;r=1&amp;protocol=http"/ -->
+        <property name="protocol" value=""/>
     </target>
 
     <target name="win32" depends="init,common" description="Download Windows-specific artifact(s)">
