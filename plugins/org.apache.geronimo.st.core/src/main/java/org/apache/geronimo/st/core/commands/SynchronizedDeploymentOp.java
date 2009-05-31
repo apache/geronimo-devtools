@@ -29,6 +29,7 @@ import javax.enterprise.deploy.spi.status.ProgressObject;
 
 import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.DeploymentStatusMessage;
+import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -45,128 +46,129 @@ import org.eclipse.wst.server.core.IModule;
  * @version $Rev$ $Date$
  */
 public class SynchronizedDeploymentOp implements ProgressListener,
-		IDeploymentCommand {
+        IDeploymentCommand {
 
-	private IDeploymentCommand command;
+    private IDeploymentCommand command;
 
-	private MultiStatus status = null;
+    private MultiStatus status = null;
 
-	private IProgressMonitor _monitor = null;
+    private IProgressMonitor _monitor = null;
 
-	private boolean timedOut = true;
+    private boolean timedOut = true;
 
-	public SynchronizedDeploymentOp(IDeploymentCommand command) {
-		super();
-		this.command = command;
-	}
+    public SynchronizedDeploymentOp(IDeploymentCommand command) {
+        super();
+        this.command = command;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
-	 */
-	public IStatus execute(IProgressMonitor monitor) throws Exception {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
+     */
+    public IStatus execute(IProgressMonitor monitor) throws Exception {
 
-		_monitor = monitor;
+        _monitor = monitor;
 
-		if (_monitor == null) {
-			_monitor = new NullProgressMonitor();
-		}
+        if (_monitor == null) {
+            _monitor = new NullProgressMonitor();
+        }
 
-		ProgressObject po = run();
+        ProgressObject po = run();
 
-		return new DeploymentCmdStatus(status, po);
-	}
+        return new DeploymentCmdStatus(status, po);
+    }
 
-	private synchronized ProgressObject run() throws Exception {
-		Trace.trace(Trace.INFO, "--> run()");
-		
-		IStatus ds = command.execute(_monitor);
+    private synchronized ProgressObject run() throws Exception {
+        Trace.trace(Trace.INFO, "--> run()");
+        
+        IStatus ds = command.execute(_monitor);
 
-		ProgressObject po = null;
+        ProgressObject po = null;
 
-		if (ds instanceof DeploymentCmdStatus) {
-			po = ((DeploymentCmdStatus) ds).getProgressObject();
-			po.addProgressListener(this);
+        if (ds instanceof DeploymentCmdStatus) {
+            po = ((DeploymentCmdStatus) ds).getProgressObject();
+            po.addProgressListener(this);
 
-			try {
-				wait(getTimeout());
-			} catch (InterruptedException e) {
-			}
+            try {
+                wait(getTimeout());
+            } catch (InterruptedException e) {
+            }
 
-			po.removeProgressListener(this);
-			if (timedOut) {
-				Trace.trace(Trace.SEVERE, "Command Timed Out!");
-				status = new MultiStatus(Activator.PLUGIN_ID, 0, "", null);
-				status.add(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, command.getCommandType() + " timed out.", null));
-			}
-		}
+            po.removeProgressListener(this);
+            if (timedOut) {
+                Trace.trace(Trace.SEVERE, "Command Timed Out!");
+                status = new MultiStatus(Activator.PLUGIN_ID, 0, "", null);
+                status.add(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, command.getCommandType() + " timed out.", null));
+                GeronimoUtils.displayEclipseErrorLog();
+            }
+        }
 
-		Trace.trace(Trace.INFO, "<-- run()");
-		return po;
-	}
+        Trace.trace(Trace.INFO, "<-- run()");
+        return po;
+    }
 
-	private synchronized void sendNotification() {
-		timedOut = false;
-		Trace.trace(Trace.INFO, "notifyAll()");
-		notifyAll();
-	}
+    private synchronized void sendNotification() {
+        timedOut = false;
+        Trace.trace(Trace.INFO, "notifyAll()");
+        notifyAll();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.enterprise.deploy.spi.status.ProgressListener#handleProgressEvent(javax.enterprise.deploy.spi.status.ProgressEvent)
-	 */
-	public void handleProgressEvent(ProgressEvent event) {
-		DeploymentStatus deploymentStatus = event.getDeploymentStatus();
-		if (deploymentStatus != null) {
-			DeploymentStatusMessage dsm = new DeploymentStatusMessage(deploymentStatus);
-			Trace.trace(Trace.INFO, dsm.toString());
-			_monitor.subTask(dsm.toString());
-			if (command.getCommandType() == deploymentStatus.getCommand()) {
-				if (deploymentStatus.isCompleted()) {
-					messageToStatus(IStatus.OK, dsm.getMessage(), false);
-					sendNotification();
-				} else if (deploymentStatus.isFailed()) {
-					messageToStatus(IStatus.ERROR, dsm.getMessage(), true);
-					sendNotification();
-				}
-			}
-		}
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.enterprise.deploy.spi.status.ProgressListener#handleProgressEvent(javax.enterprise.deploy.spi.status.ProgressEvent)
+     */
+    public void handleProgressEvent(ProgressEvent event) {
+        DeploymentStatus deploymentStatus = event.getDeploymentStatus();
+        if (deploymentStatus != null) {
+            DeploymentStatusMessage dsm = new DeploymentStatusMessage(deploymentStatus);
+            Trace.trace(Trace.INFO, dsm.toString());
+            _monitor.subTask(dsm.toString());
+            if (command.getCommandType() == deploymentStatus.getCommand()) {
+                if (deploymentStatus.isCompleted()) {
+                    messageToStatus(IStatus.OK, dsm.getMessage(), false);
+                    sendNotification();
+                } else if (deploymentStatus.isFailed()) {
+                    messageToStatus(IStatus.ERROR, dsm.getMessage(), true);
+                    sendNotification();
+                }
+            }
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#getCommandType()
-	 */
-	public CommandType getCommandType() {
-		return command.getCommandType();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.core.commands.IDeploymentCommand#getCommandType()
+     */
+    public CommandType getCommandType() {
+        return command.getCommandType();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#getModule()
-	 */
-	public IModule getModule() {
-		return command.getModule();
-	}
-	
-	public long getTimeout() {
-		return command.getTimeout();
-	}
-	
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.core.commands.IDeploymentCommand#getModule()
+     */
+    public IModule getModule() {
+        return command.getModule();
+    }
+    
+    public long getTimeout() {
+        return command.getTimeout();
+    }
+    
     public void messageToStatus(int severity, String source, boolean error) {
-    	status = new MultiStatus(Activator.PLUGIN_ID, 0, "", null);
-		try {
-			BufferedReader in = new BufferedReader(new StringReader(source));
-			String line;
-			while ((line = in.readLine()) != null) {
-				status.add(new Status(severity, Activator.PLUGIN_ID, 0,line, null));
-			}
-		} catch (IOException e) {
-
-		}
+        status = new MultiStatus(Activator.PLUGIN_ID, 0, "", null);
+        try {
+            BufferedReader in = new BufferedReader(new StringReader(source));
+            String line;
+            while ((line = in.readLine()) != null) {
+                status.add(new Status(severity, Activator.PLUGIN_ID, 0,line, null));
+            }
+        } catch (IOException e) {
+        }
+        GeronimoUtils.displayEclipseErrorLog();
     }
 }
