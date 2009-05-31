@@ -409,10 +409,10 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                 throw new IllegalArgumentException();
             }
         } catch (CoreException e) {
-            GeronimoServerConsoleHelper.write("[ERROR] CoreException in GeronimoServerBehaviourDelegate.invokeCommand():", e);
+            GeronimoUtils.displayEclipseErrorLog();
             throw e;
         } catch (Exception e) {
-            GeronimoServerConsoleHelper.write("[ERROR] Exception in GeronimoServerBehaviourDelegate.invokeCommand():", e);
+            GeronimoUtils.displayEclipseErrorLog();
             e.printStackTrace();
         } finally {
             Thread.currentThread().setContextClassLoader(old);
@@ -542,7 +542,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     protected void doFail(IStatus status, String message) throws CoreException {
         MultiStatus ms = new MultiStatus(Activator.PLUGIN_ID, 0, message, null);
         ms.addAll(status);
-        GeronimoServerConsoleHelper.write("[ERROR] Error in GeronimoServerBehaviourDelegate.doFail():", ms.toString());
+        GeronimoUtils.displayEclipseErrorLog();
         throw new CoreException(ms);
     }
 
@@ -769,7 +769,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                 }
                 MBeanServerConnection connection = jmxConnector.getMBeanServerConnection();
                 Trace.trace(Trace.INFO, "Connected to kernel. " + url);
-                GeronimoServerConsoleHelper.write("[INFO]", "Eclipse WTP has connected to Geronimo kernel: " + url);
                 return connection;
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -809,7 +808,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         try {
             op.execute(monitor, null);
         } catch (ExecutionException e) {
-            GeronimoServerConsoleHelper.write("[ERROR] ExecutionException in GeronimoServerBehaviourDelegate.updateSharedLib():", e);
+            GeronimoUtils.displayEclipseErrorLog();
             return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, e.getMessage(), e.getCause());
         }
         return Status.OK_STATUS;

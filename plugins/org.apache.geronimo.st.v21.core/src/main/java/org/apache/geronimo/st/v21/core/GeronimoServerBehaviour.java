@@ -34,7 +34,7 @@ import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
-import org.apache.geronimo.st.core.GeronimoServerConsoleHelper;
+import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.v21.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.runtime.IPath;
@@ -94,14 +94,14 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
             return getKernel() != null && kernel.isRunning();
         } catch (SecurityException e) {
             Activator.log(Status.ERROR, "Invalid username and/or password.", e);
-            GeronimoServerConsoleHelper.write("[ERROR] SecurityException in GeronimoServerBehaviour.isKernelAlive():", "Invalid username and/or password.", e);
+            GeronimoUtils.displayEclipseErrorLog();
             pingThread.interrupt();
             if (getServer().getServerState() != IServer.STATE_STOPPED) {
                 stop(true);
             }
         } catch (Exception e) {
             Activator.log(Status.WARNING, "Geronimo Server may have been terminated manually outside of workspace.", e);
-            GeronimoServerConsoleHelper.write("[WARNING] Exception in GeronimoServerBehaviour.isKernelAlive():", "Geronimo Server may have been terminated manually outside of workspace.", e);
+            GeronimoUtils.displayEclipseErrorLog();
             kernel = null;
         }
         return false;
