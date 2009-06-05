@@ -190,6 +190,21 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>geronimo-server-2.0.2</id>
+            <name>Private Geronimo 2.0.2 Repo</name>
+            <url>https://svn.apache.org/repos/asf/geronimo/server/tags/2.0.2/repository/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
     <build>
         <plugins>
             <!--
