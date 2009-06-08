@@ -191,6 +191,20 @@
     </dependencies>
 
     <repositories>
+        <!-- Following is needed for dwr-2.0.5.jar -->
+        <repository>
+            <id>geronimo-server-trunk</id>
+            <name>Private Geronimo 2.2 Repo</name>
+            <url>https://svn.apache.org/repos/asf/geronimo/server/trunk/repository/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <!-- Following is needed for pinned Tomcat and Scout depends -->
         <repository>
             <id>geronimo-server-2.0.2</id>
             <name>Private Geronimo 2.0.2 Repo</name>

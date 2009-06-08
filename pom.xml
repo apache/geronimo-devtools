@@ -384,7 +384,10 @@
         <repository>
             <id>apache-snapshots</id>
             <name>Apache Snapshots Repository</name>
-            <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+            <!-- Point to new Nexus + legay snapshot artifact repo
+              <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+            -->
+            <url>https://repository.apache.org/content/groups/snapshots-group</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>true</enabled>
@@ -396,6 +399,7 @@
             </releases>
         </repository>
   
+        <!--
         <repository>
             <id>apache.incubator</id>
             <name>Apache Incubator Repository</name>
@@ -410,7 +414,8 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
-  
+        -->
+
         <repository>
             <id>codehaus-snapshots</id>
             <name>Codehaus Snapshots Repository</name>
