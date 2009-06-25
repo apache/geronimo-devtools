@@ -42,8 +42,6 @@
     </url>
     
     <requires>
-        <import feature="org.eclipse.jst.common_core.feature" version="2.0.0.v200706041905-1007w311817231426" 
-		match="greaterOrEqual"/>     	
 	<import feature="org.eclipse.jst.server_ui.feature" version="2.0.2.v200802150100-77-CT9yJXEkuiKVeQrclqTHQ3648"
 		match="greaterOrEqual"/>
 	<import feature="org.eclipse.jst.server_adapters.feature" version="2.0.2.v200802150100-787KE8iDUUEF6GwKwpHEQ"
