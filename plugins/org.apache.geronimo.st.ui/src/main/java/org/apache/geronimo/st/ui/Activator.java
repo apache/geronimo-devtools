@@ -55,7 +55,6 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public Activator() {
 		plugin = this;
-		this.setDebugging( true );
 	}
 
 	/*
@@ -65,6 +64,7 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		this.setDebugging(true);
 	}
 
 	/*
