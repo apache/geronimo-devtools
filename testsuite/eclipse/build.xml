@@ -29,12 +29,12 @@
 <project name="TestsuiteArtifacts">
 
     <target name="init">
-        <property name="ganymede_url"           value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/ganymede/SR2/"/>
-        <property name="ganymede_jee_win32"     value="eclipse-jee-ganymede-SR2-win32.zip"/>
-        <property name="ganymede_jee_linux"     value="eclipse-jee-ganymede-SR2-linux-gtk.tar"/>
-        <property name="ganymede_jee_macos"     value="eclipse-jee-ganymede-SR2-macosx-carbon.tar"/>
-        <property name="ganymede_jee_linux_gz"  value="${ganymede_jee_linux}.gz"/>
-        <property name="ganymede_jee_macos_gz"  value="${ganymede_jee_macos}.gz"/>
+        <property name="galileo_url"            value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/galileo/R/"/>
+        <property name="galileo_jee_win32"      value="eclipse-jee-galileo-win32.zip"/>
+        <property name="galileo_jee_linux"      value="eclipse-jee-galileo-linux-gtk.tar"/>
+        <property name="galileo_jee_macos"      value="eclipse-jee-galileo-macosx-carbon.tar"/>
+        <property name="galileo_jee_linux_gz"   value="${galileo_jee_linux}.gz"/>
+        <property name="galileo_jee_macos_gz"   value="${galileo_jee_macos}.gz"/>
         <property name="protocol"               value="&amp;r=1&amp;protocol=http"/>
         <property name="test_eclipse"           value="${basedir}/../launcher/eclipse/"/>
         <property name="test_framework_url"     value="http://www.eclipse.org/downloads/download.php?file=/eclipse/downloads/drops/R-3.4-200806172000/"/>
@@ -49,26 +49,26 @@
     <target name="win32" depends="init,common" description="Download Windows-specific artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading: ${ganymede_jee_win32}                                            </echo>
+        <echo>## Downloading: ${galileo_jee_win32}                                             </echo>
         <echo>##                                                                               </echo>
-        <echo>## From: ${ganymede_url}                                                         </echo>
+        <echo>## From: ${galileo_url}                                                          </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-        <get src="${ganymede_url}${ganymede_jee_win32}${protocol}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${ganymede_jee_win32}" 
+        <get src="${galileo_url}${galileo_jee_win32}${protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_win32}" 
              verbose="true"
              ignoreerrors="true"
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${ganymede_jee_win32}                                              </echo>
+        <echo>## Unzipping: ${galileo_jee_win32}                                               </echo>
         <echo>##                                                                               </echo>
         <echo>## To: ${test_eclipse}                                                           </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${test_eclipse}"/>
-        <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${ganymede_jee_win32}" 
+        <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_win32}" 
                dest="${test_eclipse}"
                overwrite="true"/>
     </target>
@@ -76,27 +76,27 @@
     <target name="linux" depends="init,common" description="Download Linux-specific artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading: ${ganymede_jee_linux_gz}                                         </echo>
+        <echo>## Downloading: ${galileo_jee_linux_gz}                                          </echo>
         <echo>##                                                                               </echo>
-        <echo>## From: ${ganymede_url}                                                         </echo>
+        <echo>## From: ${galileo_url}                                                          </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-        <get src="${ganymede_url}${ganymede_jee_linux_gz}${protocol}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${ganymede_jee_linux_gz}" 
+        <get src="${galileo_url}${galileo_jee_linux_gz}${protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_linux_gz}" 
              verbose="true"
              ignoreerrors="true"
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${ganymede_jee_linux_gz}                                           </echo>
+        <echo>## Unzipping: ${galileo_jee_linux_gz}                                            </echo>
         <echo>##                                                                               </echo>
         <echo>## To: ${test_eclipse}                                                           </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir  dir="${test_eclipse}"/>
-        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${ganymede_jee_linux_gz}"/>
-        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${ganymede_jee_linux}" 
+        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_linux_gz}"/>
+        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_linux}" 
                 dest="${test_eclipse}"
                 overwrite="true"/>
     </target>
@@ -104,27 +104,27 @@
     <target name="macos" depends="init,common" description="Download Mac-specific artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading: ${ganymede_jee_macos_gz}                                         </echo>
+        <echo>## Downloading: ${galileo_jee_macos_gz}                                          </echo>
         <echo>##                                                                               </echo>
-        <echo>## From: ${ganymede_url}                                                         </echo>
+        <echo>## From: ${galileo_url}                                                          </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-        <get src="${ganymede_url}${ganymede_jee_macos_gz}${protocol}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${ganymede_jee_macos_gz}" 
+        <get src="${galileo_url}${galileo_jee_macos_gz}${protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_macos_gz}" 
              verbose="true"
              ignoreerrors="true"
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${ganymede_jee_macos_gz}                                           </echo>
+        <echo>## Unzipping: ${galileo_jee_macos_gz}                                            </echo>
         <echo>##                                                                               </echo>
         <echo>## To: ${test_eclipse}                                                           </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir  dir="${test_eclipse}"/>
-        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${ganymede_jee_macos_gz}"/>
-        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${ganymede_jee_macos}" 
+        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_macos_gz}"/>
+        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_macos}" 
                 dest="${test_eclipse}"
                 overwrite="true"/>
     </target>
