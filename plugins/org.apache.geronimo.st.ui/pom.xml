@@ -58,7 +58,7 @@
                 </includes>
             </resource>
             <resource>
-                <targetPath>/org/apache/geronimo/st/ui/internal/</targetPath>
+                <targetPath>org/apache/geronimo/st/ui/internal/</targetPath>
                 <directory>src/main/java/org/apache/geronimo/st/ui/internal/</directory>
                 <includes>
                     <include>Messages.properties</include>
