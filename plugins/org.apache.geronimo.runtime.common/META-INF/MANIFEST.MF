@@ -68,4 +68,4 @@ Export-Package:
  net.sf.cglib.util,
  org.apache.commons.logging,
  org.apache.commons.logging.impl
-Bundle-Vendor: Apache.org
+Bundle-Vendor: Apache Software Foundation

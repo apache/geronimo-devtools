@@ -4,7 +4,7 @@ Bundle-Name: Geronimo v22 Server Tools Testsuite Plug-in
 Bundle-SymbolicName: org.apache.geronimo.testsuite.v22;singleton:=true
 Bundle-Version: 2.2.0
 Bundle-Activator: org.apache.geronimo.testsuite.v22.Activator
-Bundle-Vendor: Apache.org
+Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: abbot.swt,
  abbot.swt.eclipse,

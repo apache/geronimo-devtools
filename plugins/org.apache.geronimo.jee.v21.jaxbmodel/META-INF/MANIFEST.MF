@@ -4,7 +4,7 @@ Bundle-Name: Geronimo V21 JAXB Models
 Bundle-SymbolicName: org.apache.geronimo.jee.v21.jaxbmodel;singleton:=true
 Bundle-Version: 2.2.0
 Bundle-ClassPath: .
-Bundle-Vendor: Apache.org
+Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.runtime.common,
  org.eclipse.core.runtime 

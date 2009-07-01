@@ -80,4 +80,4 @@ Export-Package:
  org.codehaus.plexus.archiver.util,
  org.codehaus.plexus.archiver.war,
  org.codehaus.plexus.archiver.zip
-Bundle-Vendor: Apache.org
+Bundle-Vendor: Apache Software Foundation

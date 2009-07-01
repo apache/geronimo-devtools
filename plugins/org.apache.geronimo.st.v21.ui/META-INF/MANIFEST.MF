@@ -20,7 +20,7 @@ Require-Bundle: org.apache.geronimo.runtime.common,
  org.eclipse.wst.server.core,
  org.eclipse.wst.server.ui
 Bundle-ActivationPolicy: lazy
-Bundle-Vendor: Apache.org
+Bundle-Vendor: Apache Software Foundation
 Export-Package: org.apache.geronimo.st.v21.ui,
  org.apache.geronimo.st.v21.ui.editors,
  org.apache.geronimo.st.v21.ui.internal,

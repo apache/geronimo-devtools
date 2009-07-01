@@ -55,10 +55,11 @@ public class WorkbenchTasks {
             //used because we need to save the states for newShell and nextShell
             //newShell->nextShell->nextNextShell this is the order in which shell comes up
             Shell newShell = abbotHelper.clickMenuItem(workbenchShell, new String[]{"&Help","&About Eclipse Platform"},"About Eclipse Platform");
-            Shell nextShell = abbotHelper.clickImageButton(newShell, "Apache.org - Geronimo " + version + " Server Tools Core Plug-in","About Eclipse Platform Features");
+//          Shell nextShell = abbotHelper.clickImageButton(newShell, "Apache.org - Geronimo " + version + " Server Tools Core Plug-in","About Eclipse Platform Features");
+            Shell nextShell = abbotHelper.clickImageButton(newShell, "Apache Software Foundation","About Eclipse Platform Features");
             Shell nextNextShell = abbotHelper.clickButton(nextShell, "&Plug-in Details", "Feature Plug-ins");
-            abbotHelper.clickButton(nextNextShell, IDialogConstants.OK_LABEL);
-            abbotHelper.clickButton(nextShell, IDialogConstants.OK_LABEL);
+            abbotHelper.clickButton(nextNextShell, IDialogConstants.CLOSE_LABEL);
+            abbotHelper.clickButton(nextShell, IDialogConstants.CLOSE_LABEL);
             abbotHelper.clickButton(newShell, IDialogConstants.OK_LABEL);
         }
         catch (Exception e) {
