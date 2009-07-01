@@ -4,7 +4,7 @@ Bundle-Name: Geronimo Server Tools Core Plug-in
 Bundle-SymbolicName: org.apache.geronimo.st.core;singleton:=true
 Bundle-Version: 2.1.5
 Bundle-Activator: org.apache.geronimo.st.core.Activator
-Bundle-Vendor: Apache.org
+Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.runtime.v21,
  org.apache.geronimo.jee.v21.jaxbmodel,

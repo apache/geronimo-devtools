@@ -81,4 +81,4 @@ Export-Package:
  org.apache.geronimo.util.jce,
  org.apache.geronimo.util.jce.interfaces,
  org.apache.geronimo.util.jce.provider
-Bundle-Vendor: Apache.org
+Bundle-Vendor: Apache Software Foundation

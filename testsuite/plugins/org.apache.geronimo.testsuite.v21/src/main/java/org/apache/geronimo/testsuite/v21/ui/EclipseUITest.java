@@ -51,10 +51,10 @@ public class EclipseUITest extends WorkbenchTestCase {
             aShell = WorkbenchUtilities.getWorkbenchWindow().getShell();
             aHelper = new AbbotHelper(aShell);
             Shell newShell = aHelper.clickMenuItem(aShell, new String[]{"&Help","&About Eclipse Platform"},"About Eclipse Platform");
-            Shell nextShell = aHelper.clickImageButton(newShell, "Apache.org - Geronimo v21 Server Tools Core Plug-in","About Eclipse Platform Features");
+            Shell nextShell = aHelper.clickImageButton(newShell, "Apache Software Foundation","About Eclipse Platform Features");
             Shell nextNextShell = aHelper.clickButton(nextShell, "&Plug-in Details", "Feature Plug-ins");
-            aHelper.clickButton(nextNextShell, IDialogConstants.OK_LABEL);
-            aHelper.clickButton(nextShell, IDialogConstants.OK_LABEL);
+            aHelper.clickButton(nextNextShell, IDialogConstants.CLOSE_LABEL);
+            aHelper.clickButton(nextShell, IDialogConstants.CLOSE_LABEL);
             aHelper.clickButton(newShell, IDialogConstants.OK_LABEL);
 
             success = true;

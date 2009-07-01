@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Geronimo v21 Server Tools Core Plug-in
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.apache.geronimo.st.v21.core;singleton:=true
 Bundle-Version: 2.1.5
 Bundle-Activator: org.apache.geronimo.st.v21.core.Activator
-Bundle-Vendor: Apache.org
+Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.runtime.v21,
  org.apache.geronimo.st.core,

@@ -16,4 +16,4 @@ Require-Bundle: org.apache.geronimo.st.v21.core,
  org.eclipse.core.resources,
  org.eclipse.wst.common.project.facet.ui
 Bundle-ActivationPolicy: lazy
-Bundle-Vendor: Apache.org
+Bundle-Vendor: Apache Software Foundation
