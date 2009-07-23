@@ -314,15 +314,20 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.publishFinish");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#initialize(org.eclipse.core.runtime.IProgressMonitor)
-	 */
-	protected void initialize(IProgressMonitor monitor) {
+
+    /**
+     * Initializes the Geronimo server delegate. This method is called by the server core framework 
+     * to give delegates a chance to do their own initialization. As such, the GEP proper should 
+     * never call this method.
+     * 
+     * @param monitor a progress monitor, or <code>null</code> if progress reporting and cancellation 
+     * are not desired
+     */
+    protected void initialize(IProgressMonitor monitor) {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.initialize", monitor);
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.initialize");
-	}
+    }
+
 
 	/*
 	 * (non-Javadoc)
@@ -349,26 +354,32 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		return (IGeronimoServer) getServer().loadAdapter(IGeronimoServer.class, null);
 	}
 
-	protected void terminate() {
+
+    protected void terminate() {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.terminate");
 
-		if (getServer().getServerState() == IServer.STATE_STOPPED)
-			return;
+        if (getServer().getServerState() == IServer.STATE_STOPPED)
+            return;
 
-		try {
-			setServerState(IServer.STATE_STOPPING);
-			Trace.trace(Trace.INFO, "Killing the geronimo server process"); //$NON-NLS-1$
-			if (process != null && !process.isTerminated()) {
-				process.terminate();
+        try {
+            setServerState(IServer.STATE_STOPPING);
+            Trace.trace(Trace.INFO, "Killing the geronimo server process"); //$NON-NLS-1$
+            if (process != null && !process.isTerminated()) {
+                process.terminate();
 
-			}
-			stopImpl();
-		} catch (Exception e) {
-			Trace.trace(Trace.SEVERE, "Error killing the geronimo server process", e); //$NON-NLS-1$
-		}
+            }
+            stopImpl();
+        } catch (Exception e) {
+            Trace.trace(Trace.SEVERE, "Error killing the geronimo server process", e); //$NON-NLS-1$
+            // 
+            // WTP does not allow a CoreException to be thrown in this case 
+            // 
+            throw new RuntimeException(Messages.STOP_FAIL);
+        }
 
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.terminate");
-	}
+    }
+
 
 	protected void stopImpl() {
 		if (process != null) {
