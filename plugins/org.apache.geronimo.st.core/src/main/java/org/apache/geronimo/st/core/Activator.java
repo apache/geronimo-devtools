@@ -68,6 +68,16 @@ public class Activator extends Plugin {
         }
     }
 
+
+    /** 
+     * <b>triggerStartUpdateServerTask</b> is invoked from:
+     * <ul> 
+     * <li>The WTP ResourceManager after a new server has been defined (via the WTP NewServerWizard)
+     * <li>When a server lifecycle listener has been added (see above)
+     * </ul>
+     * 
+     * @param server 
+     */
     private void triggerStartUpdateServerTask(IServer server) {
         GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) server.getAdapter(GeronimoServerBehaviourDelegate.class);
         if (delegate == null) {
@@ -77,6 +87,7 @@ public class Activator extends Plugin {
             delegate.startUpdateServerStateTask();
         }
     }
+
 
     /*
      * (non-Javadoc)

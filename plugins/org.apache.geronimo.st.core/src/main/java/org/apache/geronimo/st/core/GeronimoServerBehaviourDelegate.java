@@ -315,15 +315,20 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.publishFinish");
     }
 
-    /*
-     * (non-Javadoc)
+
+    /**
+     * Initializes the Geronimo server delegate. This method is called by the server core framework 
+     * to give delegates a chance to do their own initialization. As such, the GEP proper should 
+     * never call this method.
      * 
-     * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#initialize(org.eclipse.core.runtime.IProgressMonitor)
+     * @param monitor a progress monitor, or <code>null</code> if progress reporting and cancellation 
+     * are not desired
      */
     protected void initialize(IProgressMonitor monitor) {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.initialize", monitor);
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.initialize");
     }
+
 
     /*
      * (non-Javadoc)
@@ -350,6 +355,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         return (IGeronimoServer) getServer().loadAdapter(IGeronimoServer.class, null);
     }
 
+
     protected void terminate() {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.terminate");
 
@@ -366,10 +372,15 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             stopImpl();
         } catch (Exception e) {
             Trace.trace(Trace.SEVERE, "Error killing the geronimo server process", e); //$NON-NLS-1$
+            // 
+            // WTP does not allow a CoreException to be thrown in this case 
+            // 
+            throw new RuntimeException(Messages.STOP_FAIL);
         }
 
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.terminate");
     }
+
 
     protected void stopImpl() {
         if (process != null) {
