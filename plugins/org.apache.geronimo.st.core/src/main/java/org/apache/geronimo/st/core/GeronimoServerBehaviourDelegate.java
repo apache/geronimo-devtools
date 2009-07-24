@@ -95,7 +95,10 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
     protected transient IDebugEventSetListener processListener;
 
+    public static final String ERROR_SETUP_LAUNCH_CONFIGURATION = "errorInSetupLaunchConfiguration";
+
     abstract protected ClassLoader getContextClassLoader();
+
 
     /*
      * (non-Javadoc)
@@ -115,9 +118,21 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         if (vmInstall != null)
             wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, JavaRuntime.newJREContainerPath(vmInstall).toPortableString());
 
-        setupLaunchClasspath(wc, vmInstall);
-
-        String existingProgArgs = wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, (String) null);
+        String existingProgArgs = null;
+        wc.setAttribute(ERROR_SETUP_LAUNCH_CONFIGURATION, (String)null);
+        
+        try{
+            setupLaunchClasspath(wc, vmInstall);
+            existingProgArgs = wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, (String) null);
+        }catch (CoreException e){
+            // Throwing a CoreException at this time will not accomplish anything useful as WTP will 
+            // will essentially ignore it. Instead set a flag in the configuration that can 
+            // subsequently be checked when an attempt is made to launch the server in 
+            // GeronimoLaunchConfigurationDelegate.launch(). At that point a CoreException will be
+            // thrown that WTP will handle properly and will display an error dialog which is 
+            // exactly what we want the GEP user to see.
+            wc.setAttribute(ERROR_SETUP_LAUNCH_CONFIGURATION, e.getMessage());
+        }
         String serverProgArgs = getServerDelegate().getConsoleLogLevel();
         if (existingProgArgs == null || existingProgArgs.indexOf(serverProgArgs) < 0) {
             wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, serverProgArgs);
@@ -125,6 +140,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         
         wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, getServerDelegate().getVMArgs());
     }
+
 
     /**
      * @param launch

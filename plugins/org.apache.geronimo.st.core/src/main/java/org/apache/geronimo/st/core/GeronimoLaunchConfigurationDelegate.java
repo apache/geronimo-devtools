@@ -42,15 +42,22 @@ import org.eclipse.wst.server.core.ServerUtil;
  */
 public class GeronimoLaunchConfigurationDelegate extends AbstractJavaLaunchConfigurationDelegate {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration,
-	 *      java.lang.String, org.eclipse.debug.core.ILaunch,
-	 *      org.eclipse.core.runtime.IProgressMonitor)
-	 */
-	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration,
+     *      java.lang.String, org.eclipse.debug.core.ILaunch,
+     *      org.eclipse.core.runtime.IProgressMonitor)
+     */
+    public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
+
+        if (configuration.hasAttribute(GeronimoServerBehaviourDelegate.ERROR_SETUP_LAUNCH_CONFIGURATION)){
+            //get error flag from configuration if it's set in setLaunchConfiguration
+            String errorMessage = configuration.getAttribute(GeronimoServerBehaviourDelegate.ERROR_SETUP_LAUNCH_CONFIGURATION,"");
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, IJavaLaunchConfigurationConstants.ERR_INTERNAL_ERROR, errorMessage, null));
+        }
+        
 		IServer server = ServerUtil.getServer(configuration);
 		if (server == null) {
 			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, IJavaLaunchConfigurationConstants.ERR_INTERNAL_ERROR, Messages.missingServer, null));
