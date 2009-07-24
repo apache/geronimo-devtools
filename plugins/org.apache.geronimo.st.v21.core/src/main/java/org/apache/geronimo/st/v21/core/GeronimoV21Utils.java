@@ -116,24 +116,32 @@ public class GeronimoV21Utils extends GeronimoUtils {
 
         Environment environment = null;
         if (isWebModule(module)) {
-            WebApp plan = getWebDeploymentPlan(module).getValue();
-            if (plan != null)
-                environment = plan.getEnvironment();
+            if (getWebDeploymentPlan(module)!=null) {
+            	WebApp plan = getWebDeploymentPlan(module).getValue();
+            	if (plan != null)
+            		environment = plan.getEnvironment();
+            }
         }
         else if (isEjbJarModule(module)) {
-            OpenejbJar plan = getOpenEjbDeploymentPlan(module).getValue();
-//            if (plan != null)
-//                environment = plan.getEnvironment();
+        	   if (getOpenEjbDeploymentPlan(module)!=null) {
+		            OpenejbJar plan = getOpenEjbDeploymentPlan(module).getValue();
+		            if (plan != null)
+		            	environment = plan.getEnvironment();
+        	   }
         }
         else if (isEarModule(module)) {
-            Application plan = getApplicationDeploymentPlan(module).getValue();
-            if (plan != null)
-                environment = plan.getEnvironment();
+        	if (getApplicationDeploymentPlan(module)!=null) {
+        		Application plan = getApplicationDeploymentPlan(module).getValue();
+        		if (plan != null)
+        			environment = plan.getEnvironment();
+        	}
         }
         else if (isRARModule(module)) {
-            Connector plan = getConnectorDeploymentPlan(module).getValue();
-            if (plan != null)
-                environment = plan.getEnvironment();
+        	if (getConnectorDeploymentPlan(module)!=null) {
+	            Connector plan = getConnectorDeploymentPlan(module).getValue();
+	            if (plan != null)
+	                environment = plan.getEnvironment();
+        	}
         }
 
         if (environment != null
