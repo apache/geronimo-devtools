@@ -162,6 +162,12 @@ public class DependencyHelper {
                                 reorderedKinds.add(moduleDeltaKind);
                             }
                         }
+                    }else {
+                    	//no environment defined, do just as no parents
+                        if (!reorderedModules.contains(module)) {
+                            reorderedModules.add(module);
+                            reorderedKinds.add(moduleDeltaKind);
+                        }
                     }
                 }
             }
