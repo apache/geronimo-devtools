@@ -94,36 +94,52 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
 	protected transient IDebugEventSetListener processListener;
 
+    public static final String ERROR_SETUP_LAUNCH_CONFIGURATION = "errorInSetupLaunchConfiguration";
+
 	abstract protected ClassLoader getContextClassLoader();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#setupLaunchConfiguration(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy,
-	 *      org.eclipse.core.runtime.IProgressMonitor)
-	 */
-	public void setupLaunchConfiguration(ILaunchConfigurationWorkingCopy wc, IProgressMonitor monitor) throws CoreException {
-		if (isRemote())// No launch for remote servers.
-			return;
 
-		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, getRuntimeClass());
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#setupLaunchConfiguration(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy,
+     *      org.eclipse.core.runtime.IProgressMonitor)
+     */
+    public void setupLaunchConfiguration(ILaunchConfigurationWorkingCopy wc, IProgressMonitor monitor) throws CoreException {
+        if (isRemote())// No launch for remote servers.
+            return;
 
-		GeronimoRuntimeDelegate runtime = getRuntimeDelegate();
+        wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, getRuntimeClass());
 
-		IVMInstall vmInstall = runtime.getVMInstall();
-		if (vmInstall != null)
-			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, JavaRuntime.newJREContainerPath(vmInstall).toPortableString());
+        GeronimoRuntimeDelegate runtime = getRuntimeDelegate();
 
-		setupLaunchClasspath(wc, vmInstall);
+        IVMInstall vmInstall = runtime.getVMInstall();
+        if (vmInstall != null)
+            wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, JavaRuntime.newJREContainerPath(vmInstall).toPortableString());
 
-		String existingProgArgs = wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, (String) null);
-		String serverProgArgs = getServerDelegate().getConsoleLogLevel();
-		if (existingProgArgs == null || existingProgArgs.indexOf(serverProgArgs) < 0) {
-			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, serverProgArgs);
-		}
-		
-		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, getServerDelegate().getVMArgs());
-	}
+        String existingProgArgs = null;
+        wc.setAttribute(ERROR_SETUP_LAUNCH_CONFIGURATION, (String)null);
+        
+        try{
+            setupLaunchClasspath(wc, vmInstall);
+            existingProgArgs = wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, (String) null);
+        }catch (CoreException e){
+            // Throwing a CoreException at this time will not accomplish anything useful as WTP will 
+            // will essentially ignore it. Instead set a flag in the configuration that can 
+            // subsequently be checked when an attempt is made to launch the server in 
+            // GeronimoLaunchConfigurationDelegate.launch(). At that point a CoreException will be
+            // thrown that WTP will handle properly and will display an error dialog which is 
+            // exactly what we want the GEP user to see.
+            wc.setAttribute(ERROR_SETUP_LAUNCH_CONFIGURATION, e.getMessage());
+        }
+        String serverProgArgs = getServerDelegate().getConsoleLogLevel();
+        if (existingProgArgs == null || existingProgArgs.indexOf(serverProgArgs) < 0) {
+            wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, serverProgArgs);
+        }
+        
+        wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, getServerDelegate().getVMArgs());
+    }
+
 
 	/**
 	 * @param launch
