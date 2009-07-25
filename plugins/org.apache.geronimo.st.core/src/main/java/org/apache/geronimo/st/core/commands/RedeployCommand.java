@@ -19,6 +19,7 @@ package org.apache.geronimo.st.core.commands;
 import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
+import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.DeploymentUtils;
 import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.core.IGeronimoServer;
@@ -39,27 +40,30 @@ class RedeployCommand extends DeployCommand {
 		super(server, module);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
-	 */
-	public IStatus execute(IProgressMonitor monitor) throws TargetModuleIdNotFoundException, CoreException {
-		String configId = ModuleArtifactMapper.getInstance().resolve(getServer(), getModule());
-		
-		if(configId == null) {
-			IGeronimoServer gs = (IGeronimoServer) getServer().getAdapter(IGeronimoServer.class);
-			configId = gs.getVersionHandler().getConfigID(getModule());
-		}
-		
-		TargetModuleID[] ids = null;
-		if(configId != null) {
-			TargetModuleID id = DeploymentUtils.getTargetModuleID(getDeploymentManager(), configId);
-			ids = new TargetModuleID[] {id};
-		}
-		
-		return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().redeploy(ids, getTargetFile(), GeronimoUtils.getDeploymentPlanFile(getModule()).getLocation().toFile()));
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
+     */
+    public IStatus execute(IProgressMonitor monitor) throws TargetModuleIdNotFoundException, CoreException {
+        String configId = ModuleArtifactMapper.getInstance().resolve(getServer(), getModule());
+        
+        if(configId == null) {
+            IGeronimoServer gs = (IGeronimoServer) getServer().getAdapter(IGeronimoServer.class);
+            configId = gs.getVersionHandler().getConfigID(getModule());
+        }
+        
+        TargetModuleID[] ids = null;
+        if(configId != null) {
+            TargetModuleID id = DeploymentUtils.getTargetModuleID(getDeploymentManager(), configId);
+            ids = new TargetModuleID[] {id};
+        }
+        else {
+            throw new CoreException(new Status(IStatus.ERROR,Activator.PLUGIN_ID,"Module config Id not found for redeployment"));
+        }
+        
+        return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().redeploy(ids, getTargetFile(), GeronimoUtils.getDeploymentPlanFile(getModule()).getLocation().toFile()));
+    }
 
 	/*
 	 * (non-Javadoc)
