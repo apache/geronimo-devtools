@@ -45,11 +45,14 @@ public class Messages extends NLS {
 
     public static String editorSectionTestEnvTitle;
     public static String editorSectionTestEnvDescription;
+    public static String editorSectionNotRedeployJSPFiles;
     public static String editorSectionRunFromWorkspace;
     public static String editorSectionSharedLibrariesInPlace;
     public static String editorSectionSelectClasspathContainers;
     public static String editorSectionPublishAdvancedTitle;
     public static String editorSectionPublishAdvancedDescription;
+    public static String notRedeployJSPFilesReminder;
+    public static String notRedeployJSPFilesInformation;
 
     public static String publishingTimeout;
     public static String info;

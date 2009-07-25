@@ -197,4 +197,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
         setRunFromWorkspace(false);
     }
 
+    public boolean isNotRedeployJSPFiles() {
+        return getAttribute(PROPERTY_NOT_REDEPLOY_JSP_FILES,false);
+    }
 }

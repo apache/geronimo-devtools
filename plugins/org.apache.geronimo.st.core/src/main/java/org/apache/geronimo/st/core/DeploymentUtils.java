@@ -17,6 +17,8 @@
 package org.apache.geronimo.st.core;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
@@ -47,6 +49,9 @@ import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.model.IModuleResource;
 import org.eclipse.wst.server.core.util.ProjectModule;
+import org.eclipse.wst.server.core.model.IModuleResourceDelta;
+import org.eclipse.wst.server.core.model.IModuleFile;
+import org.eclipse.wst.server.core.model.IModuleFolder;
 
 /**
  * @version $Rev$ $Date$
@@ -225,5 +230,28 @@ public class DeploymentUtils {
 		
 		return null;
 	}
+    
+    
+    public static List<IModuleResourceDelta> getAffectedJSPFiles(IModuleResourceDelta delta) {
+        if (delta == null) return null;
 
+        IModuleResource resource = delta.getModuleResource();
+        List<IModuleResourceDelta> fileList = new ArrayList<IModuleResourceDelta>();
+
+        if (resource instanceof IModuleFile) {
+            IModuleFile moduleFile = (IModuleFile)resource;
+            if (moduleFile.getName().endsWith(".jsp")) {
+                fileList.add(delta);
+            }
+            else return null;   //not only jsp changed
+        }
+        else if (resource instanceof IModuleFolder) {
+            IModuleResourceDelta[] deltaArray = delta.getAffectedChildren();
+            for (IModuleResourceDelta childDelta: deltaArray) {
+                fileList.addAll(getAffectedJSPFiles(childDelta));
+            }
+        }
+
+        return fileList;
+    }
 }

@@ -16,8 +16,16 @@
  */
 package org.apache.geronimo.st.core;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -73,6 +81,8 @@ import org.eclipse.wst.server.core.IServerListener;
 import org.eclipse.wst.server.core.ServerEvent;
 import org.eclipse.wst.server.core.ServerPort;
 import org.eclipse.wst.server.core.internal.ProgressUtil;
+import org.eclipse.wst.server.core.model.IModuleFile;
+import org.eclipse.wst.server.core.model.IModuleResourceDelta;
 import org.eclipse.wst.server.core.model.ServerBehaviourDelegate;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
@@ -300,10 +310,11 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             //NO_CHANGE need if app is associated but not started and no delta
             if (deltaKind == NO_CHANGE && module.length == 1) {
                 invokeCommand(deltaKind, module[0]);
-            } else if (deltaKind == CHANGED || deltaKind == ADDED || deltaKind == REMOVED) {
+            }
+            else if (deltaKind == CHANGED || deltaKind == ADDED || deltaKind == REMOVED) {
                 invokeCommand(deltaKind, module[0]);
-            } 
-        } 
+            }
+        }
         catch (CoreException e) {
             //
             // Set the module publish state to UNKNOWN so that WTP will not display "Synchronized"
@@ -501,6 +512,14 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         if(configId != null) {
             String moduleConfigId = getConfigId(module);
             if(moduleConfigId.equals(configId)) {
+                
+                if (this.getServerDelegate().isNotRedeployJSPFiles()&&!this.isRemote() && GeronimoUtils.isWebModule(module)
+                        && !module.isExternal()) {
+                    // if only jsp files changed, no redeploy needed
+                    if (findAndReplaceJspFiles(module, configId))
+                        return;
+                }
+                
                 IStatus status = reDeploy(module);
                 if (!status.isOK()) {
                     doFail(status, Messages.REDEPLOY_FAIL);
@@ -517,6 +536,119 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.doChanged");
     }
+
+    
+    
+    /*
+     * This method is used to replace updated JSP files without deploy it. 
+     */
+    private boolean findAndReplaceJspFiles(IModule module, String configId)
+            throws CoreException {
+        IModule[] modules = { module };
+        IModuleResourceDelta[] deltaArray = this
+                .getPublishedResourceDelta(modules);
+
+        // get repository position
+        String ch = File.separator;
+        String repositoryLocation = this.getRuntimeDelegate().getRuntime()
+                .getLocation().toOSString()
+                + ch + "repository" + ch;
+        // Suppose directory structure of deployed module is
+        // "repository/[groupID]/[artifactId]/[version]/[artifactId]-[version].[artifactType]"
+        // configId contains the groupID,artifactId,version,artifactType
+        String[] segments = configId.split("/");
+        // groupId may contains "." as separator
+        String groupId = null;
+        if (segments[0]!=null)
+            groupId=segments[0].replace(".", "/");
+        String moduleTargetPath = repositoryLocation.concat(groupId)
+                        .concat(ch).concat(segments[1]).concat(ch).concat(segments[2])
+                        .concat(ch).concat(segments[1]).concat("-").concat(segments[2])
+                        .concat(".").concat(segments[3]);
+
+        List<IModuleResourceDelta> jspFiles = new ArrayList<IModuleResourceDelta>();
+        for (IModuleResourceDelta delta : deltaArray) {
+            List<IModuleResourceDelta> partJspFiles= DeploymentUtils
+                    .getAffectedJSPFiles(delta);
+            //if not only Jsp files found, need to redeploy the module, so return false;
+            if (partJspFiles == null) return false;
+            else jspFiles.addAll(partJspFiles);
+        }
+            for (IModuleResourceDelta deltaModule : jspFiles) {
+                IModuleFile moduleFile = (IModuleFile) deltaModule
+                        .getModuleResource();
+
+                String target;
+                String relativePath = moduleFile.getModuleRelativePath()
+                        .toOSString();
+                if (relativePath != null && relativePath.length() != 0) {
+                    target = moduleTargetPath.concat(ch).concat(relativePath)
+                            .concat(ch).concat(moduleFile.getName());
+                } else
+                    target = moduleTargetPath.concat(ch).concat(
+                            moduleFile.getName());
+
+                File file = new File(target);
+                switch (deltaModule.getKind()) {
+                case IModuleResourceDelta.REMOVED:
+                    if (file.exists())
+                        file.delete();
+                    break;
+                case IModuleResourceDelta.ADDED:
+                case IModuleResourceDelta.CHANGED:
+                    if (!file.exists())
+                        try {
+                            file.createNewFile();
+                        } catch (IOException e) {
+                            Trace.trace(Trace.SEVERE, "can't create file "
+                                    + file, e);
+                            throw new CoreException(new Status(IStatus.ERROR,
+                                    Activator.PLUGIN_ID, "can't create file "
+                                            + file, e));
+                        }
+
+                    String rootFolder = GeronimoUtils.getVirtualComponent(
+                            module).getRootFolder().getProjectRelativePath()
+                            .toOSString();
+                    String sourceFile = module.getProject().getFile(
+                            rootFolder + ch
+                                    + moduleFile.getModuleRelativePath() + ch
+                                    + moduleFile.getName()).getLocation()
+                            .toString();
+                    try {
+
+                        FileInputStream in = new FileInputStream(sourceFile);
+                        FileOutputStream out = new FileOutputStream(file);
+                        FileChannel inChannel = in.getChannel();
+                        FileChannel outChannel = out.getChannel();
+                        MappedByteBuffer mappedBuffer = inChannel.map(
+                                FileChannel.MapMode.READ_ONLY, 0, inChannel
+                                        .size());
+                        outChannel.write(mappedBuffer);
+
+                        inChannel.close();
+                        outChannel.close();
+                    } catch (FileNotFoundException e) {
+                        Trace.trace(Trace.SEVERE, "can't find file "
+                                + sourceFile, e);
+                        throw new CoreException(new Status(IStatus.ERROR,
+                                Activator.PLUGIN_ID, "can't find file "
+                                        + sourceFile, e));
+                    } catch (IOException e) {
+                        Trace.trace(Trace.SEVERE, "can't copy file "
+                                + sourceFile, e);
+                        throw new CoreException(new Status(IStatus.ERROR,
+                                Activator.PLUGIN_ID, "can't copy file "
+                                        + sourceFile, e));
+                    }
+                    break;
+                }
+            }
+
+        return true;
+
+    }
+
 
     private String getLastKnowConfigurationId(IModule module, String configId) throws CoreException {
         Trace.tracePoint("Entry ", "GeronimoServerBehaviourDelegate.getLastKnowConfigurationId", module.getName(), configId);
