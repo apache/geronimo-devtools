@@ -294,16 +294,27 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
 		_monitor = monitor;
 
-		try {
-			//NO_CHANGE need if app is associated but not started and no delta
-			if (deltaKind == NO_CHANGE && module.length == 1) {
-				invokeCommand(deltaKind, module[0]);
-			} else if (deltaKind == CHANGED || deltaKind == ADDED || deltaKind == REMOVED) {
-				invokeCommand(deltaKind, module[0]);
-			} 
-		} finally {
-			setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
-		}
+        setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
+        try {
+            //NO_CHANGE need if app is associated but not started and no delta
+            if (deltaKind == NO_CHANGE && module.length == 1) {
+                invokeCommand(deltaKind, module[0]);
+            }
+            else if (deltaKind == CHANGED || deltaKind == ADDED || deltaKind == REMOVED) {
+                invokeCommand(deltaKind, module[0]);
+            }
+        }
+        catch (CoreException e) {
+            //
+            // Set the module publish state to UNKNOWN so that WTP will not display "Synchronized"
+            // for the module and server. What we should see in the Eclipse Server View in this case
+            // is nothing for the module, but "Republish" for the server. This is a very subtle
+            // distinction but the only indication to the GEP end-user that their module was not 
+            // successfully deployed.
+            //
+            setModulePublishState(module, IServer.PUBLISH_STATE_UNKNOWN);
+            throw e;
+        }
 
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.publishModule");
 	}
