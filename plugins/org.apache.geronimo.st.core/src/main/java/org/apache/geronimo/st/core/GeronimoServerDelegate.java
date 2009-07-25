@@ -70,7 +70,9 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	public static final String PROPERTY_PUBLISH_TIMEOUT = "publishTimeout";
 	
 	public static final String PROPERTY_IN_PLACE_SHARED_LIB = "inPlaceSharedLib";
-	
+    
+    public static final String PROPERTY_NOT_REDEPLOY_JSP_FILES = "notRedeployJSPFiles";
+    
 	public static final String PROPERTY_RUN_FROM_WORKSPACE = "runFromWorkspace";
 
 	public static final String PROPERTY_SELECT_CLASSPATH_CONTAINERS = "selectClasspathContainers";
@@ -81,7 +83,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 
 	public static final String CONSOLE_DEBUG = "-vv";
 
-	public abstract String getContextRoot(IModule module);
+    public abstract String getContextRoot(IModule module) throws Exception ;
 
 	/*
 	 * (non-Javadoc)
@@ -365,7 +367,11 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	public void setInPlaceSharedLib(boolean enable) {
 		setAttribute(PROPERTY_IN_PLACE_SHARED_LIB, enable);
 	}
-	
+
+    public void setNotRedeployJSPFiles(boolean enable){
+        setAttribute(PROPERTY_NOT_REDEPLOY_JSP_FILES,enable);
+    }
+
 	public void setRunFromWorkspace(boolean enable) {
 		setAttribute(PROPERTY_RUN_FROM_WORKSPACE, enable);
 	}
