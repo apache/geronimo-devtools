@@ -246,10 +246,12 @@ public class DeploymentUtils {
             else return null;   //not only jsp changed
         }
         else if (resource instanceof IModuleFolder) {
-            IModuleResourceDelta[] deltaArray = delta.getAffectedChildren();
-            for (IModuleResourceDelta childDelta: deltaArray) {
-                fileList.addAll(getAffectedJSPFiles(childDelta));
-            }
+             IModuleResourceDelta[] deltaArray = delta.getAffectedChildren();
+			 for (IModuleResourceDelta childDelta : deltaArray) {
+				List<IModuleResourceDelta> deltaChildren = getAffectedJSPFiles(childDelta);
+				if (deltaChildren != null) fileList.addAll(deltaChildren);
+				else return null;
+			}
         }
 
         return fileList;
