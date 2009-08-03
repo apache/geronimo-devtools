@@ -34,11 +34,15 @@ import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
-import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.v21.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.internal.IModulePublishHelper;
@@ -93,20 +97,52 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
         try {
             return getKernel() != null && kernel.isRunning();
         } catch (SecurityException e) {
-            Activator.log(Status.ERROR, "Invalid username and/or password.", e);
-            GeronimoUtils.displayEclipseErrorLog();
+        	Trace.trace(Trace.SEVERE, "Invalid username and/or password.", e);
             pingThread.interrupt();
             if (getServer().getServerState() != IServer.STATE_STOPPED) {
-                stop(true);
+            	forceStopJob(true,e);
             }
         } catch (Exception e) {
             Activator.log(Status.WARNING, "Geronimo Server may have been terminated manually outside of workspace.", e);
-            GeronimoUtils.displayEclipseErrorLog();
             kernel = null;
         }
         return false;
     }
 
+    private void forceStopJob(boolean b, final SecurityException e) {
+		/* 
+		 *
+		 * Currently, there is another Status is returned by StartJob in Server. 
+		 * The message doesn't contain reason for the exception. 
+		 * So this job is created to show a message(Invalid username and/or password) to user.
+		 *  
+		 * TODO: Need a method to remove the error message thrown by StartJob in Server.
+		 * 
+		 */
+		
+		String jobName = NLS.bind(org.eclipse.wst.server.core.internal.Messages.errorStartFailed, getServer().getName());						
+		
+		//This message has different variable names in WTP 3.0 and 3.1, so we define it here instead of using that in WTP
+		final String jobStartingName =  NLS.bind("Starting {0}", getServer().getName());
+
+		new Job(jobName){
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				MultiStatus multiStatus = new  MultiStatus(Activator.PLUGIN_ID, 0, jobStartingName, null);
+				multiStatus.add(new Status(IStatus.ERROR,Activator.PLUGIN_ID,0,"Invalid username and/or password.",e));
+				try{
+					GeronimoServerBehaviour.this.stop(true);
+				}catch (Exception e){
+					multiStatus.add(new Status(IStatus.ERROR,Activator.PLUGIN_ID,0,"Failed to stop server",e));
+				}
+			
+				return multiStatus;
+			}
+		}.schedule();
+		
+}
+    
     /*
      * (non-Javadoc)
      * 
