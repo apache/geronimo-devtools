@@ -39,30 +39,21 @@ public class JAXBModelUtils {
         Object plan = element.getValue();
         if (WebApp.class.isInstance (plan)) {
             if (((WebApp)plan).getSecurity() == null) {
-                setSecurity (element, new org.apache.geronimo.jee.security.ObjectFactory().createSecurity());
+                return null;
             }
             Security security = (Security)((WebApp)plan).getSecurity().getValue();
-            if (security.getRoleMappings() == null) {
-                security.setRoleMappings (new org.apache.geronimo.jee.security.ObjectFactory().createRoleMappings());
-            }
             return security;
         } else if (Application.class.isInstance (plan)) {
             if (((Application)plan).getSecurity() == null) {
-                setSecurity (element, new org.apache.geronimo.jee.security.ObjectFactory().createSecurity());
+            	return null;
             }
             Security security = (Security)((Application)plan).getSecurity().getValue();
-            if (security.getRoleMappings() == null) {
-                security.setRoleMappings (new org.apache.geronimo.jee.security.ObjectFactory().createRoleMappings());
-            }
             return security;
         } else if (OpenejbJar.class.isInstance (plan)) {
             if (((OpenejbJar)plan).getSecurity() == null) {
-                setSecurity (element, new org.apache.geronimo.jee.security.ObjectFactory().createSecurity());
+            	return null;
             }
             Security security = (Security)((OpenejbJar)plan).getSecurity().getValue();
-            if (security.getRoleMappings() == null) {
-                security.setRoleMappings (new org.apache.geronimo.jee.security.ObjectFactory().createRoleMappings());
-            }
             return security;
         }
         return null;
