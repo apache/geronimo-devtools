@@ -17,6 +17,8 @@
 package org.apache.geronimo.st.v21.core;
 
 import org.apache.geronimo.st.v21.core.internal.Trace;
+import org.eclipse.jst.j2ee.internal.plugin.J2EEPlugin;
+import org.eclipse.jst.j2ee.internal.plugin.J2EEPreferences;
 import org.eclipse.wst.common.project.facet.core.IActionConfigFactory;
 
 
@@ -40,7 +42,25 @@ public class DeploymentPlanInstallConfig {
         public Object create()
         {
         	Trace.tracePoint("Entry/Exit", "DeploymentPlanInstallConfig.create");
+        	
+        	enableGenerationDDByDefault();
+        	
             return new DeploymentPlanInstallConfig();
+        }
+        
+        /*
+         * by default, WTP won't generate deployment descriptor for all the projects(only true for web project).
+         * Try to generate deployment descriptor by default for all projects, the default value are set here
+         * 
+         * reference to J2EEPreferences.java in org.eclipse.jst.j2ee bundle
+         */
+        
+        
+        private void enableGenerationDDByDefault(){
+        	J2EEPlugin.getDefault().getJ2EEPreferences().setValue(J2EEPreferences.Keys.APPLICATION_GENERATE_DD,true);
+        	J2EEPlugin.getDefault().getJ2EEPreferences().setValue(J2EEPreferences.Keys.DYNAMIC_WEB_GENERATE_DD,true);
+        	J2EEPlugin.getDefault().getJ2EEPreferences().setValue(J2EEPreferences.Keys.EJB_GENERATE_DD,true);
+        	J2EEPlugin.getDefault().getJ2EEPreferences().setValue(J2EEPreferences.Keys.APP_CLIENT_GENERATE_DD,true);
         }
     }
 
