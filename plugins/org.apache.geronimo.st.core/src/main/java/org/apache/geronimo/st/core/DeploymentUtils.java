@@ -113,7 +113,10 @@ public class DeploymentUtils {
 			return ".war";
 		}else if(GeronimoUtils.isRARModule(module)) {
 			return ".rar";
-		}
+		}else if(GeronimoUtils.isAppClientModule(module)) {
+			return ".car";
+ 		}
+
 		return ".jar";
 	}
 
@@ -124,9 +127,13 @@ public class DeploymentUtils {
 
 			IVirtualComponent comp = ComponentCore.createComponent(module.getProject());
 
+			//Here, specific extension name should be got, in case module has no standard JEE descriptor file included
+			String extensionName = getModuleExtension(module);
+			
 			model.setProperty(J2EEComponentExportDataModelProvider.PROJECT_NAME, module.getProject());
 			model.setProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION, outputPath.append(module.getName())
-					+ ".zip");
+					+ extensionName);
+
 			model.setProperty(J2EEComponentExportDataModelProvider.COMPONENT, comp);
 			model.setBooleanProperty(J2EEComponentExportDataModelProvider.OVERWRITE_EXISTING, true);
 			model.setBooleanProperty(J2EEComponentExportDataModelProvider.RUN_BUILD, false);
