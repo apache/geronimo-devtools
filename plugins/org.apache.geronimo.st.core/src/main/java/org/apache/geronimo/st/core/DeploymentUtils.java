@@ -180,18 +180,13 @@ public class DeploymentUtils {
 	public static TargetModuleID getTargetModuleID(DeploymentManager dm, String configId) throws TargetModuleIdNotFoundException {
 
 		try {
-			TargetModuleID ids[] = dm.getAvailableModules(null, dm.getTargets());
-			if (ids != null) {
-				for (int i = 0; i < ids.length; i++) {
-					if (ids[i].getModuleID().equals(configId)) {
-						Trace.trace(Trace.INFO, "Found configuration " + configId +  " on server.");
-						return ids[i];
-					}
-				}
-			}
+			TargetModuleID id = isInstalledModule(dm,configId);
+			if (id!=null) return id;
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		} catch (TargetException e) {
+			e.printStackTrace();
+		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 
@@ -263,4 +258,39 @@ public class DeploymentUtils {
 
         return fileList;
     }
+    
+    public static boolean isInstalledModule(IServer server, String configId) {
+		DeploymentManager dm;
+		try {
+			dm = DeploymentCommandFactory.getDeploymentManager(server);
+			TargetModuleID id=isInstalledModule(dm,configId);
+			if (id==null) return false;
+			else return true;
+		} catch (CoreException e) {
+			e.printStackTrace();
+			return false;
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			return false;
+		} catch (TargetException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
+	private static TargetModuleID isInstalledModule(DeploymentManager dm, String configId) throws CoreException, IllegalStateException, TargetException{
+		
+		TargetModuleID[] ids = dm.getAvailableModules(null, dm.getTargets());
+		if(ids == null) return null;
+		if (ids != null) {
+			for (int i = 0; i < ids.length; i++) {
+				if (ids[i].getModuleID().equals(configId)) {
+					Trace.trace(Trace.INFO, "Found configuration " + configId +  " on server.");
+					return ids[i];
+				}
+			}
+		}
+		return null;
+	}
 }

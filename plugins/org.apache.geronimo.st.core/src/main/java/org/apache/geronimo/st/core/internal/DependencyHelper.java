@@ -34,6 +34,7 @@ import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.jee.deployment.ObjectFactory;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.web.WebApp;
+import org.apache.geronimo.st.core.DeploymentUtils;
 import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.eclipse.core.resources.IFile;
@@ -111,7 +112,13 @@ public class DependencyHelper {
 	                            parent.setVersion( dep.getVersion() );
 	                            parent.setType( dep.getType() );
 	                            
-	                           	dm.addDependency( child, parent );
+	                            String configId = dep.getGroupId().concat("/")
+					              				  .concat(dep.getArtifactId()).concat("/")
+					              				  .concat(dep.getVersion()).concat("/")
+					              				  .concat(dep.getType());
+	                            
+	                            if (!DeploymentUtils.isInstalledModule(server,configId))
+	                               	dm.addDependency( child, parent );
 	                        }
 	                    }
 	                }
