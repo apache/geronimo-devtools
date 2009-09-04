@@ -39,6 +39,7 @@ import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IModule;
+import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.model.ServerBehaviourDelegate;
 
 /**
@@ -74,7 +75,7 @@ public class DependencyHelper {
      * 
      * @return List of reordered modules and deltaKind (or input if no change)
      */
-    public List reorderModules( List modules, List deltaKind ) {
+    public List reorderModules(IServer server, List modules, List deltaKind ) {
         Trace.tracePoint("Entry", "DependencyHelper.reorderModules", modules, deltaKind);
 
         if (modules.size() == 0) {
@@ -95,22 +96,26 @@ public class DependencyHelper {
             IModule[] module = (IModule[]) modules.get(ii);
             int moduleDeltaKind = ((Integer)deltaKind.get(ii)).intValue();
             if (moduleDeltaKind != ServerBehaviourDelegate.REMOVED) {
-                Environment environment = getEnvironment(module[0]);
-                if (environment != null) {
-                    Artifact child = environment.getModuleId();
-                    Dependencies dependencies = environment.getDependencies();
-                    if (dependencies != null) {
-                        List<Dependency> depList = dependencies.getDependency();
-                        for ( Dependency dep : depList) {
-                            Artifact parent = deploymentFactory.createArtifact();
-                            parent.setGroupId( dep.getGroupId() );
-                            parent.setArtifactId( dep.getArtifactId() );
-                            parent.setVersion( dep.getVersion() );
-                            parent.setType( dep.getType() );
-                            dm.addDependency( child, parent );
-                        }
-                    }
-                }
+            	//GERONIMODEVTOOLS-361
+            	for (IModule singleModule:module){
+            		Environment environment = getEnvironment(singleModule);
+	                if (environment != null) {
+	                    Artifact child = environment.getModuleId();
+	                    Dependencies dependencies = environment.getDependencies();
+	                    if (dependencies != null) {
+	                        List<Dependency> depList = dependencies.getDependency();
+	                        for ( Dependency dep : depList) {
+	                            Artifact parent = deploymentFactory.createArtifact();
+	                            parent.setGroupId( dep.getGroupId() );
+	                            parent.setArtifactId( dep.getArtifactId() );
+	                            parent.setVersion( dep.getVersion() );
+	                            parent.setType( dep.getType() );
+	                            
+	                           	dm.addDependency( child, parent );
+	                        }
+	                    }
+	                }
+            	}
             }
         }
 

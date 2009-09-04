@@ -239,7 +239,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         //
         if (modules != null && modules.size() > 0) {
             DependencyHelper dh = new DependencyHelper();
-            List list = dh.reorderModules(modules, deltaKind);
+            List list = dh.reorderModules(this.getServer(),modules, deltaKind);
             modules = (List) list.get(0);
             deltaKind = (List) list.get(1);
         }
