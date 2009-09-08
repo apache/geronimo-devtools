@@ -99,6 +99,14 @@
                name="http://geronimo.apache.org/xml/ns/plugins-1.3"
                uri="v22/plugins-1.3.xsd">
          </uri>
+          <uri
+               name="http://openejb.apache.org/xml/ns/openejb-jar-2.2"
+               uri="v22/openejb-jar-2.2.xsd">
+         </uri>
+            <uri
+               name="http://openejb.apache.org/xml/ns/pkgen-2.1"
+               uri="v22/pkgen-2.1.xsd">
+         </uri>
          </catalogContribution>
    </extension>
 
