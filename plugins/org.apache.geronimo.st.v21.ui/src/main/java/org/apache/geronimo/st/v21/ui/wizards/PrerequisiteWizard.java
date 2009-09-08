@@ -20,6 +20,8 @@ import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.wizards.AbstractWizard;
 import org.apache.geronimo.system.plugin.model.ArtifactType;
 import org.apache.geronimo.system.plugin.model.PrerequisiteType;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
@@ -77,6 +79,24 @@ public class PrerequisiteWizard extends AbstractWizard {
             type = createTextField (composite, "");
             createLabel (composite, CommonMessages.description);
             description = createTextField (composite, "");
+            
+            group.addModifyListener(new ModifyListener(){
+				public void modifyText(ModifyEvent arg0) {
+					PrerequisiteWizard.this.getContainer().updateButtons();
+				}
+            });
+            
+            artifact.addModifyListener(new ModifyListener(){
+				public void modifyText(ModifyEvent arg0) {
+					PrerequisiteWizard.this.getContainer().updateButtons();
+				}
+            });
+            
+            type.addModifyListener(new ModifyListener(){
+				public void modifyText(ModifyEvent arg0) {
+					PrerequisiteWizard.this.getContainer().updateButtons();
+				}
+            });
 
             if (prereq != null) {
                 group.setText(prereq.getId().getGroupId());
@@ -113,5 +133,13 @@ public class PrerequisiteWizard extends AbstractWizard {
     
     public PrerequisiteType getPrerequisite() {
         return prereq;
+    }
+    
+    public boolean canFinish(){
+    	if (group.getText()!=null && group.getText().length()!=0
+    			&& artifact.getText()!=null && artifact.getText().length()!=0
+    			&& type.getText()!=null && type.getText().length()!=0){
+    		return true;
+    	}else return false;
     }
 }
