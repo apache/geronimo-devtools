@@ -22,6 +22,10 @@ import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.wizards.AbstractWizard;
 import org.apache.geronimo.st.v21.core.operations.GeronimoServerPluginManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
@@ -75,6 +79,37 @@ public class ServerCustomAssemblyWizard extends AbstractWizard {
             serverPath = createTextField(composite, "var/temp/assembly");
             createTable(composite);
             populateTable();
+            
+            group.addModifyListener(new ModifyListener(){
+				public void modifyText(ModifyEvent arg0) {
+					ServerCustomAssemblyWizard.this.getContainer().updateButtons();
+				}
+            });
+            artifact.addModifyListener(new ModifyListener(){
+				public void modifyText(ModifyEvent arg0) {
+					ServerCustomAssemblyWizard.this.getContainer().updateButtons();
+				}
+            });
+            version.addModifyListener(new ModifyListener(){
+				public void modifyText(ModifyEvent arg0) {
+					ServerCustomAssemblyWizard.this.getContainer().updateButtons();
+				}
+            });
+            type.addModifyListener(new ModifyListener(){
+				public void modifyText(ModifyEvent arg0) {
+					ServerCustomAssemblyWizard.this.getContainer().updateButtons();
+				}
+            });
+            serverPath.addModifyListener(new ModifyListener(){
+				public void modifyText(ModifyEvent arg0) {
+					ServerCustomAssemblyWizard.this.getContainer().updateButtons();
+				}
+            });
+            pluginTable.addSelectionListener(new SelectionAdapter(){
+				public void widgetSelected(SelectionEvent arg0) {
+					ServerCustomAssemblyWizard.this.getContainer().updateButtons();
+				}
+            });
 
             setControl(composite);
         }
@@ -153,4 +188,12 @@ public class ServerCustomAssemblyWizard extends AbstractWizard {
     protected String getEditWizardWindowTitle() {
         return CommonMessages.wizardNewTitle_ServerCustomAssembly;
     }
+    
+    public boolean canFinish(){
+   	 if (isEmpty(group.getText()) || isEmpty(artifact.getText()) ||
+   	            isEmpty(version.getText()) || isEmpty(type.getText()) ||
+   	            isEmpty(serverPath.getText()) || pluginTable.getSelectionCount() == 0) {
+   		 return false;
+   	 }else return true;
+   }
 }
