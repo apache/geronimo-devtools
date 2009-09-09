@@ -87,7 +87,7 @@
             <xs:element name="ejb-name" type="xs:string"/>
             <xs:element ref="naming:resource-adapter"/>
             <xs:element name="activation-config" type="tns:activation-configType" minOccurs="0"/>
-            <xs:choice maxOccurs="unbounded">
+            <xs:choice maxOccurs="unbounded" minOccurs="0">
                 <xs:element ref="naming:abstract-naming-entry"/>
                 <!-- xs:element ref="naming:persistence-context-ref"/ -->
                 <!-- xs:element ref="naming:gbean-ref"/ -->
