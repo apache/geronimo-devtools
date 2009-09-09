@@ -112,12 +112,20 @@ public class DependencyHelper {
 	                            parent.setVersion( dep.getVersion() );
 	                            parent.setType( dep.getType() );
 	                            
-	                            String configId = dep.getGroupId().concat("/")
-					              				  .concat(dep.getArtifactId()).concat("/")
-					              				  .concat(dep.getVersion()).concat("/")
-					              				  .concat(dep.getType());
+	                            StringBuilder configId = new StringBuilder();
+	                            if (dep.getGroupId()!=null)
+	                            	configId.append(dep.getGroupId());
+	                            configId.append("/");
+	                            if (dep.getArtifactId()!=null)
+	                            	configId.append(dep.getArtifactId());
+	                            configId.append("/");
+	                            if (dep.getVersion()!=null)
+	                            	configId.append(dep.getVersion());
+	                            configId.append("/");
+	                            if (dep.getType()!=null)
+	                            	configId.append(dep.getType());
 	                            
-	                            if (!DeploymentUtils.isInstalledModule(server,configId))
+	                            if (!DeploymentUtils.isInstalledModule(server,configId.toString()))
 	                               	dm.addDependency( child, parent );
 	                        }
 	                    }
