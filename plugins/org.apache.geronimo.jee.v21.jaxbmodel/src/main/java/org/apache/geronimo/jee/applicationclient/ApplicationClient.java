@@ -148,6 +148,7 @@ public class ApplicationClient
      */
     public void setClientEnvironment(Environment value) {
         this.clientEnvironment = value;
+        this.clientEnvironment.getModuleId().setArtifactId(value.getModuleId().getArtifactId()+"ClientSide");
     }
 
     /**
@@ -178,6 +179,7 @@ public class ApplicationClient
      */
     public void setServerEnvironment(Environment value) {
         this.serverEnvironment = value;
+        this.serverEnvironment.getModuleId().setArtifactId(value.getModuleId().getArtifactId()+"ServerSide");
     }
 
     /**
