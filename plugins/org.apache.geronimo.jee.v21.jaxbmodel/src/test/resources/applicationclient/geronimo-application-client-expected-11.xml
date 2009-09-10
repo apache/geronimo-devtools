@@ -22,7 +22,7 @@
     <dep:client-environment>
         <dep:moduleId>
             <dep:groupId>org.apache.geronimo.testsuite</dep:groupId>
-            <dep:artifactId>agent-ear</dep:artifactId>
+            <dep:artifactId>agent-earClientSide</dep:artifactId>
             <dep:version>2.2-SNAPSHOT</dep:version>
             <dep:type>ear</dep:type>
         </dep:moduleId>
@@ -38,7 +38,7 @@
     <dep:server-environment>
         <dep:moduleId>
             <dep:groupId>org.apache.geronimo.testsuite</dep:groupId>
-            <dep:artifactId>agent-ear</dep:artifactId>
+            <dep:artifactId>agent-earServerSide</dep:artifactId>
             <dep:version>2.2-SNAPSHOT</dep:version>
             <dep:type>ear</dep:type>
         </dep:moduleId>
