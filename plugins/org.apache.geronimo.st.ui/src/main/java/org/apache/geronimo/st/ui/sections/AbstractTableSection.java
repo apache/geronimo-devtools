@@ -75,7 +75,7 @@ public abstract class AbstractTableSection extends AbstractListSection {
 
         GridData data = new GridData(SWT.FILL, SWT.FILL, false, true);
         data.heightHint = 60;
-        data.widthHint = 330;
+        data.widthHint = 660;
         //data.grabExcessVerticalSpace = true;
         table.setLayoutData(data);
 

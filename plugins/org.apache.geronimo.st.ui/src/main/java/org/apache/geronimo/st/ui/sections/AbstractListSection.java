@@ -39,6 +39,7 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
@@ -53,6 +54,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
@@ -185,6 +187,7 @@ public abstract class AbstractListSection extends AbstractSectionPart {
             public void widgetSelected(SelectionEvent e) {
                 handleDelete();
                 getViewer().refresh();
+                notifyOthers();
                 markDirty();
                 activateButtons();
             }
@@ -198,10 +201,11 @@ public abstract class AbstractListSection extends AbstractSectionPart {
             public void widgetSelected(SelectionEvent e) {
                 Wizard wizard = getWizard();
                 if (wizard != null) {
-                    WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
+                    WizardDialog dialog = createWizardDialog(Display.getCurrent().getActiveShell(), wizard);
                     dialog.open();
                     if (dialog.getReturnCode() == Dialog.OK) {
-                        getViewer().refresh();
+                    	getViewer().refresh();
+                        notifyOthers();
                         markDirty();
                     }
                 }
@@ -210,7 +214,7 @@ public abstract class AbstractListSection extends AbstractSectionPart {
         addButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
     }
 
-    protected void createEditButton(Composite buttonComp) {
+	protected void createEditButton(Composite buttonComp) {
         editButton = toolkit.createButton(buttonComp, CommonMessages.edit, SWT.NONE);
         editButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
@@ -221,10 +225,11 @@ public abstract class AbstractListSection extends AbstractSectionPart {
                         if (wizard instanceof AbstractWizard) {
                             ((AbstractWizard) wizard).setEObject(selectedObject);
                         }
-                        WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
+                        WizardDialog dialog = createWizardDialog(Display.getCurrent().getActiveShell(), wizard);
                         dialog.open();
                         if (dialog.getReturnCode() == Dialog.OK) {
                             getViewer().refresh();
+                            notifyOthers();
                             markDirty();
                         }
                     }
@@ -234,6 +239,23 @@ public abstract class AbstractListSection extends AbstractSectionPart {
         });
         editButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
     }
+	
+    /**
+     * Implemented by subclass if need to notify other component to refresh
+     */
+    protected void notifyOthers() {
+    	//here, do nothing
+	}
+    
+    /**
+     * Subclass can override it , if need to use another type of 
+     * WizardDialog(like customer implemented WizardDialog to 
+     * override some methods). 
+     */
+	protected WizardDialog createWizardDialog(Shell parentShell,
+			IWizard newWizard) {
+		return new WizardDialog(parentShell, newWizard);
+	}
 
     protected void activateButtons() {
         activateAddButton();
