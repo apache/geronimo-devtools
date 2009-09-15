@@ -27,10 +27,12 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
+
 /**
  * @version $Rev$ $Date$ 
  */
-public class NamespacePrefix {
+public class NamespacePrefix extends NamespacePrefixMapper{
 
     private static Map<String, String> prefixMap = new HashMap<String, String>();
 
@@ -45,6 +47,7 @@ public class NamespacePrefix {
         prefixMap.put("http://geronimo.apache.org/xml/ns/naming-1.2", "name");
         prefixMap.put("http://geronimo.apache.org/xml/ns/security-2.0", "sec");
         prefixMap.put("http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1", "web");
+        prefixMap.put("http://geronimo.apache.org/xml/ns/loginconfig-2.0", "log");
     }
 	
 	public static void processPrefix( Node parent ) {
@@ -91,5 +94,14 @@ public class NamespacePrefix {
             return prefixMap.get(namespaceURI);
 		return null;
 	}
+
+	@Override
+	public String getPreferredPrefix(String namespaceUri, String suggestion, boolean requirePrefix) {
+
+        if (prefixMap.containsKey(namespaceUri))
+            return prefixMap.get(namespaceUri);
+
+        return suggestion;
+    }
 
 }
