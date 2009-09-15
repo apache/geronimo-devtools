@@ -17,8 +17,11 @@
 package org.apache.geronimo.st.v21.ui.sections;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.JAXBElement;
 
@@ -29,17 +32,14 @@ import org.apache.geronimo.jee.security.Security;
 import org.apache.geronimo.jee.security.SubjectInfo;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
+import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.ui.wizards.SecurityRunAsSubjectWizard;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -47,8 +47,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -57,11 +55,11 @@ import org.eclipse.ui.forms.widgets.Section;
  */
 public class SecurityAdvancedSection extends AbstractTableSection {
 
-    private static final String SPECIFY_CREDENTIAL_STORE_MANUALLY = "<specify manually>";
+    //private static final String SPECIFY_CREDENTIAL_STORE_MANUALLY = "<specify manually>";
 
-    protected Text credentialStoreRef;
-    protected Button specifyCredentialStoreRefButton;
-    protected Button deleteCredentialStoreRefButton;
+    protected Combo credentialStoreRef;
+//    protected Button specifyCredentialStoreRefButton;
+//    protected Button deleteCredentialStoreRefButton;
 
     private Hashtable<String, Pattern> credentialStoreList = new Hashtable<String, Pattern>();
 
@@ -72,6 +70,8 @@ public class SecurityAdvancedSection extends AbstractTableSection {
     protected Button doAsCurrentCaller;
 
     protected Button useContextHandler;
+    
+    private HashMap<Pattern,HashMap<String,ArrayList<String>>> credentialStoreAttributes;
 
     public SecurityAdvancedSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style) {
         super(plan, parent, toolkit, style);
@@ -112,11 +112,23 @@ public class SecurityAdvancedSection extends AbstractTableSection {
         useContextHandler.setSelection(isUseContextHandler());
 
         createLabel(clientComposite, CommonMessages.securityCredentialStore);
-        credentialStoreRef = new Text(clientComposite, SWT.READ_ONLY| SWT.BORDER);
-        credentialStoreRef.setText("<credential store ref name will go here>");
+        credentialStoreRef = new Combo(clientComposite, SWT.READ_ONLY| SWT.BORDER);
+   //   credentialStoreRef.setText("<credential store ref name will go here>");
         GridData gridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
         gridData.widthHint = 300;
         credentialStoreRef.setLayoutData(gridData);
+        populateCredentialStores();
+        credentialStoreRef.addSelectionListener(new SelectionAdapter(){
+
+			public void widgetSelected(SelectionEvent arg0) {
+				setCredentialStoreRef();
+				populateDefaultSubjectRealmName();
+        		populateDefaultSubjectId();
+				toggleAdvancedSettings();
+				markDirty();
+			}
+        	
+        });
 
         Composite composite2 = toolkit.createComposite(clientComposite);
         GridLayout layout = new GridLayout();
@@ -127,7 +139,7 @@ public class SecurityAdvancedSection extends AbstractTableSection {
         layout.horizontalSpacing = 5;
         composite2.setLayout(layout);
         composite2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-        specifyCredentialStoreRefButton = toolkit.createButton(composite2, CommonMessages.edit, SWT.NONE);
+    /*    specifyCredentialStoreRefButton = toolkit.createButton(composite2, CommonMessages.edit, SWT.NONE);
         specifyCredentialStoreRefButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
         specifyCredentialStoreRefButton.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -148,7 +160,7 @@ public class SecurityAdvancedSection extends AbstractTableSection {
             @Override
             public void widgetSelected(SelectionEvent e) {
             }
-        });
+        });*/
 
         createLabel(clientComposite, CommonMessages.securityDefaultSubject);
         createLabel(clientComposite, "");
@@ -160,15 +172,14 @@ public class SecurityAdvancedSection extends AbstractTableSection {
         //composite3.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
         createLabel(clientComposite, CommonMessages.securityDefaultSubjectRealmName).setLayoutData(
                 new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        defaultSubjectRealmName = new Combo(clientComposite, SWT.SINGLE | SWT.DROP_DOWN);
-        defaultSubjectRealmName.add(getDefaultSubjectRealmName());
-        defaultSubjectRealmName.select(0);
+        defaultSubjectRealmName = new Combo(clientComposite, SWT.SINGLE | SWT.DROP_DOWN |SWT.READ_ONLY);
+        populateDefaultSubjectRealmName();
         gridData = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
         gridData.widthHint = 100;
         defaultSubjectRealmName.setLayoutData(gridData);
-        defaultSubjectRealmName.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent e) {
-                setDefaultSubject();
+        defaultSubjectRealmName.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(SelectionEvent arg0) {
+        		populateDefaultSubjectId();
                 markDirty();
             }
         });
@@ -179,14 +190,14 @@ public class SecurityAdvancedSection extends AbstractTableSection {
         //composite4.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
         createLabel(clientComposite, CommonMessages.securityDefaultSubjectId).setLayoutData(
                 new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        defaultSubjectId = new Combo(clientComposite, SWT.SINGLE | SWT.DROP_DOWN);
+        defaultSubjectId = new Combo(clientComposite, SWT.SINGLE | SWT.DROP_DOWN |SWT.READ_ONLY);
         defaultSubjectId.add(getDefaultSubjectId());
-        defaultSubjectId.select(0);
         gridData = new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1);
         gridData.widthHint = 100;
         defaultSubjectId.setLayoutData(gridData);
-        defaultSubjectId.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent e) {
+        populateDefaultSubjectId();
+        defaultSubjectId.addSelectionListener(new SelectionAdapter() {
+        	public void widgetSelected(SelectionEvent arg0) {
                 setDefaultSubject();
                 markDirty();
             }
@@ -212,18 +223,69 @@ public class SecurityAdvancedSection extends AbstractTableSection {
         toggleAdvancedSettings();
     }
 
-    private Wizard getCredentialStoreRefWizard() {
-        return null;
+    private void populateDefaultSubjectRealmName() {
+    	 defaultSubjectRealmName.removeAll();
+    	
+    	 String realmName = getDefaultSubjectRealmName();
+    	 
+    	 defaultSubjectRealmName.add(realmName);
+         if (realmName.length() > 0) {
+        	 defaultSubjectRealmName.add("");
+         }
+        
+         String credentialStoreName = credentialStoreRef.getText();
+         if (credentialStoreName!=null && credentialStoreName.length()!=0) {
+        	 Map<String,ArrayList<String>> realmNameMap = credentialStoreAttributes.get(credentialStoreList.get(credentialStoreName));
+        	 if (realmNameMap!=null) {
+        		 Set<String> nameSet = realmNameMap.keySet();
+        		 for (String name: nameSet){
+        			 if (!name.equals(realmName))
+        				 defaultSubjectRealmName.add(name);
+        		 }
+        	 }
+         }   
+         defaultSubjectRealmName.select(0);
+	}
+    
+    private void populateDefaultSubjectId() {
+	   	 defaultSubjectId.removeAll();
+	   	
+	   	 String subjectId = getDefaultSubjectId();
+	   	 defaultSubjectId.add(subjectId);
+	     if (subjectId.length() > 0) {
+	       	defaultSubjectId.add(""); 
+	     }
+	        
+	     String credentialStoreName = credentialStoreRef.getText();
+	     String defaultRealmName = defaultSubjectRealmName.getText();
+	     if (credentialStoreName!=null && credentialStoreName.length()!=0 && defaultRealmName!=null && defaultRealmName.length()!=0) {
+	    	 Map<String,ArrayList<String>> realmNameMap = credentialStoreAttributes.get(credentialStoreList.get(credentialStoreName));
+	    	 if (realmNameMap!=null) {
+	    		 ArrayList<String> ids = realmNameMap.get(defaultRealmName);
+	    		 for (String id: ids){
+	    			 if (!id.equals(subjectId))   				 
+	    				 defaultSubjectId.add(id);
+	    		 }
+	    	 }
+	     }   
+	     defaultSubjectId.select(0);
     }
+
+/*    private Wizard getCredentialStoreRefWizard() {
+        return null;
+    }*/
 
     private void toggleAdvancedSettings() {
         boolean enable = false;
-        if (getSecurity() != null && getSecurity().getCredentialStoreRef() != null) {
+        
+        if (getSecurity() != null && getSecurity().getCredentialStoreRef() != null 
+        		&& (defaultSubjectRealmName.getItemCount() > 0 || defaultSubjectId.getItemCount() >0)) {
             enable = true;
         }
+        
         defaultSubjectRealmName.setEnabled(enable);
         defaultSubjectId.setEnabled(enable);
-        table.setEnabled(enable);
+        table.setEnabled(enable);        
         activateAddButton();
     }
 
@@ -325,12 +387,13 @@ public class SecurityAdvancedSection extends AbstractTableSection {
         return roleNames;
     }
 
-    /*private void populateCredentialStores() {
+    private void populateCredentialStores() {
         String credentialStoreRefName = getCredentialStoreRefName();
+        credentialStoreRef.add(credentialStoreRefName);
         if (credentialStoreRefName.length() > 0) {
             credentialStoreRef.add(""); //users will select this empty string to unset credentialStoreRef
         }
-        credentialStoreRef.add(credentialStoreRefName);
+        
         List<Pattern> deployedCredentialStores = GeronimoServerInfo.getInstance().getDeployedCredentialStores();
         Pattern pattern = new Pattern();
         pattern.setCustomFoo(credentialStoreRefName);
@@ -338,10 +401,15 @@ public class SecurityAdvancedSection extends AbstractTableSection {
             deployedCredentialStores.remove(pattern);
         }
         for (int i = 0; i < deployedCredentialStores.size(); i++) {
-            credentialStoreRef.add(deployedCredentialStores.get(i).toString());
+        	String credentialStoreName = deployedCredentialStores.get(i).toString();
+        	//in case that module is null, replace the ending string of pattern.toString() with type 
+        	credentialStoreName = credentialStoreName.substring(0, credentialStoreName.lastIndexOf("/")+1).concat(deployedCredentialStores.get(i).getType()+")");
+            credentialStoreRef.add(credentialStoreName);
+            credentialStoreList.put(credentialStoreName, deployedCredentialStores.get(i));
         }
-        credentialStoreRef.add(SPECIFY_CREDENTIAL_STORE_MANUALLY);
-    }*/
+        credentialStoreAttributes = GeronimoServerInfo.getInstance().getDeployedCredentialStoreAttributes();
+        credentialStoreRef.select(0);
+    }
 
     @Override
     public List getObjectContainer() {
@@ -421,10 +489,7 @@ public class SecurityAdvancedSection extends AbstractTableSection {
         if (getSecurity() != null) {
             String credentialStoreRefName = credentialStoreRef.getText();
             if (credentialStoreRefName.trim().length() > 0) {
-                Pattern credentialStoreRef = new Pattern();
-                // credentialStoreRef.setGroupId("org.apache.geronimo.framework");
-                // credentialStoreRef.setArtifactId("server-security-config");
-                //credentialStoreRef.setCustomFoo(credentialStoreRef.getText());
+                Pattern credentialStoreRef = credentialStoreList.get(credentialStoreRefName);
                 getSecurity().setCredentialStoreRef(credentialStoreRef);
             } else {
                 getSecurity().setCredentialStoreRef(null);
