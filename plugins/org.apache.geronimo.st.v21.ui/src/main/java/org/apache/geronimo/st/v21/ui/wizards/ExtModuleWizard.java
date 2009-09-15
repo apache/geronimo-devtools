@@ -270,14 +270,10 @@ public class ExtModuleWizard extends AbstractTableWizard {
         if (eObject == null) {
             eObject = getEFactory().create(ExtModule.class);
             JAXBElement plan = section.getPlan();
-
             extModule = (ExtModule)eObject;
-
-            List extModuleList = ((Application)plan.getValue()).getExtModule();
-            if (extModuleList == null) {
-                extModuleList = (List)getEFactory().create(ExtModule.class);
-            }
-            extModuleList.add(eObject);
+            //This is the extModule field in plan(Application Type)
+            List<ExtModule> extModuleList = ((Application)plan.getValue()).getExtModule();
+            extModuleList.add(extModule);
         }
         else {
             extModule = (ExtModule)eObject;

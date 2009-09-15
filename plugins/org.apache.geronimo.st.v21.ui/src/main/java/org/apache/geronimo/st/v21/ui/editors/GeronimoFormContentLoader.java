@@ -31,6 +31,7 @@ import org.apache.geronimo.st.v21.ui.pages.AppClientGeneralPage;
 import org.apache.geronimo.st.v21.ui.pages.AppClientSecurityPage;
 import org.apache.geronimo.st.v21.ui.pages.AppGeneralPage;
 import org.apache.geronimo.st.v21.ui.pages.ConnectorOverviewPage;
+import org.apache.geronimo.st.v21.ui.pages.ConnectorPage;
 import org.apache.geronimo.st.v21.ui.pages.DeploymentPage;
 import org.apache.geronimo.st.v21.ui.pages.EjbOverviewPage;
 import org.apache.geronimo.st.v21.ui.pages.NamingFormPage;
@@ -53,6 +54,7 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
     public void addApplicationPlanPages(FormEditor editor) throws PartInitException {
         editor.addPage(new AppGeneralPage(editor, "appgeneralpage", CommonMessages.editorTabGeneral));
         editor.addPage(new SecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity));
+        editor.addPage(new ConnectorPage(editor,"connectorpage",CommonMessages.editorTabConnector));
         editor.addPage(createDeploymentFormPage(editor));
     }
 

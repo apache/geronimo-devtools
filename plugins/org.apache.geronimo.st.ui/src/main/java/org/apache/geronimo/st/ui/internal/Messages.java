@@ -123,6 +123,7 @@ public class Messages extends NLS {
     public static String editorTabGeneral;
     public static String editorTabNaming;
     public static String editorTabSecurity;
+    public static String editorTabConnector;
     public static String editorTabDeployment;
     public static String errorCouldNotOpenFile;
     public static String editorTitle;
@@ -358,7 +359,36 @@ public class Messages extends NLS {
     public static String wizardEditTitle_SecurityRole;
     public static String wizardPageTitle_SecurityRole;
     public static String wizardPageDescription_SecurityRole;
+    
+    public static String wizardTitle_SecurityRealm;
+    public static String wizardFirstPageTitle_SecurityRealm;
+    public static String wizardSecondPageTitle_SecurityRealm;
+    public static String wizardFirstPageDescription_SecurityRealm;
+    public static String wizardSecondPageDescription_SecurityRealm;
+    
+    public static String basicSettings;
+    public static String realmName;
+    public static String realmType;
+    public static String digestAlgorithm;
+    public static String digestEncoding;
+    
+    public static String sqlQueries;
+    public static String userSelectSQL;
+    public static String groupSelectSQL;
+    
+    public static String dataBasePool;
+    public static String useDataBasePool;
+    public static String useDataBase;
+    public static String dataBasePoolName;
+    
+    public static String jdbcDriverClass;
+    public static String jdbcURL;
+    public static String jdbcDriver;
+    public static String jdbcUserName;
+    public static String jdbcPassword;
+    public static String confirmPassword;    
     //
+
     public static String securityCredentialStore;
     public static String securityDefaultSubject;
     public static String securityDefaultSubjectRealmName;
@@ -370,6 +400,20 @@ public class Messages extends NLS {
     public static String securityRunAsSubjectRealm;
     public static String securityRunAsSubjectId;
     public static String securityRefreshRoles;
+
+
+    public static String wizardNewTitle_DBpool;
+    public static String wizardBasicPageTitle_DBPool;
+    public static String wizardBasicPageDescription_DBPool;
+    public static String wizardAdvancedPageTitle__DBPool;
+    public static String wizardAdvancedPageDescription__DBPool;
+    public static String wizardConnectionPageTitle__DBPool;
+    public static String wizardConnectionPageDescription__DBPool;
+    //
+    public static String doasCurrentCaller;
+    public static String useContextHandler;
+    public static String defaultRole;
+    
 
     public static String editorCorrect;
     public static String editorDefault;
@@ -418,10 +462,38 @@ public class Messages extends NLS {
     public static String ejb;
     public static String java;
     public static String web;
+
     public static String plugin;
     public static String pluginActions;
     public static String createCustomAssembly;
     public static String convertAppsToPlugins;
+
+
+
+
+
+
+
+
+
+
+
+
+    public static String poolName;
+    public static String dbType;
+    public static String dbName;
+    public static String createDatabase;
+    public static String loginTimeout;
+    public static String blockingTimeout;
+    public static String idleTimeout;
+    public static String minPoolSize;
+    public static String maxPoolSize;
+    public static String transactionType;
+    public static String loginGroup;
+    public static String driverGroup;
+    public static String basicGroup;
+    public static String advancedGroup;
+
 
     public static String licenseAgreement;
     public static String acceptLicenseAgreement;
