@@ -70,6 +70,7 @@ public class JAXBUtils {
         try {
             return JAXBContext.newInstance( 
                     "org.apache.geronimo.jee.connector:" +
+                    "org.apache.geronimo.jee.loginconfig:" +
                     "org.apache.geronimo.jee.openejb:" +
                     "org.apache.geronimo.jee.web:" +
                     "org.apache.geronimo.jee.application:" +
@@ -82,6 +83,10 @@ public class JAXBUtils {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public static JAXBContext getJAXBContext(){
+        return jaxbContext;
     }
 
     private static JAXBContext newJAXBPluginContext() {
