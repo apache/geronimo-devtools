@@ -19,6 +19,7 @@ package org.apache.geronimo.st.v21.core;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +65,7 @@ public class GeronimoServerInfo {
     private ArrayList<Pattern> jdbcConnectionPools;
     private ArrayList<Pattern> javaMailResources;
     private ArrayList<org.apache.geronimo.jee.deployment.Pattern> credentialStores;
+    private HashMap<org.apache.geronimo.jee.deployment.Pattern,HashMap<String,ArrayList<String>>> credentialStoreAttributes;
     private ArrayList<Dependency> commonLibs;
 
     // singleton class
@@ -102,6 +104,10 @@ public class GeronimoServerInfo {
 
     public ArrayList<org.apache.geronimo.jee.deployment.Pattern> getDeployedCredentialStores() {
         return credentialStores;
+    }
+    
+    public HashMap<org.apache.geronimo.jee.deployment.Pattern,HashMap<String,ArrayList<String>>> getDeployedCredentialStoreAttributes() {
+        return credentialStoreAttributes;
     }
 
     public ArrayList<Dependency> getCommonLibs() {
@@ -212,15 +218,17 @@ public class GeronimoServerInfo {
 
     private void updateDeployedCredentialStores() {
         credentialStores = new ArrayList<org.apache.geronimo.jee.deployment.Pattern>();
+        credentialStoreAttributes = new HashMap<org.apache.geronimo.jee.deployment.Pattern,HashMap<String,ArrayList<String>>> ();
         Map map = Collections.singletonMap("j2eeType", "GBean");
         AbstractNameQuery query = new AbstractNameQuery(null, map,
                 Collections.EMPTY_SET);
         for (int i = 0; i < kernels.size(); i++) {
-            Set beans = kernels.get(i).listGBeans(query);
+        	Kernel kernel = (Kernel)kernels.get(i);
+            Set beans = kernel.listGBeans(query);
             for (Iterator it = beans.iterator(); it.hasNext();) {
                 AbstractName abstractName = (AbstractName) it.next();
                 try {
-                    GBeanInfo info = kernels.get(i).getGBeanInfo(abstractName);
+                    GBeanInfo info = kernel.getGBeanInfo(abstractName);
                     GAttributeInfo attribInfo = info
                             .getAttribute("credentialStore");
                     if (attribInfo != null) {
@@ -235,6 +243,21 @@ public class GeronimoServerInfo {
                         if (!credentialStores.contains(pattern)) {
                             credentialStores.add(pattern);
                         }
+                        
+                      //update attributes of credentialStore
+                    	Map attributeMap = (Map)kernel.getAttribute(abstractName, "credentialStore");
+                    	if (attributeMap!=null){
+                    		HashMap<String,ArrayList<String>> realmMap = new HashMap<String,ArrayList<String>>();
+                    		for (Object obj:attributeMap.keySet()){
+                    			String realmName = (String)obj;
+                    			Map idMap = (Map)attributeMap.get(obj);
+                    			ArrayList<String> idList = new ArrayList<String>();
+                    			idList.addAll(idMap.keySet());                    			
+                    			
+                    			realmMap.put(realmName, idList);
+                    		}               		
+                    		credentialStoreAttributes.put(pattern, realmMap);
+                    	}
                     }
                 } catch (GBeanNotFoundException e) {
                 } catch (Exception e) {
@@ -243,6 +266,7 @@ public class GeronimoServerInfo {
             }
         }
     }
+    
 
     private void updateCommonLibs() {
         List<Object> artifacts = null;
