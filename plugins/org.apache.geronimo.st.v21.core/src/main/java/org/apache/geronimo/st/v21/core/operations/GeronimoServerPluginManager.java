@@ -189,7 +189,6 @@ public class GeronimoServerPluginManager {
             try {
                 List<ConfigurationInfo> infos = mgr.listConfigurations(storeName);
                 for (ConfigurationInfo info : infos) {
-                    results.add(info.getConfigID().toString());
                     if (info.getConfigID().getType().equalsIgnoreCase("car"))
                     {
                        results.add(info.getConfigID().toString());
