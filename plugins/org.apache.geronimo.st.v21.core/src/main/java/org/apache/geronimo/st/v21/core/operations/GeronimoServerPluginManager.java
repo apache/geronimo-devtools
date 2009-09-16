@@ -20,9 +20,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -189,7 +189,6 @@ public class GeronimoServerPluginManager {
             try {
                 List<ConfigurationInfo> infos = mgr.listConfigurations(storeName);
                 for (ConfigurationInfo info : infos) {
-                    results.add(info.getConfigID().toString());
                     if (info.getConfigID().getType().equalsIgnoreCase("car"))
                     {
                     	results.add(info.getConfigID().toString());
