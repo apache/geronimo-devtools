@@ -99,8 +99,10 @@ public abstract class AbstractWizard extends Wizard {
             return label;
         }
 
-        protected Text createTextField(Composite composite, String initialValue) {
-            Text text = new Text(composite, SWT.SINGLE | SWT.BORDER);
+        protected Text createTextField(Composite composite, String initialValue,boolean isPassword) {
+            int style = SWT.SINGLE | SWT.BORDER;
+            if (isPassword) style |= SWT.PASSWORD;
+            Text text = new Text(composite, style);
             GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.VERTICAL_ALIGN_FILL);
             data.grabExcessHorizontalSpace = true;
             data.widthHint = 100;
@@ -109,6 +111,10 @@ public abstract class AbstractWizard extends Wizard {
                 text.setText(initialValue);
             }
             return text;
+        }
+        
+        protected Text createTextField(Composite composite, String initialValue) {
+            return createTextField(composite,initialValue,false);
         }
 
         protected Text createMultiTextField(Composite composite, String[] initialValue) {

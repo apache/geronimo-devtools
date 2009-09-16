@@ -17,19 +17,34 @@
 package org.apache.geronimo.st.ui.sections;
 
 import org.apache.geronimo.st.core.IGeronimoServer;
+import org.apache.geronimo.st.core.operations.GeronimoAccountManager;
+import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.commands.SetPasswordCommand;
 import org.apache.geronimo.st.ui.commands.SetUsernameCommand;
 import org.apache.geronimo.st.ui.internal.Messages;
+import org.apache.geronimo.st.ui.internal.Trace;
+import org.apache.geronimo.st.ui.wizards.ManageAccountWizard;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.util.SocketUtil;
 
 /**
  * @version $Rev$ $Date$
@@ -39,6 +54,8 @@ public class ServerEditorSecuritySection extends AbstractServerEditorSection {
 	Text username;
 
 	Text password;
+	
+	Button manageAccountButton;
 
 	public ServerEditorSecuritySection() {
 		super();
@@ -56,13 +73,51 @@ public class ServerEditorSecuritySection extends AbstractServerEditorSection {
 
 		Section section = toolkit.createSection(parent,
 				ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
-						| ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
+						| ExpandableComposite.TITLE_BAR 
 						| ExpandableComposite.FOCUS_TITLE);
 
 		section.setText(Messages.editorSectionSecurityTitle);
-		section.setDescription(Messages.editorSectionSecurityDescription);
+	//	section.setDescription(Messages.editorSectionSecurityDescription);
 		section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
+		Composite textComposite = toolkit.createComposite(section);
+        GridLayout gridLayout = new GridLayout();
+        gridLayout.numColumns = 2;
+        textComposite.setLayout(gridLayout);
+        textComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        section.setDescriptionControl(textComposite);
+        //text
+        Label label = toolkit.createLabel(textComposite, Messages.editorSectionSecurityDescription);
+        
+		// Button for managing account
+        Button manageAccountButton = toolkit.createButton(textComposite, CommonMessages.manageAccount, SWT.PUSH);
+        GridData buttonData = new GridData(SWT.LEFT, SWT.CENTER, false, false);
+        manageAccountButton.setLayoutData(buttonData);
+        manageAccountButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                // if the server is started and local host, then we can bring up the dialog
+                if (!isLocalHost())
+                    MessageDialog.openError(Display.getCurrent().getActiveShell(), CommonMessages.errorOpenWizard, CommonMessages.isNotLocalHost);
+                else 
+                {
+                    GeronimoAccountManager manager = new GeronimoAccountManager(server.getRuntime());
+                    try {
+                        manager.init();
+                    } catch (Exception e1) {
+                        MessageDialog.openError(Display.getCurrent().getActiveShell(), CommonMessages.errorOpenWizard, CommonMessages.cannotRead);
+                        Trace.trace(Trace.SEVERE, "Properties file containing user information can't be read!", e1);
+                        return;
+                    }
+                    ManageAccountWizard wizard = new ManageAccountWizard(manager);
+                    WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
+                    dialog.open();
+                    if (dialog.getReturnCode() == Dialog.OK) {
+                    }
+                } 
+            }
+
+        });
+		
 		Composite composite = toolkit.createComposite(section);
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
@@ -76,7 +131,6 @@ public class ServerEditorSecuritySection extends AbstractServerEditorSection {
 
 		// ------- Label and text field for the username -------
 		createLabel(composite, Messages.username, toolkit);
-
 		username = toolkit.createText(composite, getUserName(), SWT.BORDER);
 		username.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		username.addModifyListener(new ModifyListener() {
@@ -110,4 +164,16 @@ public class ServerEditorSecuritySection extends AbstractServerEditorSection {
 		}
 		return "";
 	}
+	
+	private boolean isLocalHost(){
+	    return !(server.getServerType().supportsRemoteHosts()
+                && !SocketUtil.isLocalhost(server.getHost()));
+	}
+	
+    private boolean isServerRunning () {
+        if (gs == null || gs.getServer() == null)
+            return false;
+        
+        return gs.getServer().getServerState() == IServer.STATE_STARTED;
+    }
 }
