@@ -228,6 +228,7 @@ public class Messages extends NLS {
     public static String remove;
     public static String edit;
     // Wizard/Wizard Pages
+    public static String wizardTitle_ManageAccount;
     public static String wizardNewTitle_ResRef;
     public static String wizardEditTitle_ResRef;
     public static String wizardPageTitle_ResRef;
@@ -300,6 +301,16 @@ public class Messages extends NLS {
     public static String wizardTabManual_Dependency;
     public static String wizardTabServer_Dependency;
     public static String dependencyGroupLabel;
+    
+    public static String addUser;
+    public static String delUser;
+    public static String editUser;
+    public static String oldPassword;
+    public static String newPassword;
+    public static String groupName;
+    public static String passwordNotEqual;
+    public static String cannotSave;
+    public static String cannotRead;
 
     public static String groupId;
     public static String artifactId;
@@ -468,16 +479,9 @@ public class Messages extends NLS {
     public static String createCustomAssembly;
     public static String convertAppsToPlugins;
 
-
-
-
-
-
-
-
-
-
-
+    public static String manageAccount;
+    public static String manageAccountDescription;
+    public static String isNotLocalHost;
 
     public static String poolName;
     public static String dbType;
