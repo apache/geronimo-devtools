@@ -148,4 +148,28 @@
         </operationExtension>
     </extension>
  
+ 	<extension
+       point="org.eclipse.hyades.trace.ui.launchConfigMechanismAssociator">
+       <association            
+           launchConfigID = "org.apache.geronimo.st.core.launchConfigurationType">
+   
+           <mechanism mechanismID = "org.eclipse.tptp.trace.ui.jvmpiMechanism"> 
+               <configuration
+                   launchDelegate = "org.eclipse.tptp.trace.ui.internal.launcher.deleg.application.PIAttachLauncherDelegate"
+                   configurationId = "org.eclipse.tptp.trace.ui.jvmpiConfiguration"
+                   associatedAgent = "org.eclipse.tptp.trace.ui.jvmpiAgent"        
+                   filter = "org.eclipse.tptp.platform.profile.server.core.internal.PICollectorFiltration">                
+               </configuration>            
+           </mechanism>        
+           
+           <mechanism mechanismID = "org.eclipse.tptp.trace.jvmti.jvmtiMechanism"> 
+               <configuration
+                   launchDelegate = "org.eclipse.tptp.platform.jvmti.client.internal.launcher.TIAttachLauncherDelegate"
+                   configurationId = "org.eclipse.tptp.trace.jvmti.tiConfiguration"
+                   associatedAgent = "org.eclipse.tptp.platform.jvmti.TIAgent"
+                   filter = "org.eclipse.tptp.platform.profile.server.core.internal.TICollectorFiltration">                            
+               </configuration>            
+           </mechanism>    
+       </association>
+   </extension>
 </plugin>
