@@ -120,6 +120,7 @@ public class ServerPluginManagerWizard extends AbstractWizard {
                 } else {
                     // refresh the list of available plugins
                     page1.refreshPluginList();
+                    page1.setPageComplete(false);
                     page5.setPageComplete(true);
                     pageVisible = 1;
                 }
