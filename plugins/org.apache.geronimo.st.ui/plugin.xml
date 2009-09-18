@@ -217,8 +217,8 @@
     <extension point="org.eclipse.ltk.core.refactoring.renameParticipants">    
 		<renameParticipant    
 			id="org.apache.geronimo.st.ui.refactoring.rename"    
-			name="Rename a project with rename additional info"     
-			class="org.apache.geronimo.st.ui.refactoring.GeronimoWebProjectRenameParticipant">     
+			name="Rename a project with renaming additional info in deployment plan"     
+			class="org.apache.geronimo.st.ui.refactoring.GeronimoProjectRenameParticipant">     
 			<enablement>
 				<with variable="element">
 					<instanceof value="org.eclipse.core.resources.IProject">

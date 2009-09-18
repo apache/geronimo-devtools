@@ -11,38 +11,42 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class WebDeploymentPlanHandler extends DefaultHandler {
-	private String file;
-	private Locator locator;
-	private List<WebTextNode> nodeList = new ArrayList<WebTextNode>();
+/**
+ * A SAX Handler for geronimo deployment plan
+ */
+public class DeploymentPlanHandler extends DefaultHandler {
+	protected String file;
+	protected Locator locator;
+	protected List<DeploymentPlanTextNode> nodeList = new ArrayList<DeploymentPlanTextNode>();
 
-	public List<WebTextNode> getNodeList() {
+	protected static final int START = 0, IN_ROOT_ELEMENT = 1,
+			IN_CONTEXT_ROOT = 2, IN_ENVIRONMENT = 3, IN_MODULEID = 4,
+			IN_ARTIFACTID = 5;
+
+	protected int state = START;
+
+	public DeploymentPlanHandler(String file) {
+		this.file = file;
+	}
+
+	public List<DeploymentPlanTextNode> getNodeList() {
 		return nodeList;
 	}
 
-	public WebTextNode getContextRootTextNode() {
-		for (WebTextNode n : nodeList) {
-			if (n.getName().equals("context-root"))
-				return n;
+	public int getNodeOffset(String nodeName) {
+		for (DeploymentPlanTextNode n : nodeList) {
+			if (n.getName().equals(nodeName))
+				return n.getOffset();
 		}
-		return null;
+		return -1;
 	}
 
-	public WebTextNode getArtifactIdTextNode() {
-		for (WebTextNode n : nodeList) {
-			if (n.getName().equals("artifactId"))
-				return n;
+	public String getNodeValue(String nodeName) {
+		for (DeploymentPlanTextNode n : nodeList) {
+			if (n.getName().equals(nodeName))
+				return n.getValue();
 		}
 		return null;
-	}
-
-	private static final int START = 0, IN_WEB_APP = 1, IN_CONTEXT_ROOT = 2,
-			IN_ENVIRONMENT = 3, IN_MODULEID = 4, IN_ARTIFACTID = 5;
-
-	private int state = START;
-
-	public WebDeploymentPlanHandler(String file) {
-		this.file = file;
 	}
 
 	public void setDocumentLocator(Locator locator) {
@@ -52,15 +56,15 @@ public class WebDeploymentPlanHandler extends DefaultHandler {
 	public void characters(char[] ch, int start, int length)
 			throws SAXException {
 		String value = null;
-		WebTextNode wtn = null;
+		DeploymentPlanTextNode wtn = null;
 		switch (state) {
 		case IN_CONTEXT_ROOT:
 			value = new String(ch, start, length);
-			wtn = new WebTextNode();
+			wtn = new DeploymentPlanTextNode();
 			try {
 				int offset = getOffset(locator.getLineNumber(), locator
 						.getColumnNumber());
-				wtn.setName("context-root");
+				wtn.setName(DeploymentPlanTextNode.CONTEXT_ROOT);
 				wtn.setValue(value);
 				wtn.setOffset(offset - length);
 				nodeList.add(wtn);
@@ -70,11 +74,11 @@ public class WebDeploymentPlanHandler extends DefaultHandler {
 			break;
 		case IN_ARTIFACTID:
 			value = new String(ch, start, length);
-			wtn = new WebTextNode();
+			wtn = new DeploymentPlanTextNode();
 			try {
 				int offset = getOffset(locator.getLineNumber(), locator
 						.getColumnNumber());
-				wtn.setName("artifactId");
+				wtn.setName(DeploymentPlanTextNode.ARTIFACT_ID);
 				wtn.setValue(value);
 				wtn.setOffset(offset - length);
 				nodeList.add(wtn);
@@ -92,10 +96,12 @@ public class WebDeploymentPlanHandler extends DefaultHandler {
 			Attributes attributes) throws SAXException {
 		switch (state) {
 		case START:
-			if (localName.equals("web-app"))
-				state = IN_WEB_APP;
+			if (localName.equals("web-app") || localName.equals("openejb-jar")
+					|| localName.equals("connector")
+					|| localName.equals("application"))
+				state = IN_ROOT_ELEMENT;
 			break;
-		case IN_WEB_APP:
+		case IN_ROOT_ELEMENT:
 			if (localName.equals("environment"))
 				state = IN_ENVIRONMENT;
 			else if (localName.equals("context-root"))
@@ -117,13 +123,15 @@ public class WebDeploymentPlanHandler extends DefaultHandler {
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
 		switch (state) {
-		case IN_WEB_APP:
-			if (localName.equals("web-app"))
+		case IN_ROOT_ELEMENT:
+			if (localName.equals("web-app") || localName.equals("openejb-jar")
+					|| localName.equals("connector")
+					|| localName.equals("application"))
 				state = START;
 			break;
 		case IN_ENVIRONMENT:
 			if (localName.equals("environment"))
-				state = IN_WEB_APP;
+				state = IN_ROOT_ELEMENT;
 			break;
 		case IN_MODULEID:
 			if (localName.equals("moduleId"))
@@ -135,15 +143,16 @@ public class WebDeploymentPlanHandler extends DefaultHandler {
 			break;
 		case IN_CONTEXT_ROOT:
 			if (localName.equals("context-root"))
-				state = IN_WEB_APP;
+				state = IN_ROOT_ELEMENT;
 			break;
 		default:
 			break;
 		}
 	}
 
-	// return the offset of the TextNode's end
-	private int getOffset(int lineNumber, int columnNumber) throws IOException {
+	// return the offset of the DeploymentPlanTextNode's end
+	protected int getOffset(int lineNumber, int columnNumber)
+			throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(file));
 
 		if (lineNumber < 1 || columnNumber < 1)
@@ -159,7 +168,7 @@ public class WebDeploymentPlanHandler extends DefaultHandler {
 			} while (current != '\n');
 			i++;
 		}
-		offset += (columnNumber-1);
+		offset += (columnNumber - 1);
 
 		br.close();
 

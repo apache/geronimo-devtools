@@ -1,17 +1,17 @@
 package org.apache.geronimo.st.ui.refactoring;
 
-public class WebTextNode {
+public class DeploymentPlanTextNode {
 	private String name;
 	private String value;
 	private int offset;	
 	
 	public static final String CONTEXT_ROOT="context-root",ARTIFACT_ID="artifactId";
 	
-	public WebTextNode() {
+	public DeploymentPlanTextNode() {
 		this(null,null,-1);
 	}
 
-	public WebTextNode(String name, String value, int offset) {
+	public DeploymentPlanTextNode(String name, String value, int offset) {
 		this.name = name;
 		this.value = value;
 		this.offset = offset;

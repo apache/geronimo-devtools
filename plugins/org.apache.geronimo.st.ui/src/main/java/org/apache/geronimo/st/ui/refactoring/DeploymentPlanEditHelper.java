@@ -11,15 +11,25 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 
-public class WebDeploymentPlanEditHelper {
+/**
+ * 
+ */
+public class DeploymentPlanEditHelper {
 	private String fileName;
-	private WebDeploymentPlanHandler handler;
+	private DeploymentPlanHandler handler;
 	
-	public WebDeploymentPlanEditHelper(String fileName){
+	public DeploymentPlanEditHelper(String fileName){
 		this.fileName=fileName;
-		this.handler=new WebDeploymentPlanHandler(fileName);
+		this.handler=new DeploymentPlanHandler(fileName);
 		init();
 	}
+	
+	public DeploymentPlanEditHelper(DeploymentPlanHandler deploymentPlanHandler){
+		this.fileName=deploymentPlanHandler.file;
+		this.handler=deploymentPlanHandler;
+		//parse the deployment plan, generate info
+		init();
+	} 
 	
 	private void init(){
 		SAXParserFactory factory=SAXParserFactory.newInstance();
@@ -41,31 +51,12 @@ public class WebDeploymentPlanEditHelper {
 		}	
 	}
 	
-	public int getContextRootOffset(){
-		if(handler.getContextRootTextNode()!=null){
-			return handler.getContextRootTextNode().getOffset();
-		}
-		return -1;
+	public int getNodeOffset(String nodeName){
+		return handler.getNodeOffset(nodeName);
 	}
 	
-	public String getContextRootValue(){
-		if(handler.getContextRootTextNode()!=null){
-			return handler.getContextRootTextNode().getValue();
-		}
-		return null;
+	public String getNodeValue(String nodeName){
+		return handler.getNodeValue(nodeName);
 	}
 	
-	public int getArtifactIdOffset() {
-		if(handler.getArtifactIdTextNode()!=null){
-			return handler.getArtifactIdTextNode().getOffset();
-		}
-		return -1;
-	}
-	
-	public String getArtifactIdValue(){
-		if(handler.getArtifactIdTextNode()!=null){
-			return handler.getArtifactIdTextNode().getValue();
-		}
-		return null;
-	}
 }
