@@ -36,7 +36,7 @@
         
         <property name="tptp-version"	 value="4.6.0"/>
         <property name="tptp"		value="tptp.runtime-TPTP-${tptp-version}.zip"/>
-        <property name="tptp-runtime-url"		value="http://www.eclipse.org/downloads/download.php?file=/tptp/${tptp-version}/TPTP-${tptp-version}/${tptp}"/>       
+        <property name="tptp-runtime-url"		value="http://download.eclipse.org/tptp/${tptp-version}/TPTP-${tptp-version}/${tptp}"/>       
     </target>
 
 	<target name="tptp" description="Download and extract TPTP runtime package">
@@ -48,7 +48,7 @@
 	        <echo>##                                                                               </echo>
 	        <echo>#################################################################################</echo>
 	        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-	        <get src="${tptp-runtime-url}${tptp}"
+	        <get src="${tptp-runtime-url}"
 	             dest="${LOCAL_M2_REPO}/eclipse-downloads/${tptp}" 
 	             verbose="true"
 	             ignoreerrors="true"
