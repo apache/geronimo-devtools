@@ -30,8 +30,13 @@ public class GeronimoAccountManager {
         userProperties = new Properties();
         groupProperties= new Properties();
         try {
-          userProperties.load(new FileInputStream(new File(securityPath,userPropertiesFile)));
-          groupProperties.load(new FileInputStream(new File(securityPath,groupPropertiesFile)));
+          FileInputStream fis = new FileInputStream(new File(securityPath,userPropertiesFile));
+          userProperties.load(fis);
+          fis.close();
+          
+          fis = new FileInputStream(new File(securityPath,groupPropertiesFile));
+          groupProperties.load(fis);
+          fis.close();
       } catch (FileNotFoundException e) {
           Trace.trace(Trace.SEVERE, e.getMessage());
           throw e;
@@ -112,8 +117,13 @@ public class GeronimoAccountManager {
     
     public void persist() throws Exception, IOException{
         try{
-            groupProperties.store(new FileOutputStream(new File(securityPath,groupPropertiesFile)), "");
-            userProperties.store(new FileOutputStream(new File(securityPath,userPropertiesFile)), "");
+        	FileOutputStream fos = new FileOutputStream(new File(securityPath,groupPropertiesFile));
+            groupProperties.store(fos, "");
+            fos.close();
+            
+            fos = new FileOutputStream(new File(securityPath,userPropertiesFile));
+            userProperties.store(fos, "");
+            fos.close();
         } catch (FileNotFoundException e) {
             Trace.trace(Trace.SEVERE, e.getMessage());
             throw e;

@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.geronimo.kernel.classloader.JarFileClassLoader;
 import org.apache.geronimo.st.core.internal.Messages;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -237,15 +238,16 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
         }
 
         if (systemjarURL != null) {
-            URLClassLoader cl = new URLClassLoader(new URL[] { systemjarURL});
-            try {
-                Class clazz = cl.loadClass("org.apache.geronimo.system.serverinfo.ServerConstants");
-                Method method = clazz.getMethod("getVersion", new Class[] {});
-                return(String) method.invoke(null, null);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
+        	JarFileClassLoader loader = new JarFileClassLoader(null,new URL[]{systemjarURL},this.getClass().getClassLoader());
+			try {
+				Class clazz = loader.loadClass("org.apache.geronimo.system.serverinfo.ServerConstants");
+				Method method = clazz.getMethod("getVersion", new Class[] {});
+				String version =(String) method.invoke(null, null);
+				loader.destroy();
+				return version;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
         }
         return null;
     }
