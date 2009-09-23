@@ -177,7 +177,10 @@ public class DBPoolWizard extends AbstractTableWizard {
 	    extModule.setExternalPath(pattern);
 	    pattern.setGroupId(page0.text[1].getText());
 	    pattern.setArtifactId(page0.text[2].getText());
-	    pattern.setVersion(page0.text[3].getText());
+	    //empty version element will cause deploy failure
+	    String version = page0.text[3].getText();
+	    if (version!=null && version.length()!=0)
+	    	pattern.setVersion(page0.text[3].getText());
 	    pattern.setType(page0.text[4].getText().trim());
 
 	    Connector conn = new Connector();
@@ -920,54 +923,4 @@ class DriverDialog extends Dialog {
 
 }
 
-/**
- * Needn't it, so comment it.
- */
-/*
- * class PlanWizard extends Wizard {
- * 
- * String plan;
- * 
- * protected ImageDescriptor descriptor = Activator.imageDescriptorFromPlugin(
- * "org.apache.geronimo.st.ui", "icons/bigG.gif");
- * 
- * public PlanWizard(String plan) { setWindowTitle("Plan Wizard"); this.plan =
- * plan; }
- * 
- * public void addPages() { PlanWizardPage page1 = new PlanWizardPage("Plan",
- * plan); page1.setImageDescriptor(descriptor); addPage(page1);
- * 
- * }
- * 
- * public boolean performFinish() { // =============to
- * remove==========================================
- * System.out.println("To Deploy The Plan!======================");
- * System.out.println(plan); //
- * ================================================================ return true;
- * }
- * 
- * public class PlanWizardPage extends WizardPage {
- * 
- * String plan;
- * 
- * protected PlanWizardPage(String pageName, String plan) { super(pageName);
- * this.plan = plan; setTitle("Plan"); setDescription("Edit plan to Deploy"); }
- * 
- * public void createControl(Composite parent) { Composite composite = new
- * Composite(parent, SWT.NULL); GridLayout layout = new GridLayout();
- * layout.numColumns = 2; composite.setLayout(layout); GridData data = new
- * GridData(); data.verticalAlignment = GridData.FILL; data.horizontalAlignment
- * = GridData.FILL; data.widthHint = 300; composite.setLayoutData(data);
- * 
- * Text text = new Text(composite, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL |
- * SWT.V_SCROLL); GridData textData = new GridData(); textData.widthHint = 600;
- * textData.heightHint = 400; text.setLayoutData(textData); text.setText(plan);
- * 
- * setControl(composite);
- * 
- * }
- * 
- * }
- * 
- * }
- */
+
