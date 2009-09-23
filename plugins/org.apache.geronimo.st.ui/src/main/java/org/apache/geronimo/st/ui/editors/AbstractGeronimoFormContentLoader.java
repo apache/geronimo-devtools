@@ -68,7 +68,7 @@ public abstract class AbstractGeronimoFormContentLoader implements IGeronimoForm
 
 	abstract public void addApplicationClientPlanPages(FormEditor editor) throws PartInitException;
 
-	public void saveDeploymentPlan(JAXBElement deploymentPlan, IFile file) throws IOException, JAXBException {
+	public void saveDeploymentPlan(JAXBElement deploymentPlan, IFile file) throws Exception {
 		JAXBUtils.marshalDeploymentPlan(deploymentPlan, file);
 	}
 

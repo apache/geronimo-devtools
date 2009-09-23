@@ -30,6 +30,7 @@ import org.apache.geronimo.jee.application.Application;
 import org.apache.geronimo.jee.application.ExtModule;
 import org.apache.geronimo.jee.application.Path;
 import org.apache.geronimo.jee.deployment.Pattern;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -37,6 +38,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -196,7 +198,12 @@ public class ExtModuleWizard extends AbstractTableWizard {
                     }
                     else if (i > 2 && extModule.getExternalPath() != null) {
                         Pattern pattern = extModule.getExternalPath();
-                        String value = (String) JAXBUtils.getValue(pattern,getTableColumnEAttributes()[i]);
+                        String value;
+						try {
+							value = (String) JAXBUtils.getValue(pattern,getTableColumnEAttributes()[i]);
+						} catch (Exception e1) {
+							value = e1.getMessage();
+						}
                         if (value != null) {
                             text.setText(value);
                         }
@@ -307,7 +314,11 @@ public class ExtModuleWizard extends AbstractTableWizard {
             for (int i = 2; i < 6; i++) {
                 String value = page.getTextEntry(i).getText();
                 String attribute = getTableColumnEAttributes()[i + 1];
-                JAXBUtils.setValue(pattern, attribute, value);
+                try {
+					JAXBUtils.setValue(pattern, attribute, value);
+				} catch (Exception e) {
+					MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+				}
             }
             extModule.setInternalPath(null);
         }

@@ -95,14 +95,14 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEd
 	 * 
 	 * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor#loadDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
-	public JAXBElement loadDeploymentPlan(IFile file) {
+	public JAXBElement loadDeploymentPlan(IFile file) throws Exception {
         Trace.tracePoint("ENTRY", "SharedDeploymentPlanEditor.loadDeploymentPlan", file);
         JAXBElement jaxbElement = getLoader() != null ? currentLoader.loadDeploymentPlan(file) : null;
         Trace.tracePoint("EXIT", "SharedDeploymentPlanEditor.loadDeploymentPlan", jaxbElement);
 		return jaxbElement;
 	}
 	
-	public void saveDeploymentPlan(IFile file) throws IOException, JAXBException {
+	public void saveDeploymentPlan(IFile file) throws Exception {
 		if (getLoader() != null) {
 			getLoader().saveDeploymentPlan(deploymentPlan, file);
 		}

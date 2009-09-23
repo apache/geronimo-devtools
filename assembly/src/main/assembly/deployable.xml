@@ -55,14 +55,19 @@
             <outputDirectory>eclipse/plugins/</outputDirectory>
             <unpack>false</unpack>
             <includes>
+            		<include>org.apache.geronimo.devtools:org.apache.geronimo.jee.v11.jaxbmodel</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.jee.v21.jaxbmodel</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.common</include>
+								<include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v11</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v20</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v21</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v22</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.core</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.ui</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.schemas</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v11.schemas</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v11.core</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v11.ui</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v20.core</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v20.ui</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v21.core</include>
@@ -82,7 +87,7 @@
             <outputDirectory>eclipse/features/</outputDirectory>
             <unpack>true</unpack>
             <includes>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.v21.feature</include>
+                <!-- include>org.apache.geronimo.devtools:org.apache.geronimo.v21.feature</include -->
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.v22.feature</include>
             </includes>
         </dependencySet>

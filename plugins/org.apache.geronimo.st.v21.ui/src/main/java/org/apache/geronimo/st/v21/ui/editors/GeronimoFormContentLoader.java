@@ -111,11 +111,11 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
      * 
      * @see org.apache.geronimo.st.ui.editors.IGeronimoFormContentLoader#loadDeploymentPlan(org.eclipse.core.resources.IFile)
      */
-    public JAXBElement loadDeploymentPlan(IFile file) {
+    public JAXBElement loadDeploymentPlan(IFile file) throws Exception {
         return GeronimoV21Utils.getDeploymentPlan(file);
     }
     
-    public void saveDeploymentPlan(JAXBElement deploymentPlan, IFile file) throws IOException, JAXBException {
+    public void saveDeploymentPlan(JAXBElement deploymentPlan, IFile file) throws Exception {
         JAXBUtils.marshalDeploymentPlan(deploymentPlan, file);
     }
 

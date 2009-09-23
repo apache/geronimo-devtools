@@ -37,10 +37,9 @@ public class ConversionHelper {
      * and return the JAXB representation
      * 
      * @param plan Geronimo deployment plan
-     * 
-     * @exception JAXBException if JAXB error
+     * @throws Exception 
      */
-    public static void convertGeronimoWebFile( IFile plan ) throws JAXBException {
+    public static void convertGeronimoWebFile( IFile plan ) throws Exception {
         Trace.tracePoint("Entry", "ConversionHelper.convertGeronimoWebFile", plan);
 
         convertNamespace( plan );
@@ -54,10 +53,9 @@ public class ConversionHelper {
      * JAXB representation 
      * 
      * @param plan OpenEJB deployment plan
-     * 
-     * @exception JAXBException if JAXB error
+     * @throws Exception 
      */
-    public static void convertOpenEjbJarFile( IFile plan ) throws JAXBException {
+    public static void convertOpenEjbJarFile( IFile plan ) throws Exception {
         Trace.tracePoint("Entry", "ConversionHelper.convertGeronimoOpenEjbFile", plan);
 
         convertNamespace( plan );
@@ -130,7 +128,7 @@ public class ConversionHelper {
      * 
      * @param plan Geronimo deployment plan
      */
-    private static void convertNamespace( IFile plan ) {
+    private static void convertNamespace( IFile plan ) throws Exception{
 
         // 
         // Unmarshall and filter the deployment plan 

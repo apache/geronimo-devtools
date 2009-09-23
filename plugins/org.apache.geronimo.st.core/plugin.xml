@@ -62,6 +62,7 @@
      --> 
     <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
         <runtime-component-type id="org.apache.geronimo.runtime"/>
+        <runtime-component-version type="org.apache.geronimo.runtime" version="1.1"/>
         <runtime-component-version type="org.apache.geronimo.runtime" version="2.0"/>
         <runtime-component-version type="org.apache.geronimo.runtime" version="2.1"/>
         <runtime-component-version type="org.apache.geronimo.runtime" version="2.2"/>
@@ -74,6 +75,17 @@
             <type
                 class="org.eclipse.jst.common.project.facet.core.IClasspathProvider"/>
         </adapter>
+
+		<supported>
+            <runtime-component id="org.apache.geronimo.runtime" version="1.1"/>
+            <facet id="org.apache.geronimo.facet" version="1.1"/>
+            <facet id="jst.web" version="2.2,2.3,2.4"/>
+            <facet id="jst.ejb" version="1.1,2.0,2.1"/>
+            <facet id="jst.ear" version="1.2,1.3,1.4"/>
+            <facet id="jst.connector" version="1.0,1.5"/>
+            <facet id="jst.appclient" version="1.2,1.3,1.4"/>
+            <facet id="jst.utility" version="1.0"/>
+        </supported>
 
         <supported>
             <runtime-component id="org.apache.geronimo.runtime" version="2.0"/>

@@ -79,4 +79,5 @@ public class Activator extends AbstractUIPlugin {
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return AbstractUIPlugin.imageDescriptorFromPlugin("org.apache.geronimo.st.v21.ui", path);
 	}
+	
 }

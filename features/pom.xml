@@ -29,7 +29,6 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modules>
-        <module>org.apache.geronimo.v21.feature</module>
         <module>org.apache.geronimo.v22.feature</module>
     </modules>
 </project>

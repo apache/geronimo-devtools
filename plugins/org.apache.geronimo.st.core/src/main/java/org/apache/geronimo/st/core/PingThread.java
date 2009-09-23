@@ -90,6 +90,7 @@ public class PingThread extends Thread {
 			}
 		}
 
+		//don't need to show this message to user, since wst Server will show the timeout message to user
 		Trace.trace(Trace.SEVERE, "Ping: Can't ping for server startup.");
 		server.stop(false);
 	}

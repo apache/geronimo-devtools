@@ -145,6 +145,38 @@
          download-size="1052"
          install-size="1052"
          version="2.2.0"/>
+         
+    <plugin
+         id="org.apache.geronimo.st.v11.core"
+         download-size="48"
+         install-size="48"
+         version="2.2.0"
+         unpack="false"/>
     
+    <plugin
+         id="org.apache.geronimo.st.v11.ui"
+         download-size="164"
+         install-size="164"
+         version="2.2.0"
+         unpack="false"/>
+
+    <plugin
+         id="org.apache.geronimo.runtime.v11"
+         download-size="1252"
+         install-size="1252"
+         version="2.2.0"/>
+
+    <plugin
+         id="org.apache.geronimo.jee.v11.jaxbmodel"
+         download-size="140"
+         install-size="140"
+         version="2.2.0"
+         unpack="false"/>
     
+    <plugin
+         id="org.apache.geronimo.st.v11.schemas"
+         download-size="72"
+         install-size="72"
+         version="2.2.0"
+         unpack="false"/>
 </feature>

@@ -18,6 +18,7 @@ package org.apache.geronimo.st.core.operations;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.GeronimoUtils;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
@@ -54,11 +55,15 @@ public abstract class DeploymentPlanCreationOperation extends
 	 */
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info)
 			throws ExecutionException {
-		execute();
+		try {
+			execute();
+		}catch (Exception e){
+			return new Status(IStatus.ERROR,Activator.PLUGIN_ID,"Error in creating deployment plan",e);
+		}
 		return Status.OK_STATUS;
 	}
 
-	public void execute() {
+	public void execute() throws Exception {
 		IVirtualComponent comp = ComponentCore.createComponent(getProject());
 
 		String type = J2EEProjectUtilities.getJ2EEProjectType(getProject());
@@ -73,27 +78,34 @@ public abstract class DeploymentPlanCreationOperation extends
 			createGeronimoApplicationClientDeploymentPlan(GeronimoUtils.getApplicationClientDeploymentPlanFile(comp));
 		} else if (IModuleConstants.JST_CONNECTOR_MODULE.equals(type)) {
 			createConnectorDeploymentPlan(GeronimoUtils.getConnectorDeploymentPlanFile(comp));
+		} else if (IModuleConstants.JST_UTILITY_MODULE.equals(type)) {
+			createServiceDeploymentPlan(GeronimoUtils.getServiceDeploymentPlanFile(comp));
 		}
 	}
 
 	
-	public JAXBElement createOpenEjbDeploymentPlan(IFile file) {
+	public JAXBElement createOpenEjbDeploymentPlan(IFile file) throws Exception {
 		return null;
 	}
 
-	public JAXBElement createGeronimoWebDeploymentPlan(IFile file) {
+	public JAXBElement createGeronimoWebDeploymentPlan(IFile file) throws Exception {
 		return null;
 	}
 
-	public JAXBElement createGeronimoApplicationDeploymentPlan(IFile file) {
+	public JAXBElement createGeronimoApplicationDeploymentPlan(IFile file) throws Exception {
 		return null;
 	}
 
-	public JAXBElement createGeronimoApplicationClientDeploymentPlan(IFile file) {
+	public JAXBElement createGeronimoApplicationClientDeploymentPlan(IFile file) throws Exception{
 		return null;
 	}
 
-	public JAXBElement createConnectorDeploymentPlan(IFile file) {
+	public JAXBElement createConnectorDeploymentPlan(IFile file) throws Exception{
+		return null;
+	}
+	
+
+	public JAXBElement createServiceDeploymentPlan(IFile file) throws Exception{
 		return null;
 	}
 }

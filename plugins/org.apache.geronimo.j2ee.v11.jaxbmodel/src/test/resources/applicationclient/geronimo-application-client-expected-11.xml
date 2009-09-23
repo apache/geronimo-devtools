@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one or more
+   contributor license agreements.  See the NOTICE file distributed with
+   this work for additional information regarding copyright ownership.
+   The ASF licenses this file to You under the Apache License, Version 2.0
+   (the "License"); you may not use this file except in compliance with
+   the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+   
+<!-- @version $Rev: 652419 $ $Date: 2008-05-01 10:09:32 +0800 (Thu, 01 May 2008) $ -->
+   
+<client:application-client xmlns:dep="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:name="http://geronimo.apache.org/xml/ns/naming-1.2" xmlns:sec="http://geronimo.apache.org/xml/ns/security-2.0" xmlns:client="http://geronimo.apache.org/xml/ns/j2ee/application-client-2.0" xmlns:conn="http://geronimo.apache.org/xml/ns/j2ee/connector-1.2">
+    <dep:client-environment>
+        <dep:moduleId>
+            <dep:groupId>org.apache.geronimo.testsuite</dep:groupId>
+            <dep:artifactId>agent-ear</dep:artifactId>
+            <dep:version>2.2-SNAPSHOT</dep:version>
+            <dep:type>ear</dep:type>
+        </dep:moduleId>
+        <dep:dependencies>
+            <dep:dependency>
+                <dep:groupId>org.apache.geronimo.testsuite</dep:groupId>
+                <dep:artifactId>agent-ds</dep:artifactId>
+                <dep:version>2.2-SNAPSHOT</dep:version>
+                <dep:type>car</dep:type>
+            </dep:dependency>
+        </dep:dependencies>
+    </dep:client-environment>
+    <dep:server-environment>
+        <dep:moduleId>
+            <dep:groupId>org.apache.geronimo.testsuite</dep:groupId>
+            <dep:artifactId>agent-ear</dep:artifactId>
+            <dep:version>2.2-SNAPSHOT</dep:version>
+            <dep:type>ear</dep:type>
+        </dep:moduleId>
+        <dep:dependencies>
+            <dep:dependency>
+                <dep:groupId>org.apache.geronimo.testsuite</dep:groupId>
+                <dep:artifactId>agent-ds</dep:artifactId>
+                <dep:version>2.2-SNAPSHOT</dep:version>
+                <dep:type>car</dep:type>
+            </dep:dependency>
+        </dep:dependencies>
+    </dep:server-environment>
+    <name:gbean-ref>
+        <name:ref-name>gbeanref-name</name:ref-name>
+        <name:ref-type>gbeanref-reftype</name:ref-type>
+        <name:pattern>
+            <name:groupId>gbeanref-pattern-groupid</name:groupId>
+            <name:artifactId>gbeanref-pattern-artifactid</name:artifactId>
+            <name:version>gbeanref-pattern-version</name:version>
+            <name:module>gbeanref-pattern-module</name:module>
+            <name:name>gbeanref-pattern-name</name:name>
+        </name:pattern>
+    </name:gbean-ref>
+    <name:ejb-ref>
+        <name:ref-name>ejbref-refname</name:ref-name>
+        <name:pattern>
+            <name:groupId>ejbref-pattern-groupid</name:groupId>
+            <name:artifactId>ejbref-pattern-artifactid</name:artifactId>
+            <name:version>ejbref-pattern-version</name:version>
+            <name:module>ejbref-pattern-module</name:module>
+            <name:name>ejbref-pattern-name</name:name>
+        </name:pattern>
+        <name:ns-corbaloc>ejbref-nscorbaloc</name:ns-corbaloc>
+        <name:name>ejbref-name</name:name>
+        <name:css>
+            <name:groupId>ejbref-css-groupid</name:groupId>
+            <name:artifactId>ejbref-css-artifactid</name:artifactId>
+            <name:version>ejbref-css-version</name:version>
+            <name:module>ejbref-css-module</name:module>
+            <name:name>ejbref-css-name</name:name>
+        </name:css>
+        <name:css-link>ejbref-csslink</name:css-link>
+        <name:ejb-link>ejbref-ejblink</name:ejb-link>
+    </name:ejb-ref>
+    <name:service-ref>
+        <name:service-ref-name>serviceref-refname</name:service-ref-name>
+        <name:service-completion>
+            <name:service-name>serviceref-servicecompletion-servicename</name:service-name>
+            <name:port-completion>
+                <name:port>
+                    <name:port-name>serviceref-servicecompletion-portcompletion-port-portname</name:port-name>
+                    <name:protocol>serviceref-servicecompletion-portcompletion-port-protocol</name:protocol>
+                    <name:host>serviceref-servicecompletion-portcompletion-port-host</name:host>
+                    <name:port>0</name:port>
+                    <name:uri>serviceref-servicecompletion-portcompletion-port-uri</name:uri>
+                    <name:credentials-name>serviceref-servicecompletion-portcompletion-port-credentialsname</name:credentials-name>
+                </name:port>
+                <name:binding-name>serviceref-servicecompletion-portcompletion-bindingname</name:binding-name>
+            </name:port-completion>
+        </name:service-completion>
+        <name:port>
+            <name:port-name>serviceref-port-portname</name:port-name>
+            <name:protocol>serviceref-port-protocol</name:protocol>
+            <name:host>serviceref-port-host</name:host>
+            <name:port>0</name:port>
+            <name:uri>serviceref-port-uri</name:uri>
+            <name:credentials-name>serviceref-port-credentialsname</name:credentials-name>
+        </name:port>
+    </name:service-ref>
+    <name:resource-ref>
+        <name:ref-name>resourceref-refname</name:ref-name>
+        <name:pattern>
+            <name:groupId>resourceref-pattern-groupid</name:groupId>
+            <name:artifactId>resourceref-pattern-artifactid</name:artifactId>
+            <name:version>resourceref-pattern-version</name:version>
+            <name:module>resourcref-pattern-module</name:module>
+            <name:name>resourceref-pattern-name</name:name>
+        </name:pattern>
+        <name:resource-link>resourceref-resourcelink</name:resource-link>
+        <name:url>resourceref-url</name:url>
+    </name:resource-ref>
+    <name:resource-env-ref>
+        <name:ref-name>resourceenvref-refname</name:ref-name>
+        <name:pattern>
+            <name:groupId>resourceenvref-pattern-groupid</name:groupId>
+            <name:artifactId>resourceenvref-pattern-artifactid</name:artifactId>
+            <name:version>resourceenvref-pattern-version</name:version>
+            <name:module>resourceenvref-pattern-module</name:module>
+            <name:name>resourceenvref-pattern-name</name:name>
+        </name:pattern>
+        <name:message-destination-link>resourceenvref-messagedestinationlink</name:message-destination-link>
+        <name:admin-object-module>resourceenvref-adminobjectmodule</name:admin-object-module>
+        <name:admin-object-link>resourceenvref-adminobjectlink</name:admin-object-link>
+    </name:resource-env-ref>
+    <name:message-destination>
+        <name:message-destination-name>messagedestination-name</name:message-destination-name>
+        <name:pattern>
+            <name:groupId>messagedestination-pattern-groupid</name:groupId>
+            <name:artifactId>messagedestination-pattern-artifactid</name:artifactId>
+            <name:version>messagedestination-pattern-version</name:version>
+            <name:module>messagedestination-pattern-module</name:module>
+            <name:name>messagedestination-pattern-name</name:name>
+        </name:pattern>
+        <name:admin-object-module>messagedestination-adminobjectmodule</name:admin-object-module>
+        <name:admin-object-link>messagedestination-adminobjectlink</name:admin-object-link>
+    </name:message-destination>
+    <sec:default-subject>
+        <sec:description>subjectinfo-description</sec:description>
+        <sec:realm>subjectinfo-realm</sec:realm>
+        <sec:id>subjectinfo-id</sec:id>
+    </sec:default-subject>
+    <client:realm-name>realmname</client:realm-name>
+    <client:callback-handler>callbackhandler</client:callback-handler>
+    <client:resource>
+        <client:external-rar>
+            <dep:groupId>resource-externalrar-groupid</dep:groupId>
+            <dep:artifactId>resource-externalrar-artifactid</dep:artifactId>
+            <dep:version>resource-externalrar-version</dep:version>
+            <dep:module>resource-externalrar-module</dep:module>
+            <dep:type>resource-externalrar-type</dep:type>
+            <dep:name>resource-externalrar-customfoo</dep:name>
+        </client:external-rar>
+        <client:internal-rar>resource-internalrar</client:internal-rar>
+        <conn:connector>
+            <dep:environment>
+                <dep:moduleId>
+                    <dep:groupId>org.apache.geronimo.testsuite</dep:groupId>
+                    <dep:artifactId>agent-ear</dep:artifactId>
+                    <dep:version>2.2-SNAPSHOT</dep:version>
+                    <dep:type>ear</dep:type>
+                </dep:moduleId>
+                <dep:dependencies>
+                    <dep:dependency>
+                        <dep:groupId>org.apache.geronimo.testsuite</dep:groupId>
+                        <dep:artifactId>agent-ds</dep:artifactId>
+                        <dep:version>2.2-SNAPSHOT</dep:version>
+                        <dep:type>car</dep:type>
+                    </dep:dependency>
+                </dep:dependencies>
+            </dep:environment>
+            <conn:resourceadapter>
+                <conn:resourceadapter-instance>
+                    <conn:resourceadapter-name>resource-connector-resourceadapter-name</conn:resourceadapter-name>
+                    <conn:config-property-setting name="resource-connector-resourceadapter-instance-name">resource-connector-resourceadapter-instance-value</conn:config-property-setting>
+                    <name:workmanager>
+                        <name:pattern>
+                            <name:groupId>connector-resourceadapter-workmanager-pattern-groupid</name:groupId>
+                            <name:artifactId>connector-resourceadapter-workmanager-pattern-artifactid</name:artifactId>
+                            <name:version>connector-resourceadapter-workmanager-pattern-version</name:version>
+                            <name:module>connector-resourceadapter-workmanager-pattern-module</name:module>
+                            <name:name>connector-resourceadapter-workmanager-pattern-name</name:name>
+                        </name:pattern>
+                        <name:gbean-link>connector-resourceadapter-workmanager-gbeanlink</name:gbean-link>
+                    </name:workmanager>
+                </conn:resourceadapter-instance>
+                <conn:outbound-resourceadapter>
+                    <conn:connection-definition>
+                        <conn:connectionfactory-interface>resource-connector-resourceadapter-outbound-connectiondefinition-interface</conn:connectionfactory-interface>
+                        <conn:connectiondefinition-instance>
+                            <conn:name>resource-connector-resourceadapter-outbound-connectiondefinition-instance-name</conn:name>
+                            <conn:implemented-interface>resource-connector-resourceadapter-outbound-connectiondefinition-instance-implementedinterface</conn:implemented-interface>
+                            <conn:config-property-setting name="resource-connector-resourceadapter-outbound-connectiondefinition-instance-name">resource-connector-resourceadapter-outbound-connectiondefinition-instance-value</conn:config-property-setting>
+                            <conn:connectionmanager>
+<conn:container-managed-security/>
+<conn:no-transaction/>
+<conn:local-transaction/>
+<conn:xa-transaction>
+    <conn:transaction-caching/>
+    <conn:thread-caching/>
+</conn:xa-transaction>
+<conn:transaction-log/>
+<conn:no-pool/>
+<conn:single-pool>
+    <conn:max-size>0</conn:max-size>
+    <conn:min-size>0</conn:min-size>
+    <conn:blocking-timeout-milliseconds>0</conn:blocking-timeout-milliseconds>
+    <conn:idle-timeout-minutes>0</conn:idle-timeout-minutes>
+    <conn:match-one/>
+    <conn:match-all/>
+    <conn:select-one-assume-match/>
+</conn:single-pool>
+<conn:partitioned-pool>
+    <conn:max-size>0</conn:max-size>
+    <conn:min-size>0</conn:min-size>
+    <conn:blocking-timeout-milliseconds>0</conn:blocking-timeout-milliseconds>
+    <conn:idle-timeout-minutes>0</conn:idle-timeout-minutes>
+    <conn:match-one/>
+    <conn:match-all/>
+    <conn:select-one-assume-match/>
+    <conn:partition-by-subject/>
+    <conn:partition-by-connectionrequestinfo/>
+</conn:partitioned-pool>
+                            </conn:connectionmanager>
+                        </conn:connectiondefinition-instance>
+                    </conn:connection-definition>
+                </conn:outbound-resourceadapter>
+            </conn:resourceadapter>
+            <conn:adminobject>
+                <conn:adminobject-interface>resource-connector-adminobject-adminobjectinterface</conn:adminobject-interface>
+                <conn:adminobject-class>resource-connector-adminobject-adminobjectclass</conn:adminobject-class>
+                <conn:adminobject-instance>
+                    <conn:message-destination-name>resource-connector-adminobject-instance-messagedestinationname</conn:message-destination-name>
+                    <conn:config-property-setting name="resource-connector-adminobject-instance-name">resource-connector-adminobject-instance-value</conn:config-property-setting>
+                </conn:adminobject-instance>
+            </conn:adminobject>
+            <dep:gbean name="resource-connector-gbean-name" class="resource-connector-gbean-class"/>
+        </conn:connector>
+    </client:resource>
+    <dep:gbean name="service-gbean-name" class="service-gbean-class"/>
+</client:application-client>

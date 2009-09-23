@@ -95,12 +95,14 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
             }
         } catch (Exception e) {
             Trace.trace(Trace.SEVERE, "Error saving", e);
+            MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error saving", e.getMessage());
         } finally {
             try {
                 if (is != null)
                     is.close();
             } catch (Exception e) {
-                // do nothing
+            	Trace.trace(Trace.SEVERE, "Error saving", e);
+            	MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error saving", e.getMessage());
             }
         }
     }
@@ -184,7 +186,11 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
         super.init(site, input);
         if (input instanceof IFileEditorInput) {
             IFileEditorInput fei = (IFileEditorInput) input;
-            deploymentPlan = loadDeploymentPlan(fei.getFile());
+            try {
+				deploymentPlan = loadDeploymentPlan(fei.getFile());
+			} catch (Exception e1) {
+				throw new PartInitException("Error in loading deployment plan");
+			}
             
             boolean fix = false;
             if(deploymentPlan == null) {
@@ -201,10 +207,14 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
                     IDataModelOperation op = new ImportDeploymentPlanOperation(model);
                     op.execute(new NullProgressMonitor(), null);
                 } catch (Exception e) {
-                    //ingnore
+                   throw new PartInitException(e.getMessage());
                 }
                 
-                deploymentPlan = loadDeploymentPlan(fei.getFile());
+                try {
+					deploymentPlan = loadDeploymentPlan(fei.getFile());
+				} catch (Exception e) {
+					throw new PartInitException("Error in loading deployment plan");
+				}
                 
                 if (deploymentPlan == null) {    
                     MessageDialog.openInformation(Display.getDefault().getActiveShell(), Messages.errorOpenDialog, Messages.editorDefault);
@@ -213,7 +223,7 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
         }
     }
 
-    public void reloadDeploymentPlan() {
+    public void reloadDeploymentPlan() throws Exception {
         IEditorInput input = getEditorInput();
         if (input instanceof IFileEditorInput) {
             IFileEditorInput fei = (IFileEditorInput) input;
@@ -253,7 +263,7 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
         super.pageChange(newPageIndex);
     }
 
-    abstract public JAXBElement loadDeploymentPlan(IFile file);
-    abstract public void saveDeploymentPlan(IFile file) throws IOException, JAXBException;
+    abstract public JAXBElement loadDeploymentPlan(IFile file) throws Exception;
+    abstract public void saveDeploymentPlan(IFile file) throws Exception;
 
 }

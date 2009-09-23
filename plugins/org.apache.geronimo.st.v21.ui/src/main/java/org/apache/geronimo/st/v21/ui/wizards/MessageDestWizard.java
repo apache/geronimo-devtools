@@ -29,9 +29,11 @@ import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.jee.naming.MessageDestination;
 import org.apache.geronimo.jee.naming.Pattern;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
@@ -99,14 +101,24 @@ public class MessageDestWizard extends AbstractTableWizard {
                     if (i > 2) {
                         // get the pattern value
                         Pattern pattern = ((MessageDestination) eObject).getPattern();
-                        String value = (String) JAXBUtils.getValue(pattern,getTableColumnEAttributes()[i]);
+                        String value = null;
+						try {
+							value = (String) JAXBUtils.getValue(pattern,getTableColumnEAttributes()[i]);
+						} catch (Exception e) {
+							MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+						}
                         if (value != null) {
                             text.setText(value);
                         }                        
                     }
                     else
                     {
-                        String value = (String) JAXBUtils.getValue(eObject,getTableColumnEAttributes()[i]);
+                        String value = null;
+						try {
+							value = (String) JAXBUtils.getValue(eObject,getTableColumnEAttributes()[i]);
+						} catch (Exception e) {
+							MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+						}
                         if (value != null) {
                             text.setText(value);
                         }
@@ -156,9 +168,17 @@ public class MessageDestWizard extends AbstractTableWizard {
             String value = page.getTextEntry(i).getText();
             String attribute = getTableColumnEAttributes()[i];
             if (i < 3)
-                JAXBUtils.setValue(eObject, attribute, value);
-            else
-                JAXBUtils.setValue(msgPattern, attribute, value);
+				try {
+					JAXBUtils.setValue(eObject, attribute, value);
+				} catch (Exception e) {
+					MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+				}
+			else
+				try {
+					JAXBUtils.setValue(msgPattern, attribute, value);
+				} catch (Exception e) {
+					MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+				}
         }
         
         if (section.getViewer().getInput() == section.getPlan()) {

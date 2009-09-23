@@ -25,12 +25,12 @@ import org.eclipse.core.resources.IFile;
  */
 public interface IDeploymentPlanCreationOp {
 
-	public JAXBElement createOpenEjbDeploymentPlan(IFile file);
+	public JAXBElement createOpenEjbDeploymentPlan(IFile file) throws Exception;
 
-	public JAXBElement createGeronimoWebDeploymentPlan(IFile file);
+	public JAXBElement createGeronimoWebDeploymentPlan(IFile file) throws Exception;
 
-	public JAXBElement createGeronimoApplicationDeploymentPlan(IFile file);
+	public JAXBElement createGeronimoApplicationDeploymentPlan(IFile file) throws Exception;
 
-	public JAXBElement createConnectorDeploymentPlan(IFile file);
+	public JAXBElement createConnectorDeploymentPlan(IFile file) throws Exception;
 
 }

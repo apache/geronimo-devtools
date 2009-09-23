@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!-- @version $Rev: 671363 $ $Date: 2008-06-25 06:02:37 +0800 (Wed, 25 Jun 2008) $ -->
+
+<ejb:openejb-jar xmlns:dep="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:name="http://geronimo.apache.org/xml/ns/naming-1.2" xmlns:ejb="http://openejb.apache.org/xml/ns/openejb-jar-2.2" xmlns:pkgen="http://openejb.apache.org/xml/ns/pkgen-2.1" xmlns:app="http://geronimo.apache.org/xml/ns/j2ee/application-2.0">
+    <dep:environment>
+        <dep:moduleId>
+            <dep:groupId>com.ibm.wasce.samples</dep:groupId>
+            <dep:artifactId>MDBDemo</dep:artifactId>
+            <dep:version>2.1.0.0</dep:version>
+            <dep:type>car</dep:type>
+        </dep:moduleId>
+        <dep:dependencies>
+            <dep:dependency>
+                <dep:groupId>org.apache.geronimo.configs</dep:groupId>
+                <dep:artifactId>activemq-ra</dep:artifactId>
+                <dep:type>car</dep:type>
+            </dep:dependency>
+        </dep:dependencies>
+        <dep:hidden-classes/>
+        <dep:non-overridable-classes/>
+    </dep:environment>
+    <ejb:enterprise-beans>
+        <ejb:message-driven>
+            <ejb:ejb-name>SampleMDB</ejb:ejb-name>
+            <name:resource-adapter>
+                <name:resource-link>ActiveMQ RA</name:resource-link>
+            </name:resource-adapter>
+            <ejb:activation-config>
+                <ejb:activation-config-property>
+                    <ejb:activation-config-property-name>destination</ejb:activation-config-property-name>
+                    <ejb:activation-config-property-value>SendReceiveQueue</ejb:activation-config-property-value>
+                </ejb:activation-config-property>
+                <ejb:activation-config-property>
+                    <ejb:activation-config-property-name>destinationType</ejb:activation-config-property-name>
+                    <ejb:activation-config-property-value>javax.jms.Queue</ejb:activation-config-property-value>
+                </ejb:activation-config-property>
+            </ejb:activation-config>
+            <name:ejb-ref>
+                <name:ref-name>CustomerHomeRemote</name:ref-name>
+                <name:ejb-link>CustomerEJB</name:ejb-link>
+            </name:ejb-ref>
+        </ejb:message-driven>
+        <ejb:entity>
+            <ejb:ejb-name>CustomerEJB</ejb:ejb-name>
+            <ejb:jndi-name>CustomerHomeRemote</ejb:jndi-name>
+            <ejb:local-jndi-name></ejb:local-jndi-name>
+            <name:resource-ref>
+                <name:ref-name>jdbc/ibm-demo</name:ref-name>
+                <name:resource-link>SystemDatasource</name:resource-link>
+            </name:resource-ref>
+        </ejb:entity>
+    </ejb:enterprise-beans>
+</ejb:openejb-jar>

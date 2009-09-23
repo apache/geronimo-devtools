@@ -39,11 +39,13 @@ import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.wizards.SecurityRoleMappingWizard;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
@@ -112,7 +114,11 @@ public class SecurityRoleMappingSection extends AbstractTreeSection {
         TreeItem selectedItem = tree.getSelection()[0];
         Object selectedObject = selectedItem.getData();
         Role role = (Role) selectedItem.getParentItem().getData();
-        ((ArrayList) JAXBUtils.getValue(role, selectedObject.getClass().getSimpleName())).remove(selectedObject);
+        try {
+			((ArrayList) JAXBUtils.getValue(role, selectedObject.getClass().getSimpleName())).remove(selectedObject);
+		} catch (Exception e) {
+			MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+		}
     }
 
     public Role getSelectedObject() {

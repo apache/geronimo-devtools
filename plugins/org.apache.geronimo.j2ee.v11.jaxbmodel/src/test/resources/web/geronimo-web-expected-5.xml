@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+           
+<!-- @version $Rev: 647891 $ $Date: 2008-04-15 00:40:39 +0800 (Tue, 15 Apr 2008) $ -->
+           
+<ns8:web-app xmlns="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:ns2="http://geronimo.apache.org/xml/ns/j2ee/connector-1.2" xmlns:ns3="http://geronimo.apache.org/xml/ns/naming-1.2" xmlns:ns4="http://geronimo.apache.org/xml/ns/j2ee/ejb/openejb-2.0" xmlns:ns5="http://geronimo.apache.org/xml/ns/j2ee/application-2.0" xmlns:ns6="http://geronimo.apache.org/xml/ns/security-2.0" xmlns:ns7="http://java.sun.com/xml/ns/persistence" xmlns:ns8="http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1" xmlns:ns9="http://geronimo.apache.org/xml/ns/j2ee/application-client-2.0">
+    <environment>
+        <moduleId>
+            <groupId>jaxws-calculator</groupId>
+            <artifactId>calculator</artifactId>
+            <version>2.1</version>
+            <type>war</type>
+        </moduleId>
+    </environment>
+    <ns8:context-root>/jaxws-calculator</ns8:context-root>
+    <ns3:service-ref>
+        <ns3:service-ref-name>services/Calculator</ns3:service-ref-name>
+        <ns3:port>
+            <ns3:port-name>CalculatorPort</ns3:port-name>
+            <ns3:protocol>http</ns3:protocol>
+            <ns3:host>localhost</ns3:host>
+            <ns3:port>8080</ns3:port>
+            <ns3:uri>/jaxws-calculator/calculator</ns3:uri>
+        </ns3:port>
+    </ns3:service-ref>
+</ns8:web-app>

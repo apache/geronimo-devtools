@@ -17,6 +17,7 @@
 package org.apache.geronimo.st.ui.internal;
 
 import org.apache.geronimo.st.ui.Activator;
+import org.eclipse.core.runtime.IStatus;
 
 
 /**
@@ -77,6 +78,7 @@ public class Trace {
         System.out.println(Activator.PLUGIN_ID + ":  " + s);
         if (t != null)
             t.printStackTrace();
+        
     }
 
     /**

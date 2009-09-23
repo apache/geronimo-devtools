@@ -20,7 +20,9 @@ import java.net.URL;
 
 import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.server.core.Servlet;
 import org.eclipse.wst.server.core.IModuleArtifact;
 import org.eclipse.wst.server.core.IServer;
@@ -56,7 +58,7 @@ public class GeronimoLaunchableAdapterDelegate extends LaunchableAdapterDelegate
 		return null;
 	}
 
-	private Object getHttpLaunchable(IModuleArtifact moduleObject, ServerDelegate delegate) {
+	private Object getHttpLaunchable(IModuleArtifact moduleObject, ServerDelegate delegate) throws CoreException {
 		URL url = ((IURLProvider) delegate).getModuleRootURL(moduleObject.getModule());
 		try {
 			if (moduleObject instanceof Servlet) {
@@ -80,8 +82,8 @@ public class GeronimoLaunchableAdapterDelegate extends LaunchableAdapterDelegate
 			return new HttpLaunchable(url);
 		} catch (Exception e) {
 			Trace.trace(Trace.SEVERE, "Error getting URL for " + moduleObject, e);
+			throw new CoreException (new Status(IStatus.ERROR,Activator.PLUGIN_ID,"Error getting URL for " + moduleObject,e));
 		}
-		return null;
 	}
 
 }

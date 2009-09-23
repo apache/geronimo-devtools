@@ -49,13 +49,15 @@
 
         <image id="org.apache.geronimo.runtime.image" 
             icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.runtime.20,
+            typeIds="org.apache.geronimo.runtime.11,
+            		 org.apache.geronimo.runtime.20,
                      org.apache.geronimo.runtime.21,
                      org.apache.geronimo.runtime.22"/>
 
         <image id="org.apache.geronimo.server.image" 
             icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.server.20,
+            typeIds="org.apache.geronimo.server.11,
+            		 org.apache.geronimo.server.20,
                      org.apache.geronimo.server.21,
                      org.apache.geronimo.server.22"/>
     </extension>
@@ -71,12 +73,14 @@
      -->
     <extension point="org.eclipse.wst.server.ui.wizardFragments">
         <fragment id="org.apache.geronimo.runtime.wizardFragment"
-            typeIds="org.apache.geronimo.runtime.20,
+            typeIds="org.apache.geronimo.runtime.11,
+            		 org.apache.geronimo.runtime.20,
                      org.apache.geronimo.runtime.21,
                      org.apache.geronimo.runtime.22"
             class="org.apache.geronimo.st.ui.internal.GeronimoRuntimeWizardFragment"/>
         <fragment id="org.apache.geronimo.server.wizardFragment"
-            typeIds="org.apache.geronimo.server.20,
+            typeIds="org.apache.geronimo.server.11,
+            		 org.apache.geronimo.server.20,
                      org.apache.geronimo.server.21,
                      org.apache.geronimo.server.22"
             class="org.apache.geronimo.st.ui.internal.GeronimoServerWizardFragment"/>

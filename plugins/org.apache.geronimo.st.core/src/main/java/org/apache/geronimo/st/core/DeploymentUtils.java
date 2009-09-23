@@ -201,9 +201,9 @@ public class DeploymentUtils {
 	 * @param module
 	 * @param server
 	 * @return For a given module associated with a given server, this method returns the last known configuration id.
-	 * @throws CoreException
+	 * @throws Exception 
 	 */
-	public static String getLastKnownConfigurationId(IModule module, IServer server) throws CoreException {
+	public static String getLastKnownConfigurationId(IModule module, IServer server) throws Exception {
 		
 		IGeronimoServer gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
 		String currentId = gs.getVersionHandler().getConfigID(module);

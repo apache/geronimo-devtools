@@ -50,7 +50,11 @@ class RedeployCommand extends DeployCommand {
         
         if(configId == null) {
             IGeronimoServer gs = (IGeronimoServer) getServer().getAdapter(IGeronimoServer.class);
-            configId = gs.getVersionHandler().getConfigID(getModule());
+            try {
+				configId = gs.getVersionHandler().getConfigID(getModule());
+			} catch (Exception e) {
+				throw new CoreException(new Status(IStatus.ERROR,Activator.PLUGIN_ID,"Module config Id not found for redeployment",e));
+			}
         }
         
         TargetModuleID[] ids = null;

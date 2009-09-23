@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.apache.geronimo.st.ui.internal.Trace;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
@@ -63,7 +64,8 @@ public class Activator extends AbstractUIPlugin {
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
-		super.start(context);
+		super.start(context);	
+		this.setDebugging(true);
 		this.setDebugging(true);
 	}
 
@@ -140,13 +142,17 @@ public class Activator extends AbstractUIPlugin {
 
 		URL iconsURL = plugin.getBundle().getEntry(ICONS_DIRECTORY);
 
-		try {
+		try { 
 			ImageDescriptor id = ImageDescriptor.createFromURL(new URL(iconsURL, partialURL));
 			registry.put(key, id);
 			imageDescriptors.put(key, id);
 		} catch (Exception e) {
 			Trace.trace(Trace.WARNING, "Error registering image", e);
 		}
+	}
+
+	public static void log(int statusLevel, String s, Throwable t) {
+		plugin.getLog().log(new Status(statusLevel, PLUGIN_ID, 0, s, t));
 	}
 
 }

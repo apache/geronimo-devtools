@@ -204,6 +204,8 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 				e.printStackTrace();
 			} catch (InternalKernelException e) {
 				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
 			} finally {
 				Thread.currentThread().setContextClassLoader(old);
 			}

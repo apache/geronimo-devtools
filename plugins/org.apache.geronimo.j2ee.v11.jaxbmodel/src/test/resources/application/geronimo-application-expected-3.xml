@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    (the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<!-- @version $Rev: 646917 $ $Date: 2008-04-11 02:27:11 +0800 (Fri, 11 Apr 2008) $ -->
+
+<ns2:application xmlns="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:ns2="http://geronimo.apache.org/xml/ns/j2ee/application-2.0">
+    <environment>
+        <moduleId>
+            <groupId>org.apache.geronimo.testsuite</groupId>
+            <artifactId>jca-cms-ear</artifactId>
+            <version>2.2-SNAPSHOT</version>
+            <type>ear</type>
+        </moduleId>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.geronimo.configs</groupId>
+                <artifactId>system-database</artifactId>
+                <type>car</type>
+            </dependency>
+        </dependencies>
+    </environment>
+    <ns2:module>
+        <ns2:connector>tranql.rar</ns2:connector>
+        <connector:connector xmlns:connector="http://geronimo.apache.org/xml/ns/j2ee/connector-1.2">
+            <connector:resourceadapter>
+                <connector:outbound-resourceadapter>
+                    <connector:connection-definition>
+                        <connector:connectionfactory-interface>javax.sql.DataSource</connector:connectionfactory-interface>
+                        <connector:connectiondefinition-instance>
+                            <connector:name>cmsds</connector:name>
+                            <connector:config-property-setting xmlns:ns4="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns="" name="DatabaseName">TestDatabase</connector:config-property-setting>
+                            <connector:config-property-setting xmlns:ns4="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns="" name="CreateDatabase">false</connector:config-property-setting>
+                            <connector:connectionmanager>
+<connector:container-managed-security/>
+<connector:xa-transaction>
+    <connector:transaction-caching/>
+                                </connector:xa-transaction>
+<connector:single-pool>
+    <connector:max-size>10</connector:max-size>
+    <connector:blocking-timeout-milliseconds>5000</connector:blocking-timeout-milliseconds>
+    <connector:select-one-assume-match/>
+                                </connector:single-pool>
+                            </connector:connectionmanager>
+                        </connector:connectiondefinition-instance>
+                        <connector:connectiondefinition-instance>
+                            <connector:name>configuredsecurityds</connector:name>
+                            <connector:config-property-setting xmlns:ns4="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns="" name="UserName">system</connector:config-property-setting>
+                            <connector:config-property-setting xmlns:ns4="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns="" name="Password">manager</connector:config-property-setting>
+                            <connector:config-property-setting xmlns:ns4="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns="" name="DatabaseName">TestDatabase</connector:config-property-setting>
+                            <connector:config-property-setting xmlns:ns4="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns="" name="CreateDatabase">true</connector:config-property-setting>
+                            <connector:connectionmanager>
+<connector:xa-transaction>
+    <connector:transaction-caching/>
+                                </connector:xa-transaction>
+<connector:single-pool>
+    <connector:max-size>10</connector:max-size>
+    <connector:blocking-timeout-milliseconds>5000</connector:blocking-timeout-milliseconds>
+    <connector:select-one-assume-match/>
+                                </connector:single-pool>
+                            </connector:connectionmanager>
+                        </connector:connectiondefinition-instance>
+                    </connector:connection-definition>
+                </connector:outbound-resourceadapter>
+            </connector:resourceadapter>
+            <connector:gbean xmlns:ns4="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns="" class="org.apache.geronimo.security.realm.GenericSecurityRealm" name="test-cms-realm">
+                <connector:attribute name="realmName">test-cms-realm</connector:attribute>
+                <connector:xml-reference xmlns:lc="http://geronimo.apache.org/xml/ns/loginconfig-1.1" name="LoginModuleConfiguration">
+                    <lc:login-config>
+                        <lc:login-module-ref control-flag="REQUIRED">
+                            <lc:pattern>
+<ns4:name>test-cms-credentials
+                                </ns4:name>
+                            </lc:pattern>
+                        </lc:login-module-ref>
+                        <lc:login-module control-flag="REQUIRED" wrap-principals="false">
+                            <lc:login-domain-name>test-app-credentials</lc:login-domain-name>
+                            <lc:login-module-class>org.apache.geronimo.security.realm.providers.PropertiesFileLoginModule</lc:login-module-class>
+                            <lc:option name="usersURI">var/security/demo_users.properties</lc:option>
+                            <lc:option name="groupsURI">var/security/demo_groups.properties</lc:option>
+                        </lc:login-module>
+                    </lc:login-config>
+                </connector:xml-reference>
+                <connector:reference name="ServerInfo">
+                    <connector:name>ServerInfo</connector:name>
+                </connector:reference>
+            </connector:gbean>
+            <connector:gbean xmlns:ns4="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns="" class="org.apache.geronimo.connector.outbound.security.PasswordCredentialLoginModuleWrapperGBean" name="test-cms-credentials">
+                <connector:attribute name="loginModuleClass">
+                    org.apache.geronimo.connector.outbound.security.CallerIdentityPasswordCredentialLoginModule
+                </connector:attribute>
+                <connector:reference name="ManagedConnectionFactoryWrapper">
+                    <connector:name>cmsds</connector:name>
+                </connector:reference>
+                <connector:attribute name="loginDomainName">test-cms-credentials</connector:attribute>
+            </connector:gbean>
+        </connector:connector>
+    </ns2:module>
+    <ns2:module>
+        <ns2:web>web.war</ns2:web>
+        <web-app:web-app xmlns:web-app="http://geronimo.apache.org/xml/ns/j2ee/web-2.0">
+            <web-app:security-realm-name>test-cms-realm</web-app:security-realm-name>
+            <security:security xmlns:security="http://geronimo.apache.org/xml/ns/security-2.0">
+                <security:credential-store-ref>
+                    <name>test-credential-store</name>
+                </security:credential-store-ref>
+                <security:default-subject>
+                    <security:realm>test-cms-realm</security:realm>
+                    <security:id>test</security:id>
+                </security:default-subject>
+                <security:role-mappings>
+                    <security:role xmlns:ns5="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns="" role-name="test">
+                        <security:principal class="org.apache.geronimo.connector.outbound.security.ResourcePrincipal" name="george"/>
+                    </security:role>
+                    <security:role xmlns:ns5="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns="" role-name="fail">
+                        <security:run-as-subject>
+                            <security:realm>test-cms-realm</security:realm>
+                            <security:id>fail</security:id>
+                        </security:run-as-subject>
+                    </security:role>
+                </security:role-mappings>
+            </security:security>
+        </web-app:web-app>
+    </ns2:module>
+</ns2:application>

@@ -50,6 +50,7 @@ import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -156,7 +157,11 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 			
 			updateAndRecycleSharedLib(addList, deleteList);
 			
-		} catch (Exception e) {
+		}catch (CoreException e){
+			IStatus status = e.getStatus();
+			Trace.trace(Trace.SEVERE, status.getMessage(), e);
+			throw new ExecutionException(status.getMessage(), e);
+		}catch (Exception e) {
 			Trace.trace(Trace.SEVERE, "Failure in updating shared library.", e);
 			throw new ExecutionException("Failure in updating shared library", e);
 		} finally {
@@ -250,11 +255,12 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 		return entries;
 	}
 
-	private void delete(File dummyJarFile) {
+	private void delete(File dummyJarFile) throws CoreException {
 		if(dummyJarFile.delete()) {
 			Trace.trace(Trace.INFO, dummyJarFile.getAbsolutePath() + " deleted sucessfully.");
 		} else {
 			Trace.trace(Trace.SEVERE, "Failed to delete " + dummyJarFile.getAbsolutePath(), null);
+			throw new CoreException(new Status(IStatus.ERROR,Activator.PLUGIN_ID,"Failed to delete " + dummyJarFile.getAbsolutePath(),null));
 		}
 	}
 

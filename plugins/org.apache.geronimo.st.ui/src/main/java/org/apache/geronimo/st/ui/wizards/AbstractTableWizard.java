@@ -21,8 +21,10 @@ import java.util.List;
 import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -63,7 +65,11 @@ public abstract class AbstractTableWizard extends AbstractWizard {
                 createLabel(composite, section.getTableColumnNames()[i]);
                 String initialValue = "";
                 if (eObject != null) {
-                    initialValue = (String) JAXBUtils.getValue(eObject, getTableColumnEAttributes()[i]);
+                    try {
+						initialValue = (String) JAXBUtils.getValue(eObject, getTableColumnEAttributes()[i]);
+					} catch (Exception e) {
+						MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+					}
                 }
                 textEntries[i] = createTextField(composite, initialValue);
             }
@@ -102,7 +108,11 @@ public abstract class AbstractTableWizard extends AbstractWizard {
             for (int i = 0; i < getTableColumnEAttributes().length; i++) {
                 String value = ((AbstractTableWizardPage) page).textEntries[i].getText();
                 String attribute = getTableColumnEAttributes()[i];
-                JAXBUtils.setValue(eObject, attribute, value);
+                try {
+					JAXBUtils.setValue(eObject, attribute, value);
+				} catch (Exception e) {
+					MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+				}
             }
         }
     }

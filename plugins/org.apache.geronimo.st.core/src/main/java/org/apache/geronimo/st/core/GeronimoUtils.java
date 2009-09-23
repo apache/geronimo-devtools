@@ -46,6 +46,8 @@ public class GeronimoUtils {
 	public static final String APP_CLIENT_PLAN_NAME = "geronimo-application-client.xml";
 
 	public static final String CONNECTOR_PLAN_NAME = "geronimo-ra.xml";
+	
+	public static final String SERVICE_PLAN_NAME = "geronimo-service.xml";
 
 	public static boolean isWebModule(IModule module) {
 		return "jst.web".equals(module.getModuleType().getId());
@@ -133,7 +135,7 @@ public class GeronimoUtils {
 		return ComponentCore.createComponent(module.getProject());
 	}
 
-	public static String getContextRoot(IModule module) {
+	public static String getContextRoot(IModule module) throws Exception{
 		String contextRoot = null;
 
 		J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) module.loadAdapter(J2EEFlexProjDeployable.class, null);
@@ -184,6 +186,11 @@ public class GeronimoUtils {
 		}
 
 		return moduleId;
+	}
+
+	public static IFile getServiceDeploymentPlanFile(IVirtualComponent comp) {
+		IPath deployPlanPath = comp.getRootFolder().getUnderlyingFolder().getProjectRelativePath().append("META-INF").append(SERVICE_PLAN_NAME);
+		return comp.getProject().getFile(deployPlanPath);
 	}
 
 /*

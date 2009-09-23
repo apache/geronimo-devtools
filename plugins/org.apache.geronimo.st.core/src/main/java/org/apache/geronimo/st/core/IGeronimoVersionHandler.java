@@ -25,7 +25,7 @@ import org.eclipse.wst.server.core.IModule;
  */
 public interface IGeronimoVersionHandler {
 
-	public String getConfigID(IModule module);
+	public String getConfigID(IModule module) throws Exception;
 	
 	public TargetModuleID createTargetModuleId(String configId);
 

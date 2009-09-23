@@ -69,7 +69,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * 
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createGeronimoApplicationDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
-	public JAXBElement createGeronimoApplicationDeploymentPlan(IFile dpFile) {
+	public JAXBElement createGeronimoApplicationDeploymentPlan(IFile dpFile) throws Exception {
 		Trace.tracePoint("Entry",
 				"V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", dpFile);
 
@@ -93,7 +93,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * 
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createGeronimoWebDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
-	public JAXBElement createGeronimoWebDeploymentPlan(IFile dpFile) {
+	public JAXBElement createGeronimoWebDeploymentPlan(IFile dpFile) throws Exception {
   		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan",
 				dpFile, dpFile.getFullPath());
 
@@ -116,7 +116,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * 
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createOpenEjbDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
-	public JAXBElement createOpenEjbDeploymentPlan(IFile dpFile) {
+	public JAXBElement createOpenEjbDeploymentPlan(IFile dpFile) throws Exception {
   		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile);
 
 		org.apache.geronimo.jee.openejb.ObjectFactory ejbFactory = new org.apache.geronimo.jee.openejb.ObjectFactory();
@@ -137,7 +137,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * 
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createConnectorDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
-	public JAXBElement createConnectorDeploymentPlan(IFile dpFile) {
+	public JAXBElement createConnectorDeploymentPlan(IFile dpFile) throws Exception {
   		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", dpFile);
 
 		org.apache.geronimo.jee.connector.ObjectFactory connectorFactory = new org.apache.geronimo.jee.connector.ObjectFactory();
@@ -160,7 +160,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * 
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createGeronimoApplicationDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
-	public JAXBElement createGeronimoApplicationClientDeploymentPlan(IFile dpFile) {
+	public JAXBElement createGeronimoApplicationClientDeploymentPlan(IFile dpFile) throws Exception {
 		Trace.tracePoint("Entry","V21DeploymentPlanCreationOperation.createGeronimoApplicationClientDeploymentPlan", dpFile);
 
 		org.apache.geronimo.jee.applicationclient.ObjectFactory applicationClientFactory = new org.apache.geronimo.jee.applicationclient.ObjectFactory();

@@ -19,6 +19,7 @@ package org.apache.geronimo.st.core;
 import java.util.TimerTask;
 
 import org.apache.geronimo.st.core.internal.Trace;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.internal.Server;
@@ -107,7 +108,7 @@ public class UpdateServerStateTask extends TimerTask {
 		Trace.trace(Trace.INFO, "<< " + server.getId() + " Updating Server State.");
 	}
 
-	private void updateFromStopped() {
+	private void updateFromStopped() throws CoreException {
 		if (isFullyStarted()) {
 			delegate.setServerStarted();
 		} else {
@@ -115,17 +116,17 @@ public class UpdateServerStateTask extends TimerTask {
 		}
 	}
 
-	private void updateFromStarting() {
+	private void updateFromStarting() throws CoreException {
 		if (isFullyStarted())
 			delegate.setServerStarted();
 	}
 
-	private void updateFromStarted() {
+	private void updateFromStarted() throws CoreException {
 		if (!isFullyStarted())
 			delegate.setServerStopped();
 	}
 
-	private boolean isFullyStarted() {
+	private boolean isFullyStarted() throws CoreException {
 		ClassLoader old = Thread.currentThread().getContextClassLoader();
 		try {
 			Thread.currentThread().setContextClassLoader(((GeronimoServerBehaviourDelegate) delegate).getContextClassLoader());

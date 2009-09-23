@@ -9,6 +9,7 @@ Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.runtime.common,
  org.apache.geronimo.runtime.v22,
  org.apache.geronimo.jee.v21.jaxbmodel,
+ org.apache.geronimo.j2ee.v11.jaxbmodel,
  org.eclipse.core.runtime,
  org.eclipse.wst.server.core,
  org.eclipse.jst.j2ee,

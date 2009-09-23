@@ -149,6 +149,11 @@
             <version>${version}</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.j2ee.v11.jaxbmodel</artifactId>
+            <version>${version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-stax-api_1.0_spec</artifactId>
         </dependency>

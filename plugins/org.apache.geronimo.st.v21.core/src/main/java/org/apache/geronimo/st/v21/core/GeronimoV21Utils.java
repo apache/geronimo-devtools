@@ -37,7 +37,7 @@ import org.eclipse.wst.server.core.IModule;
  */
 public class GeronimoV21Utils extends GeronimoUtils {
 
-    public static JAXBElement getDeploymentPlan(IFile file) {
+    public static JAXBElement getDeploymentPlan(IFile file) throws Exception {
         Trace.tracePoint("ENTRY", "GeronimoV21Utils.getDeploymentPlan", file);
 
         if (!file.exists()) {
@@ -111,7 +111,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
     //    return null;
     //}
 
-    public static String getConfigId(IModule module) {
+    public static String getConfigId(IModule module) throws Exception {
         Trace.tracePoint("ENTRY", "GeronimoV21Utils.getConfigId", module);
 
         Environment environment = null;
@@ -162,7 +162,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
     //    return getQualifiedConfigID(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), artifact.getType());
     //}
 
-    public static String getContextRoot(IModule module) {
+    public static String getContextRoot(IModule module) throws Exception {
         String contextRoot = null;
 
         WebApp deploymentPlan = getWebDeploymentPlan(module).getValue();
@@ -175,39 +175,39 @@ public class GeronimoV21Utils extends GeronimoUtils {
         return contextRoot;
     }
 
-    public static JAXBElement<WebApp> getWebDeploymentPlan(IModule module) {
+    public static JAXBElement<WebApp> getWebDeploymentPlan(IModule module) throws Exception {
         return getWebDeploymentPlan(getVirtualComponent(module));
     }
 
-    public static JAXBElement<Application> getApplicationDeploymentPlan(IModule module) {
+    public static JAXBElement<Application> getApplicationDeploymentPlan(IModule module) throws Exception {
         return getApplicationDeploymentPlan(getVirtualComponent(module));
     }
 
-    public static JAXBElement<OpenejbJar> getOpenEjbDeploymentPlan(IModule module) {
+    public static JAXBElement<OpenejbJar> getOpenEjbDeploymentPlan(IModule module) throws Exception {
         return getOpenEjbDeploymentPlan(getVirtualComponent(module));
     }
 
-    public static JAXBElement<Connector> getConnectorDeploymentPlan(IModule module) {
+    public static JAXBElement<Connector> getConnectorDeploymentPlan(IModule module) throws Exception {
         return getConnectorDeploymentPlan(getVirtualComponent(module));
     }
 
-    public static JAXBElement getApplicationDeploymentPlan(IVirtualComponent comp) {
+    public static JAXBElement getApplicationDeploymentPlan(IVirtualComponent comp) throws Exception {
         return getApplicationDeploymentPlan(getApplicationDeploymentPlanFile(comp));
     }
 
-    public static JAXBElement getWebDeploymentPlan(IVirtualComponent comp) {
+    public static JAXBElement getWebDeploymentPlan(IVirtualComponent comp) throws Exception {
         return getWebDeploymentPlan(getWebDeploymentPlanFile(comp));
     }
 
-    public static JAXBElement getOpenEjbDeploymentPlan(IVirtualComponent comp) {
+    public static JAXBElement getOpenEjbDeploymentPlan(IVirtualComponent comp) throws Exception {
         return getOpenEjbDeploymentPlan(getOpenEjbDeploymentPlanFile(comp));
     }
 
-    public static JAXBElement getConnectorDeploymentPlan(IVirtualComponent comp) {
+    public static JAXBElement getConnectorDeploymentPlan(IVirtualComponent comp) throws Exception {
         return getConnectorDeploymentPlan(getConnectorDeploymentPlanFile(comp));
     }
 
-    public static JAXBElement getApplicationDeploymentPlan(IFile file) {
+    public static JAXBElement getApplicationDeploymentPlan(IFile file) throws Exception {
         Trace.tracePoint("ENTRY", "GeronimoV21Utils.getApplicationDeploymentPlan", file);
 
         if (file.getName().equals(APP_PLAN_NAME) && file.exists()) {
@@ -218,7 +218,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
         return null;
     }
 
-    public static JAXBElement getApplicationClientDeploymentPlan(IFile file) {
+    public static JAXBElement getApplicationClientDeploymentPlan(IFile file) throws Exception {
         Trace.tracePoint("ENTRY", "GeronimoV21Utils.getApplicationClientDeploymentPlan", file);
 
         if (file.getName().equals(APP_CLIENT_PLAN_NAME) && file.exists()) {
@@ -229,7 +229,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
         return null;
     }
 
-    public static JAXBElement getWebDeploymentPlan(IFile file) {
+    public static JAXBElement getWebDeploymentPlan(IFile file) throws Exception {
         Trace.tracePoint("ENTRY", "GeronimoV21Utils.getWebDeploymentPlan", file);
 
         if (file.getName().equals(WEB_PLAN_NAME) && file.exists()) {
@@ -240,7 +240,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
         return null;
     }
 
-    public static JAXBElement getOpenEjbDeploymentPlan(IFile file) {
+    public static JAXBElement getOpenEjbDeploymentPlan(IFile file) throws Exception {
         Trace.tracePoint("ENTRY", "GeronimoV21Utils.getOpenEjbDeploymentPlan", file);
 
         if (file.getName().equals(OPENEJB_PLAN_NAME) && file.exists()) {
@@ -251,7 +251,7 @@ public class GeronimoV21Utils extends GeronimoUtils {
         return null;
     }
 
-    public static JAXBElement getConnectorDeploymentPlan(IFile file) {
+    public static JAXBElement getConnectorDeploymentPlan(IFile file) throws Exception {
         Trace.tracePoint("ENTRY", "GeronimoV21Utils.getConnectorDeploymentPlan", file);
 
         if (file.getName().equals(CONNECTOR_PLAN_NAME) && file.exists()) {

@@ -17,6 +17,7 @@
 package org.apache.geronimo.st.v21.core.internal;
 
 import org.apache.geronimo.st.v21.core.Activator;
+import org.eclipse.core.runtime.IStatus;
 
 /**
  * Helper class to route trace output.
@@ -76,6 +77,7 @@ public class Trace {
         System.out.println(Activator.PLUGIN_ID + ":  " + s);
         if (t != null)
             t.printStackTrace();
+        
     }
 
     /**

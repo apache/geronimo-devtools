@@ -100,7 +100,7 @@ public class JAXBUtils {
         return null;
     }
     
-    public static void marshalDeploymentPlan(JAXBElement jaxbElement, IFile file) {
+    public static void marshalDeploymentPlan(JAXBElement jaxbElement, IFile file) throws Exception {
         try {
             Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setListener(marshallerListener);
@@ -138,26 +138,26 @@ public class JAXBUtils {
             }
         } catch (JAXBException jaxbException) {
             Trace.tracePoint("JAXBException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
-            jaxbException.printStackTrace();
+            throw jaxbException;
         } catch (CoreException coreException) {
             Trace.tracePoint("CoreException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
-            coreException.printStackTrace();
+            throw coreException;
         } catch (ParserConfigurationException e) {
         	Trace.tracePoint("ParserConfigurationException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
-			e.printStackTrace();
+        	throw e;
 		} catch (TransformerConfigurationException e) {
 			Trace.tracePoint("TransformerConfigurationException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
-			e.printStackTrace();
+			throw e;
 		} catch (UnsupportedEncodingException e) {
 			Trace.tracePoint("UnsupportedEncodingException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
-			e.printStackTrace();
+			throw e;
 		} catch (TransformerException e) {
 			Trace.tracePoint("TransformerException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
-			e.printStackTrace();
+			throw e;
 		}
     }
 
-    public static JAXBElement unmarshalFilterDeploymentPlan(IFile file) {
+    public static JAXBElement unmarshalFilterDeploymentPlan(IFile file) throws Exception {
         try {
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -170,21 +170,20 @@ public class JAXBUtils {
             return plan;
         } catch (JAXBException e) {
             Trace.tracePoint("JAXBException", "JAXBUtils.unmarshalFilterDeploymentPlan()", file.getFullPath());
-            e.printStackTrace();
+            throw e;
         } catch (CoreException e) {
             Trace.tracePoint("CoreException", "JAXBUtils.unmarshalFilterDeploymentPlan()", file.getFullPath());
-            e.printStackTrace();
+            throw e;
         } catch (ParserConfigurationException e) {
             Trace.tracePoint("ParserConfigurationException", "JAXBUtils.unmarshalFilterDeploymentPlan()", file.getFullPath());
-            e.printStackTrace();
+            throw e;
         } catch (SAXException e) {
             Trace.tracePoint("SAXException", "JAXBUtils.unmarshalFilterDeploymentPlan()", file.getFullPath());
-            e.printStackTrace();
+            throw e;
         }
-        return null;
     }
 
-    public static void marshalPlugin(JAXBElement jaxbElement, OutputStream outputStream) {
+    public static void marshalPlugin(JAXBElement jaxbElement, OutputStream outputStream) throws Exception {
         try {
             Marshaller marshaller = jaxbPluginContext.createMarshaller();
             marshaller.setListener(marshallerListener);
@@ -215,19 +214,19 @@ public class JAXBUtils {
             outputStream.write(outBuffer.toByteArray());
         } catch (JAXBException jaxbException) {
             Trace.tracePoint("JAXBException", "JAXBUtils.marshalDeploymentPlan()");
-            jaxbException.printStackTrace();
+            throw jaxbException;
         } catch (IOException coreException) {
             Trace.tracePoint("IOException", "JAXBUtils.marshalDeploymentPlan()");
-            coreException.printStackTrace();
+            throw coreException;
         } catch (ParserConfigurationException e) {
             Trace.tracePoint("ParserConfigurationException", "JAXBUtils.marshalDeploymentPlan()");
-            e.printStackTrace();
+            throw e;
         } catch (TransformerConfigurationException e) {
             Trace.tracePoint("TransformerConfigurationException", "JAXBUtils.marshalDeploymentPlan()");
-            e.printStackTrace();
+            throw e;
         } catch (TransformerException e) {
             Trace.tracePoint("TransformerException", "JAXBUtils.marshalDeploymentPlan()");
-            e.printStackTrace();
+            throw e;
         }
     }
 
@@ -264,28 +263,18 @@ public class JAXBUtils {
         ((IFolder) folder).create(true, true, null);
     }
 
-    public static Object getValue( Object element, String name ) {
+    public static Object getValue( Object element, String name ) throws Exception {
         try {
             if (String.class.isInstance(element))
                 return (String)element;
             Method method = element.getClass().getMethod( "get" + name, null);
             return method.invoke(element, null);
-        } catch ( NoSuchMethodException e ) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch ( Exception e ) {
+            throw e;
         }
-        return null;
     }
     
-    public static void setValue( Object element, String name, Object value ) {
+    public static void setValue( Object element, String name, Object value ) throws Exception {
         try {
             Method[] methods = element.getClass().getMethods();
             for ( Method method: methods) {
@@ -294,15 +283,8 @@ public class JAXBUtils {
                     return;
                 }
             }
-        } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw e;
         }
         System.out.println( "============== No such method set" + name + " in class " + element.getClass().getName() );
     }

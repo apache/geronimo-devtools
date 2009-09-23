@@ -17,7 +17,6 @@
 package org.apache.geronimo.st.v21.core;
 
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -68,7 +67,4 @@ public class Activator extends Plugin {
 		return plugin;
 	}
 	
-	public static void log(int severity, String message, Throwable throwable) {
-		plugin.getLog().log(new Status(severity, PLUGIN_ID, 0, message, throwable));
-	}
 }

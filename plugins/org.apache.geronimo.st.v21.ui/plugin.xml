@@ -51,5 +51,15 @@
             class="org.apache.geronimo.st.v21.ui.sections.ServerPluginSection">
         </section>
     </extension>
+    <extension
+          point="org.eclipse.debug.core.statusHandlers">
+       <statusHandler
+	   id="com.example.ExampleIdentifier"
+	   class="com.example.ExampleStatusHandler"
+	   plugin="com.example.ExamplePluginId"
+	   code="123">
+  </statusHandler>
+
+    </extension>
 
 </plugin>

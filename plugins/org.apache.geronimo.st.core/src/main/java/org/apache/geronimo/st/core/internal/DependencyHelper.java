@@ -484,8 +484,13 @@ public class DependencyHelper {
         IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
         IFile file = GeronimoUtils.getWebDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.WEB_PLAN_NAME) && file.exists()) {
-            Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan", JAXBUtils.unmarshalFilterDeploymentPlan(file));
-            return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+            try {
+				Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan", JAXBUtils.unmarshalFilterDeploymentPlan(file));
+				 return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+			} catch (Exception e) {
+				//ignore it, just indicate error by returning null
+			}
+           
         }
 
         Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan", null);
@@ -506,8 +511,16 @@ public class DependencyHelper {
         IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
         IFile file = GeronimoUtils.getOpenEjbDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.OPENEJB_PLAN_NAME) && file.exists()) {
-            Trace.tracePoint("Exit ", "DependencyHelper.getOpenEjbDeploymentPlan", JAXBUtils.unmarshalFilterDeploymentPlan(file));
-            return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+            try {
+				Trace.tracePoint("Exit ", "DependencyHelper.getOpenEjbDeploymentPlan", JAXBUtils.unmarshalFilterDeploymentPlan(file));
+			} catch (Exception e) {
+				//ignore it, just indicate error by returning null
+			}
+            try {
+				return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+			} catch (Exception e) {
+				//ignore it, just indicate error by returning null
+			}
         }
 
         Trace.tracePoint("Exit ", "DependencyHelper.getOpenEjbDeploymentPlan", null);
@@ -527,8 +540,13 @@ public class DependencyHelper {
         IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
         IFile file = GeronimoUtils.getApplicationClientDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.APP_CLIENT_PLAN_NAME) && file.exists()) {
-            Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan", JAXBUtils.unmarshalFilterDeploymentPlan(file));
-            return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+            try {
+				Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan", JAXBUtils.unmarshalFilterDeploymentPlan(file));
+				 return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+			} catch (Exception e) {
+				//ignore it, just indicate error by returning null
+			}
+           
         }
 
         Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan", null);
@@ -548,8 +566,13 @@ public class DependencyHelper {
         IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
         IFile file = GeronimoUtils.getApplicationDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.APP_PLAN_NAME) && file.exists()) {
-            Trace.tracePoint("Exit ", "DependencyHelper.getApplicationDeploymentPlan", JAXBUtils.unmarshalFilterDeploymentPlan(file));
-            return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+            try {
+				Trace.tracePoint("Exit ", "DependencyHelper.getApplicationDeploymentPlan", JAXBUtils.unmarshalFilterDeploymentPlan(file));
+				  return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+			} catch (Exception e) {
+				//ignore it, just indicate error by returning null
+			}
+          
         }
 
         Trace.tracePoint("Exit ", "DependencyHelper.getApplicationDeploymentPlan", null);
@@ -570,8 +593,13 @@ public class DependencyHelper {
         IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
         IFile file = GeronimoUtils.getConnectorDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.CONNECTOR_PLAN_NAME) && file.exists()) {
-            Trace.tracePoint("Exit ", "DependencyHelper.getConnectorDeploymentPlan", JAXBUtils.unmarshalFilterDeploymentPlan(file));
-            return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+            try {
+				Trace.tracePoint("Exit ", "DependencyHelper.getConnectorDeploymentPlan", JAXBUtils.unmarshalFilterDeploymentPlan(file));
+				 return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+			} catch (Exception e) {
+				//ignore it, just indicate error by returning null
+			}
+           
         }
 
         Trace.tracePoint("Exit ", "DependencyHelper.getConnectorDeploymentPlan", null);

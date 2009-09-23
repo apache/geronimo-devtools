@@ -647,7 +647,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     }
 
 
-	private String getLastKnowConfigurationId(IModule module, String configId) throws CoreException {
+	private String getLastKnowConfigurationId(IModule module, String configId) throws Exception {
         Trace.tracePoint("Entry ", "GeronimoServerBehaviourDelegate.getLastKnowConfigurationId", module.getName(), configId);
 
 		//use the correct configId, second from the .metadata, then from the plan
@@ -960,7 +960,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		return Integer.toString(kind);
 	}
 	
-	public String getConfigId(IModule module) {
+	public String getConfigId(IModule module) throws Exception {
 		return getGeronimoServer().getVersionHandler().getConfigID(module);
 	}
 	

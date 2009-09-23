@@ -30,8 +30,8 @@ import org.eclipse.ui.forms.editor.FormEditor;
  */
 public interface IGeronimoFormContentLoader {
 	
-	public JAXBElement loadDeploymentPlan(IFile file);
-	public void saveDeploymentPlan(JAXBElement deploymentPlan, IFile file) throws IOException, JAXBException;
+	public JAXBElement loadDeploymentPlan(IFile file) throws Exception;
+	public void saveDeploymentPlan(JAXBElement deploymentPlan, IFile file) throws Exception;
 	
 	public void doAddPages(FormEditor editor) throws PartInitException;
 
