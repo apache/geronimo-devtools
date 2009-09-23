@@ -177,7 +177,10 @@ public class DBPoolWizard extends AbstractTableWizard {
 	    extModule.setExternalPath(pattern);
 	    pattern.setGroupId(page0.text[1].getText());
 	    pattern.setArtifactId(page0.text[2].getText());
-	    pattern.setVersion(page0.text[3].getText());
+	    //empty version element will cause deploy failure
+	    String version = page0.text[3].getText();
+	    if (version!=null && version.length()!=0)
+	    	pattern.setVersion(page0.text[3].getText());
 	    pattern.setType(page0.text[4].getText().trim());
 
 	    Connector conn = new Connector();
