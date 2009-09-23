@@ -112,7 +112,7 @@
             <xs:element name="cache-size" type="xs:int" minOccurs="0"/>
             <xs:element name="tss-link" type="xs:string" minOccurs="0"/>
             <xs:element name="tss" type="naming:patternType" minOccurs="0"/>
-            <xs:choice maxOccurs="unbounded">
+            <xs:choice maxOccurs="unbounded" minOccurs="0">
                 <xs:element ref="naming:abstract-naming-entry"/>
                 <!-- xs:element ref="naming:persistence-context-ref"/ -->
                 <!-- xs:element ref="naming:gbean-ref"/ -->
@@ -173,7 +173,7 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:choice maxOccurs="unbounded">
+            <xs:choice maxOccurs="unbounded" minOccurs="0">
                 <xs:element ref="naming:abstract-naming-entry"/>
                 <!-- xs:element ref="naming:persistence-context-ref"/ -->
                 <!-- xs:element ref="naming:gbean-ref"/ -->
