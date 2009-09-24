@@ -167,7 +167,7 @@
          version="2.2.0"/>
 
     <plugin
-         id="org.apache.geronimo.jee.v11.jaxbmodel"
+         id="org.apache.geronimo.j2ee.v11.jaxbmodel"
          download-size="140"
          install-size="140"
          version="2.2.0"
