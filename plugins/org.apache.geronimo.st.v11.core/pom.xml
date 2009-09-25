@@ -29,6 +29,13 @@
     <build>
         <resources>
             <resource>
+                <directory>..</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>about.html</include>
+                </includes>
+            </resource>
+            <resource>
                <directory>.</directory>
                 <filtering>true</filtering>
                 <includes>
@@ -58,6 +65,23 @@
                     <include>NOTICE.txt</include>
                 </includes>
             </resource>
+            <resource>
+                <targetPath>about_files</targetPath>
+                <directory>.</directory>
+                <includes>
+                    <include>LICENSE.txt</include>
+                    <include>NOTICE.txt</include>
+                </includes>
+            </resource>
+
+            <resource>
+                <targetPath>about_files</targetPath>
+                <directory>../..</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>PLUGIN_RELEASE-NOTES-${pom.version}.txt</include>
+                </includes>
+            </resource>
         </resources>
         <plugins>
             <plugin>
@@ -68,10 +92,37 @@
                 <artifactId>maven-antrun-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                  <execution>
+                    <goals>
+                      <goal>sign</goal>
+                    </goals>
+                  </execution>
+                </executions>
+                <configuration>
+                  <keystore>../../${keystoreFile}</keystore>
+                  <alias>${keystoreAlias}</alias>
+                  <storepass>${keystoreStorepass}</storepass>
+                  <keypass>${keystoreKeypass}</keypass>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+             <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${pom.basedir}</directory>
+                            <includes>
+                                <include>bin</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
             </plugin>
         </plugins>
     </build>
