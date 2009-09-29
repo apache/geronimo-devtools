@@ -18,7 +18,7 @@ package org.apache.geronimo.st.v11.ui.editors;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.st.core.jaxb.JAXBUtils;
+import org.apache.geronimo.st.v11.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader;

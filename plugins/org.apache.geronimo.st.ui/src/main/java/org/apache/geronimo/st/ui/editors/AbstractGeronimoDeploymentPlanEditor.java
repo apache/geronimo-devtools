@@ -189,7 +189,10 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
             try {
 				deploymentPlan = loadDeploymentPlan(fei.getFile());
 			} catch (Exception e1) {
-				throw new PartInitException("Error in loading deployment plan");
+				// throw new PartInitException("Error in loading deployment plan");
+				// if catching an exception , it will try to correct the plan 
+				// or open the plan with default editor
+				e1.printStackTrace();
 			}
             
             boolean fix = false;

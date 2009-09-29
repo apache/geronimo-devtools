@@ -39,11 +39,13 @@ public class NamespacePrefix {
         prefixMap.put("http://geronimo.apache.org/xml/ns/j2ee/application-1.1", "app");
         prefixMap.put("http://geronimo.apache.org/xml/ns/j2ee/application-client-1.1", "client");
         prefixMap.put("http://geronimo.apache.org/xml/ns/j2ee/connector-1.1", "conn");
-        prefixMap.put("http://openejb.apache.org/xml/ns/openejb-jar-2.1", "ejb");
-        prefixMap.put("http://openejb.apache.org/xml/ns/pkgen-2.0", "pkgen");
+        prefixMap.put("http://www.openejb.org/xml/ns/openejb-jar-2.1", "ejb");
+        prefixMap.put("http://www.openejb.org/xml/ns/pkgen-2.0", "pkgen");
         prefixMap.put("http://geronimo.apache.org/xml/ns/naming-1.1", "name");
         prefixMap.put("http://geronimo.apache.org/xml/ns/security-1.1", "sec");
         prefixMap.put("http://geronimo.apache.org/xml/ns/j2ee/web-1.1", "web");
+        prefixMap.put("http://www.openejb.org/xml/ns/corba-tss-config-2.0", "cbt");
+        prefixMap.put("http://www.openejb.org/xml/ns/corba-css-config-2.0", "cbc");
     }
 	
 	public static void processPrefix( Node parent ) {
