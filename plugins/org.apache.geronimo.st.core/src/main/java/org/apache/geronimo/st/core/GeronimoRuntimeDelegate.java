@@ -17,16 +17,19 @@
 package org.apache.geronimo.st.core;
 
 import java.io.File;
-import java.lang.reflect.Method;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
-import org.apache.geronimo.kernel.classloader.JarFileClassLoader;
 import org.apache.geronimo.st.core.internal.Messages;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -238,14 +241,26 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
         }
 
         if (systemjarURL != null) {
-        	JarFileClassLoader loader = new JarFileClassLoader(null,new URL[]{systemjarURL},this.getClass().getClassLoader());
-			try {
-				Class clazz = loader.loadClass("org.apache.geronimo.system.serverinfo.ServerConstants");
-				Method method = clazz.getMethod("getVersion", new Class[] {});
-				String version =(String) method.invoke(null, null);
-				loader.destroy();
+        	try {
+				String version = null;
+				JarFile jar = new JarFile(systemjarURL.getFile());
+				Enumeration<JarEntry> entries = jar.entries();
+				while(entries.hasMoreElements()){
+					JarEntry entry = entries.nextElement();
+					if (entry.getName().indexOf("geronimo-version.properties")!=-1 ||
+							entry.getName().indexOf("server-version.properties")!=-1 ){
+						InputStream is = jar.getInputStream(entry);
+						Properties properties = new Properties();
+						properties.load(is);
+						 version = properties.getProperty("version");
+						 is.close();
+					}
+				}
+				jar.close();
 				return version;
-			} catch (Exception e) {
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         }
