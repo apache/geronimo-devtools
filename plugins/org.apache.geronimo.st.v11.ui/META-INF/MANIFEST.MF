@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.apache.geronimo.st.v11.ui;singleton:=true
 Bundle-Version: 2.2.0
 Bundle-Activator: org.apache.geronimo.st.v21.ui.Activator
 Bundle-Vendor: Apache.org
+Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.runtime.common,
  org.apache.geronimo.runtime.v11;bundle-version="2.2.0",
  org.apache.geronimo.st.ui,
@@ -19,6 +20,10 @@ Require-Bundle: org.apache.geronimo.runtime.common,
  org.apache.geronimo.st.v11.core,
  org.apache.geronimo.st.v21.core,
  org.eclipse.wst.server.ui,
- org.eclipse.wst.server.core
+ org.eclipse.wst.server.core,
+ org.eclipse.ui.ide,
+ org.eclipse.wst.common.modulecore,
+ org.eclipse.wst.sse.ui,
+ org.eclipse.jface.text;bundle-version="3.5.0"
 Bundle-ActivationPolicy: lazy
 Import-Package: org.apache.geronimo.st.v21.core.jaxb

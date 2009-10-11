@@ -19,7 +19,7 @@ package org.apache.geronimo.st.v11.ui.pages;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
-import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
+import org.apache.geronimo.st.v11.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v11.ui.sections.EjbLocalRefSection;
 import org.apache.geronimo.st.v11.ui.sections.EjbRefSection;
 import org.apache.geronimo.st.v11.ui.sections.EjbRelationSection;

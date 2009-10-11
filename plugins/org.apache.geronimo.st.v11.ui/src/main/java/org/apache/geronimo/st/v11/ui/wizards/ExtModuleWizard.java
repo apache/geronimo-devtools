@@ -24,7 +24,7 @@ import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
+import org.apache.geronimo.st.v11.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.xml.ns.j2ee.application_1.ApplicationType;
 import org.apache.geronimo.xml.ns.j2ee.application_1.ExtModuleType;
 import org.apache.geronimo.xml.ns.j2ee.application_1.PathType;

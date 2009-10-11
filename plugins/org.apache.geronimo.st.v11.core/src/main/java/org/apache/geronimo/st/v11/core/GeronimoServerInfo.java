@@ -38,7 +38,7 @@ import org.apache.geronimo.kernel.NoSuchAttributeException;
 import org.apache.geronimo.kernel.NoSuchOperationException;
 import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
-import org.apache.geronimo.st.v21.core.internal.Trace;
+import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.apache.geronimo.xml.ns.deployment_1.DependencyType;
 import org.apache.geronimo.xml.ns.naming_1.PatternType;

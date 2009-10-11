@@ -22,7 +22,7 @@ import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTreeWizard;
-import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
+import org.apache.geronimo.st.v11.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v11.ui.sections.AdminObjectSection;
 import org.apache.geronimo.xml.ns.j2ee.connector_1.AdminobjectInstanceType;
 import org.apache.geronimo.xml.ns.j2ee.connector_1.AdminobjectType;

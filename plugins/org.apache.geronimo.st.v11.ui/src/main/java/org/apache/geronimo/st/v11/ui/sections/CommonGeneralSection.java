@@ -50,7 +50,7 @@ import org.openejb.xml.ns.openejb_jar_2.OpenejbJarType;
  */
 public abstract class CommonGeneralSection extends AbstractSectionPart {
 
-    protected Text artifactTypeId;
+    protected Text artifactId;
 
     protected Text groupId;
 
@@ -100,13 +100,13 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
             }
         });
 
-        createLabel(composite, CommonMessages.artifactType);
+        createLabel(composite, CommonMessages.artifactId);
 
-        artifactTypeId = toolkit.createText(composite, getArtifactTypeId(), SWT.BORDER);
-        artifactTypeId.setLayoutData(createTextFieldGridData());
-        artifactTypeId.addModifyListener(new ModifyListener() {
+        artifactId = toolkit.createText(composite, getArtifactId(), SWT.BORDER);
+        artifactId.setLayoutData(createTextFieldGridData());
+        artifactId.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
-                getModuleId(true).setArtifactId(artifactTypeId.getText());
+                getModuleId(true).setArtifactId(artifactId.getText());
                 markDirty();
             }
         });
@@ -124,7 +124,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 
         createLabel(composite, CommonMessages.artifactType);
 
-        type = toolkit.createText(composite, getArtifactType(), SWT.BORDER);
+        type = toolkit.createText(composite, getArtifact(), SWT.BORDER);
         type.setLayoutData(createTextFieldGridData());
         type.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
@@ -150,7 +150,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
         });
 
         suppressDefaultEnv = toolkit.createButton(composite, CommonMessages.supressDefaultEnv, SWT.CHECK);
-        suppressDefaultEnv.setSelection(isSuppressDefaultEnvironmentType());
+        suppressDefaultEnv.setSelection(isSuppressDefaultEnvironment());
         data = new GridData();
         data.horizontalSpan = 2;
         suppressDefaultEnv.setLayoutData(data);
@@ -160,7 +160,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
             }
 
             public void widgetSelected(SelectionEvent e) {
-                setSuppressDefaultEnvironmentType(suppressDefaultEnv.getSelection());
+                setSuppressDefaultEnvironment(suppressDefaultEnv.getSelection());
                 markDirty();
             }
         });
@@ -190,7 +190,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
         return "";
     }
 
-    protected String getArtifactTypeId() {
+    protected String getArtifactId() {
         ArtifactType moduleId = getModuleId(false);
         if (moduleId != null
                 && moduleId.getArtifactId() != null)
@@ -206,7 +206,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
         return "";
     }
 
-    protected String getArtifactType() {
+    protected String getArtifact() {
         ArtifactType moduleId = getModuleId(false);
         if (moduleId != null
                 && moduleId.getType() != null)
@@ -215,12 +215,12 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
     }
 
     protected boolean isInverseClassloading() {
-        EnvironmentType type = getEnvironmentType(false);
+        EnvironmentType type = getEnvironment(false);
         return type != null && type.getInverseClassloading() != null;
     }
 
-    protected boolean isSuppressDefaultEnvironmentType() {
-        EnvironmentType type = getEnvironmentType(false);
+    protected boolean isSuppressDefaultEnvironment() {
+        EnvironmentType type = getEnvironment(false);
         return type != null && type.getSuppressDefaultEnvironment() != null;
     }
     
@@ -234,22 +234,22 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 
     protected void setInverseClassloading(boolean enable) {
         if (enable) {
-            EnvironmentType type = getEnvironmentType(true);
+            EnvironmentType type = getEnvironment(true);
             type.setInverseClassloading(getDeploymentObjectFactory().createEmptyType());
         } else {
-            EnvironmentType type = getEnvironmentType(false);
+            EnvironmentType type = getEnvironment(false);
             if (type != null) {
                 type.setInverseClassloading(null);
             }
         }
     }
 
-    protected void setSuppressDefaultEnvironmentType(boolean enable) {
+    protected void setSuppressDefaultEnvironment(boolean enable) {
         if (enable) {
-            EnvironmentType type = getEnvironmentType(true);
+            EnvironmentType type = getEnvironment(true);
             type.setSuppressDefaultEnvironment(getDeploymentObjectFactory().createEmptyType());
         } else {
-            EnvironmentType type = getEnvironmentType(false);
+            EnvironmentType type = getEnvironment(false);
             if (type != null) {
                 type.setSuppressDefaultEnvironment(null);
             }
@@ -288,7 +288,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
         return null;
     }
 
-    protected EnvironmentType getEnvironmentType(boolean create) {
+    protected EnvironmentType getEnvironment(boolean create) {
         EnvironmentType type = null;
         Object plan = getPlan().getValue();
         if (WebAppType.class.isInstance(plan)) {
@@ -321,7 +321,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
     }
     
     private DependenciesType getDependencies(boolean create) {
-        EnvironmentType env = getEnvironmentType(create);
+        EnvironmentType env = getEnvironment(create);
         if(env != null) {
             DependenciesType dep = env.getDependencies();
             if (dep == null && create) {
@@ -334,7 +334,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
     }
 
     private ArtifactType getModuleId(boolean create) {
-        EnvironmentType type = getEnvironmentType(create);
+        EnvironmentType type = getEnvironment(create);
         if (type != null) {
             ArtifactType moduleId = type.getModuleId();
             if (moduleId == null && create) {

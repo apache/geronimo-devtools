@@ -20,7 +20,7 @@ import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.core.internal.Trace;
-import org.apache.geronimo.st.v11.core.jaxb.JAXBUtils;
+import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
 import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
 import org.apache.geronimo.xml.ns.j2ee.application_1.ApplicationType;

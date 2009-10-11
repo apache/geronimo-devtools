@@ -63,8 +63,8 @@ public class WebGeneralSection extends CommonGeneralSection {
             }
         });
 
-        createLabel(composite, CommonMessages.editorWorkDir);
-
+//        createLabel(composite, CommonMessages.editorWorkDir);
+//
 //        workDir = toolkit.createText(composite, plan.getWorkDir(), SWT.BORDER);
 //        workDir.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
 //        workDir.addModifyListener(new ModifyListener() {

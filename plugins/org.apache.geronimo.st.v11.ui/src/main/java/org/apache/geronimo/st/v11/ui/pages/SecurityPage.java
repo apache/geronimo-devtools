@@ -18,7 +18,7 @@ package org.apache.geronimo.st.v11.ui.pages;
 
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
-import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
+import org.apache.geronimo.st.v11.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v11.ui.sections.SecurityRoleMappingSection;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.ui.forms.IManagedForm;

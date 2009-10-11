@@ -35,5 +35,6 @@
     		<page class="org.apache.geronimo.st.v11.ui.wizards.FacetInstallPage"/>
   		</wizard-pages>
 	</extension>  
+	
 
 </plugin>

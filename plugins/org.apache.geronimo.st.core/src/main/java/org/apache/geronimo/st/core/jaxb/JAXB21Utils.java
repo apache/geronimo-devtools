@@ -14,13 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v11.core.jaxb;
+package org.apache.geronimo.st.core.jaxb;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
@@ -56,34 +56,44 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * @version $Rev: 726047 $ $Date: 2008-12-12 23:35:00 +0800 (Fri, 12 Dec 2008) $
+ * @version $Rev: 817996 $ $Date: 2009-09-23 16:04:12 +0800 (Wed, 23 Sep 2009) $
  */
-public class JAXBUtils {
+public class JAXB21Utils implements IJAXBUtilsProvider{
 
     // JAXBContext instantiation is costly - must be done only once!
     private static final JAXBContext jaxbContext = newJAXBContext();
     private static final JAXBContext jaxbPluginContext = newJAXBPluginContext();
     private static final MarshallerListener marshallerListener = new MarshallerListener();
-
+    //private static JAXB21Utils _instance = new JAXB21Utils();
+    
     private static JAXBContext newJAXBContext() {
         try {
             return JAXBContext.newInstance( 
-                    "org.apache.geronimo.xml.ns.deployment_1:" +
-                    "org.apache.geronimo.xml.ns.j2ee.application_1:" +
-                    "org.apache.geronimo.xml.ns.j2ee.application_client_1:" +
-                    "org.apache.geronimo.xml.ns.j2ee.connector_1:" +
-                    "org.apache.geronimo.xml.ns.j2ee.web_1:" +
-                    "org.apache.geronimo.xml.ns.naming_1:" +
-                    "org.apache.geronimo.xml.ns.security_1:" +
-                    "org.openejb.xml.ns.openejb_jar_2:"+
-                    "org.openejb.xml.ns.pkgen_2:"+
-                    "org.openejb.xml.ns.corba_css_config_2:"+
-                    "org.openejb.xml.ns.corba_tss_config_2:", Activator.class.getClassLoader() );
+                    "org.apache.geronimo.jee.connector:" +
+                    "org.apache.geronimo.jee.loginconfig:" +
+                    "org.apache.geronimo.jee.openejb:" +
+                    "org.apache.geronimo.jee.web:" +
+                    "org.apache.geronimo.jee.application:" +
+                    "org.apache.geronimo.jee.applicationclient:" +
+                    "org.apache.geronimo.jee.deployment:" +
+                    "org.apache.geronimo.jee.naming:" +
+                    "org.apache.geronimo.jee.security:", Activator.class.getClassLoader() );
         } catch (JAXBException e) {
             Trace.tracePoint("JAXBException", "JAXBContext.newInstance");
             e.printStackTrace();
         }
         return null;
+    }
+    
+    /*private JAXB21Utils(){
+    }
+    
+    public static JAXB21Utils getInstance(){
+    	return _instance;
+    }*/
+    
+    public JAXBContext getJAXBContext(){
+        return jaxbContext;
     }
 
     private static JAXBContext newJAXBPluginContext() {
@@ -97,7 +107,7 @@ public class JAXBUtils {
         return null;
     }
     
-    public static void marshalDeploymentPlan(JAXBElement jaxbElement, IFile file) throws Exception {
+    public void marshalDeploymentPlan(JAXBElement jaxbElement, IFile file) throws Exception {
         try {
             Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setListener(marshallerListener);
@@ -154,14 +164,15 @@ public class JAXBUtils {
 		}
     }
 
-    public static JAXBElement unmarshalFilterDeploymentPlan(IFile file) throws Exception {
+    public JAXBElement unmarshalFilterDeploymentPlan(IFile file) throws Exception {
         try {
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             SAXParserFactory factory = SAXParserFactory.newInstance();
             factory.setNamespaceAware(true);
             factory.setValidating(false);
             SAXParser parser = factory.newSAXParser();
-            SAXSource source = new SAXSource(null, new InputSource(file.getContents()));
+            NamespaceFilter xmlFilter = new NamespaceFilter(parser.getXMLReader());
+            SAXSource source = new SAXSource(xmlFilter, new InputSource(file.getContents()));
             JAXBElement plan = (JAXBElement) unmarshaller.unmarshal(source);
             return plan;
         } catch (JAXBException e) {
@@ -179,7 +190,7 @@ public class JAXBUtils {
         }
     }
 
-    public static void marshalPlugin(JAXBElement jaxbElement, OutputStream outputStream) throws Exception {
+    public void marshalPlugin(JAXBElement jaxbElement, OutputStream outputStream) throws Exception {
         try {
             Marshaller marshaller = jaxbPluginContext.createMarshaller();
             marshaller.setListener(marshallerListener);
@@ -226,14 +237,15 @@ public class JAXBUtils {
         }
     }
 
-    public static JAXBElement unmarshalPlugin(InputStream inputStream) {
+    public JAXBElement unmarshalPlugin(InputStream inputStream) {
         try {
             Unmarshaller unmarshaller = jaxbPluginContext.createUnmarshaller();
             SAXParserFactory factory = SAXParserFactory.newInstance();
             factory.setNamespaceAware(true);
             factory.setValidating(false);
             SAXParser parser = factory.newSAXParser();
-            SAXSource source = new SAXSource(null, new InputSource(inputStream));
+            NamespaceFilter xmlFilter = new NamespaceFilter(parser.getXMLReader());
+            SAXSource source = new SAXSource(xmlFilter, new InputSource(inputStream));
             JAXBElement plan = (JAXBElement) unmarshaller.unmarshal(source);
             return plan;
         } catch (JAXBException e) {
@@ -249,7 +261,7 @@ public class JAXBUtils {
         return null;
     }
 
-    private static void prepareFolder(IContainer folder) throws CoreException {
+    private void prepareFolder(IContainer folder) throws CoreException {
         if (folder.exists() || !(folder instanceof IFolder)) {
             return;
         }
@@ -258,7 +270,7 @@ public class JAXBUtils {
         ((IFolder) folder).create(true, true, null);
     }
 
-    public static Object getValue( Object element, String name ) throws Exception {
+    public Object getValue( Object element, String name ) throws Exception {
         try {
             if (String.class.isInstance(element))
                 return (String)element;
@@ -269,7 +281,7 @@ public class JAXBUtils {
         }
     }
     
-    public static void setValue( Object element, String name, Object value ) throws Exception {
+    public void setValue( Object element, String name, Object value ) throws Exception {
         try {
             Method[] methods = element.getClass().getMethods();
             for ( Method method: methods) {

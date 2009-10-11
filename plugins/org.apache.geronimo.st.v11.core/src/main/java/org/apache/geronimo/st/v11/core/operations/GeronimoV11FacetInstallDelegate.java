@@ -17,7 +17,7 @@
 package org.apache.geronimo.st.v11.core.operations;
 
 import org.apache.geronimo.st.core.GeronimoFacetInstallDelegate;
-import org.apache.geronimo.st.v21.core.internal.Trace;
+import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jst.common.project.facet.JavaProjectFacetCreationDataModelProvider;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;

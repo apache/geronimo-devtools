@@ -110,4 +110,7 @@
         </default-facets>
     </extension>
   
+    <extension point="org.apache.geronimo.st.core.JAXBUtilsProvider">
+        <provider class="org.apache.geronimo.st.v11.core.jaxb.JAXB11Utils" version="1.1"/>
+    </extension>
 </plugin>

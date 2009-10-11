@@ -16,7 +16,8 @@ Require-Bundle: org.apache.geronimo.runtime.v11,
  org.eclipse.wst.common.project.facet.core,
  org.eclipse.jst.common.frameworks,
  org.eclipse.wst.common.modulecore,
- org.eclipse.jst.j2ee
+ org.eclipse.jst.j2ee,
+ org.eclipse.jem.util
 Bundle-ActivationPolicy: lazy
 Export-Package: org.apache.geronimo.st.v11.core,
  org.apache.geronimo.st.v11.core.internal,

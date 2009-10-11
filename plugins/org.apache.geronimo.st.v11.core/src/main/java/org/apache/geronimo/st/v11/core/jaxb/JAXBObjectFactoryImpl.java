@@ -16,7 +16,6 @@
  */
 package org.apache.geronimo.st.v11.core.jaxb;
 
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.xml.ns.deployment.javabean_1.PropertyType;
 import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
 import org.apache.geronimo.xml.ns.deployment_1.AttributeType;
@@ -59,7 +58,7 @@ import org.openejb.xml.ns.openejb_jar_2.RelationshipsType;
 /**
  * @version $Rev: 705268 $ $Date: 2008-10-16 23:54:29 +0800 (Thu, 16 Oct 2008) $
  */
-public class JAXBObjectFactoryImpl implements JAXBObjectFactory {
+public class JAXBObjectFactoryImpl implements org.apache.geronimo.st.core.jaxb.JAXBObjectFactory {
 
     private static JAXBObjectFactoryImpl instance = new JAXBObjectFactoryImpl();
     
