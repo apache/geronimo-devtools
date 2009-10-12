@@ -17,6 +17,7 @@
 package org.apache.geronimo.st.v21.core;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Set;
 
 import javax.management.MBeanServerConnection;
@@ -34,6 +35,7 @@ import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
+import org.apache.geronimo.st.core.internal.DependencyHelper;
 import org.apache.geronimo.st.v21.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.runtime.IPath;
@@ -222,4 +224,12 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 	protected ClassLoader getContextClassLoader() {
 		return Kernel.class.getClassLoader();
 	}
+
+	@Override
+    protected List getOrderedModules(IServer server, List modules,
+            List deltaKind) {
+		 DependencyHelper dh = new DependencyHelper();
+         List list = dh.reorderModules(this.getServer(),modules, deltaKind);
+         return list;
+    }
 }

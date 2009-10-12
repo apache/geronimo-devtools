@@ -21,7 +21,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.MappedByteBuffer;
@@ -44,7 +43,6 @@ import javax.management.remote.JMXServiceURL;
 import org.apache.geronimo.st.core.commands.DeploymentCmdStatus;
 import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.core.commands.IDeploymentCommand;
-import org.apache.geronimo.st.core.internal.DependencyHelper;
 import org.apache.geronimo.st.core.internal.Messages;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.apache.geronimo.st.core.operations.ISharedLibEntryCreationDataModelProperties;
@@ -238,8 +236,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         // based on any discovered dependencies. 
         //
         if (modules != null && modules.size() > 0) {
-            DependencyHelper dh = new DependencyHelper();
-            List list = dh.reorderModules(this.getServer(),modules, deltaKind);
+        	List list = getOrderedModules(this.getServer(),modules, deltaKind);
             modules = (List) list.get(0);
             deltaKind = (List) list.get(1);
         }
@@ -291,6 +288,12 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.publishModules");
 	}
+
+	/*
+	 * This method is used to invoke DependencyHelper of different version
+	 */
+	abstract protected List getOrderedModules(IServer server, List modules, List deltaKind);
+
 
 	/*
 	 * (non-Javadoc)
