@@ -29,8 +29,10 @@
         <property name="galileo_url"            value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/galileo/R/"/>
         <property name="galileo_jee_win32"      value="eclipse-jee-galileo-win32.zip"/>
         <property name="galileo_jee_linux"      value="eclipse-jee-galileo-linux-gtk.tar"/>
+        <property name="galileo_jee_linux-x86_64" value="eclipse-jee-galileo-linux-gtk-x86_64.tar"/>
         <property name="galileo_jee_macos"      value="eclipse-jee-galileo-macosx-carbon.tar"/>
         <property name="galileo_jee_linux_gz"   value="${galileo_jee_linux}.gz"/>
+        <property name="galileo_jee_linux-x86_64_gz" value="${galileo_jee_linux-x86_64}.gz"/>
         <property name="galileo_jee_macos_gz"   value="${galileo_jee_macos}.gz"/>
         <property name="protocol"               value="&amp;r=1&amp;protocol=http"/>
         
@@ -115,6 +117,34 @@
                 dest="${LOCAL_M2_REPO}/eclipse"
                 overwrite="true"/>
     </target>
+
+    <target name="linux-x86_64" depends="init" description="Download Linux-specific artifact(s)">
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Downloading: ${galileo_jee_linux-x86_64_gz}                                   </echo>
+        <echo>##                                                                               </echo>
+        <echo>## From: ${galileo_url}                                                          </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
+        <get src="${galileo_url}${galileo_jee_linux-x86_64_gz}${protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_linux-x86_64_gz}"
+             verbose="true"
+             ignoreerrors="true"
+             usetimestamp="true"/>
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Unzipping: ${galileo_jee_linux-x86_64_gz}                                     </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/>
+        <mkdir  dir="${LOCAL_M2_REPO}/eclipse"/>
+        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_linux-x86_64_gz}"/>
+        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_linux-x86_64}"
+                dest="${LOCAL_M2_REPO}/eclipse"
+                overwrite="true"/>
+    </target>
+
 
     <target name="macos" depends="init" description="Download Mac-specific artifact(s)">
         <echo>#################################################################################</echo>

@@ -32,13 +32,15 @@
         <property name="galileo_url"            value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/galileo/R/"/>
         <property name="galileo_jee_win32"      value="eclipse-jee-galileo-win32.zip"/>
         <property name="galileo_jee_linux"      value="eclipse-jee-galileo-linux-gtk.tar"/>
+        <property name="galileo_jee_linux-x86_64" value="eclipse-jee-galileo-linux-gtk-x86_64.tar"/>
         <property name="galileo_jee_macos"      value="eclipse-jee-galileo-macosx-carbon.tar"/>
         <property name="galileo_jee_linux_gz"   value="${galileo_jee_linux}.gz"/>
+        <property name="galileo_jee_linux-x86_64_gz" value="${galileo_jee_linux-x86_64}.gz"/>
         <property name="galileo_jee_macos_gz"   value="${galileo_jee_macos}.gz"/>
         <property name="protocol"               value="&amp;r=1&amp;protocol=http"/>
         <property name="test_eclipse"           value="${basedir}/../launcher/eclipse/"/>
-        <property name="test_framework_url"     value="http://www.eclipse.org/downloads/download.php?file=/eclipse/downloads/drops/R-3.4-200806172000/"/>
-        <property name="test_framework"         value="eclipse-test-framework-3.4.zip"/>
+        <property name="test_framework_url"     value="http://www.eclipse.org/downloads/download.php?file=/eclipse/downloads/drops/R-3.5-200906111540/"/>
+        <property name="test_framework"         value="eclipse-test-framework-3.5.zip"/>
         <property name="abbot_swt_url"          value="http://downloads.sourceforge.net/abbot/"/>
         <property name="abbot_swt_version"      value="0.1.0.20080305_1254"/>
         <property name="abbot_swt"              value="abbot.swt-${abbot_swt_version}.zip"/>
@@ -98,6 +100,34 @@
         <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_linux_gz}"/>
         <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_linux}" 
                 dest="${test_eclipse}"
+                overwrite="true"/>
+    </target>
+
+    <target name="linux-x86_64" depends="init" description="Download Linux-specific artifact(s)">
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Downloading: ${galileo_jee_linux-x86_64_gz}                                   </echo>
+        <echo>##                                                                               </echo>
+        <echo>## From: ${galileo_url}                                                          </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
+        <get src="${galileo_url}${galileo_jee_linux-x86_64_gz}${protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_linux-x86_64_gz}"
+             verbose="true"
+             ignoreerrors="true"
+             usetimestamp="true"/>
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Unzipping: ${galileo_jee_linux-x86_64_gz}                                     </echo>
+	<echo>##                                                                               </echo>
+        <echo>## To: ${test_eclipse}                                                           </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+	<mkdir  dir="${test_eclipse}"/>
+        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_linux-x86_64_gz}"/>
+        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_linux-x86_64}"
+		dest="${test_eclipse}"
                 overwrite="true"/>
     </target>
 
