@@ -16,7 +16,7 @@
   ~ limitations under the License.
   -->
 
-<!-- $Rev: 471551 $ $Date: 2006-11-06 06:47:11 +0800 (Mon, 06 Nov 2006) $ -->
+<!-- $Rev: 471551 $ $Date: 2006-11-05 23:47:11 +0100 (Sun, 05 Nov 2006) $ -->
 
 <classpath>
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-kernel-1.1.1.jar"/>
