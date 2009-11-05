@@ -38,7 +38,8 @@
         
         <property name="tptp-version"	 value="4.6.0"/>
         <property name="tptp"		value="tptp.runtime-TPTP-${tptp-version}.zip"/>
-        <property name="tptp-runtime-url"		value="http://download.eclipse.org/tptp/${tptp-version}/TPTP-${tptp-version}/${tptp}"/>       
+        <property name="tptp-runtime-url"		value="http://archive.eclipse.org/tptp/${tptp-version}/TPTP-${tptp-version}/${tptp}"/>       
+      
     </target>
 
 	<target name="tptp" description="Download and extract TPTP runtime package">
