@@ -70,18 +70,6 @@
             </properties>
         </profile>
         <profile>
-            <id>unix-x86</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                    <arch>i386</arch>
-                </os>
-            </activation>
-            <properties>
-                <eclipsePlatformFamily>linux</eclipsePlatformFamily>
-            </properties>
-        </profile>
-        <profile>
             <id>unix-x86_64</id>
             <activation>
                 <os>
@@ -91,6 +79,17 @@
             </activation>
             <properties>
                 <eclipsePlatformFamily>linux-x86_64</eclipsePlatformFamily>
+            </properties>
+        </profile>
+        <profile>
+            <id>unix-x86</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                </os>
+            </activation>
+            <properties>
+                <eclipsePlatformFamily>linux</eclipsePlatformFamily>
             </properties>
         </profile>
         <profile>
