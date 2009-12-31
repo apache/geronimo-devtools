@@ -27,7 +27,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <properties>
-        <geronimoVersion>2.2-SNAPSHOT</geronimoVersion>
+        <geronimoVersion>2.2</geronimoVersion>
     </properties>
     <build>
         <resources>
