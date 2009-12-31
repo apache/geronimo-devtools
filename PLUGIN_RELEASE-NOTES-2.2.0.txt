@@ -6,8 +6,8 @@ Helpful URLs
 Geronimo Devtools:                          http://geronimo.apache.org/development-tools.html
 Geronimo Eclipse Update Site:               http://www.apache.org/dist/geronimo/eclipse/updates
 Bug Tracking:                               http://issues.apache.org/jira/browse/GERONIMODEVTOOLS
-Quick start - fast and easy development:    http://cwiki.apache.org/GMOxDOC21/quick-start-fast-and-easy-development.html
-5-minute Tutorial using GEP:                http://cwiki.apache.org/GMOxDOC21/5-minute-tutorial-on-enterprise-application-development-with-eclipse-and-geronimo.html
+Quick start - fast and easy development:    http://cwiki.apache.org/GMOxDOC22/quick-start-fast-and-easy-development.html
+5-minute Tutorial using GEP:                http://cwiki.apache.org/GMOxDOC22/5-minute-tutorial-on-enterprise-application-development-with-eclipse-and-geronimo.html
 
 
 System Requirements
