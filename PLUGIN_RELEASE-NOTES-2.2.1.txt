@@ -18,7 +18,7 @@ System Requirements
 
    -- Get Eclipse from http://www.eclipse.org/downloads/
 
-3. Geronimo server (1.1.x, 2.0.x, 2.1.x or 2.2)
+3. Geronimo server (1.1.x, 2.0.x, 2.1.x or 2.2.x)
 
    -- Get a Geronimo server from http://geronimo.apache.org/downloads.html
 
@@ -112,4 +112,4 @@ GERONIMODEVTOOLS-198	Daytrader deployment exception in Eclipse
 
 Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
 
-@version $Rev$ $Date$
+@version $Rev: 897145 $ $Date: 2010-01-08 17:38:07 +0800 (Fri, 08 Jan 2010) $
