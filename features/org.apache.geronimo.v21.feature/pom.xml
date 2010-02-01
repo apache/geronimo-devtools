@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>eclipse-features-parent</artifactId>
-        <version>2.2.0</version>
+        <version>3.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <build>

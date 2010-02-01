@@ -18,7 +18,7 @@ System Requirements
 
    -- Get Eclipse from http://www.eclipse.org/downloads/
 
-3. Geronimo server (1.1.x, 2.0.x, 2.1.x or 2.2)
+3. Geronimo server (1.1.x, 2.0.x, 2.1.x, 2.2.x or 3.0)
 
    -- Get a Geronimo server from http://geronimo.apache.org/downloads.html
 
@@ -91,7 +91,7 @@ GERONIMODEVTOOLS-496	GEP 2.1.2 cannot be uninstalled through P2 in Ganymede
 GERONIMODEVTOOLS-497	GEP 2.1.2 installed through "Download additional server adapters" should be uninstallable through Ganymede P2
 GERONIMODEVTOOLS-504	advanced security section does not allow setting of credential store
 GERONIMODEVTOOLS-510	Deployment plan editor warning message when opening source tab for openejb-jar.xml file
-GERONIMODEVTOOLS-512  When running the testsuite from maven, the Geronimo branding does not show up
+GERONIMODEVTOOLS-512	When running the testsuite from maven, the Geronimo branding does not show up
 GERONIMODEVTOOLS-518	Update GEP code with new Devtools URL
 GERONIMODEVTOOLS-519	Document the Deployment Plan editors
 GERONIMODEVTOOLS-520	Add v22 runtimes, plugins and feature
@@ -109,7 +109,7 @@ GERONIMODEVTOOLS-541	move all Abbot testcases to run during a single server inst
 GERONIMODEVTOOLS-543	Investigate and determine if the JVM arguments that are used for Eclipse should be the same ones used for the Geronimo server
 GERONIMODEVTOOLS-544	add wizard for converting applications into Geronimo plugins
 GERONIMODEVTOOLS-545	initial version of the Server Plugin Manager code
-GERONIMODEVTOOLS-546  add summary page to Server Plugin Manager
+GERONIMODEVTOOLS-546	add summary page to Server Plugin Manager
 GERONIMODEVTOOLS-547	code cleanup on Server Plugin Manager
 GERONIMODEVTOOLS-548	combine Custom Server Assembly and the Plugin Server Manager into one wizard.
 GERONIMODEVTOOLS-549	write documentation for the Plugin Server Manager
@@ -147,4 +147,4 @@ GERONIMODEVTOOLS-598	Support builds on Linux x86_64 based systems
 
 Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
 
-@version $Rev$ $Date$
+@version $Rev: 894783 $ $Date: 2009-12-31 14:21:08 +0800 (Thu, 31 Dec 2009) $
