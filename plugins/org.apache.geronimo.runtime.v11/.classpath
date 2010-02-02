@@ -16,21 +16,21 @@
   ~ limitations under the License.
   -->
 
-<!-- $Rev: 471551 $ $Date: 2006-11-05 23:47:11 +0100 (Sun, 05 Nov 2006) $ -->
+<!-- $Rev: 471551 $ $Date: 2006-11-05 17:47:11 -0500 (Sun, 05 Nov 2006) $ -->
 
 <classpath>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-kernel-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-util-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-deploy-jsr88-1.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-common-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-j2ee-schema-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-service-builder-1.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-connector-builder-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-web-builder-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-naming-builder-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-j2ee-builder-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/openejb-builder-2.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-security-builder-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-system-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-deploy-jsr88-1.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-deployment-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-j2ee-builder-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-j2ee-schema-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-kernel-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-naming-builder-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-security-builder-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-service-builder-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-system-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-util-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-web-builder-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/openejb-builder-2.1.1.jar"/>
 </classpath>
