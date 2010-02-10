@@ -42,8 +42,8 @@
                 </includes>
             </resource>
             <resource>
-                <targetPath>v22</targetPath>
-                <directory>v22</directory>
+                <targetPath>v21</targetPath>
+                <directory>v21</directory>
             </resource>
             <!-- The Geronimo covention puts license and notice for artifacts shipped in this jar 
                  in the jar's meta-inf directory -->
