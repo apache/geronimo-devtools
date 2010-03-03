@@ -25,13 +25,13 @@
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>testsuite</artifactId>
     <packaging>pom</packaging>
-    <version>3.0</version>
+    <version>3.0.0</version>
     <name>Geronimo Eclipse Plugin :: Testsuite</name>
 
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
-        <version>3.0</version>
+        <version>3.0.0</version>
     </parent>
 
     <description>

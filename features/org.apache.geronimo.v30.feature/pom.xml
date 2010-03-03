@@ -17,14 +17,14 @@
 <!-- $Rev$ $Date$ -->
 <project>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>org.apache.geronimo.v21.feature</artifactId>
+    <artifactId>org.apache.geronimo.v22.feature</artifactId>
     <packaging>jar</packaging>
-    <version>${org.apache.geronimo.v21.feature_version}</version>
+    <version>${org.apache.geronimo.v22.feature_version}</version>
     <name>${artifactId}</name>
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>eclipse-features-parent</artifactId>
-        <version>3.0</version>
+        <version>3.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <build>
@@ -92,6 +92,7 @@
                     </filesets>
                 </configuration>
             </plugin>
+            
              <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>

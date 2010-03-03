@@ -39,7 +39,7 @@
             <outputDirectory>/</outputDirectory>
         </file>
         <file>
-            <source>../features/org.apache.geronimo.v22.feature/target/classes/about_files/PLUGIN_RELEASE-NOTES-${pom.version}.txt</source>
+            <source>../features/org.apache.geronimo.v30.feature/target/classes/about_files/PLUGIN_RELEASE-NOTES-${pom.version}.txt</source>
             <outputDirectory></outputDirectory>
             <!--  <filtered>true</filtered>
                  ${pom.version} does not get expanded by this filtering :-(
@@ -59,13 +59,14 @@
             <outputDirectory>plugins/</outputDirectory>
             <unpack>false</unpack>
             <includes>
-								<include>org.apache.geronimo.devtools:org.apache.geronimo.j2ee.v11.jaxbmodel</include>
+         	<include>org.apache.geronimo.devtools:org.apache.geronimo.j2ee.v11.jaxbmodel</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.jee.v21.jaxbmodel</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.common</include>
-								<include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v11</include>
+	        <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v11</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v20</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v21</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v22</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v30</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.core</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.ui</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.schemas</include>
@@ -78,7 +79,9 @@
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v21.ui</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v22.core</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v22.ui</include>
-            </includes>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v30.core</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v30.ui</include>
+             </includes>
         </dependencySet>
 
         <!-- 
@@ -90,8 +93,7 @@
             <outputFileNameMapping>${artifactId}_${version}.${extension}</outputFileNameMapping>
             <outputDirectory>features/</outputDirectory>
             <includes>
-                <!-- include>org.apache.geronimo.devtools:org.apache.geronimo.v21.feature</include -->
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.v22.feature</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.v30.feature</include>
             </includes>
         </dependencySet>
 

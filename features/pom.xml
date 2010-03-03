@@ -25,10 +25,10 @@
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
-        <version>3.0</version>
+        <version>3.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modules>
-        <module>org.apache.geronimo.v22.feature</module>
+        <module>org.apache.geronimo.v30.feature</module>
     </modules>
 </project>
