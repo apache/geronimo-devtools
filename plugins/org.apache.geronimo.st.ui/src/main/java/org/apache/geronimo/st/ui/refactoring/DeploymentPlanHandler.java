@@ -90,7 +90,7 @@ public class DeploymentPlanHandler extends DefaultHandler {
 			//ch doesn't contains XML declare statement at the beginning of deployment plan
 			//get the character number of first line
 			int xmlDeclareLength = getXMLDeclareLength();
-			wtn.setOffset(xmlDeclareLength + start - 1);
+			wtn.setOffset(xmlDeclareLength + start);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -167,7 +167,7 @@ public class DeploymentPlanHandler extends DefaultHandler {
 		do {
 			current = br.read();
 			offset++;
-		} while (current != '\n');
+		} while (current != '>');
 
 		br.close();
 
