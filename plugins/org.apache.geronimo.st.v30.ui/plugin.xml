@@ -39,7 +39,7 @@
     <extension point="org.eclipse.wst.server.ui.editorPages">
         <page id="org.eclipse.wst.server.editor.plugins" order="10"
               name="%serverEditorPluginPage"
-              typeIds="*"
+              typeIds="org.apache.geronimo.server.*"
               insertionIds="org.eclipse.wst.server.editor.plugins"
               class="org.apache.geronimo.st.v21.ui.pages.ServerPluginPage"/>
     </extension>
