@@ -126,10 +126,7 @@ public class GeronimoServerRuntimeTargetHandler extends RuntimeClasspathProvider
             }if (version.startsWith("2.2")) {
             	 //TODO: review list here when server 2.2 is ready
             	 IPath javaMailSpec = runtime.getLocation().append("repository/org/apache/geronimo/javamail/geronimo-javamail_1.4_mail/");
-            	 IPath jaxbApiSpec  = runtime.getLocation().append("repository/javax/xml/bind/jaxb-api/");
-            	 IPath jabxImplSpec = runtime.getLocation().append("repository/com/sun/xml/bind/jaxb-impl/");
-            	 IPath jaxwsApiSpec = runtime.getLocation().append("repository/org/apache/axis2/axis2-jaxws-api/");
-            	 IPath jstlSpec     = runtime.getLocation().append("repository/jstl/jstl/");
+            	 IPath jstlSpec     = runtime.getLocation().append("repository/javax/servlet/jstl/");
             	 IPath myfacesSpec  = runtime.getLocation().append("repository/org/apache/myfaces/core/myfaces-api/");
             	 IPath myfacesImplSpec  = runtime.getLocation().append("repository/org/apache/myfaces/core/myfaces-impl/");
             	 IPath jdbcSpec     = runtime.getLocation().append("repository/org/apache/geronimo/framework/geronimo-jdbc/");
