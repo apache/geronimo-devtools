@@ -378,9 +378,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 		stopUpdateServerStateTask();
 	}
 
-	public String getRuntimeClass() {
-		return "org.apache.geronimo.system.main.Daemon";
-	}
+	public abstract String getRuntimeClass();
 
 	public void setServerStarted() {
 		setServerState(IServer.STATE_STARTED);
@@ -770,8 +768,22 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
 	protected void setupLaunchClasspath(ILaunchConfigurationWorkingCopy wc, IVMInstall vmInstall) throws CoreException {
 		List<IRuntimeClasspathEntry> cp = new ArrayList<IRuntimeClasspathEntry>();
-		IPath serverJar = getServer().getRuntime().getLocation().append("/bin/server.jar");
-		cp.add(JavaRuntime.newArchiveRuntimeClasspathEntry(serverJar));
+		
+		String version = getServer().getRuntime().getRuntimeType().getVersion();
+		
+		if (version.startsWith("3")) {
+			//get required jar file
+			IPath libPath = getServer().getRuntime().getLocation().append("/lib");
+			for (String jarFile: libPath.toFile().list()){
+				IPath serverJar = libPath.append("/"+jarFile);
+				cp.add(JavaRuntime.newArchiveRuntimeClasspathEntry(serverJar));
+			}
+			
+		}else{
+		     //for 1.1,2.0,2.1,2.2 
+		     IPath serverJar = getServer().getRuntime().getLocation().append("/lib/server.jar");
+		     cp.add(JavaRuntime.newArchiveRuntimeClasspathEntry(serverJar));
+	    }
 		// merge existing classpath with server classpath
 		IRuntimeClasspathEntry[] existingCps = JavaRuntime.computeUnresolvedRuntimeClasspath(wc);
 

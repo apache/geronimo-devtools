@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v21.core;
+package org.apache.geronimo.st.v30.core;
 
 import java.net.URL;
 import java.util.List;
@@ -36,7 +36,7 @@ import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.core.internal.DependencyHelper;
-import org.apache.geronimo.st.v21.core.internal.Trace;
+import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;

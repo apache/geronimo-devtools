@@ -14,9 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v21.core;
+package org.apache.geronimo.st.v30.core;
 
 import java.io.File;
+import java.text.MessageFormat;
+
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 
@@ -54,7 +56,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
      * @see org.apache.geronimo.st.core.GenericGeronimoServer#getContextRoot(org.eclipse.wst.server.core.IModule)
      */
     public String getContextRoot(IModule module) throws Exception {
-        return GeronimoV21Utils.getContextRoot(module);
+        return GeronimoV30Utils.getContextRoot(module);
     }
 
     /*
@@ -110,9 +112,16 @@ public class GeronimoServer extends GeronimoServerDelegate {
         String memoryOpts = "-Xms256m -Xmx512m -XX:MaxPermSize=128m";
 
         // Specify GERONIMO_BASE
-        String homeDirectory = "-Dorg.apache.geronimo.home.dir=\"" + runtimeLocation;
+        String homeDirectory = "-Dorg.apache.geronimo.home.dir=\"" + runtimeLocation + "\"";
+        
+        // Karaf arguments
+        String serverLocation = getServer().getRuntime().getLocation().toOSString();
+        String karafArgs = "-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=true " + MessageFormat.format("-Dorg.apache.geronimo.home.dir=\"{0}\" -Dkaraf.home=\"{0}\" -Dkaraf.base=\"{0}\" -Djava.util.logging.config.file={0}/etc/java.util.logging.properties", serverLocation);
 
-        return javaagent + " " + javaExtDirs + " " + javaEndorsedDirs + " " + memoryOpts + " " + homeDirectory;
+        StringBuilder vmArgs = new StringBuilder(javaagent);
+        vmArgs.append(" ").append(javaExtDirs).append(" ").append(javaEndorsedDirs).append(" ").append(memoryOpts).append(" ").append(homeDirectory).append(" ").append(karafArgs);
+        
+        return vmArgs.toString();
     }
 
     /*
@@ -161,7 +170,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
      */
     public IGeronimoVersionHandler getVersionHandler() {
         if (versionHandler == null)
-            versionHandler = new GeronimoV21VersionHandler();
+            versionHandler = new GeronimoV30VersionHandler();
         return versionHandler;
     }
 

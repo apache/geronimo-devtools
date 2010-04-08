@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v21.core.operations;
+package org.apache.geronimo.st.v30.core.operations;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -56,7 +56,7 @@ import org.apache.geronimo.st.core.CommonMessages;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
-import org.apache.geronimo.st.v21.core.internal.Trace;
+import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.apache.geronimo.system.plugin.PluginInstaller;
 import org.apache.geronimo.system.plugin.model.ArtifactType;

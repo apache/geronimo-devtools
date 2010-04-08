@@ -22,4 +22,3 @@ Export-Package:
  org.apache.geronimo.st.v21.core.internal,
  org.apache.geronimo.st.v21.core.jaxb,
  org.apache.geronimo.st.v21.core.operations
-Import-Package: junit.framework;version="3.8.2"

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo Server Tools V30 UI Plug-in
 Bundle-SymbolicName: org.apache.geronimo.st.v30.ui;singleton:=true
 Bundle-Version: 3.0.0
-Bundle-Activator: org.apache.geronimo.st.v21.ui.Activator
+Bundle-Activator: org.apache.geronimo.st.v30.ui.Activator
 Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.runtime.common,
  org.apache.geronimo.jee.v21.jaxbmodel,
@@ -21,9 +21,12 @@ Require-Bundle: org.apache.geronimo.runtime.common,
  org.eclipse.wst.server.ui
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Apache Software Foundation
-Export-Package: org.apache.geronimo.st.v21.ui,
- org.apache.geronimo.st.v21.ui.editors,
- org.apache.geronimo.st.v21.ui.internal,
- org.apache.geronimo.st.v21.ui.pages,
- org.apache.geronimo.st.v21.ui.sections,
- org.apache.geronimo.st.v21.ui.wizards
+Export-Package: org.apache.geronimo.st.v30.ui,
+ org.apache.geronimo.st.v30.ui.editors,
+ org.apache.geronimo.st.v30.ui.internal,
+ org.apache.geronimo.st.v30.ui.pages,
+ org.apache.geronimo.st.v30.ui.sections,
+ org.apache.geronimo.st.v30.ui.wizards
+Import-Package: org.apache.geronimo.st.v30.core,
+ org.apache.geronimo.st.v30.core.jaxb,
+ org.apache.geronimo.st.v30.core.operations

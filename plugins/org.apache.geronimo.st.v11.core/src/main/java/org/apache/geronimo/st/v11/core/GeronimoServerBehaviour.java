@@ -176,4 +176,9 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
          List list = dh.reorderModules(this.getServer(),modules, deltaKind);
          return list;
     }
+
+    @Override
+    public String getRuntimeClass() {
+        return "org.apache.geronimo.system.main.Daemon";
+    }
 }

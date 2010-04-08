@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v21.core.jaxb;
+package org.apache.geronimo.st.v30.core.jaxb;
 
 import java.util.List;
 

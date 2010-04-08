@@ -22,7 +22,7 @@
 <plugin>
 
     <extension point="org.apache.geronimo.st.ui.loader">
-           <loader class="org.apache.geronimo.st.v21.ui.editors.GeronimoFormContentLoader" version="2.1"/>
+           <loader class="org.apache.geronimo.st.v30.ui.editors.GeronimoFormContentLoader" version="3.0"/>
     </extension>
 
     <!-- 
@@ -31,24 +31,24 @@
      |
      -->
     <extension point="org.eclipse.wst.common.project.facet.ui.wizardPages">
-        <wizard-pages action="geronimo.plan.install.v21">
-            <page class="org.apache.geronimo.st.v21.ui.wizards.FacetInstallPage"/>
+        <wizard-pages action="geronimo.plan.install.v30">
+            <page class="org.apache.geronimo.st.v30.ui.wizards.FacetInstallPage"/>
         </wizard-pages>
     </extension>
 
     <extension point="org.eclipse.wst.server.ui.editorPages">
         <page id="org.eclipse.wst.server.editor.plugins" order="10"
               name="%serverEditorPluginPage"
-              typeIds="org.apache.geronimo.server.*"
+              typeIds="org.apache.geronimo.server.3*"
               insertionIds="org.eclipse.wst.server.editor.plugins"
-              class="org.apache.geronimo.st.v21.ui.pages.ServerPluginPage"/>
+              class="org.apache.geronimo.st.v30.ui.pages.ServerPluginPage"/>
     </extension>
     
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.plugins" order="10"
             insertionId="org.eclipse.wst.server.editor.plugins"
-            typeIds="org.apache.geronimo.server.*"
-            class="org.apache.geronimo.st.v21.ui.sections.ServerPluginSection">
+            typeIds="org.apache.geronimo.server.3*"
+            class="org.apache.geronimo.st.v30.ui.sections.ServerPluginSection">
         </section>
     </extension>
     <extension
