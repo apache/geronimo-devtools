@@ -20,6 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>eclipse-plugins-parent</artifactId>
+    <version>2.1.5</version>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin :: Plugins</name>
     <parent>
