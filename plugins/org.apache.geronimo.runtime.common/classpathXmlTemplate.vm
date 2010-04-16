@@ -16,7 +16,7 @@
   ~ limitations under the License.
   -->
 
-<!-- $Rev$ $Date$ -->
+<!-- $Rev$ $Date$  -->
 
 <classpath>
 #set($libs = $libDir.listFiles() )
