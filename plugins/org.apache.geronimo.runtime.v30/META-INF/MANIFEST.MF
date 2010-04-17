@@ -13,11 +13,11 @@ Bundle-ClassPath: lib/geronimo-common-3.0-SNAPSHOT.jar,
  lib/geronimo-system-3.0-SNAPSHOT.jar,
  lib/geronimo-util-3.0-SNAPSHOT.jar,
  lib/geronimo-deploy-config-3.0-SNAPSHOT.jar,
- lib/geronimo-javaee-deployment_1.1MR3_spec-1.0.jar,
- lib/plexus-archiver-1.0-alpha-7.jar,
+ lib/geronimo-javaee-deployment_1.1MR3_spec-1.0.1-SNAPSHOT.jar,
+ lib/plexus-archiver-1.0-alpha-12.jar,
  lib/geronimo-crypto-3.0-SNAPSHOT.jar,
- lib/slf4j-api-1.4.3.jar,
- lib/slf4j-simple-1.4.3.jar
+ lib/slf4j-api-1.5.5.jar,
+ lib/slf4j-simple-1.5.5.jar
 Export-Package: 
  javax.enterprise.deploy.model,
  javax.enterprise.deploy.model.exceptions,

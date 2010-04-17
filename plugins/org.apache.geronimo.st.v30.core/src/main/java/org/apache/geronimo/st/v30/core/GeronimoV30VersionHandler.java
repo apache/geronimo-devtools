@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v21.core;
+package org.apache.geronimo.st.v30.core;
 
 import javax.enterprise.deploy.spi.TargetModuleID;
 
@@ -25,21 +25,21 @@ import org.eclipse.wst.server.core.IModule;
 /**
  * @version $Rev$ $Date$
  */
-public class GeronimoV21VersionHandler implements IGeronimoVersionHandler {
+public class GeronimoV30VersionHandler implements IGeronimoVersionHandler {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.geronimo.st.core.IGeronimoVersionHandler#getConfigID(org.eclipse.wst.server.core.IModule)
-	 */
-	public String getConfigID(IModule module) throws Exception {
-		return GeronimoV21Utils.getConfigId(module);
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.apache.geronimo.st.core.IGeronimoVersionHandler#createTargetModuleId(java.lang.String)
-	 */
-	public TargetModuleID createTargetModuleId(String configId) {
-		return new TargetModuleIDImpl(null, configId);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.st.core.IGeronimoVersionHandler#getConfigID(org.eclipse.wst.server.core.IModule)
+     */
+    public String getConfigID(IModule module) throws Exception {
+        return GeronimoV30Utils.getConfigId(module);
+    }
+    
+    /* (non-Javadoc)
+     * @see org.apache.geronimo.st.core.IGeronimoVersionHandler#createTargetModuleId(java.lang.String)
+     */
+    public TargetModuleID createTargetModuleId(String configId) {
+        return new TargetModuleIDImpl(null, configId);
+    }
 }

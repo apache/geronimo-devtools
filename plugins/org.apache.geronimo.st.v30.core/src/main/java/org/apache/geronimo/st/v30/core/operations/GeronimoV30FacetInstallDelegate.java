@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v21.core.operations;
+package org.apache.geronimo.st.v30.core.operations;
 
 import org.apache.geronimo.st.core.GeronimoFacetInstallDelegate;
-import org.apache.geronimo.st.v21.core.internal.Trace;
+import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jst.common.project.facet.JavaProjectFacetCreationDataModelProvider;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
@@ -28,15 +28,15 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 /**
  * @version $Rev$ $Date$
  */
-public class GeronimoV21FacetInstallDelegate extends GeronimoFacetInstallDelegate {
+public class GeronimoV30FacetInstallDelegate extends GeronimoFacetInstallDelegate {
 
-	public IDataModelOperation createDeploymentPlanCreationOp(IProject project, Object config) {
-		Trace.tracePoint("Entry", "GeronimoV21FacetInstallDelegate.createDeploymentPlanCreationOp", project, config);
-		
-		IDataModel model = DataModelFactory.createDataModel(new JavaProjectFacetCreationDataModelProvider());
-		model.setStringProperty(IFacetDataModelProperties.FACET_PROJECT_NAME, project.getName());
-		
-		Trace.tracePoint("Exit ", "GeronimoV21FacetInstallDelegate.createDeploymentPlanCreationOp");
-		return new V21DeploymentPlanCreationOperation(model, config);		
-	}
+    public IDataModelOperation createDeploymentPlanCreationOp(IProject project, Object config) {
+        Trace.tracePoint("Entry", "GeronimoV30FacetInstallDelegate.createDeploymentPlanCreationOp", project, config);
+        
+        IDataModel model = DataModelFactory.createDataModel(new JavaProjectFacetCreationDataModelProvider());
+        model.setStringProperty(IFacetDataModelProperties.FACET_PROJECT_NAME, project.getName());
+        
+        Trace.tracePoint("Exit ", "GeronimoV30FacetInstallDelegate.createDeploymentPlanCreationOp");
+        return new V30DeploymentPlanCreationOperation(model, config);       
+    }
 }

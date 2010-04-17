@@ -54,7 +54,7 @@ For jaxb-api and jaxb-impl jars in org.apache.geronimo.runtime.common.jar:
 This product includes software developed for the JAXB Reference 
 Implementation project. (https://jaxb.dev.java.net/)
 
-For plexus-archiver-1.0-alpha-7.jar in org.apache.geronimo.runtime.v21.jar:
+For plexus-archiver jar in org.apache.geronimo.runtime.v21.jar:
 
 =========================================================================
 ==  Plexus Notice                                                      ==

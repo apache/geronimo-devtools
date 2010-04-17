@@ -236,7 +236,7 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRA
 OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
-For plexus-archiver-1.0-alpha-7.jar:
+For plexus-archiver jar:
 
 =========================================================================
 ==  Plexus License                                                     ==

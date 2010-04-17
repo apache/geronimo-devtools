@@ -21,7 +21,7 @@ package) which was developed by the Bouncy Castle project.
 
      Copyright (c) 2000-2005 The Legion Of The Bouncy Castle (http://www.bouncycastle.org)
 
-For plexus-archiver-1.0-alpha-7.jar:
+For plexus-archiver jar:
 
 =========================================================================
 ==  Plexus Notice                                                      ==
