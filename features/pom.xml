@@ -20,13 +20,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>eclipse-features-parent</artifactId>
-    <version>2.1.6</version>
+    <version>2.1.5</version>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin :: Features</name>
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
-        <version>2.1.6-SNAPSHOT</version>
+        <version>2.1.5-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modules>
