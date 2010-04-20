@@ -40,7 +40,7 @@
         </copy>
         <mkdir dir="${eclipse-home}/eclipse/plugins/org.eclipse.test"/>
         <copy todir="${eclipse-home}/eclipse/plugins/org.eclipse.test">
-            <fileset dir="${eclipse-home}/eclipse/plugins/org.eclipse.test_3.2.0"/>
+            <fileset dir="${eclipse-home}/eclipse/plugins/org.eclipse.test_3.3.0"/>
         </copy>
     </target>
 
