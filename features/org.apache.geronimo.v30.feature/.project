@@ -1,6 +1,6 @@
 <projectDescription>
-  <name>org.apache.geronimo.v22.feature</name>
-  <comment>WTP Server Adapter for the Apache Geronimo v2.2 server</comment>
+  <name>org.apache.geronimo.v30.feature</name>
+  <comment>WTP Server Adapter for the Apache Geronimo v3.0 server</comment>
   <projects/>
   <buildSpec>
     <buildCommand>

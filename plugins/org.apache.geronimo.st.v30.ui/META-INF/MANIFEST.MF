@@ -21,12 +21,6 @@ Require-Bundle: org.apache.geronimo.runtime.common,
  org.eclipse.wst.server.ui
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Apache Software Foundation
-Export-Package: org.apache.geronimo.st.v30.ui,
- org.apache.geronimo.st.v30.ui.editors,
- org.apache.geronimo.st.v30.ui.internal,
- org.apache.geronimo.st.v30.ui.pages,
- org.apache.geronimo.st.v30.ui.sections,
- org.apache.geronimo.st.v30.ui.wizards
 Import-Package: org.apache.geronimo.st.v30.core,
  org.apache.geronimo.st.v30.core.jaxb,
  org.apache.geronimo.st.v30.core.operations

@@ -17,18 +17,22 @@
   -->
 <!-- $Rev$ $Date$ -->
 <project>
+                        
     <modelVersion>4.0.0</modelVersion>
+                        
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>assembly</artifactId>
+    <version>3.0.0</version>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin :: Assembly</name>
-    <version>${org.apache.geronimo.v30.feature_version}</version>
+                        
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
         <version>3.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+                        
     <build>
         <plugins>
             <plugin>

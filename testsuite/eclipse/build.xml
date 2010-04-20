@@ -29,48 +29,53 @@
 <project name="TestsuiteArtifacts">
 
     <target name="init">
-        <property name="galileo_url"            value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/galileo/SR1/"/>
-        <property name="galileo_jee_win32"      value="eclipse-jee-galileo-SR1-win32.zip"/>
-        <property name="galileo_jee_linux"      value="eclipse-jee-galileo-SR1-linux-gtk.tar"/>
-        <property name="galileo_jee_linux-x86_64" value="eclipse-jee-galileo-SR1-linux-gtk-x86_64.tar"/>
-        <property name="galileo_jee_macos"      value="eclipse-jee-galileo-SR1-macosx-carbon.tar"/>
-        <property name="galileo_jee_linux_gz"   value="${galileo_jee_linux}.gz"/>
-        <property name="galileo_jee_linux-x86_64_gz" value="${galileo_jee_linux-x86_64}.gz"/>
-        <property name="galileo_jee_macos_gz"   value="${galileo_jee_macos}.gz"/>
-        <property name="protocol"               value="&amp;r=1&amp;protocol=http"/>
-        <property name="test_eclipse"           value="${basedir}/../launcher/eclipse/"/>
-        <property name="test_framework_url"     value="http://www.eclipse.org/downloads/download.php?file=/eclipse/downloads/drops/R-3.5-200906111540/"/>
-        <property name="test_framework"         value="eclipse-test-framework-3.5.zip"/>
-        <property name="abbot_swt_url"          value="http://downloads.sourceforge.net/abbot/"/>
-        <property name="abbot_swt_version"      value="0.1.0.20080305_1254"/>
-        <property name="abbot_swt"              value="abbot.swt-${abbot_swt_version}.zip"/>
-        <property name="abbot_protocol"         value="?modtime=12047243638&amp;protocol=http"/>
-        <property name="gep_version"            value="2.2.0"/>
+        <property name="helios_url"                     value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/helios/M6"/>
+        <property name="helios_jee_win32"               value="eclipse-jee-helios-M6-win32.zip"/>
+        <property name="helios_jee_linux"               value="eclipse-jee-helios-M6-linux-gtk.tar"/>
+        <property name="helios_jee_linux-x86_64"        value="eclipse-jee-helios-M6-linux-gtk-x86_64.tar"/>
+        <property name="helios_jee_macos"               value="eclipse-jee-helios-M6-macosx-carbon.tar"/>
+        <property name="helios_jee_linux_gz"            value="${helios_jee_linux}.gz"/>
+        <property name="helios_jee_linux-x86_64_gz"     value="${helios_jee_linux-x86_64}.gz"/>
+        <property name="helios_jee_macos_gz"            value="${helios_jee_macos}.gz"/>
+        
+        <property name="test_eclipse"                   value="${basedir}/../launcher/eclipse/"/>
+        <property name="test_framework_url"             value="http://www.eclipse.org/downloads/download.php?file=/eclipse/downloads/drops/S-3.6M6-201003121448/"/>
+        <property name="test_framework"                 value="eclipse-test-framework-3.6M6.zip"/>
+                                
+        
+        <property name="abbot_swt_url"                  value="http://downloads.sourceforge.net/abbot"/>
+        <property name="abbot_swt_version"              value="0.1.0.20080305_1254"/>
+        <property name="abbot_swt"                      value="abbot.swt-${abbot_swt_version}.zip"/>
+        <property name="abbot_protocol"                 value="?modtime=12047243638&amp;protocol=http"/>
+        
+        <property name="gep_version"                    value="3.0.0"/>
+        
+        <property name="protocol"                       value="&amp;r=1&amp;protocol=http"/>
     </target>
 
     <target name="win32" depends="init,common" description="Download Windows-specific artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading: ${galileo_jee_win32}                                             </echo>
+        <echo>## Downloading: ${helios_jee_win32}                                              </echo>
         <echo>##                                                                               </echo>
-        <echo>## From: ${galileo_url}                                                          </echo>
+        <echo>## From: ${helios_url}                                                           </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-        <get src="${galileo_url}${galileo_jee_win32}${protocol}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_win32}" 
+        <get src="${helios_url}/${helios_jee_win32}${protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_win32}" 
              verbose="true"
              ignoreerrors="true"
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${galileo_jee_win32}                                               </echo>
+        <echo>## Unzipping: ${helios_jee_win32}                                                </echo>
         <echo>##                                                                               </echo>
         <echo>## To: ${test_eclipse}                                                           </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${test_eclipse}"/>
-        <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_win32}" 
+        <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_win32}" 
                dest="${test_eclipse}"
                overwrite="true"/>
     </target>
@@ -78,27 +83,27 @@
     <target name="linux" depends="init,common" description="Download Linux-specific artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading: ${galileo_jee_linux_gz}                                          </echo>
+        <echo>## Downloading: ${helios_jee_linux_gz}                                           </echo>
         <echo>##                                                                               </echo>
-        <echo>## From: ${galileo_url}                                                          </echo>
+        <echo>## From: ${helios_url}                                                           </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-        <get src="${galileo_url}${galileo_jee_linux_gz}${protocol}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_linux_gz}" 
+        <get src="${helios_url}/${helios_jee_linux_gz}${protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_linux_gz}" 
              verbose="true"
              ignoreerrors="true"
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${galileo_jee_linux_gz}                                            </echo>
+        <echo>## Unzipping: ${helios_jee_linux_gz}                                             </echo>
         <echo>##                                                                               </echo>
         <echo>## To: ${test_eclipse}                                                           </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir  dir="${test_eclipse}"/>
-        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_linux_gz}"/>
-        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_linux}" 
+        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_linux_gz}"/>
+        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_linux}" 
                 dest="${test_eclipse}"
                 overwrite="true"/>
     </target>
@@ -106,55 +111,55 @@
     <target name="linux-x86_64" depends="init,common" description="Download Linux-specific artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading: ${galileo_jee_linux-x86_64_gz}                                   </echo>
+        <echo>## Downloading: ${helios_jee_linux-x86_64_gz}                                    </echo>
         <echo>##                                                                               </echo>
-        <echo>## From: ${galileo_url}                                                          </echo>
+        <echo>## From: ${helios_url}                                                           </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-        <get src="${galileo_url}${galileo_jee_linux-x86_64_gz}${protocol}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_linux-x86_64_gz}"
+        <get src="${helios_url}/${helios_jee_linux-x86_64_gz}${protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_linux-x86_64_gz}"
              verbose="true"
              ignoreerrors="true"
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${galileo_jee_linux-x86_64_gz}                                     </echo>
-	<echo>##                                                                               </echo>
+        <echo>## Unzipping: ${helios_jee_linux-x86_64_gz}                                      </echo>
+        <echo>##                                                                               </echo>
         <echo>## To: ${test_eclipse}                                                           </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
-	<mkdir  dir="${test_eclipse}"/>
-        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_linux-x86_64_gz}"/>
-        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_linux-x86_64}"
-		dest="${test_eclipse}"
+    <mkdir  dir="${test_eclipse}"/>
+        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_linux-x86_64_gz}"/>
+        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_linux-x86_64}"
+        dest="${test_eclipse}"
                 overwrite="true"/>
     </target>
 
     <target name="macos" depends="init,common" description="Download Mac-specific artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading: ${galileo_jee_macos_gz}                                          </echo>
+        <echo>## Downloading: ${helios_jee_macos_gz}                                           </echo>
         <echo>##                                                                               </echo>
-        <echo>## From: ${galileo_url}                                                          </echo>
+        <echo>## From: ${helios_url}                                                           </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-        <get src="${galileo_url}${galileo_jee_macos_gz}${protocol}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_macos_gz}" 
+        <get src="${helios_url}/${helios_jee_macos_gz}${protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_macos_gz}" 
              verbose="true"
              ignoreerrors="true"
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${galileo_jee_macos_gz}                                            </echo>
+        <echo>## Unzipping: ${helios_jee_macos_gz}                                             </echo>
         <echo>##                                                                               </echo>
         <echo>## To: ${test_eclipse}                                                           </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir  dir="${test_eclipse}"/>
-        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_macos_gz}"/>
-        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${galileo_jee_macos}" 
+        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_macos_gz}"/>
+        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_macos}" 
                 dest="${test_eclipse}"
                 overwrite="true"/>
     </target>
@@ -188,7 +193,7 @@
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-        <get src="${test_framework_url}${test_framework}${protocol}"
+        <get src="${test_framework_url}/${test_framework}${protocol}"
              dest="${LOCAL_M2_REPO}/eclipse-downloads/${test_framework}" 
              verbose="true"
              ignoreerrors="true"
@@ -215,7 +220,7 @@
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-        <get src="${abbot_swt_url}${abbot_swt}${abbot_protocol}"
+        <get src="${abbot_swt_url}/${abbot_swt}${abbot_protocol}"
              dest="${LOCAL_M2_REPO}/eclipse-downloads/${abbot_swt}" 
              verbose="true"
              ignoreerrors="true"
@@ -271,6 +276,9 @@
             <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.runtime.common/${gep_version}">
                 <include name="**/*.jar"/>
             </fileset>
+            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.runtime.v30/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
             <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.runtime.v22/${gep_version}">
                 <include name="**/*.jar"/>
             </fileset>
@@ -289,7 +297,13 @@
             <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.schemas/${gep_version}">
                 <include name="**/*.jar"/>
             </fileset>
+            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.v30.core/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
             <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.v22.core/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.v30.ui/${gep_version}">
                 <include name="**/*.jar"/>
             </fileset>
             <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.v22.ui/${gep_version}">
@@ -317,8 +331,8 @@
         |  
         -->
         <mkdir dir="${test_eclipse}"/>
-        <unzip src="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.v22.feature/${gep_version}/org.apache.geronimo.v22.feature-${gep_version}.jar"
-               dest="${test_eclipse}eclipse/features/org.apache.geronimo.v22.feature_${gep_version}"
+        <unzip src="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.v30.feature/${gep_version}/org.apache.geronimo.v30.feature-${gep_version}.jar"
+               dest="${test_eclipse}eclipse/features/org.apache.geronimo.v30.feature_${gep_version}"
                overwrite="true"/>
     </target>
 

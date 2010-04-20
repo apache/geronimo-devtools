@@ -16,16 +16,22 @@
   -->
 <!-- $Rev: 697956 $ $Date: 2008-09-22 15:29:47 -0400 (Mon, 22 Sep 2008) $ -->
 <project>
+    
     <modelVersion>4.0.0</modelVersion>
+    
+    <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>org.apache.geronimo.st.v22.core</artifactId>
+    <version>3.0.0</version>
     <packaging>jar</packaging>
     <name>${artifactId}</name>
+    
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>eclipse-plugins-parent</artifactId>
         <version>3.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+    
     <build>
         <resources>
             <resource>
@@ -127,9 +133,9 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>${pom.basedir}</directory>
+                            <directory>${pom.basedir}/bin</directory>
                             <includes>
-                                <include>bin</include>
+                                <include>**</include>
                             </includes>
                         </fileset>
                     </filesets>

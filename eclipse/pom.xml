@@ -18,8 +18,10 @@
 <project>
                                                 
     <modelVersion>4.0.0</modelVersion>
+                                                
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>eclipse</artifactId>
+    <version>3.0.0</version>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin :: Eclipse</name>
                                                 

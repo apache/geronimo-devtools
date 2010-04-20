@@ -24,8 +24,8 @@
 
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>testsuite</artifactId>
-    <packaging>pom</packaging>
     <version>3.0.0</version>
+    <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin :: Testsuite</name>
 
     <parent>
@@ -39,20 +39,21 @@
     </description>
 
     <properties>
-        <geronimoVersion_1>2.2-SNAPSHOT</geronimoVersion_1>
-        <geronimoVersion_2>2.1.4</geronimoVersion_2>
-        <geronimoVersion_3>2.0.2</geronimoVersion_3>
+        <geronimoVersion_1>3.0-SNAPSHOT</geronimoVersion_1>
+        <geronimoVersion_2>2.2.1-SNAPSHOT</geronimoVersion_2>
+        <geronimoVersion_3>2.1.4</geronimoVersion_3>
+        <geronimoVersion_4>2.0.2</geronimoVersion_4>
     </properties>
 
     <dependencies>
         <!--
          |
-         | Geronimo server v2.2
+         | Geronimo server v3.0
          |
          -->
         <dependency>
             <groupId>org.apache.geronimo.assemblies</groupId>
-            <artifactId>geronimo-tomcat6-javaee5</artifactId>
+            <artifactId>geronimo-tomcat7-javaee6</artifactId>
             <version>${geronimoVersion_1}</version>
             <type>zip</type>
             <classifier>bin</classifier>
@@ -112,7 +113,7 @@
 
         <!--
          |
-         | Geronimo server v2.1
+         | Geronimo server v2.2
          |
          -->
         <dependency>
@@ -177,13 +178,78 @@
 
         <!--
          |
+         | Geronimo server v2.1
+         |
+         -->
+        <dependency>
+            <groupId>org.apache.geronimo.assemblies</groupId>
+            <artifactId>geronimo-tomcat6-javaee5</artifactId>
+            <version>${geronimoVersion_3}</version>
+            <type>zip</type>
+            <classifier>bin</classifier>
+            <scope>test</scope>
+            <!--
+             |
+             | Exclude server dependencies not used by the GEP
+             |
+             -->
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.xml.ws</groupId>
+                    <artifactId>jaxws-tools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.xml.ws</groupId>
+                    <artifactId>jaxws-rt</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>catalina</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>jasper</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-portal-driver</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-portal-driver-impl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-container</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-taglib</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-descriptor-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pluto</groupId>
+                    <artifactId>pluto-descriptor-impl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>juddi</groupId>
+                    <artifactId>juddi</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!--
+         |
          | Geronimo server v2.0
          |
          -->
         <dependency>
             <groupId>org.apache.geronimo.assemblies</groupId>
             <artifactId>geronimo-tomcat6-jee5</artifactId>
-            <version>${geronimoVersion_3}</version>
+            <version>${geronimoVersion_4}</version>
             <type>zip</type>
             <classifier>bin</classifier>
             <scope>test</scope>
@@ -233,15 +299,45 @@
                     <failOnError>false</failOnError>
                     <filesets>
                         <fileset>
-                            <directory>${pom.basedir}</directory>
+                            <directory>${pom.basedir}/launcher/server_v3.0</directory>
                             <includes>
-                                <include>launcher/.metadata</include>
-                                <include>launcher/eclipse</include>
-                                <include>launcher/results</include>
-                                <include>launcher/server_v2.2</include>
-                                <include>launcher/server_v2.1</include>
-                                <include>launcher/server_v2.0</include>
-                                <include>launcher/workspace</include>
+                                <include>**</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>${pom.basedir}/launcher/server_v2.2</directory>
+                            <includes>
+                                <include>**</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>${pom.basedir}/launcher/server_v2.1</directory>
+                            <includes>
+                                <include>**</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>${pom.basedir}/launcher/server_v2.0</directory>
+                            <includes>
+                                <include>**</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>${pom.basedir}/launcher/eclipse</directory>
+                            <includes>
+                                <include>**</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>${pom.basedir}/launcher/results</directory>
+                            <includes>
+                                <include>**</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>${pom.basedir}/launcher/workspace</directory>
+                            <includes>
+                                <include>**</include>
                             </includes>
                         </fileset>
                     </filesets>

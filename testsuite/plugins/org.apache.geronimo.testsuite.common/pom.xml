@@ -24,14 +24,14 @@
 
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>org.apache.geronimo.testsuite.common</artifactId>
+    <version>3.0.0</version>
     <packaging>jar</packaging>
-    <version>3.0</version>
     <name>${artifactId}</name>
 
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>testsuite-plugins</artifactId>
-        <version>3.0</version>
+        <version>3.0.0</version>
     </parent>
 
     <build>
@@ -83,9 +83,9 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <unzip src="${settings.localRepository}/org/openqa/selenium/client-drivers/selenium-java-client-driver/1.0-beta-1/selenium-java-client-driver-1.0-beta-1.jar"
+                                <unzip src="${settings.localRepository}/org/openqa/selenium/client-drivers/selenium-java-client-driver/1.0-beta-2/selenium-java-client-driver-1.0-beta-2.jar"
                                       dest="${project.build.directory}/classes"/>
-                                <unzip src="${settings.localRepository}/org/openqa/selenium/server/selenium-server/1.0-beta-1/selenium-server-1.0-beta-1-standalone.jar"
+                                <unzip src="${settings.localRepository}/org/openqa/selenium/server/selenium-server/1.0-beta-2/selenium-server-1.0-beta-2-standalone.jar"
                                       dest="${project.build.directory}/classes"/>
                             </tasks>
                         </configuration>

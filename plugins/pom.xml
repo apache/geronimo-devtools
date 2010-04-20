@@ -17,17 +17,22 @@
   -->
 <!-- $Rev$ $Date$ -->
 <project>
+                
     <modelVersion>4.0.0</modelVersion>
+                
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>eclipse-plugins-parent</artifactId>
+    <version>3.0.0</version>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin :: Plugins</name>
+                
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
         <version>3.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+                
     <build>
         <plugins>
             <plugin>
@@ -122,9 +127,9 @@
                     <configuration>
                         <filesets>
                             <fileset>
-                                <directory>${pom.basedir}</directory>
+                                <directory>${pom.basedir}/lib</directory>
                                 <includes>
-                                    <include>lib</include>
+                                    <include>**</include>
                                 </includes>
                             </fileset>
                         </filesets>
@@ -145,7 +150,7 @@
         <module>org.apache.geronimo.st.ui</module>
         <module>org.apache.geronimo.st.v11.schemas</module>
         <module>org.apache.geronimo.st.schemas</module>
-        <module>org.apache.geronimo.st.v11.ui</module>       
+        <module>org.apache.geronimo.st.v11.ui</module>
         <module>org.apache.geronimo.st.v20.ui</module>
         <module>org.apache.geronimo.st.v21.ui</module>
         <module>org.apache.geronimo.st.v22.ui</module>

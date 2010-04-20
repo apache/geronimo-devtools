@@ -16,16 +16,22 @@
   -->
 <!-- $Rev$ $Date$ -->
 <project>
+
     <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>org.apache.geronimo.st.schemas</artifactId>
+    <version>3.0.0</version>
     <packaging>jar</packaging>
     <name>${artifactId}</name>
+
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>eclipse-plugins-parent</artifactId>
         <version>3.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+
     <build>
         <resources>
             <resource>
@@ -42,8 +48,8 @@
                 </includes>
             </resource>
             <resource>
-                <targetPath>v22</targetPath>
-                <directory>v22</directory>
+                <targetPath>v30</targetPath>
+                <directory>v30</directory>
             </resource>
             <!-- The Geronimo covention puts license and notice for artifacts shipped in this jar 
                  in the jar's meta-inf directory -->

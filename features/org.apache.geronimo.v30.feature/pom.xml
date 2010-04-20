@@ -16,17 +16,22 @@
   -->
 <!-- $Rev$ $Date$ -->
 <project>
+                
     <modelVersion>4.0.0</modelVersion>
+                
+    <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>org.apache.geronimo.v30.feature</artifactId>
+    <version>3.0.0</version>
     <packaging>jar</packaging>
-    <version>${org.apache.geronimo.v30.feature_version}</version>
-    <name>${artifactId}</name>
+    <name>Geronimo Eclipse Plugin :: Features :: v30</name>
+                
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>eclipse-features-parent</artifactId>
         <version>3.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+                
     <build>
         <resources>
             <resource>
@@ -84,9 +89,9 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>${pom.basedir}</directory>
+                            <directory>${pom.basedir}/bin</directory>
                             <includes>
-                                <include>bin</include>
+                                <include>**</include>
                             </includes>
                         </fileset>
                     </filesets>

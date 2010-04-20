@@ -7,7 +7,7 @@ Bundle-Activator: org.apache.geronimo.st.core.Activator
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.runtime.common,
- org.apache.geronimo.runtime.v22,
+ org.apache.geronimo.runtime.v30,
  org.apache.geronimo.jee.v21.jaxbmodel,
  org.eclipse.core.runtime,
  org.eclipse.wst.server.core,

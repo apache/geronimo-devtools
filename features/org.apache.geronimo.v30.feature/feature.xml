@@ -42,14 +42,14 @@
     </url>
     
     <requires>
-	<import feature="org.eclipse.jst.server_ui.feature" version="2.0.2.v200802150100-77-CT9yJXEkuiKVeQrclqTHQ3648"
-		match="greaterOrEqual"/>
-	<import feature="org.eclipse.jst.server_adapters.feature" version="2.0.2.v200802150100-787KE8iDUUEF6GwKwpHEQ"
-		match="greaterOrEqual"/>
-	<import feature="org.eclipse.jst.web_ui.feature" version="2.0.2.v200802150100-7B1DzCkuNa_RPevwkwB1iJ6z-0RH" 
-		match="greaterOrEqual"/>
-  	<import feature="org.eclipse.jst.enterprise_ui.feature" version="2.0.2.v200802150100-7b7_Es8EU6AXOV9QLJSees1SQoYQ"
-		match="greaterOrEqual"/>
+    <import feature="org.eclipse.jst.server_ui.feature" version="2.0.2.v200802150100-77-CT9yJXEkuiKVeQrclqTHQ3648"
+        match="greaterOrEqual"/>
+    <import feature="org.eclipse.jst.server_adapters.feature" version="2.0.2.v200802150100-787KE8iDUUEF6GwKwpHEQ"
+        match="greaterOrEqual"/>
+    <import feature="org.eclipse.jst.web_ui.feature" version="2.0.2.v200802150100-7B1DzCkuNa_RPevwkwB1iJ6z-0RH" 
+        match="greaterOrEqual"/>
+    <import feature="org.eclipse.jst.enterprise_ui.feature" version="2.0.2.v200802150100-7b7_Es8EU6AXOV9QLJSees1SQoYQ"
+        match="greaterOrEqual"/>
     </requires>
     
     <plugin
@@ -105,6 +105,26 @@
          install-size="140"
          version="3.0.0"
          unpack="false"/>
+         
+    <plugin
+         id="org.apache.geronimo.st.v30.core"
+         download-size="20"
+         install-size="20"
+         version="3.0.0"
+         unpack="false"/>
+         
+    <plugin
+         id="org.apache.geronimo.st.v30.ui"
+         download-size="16"
+         install-size="16"
+         version="3.0.0"
+         unpack="false"/>
+         
+    <plugin
+         id="org.apache.geronimo.runtime.v30"
+         download-size="1052"
+         install-size="1052"
+         version="3.0.0"/>
          
     <plugin
          id="org.apache.geronimo.st.v22.core"

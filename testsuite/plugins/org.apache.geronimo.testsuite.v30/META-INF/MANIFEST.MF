@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Geronimo v30 Server Tools Testsuite Plug-in
+Bundle-SymbolicName: org.apache.geronimo.testsuite.v30;singleton:=true
+Bundle-Version: 3.0.0
+Bundle-Activator: org.apache.geronimo.testsuite.v30.Activator
+Bundle-Vendor: Apache Software Foundation
+Bundle-Localization: plugin
+Require-Bundle: abbot.swt,
+ abbot.swt.eclipse,
+ org.eclipse.core.runtime,
+ org.eclipse.debug.ui,
+ org.eclipse.debug.core,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.launching;visibility:=reexport,
+ org.eclipse.jst.common.frameworks,
+ org.eclipse.jst.j2ee,
+ org.eclipse.jst.j2ee.ejb,
+ org.eclipse.jst.j2ee.jca,
+ org.eclipse.jst.j2ee.web,
+ org.eclipse.jst.server.core;visibility:=reexport,
+ org.eclipse.ui,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.forms,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.views,
+ org.apache.geronimo.testsuite.common
+Bundle-ActivationPolicy: lazy
+Export-Package: org.apache.geronimo.testsuite.v30
+Import-Package: junit.framework;version="3.8.2"

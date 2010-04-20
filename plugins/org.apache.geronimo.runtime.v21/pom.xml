@@ -16,16 +16,22 @@
   -->
 <!-- $Rev: 610511 $ $Date: 2008-01-09 13:50:47 -0500 (Wed, 09 Jan 2008) $ -->
 <project>
+
     <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>org.apache.geronimo.runtime.v21</artifactId>
+    <version>3.0.0</version>
     <packaging>jar</packaging>
     <name>${artifactId}</name>
+
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>eclipse-plugins-parent</artifactId>
         <version>3.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+
     <properties>
         <geronimoVersion>2.1.4</geronimoVersion>
     </properties>
@@ -210,9 +216,19 @@
                             <directory>${pom.basedir}</directory>
                             <includes>
                                 <include>.classpath</include>
-                                <include>lib</include>
-                                <include>bin</include>
                                 <include>*.log</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>${pom.basedir}/lib</directory>
+                            <includes>
+                                <include>**</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>${pom.basedir}/bin</directory>
+                            <includes>
+                                <include>**</include>
                             </includes>
                         </fileset>
                     </filesets>

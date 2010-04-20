@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
-	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="var" path="M2_REPO/org/openqa/selenium/client-drivers/selenium-java-client-driver/1.0-beta-1/selenium-java-client-driver-1.0-beta-1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/openqa/selenium/server/selenium-server-coreless/1.0-beta-1/selenium-server-coreless-1.0-beta-1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/openqa/selenium/core/selenium-core/1.0-beta-1/selenium-core-1.0-beta-1.jar"/>
-	<classpathentry kind="output" path="target/classes"/>
+    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+    <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+    <classpathentry kind="src" path="src/main/java"/>
+    <classpathentry kind="var" path="M2_REPO/org/openqa/selenium/client-drivers/selenium-java-client-driver/1.0-beta-2/selenium-java-client-driver-1.0-beta-2.jar"/>
+    <classpathentry kind="var" path="M2_REPO/org/openqa/selenium/server/selenium-server-coreless/1.0-beta-2/selenium-server-coreless-1.0-beta-2.jar"/>
+    <classpathentry kind="var" path="M2_REPO/org/openqa/selenium/core/selenium-core/1.0-beta-2/selenium-core-1.0-beta-2.jar"/>
+    <classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -19,11 +19,12 @@
 <project>
                         
     <modelVersion>4.0.0</modelVersion>
+                        
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>geronimo-eclipse-plugin</artifactId>
+    <version>3.0.0</version>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin</name>
-    <version>3.0.0</version>
                         
     <parent>
         <groupId>org.apache</groupId>
@@ -213,19 +214,19 @@
             <dependency>
                 <groupId>org.openqa.selenium.client-drivers</groupId>
                 <artifactId>selenium-java-client-driver</artifactId>
-                <version>1.0-beta-2</version>
+                <version>1.0-beta-1</version>
             </dependency>
             
             <dependency>
                 <groupId>org.openqa.selenium.server</groupId>
                 <artifactId>selenium-server</artifactId>
-                <version>1.0-beta-2</version>
+                <version>1.0-beta-1</version>
             </dependency>
              
             <dependency>
                 <groupId>org.openqa.selenium.core</groupId>
                 <artifactId>selenium-core</artifactId>
-                <version>1.0-beta-2</version>
+                <version>1.0-beta-1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -272,7 +273,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <version>2.2-beta-4</version>
+                    <version>2.2-beta-1</version>
                 </plugin>
                 
                 <plugin>
@@ -562,66 +563,66 @@
             </modules>
         </profile>
 
-         <profile>
-                      <id>apache-release</id>
-                      <build>
-                        <plugins>
-                          <!-- Create a source-release artifact that contains the fully buildable 
-                               project directory source structure. This is the artifact which is 
-                               the official subject of any release vote. -->
-                          <plugin>
-                            <artifactId>maven-assembly-plugin</artifactId>
-                            <dependencies>
-                              <dependency>
+        <profile>
+            <id>apache-release</id>
+            <build>
+                <plugins>
+                    <!-- Create a source-release artifact that contains the fully buildable 
+                         project directory source structure. This is the artifact which is 
+                         the official subject of any release vote. -->
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <dependencies>
+                            <dependency>
                                 <groupId>org.apache.apache.resources</groupId>
                                 <artifactId>apache-source-release-assembly-descriptor</artifactId>
                                 <version>1.0.2</version>
-                              </dependency>
-                            </dependencies>
-                            <executions>
-                              <execution>
+                            </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
                                 <id>source-release-assembly</id>
                                 <phase>package</phase>
                                 <goals>
-                                  <goal>single</goal>
+                                    <goal>single</goal>
                                 </goals>
                                 <configuration>
-                                  <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
-                                  <descriptorRefs>
-                                    <descriptorRef>source-release</descriptorRef>
-                                  </descriptorRefs>
-                                  <tarLongFileFormat>gnu</tarLongFileFormat>
+                                    <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+                                    <descriptorRefs>
+                                        <descriptorRef>source-release</descriptorRef>
+                                    </descriptorRefs>
+                                    <tarLongFileFormat>gnu</tarLongFileFormat>
                                 </configuration>
-                              </execution>
-                            </executions>
-                          </plugin>
-                          <!-- We want to sign the artifact, the POM, and all attached artifacts -->
-                          <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-gpg-plugin</artifactId>
-                            <configuration>
-                              <passphrase>${gpg.passphrase}</passphrase>
-                            </configuration>
-                            <executions>
-                              <execution>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- We want to sign the artifact, the POM, and all attached artifacts -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <configuration>
+                            <passphrase>${gpg.passphrase}</passphrase>
+                        </configuration>
+                        <executions>
+                            <execution>
                                 <goals>
-                                  <goal>sign</goal>
+                                    <goal>sign</goal>
                                 </goals>
-                              </execution>
-                            </executions>
-                          </plugin>
-                          <!-- We want to deploy the artifact to a staging location for perusal -->
-                          <plugin>
-                            <inherited>true</inherited>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-deploy-plugin</artifactId>
-                            <configuration>
-                              <updateReleaseInfo>true</updateReleaseInfo>
-                            </configuration>
-                          </plugin>          
-                        </plugins>
-                      </build>
-           </profile>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- We want to deploy the artifact to a staging location for perusal -->
+                    <plugin>
+                        <inherited>true</inherited>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <configuration>
+                            <updateReleaseInfo>true</updateReleaseInfo>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
                         
 </project>
