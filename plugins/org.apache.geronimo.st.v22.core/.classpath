@@ -16,11 +16,8 @@
   ~ limitations under the License.
   -->
 
-<!-- $Rev$ $Date$ -->
+<!-- @version $Rev$ $Date$ -->
 
 <classpath>
-#set($libs = $libDir.listFiles() )
-#foreach( $lib in $libs )
-	<classpathentry exported="true" kind="lib" path="lib/$lib.getName()"/>
-#end
+    <classpathentry kind="output" path="target/classes"/>
 </classpath>

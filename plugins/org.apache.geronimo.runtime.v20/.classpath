@@ -19,8 +19,13 @@
 <!-- @version $Rev$ $Date$ -->
 
 <classpath>
-    <classpathentry kind="src" path="src/main/java"/>
-    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-    <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-    <classpathentry kind="output" path="target/classes"/>
+    <classpathentry exported="true" kind="lib" path="lib/geronimo-common-2.0.2.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/geronimo-deploy-config-2.0.2.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/geronimo-deploy-jsr88-2.0.2.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/geronimo-deployment-2.0.2.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/geronimo-j2ee-schema-2.0.2.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/geronimo-javaee-deployment_1.1MR3_spec-1.0.1-SNAPSHOT.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/geronimo-kernel-2.0.2.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/geronimo-system-2.0.2.jar"/>
+    <classpathentry exported="true" kind="lib" path="lib/geronimo-util-2.0.2.jar"/>
 </classpath>

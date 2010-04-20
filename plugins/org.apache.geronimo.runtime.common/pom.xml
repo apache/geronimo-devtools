@@ -137,26 +137,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.geronimo.devtools</groupId>
-                <artifactId>maven-eclipsepde-plugin</artifactId>
-                <configuration>
-                    <libDir>lib</libDir>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>generate-classpath</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>classpath</goal>
-                        </goals>
-                        <configuration>
-                            <templateFile>classpathXmlTemplate.vm</templateFile>
-                            <destFile>.classpath</destFile>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -181,18 +161,11 @@
                         <fileset>
                             <directory>${pom.basedir}</directory>
                             <includes>
-                                <include>.classpath</include>
                                 <include>*.log</include>
                             </includes>
                         </fileset>
                         <fileset>
                             <directory>${pom.basedir}/lib</directory>
-                            <includes>
-                                <include>**</include>
-                            </includes>
-                        </fileset>
-                        <fileset>
-                            <directory>${pom.basedir}/bin</directory>
                             <includes>
                                 <include>**</include>
                             </includes>
