@@ -85,34 +85,20 @@
 
         <plugins>
             <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${pom.basedir}/bin</directory>
-                            <includes>
-                                <include>**</include>
-                            </includes>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
-            
-             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <executions>
-                  <execution>
-                    <goals>
-                      <goal>sign</goal>
-                    </goals>
-                  </execution>
+                    <execution>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
                 </executions>
                 <configuration>
-                  <keystore>../../${keystoreFile}</keystore>
-                  <alias>${keystoreAlias}</alias>
-                  <storepass>${keystoreStorepass}</storepass>
-                  <keypass>${keystoreKeypass}</keypass>
+                    <keystore>../../${keystoreFile}</keystore>
+                    <alias>${keystoreAlias}</alias>
+                    <storepass>${keystoreStorepass}</storepass>
+                    <keypass>${keystoreKeypass}</keypass>
                 </configuration>
             </plugin>
         </plugins>
