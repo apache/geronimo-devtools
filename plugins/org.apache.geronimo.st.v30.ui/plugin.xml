@@ -51,15 +51,93 @@
             class="org.apache.geronimo.st.v30.ui.sections.ServerPluginSection">
         </section>
     </extension>
-    <extension
-          point="org.eclipse.debug.core.statusHandlers">
+    
+    <extension point="org.eclipse.debug.core.statusHandlers">
        <statusHandler
-	   id="com.example.ExampleIdentifier"
-	   class="com.example.ExampleStatusHandler"
-	   plugin="com.example.ExamplePluginId"
-	   code="123">
-  </statusHandler>
+            id="com.example.ExampleIdentifier"
+            class="com.example.ExampleStatusHandler"
+            plugin="com.example.ExamplePluginId"
+            code="123">
+        </statusHandler>
+    </extension>
+    
+    
+    <!-- 
+     |
+     | Step 1. Create a commands category for the various download commands
+     |
+     -->
+    <extension point="org.eclipse.ui.commands">
+        <category 
+              description="Isolate all the various GEP downloads into a single menu"
+              id="org.apache.geronimo.st.v30.ui.commands.category"
+              name="Downloads">
+        </category>
+        <command
+              categoryId="org.apache.geronimo.st.v30.ui.commands.category"
+              description="Download tools for OSGi-based applications"
+              id="org.apache.geronimo.st.v30.ui.commands.downloadOSGi"
+              name="Download OSGi Tools">
+        </command>
+        <command
+              categoryId="org.apache.geronimo.st.v30.ui.commands.category"
+              description="Download Geronimo Servers"
+              id="org.apache.geronimo.st.v30.ui.commands.downloadGeronimo"
+              name="Download Geronimo Servers">
+        </command>
+    </extension>
+    
 
+    <!-- 
+     |
+     | Step 2. Create a Downloads menu for the download commands defined above
+     |
+     -->
+    <extension point="org.eclipse.ui.menus">
+        <menuContribution
+              locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+            <menu
+                  icon="icons/obj16/littleG.gif"
+                  id="org.apache.geronimo.st.v30.ui.downloadsMenu"
+                  label="Downloads"
+                  mnemonic="D">
+                <command
+                      commandId="org.apache.geronimo.st.v30.ui.commands.downloadOSGi"
+                      icon="icons/obj16/littleOSGi.gif"
+                      id="org.apache.geronimo.st.v30.ui.menus.downloadOSGi"
+                      mnemonic="O"
+                      style="push">
+                </command>
+                <separator
+                      name="org.apache.geronimo.st.v30.ui.separator"
+                      visible="true">
+                </separator>
+                <command
+                      commandId="org.apache.geronimo.st.v30.ui.commands.downloadGeronimo"
+                      icon="icons/obj16/littleG.gif"
+                      id="org.apache.geronimo.st.v30.ui.menus.downloadGeronimo"
+                      mnemonic="G"
+                      style="push">
+                </command>
+            </menu>
+        </menuContribution>
+    </extension>
+
+
+    <!-- 
+     |
+     | Step 3. Create the handlers for the commands defined above
+     |
+     -->
+    <extension point="org.eclipse.ui.handlers">
+        <handler
+              class="org.apache.geronimo.st.v30.ui.handlers.DownloadOSGi"
+              commandId="org.apache.geronimo.st.v30.ui.commands.downloadOSGi">
+        </handler>
+        <handler
+              class="org.apache.geronimo.st.v30.ui.handlers.DownloadGeronimo"
+              commandId="org.apache.geronimo.st.v30.ui.commands.downloadGeronimo">
+        </handler>
     </extension>
 
 </plugin>
