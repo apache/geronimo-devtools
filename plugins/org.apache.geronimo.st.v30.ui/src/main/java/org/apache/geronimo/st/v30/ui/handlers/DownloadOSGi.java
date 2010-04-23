@@ -33,9 +33,9 @@ public class DownloadOSGi extends AbstractHandler  {
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-    	Trace.tracePoint("ENTRY", "DownloadOSGi.execute", event);
-    	// TODO
-    	Trace.tracePoint("EXIT ", "DownloadOSGi.execute");
+        Trace.tracePoint("Entry", "DownloadOSGi.execute", event);
+        // TODO
+        Trace.tracePoint("Exit", "DownloadOSGi.execute");
         return null;
     }
 

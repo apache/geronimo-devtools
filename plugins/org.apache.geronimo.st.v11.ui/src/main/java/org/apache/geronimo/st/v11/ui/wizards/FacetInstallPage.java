@@ -33,105 +33,105 @@ import org.eclipse.wst.common.project.facet.ui.AbstractFacetWizardPage;
  */
 public class FacetInstallPage extends AbstractFacetWizardPage {
 
-	private DeploymentPlanInstallConfig config;
+    private DeploymentPlanInstallConfig config;
 
-	private Text groupText;
-	private Text artifactText;
-	private Text versionText;
-	private Text typeText;
-	private Button sharedLib;
+    private Text groupText;
+    private Text artifactText;
+    private Text versionText;
+    private Text typeText;
+    private Button sharedLib;
 
-	public FacetInstallPage() {
-		super("geronimo.plan.install");
-		Trace.trace("Constructor Entry", "FacetInstallPage");
-		
-		setTitle("Geronimo Deployment Plan");
-		setDescription("Configure the geronimo deployment plan.");
-		
-		Trace.trace("Constructor Exit", "FacetInstallPage");
-	}
+    public FacetInstallPage() {
+        super("geronimo.plan.install");
+        Trace.trace("Constructor Entry", "FacetInstallPage");
+        
+        setTitle("Geronimo Deployment Plan");
+        setDescription("Configure the geronimo deployment plan.");
+        
+        Trace.trace("Constructor Exit", "FacetInstallPage");
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.wst.common.project.facet.ui.IFacetWizardPage#setConfig(java.lang.Object)
-	 */
-	public void setConfig(Object config) {
-		Trace.trace("Entry", "FacetInstallPage.setConfig", config);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.wst.common.project.facet.ui.IFacetWizardPage#setConfig(java.lang.Object)
+     */
+    public void setConfig(Object config) {
+        Trace.trace("Entry", "FacetInstallPage.setConfig", config);
 
-		this.config = (DeploymentPlanInstallConfig) config;
-		
-		Trace.trace("Exit", "FacetInstallPage.setConfig");
-	}
+        this.config = (DeploymentPlanInstallConfig) config;
+        
+        Trace.trace("Exit", "FacetInstallPage.setConfig");
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
-	 */
-	public void createControl(Composite parent) {
-		Trace.trace("Entry", "FacetInstallPage.createControl", parent);
-		
-		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new GridLayout(2, false));
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+     */
+    public void createControl(Composite parent) {
+        Trace.trace("Entry", "FacetInstallPage.createControl", parent);
+        
+        Composite composite = new Composite(parent, SWT.NONE);
+        composite.setLayout(new GridLayout(2, false));
 
-		Label groupLabel = new Label(composite, SWT.NONE);
-		groupLabel.setText(CommonMessages.groupId);
+        Label groupLabel = new Label(composite, SWT.NONE);
+        groupLabel.setText(CommonMessages.groupId);
 
-		groupText = new Text(composite, SWT.BORDER);
-		groupText.setLayoutData(createGridData());
-		groupText.setText("default");
-		
-		Label artifactLabel = new Label(composite, SWT.NONE);
-		artifactLabel.setText(CommonMessages.artifactId);
+        groupText = new Text(composite, SWT.BORDER);
+        groupText.setLayoutData(createGridData());
+        groupText.setText("default");
+        
+        Label artifactLabel = new Label(composite, SWT.NONE);
+        artifactLabel.setText(CommonMessages.artifactId);
 
-		artifactText = new Text(composite, SWT.BORDER);
-		artifactText.setLayoutData(createGridData());
-		
-		Label versionLabel = new Label(composite, SWT.NONE);
-		versionLabel.setText(CommonMessages.version);
+        artifactText = new Text(composite, SWT.BORDER);
+        artifactText.setLayoutData(createGridData());
+        
+        Label versionLabel = new Label(composite, SWT.NONE);
+        versionLabel.setText(CommonMessages.version);
 
-		versionText = new Text(composite, SWT.BORDER);
-		versionText.setLayoutData(createGridData());
-		versionText.setText("1.0");
-		
-		Label typeLabel = new Label(composite, SWT.NONE);
-		typeLabel.setText(CommonMessages.artifactType);
+        versionText = new Text(composite, SWT.BORDER);
+        versionText.setLayoutData(createGridData());
+        versionText.setText("1.0");
+        
+        Label typeLabel = new Label(composite, SWT.NONE);
+        typeLabel.setText(CommonMessages.artifactType);
 
-		typeText = new Text(composite, SWT.BORDER);
-		typeText.setLayoutData(createGridData());
-		typeText.setText("car");
-		
-		sharedLib = new Button(composite, SWT.CHECK);
-		GridData data = createGridData();
-		data.horizontalSpan = 2;
-		data.verticalIndent = 5;
-		sharedLib.setLayoutData(data);
-		sharedLib.setText(CommonMessages.addSharedLib);
-		
-		setControl(composite);
-		
-		Trace.trace("Exit", "FacetInstallPage.createControl");		
-	}
+        typeText = new Text(composite, SWT.BORDER);
+        typeText.setLayoutData(createGridData());
+        typeText.setText("car");
+        
+        sharedLib = new Button(composite, SWT.CHECK);
+        GridData data = createGridData();
+        data.horizontalSpan = 2;
+        data.verticalIndent = 5;
+        sharedLib.setLayoutData(data);
+        sharedLib.setText(CommonMessages.addSharedLib);
+        
+        setControl(composite);
+        
+        Trace.trace("Exit", "FacetInstallPage.createControl");      
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.wst.common.project.facet.ui.AbstractFacetWizardPage#transferStateToConfig()
-	 */
-	public void transferStateToConfig() {
-		Trace.trace("Entry", "FacetInstallPage.transferStateToConfig");		
-	
-		config.setGroupId(groupText.getText());
-		config.setArtifactId(artifactText.getText());
-		config.setVersion(versionText.getText());
-		config.setType(typeText.getText());
-		config.setSharedLib(sharedLib.getSelection());
-		
-		Trace.trace("Exit", "FacetInstallPage.transferStateToConfig");		
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.wst.common.project.facet.ui.AbstractFacetWizardPage#transferStateToConfig()
+     */
+    public void transferStateToConfig() {
+        Trace.trace("Entry", "FacetInstallPage.transferStateToConfig");     
+    
+        config.setGroupId(groupText.getText());
+        config.setArtifactId(artifactText.getText());
+        config.setVersion(versionText.getText());
+        config.setType(typeText.getText());
+        config.setSharedLib(sharedLib.getSelection());
+        
+        Trace.trace("Exit", "FacetInstallPage.transferStateToConfig");      
+    }
 
-	private static GridData createGridData() {
-		return new GridData(GridData.FILL_HORIZONTAL);
-	}
+    private static GridData createGridData() {
+        return new GridData(GridData.FILL_HORIZONTAL);
+    }
 }

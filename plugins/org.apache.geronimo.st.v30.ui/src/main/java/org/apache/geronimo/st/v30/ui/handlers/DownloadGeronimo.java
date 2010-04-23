@@ -41,7 +41,7 @@ import org.eclipse.ui.internal.browser.WorkbenchBrowserSupport;
 public class DownloadGeronimo extends AbstractHandler {
 
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        Trace.tracePoint("ENTRY", "DownloadGeronimo.execute", event);
+        Trace.tracePoint("Entry", "DownloadGeronimo.execute", event);
 
         String url = Messages.DownloadServerURL;
 
@@ -57,7 +57,7 @@ public class DownloadGeronimo extends AbstractHandler {
             e.printStackTrace();
         }
 
-        Trace.tracePoint("EXIT ", "DownloadGeronimo.execute");
+        Trace.tracePoint("Exit", "DownloadGeronimo.execute");
         return null;
     }
 }

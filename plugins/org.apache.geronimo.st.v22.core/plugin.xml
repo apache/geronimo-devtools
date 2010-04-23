@@ -21,7 +21,7 @@
 
 <plugin>
 
-	 <extension point="org.eclipse.wst.server.core.runtimeTypes">
+     <extension point="org.eclipse.wst.server.core.runtimeTypes">
         <runtimeType id="org.apache.geronimo.runtime.22" version="2.2"
             name="%runtimeTypeName" description="%runtimeTypeDescription"
             vendor="%runtimeTypeVendor"
@@ -104,7 +104,7 @@
      |
      -->
     <extension point="org.eclipse.wst.common.project.facet.core.defaultFacets" 
-    	id="org.apache.geronimo.defaultFacets"
+        id="org.apache.geronimo.defaultFacets"
         name="Geronimo Default Facets">
         <default-facets>
             <runtime-component id="org.apache.geronimo.runtime" version="2.2"/>

@@ -21,7 +21,7 @@
 
 <plugin>
 
-	 <extension point="org.eclipse.wst.server.core.runtimeTypes">
+     <extension point="org.eclipse.wst.server.core.runtimeTypes">
         <runtimeType id="org.apache.geronimo.runtime.20"
             name="%runtimeTypeName" description="%runtimeTypeDescription"
             vendor="%runtimeTypeVendor" version="2.0"
@@ -31,7 +31,7 @@
             <moduleType types="jst.connector" versions="1.0, 1.5"/>
             <moduleType types="jst.ear" versions="1.2, 1.3, 1.4, 5.0"/>
             <moduleType types="jst.utility" versions="1.0"/>
-	        <moduleType types="jst.appclient" versions="1.2, 1.3, 1.4, 5.0"/>
+            <moduleType types="jst.appclient" versions="1.2, 1.3, 1.4, 5.0"/>
         </runtimeType>
     </extension>
     
@@ -104,7 +104,7 @@
      |
      -->
     <extension point="org.eclipse.wst.common.project.facet.core.defaultFacets" 
-    	id="org.apache.geronimo.defaultFacets"
+        id="org.apache.geronimo.defaultFacets"
         name="Geronimo Default Facets">
         <default-facets>
             <runtime-component id="org.apache.geronimo.runtime" version="2.0"/>

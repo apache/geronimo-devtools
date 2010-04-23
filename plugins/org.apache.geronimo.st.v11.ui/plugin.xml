@@ -22,7 +22,7 @@
 <plugin>
     
     <extension point="org.apache.geronimo.st.ui.loader">
- 	  	<loader class="org.apache.geronimo.st.v11.ui.editors.GeronimoFormContentLoader" version="1.1"/>
+        <loader class="org.apache.geronimo.st.v11.ui.editors.GeronimoFormContentLoader" version="1.1"/>
     </extension>
 
     <!-- 
@@ -31,10 +31,10 @@
      |
      -->
     <extension point="org.eclipse.wst.common.project.facet.ui.wizardPages">
-  		<wizard-pages action="geronimo.plan.install.v11">
-    		<page class="org.apache.geronimo.st.v11.ui.wizards.FacetInstallPage"/>
-  		</wizard-pages>
-	</extension>  
-	
+        <wizard-pages action="geronimo.plan.install.v11">
+            <page class="org.apache.geronimo.st.v11.ui.wizards.FacetInstallPage"/>
+        </wizard-pages>
+    </extension>  
+    
 
 </plugin>

@@ -64,7 +64,7 @@
     
     <!-- 
      |
-     | Step 1. Create a commands category for the various download commands
+     | Downloads Menu - Create a commands category for the various download commands
      |
      -->
     <extension point="org.eclipse.ui.commands">
@@ -90,7 +90,7 @@
 
     <!-- 
      |
-     | Step 2. Create a Downloads menu for the download commands defined above
+     | Downloads Menu - Create a Downloads menu for the download commands defined above
      |
      -->
     <extension point="org.eclipse.ui.menus">
@@ -126,7 +126,7 @@
 
     <!-- 
      |
-     | Step 3. Create the handlers for the commands defined above
+     | Downloads Menu - Create the handlers for the commands defined above
      |
      -->
     <extension point="org.eclipse.ui.handlers">
