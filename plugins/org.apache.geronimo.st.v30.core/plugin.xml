@@ -24,7 +24,7 @@
 
     <!-- 
      | 
-     | Extend WTP runtimeTypes to include the 2.1 version of the "Geronimo Runtime Type"
+     | Extend WTP runtimeTypes to include the 3.0 version of the "Geronimo Runtime Type"
      | 
      -->
     <extension point="org.eclipse.wst.server.core.runtimeTypes">

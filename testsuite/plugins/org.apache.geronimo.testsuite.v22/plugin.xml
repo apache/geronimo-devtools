@@ -51,16 +51,16 @@
     <extension-point id="testCases" name="org.apache.geronimo.testsuite.v22.testCases" schema="schema/testCases.exsd"/>
 
     <extension point="org.apache.geronimo.testsuite.v22.testCases">
-    	<testCase class="org.apache.geronimo.testsuite.v22.ui.RunOnServerTest">
-    	</testCase>
+        <testCase class="org.apache.geronimo.testsuite.v22.ui.RunOnServerTest">
+        </testCase>
     </extension>
     <extension point="org.apache.geronimo.testsuite.v22.testCases">
-    	<testCase class="org.apache.geronimo.testsuite.v22.ui.Tutorial5MinuteTest">
-    	</testCase>
+        <testCase class="org.apache.geronimo.testsuite.v22.ui.Tutorial5MinuteTest">
+        </testCase>
     </extension>
     <extension point="org.apache.geronimo.testsuite.v22.testCases">
-    	<testCase class="org.apache.geronimo.testsuite.v22.ui.SharedLibPojoTest">
-    	</testCase>
+        <testCase class="org.apache.geronimo.testsuite.v22.ui.SharedLibPojoTest">
+        </testCase>
     </extension>
 
 </plugin>

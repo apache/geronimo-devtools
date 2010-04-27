@@ -50,7 +50,7 @@
         <image id="org.apache.geronimo.runtime.image" 
             icon="icons/obj16/littleG.gif"
             typeIds="org.apache.geronimo.runtime.11,
-            		 org.apache.geronimo.runtime.20,
+                     org.apache.geronimo.runtime.20,
                      org.apache.geronimo.runtime.21,
                      org.apache.geronimo.runtime.22,
                      org.apache.geronimo.runtime.30"/>
@@ -58,7 +58,7 @@
         <image id="org.apache.geronimo.server.image" 
             icon="icons/obj16/littleG.gif"
             typeIds="org.apache.geronimo.server.11,
-            		 org.apache.geronimo.server.20,
+                     org.apache.geronimo.server.20,
                      org.apache.geronimo.server.21,
                      org.apache.geronimo.server.22,
                      org.apache.geronimo.server.30"/>
@@ -76,14 +76,14 @@
     <extension point="org.eclipse.wst.server.ui.wizardFragments">
         <fragment id="org.apache.geronimo.runtime.wizardFragment"
             typeIds="org.apache.geronimo.runtime.11,
-            		 org.apache.geronimo.runtime.20,
+                     org.apache.geronimo.runtime.20,
                      org.apache.geronimo.runtime.21,
                      org.apache.geronimo.runtime.22,
                      org.apache.geronimo.runtime.30"
             class="org.apache.geronimo.st.ui.internal.GeronimoRuntimeWizardFragment"/>
         <fragment id="org.apache.geronimo.server.wizardFragment"
             typeIds="org.apache.geronimo.server.11,
-            		 org.apache.geronimo.server.20,
+                     org.apache.geronimo.server.20,
                      org.apache.geronimo.server.21,
                      org.apache.geronimo.server.22,
                      org.apache.geronimo.server.30"
@@ -225,17 +225,17 @@
                     URL="http://geronimo.apache.org/" />
     </extension>
     
- 	<extension point="org.eclipse.ltk.core.refactoring.renameParticipants">		    
-		<renameParticipant    
-			id="org.apache.geronimo.st.ui.refactoring.rename"    
-			name="Rename a project with renaming additional info in deployment plan"     
-			class="org.apache.geronimo.st.ui.refactoring.GeronimoProjectRenameParticipant">     
-			<enablement>
-				<with variable="element">
-					<instanceof value="org.eclipse.core.resources.IProject">
-					</instanceof>
-				</with> 
-			</enablement>        
-		</renameParticipant>    
-	</extension>
+    <extension point="org.eclipse.ltk.core.refactoring.renameParticipants">         
+        <renameParticipant    
+            id="org.apache.geronimo.st.ui.refactoring.rename"    
+            name="Rename a project with renaming additional info in deployment plan"     
+            class="org.apache.geronimo.st.ui.refactoring.GeronimoProjectRenameParticipant">     
+            <enablement>
+                <with variable="element">
+                    <instanceof value="org.eclipse.core.resources.IProject">
+                    </instanceof>
+                </with> 
+            </enablement>        
+        </renameParticipant>    
+    </extension>
 </plugin>

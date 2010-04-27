@@ -36,6 +36,13 @@
         </wizard-pages>
     </extension>
 
+    <!-- 
+     |
+     | Map the server editor pages (i.e., pages that display when user double-clicks on the server) and sections, to 
+     | to a specific class, and filter by typeIds for the v3x servers (so as not to pick up the v2x and v1x editor 
+     | pages/sections)
+     |
+     -->
     <extension point="org.eclipse.wst.server.ui.editorPages">
         <page id="org.eclipse.wst.server.editor.plugins" order="10"
               name="%serverEditorPluginPage"
@@ -43,7 +50,6 @@
               insertionIds="org.eclipse.wst.server.editor.plugins"
               class="org.apache.geronimo.st.v30.ui.pages.ServerPluginPage"/>
     </extension>
-    
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.plugins" order="10"
             insertionId="org.eclipse.wst.server.editor.plugins"

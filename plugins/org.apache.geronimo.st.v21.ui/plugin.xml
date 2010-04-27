@@ -39,7 +39,8 @@
     <extension point="org.eclipse.wst.server.ui.editorPages">
         <page id="org.eclipse.wst.server.editor.plugins" order="10"
               name="%serverEditorPluginPage"
-              typeIds="org.apache.geronimo.server.*"
+              typeIds="org.apache.geronimo.server.1*,
+                       org.apache.geronimo.server.2*"
               insertionIds="org.eclipse.wst.server.editor.plugins"
               class="org.apache.geronimo.st.v21.ui.pages.ServerPluginPage"/>
     </extension>
@@ -47,7 +48,8 @@
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.plugins" order="10"
             insertionId="org.eclipse.wst.server.editor.plugins"
-            typeIds="org.apache.geronimo.server.*"
+            typeIds="org.apache.geronimo.server.1*,
+                     org.apache.geronimo.server.2*"
             class="org.apache.geronimo.st.v21.ui.sections.ServerPluginSection">
         </section>
     </extension>

@@ -14,15 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v21.ui.sections;
+package org.apache.geronimo.st.v30.ui.sections;
 
-import org.apache.geronimo.st.v21.core.internal.Trace;
+import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractServerEditorSection;
-import org.apache.geronimo.st.v21.core.operations.GeronimoServerPluginManager;
-import org.apache.geronimo.st.v21.ui.wizards.ServerCustomAssemblyWizard;
-import org.apache.geronimo.st.v21.ui.wizards.ServerPluginManagerDialog;
-import org.apache.geronimo.st.v21.ui.wizards.ServerPluginManagerWizard;
+import org.apache.geronimo.st.v30.core.operations.GeronimoServerPluginManager;
+import org.apache.geronimo.st.v30.ui.wizards.ServerCustomAssemblyWizard;
+import org.apache.geronimo.st.v30.ui.wizards.ServerPluginManagerDialog;
+import org.apache.geronimo.st.v30.ui.wizards.ServerPluginManagerWizard;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -40,6 +40,8 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.wst.server.core.IServer;
 
 /**
+ * Server advanced editor section
+ *
  * @version $Rev$ $Date$
  */
 public class ServerPluginSection extends AbstractServerEditorSection {
