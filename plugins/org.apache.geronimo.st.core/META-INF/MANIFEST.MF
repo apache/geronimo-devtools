@@ -8,7 +8,7 @@ Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: 
  org.apache.geronimo.runtime.common,
- org.apache.geronimo.runtime.v30,
+ org.apache.geronimo.runtime.v22,
  org.apache.geronimo.jee.v21.jaxbmodel,
  org.eclipse.core.runtime,
  org.eclipse.wst.server.core,
@@ -16,7 +16,6 @@ Require-Bundle:
  org.eclipse.jst.j2ee.web,
  org.eclipse.jst.j2ee.ejb,
  org.eclipse.jst.j2ee.jca,
- org.eclipse.core.runtime,
  org.eclipse.wst.common.frameworks;visibility:=reexport,
  org.eclipse.core.commands;visibility:=reexport,
  org.eclipse.wst.server.core,

@@ -45,10 +45,8 @@ public class GeronimoServerRuntimeTargetHandler extends RuntimeClasspathProvider
             return Messages.target21runtime;
         }if (version.equals("2.2")) {
             return Messages.target22runtime;
-        }if (version.equals("3.0")) {
-            return Messages.target30runtime;
         }
-        return Messages.target30runtime;
+        return Messages.target22runtime;
     }
 
     /* (non-Javadoc)
@@ -139,18 +137,6 @@ public class GeronimoServerRuntimeTargetHandler extends RuntimeClasspathProvider
             	 addLibraryEntries(list, myfacesSpec.toFile(),  true);
             	 addLibraryEntries(list, myfacesImplSpec.toFile(),  true);
             	 addLibraryEntries(list, jdbcSpec.toFile(),     true);
-            }if (version.startsWith("3.0")) {
-	           	 //TODO: review list here when server 3.0 is ready
-	           	 IPath javaMailSpec = runtime.getLocation().append("repository/org/apache/geronimo/javamail/geronimo-javamail_1.4_mail/");
-	           	 IPath jstlSpec     = runtime.getLocation().append("repository/org/apache/geronimo/bundles/jstl/");
-	           	 IPath myfacesSpec  = runtime.getLocation().append("repository/org/apache/myfaces/core/myfaces-api/");
-	           	 IPath myfacesImplSpec  = runtime.getLocation().append("repository/org/apache/myfaces/core/myfaces-impl/");
-	           	 IPath jdbcSpec     = runtime.getLocation().append("repository/org/apache/geronimo/framework/geronimo-jdbc/");
-	           	 addLibraryEntries(list, javaMailSpec.toFile(), true);
-	           	 addLibraryEntries(list, jstlSpec.toFile(),     true);
-	           	 addLibraryEntries(list, myfacesSpec.toFile(),  true);
-	           	 addLibraryEntries(list, myfacesImplSpec.toFile(),  true);
-	           	 addLibraryEntries(list, jdbcSpec.toFile(),     true);
             }
         }
 
