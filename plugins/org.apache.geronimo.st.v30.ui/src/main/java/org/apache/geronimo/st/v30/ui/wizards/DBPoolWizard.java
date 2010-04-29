@@ -18,6 +18,7 @@ package org.apache.geronimo.st.v30.ui.wizards;
 
 import java.util.ArrayList;
 import javax.xml.bind.JAXBElement;
+
 import org.apache.geronimo.jee.application.Application;
 import org.apache.geronimo.jee.application.ExtModule;
 import org.apache.geronimo.jee.application.Path;
@@ -36,12 +37,12 @@ import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.jee.deployment.Pattern;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.web.WebApp;
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
-import org.apache.geronimo.st.ui.Activator;
-import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.sections.AbstractTableSection;
-import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
+import org.apache.geronimo.st.v30.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBObjectFactoryImpl;
+import org.apache.geronimo.st.v30.ui.Activator;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.sections.AbstractTableSection;
+import org.apache.geronimo.st.v30.ui.wizards.AbstractTableWizard;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
@@ -75,7 +76,7 @@ import org.eclipse.swt.widgets.Text;
 public class DBPoolWizard extends AbstractTableWizard {
 
     protected ImageDescriptor descriptor = Activator.imageDescriptorFromPlugin(
-        "org.apache.geronimo.st.ui", "icons/bigG.gif");
+        "org.apache.geronimo.st.v30.ui", "icons/bigG.gif");
 
     public DBPoolWizard(AbstractTableSection section) {
     super(section);

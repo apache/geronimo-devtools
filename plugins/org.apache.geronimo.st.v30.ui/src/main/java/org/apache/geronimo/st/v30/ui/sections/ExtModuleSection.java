@@ -21,8 +21,8 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.application.ExtModule;
-import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.sections.AbstractTableSection;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v30.ui.pages.ConnectorPage;
 import org.apache.geronimo.st.v30.ui.pages.DeploymentPage;
 import org.apache.geronimo.st.v30.ui.wizards.ExtModuleWizard;
@@ -34,7 +34,7 @@ import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-/**
+/*
  * @version $Rev$ $Date$
  */
 public class ExtModuleSection extends AbstractTableSection {

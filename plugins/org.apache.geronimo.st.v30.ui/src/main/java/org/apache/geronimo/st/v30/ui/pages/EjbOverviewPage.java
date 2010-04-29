@@ -16,7 +16,7 @@
  */
 package org.apache.geronimo.st.v30.ui.pages;
 
-import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
+import org.apache.geronimo.st.v30.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v30.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v30.ui.sections.OpenEjbJarCMPSection;
 import org.apache.geronimo.st.v30.ui.sections.OpenEjbJarGeneralSection;
@@ -35,7 +35,7 @@ public class EjbOverviewPage extends AbstractGeronimoFormPage {
     /*
      * (non-Javadoc)
      * 
-     * @see org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
+     * @see org.apache.geronimo.st.v30.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
     protected void fillBody(IManagedForm managedForm) {
         managedForm.addPart(new OpenEjbJarGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));

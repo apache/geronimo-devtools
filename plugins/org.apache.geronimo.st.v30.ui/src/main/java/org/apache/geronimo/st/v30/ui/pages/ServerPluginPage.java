@@ -16,7 +16,7 @@
  */
 package org.apache.geronimo.st.v30.ui.pages;
 
-import org.apache.geronimo.st.ui.internal.Messages;
+import org.apache.geronimo.st.v30.ui.internal.Messages;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
@@ -31,7 +31,7 @@ import org.eclipse.wst.server.ui.editor.*;
 import org.eclipse.wst.server.ui.internal.ImageResource;
 
 /**
- * Server advanced editor page
+ * Server advanced editor page.
  *
  * @version $Rev$ $Date$
  */

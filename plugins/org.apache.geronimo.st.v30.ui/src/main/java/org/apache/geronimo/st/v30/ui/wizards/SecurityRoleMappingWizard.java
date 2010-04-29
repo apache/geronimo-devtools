@@ -23,12 +23,12 @@ import org.apache.geronimo.jee.security.LoginDomainPrincipal;
 import org.apache.geronimo.jee.security.Principal;
 import org.apache.geronimo.jee.security.RealmPrincipal;
 import org.apache.geronimo.jee.security.Role;
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
-import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
-import org.apache.geronimo.st.ui.wizards.AbstractWizard;
 import org.apache.geronimo.st.v30.core.GeronimoServerInfo;
+import org.apache.geronimo.st.v30.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBObjectFactoryImpl;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.sections.AbstractTreeSection;
+import org.apache.geronimo.st.v30.ui.wizards.AbstractWizard;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Combo;
@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * @version $Rev$ $Date$
+ *  @version $Rev$ $Date$
  */
 public class SecurityRoleMappingWizard extends AbstractWizard {
     public static final String[] PRINCIPAL_CLASSES = {

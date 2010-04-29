@@ -20,7 +20,7 @@ import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.applicationclient.ApplicationClient;
 import org.apache.geronimo.jee.deployment.Environment;
-import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 

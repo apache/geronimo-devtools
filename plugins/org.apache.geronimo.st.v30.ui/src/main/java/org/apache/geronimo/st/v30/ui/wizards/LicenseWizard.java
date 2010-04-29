@@ -16,8 +16,8 @@
  */
 package org.apache.geronimo.st.v30.ui.wizards;
 
-import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.wizards.AbstractWizard;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.wizards.AbstractWizard;
 import org.apache.geronimo.system.plugin.model.LicenseType;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Combo;

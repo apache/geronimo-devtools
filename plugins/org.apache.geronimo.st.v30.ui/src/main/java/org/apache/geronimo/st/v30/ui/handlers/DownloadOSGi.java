@@ -16,7 +16,7 @@
  */
 package org.apache.geronimo.st.v30.ui.handlers;
 
-import org.apache.geronimo.st.core.internal.Trace;
+import org.apache.geronimo.st.v30.ui.internal.Trace;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

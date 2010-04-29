@@ -21,8 +21,8 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.naming.MessageDestination;
-import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.sections.AbstractTableSection;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v30.ui.wizards.MessageDestWizard;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.wizard.Wizard;

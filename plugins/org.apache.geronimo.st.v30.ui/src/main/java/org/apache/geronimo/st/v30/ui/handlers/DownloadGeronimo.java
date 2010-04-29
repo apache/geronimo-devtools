@@ -19,8 +19,8 @@ package org.apache.geronimo.st.v30.ui.handlers;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.geronimo.st.core.internal.Trace;
-import org.apache.geronimo.st.ui.internal.Messages;
+import org.apache.geronimo.st.v30.ui.internal.Messages;
+import org.apache.geronimo.st.v30.ui.internal.Trace;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

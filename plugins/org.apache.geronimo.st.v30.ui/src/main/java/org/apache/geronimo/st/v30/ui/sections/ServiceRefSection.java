@@ -20,12 +20,11 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
-
 import org.apache.geronimo.jee.naming.Port;
 import org.apache.geronimo.jee.naming.PortCompletion;
 import org.apache.geronimo.jee.naming.ServiceRef;
-import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.v30.ui.Activator;
 import org.apache.geronimo.st.v30.ui.wizards.ServiceRefWizard;
 import org.eclipse.jface.viewers.ILabelProvider;

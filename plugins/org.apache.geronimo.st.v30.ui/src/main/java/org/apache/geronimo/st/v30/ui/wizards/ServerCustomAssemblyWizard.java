@@ -18,8 +18,8 @@ package org.apache.geronimo.st.v30.ui.wizards;
 
 import java.util.List;
 
-import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.wizards.AbstractWizard;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.wizards.AbstractWizard;
 import org.apache.geronimo.st.v30.core.operations.GeronimoServerPluginManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;

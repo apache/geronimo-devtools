@@ -16,12 +16,21 @@
  */
 package org.apache.geronimo.st.v30.ui;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.Map;
+import java.util.HashMap;
+
+import org.apache.geronimo.st.v30.ui.internal.Trace;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
- * The activator class controls the plug-in life cycle
+ * The main plugin class to be used in the desktop.
  *
  * @version $Rev$ $Date$
  */
@@ -32,6 +41,14 @@ public class Activator extends AbstractUIPlugin {
 
     // The shared instance
     private static Activator plugin;
+
+    private static String iconLocation;
+
+    private Map imageDescriptors = new HashMap();
+
+    public static final String ICONS_DIRECTORY = "icons/";
+    public static final String IMG_WIZ_GERONIMO = "gServer";
+    public static final String IMG_PORT = "port";
 
     /**
      * The constructor
@@ -80,4 +97,52 @@ public class Activator extends AbstractUIPlugin {
         return AbstractUIPlugin.imageDescriptorFromPlugin("org.apache.geronimo.st.v30.ui", path);
     }
 
+    public static String getIconLocation() {
+        if (iconLocation == null) {
+            try {
+                iconLocation = FileLocator.resolve(plugin.getBundle().getEntry("/")).getPath()
+                        + ICONS_DIRECTORY;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return iconLocation;
+    }
+
+    /**
+     * Return the image with the given key from the image registry.
+     * 
+     * @param key
+     *            java.lang.String
+     * @return org.eclipse.jface.parts.IImage
+     */
+    public static Image getImage(String key) {
+        return plugin.getImageRegistry().get(key);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#initializeImageRegistry(org.eclipse.jface.resource.ImageRegistry)
+     */
+    protected void initializeImageRegistry(ImageRegistry reg) {
+        registerImage(reg, IMG_WIZ_GERONIMO, "g_server.gif");
+        registerImage(reg, IMG_PORT, "obj16/port.gif");
+    }
+
+    private void registerImage(ImageRegistry registry, String key,
+            String partialURL) {
+
+        URL iconsURL = plugin.getBundle().getEntry(ICONS_DIRECTORY);
+
+        try { 
+            ImageDescriptor id = ImageDescriptor.createFromURL(new URL(iconsURL, partialURL));
+            registry.put(key, id);
+            imageDescriptors.put(key, id);
+        } catch (Exception e) {
+            Trace.trace(Trace.WARNING, "Error registering image", e);
+        }
+    }
+
+    
 }

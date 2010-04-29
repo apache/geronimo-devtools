@@ -18,16 +18,16 @@ package org.apache.geronimo.st.v30.ui.wizards;
 
 import org.apache.geronimo.jee.security.Role;
 import org.apache.geronimo.jee.security.SubjectInfo;
-import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.sections.AbstractTableSection;
-import org.apache.geronimo.st.ui.wizards.AbstractWizard;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v30.ui.sections.SecurityAdvancedSection;
+import org.apache.geronimo.st.v30.ui.wizards.AbstractWizard;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * @version $Rev$ $Date$
+ *  @version $Rev$ $Date$
  */
 public class SecurityRunAsSubjectWizard extends AbstractWizard {
     protected Combo role;

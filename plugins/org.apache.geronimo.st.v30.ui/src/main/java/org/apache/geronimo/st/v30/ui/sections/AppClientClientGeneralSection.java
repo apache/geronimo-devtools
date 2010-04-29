@@ -20,7 +20,7 @@ import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.applicationclient.ApplicationClient;
 import org.apache.geronimo.jee.deployment.Environment;
-import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;

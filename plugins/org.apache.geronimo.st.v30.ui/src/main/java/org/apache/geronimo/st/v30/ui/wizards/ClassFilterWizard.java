@@ -18,12 +18,12 @@ package org.apache.geronimo.st.v30.ui.wizards;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
-import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.sections.AbstractTableSection;
-import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBModelUtils;
+import org.apache.geronimo.st.v30.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBObjectFactoryImpl;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.sections.AbstractTableSection;
+import org.apache.geronimo.st.v30.ui.wizards.AbstractTableWizard;
 import org.apache.geronimo.st.v30.ui.sections.ClassFilterSection;
 import org.apache.geronimo.jee.deployment.ClassFilter;
 import org.apache.geronimo.jee.deployment.Environment;
@@ -75,7 +75,7 @@ public class ClassFilterWizard extends AbstractTableWizard {
     }
     
     /* (non-Javadoc)
-     * @see org.apache.geronimo.st.ui.wizards.AbstractTableWizard#performFinish()
+     * @see org.apache.geronimo.st.v30.ui.wizards.AbstractTableWizard#performFinish()
      */
     public boolean performFinish() {
         AbstractTableWizardPage page = (AbstractTableWizardPage) getPages()[0];

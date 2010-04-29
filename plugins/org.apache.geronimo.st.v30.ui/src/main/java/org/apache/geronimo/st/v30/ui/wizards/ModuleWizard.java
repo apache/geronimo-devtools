@@ -20,11 +20,11 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
-import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.sections.AbstractTableSection;
-import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
+import org.apache.geronimo.st.v30.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBObjectFactoryImpl;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.sections.AbstractTableSection;
+import org.apache.geronimo.st.v30.ui.wizards.AbstractTableWizard;
 import org.apache.geronimo.jee.application.Application;
 import org.apache.geronimo.jee.application.Module;
 import org.apache.geronimo.jee.application.Path;
@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-/**
+/*
  * @version $Rev$ $Date$
  */
 public class ModuleWizard extends AbstractTableWizard {

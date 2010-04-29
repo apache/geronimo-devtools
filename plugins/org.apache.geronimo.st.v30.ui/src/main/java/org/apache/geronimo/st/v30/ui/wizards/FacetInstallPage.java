@@ -16,9 +16,9 @@
  */
 package org.apache.geronimo.st.v30.ui.wizards;
 
-import org.apache.geronimo.st.core.internal.Trace;
-import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.v30.core.DeploymentPlanInstallConfig;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.internal.Trace;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -44,10 +44,10 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
     public FacetInstallPage() {
         super("geronimo.plan.install");
         Trace.tracePoint("Constructor Entry", "FacetInstallPage");
-
+        
         setTitle("Geronimo Deployment Plan");
         setDescription("Configure the geronimo deployment plan.");
-
+        
         Trace.tracePoint("Constructor Exit", "FacetInstallPage");
     }
 
@@ -60,7 +60,7 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
         Trace.tracePoint("Entry", "FacetInstallPage.setConfig", config);
 
         this.config = (DeploymentPlanInstallConfig) config;
-
+        
         Trace.tracePoint("Exit", "FacetInstallPage.setConfig");
     }
 
@@ -71,7 +71,7 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
      */
     public void createControl(Composite parent) {
         Trace.tracePoint("Entry", "FacetInstallPage.createControl", parent);
-
+        
         Composite composite = new Composite(parent, SWT.NONE);
         composite.setLayout(new GridLayout(2, false));
 
@@ -81,36 +81,36 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
         groupText = new Text(composite, SWT.BORDER);
         groupText.setLayoutData(createGridData());
         groupText.setText("default");
-
+        
         Label artifactLabel = new Label(composite, SWT.NONE);
         artifactLabel.setText(CommonMessages.artifactId);
 
         artifactText = new Text(composite, SWT.BORDER);
         artifactText.setLayoutData(createGridData());
-
+        
         Label versionLabel = new Label(composite, SWT.NONE);
         versionLabel.setText(CommonMessages.version);
 
         versionText = new Text(composite, SWT.BORDER);
         versionText.setLayoutData(createGridData());
         versionText.setText("1.0");
-
+        
         Label typeLabel = new Label(composite, SWT.NONE);
         typeLabel.setText(CommonMessages.artifactType);
 
         typeText = new Text(composite, SWT.BORDER);
         typeText.setLayoutData(createGridData());
         typeText.setText("car");
-
+        
         sharedLib = new Button(composite, SWT.CHECK);
         GridData data = createGridData();
         data.horizontalSpan = 2;
         data.verticalIndent = 5;
         sharedLib.setLayoutData(data);
         sharedLib.setText(CommonMessages.addSharedLib);
-
+        
         setControl(composite);
-
+        
         Trace.tracePoint("Exit", "FacetInstallPage.createControl");      
     }
 
@@ -121,13 +121,13 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
      */
     public void transferStateToConfig() {
         Trace.tracePoint("Entry", "FacetInstallPage.transferStateToConfig");     
-
+    
         config.setGroupId(groupText.getText());
         config.setArtifactId(artifactText.getText());
         config.setVersion(versionText.getText());
         config.setType(typeText.getText());
         config.setSharedLib(sharedLib.getSelection());
-
+        
         Trace.tracePoint("Exit", "FacetInstallPage.transferStateToConfig");      
     }
 

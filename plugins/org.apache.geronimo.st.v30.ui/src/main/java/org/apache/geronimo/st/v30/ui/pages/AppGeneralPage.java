@@ -16,8 +16,8 @@
  */
 package org.apache.geronimo.st.v30.ui.pages;
 
-import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v30.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v30.ui.sections.AppGeneralSection;
 import org.eclipse.ui.forms.IManagedForm;

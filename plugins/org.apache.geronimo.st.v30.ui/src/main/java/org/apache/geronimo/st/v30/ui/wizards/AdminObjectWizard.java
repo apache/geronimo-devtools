@@ -21,11 +21,11 @@ import java.util.List;
 import org.apache.geronimo.jee.connector.Adminobject;
 import org.apache.geronimo.jee.connector.AdminobjectInstance;
 import org.apache.geronimo.jee.connector.ConfigPropertySetting;
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
-import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
-import org.apache.geronimo.st.ui.wizards.AbstractTreeWizard;
+import org.apache.geronimo.st.v30.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBObjectFactoryImpl;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.sections.AbstractTreeSection;
+import org.apache.geronimo.st.v30.ui.wizards.AbstractTreeWizard;
 import org.apache.geronimo.st.v30.ui.sections.AdminObjectSection;
 
 /**

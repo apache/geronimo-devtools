@@ -21,12 +21,12 @@ import java.io.IOException;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
-import org.apache.geronimo.st.core.jaxb.JAXBUtils;
-import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
-import org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader;
 import org.apache.geronimo.st.v30.core.GeronimoServerInfo;
-import org.apache.geronimo.st.v30.core.GeronimoV30Utils;
+import org.apache.geronimo.st.v30.core.GeronimoUtils;
+import org.apache.geronimo.st.v30.core.jaxb.JAXBUtils;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.apache.geronimo.st.v30.ui.editors.AbstractGeronimoFormContentLoader;
 import org.apache.geronimo.st.v30.ui.pages.AppClientGeneralPage;
 import org.apache.geronimo.st.v30.ui.pages.AppClientSecurityPage;
 import org.apache.geronimo.st.v30.ui.pages.AppGeneralPage;
@@ -49,7 +49,7 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
     /*
      * (non-Javadoc)
      * 
-     * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader#addApplicationPlanPages(org.eclipse.ui.forms.editor.FormEditor)
+     * @see org.apache.geronimo.st.v30.ui.editors.AbstractGeronimoFormContentLoader#addApplicationPlanPages(org.eclipse.ui.forms.editor.FormEditor)
      */
     public void addApplicationPlanPages(FormEditor editor) throws PartInitException {
         editor.addPage(new AppGeneralPage(editor, "appgeneralpage", CommonMessages.editorTabGeneral));
@@ -61,7 +61,7 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
     /*
      * (non-Javadoc)
      * 
-     * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader#addConnectorPlanPages(org.eclipse.ui.forms.editor.FormEditor)
+     * @see org.apache.geronimo.st.v30.ui.editors.AbstractGeronimoFormContentLoader#addConnectorPlanPages(org.eclipse.ui.forms.editor.FormEditor)
      */
     public void addConnectorPlanPages(FormEditor editor) throws PartInitException {
         editor.addPage(new ConnectorOverviewPage(editor, "connectoroverview", CommonMessages.editorTabGeneral));
@@ -71,7 +71,7 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
     /*
      * (non-Javadoc)
      * 
-     * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader#addApplicationPlanPages(org.eclipse.ui.forms.editor.FormEditor)
+     * @see org.apache.geronimo.st.v30.ui.editors.AbstractGeronimoFormContentLoader#addApplicationPlanPages(org.eclipse.ui.forms.editor.FormEditor)
      */
     public void addApplicationClientPlanPages(FormEditor editor) throws PartInitException {
         editor.addPage(new AppClientGeneralPage(editor, "appclientgeneralpage", CommonMessages.editorTabGeneral));
@@ -83,7 +83,7 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
     /*
      * (non-Javadoc)
      * 
-     * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader#addOpenEjbPlanPages()
+     * @see org.apache.geronimo.st.v30.ui.editors.AbstractGeronimoFormContentLoader#addOpenEjbPlanPages()
      */
     public void addOpenEjbPlanPages(FormEditor editor) throws PartInitException {
         editor.addPage(new EjbOverviewPage(editor, "ejboverview", CommonMessages.editorTabGeneral));
@@ -95,7 +95,7 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
     /*
      * (non-Javadoc)
      * 
-     * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader#addWebPlanPages()
+     * @see org.apache.geronimo.st.v30.ui.editors.AbstractGeronimoFormContentLoader#addWebPlanPages()
      */
     public void addWebPlanPages(FormEditor editor) throws PartInitException {
         AbstractGeronimoDeploymentPlanEditor geronimoEditor = (AbstractGeronimoDeploymentPlanEditor)editor;
@@ -109,10 +109,10 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
     /*
      * (non-Javadoc)
      * 
-     * @see org.apache.geronimo.st.ui.editors.IGeronimoFormContentLoader#loadDeploymentPlan(org.eclipse.core.resources.IFile)
+     * @see org.apache.geronimo.st.v30.ui.editors.IGeronimoFormContentLoader#loadDeploymentPlan(org.eclipse.core.resources.IFile)
      */
     public JAXBElement loadDeploymentPlan(IFile file) throws Exception {
-        return GeronimoV30Utils.getDeploymentPlan(file);
+        return GeronimoUtils.getDeploymentPlan(file);
     }
     
     public void saveDeploymentPlan(JAXBElement deploymentPlan, IFile file) throws Exception {

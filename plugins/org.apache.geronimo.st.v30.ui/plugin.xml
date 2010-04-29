@@ -21,14 +21,52 @@
 
 <plugin>
 
-    <extension point="org.apache.geronimo.st.ui.loader">
-           <loader class="org.apache.geronimo.st.v30.ui.editors.GeronimoFormContentLoader" version="3.0"/>
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Geronimo Server - Extend WTP wizardFragments to include the Geronimo runtime and server types (defined in     ##
+     ##                   the corresponding core plugin) when defining either a new Geronimo runtime                  ##
+     ##                   (e.g., via Window->Preferences->Server->Installed Runtimes->Add) or a new Geronimo server   ##  
+     ##                   (e.g., via File->New->Other->Server)                                                        ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.wst.server.ui.wizardFragments">
+        <fragment id="org.apache.geronimo.runtime.wizardFragment"
+            typeIds="org.apache.geronimo.runtime.30"
+            class="org.apache.geronimo.st.v30.ui.internal.GeronimoRuntimeWizardFragment"/>
+        <fragment id="org.apache.geronimo.server.wizardFragment"
+            typeIds="org.apache.geronimo.server.30"
+            class="org.apache.geronimo.st.v30.ui.internal.GeronimoServerWizardFragment"/>
     </extension>
 
+
+
     <!-- 
-     |
-     | Map the action defined for the "Geronimo Deployment" project-facet to a specific class
-     |
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Geronimo Server - Define the icon for the Geronimo runtime and server types                                   ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.wst.server.ui.serverImages">
+        <image id="org.apache.geronimo.runtime.image" 
+            icon="icons/obj16/littleG.gif"
+            typeIds="org.apache.geronimo.runtime.30"/>
+        <image id="org.apache.geronimo.server.image" 
+            icon="icons/obj16/littleG.gif"
+            typeIds="org.apache.geronimo.server.30"/>
+    </extension>
+
+
+
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Geronimo Server - Map the action defined for the "Geronimo Deployment" project-facet to a specific class. The ##
+     ##                   action must have been defined in the corresponding core plugin.                             ## 
+     ##                                                                                                               ##
+     ###################################################################################################################
      -->
     <extension point="org.eclipse.wst.common.project.facet.ui.wizardPages">
         <wizard-pages action="geronimo.plan.install.v30">
@@ -36,42 +74,247 @@
         </wizard-pages>
     </extension>
 
+
+
     <!-- 
-     |
-     | Map the server editor pages (i.e., pages that display when user double-clicks on the server) and sections, to 
-     | to a specific class, and filter by typeIds for the v3x servers (so as not to pick up the v2x and v1x editor 
-     | pages/sections)
-     |
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Geronimo Server - Define the icon for the Geronimo facet. The runtime component must have been defined in the ##
+     ##                   corresponding core plugin.                                                                  ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.wst.common.project.facet.ui.images">
+        <image runtime-component-type="org.apache.geronimo.runtime"
+            path="icons/obj16/littleG.gif"/>
+        <image facet="org.apache.geronimo.facet"
+            path="icons/obj16/littleG.gif"/>
+    </extension>
+
+
+
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Geronimo Server - Define the server editor pages (i.e., pages that display when user double-clicks on the     ##
+     ##                   server in the Java EE perspecitive) and sections and map them to specific classes           ##                                                
+     ##                                                                                                               ##
+     ###################################################################################################################
      -->
     <extension point="org.eclipse.wst.server.ui.editorPages">
         <page id="org.eclipse.wst.server.editor.plugins" order="10"
               name="%serverEditorPluginPage"
-              typeIds="org.apache.geronimo.server.3*"
+              typeIds="org.apache.geronimo.server.30"
               insertionIds="org.eclipse.wst.server.editor.plugins"
               class="org.apache.geronimo.st.v30.ui.pages.ServerPluginPage"/>
     </extension>
+    
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.plugins" order="10"
             insertionId="org.eclipse.wst.server.editor.plugins"
-            typeIds="org.apache.geronimo.server.3*"
+            typeIds="org.apache.geronimo.server.30"
             class="org.apache.geronimo.st.v30.ui.sections.ServerPluginSection">
         </section>
     </extension>
     
-    <extension point="org.eclipse.debug.core.statusHandlers">
-       <statusHandler
-            id="com.example.ExampleIdentifier"
-            class="com.example.ExampleStatusHandler"
-            plugin="com.example.ExamplePluginId"
-            code="123">
-        </statusHandler>
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.security" order="10"
+            insertionId="org.eclipse.wst.server.editor.overview.left"
+            typeIds="org.apache.geronimo.runtime.30"
+            class="org.apache.geronimo.st.v30.ui.sections.ServerEditorSecuritySection">
+        </section>
     </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.publishAdvanced" order="10"
+            insertionId="org.eclipse.wst.server.editor.overview.right"
+            typeIds="org.apache.geronimo.runtime.30"
+            class="org.apache.geronimo.st.v30.ui.sections.ServerEditorPublishAdvancedSection">
+        </section>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.port" order="10"
+            insertionId="org.eclipse.wst.server.editor.overview.right"
+            typeIds="org.apache.geronimo.runtime.30"
+            class="org.apache.geronimo.st.v30.ui.sections.ServerEditorPortsSection">
+        </section>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.loglevel" order="20"
+            insertionId="org.eclipse.wst.server.editor.overview.right"
+            typeIds="org.apache.geronimo.runtime.30"
+            class="org.apache.geronimo.st.v30.ui.sections.ServerEditorLogLevelSection">
+        </section>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.security" order="30"
+            insertionId="org.eclipse.wst.server.editor.overview.right"
+            typeIds="org.apache.geronimo.runtime.30"
+            class="org.apache.geronimo.st.v30.ui.sections.ServerEditorStartupSection">
+        </section>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.vmargs" order="40"
+            insertionId="org.eclipse.wst.server.editor.overview.right"
+            typeIds="org.apache.geronimo.runtime.30"
+            class="org.apache.geronimo.st.v30.ui.sections.ServerVMArgsSection">
+        </section>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.testenv" order="20"
+            insertionId="org.eclipse.wst.server.editor.overview.left"
+            typeIds="org.apache.geronimo.runtime.30"
+            class="org.apache.geronimo.st.v30.ui.sections.ServerEditorTestEnvSection">
+        </section>
+    </extension>
+    
+
+
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Geronimo Server Launch Configuration Tabs - Displays when the users selects "Open launch configuration" from  ##
+     ##                                             the ServerEditorTestEnvSection defined above                      ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+        <launchConfigurationTypeImage
+            id="org.apache.geronimo.st.v30.ui.launchConfigurationTypeImage"
+            configTypeID="org.apache.geronimo.st.v30.core.launchConfigurationType"
+            icon="icons/obj16/littleG.gif">
+        </launchConfigurationTypeImage>
+    </extension>
+    
+    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+        <launchConfigurationTabGroup
+            id="org.apache.geronimo.st.v30.ui.launchConfigurationTabGroup"
+            type="org.apache.geronimo.st.v30.core.launchConfigurationType"
+            class="org.apache.geronimo.st.v30.ui.internal.GeronimoLaunchConfigurationTabGroup">
+        </launchConfigurationTabGroup>
+    </extension>
+
+
+
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Geronimo Server - Define the schemas for the LaunchGeronimoConsoleAction and LaunchGeronimoSupportAction menu ##
+     ##                   actions from the Server view when right clicking                                            ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension-point id="actionURLs" name="Action ID and URL" schema="schema/actionURLs.exsd"/>
+
+    <extension point="org.apache.geronimo.st.v30.ui.actionURLs">
+        <server_prefix>org.apache.geronimo.</server_prefix>
+        <action_URL class="org.apache.geronimo.st.v30.ui.actions.LaunchGeronimoSupportAction"
+                    URL="http://geronimo.apache.org/" />
+    </extension>
+
+    <extension point="org.eclipse.ui.popupMenus">
+        <objectContribution
+                adaptable="true"
+                id="org.apache.geronimo.ui.serveractions"
+                objectClass="org.eclipse.wst.server.core.IServer">
+            <enablement>
+                <test forcePluginActivation="true"
+                    property="org.eclipse.wst.server.ui.serverType"
+                    value="org.apache.geronimo.*" />
+            </enablement>
+            <action id="org.apache.geronimo.ui.launchSupport"
+                label="%PopupMenus.launchSupport" icon="icons/obj16/littleG.gif"
+                class="org.apache.geronimo.st.v30.ui.actions.LaunchGeronimoSupportAction"
+                enablesFor="1">
+            </action>
+        </objectContribution>
+    </extension>
+
+    <extension point="org.eclipse.ui.popupMenus">
+        <objectContribution
+                adaptable="true"
+                id="org.apache.geronimo.ui.serveractions"
+                objectClass="org.eclipse.wst.server.core.IServer">
+            <enablement>
+                <test forcePluginActivation="true"
+                    property="org.eclipse.wst.server.ui.serverType"
+                    value="org.apache.geronimo.*" />
+            </enablement>
+            <action id="org.apache.geronimo.ui.launchconsole"
+                label="%PopupMenus.launchconsole" icon="icons/obj16/littleG.gif"
+                class="org.apache.geronimo.st.v30.ui.actions.LaunchGeronimoConsoleAction"
+                enablesFor="1">
+            </action>
+        </objectContribution>
+    </extension>
+
+
+
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Geronimo XML Editors - Define the Web editor class for the various Geronimo-specific XML files (except for    ##
+     ##                        geronimo-application-client.xml)                                                       ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.ui.editors">
+        <editor class="org.apache.geronimo.st.v30.ui.editors.SharedDeploymentPlanEditor"
+            default="true" 
+            filenames="geronimo-web.xml,
+                       geronimo-application.xml,    
+                       openejb-jar.xml,
+                       geronimo-application-client.xml,
+                       geronimo-ra.xml"
+            icon="icons/obj16/littleG.gif"
+            id="org.apache.geronimo.ui.editors.WebEditor" 
+            name="%deploymentPlanEditorName">
+        </editor>
+    </extension>
+    
+    <extension point="org.apache.geronimo.st.ui.loader">
+           <loader class="org.apache.geronimo.st.v30.ui.editors.GeronimoFormContentLoader" version="3.0"/>
+    </extension>
+    
+
+
     
     
     <!-- 
-     |
-     | Downloads Menu - Create a commands category for the various download commands
-     |
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Refactoring                                                                                                   ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.ltk.core.refactoring.renameParticipants">         
+        <renameParticipant    
+            id="org.apache.geronimo.st.v30.ui.refactoring.rename"    
+            name="Rename a project with renaming additional info in deployment plan"     
+            class="org.apache.geronimo.st.v30.ui.refactoring.GeronimoProjectRenameParticipant">     
+            <enablement>
+                <with variable="element">
+                    <instanceof value="org.eclipse.core.resources.IProject">
+                    </instanceof>
+                </with> 
+            </enablement>        
+        </renameParticipant>    
+    </extension>
+
+    
+
+
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Downloads Menu - Create a commands category for the various download commands                                 ##
+     ##                                                                                                               ##
+     ###################################################################################################################
      -->
     <extension point="org.eclipse.ui.commands">
         <category 
@@ -93,11 +336,14 @@
         </command>
     </extension>
     
-
+    
+    
     <!-- 
-     |
-     | Downloads Menu - Create a Downloads menu for the download commands defined above
-     |
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Downloads Menu - Create a Downloads menu for the download commands defined above                              ##
+     ##                                                                                                               ##
+     ###################################################################################################################
      -->
     <extension point="org.eclipse.ui.menus">
         <menuContribution
@@ -130,10 +376,13 @@
     </extension>
 
 
+
     <!-- 
-     |
-     | Downloads Menu - Create the handlers for the commands defined above
-     |
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Downloads Menu - Create the handlers for the commands defined above                                           ##
+     ##                                                                                                               ##
+     ###################################################################################################################
      -->
     <extension point="org.eclipse.ui.handlers">
         <handler
