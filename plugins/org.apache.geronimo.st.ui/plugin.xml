@@ -46,22 +46,18 @@
      |   
      -->
     <extension point="org.eclipse.wst.server.ui.serverImages">
-
         <image id="org.apache.geronimo.runtime.image" 
             icon="icons/obj16/littleG.gif"
             typeIds="org.apache.geronimo.runtime.11,
                      org.apache.geronimo.runtime.20,
                      org.apache.geronimo.runtime.21,
-                     org.apache.geronimo.runtime.22,
-                     org.apache.geronimo.runtime.30"/>
-
+                     org.apache.geronimo.runtime.22"/>
         <image id="org.apache.geronimo.server.image" 
             icon="icons/obj16/littleG.gif"
             typeIds="org.apache.geronimo.server.11,
                      org.apache.geronimo.server.20,
                      org.apache.geronimo.server.21,
-                     org.apache.geronimo.server.22,
-                     org.apache.geronimo.server.30"/>
+                     org.apache.geronimo.server.22"/>
     </extension>
 
 
@@ -78,15 +74,13 @@
             typeIds="org.apache.geronimo.runtime.11,
                      org.apache.geronimo.runtime.20,
                      org.apache.geronimo.runtime.21,
-                     org.apache.geronimo.runtime.22,
-                     org.apache.geronimo.runtime.30"
+                     org.apache.geronimo.runtime.22"
             class="org.apache.geronimo.st.ui.internal.GeronimoRuntimeWizardFragment"/>
         <fragment id="org.apache.geronimo.server.wizardFragment"
             typeIds="org.apache.geronimo.server.11,
                      org.apache.geronimo.server.20,
                      org.apache.geronimo.server.21,
-                     org.apache.geronimo.server.22,
-                     org.apache.geronimo.server.30"
+                     org.apache.geronimo.server.22"
             class="org.apache.geronimo.st.ui.internal.GeronimoServerWizardFragment"/>
     </extension>
 
@@ -129,7 +123,10 @@
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.security" order="10"
             insertionId="org.eclipse.wst.server.editor.overview.left"
-            typeIds="org.apache.geronimo.server.*"
+            typeIds="org.apache.geronimo.runtime.11,
+                     org.apache.geronimo.runtime.20,
+                     org.apache.geronimo.runtime.21,
+                     org.apache.geronimo.runtime.22"
             class="org.apache.geronimo.st.ui.sections.ServerEditorSecuritySection">
         </section>
     </extension>
@@ -137,7 +134,10 @@
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.publishAdvanced" order="10"
             insertionId="org.eclipse.wst.server.editor.overview.right"
-            typeIds="org.apache.geronimo.server.*"
+            typeIds="org.apache.geronimo.runtime.11,
+                     org.apache.geronimo.runtime.20,
+                     org.apache.geronimo.runtime.21,
+                     org.apache.geronimo.runtime.22"
             class="org.apache.geronimo.st.ui.sections.ServerEditorPublishAdvancedSection">
         </section>
     </extension>
@@ -145,7 +145,10 @@
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.port" order="10"
             insertionId="org.eclipse.wst.server.editor.overview.right"
-            typeIds="org.apache.geronimo.server.*"
+            typeIds="org.apache.geronimo.runtime.11,
+                     org.apache.geronimo.runtime.20,
+                     org.apache.geronimo.runtime.21,
+                     org.apache.geronimo.runtime.22"
             class="org.apache.geronimo.st.ui.sections.ServerEditorPortsSection">
         </section>
     </extension>
@@ -153,7 +156,10 @@
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.loglevel" order="20"
             insertionId="org.eclipse.wst.server.editor.overview.right"
-            typeIds="org.apache.geronimo.server.*"
+            typeIds="org.apache.geronimo.runtime.11,
+                     org.apache.geronimo.runtime.20,
+                     org.apache.geronimo.runtime.21,
+                     org.apache.geronimo.runtime.22"
             class="org.apache.geronimo.st.ui.sections.ServerEditorLogLevelSection">
         </section>
     </extension>
@@ -161,7 +167,10 @@
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.security" order="30"
             insertionId="org.eclipse.wst.server.editor.overview.right"
-            typeIds="org.apache.geronimo.server.*"
+            typeIds="org.apache.geronimo.runtime.11,
+                     org.apache.geronimo.runtime.20,
+                     org.apache.geronimo.runtime.21,
+                     org.apache.geronimo.runtime.22"
             class="org.apache.geronimo.st.ui.sections.ServerEditorStartupSection">
         </section>
     </extension>
@@ -169,7 +178,10 @@
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.vmargs" order="40"
             insertionId="org.eclipse.wst.server.editor.overview.right"
-            typeIds="org.apache.geronimo.server.*"
+            typeIds="org.apache.geronimo.runtime.11,
+                     org.apache.geronimo.runtime.20,
+                     org.apache.geronimo.runtime.21,
+                     org.apache.geronimo.runtime.22"
             class="org.apache.geronimo.st.ui.sections.ServerVMArgsSection">
         </section>
     </extension>
@@ -177,7 +189,10 @@
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.testenv" order="20"
             insertionId="org.eclipse.wst.server.editor.overview.left"
-            typeIds="org.apache.geronimo.server.*"
+            typeIds="org.apache.geronimo.runtime.11,
+                     org.apache.geronimo.runtime.20,
+                     org.apache.geronimo.runtime.21,
+                     org.apache.geronimo.runtime.22"
             class="org.apache.geronimo.st.ui.sections.ServerEditorTestEnvSection">
         </section>
     </extension>
