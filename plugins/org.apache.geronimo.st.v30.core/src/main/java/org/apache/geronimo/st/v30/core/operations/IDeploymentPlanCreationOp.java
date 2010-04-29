@@ -14,13 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v30.core;
+package org.apache.geronimo.st.v30.core.operations;
 
-import org.apache.geronimo.st.v30.core.GeronimoRuntimeDelegate;
+import javax.xml.bind.JAXBElement;
+
+import org.eclipse.core.resources.IFile;
 
 /**
  * @version $Rev$ $Date$
  */
-public class GeronimoRuntime extends GeronimoRuntimeDelegate {
+public interface IDeploymentPlanCreationOp {
+
+    public JAXBElement createOpenEjbDeploymentPlan(IFile file) throws Exception;
+
+    public JAXBElement createGeronimoWebDeploymentPlan(IFile file) throws Exception;
+
+    public JAXBElement createGeronimoApplicationDeploymentPlan(IFile file) throws Exception;
+
+    public JAXBElement createConnectorDeploymentPlan(IFile file) throws Exception;
 
 }

@@ -14,13 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v30.core;
+package org.apache.geronimo.st.v30.core.commands;
 
-import org.apache.geronimo.st.v30.core.GeronimoRuntimeDelegate;
+import javax.enterprise.deploy.shared.CommandType;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.wst.server.core.IModule;
 
 /**
  * @version $Rev$ $Date$
  */
-public class GeronimoRuntime extends GeronimoRuntimeDelegate {
+public interface IDeploymentCommand {
+
+    public IStatus execute(IProgressMonitor monitor) throws Exception;
+
+    public CommandType getCommandType();
+
+    public IModule getModule();
+    
+    public long getTimeout();
 
 }

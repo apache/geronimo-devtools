@@ -6,19 +6,31 @@ Bundle-Version: 3.0.0
 Bundle-Activator: org.apache.geronimo.st.v30.core.Activator
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.jst.j2ee,
- org.apache.geronimo.runtime.v30,
- org.apache.geronimo.st.core,
+Require-Bundle: 
  org.apache.geronimo.jee.v21.jaxbmodel,
+ org.apache.geronimo.runtime.v30,
+ org.eclipse.core.commands,
  org.eclipse.core.runtime,
- org.eclipse.wst.server.core,
  org.eclipse.debug.core,
- org.eclipse.wst.common.project.facet.core,
+ org.eclipse.emf.ecore,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.launching,
+ org.eclipse.jem.util,
  org.eclipse.jst.common.frameworks,
- org.eclipse.wst.common.modulecore
+ org.eclipse.jst.j2ee,
+ org.eclipse.jst.j2ee.core,
+ org.eclipse.jst.j2ee.ejb,
+ org.eclipse.jst.j2ee.jca,
+ org.eclipse.jst.j2ee.web,
+ org.eclipse.jst.server.core,
+ org.eclipse.wst.common.frameworks,
+ org.eclipse.wst.common.project.facet.core,
+ org.eclipse.wst.server.core,
+ org.eclipse.wst.web
 Bundle-ActivationPolicy: lazy
 Export-Package: 
  org.apache.geronimo.st.v30.core,
+ org.apache.geronimo.st.v30.core.descriptor,
  org.apache.geronimo.st.v30.core.internal,
  org.apache.geronimo.st.v30.core.jaxb,
  org.apache.geronimo.st.v30.core.operations

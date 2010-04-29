@@ -14,13 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v30.core;
-
-import org.apache.geronimo.st.v30.core.GeronimoRuntimeDelegate;
+package org.apache.geronimo.st.v30.core.jaxb;
 
 /**
  * @version $Rev$ $Date$
  */
-public class GeronimoRuntime extends GeronimoRuntimeDelegate {
+public interface JAXBObjectFactory {
 
+    public Object create(Class type);
 }

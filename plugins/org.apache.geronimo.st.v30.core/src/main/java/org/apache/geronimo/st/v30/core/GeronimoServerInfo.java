@@ -40,7 +40,6 @@ import org.apache.geronimo.kernel.Kernel;
 import org.apache.geronimo.kernel.NoSuchAttributeException;
 import org.apache.geronimo.kernel.NoSuchOperationException;
 import org.apache.geronimo.kernel.repository.Artifact;
-import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.runtime.IProgressMonitor;

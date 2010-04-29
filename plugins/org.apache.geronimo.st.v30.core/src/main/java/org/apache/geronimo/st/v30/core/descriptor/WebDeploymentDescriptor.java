@@ -14,13 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v30.core;
+package org.apache.geronimo.st.v30.core.descriptor;
 
-import org.apache.geronimo.st.v30.core.GeronimoRuntimeDelegate;
+import java.util.List;
 
 /**
  * @version $Rev$ $Date$
  */
-public class GeronimoRuntime extends GeronimoRuntimeDelegate {
+public interface WebDeploymentDescriptor {
+
+    public List<String> getEjbRefs();
+
+    public List<String> getEjbLocalRefs();
+
+    public List<String> getSecurityRoles();
+
+    public List<String> getResourceRefs();
+
+    public List<String> getResourceEnvRefs();
+
+    public List<String> getMessageDestinations();
 
 }

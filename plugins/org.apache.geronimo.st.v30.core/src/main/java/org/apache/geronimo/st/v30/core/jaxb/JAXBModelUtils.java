@@ -33,7 +33,7 @@ import org.apache.geronimo.jee.web.WebApp;
  * @version $Rev$ $Date$
  */
 public class JAXBModelUtils {
-	
+    
     
     public static Security getSecurity (JAXBElement element) {
         Object plan = element.getValue();
@@ -45,13 +45,13 @@ public class JAXBModelUtils {
             return security;
         } else if (Application.class.isInstance (plan)) {
             if (((Application)plan).getSecurity() == null) {
-            	return null;
+                return null;
             }
             Security security = (Security)((Application)plan).getSecurity().getValue();
             return security;
         } else if (OpenejbJar.class.isInstance (plan)) {
             if (((OpenejbJar)plan).getSecurity() == null) {
-            	return null;
+                return null;
             }
             Security security = (Security)((OpenejbJar)plan).getSecurity().getValue();
             return security;

@@ -14,13 +14,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v30.core;
-
-import org.apache.geronimo.st.v30.core.GeronimoRuntimeDelegate;
+package org.apache.geronimo.st.v30.core.commands;
 
 /**
  * @version $Rev$ $Date$
  */
-public class GeronimoRuntime extends GeronimoRuntimeDelegate {
+public class TargetModuleIdNotFoundException extends Exception {
+
+    private static final long serialVersionUID = -2530352160336730134L;
+
+    public TargetModuleIdNotFoundException() {
+        super();
+    }
+
+    public TargetModuleIdNotFoundException(String arg0) {
+        super(arg0);
+    }
+
+    public TargetModuleIdNotFoundException(String arg0, Throwable arg1) {
+        super(arg0, arg1);
+    }
+
+    public TargetModuleIdNotFoundException(Throwable arg0) {
+        super(arg0);
+    }
 
 }

@@ -24,9 +24,9 @@ import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 
 import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
 import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
-import org.apache.geronimo.st.core.GeronimoRuntimeDelegate;
-import org.apache.geronimo.st.core.GeronimoServerDelegate;
-import org.apache.geronimo.st.core.IGeronimoVersionHandler;
+import org.apache.geronimo.st.v30.core.GeronimoRuntimeDelegate;
+import org.apache.geronimo.st.v30.core.GeronimoServerDelegate;
+import org.apache.geronimo.st.v30.core.IGeronimoVersionHandler;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -53,16 +53,16 @@ public class GeronimoServer extends GeronimoServerDelegate {
     }
 
     /* (non-Javadoc)
-     * @see org.apache.geronimo.st.core.GenericGeronimoServer#getContextRoot(org.eclipse.wst.server.core.IModule)
+     * @see org.apache.geronimo.st.v30.core.GenericGeronimoServer#getContextRoot(org.eclipse.wst.server.core.IModule)
      */
     public String getContextRoot(IModule module) throws Exception {
-        return GeronimoV30Utils.getContextRoot(module);
+        return GeronimoUtils.getContextRoot(module);
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.apache.geronimo.st.core.IGeronimoServer#getDeployerURL()
+     * @see org.apache.geronimo.st.v30.core.IGeronimoServer#getDeployerURL()
      */
     public String getDeployerURL() {
         return "deployer:geronimo:jmx://" + getServer().getHost() + ":" + getRMINamingPort();
@@ -127,7 +127,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
     /*
      * (non-Javadoc)
      *
-     * @see org.apache.geronimo.st.core.IGeronimoServer#getJMXServiceURL()
+     * @see org.apache.geronimo.st.v30.core.IGeronimoServer#getJMXServiceURL()
      */
     public String getJMXServiceURL() {
         String host = getServer().getHost();
@@ -137,7 +137,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
     /*
      * (non-Javadoc)
      *
-     * @see org.apache.geronimo.st.core.IGeronimoServer#getJSR88DeployerJar()
+     * @see org.apache.geronimo.st.v30.core.IGeronimoServer#getJSR88DeployerJar()
      */
     public IPath getJSR88DeployerJar() {
         return getServer().getRuntime().getLocation().append("/lib/jsr88-deploymentfactory.jar");
@@ -146,7 +146,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
     /*
      * (non-Javadoc)
      *
-     * @see org.apache.geronimo.st.core.IGeronimoServer#getDeploymentFactory()
+     * @see org.apache.geronimo.st.v30.core.IGeronimoServer#getDeploymentFactory()
      */
     public DeploymentFactory getDeploymentFactory() {
         return deploymentFactory;
@@ -155,7 +155,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
     /*
      * (non-Javadoc)
      *
-     * @see org.apache.geronimo.st.core.IGeronimoServer#configureDeploymentManager(javax.enterprise.deploy.spi.DeploymentManager)
+     * @see org.apache.geronimo.st.v30.core.IGeronimoServer#configureDeploymentManager(javax.enterprise.deploy.spi.DeploymentManager)
      */
     public void configureDeploymentManager(DeploymentManager dm) {
         ((JMXDeploymentManager) dm).setLogConfiguration(true, true);
@@ -166,11 +166,11 @@ public class GeronimoServer extends GeronimoServerDelegate {
     /*
      * (non-Javadoc)
      *
-     * @see org.apache.geronimo.st.core.IGeronimoServer#getVersionHandler()
+     * @see org.apache.geronimo.st.v30.core.IGeronimoServer#getVersionHandler()
      */
     public IGeronimoVersionHandler getVersionHandler() {
         if (versionHandler == null)
-            versionHandler = new GeronimoV30VersionHandler();
+            versionHandler = new GeronimoVersionHandler();
         return versionHandler;
     }
 
@@ -179,14 +179,14 @@ public class GeronimoServer extends GeronimoServerDelegate {
     }
 
     /* (non-Javadoc)
-     * @see org.apache.geronimo.st.core.IGeronimoServer#isInPlace()
+     * @see org.apache.geronimo.st.v30.core.IGeronimoServer#isInPlace()
      */
     public boolean isInPlaceSharedLib() {
         return getAttribute(PROPERTY_IN_PLACE_SHARED_LIB, false);
     }
 
     /* (non-Javadoc)
-     * @see org.apache.geronimo.st.core.IGeronimoServer#isRunFromWorkspace()
+     * @see org.apache.geronimo.st.v30.core.IGeronimoServer#isRunFromWorkspace()
      */
     public boolean isRunFromWorkspace() {
         return getAttribute(PROPERTY_RUN_FROM_WORKSPACE, false);
@@ -201,7 +201,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
     }
 
     /* (non-Javadoc)
-     * @see org.apache.geronimo.st.core.GeronimoServerDelegate#setDefaults(org.eclipse.core.runtime.IProgressMonitor)
+     * @see org.apache.geronimo.st.v30.core.GeronimoServerDelegate#setDefaults(org.eclipse.core.runtime.IProgressMonitor)
      */
     public void setDefaults(IProgressMonitor monitor) {
         super.setDefaults(monitor);

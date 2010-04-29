@@ -16,7 +16,6 @@
  */
 package org.apache.geronimo.st.v30.core.jaxb;
 
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.jee.application.ExtModule;
 import org.apache.geronimo.jee.application.Module;
 import org.apache.geronimo.jee.application.Path;

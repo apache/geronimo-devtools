@@ -14,13 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v30.core;
+package org.apache.geronimo.st.v30.core.operations;
 
-import org.apache.geronimo.st.v30.core.GeronimoRuntimeDelegate;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelProperties;
 
 /**
  * @version $Rev$ $Date$
  */
-public class GeronimoRuntime extends GeronimoRuntimeDelegate {
+public interface ISharedLibEntryCreationDataModelProperties extends IDataModelProperties {
 
+    public static final String MODULES = "ISharedLibEntryCreationDataModelProperties.MODULE";   //array of IModules
+    public static final String SERVER = "ISharedLibEntryCreationDataModelProperties.SERVER";    //IServer
+    
 }

@@ -16,11 +16,11 @@
  */
 package org.apache.geronimo.st.v30.core;
 
-import org.apache.geronimo.st.v30.core.GeronimoRuntimeDelegate;
+import org.apache.geronimo.st.v30.core.internal.Messages;
 
 /**
  * @version $Rev$ $Date$
  */
-public class GeronimoRuntime extends GeronimoRuntimeDelegate {
-
+public class CommonMessages extends Messages {
+    
 }

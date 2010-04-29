@@ -14,13 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v30.core;
+package org.apache.geronimo.st.v30.core.jaxb;
 
-import org.apache.geronimo.st.v30.core.GeronimoRuntimeDelegate;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+
+import org.eclipse.core.resources.IFile;
 
 /**
  * @version $Rev$ $Date$
  */
-public class GeronimoRuntime extends GeronimoRuntimeDelegate {
-
+public interface IJAXBUtilsProvider {
+     public JAXBContext getJAXBContext();
+     public void marshalDeploymentPlan(JAXBElement jaxbElement, IFile file) throws Exception;
+     public void marshalPlugin(JAXBElement jaxbElement, OutputStream outputStream) throws Exception;
+     public JAXBElement unmarshalFilterDeploymentPlan(IFile file) throws Exception;
+     public JAXBElement unmarshalPlugin(InputStream inputStream);
 }

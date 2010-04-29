@@ -16,11 +16,17 @@
  */
 package org.apache.geronimo.st.v30.core;
 
-import org.apache.geronimo.st.v30.core.GeronimoRuntimeDelegate;
+import javax.enterprise.deploy.spi.TargetModuleID;
+
+import org.eclipse.wst.server.core.IModule;
 
 /**
  * @version $Rev$ $Date$
  */
-public class GeronimoRuntime extends GeronimoRuntimeDelegate {
+public interface IGeronimoVersionHandler {
+
+    public String getConfigID(IModule module) throws Exception;
+    
+    public TargetModuleID createTargetModuleId(String configId);
 
 }

@@ -16,11 +16,14 @@
  */
 package org.apache.geronimo.st.v30.core;
 
-import org.apache.geronimo.st.v30.core.GeronimoRuntimeDelegate;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.jst.server.core.IJavaRuntime;
 
 /**
  * @version $Rev$ $Date$
  */
-public class GeronimoRuntime extends GeronimoRuntimeDelegate {
+public interface IGeronimoRuntime extends IJavaRuntime {
+    
+    public IPath getRuntimeSourceLocation();
 
 }
