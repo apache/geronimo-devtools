@@ -322,9 +322,9 @@
         </category>
         <command
               categoryId="org.apache.geronimo.st.v30.ui.commands.category"
-              description="Download tools for OSGi-based applications"
+              description="Download OSGi application development tools"
               id="org.apache.geronimo.st.v30.ui.commands.downloadOSGi"
-              name="Download OSGi Tools">
+              name="Download OSGi Application Development Tools">
         </command>
         <command
               categoryId="org.apache.geronimo.st.v30.ui.commands.category"

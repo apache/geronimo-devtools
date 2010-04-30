@@ -16,10 +16,18 @@
  */
 package org.apache.geronimo.st.v30.ui.handlers;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.apache.geronimo.st.v30.ui.internal.Messages;
 import org.apache.geronimo.st.v30.ui.internal.Trace;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.browser.IWebBrowser;
+import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
+import org.eclipse.ui.internal.browser.WorkbenchBrowserSupport;
 
 /**
  * Handler to download the OSGi Application Development tools (i.e., Aries free tooling)
@@ -31,22 +39,25 @@ import org.eclipse.core.commands.ExecutionException;
  */
 public class DownloadOSGi extends AbstractHandler  {
 
-    @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         Trace.tracePoint("Entry", "DownloadOSGi.execute", event);
-        // TODO
+
+        String url = Messages.DownloadOSGiURL;
+
+        try {
+            int style = IWorkbenchBrowserSupport.AS_EXTERNAL | IWorkbenchBrowserSupport.STATUS;
+            IWebBrowser browser = WorkbenchBrowserSupport.getInstance().createBrowser(style, "", "", "");
+            browser.openURL(new URL(url));
+        }
+        catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        catch (PartInitException e) {
+            e.printStackTrace();
+        }
+
         Trace.tracePoint("Exit", "DownloadOSGi.execute");
         return null;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
-
-    @Override
-    public boolean isHandled() {
-        return false;
     }
 
 }

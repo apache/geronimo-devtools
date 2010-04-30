@@ -93,6 +93,7 @@ public class Messages extends NLS {
     public static String DownloadServerButtonLabel;
     public static String DownloadServerText;
     public static String DownloadServerURL;
+    public static String DownloadOSGiURL;
     public static String jvmWarning;
     public static String installTitle;
     public static String installMessage;
