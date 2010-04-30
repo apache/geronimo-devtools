@@ -63,14 +63,14 @@
     <!-- 
      ###################################################################################################################
      ##                                                                                                               ##
-     ## Geronimo Server - Map the action defined for the "Geronimo Deployment" project-facet to a specific class. The ##
-     ##                   action must have been defined in the corresponding core plugin.                             ## 
+     ## Geronimo Facets - Map the action defined for the "Geronimo Java EE Deployment" project-facet to a specific    ##
+     ##                   wizard class. The action must have been defined in the corresponding core plugin.           ## 
      ##                                                                                                               ##
      ###################################################################################################################
      -->
     <extension point="org.eclipse.wst.common.project.facet.ui.wizardPages">
         <wizard-pages action="geronimo.plan.install.v30">
-            <page class="org.apache.geronimo.st.v30.ui.wizards.FacetInstallPage"/>
+            <page class="org.apache.geronimo.st.v30.ui.wizards.facets.GeronimoJEEFacetInstallWizardPage"/>
         </wizard-pages>
     </extension>
 
@@ -79,8 +79,8 @@
     <!-- 
      ###################################################################################################################
      ##                                                                                                               ##
-     ## Geronimo Server - Define the icon for the Geronimo facet. The runtime component must have been defined in the ##
-     ##                   corresponding core plugin.                                                                  ##
+     ## Geronimo Facets - Define the icon for the Geronimo Jave EE and OSGi facets. The runtime component must have   ##
+     ##                   been defined in the corresponding core plugin.                                              ##
      ##                                                                                                               ##
      ###################################################################################################################
      -->
@@ -225,7 +225,7 @@
             <enablement>
                 <test forcePluginActivation="true"
                     property="org.eclipse.wst.server.ui.serverType"
-                    value="org.apache.geronimo.*" />
+                    value="org.apache.geronimo.server.3*" />
             </enablement>
             <action id="org.apache.geronimo.ui.launchSupport"
                 label="%PopupMenus.launchSupport" icon="icons/obj16/littleG.gif"
@@ -243,7 +243,7 @@
             <enablement>
                 <test forcePluginActivation="true"
                     property="org.eclipse.wst.server.ui.serverType"
-                    value="org.apache.geronimo.*" />
+                    value="org.apache.geronimo.server.3*" />
             </enablement>
             <action id="org.apache.geronimo.ui.launchconsole"
                 label="%PopupMenus.launchconsole" icon="icons/obj16/littleG.gif"
@@ -282,13 +282,12 @@
     </extension>
     
 
-
-    
     
     <!-- 
      ###################################################################################################################
      ##                                                                                                               ##
-     ## Refactoring                                                                                                   ##
+     ## Refactoring - Invoked when the user changes a project name, so that the artifact ID in the deployment plan    ##
+     ##               changes automatically                                                                           ##
      ##                                                                                                               ##
      ###################################################################################################################
      -->
@@ -306,7 +305,6 @@
         </renameParticipant>    
     </extension>
 
-    
 
 
     <!-- 

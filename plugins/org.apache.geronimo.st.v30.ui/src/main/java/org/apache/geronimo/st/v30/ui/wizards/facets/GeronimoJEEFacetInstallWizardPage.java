@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v30.ui.wizards;
+package org.apache.geronimo.st.v30.ui.wizards.facets;
 
-import org.apache.geronimo.st.v30.core.DeploymentPlanInstallConfig;
+import org.apache.geronimo.st.v30.core.facets.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.apache.geronimo.st.v30.ui.internal.Trace;
 import org.eclipse.swt.SWT;
@@ -29,9 +29,12 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wst.common.project.facet.ui.AbstractFacetWizardPage;
 
 /**
+ * <b>GeroniomoJEEFacetInstallWizardPage</b> gathers user input to create the Geronmio deployment plan. It
+ *    is invoked just prior to the installation of the corresponding facet. 
+ * 
  * @version $Rev$ $Date$
  */
-public class FacetInstallPage extends AbstractFacetWizardPage {
+public class GeronimoJEEFacetInstallWizardPage extends AbstractFacetWizardPage {
 
     private DeploymentPlanInstallConfig config;
 
@@ -41,14 +44,14 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
     private Text typeText;
     private Button sharedLib;
 
-    public FacetInstallPage() {
+    public GeronimoJEEFacetInstallWizardPage() {
         super("geronimo.plan.install");
-        Trace.tracePoint("Constructor Entry", "FacetInstallPage");
+        Trace.tracePoint("Constructor Entry", "GeroniomoJEEFacetInstallWizardPage");
         
         setTitle("Geronimo Deployment Plan");
         setDescription("Configure the geronimo deployment plan.");
         
-        Trace.tracePoint("Constructor Exit", "FacetInstallPage");
+        Trace.tracePoint("Constructor Exit", "GeronimoJEEFacetInstallWizardPage");
     }
 
     /*
@@ -57,11 +60,11 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
      * @see org.eclipse.wst.common.project.facet.ui.IFacetWizardPage#setConfig(java.lang.Object)
      */
     public void setConfig(Object config) {
-        Trace.tracePoint("Entry", "FacetInstallPage.setConfig", config);
+        Trace.tracePoint("Entry", "GeronimoJEEFacetInstallWizardPage.setConfig", config);
 
         this.config = (DeploymentPlanInstallConfig) config;
         
-        Trace.tracePoint("Exit", "FacetInstallPage.setConfig");
+        Trace.tracePoint("Exit", "GeronimoJEEFacetInstallWizardPage.setConfig");
     }
 
     /*
@@ -70,7 +73,7 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
      * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
      */
     public void createControl(Composite parent) {
-        Trace.tracePoint("Entry", "FacetInstallPage.createControl", parent);
+        Trace.tracePoint("Entry", "GeronimoJEEFacetInstallWizardPage.createControl", parent);
         
         Composite composite = new Composite(parent, SWT.NONE);
         composite.setLayout(new GridLayout(2, false));
@@ -111,7 +114,7 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
         
         setControl(composite);
         
-        Trace.tracePoint("Exit", "FacetInstallPage.createControl");      
+        Trace.tracePoint("Exit", "GeronimoJEEFacetInstallWizardPage.createControl");      
     }
 
     /*
@@ -120,7 +123,7 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
      * @see org.eclipse.wst.common.project.facet.ui.AbstractFacetWizardPage#transferStateToConfig()
      */
     public void transferStateToConfig() {
-        Trace.tracePoint("Entry", "FacetInstallPage.transferStateToConfig");     
+        Trace.tracePoint("Entry", "GeronimoJEEFacetInstallWizardPage.transferStateToConfig");     
     
         config.setGroupId(groupText.getText());
         config.setArtifactId(artifactText.getText());
@@ -128,7 +131,7 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
         config.setType(typeText.getText());
         config.setSharedLib(sharedLib.getSelection());
         
-        Trace.tracePoint("Exit", "FacetInstallPage.transferStateToConfig");      
+        Trace.tracePoint("Exit", "GeronimoJEEFacetInstallWizardPage.transferStateToConfig");      
     }
 
     private static GridData createGridData() {

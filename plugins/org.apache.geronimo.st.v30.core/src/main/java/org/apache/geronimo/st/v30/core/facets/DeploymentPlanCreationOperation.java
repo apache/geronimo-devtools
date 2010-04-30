@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v30.core.operations;
+package org.apache.geronimo.st.v30.core.facets;
 
 import javax.xml.bind.JAXBElement;
 
@@ -32,8 +32,8 @@ import org.apache.geronimo.st.v30.core.Activator;
 import org.apache.geronimo.st.v30.core.GeronimoUtils;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBUtils;
-import org.apache.geronimo.st.v30.core.DeploymentPlanInstallConfig;
-import org.apache.geronimo.st.v30.core.operations.DeploymentPlanCreationOperation;
+import org.apache.geronimo.st.v30.core.operations.AbstractGeronimoJ2EEComponentOperation;
+import org.apache.geronimo.st.v30.core.operations.IDeploymentPlanCreationOp;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;

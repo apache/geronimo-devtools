@@ -14,15 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v30.core;
+package org.apache.geronimo.st.v30.core.facets;
 
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEPlugin;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEPreferences;
 import org.eclipse.wst.common.project.facet.core.IActionConfigFactory;
 
-
 /**
+ * <b>DeploymentPlanInstallConfig</b> is used to enable comminications between the facet action delegate and any
+ * wizard page(s). The object created by the factory will be populated by the wizard page(s) 
+ * (i.e., GeronimoJEEFacetInstallWizardPage) and can then be read by corresponding action delegate 
+ * (i.e., GeronimoJEEFacetInstallDelegate). 
+ * 
  * @version $Rev$ $Date$
  */
 public class DeploymentPlanInstallConfig {
@@ -37,10 +41,9 @@ public class DeploymentPlanInstallConfig {
     
     private boolean sharedLib;
     
-    public static final class Factory implements IActionConfigFactory
-    {
-        public Object create()
-        {
+    public static final class Factory implements IActionConfigFactory {
+    
+        public Object create() {
             Trace.tracePoint("Entry/Exit", "DeploymentPlanInstallConfig.create");
             
             enableGenerationDDByDefault();
@@ -54,8 +57,6 @@ public class DeploymentPlanInstallConfig {
          * 
          * reference to J2EEPreferences.java in org.eclipse.jst.j2ee bundle
          */
-        
-        
         private void enableGenerationDDByDefault(){
             J2EEPlugin.getDefault().getJ2EEPreferences().setValue(J2EEPreferences.Keys.APPLICATION_GENERATE_DD,true);
             J2EEPlugin.getDefault().getJ2EEPreferences().setValue(J2EEPreferences.Keys.DYNAMIC_WEB_GENERATE_DD,true);

@@ -14,10 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v30.core;
+package org.apache.geronimo.st.v30.core.facets;
 
 import org.apache.geronimo.st.v30.core.internal.Trace;
-import org.apache.geronimo.st.v30.core.operations.DeploymentPlanCreationOperation;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -35,20 +34,29 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 /**
+ * <b>GeronimoJEEFacetInstallDelegate</b> implements any Geronimo-specific functions for JEE projects when the 
+ *    project is created, which is mainly to create a Geronimo deployment plan
+ * 
  * @version $Rev$ $Date$
  */
-public class GeronimoFacetInstallDelegate implements IDelegate {
+public class GeronimoJEEFacetInstallDelegate implements IDelegate {
 
     public static final String FACET_ID = "org.apache.geronimo.facet";
 
-    /*
-     * (non-Javadoc)
+    /**
+     * The method that's called to execute the delegate
      * 
-     * @see org.eclipse.wst.common.project.facet.core.IDelegate#execute(org.eclipse.core.resources.IProject,
-     *      org.eclipse.wst.common.project.facet.core.IProjectFacetVersion,
-     *      java.lang.Object, org.eclipse.core.runtime.IProgressMonitor)
+     * @param project   The workspace project
+     * @param fv        The project facet version that this delegate is handling; this
+     *                  is useful when sharing the delegate among several versions of the same
+     *                  project facet or even different project facets
+     * @param config    The configuration object, or null if defaults should be used
+     * @param monitor   The progress monitor
+     * 
+     * @throws CoreException if the delegate fails for any reason
      */
     public void execute(IProject project, IProjectFacetVersion fv, Object config, IProgressMonitor monitor) throws CoreException {
+        Trace.tracePoint("Entry", "GeronimoJEEFacetInstallDelegate.execute", project, fv, config, monitor);
 
         try {
             createDeploymentPlanCreationOp(project, config).execute(monitor, null);
@@ -68,15 +76,17 @@ public class GeronimoFacetInstallDelegate implements IDelegate {
                 }
             }
         }
+
+        Trace.tracePoint("Exit ", "GeronimoJEEFacetInstallDelegate.execute");
     }
 
     public IDataModelOperation createDeploymentPlanCreationOp(IProject project, Object config) {
-        Trace.tracePoint("Entry", "GeronimoFacetInstallDelegate.createDeploymentPlanCreationOp", project, config);
+        Trace.tracePoint("Entry", "GeronimoJEEFacetInstallDelegate.createDeploymentPlanCreationOp", project, config);
         
         IDataModel model = DataModelFactory.createDataModel(new JavaProjectFacetCreationDataModelProvider());
         model.setStringProperty(IFacetDataModelProperties.FACET_PROJECT_NAME, project.getName());
         
-        Trace.tracePoint("Exit ", "GeronimoFacetInstallDelegate.createDeploymentPlanCreationOp");
+        Trace.tracePoint("Exit ", "GeronimoJEEFacetInstallDelegate.createDeploymentPlanCreationOp");
         return new DeploymentPlanCreationOperation(model, config);       
     }
 }

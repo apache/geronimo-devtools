@@ -92,7 +92,7 @@
             <enablement>
                 <test forcePluginActivation="true"
                     property="org.eclipse.wst.server.ui.serverType"
-                    value="org.apache.geronimo.*" />
+                    value="org.apache.geronimo.server.1*,org.apache.geronimo.server.2*"/>
             </enablement>
             <action id="org.apache.geronimo.ui.launchSupport"
                 label="%PopupMenus.launchSupport" icon="icons/obj16/littleG.gif"
@@ -110,7 +110,7 @@
             <enablement>
                 <test forcePluginActivation="true"
                     property="org.eclipse.wst.server.ui.serverType"
-                    value="org.apache.geronimo.*" />
+                    value="org.apache.geronimo.server.1*,org.apache.geronimo.server.2*"/>
             </enablement>
             <action id="org.apache.geronimo.ui.launchconsole"
                 label="%PopupMenus.launchconsole" icon="icons/obj16/littleG.gif"
