@@ -53,6 +53,14 @@
                 </includes>
             </resource>
 
+            <resource>
+                <targetPath>schema/</targetPath>
+                <directory>schema/</directory>
+                <includes>
+                    <include>*.exsd</include>
+                </includes>
+            </resource>
+
             <!--
              |
              | GERONIMODEVTOOLS-482: Ensure filtering is not used on a binary resource 

@@ -50,6 +50,20 @@
                 </includes>
             </resource>
             <resource>
+                <targetPath>schema/</targetPath>
+                <directory>schema/</directory>
+                <includes>
+                    <include>*.exsd</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>icons/</targetPath>
+                <directory>icons/</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+            <resource>
                 <targetPath>org/apache/geronimo/st/v30/ui/internal</targetPath>
                 <directory>src/main/java/org/apache/geronimo/st/v30/ui/internal</directory>
                 <includes>
