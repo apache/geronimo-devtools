@@ -781,7 +781,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             
         }else{
              //for 1.1,2.0,2.1,2.2 
-             IPath serverJar = getServer().getRuntime().getLocation().append("/lib/server.jar");
+             IPath serverJar = getServer().getRuntime().getLocation().append("/bin/server.jar");
              cp.add(JavaRuntime.newArchiveRuntimeClasspathEntry(serverJar));
         }
         // merge existing classpath with server classpath
@@ -890,7 +890,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     }
 
     public void stopUpdateServerStateTask() {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stopUpdateServerStateTask", getServer().getName());
+        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stopUpdateServerStateTask");
 
         if (timer != null)
             timer.cancel();
