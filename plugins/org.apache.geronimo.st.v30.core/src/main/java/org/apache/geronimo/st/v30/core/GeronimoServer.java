@@ -37,6 +37,9 @@ import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
 /**
+ * <b>GeronimoServer</b> is the implementation of the Geronimo Server Configuration defined in the
+ * org.apache.geronimo.st.v30.core plugin
+ * 
  * @version $Rev$ $Date$
  */
 public class GeronimoServer extends GeronimoServerDelegate {
@@ -116,7 +119,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
         
         // Karaf arguments
         String serverLocation = getServer().getRuntime().getLocation().toOSString();
-        String karafArgs = "-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=true " + MessageFormat.format("-Dorg.apache.geronimo.home.dir=\"{0}\" -Dkaraf.home=\"{0}\" -Dkaraf.base=\"{0}\" -Djava.util.logging.config.file={0}/etc/java.util.logging.properties", serverLocation);
+        String karafArgs = "-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=true " + MessageFormat.format("-Dorg.apache.geronimo.home.dir=\"{0}\" -Dkaraf.home=\"{0}\" -Dkaraf.base=\"{0}\" -Djava.util.logging.config.file={0}/etc/java.util.logging.properties", serverLocation);
 
         StringBuilder vmArgs = new StringBuilder(javaagent);
         vmArgs.append(" ").append(javaExtDirs).append(" ").append(javaEndorsedDirs).append(" ").append(memoryOpts).append(" ").append(homeDirectory).append(" ").append(karafArgs);

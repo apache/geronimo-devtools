@@ -63,8 +63,8 @@
     <!-- 
      ###################################################################################################################
      ##                                                                                                               ##
-     ## Geronimo Facets - Map the action defined for the "Geronimo Java EE Deployment" project-facet to a specific    ##
-     ##                   wizard class. The action must have been defined in the corresponding core plugin.           ## 
+     ## Project Facets - Map the action defined for the "Geronimo Java EE Deployment" project-facet to a specific     ##
+     ##                  wizard class. The action must have been defined in the corresponding core plugin.            ## 
      ##                                                                                                               ##
      ###################################################################################################################
      -->
@@ -79,8 +79,8 @@
     <!-- 
      ###################################################################################################################
      ##                                                                                                               ##
-     ## Geronimo Facets - Define the icon for the Geronimo Jave EE and OSGi facets. The runtime component must have   ##
-     ##                   been defined in the corresponding core plugin.                                              ##
+     ## Project Facets - Define the icon for the Geronimo Java EE and OSGi facets. The runtime component must have    ##
+     ##                  been defined in the corresponding core plugin.                                               ##
      ##                                                                                                               ##
      ###################################################################################################################
      -->
@@ -178,8 +178,8 @@
     <!-- 
      ###################################################################################################################
      ##                                                                                                               ##
-     ## Geronimo Server Launch Configuration Tabs - Displays when the users selects "Open launch configuration" from  ##
-     ##                                             the ServerEditorTestEnvSection defined above                      ##
+     ## Launch Configuration Properties - Displays when the users selects "Open launch configuration" from the        ##
+     ##                                   the ServerEditorTestEnvSection defined above                                ##
      ##                                                                                                               ##
      ###################################################################################################################
      -->
@@ -204,8 +204,8 @@
     <!-- 
      ###################################################################################################################
      ##                                                                                                               ##
-     ## Geronimo Server - Define the schemas for the LaunchGeronimoConsoleAction and LaunchGeronimoSupportAction menu ##
-     ##                   actions from the Server view when right clicking                                            ##
+     ## Popup Menu - Define the schemas for the LaunchGeronimoConsoleAction and LaunchGeronimoSupportAction menu      ##
+     ##              actions for the popup menu when right clicking on the server in the Server View                  ##
      ##                                                                                                               ##
      ###################################################################################################################
      -->
@@ -220,14 +220,14 @@
     <extension point="org.eclipse.ui.popupMenus">
         <objectContribution
                 adaptable="true"
-                id="org.apache.geronimo.ui.serveractions"
+                id="org.apache.geronimo.ui.serveractions.30"
                 objectClass="org.eclipse.wst.server.core.IServer">
             <enablement>
                 <test forcePluginActivation="true"
                     property="org.eclipse.wst.server.ui.serverType"
                     value="org.apache.geronimo.server.3*" />
             </enablement>
-            <action id="org.apache.geronimo.ui.launchSupport"
+            <action id="org.apache.geronimo.ui.launchSupport.30"
                 label="%PopupMenus.launchSupport" icon="icons/obj16/littleG.gif"
                 class="org.apache.geronimo.st.v30.ui.actions.LaunchGeronimoSupportAction"
                 enablesFor="1">
@@ -238,14 +238,14 @@
     <extension point="org.eclipse.ui.popupMenus">
         <objectContribution
                 adaptable="true"
-                id="org.apache.geronimo.ui.serveractions"
+                id="org.apache.geronimo.ui.serveractions.30"
                 objectClass="org.eclipse.wst.server.core.IServer">
             <enablement>
                 <test forcePluginActivation="true"
                     property="org.eclipse.wst.server.ui.serverType"
                     value="org.apache.geronimo.server.3*" />
             </enablement>
-            <action id="org.apache.geronimo.ui.launchconsole"
+            <action id="org.apache.geronimo.ui.launchconsole.30"
                 label="%PopupMenus.launchconsole" icon="icons/obj16/littleG.gif"
                 class="org.apache.geronimo.st.v30.ui.actions.LaunchGeronimoConsoleAction"
                 enablesFor="1">
