@@ -282,6 +282,28 @@
            <loader class="org.apache.geronimo.st.v30.ui.editors.GeronimoFormContentLoader" version="3.0"/>
     </extension>
     
+    
+    
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Blueprint XML Editor - Define the XML form editor class for the blueprint.xml file                            ##
+     ##                                                                                                               ##
+     ## TODO(s) - Create JAXB model from blueprint.xsd Schema                                                         ##
+     ##         - Implement org.apache.geronimo.st.v30.ui.editors.BlueprintFormEditor                                 ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.ui.editors">
+        <editor class="org.eclipse.ui.editors.text.TextEditor"
+            default="true" 
+            filenames="blueprint.xml"
+            icon="icons/obj16/littleOSGi.gif"
+            id="org.apache.geronimo.v30.ui.editors.BlueprintFormEditor" 
+            name="%BlueprintFormEditorName">
+        </editor>
+    </extension>
+
 
     
     <!-- 
