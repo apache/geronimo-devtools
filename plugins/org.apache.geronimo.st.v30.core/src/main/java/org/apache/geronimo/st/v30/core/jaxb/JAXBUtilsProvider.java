@@ -58,13 +58,13 @@ import org.xml.sax.SAXException;
 /**
  * @version $Rev$ $Date$
  */
-public class JAXB21Utils implements IJAXBUtilsProvider{
+public class JAXBUtilsProvider implements IJAXBUtilsProvider{
 
     // JAXBContext instantiation is costly - must be done only once!
     private static final JAXBContext jaxbContext = newJAXBContext();
     private static final JAXBContext jaxbPluginContext = newJAXBPluginContext();
     private static final MarshallerListener marshallerListener = new MarshallerListener();
-    //private static JAXB21Utils _instance = new JAXB21Utils();
+    //private static JAXBUtilsProvider _instance = new JAXBUtilsProvider();
     
     private static JAXBContext newJAXBContext() {
         try {
@@ -85,10 +85,10 @@ public class JAXB21Utils implements IJAXBUtilsProvider{
         return null;
     }
     
-    /*private JAXB21Utils(){
+    /*private JAXBUtilsProvider(){
     }
     
-    public static JAXB21Utils getInstance(){
+    public static JAXBUtilsProvider getInstance(){
         return _instance;
     }*/
     

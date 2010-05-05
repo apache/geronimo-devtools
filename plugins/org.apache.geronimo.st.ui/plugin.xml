@@ -21,7 +21,7 @@
 
 <plugin>
 
-    <extension-point id="loader" name="Source Path Computer Mapping" schema="schema/loader.exsd"/>
+    <extension-point id="loader" name="Geronimo Deployment Plan Form Loader" schema="schema/loader.exsd"/>
     <extension-point id="actionURLs" name="Action ID and URL" schema="schema/actionURLs.exsd"/>
     
     

@@ -7,8 +7,8 @@ Bundle-ClassPath:
  lib/geronimo-j2ee-deployment_1.1_spec-1.1.jar,
  lib/commons-logging-1.1.1.jar,
  lib/cglib-nodep-2.1_3.jar,
- lib/jaxb-api-2.2.jar,
- lib/jaxb-impl-2.2.jar,
+ lib/jaxb-api-2.0.jar,
+ lib/jaxb-impl-2.0.5.jar,
  lib/geronimo-stax-api_1.0_spec-1.0.1.jar,
  lib/geronimo-activation_1.1_spec-1.0.3-SNAPSHOT.jar
 Export-Package: 

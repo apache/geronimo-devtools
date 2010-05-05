@@ -25,60 +25,60 @@ import org.apache.geronimo.st.v11.core.Activator;
  */
 public class Trace {
 
-	/**
-	 * Finest trace event.
-	 */
-	public static byte INFO = 0;
+    /**
+     * Finest trace event.
+     */
+    public static byte INFO = 0;
 
-	/**
-	 * Warning trace event.
-	 */
-	public static byte WARNING = 1;
+    /**
+     * Warning trace event.
+     */
+    public static byte WARNING = 1;
 
-	/**
-	 * Severe trace event.
-	 */
-	public static byte SEVERE = 2;
+    /**
+     * Severe trace event.
+     */
+    public static byte SEVERE = 2;
 
-	/**
-	 * Trace constructor comment.
-	 */
-	private Trace() {
-		super();
-	}
+    /**
+     * Trace constructor comment.
+     */
+    private Trace() {
+        super();
+    }
 
-	/**
-	 * Trace the given text.
-	 * 
-	 * @param level
-	 *            the trace level
-	 * @param s
-	 *            a message
-	 */
-	public static void trace(byte level, String s) {
-		trace(level, s, null);
-	}
+    /**
+     * Trace the given text.
+     * 
+     * @param level
+     *            the trace level
+     * @param s
+     *            a message
+     */
+    public static void trace(byte level, String s) {
+        trace(level, s, null);
+    }
 
-	/**
-	 * Trace the given message and exception.
-	 * 
-	 * @param level
-	 *            the trace level
-	 * @param s
-	 *            a message
-	 * @param t
-	 *            a throwable
-	 */
-	public static void trace(byte level, String s, Throwable t) {
-		if (!Activator.getDefault().isDebugging())
-			return;
+    /**
+     * Trace the given message and exception.
+     * 
+     * @param level
+     *            the trace level
+     * @param s
+     *            a message
+     * @param t
+     *            a throwable
+     */
+    public static void trace(byte level, String s, Throwable t) {
+        if (Activator.getDefault() == null || !Activator.getDefault().isDebugging())
+            return;
 
-		System.out.println(Activator.PLUGIN_ID + ":  " + s);
-		if (t != null)
-			t.printStackTrace();
-	}
-	
-	 /**
+        System.out.println(Activator.PLUGIN_ID + ":  " + s);
+        if (t != null)
+            t.printStackTrace();
+    }
+    
+     /**
      * Trace the given message 
      * 
      * @param tracePoint

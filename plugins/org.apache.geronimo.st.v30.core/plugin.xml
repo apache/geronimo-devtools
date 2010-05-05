@@ -418,4 +418,18 @@
         </operationExtension>
     </extension>
     
+    
+    
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Geronimo JAXB Utils - Define the JAXB Utils Provider for this plugin and the corresponding ui plugin          ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+     <extension-point id="JAXBUtilsProvider" name="Geronimo JAXB Utils" schema="schema/JAXBUtilsProvider.exsd"/>
+     <extension point="org.apache.geronimo.st.v30.core.JAXBUtilsProvider">
+         <provider class="org.apache.geronimo.st.v30.core.jaxb.JAXBUtilsProvider" version="3.0"/>
+     </extension>   
+    
 </plugin>
