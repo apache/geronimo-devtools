@@ -31,19 +31,19 @@
 
 
     <target name="init">
-        <property name="helios_url"                     value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/helios/M6"/>
-        <property name="helios_jee_win32"               value="eclipse-jee-helios-M6-win32.zip"/>
-        <property name="helios_jee_win64"               value="eclipse-jee-helios-M6-win32_64.zip"/>
-        <property name="helios_jee_linux"               value="eclipse-jee-helios-M6-linux-gtk.tar"/>
-        <property name="helios_jee_linux-x86_64"        value="eclipse-jee-helios-M6-linux-gtk-x86_64.tar"/>
-        <property name="helios_jee_macos"               value="eclipse-jee-helios-M6-macosx-carbon.tar"/>
+        <property name="helios_url"                     value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/helios/M7"/>
+        <property name="helios_jee_win32"               value="eclipse-jee-helios-M7-win32.zip"/>
+        <property name="helios_jee_win64"               value="eclipse-jee-helios-M7-win32_64.zip"/>
+        <property name="helios_jee_linux"               value="eclipse-jee-helios-M7-linux-gtk.tar"/>
+        <property name="helios_jee_linux-x86_64"        value="eclipse-jee-helios-M7-linux-gtk-x86_64.tar"/>
+        <property name="helios_jee_macos"               value="eclipse-jee-helios-M7-macosx-carbon.tar"/>
         <property name="helios_jee_linux_gz"            value="${helios_jee_linux}.gz"/>
         <property name="helios_jee_linux-x86_64_gz"     value="${helios_jee_linux-x86_64}.gz"/>
         <property name="helios_jee_macos_gz"            value="${helios_jee_macos}.gz"/>
         
-        <property name="tptp-version"                   value="4.7.0M6"/>
+        <property name="tptp-version"                   value="4.7.0M7"/>
         <property name="tptp"                           value="tptp.runtime-TPTP-${tptp-version}.zip"/>
-        <property name="tptp-runtime-url"               value="http://www.eclipse.org/downloads/download.php?file=/tptp/4.7.0/TPTP-4.7.0M6-201003152345"/>
+        <property name="tptp-runtime-url"               value="http://www.eclipse.org/downloads/download.php?file=/tptp/4.7.0/TPTP-4.7.0M7-201005041505"/>
         
         <property name="protocol"                       value="&amp;r=1&amp;protocol=http"/>
 

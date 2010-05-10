@@ -61,9 +61,12 @@ public class DeploymentUtils {
     public static final IPath STATE_LOC = Activator.getDefault().getStateLocation();
 
     private DeploymentUtils() {
+        Trace.tracePoint("Entry/Exit", "DeploymentUtils.DeploymentUtils"); 
     }
     
+    
     public static IPath generateExplodedConfiguration(IModule module, IPath outputPath) {
+        Trace.tracePoint("Entry", "DeploymentUtils.generateExplodedConfiguration", module, outputPath);
         
         IPath output = outputPath.append(module.getName() + getModuleExtension(module));
         try {
@@ -95,32 +98,53 @@ public class DeploymentUtils {
             e.printStackTrace();
         }
         
+        Trace.tracePoint("Exit ", "DeploymentUtils.generateExplodedConfiguration", output);
         return output;
     }
     
+    
     public static IModuleResource[] getModuleResources(IModule module) throws CoreException {
+        Trace.tracePoint("Entry", "DeploymentUtils.getModuleResources", module);
+    
         ProjectModule pm = (ProjectModule)module.loadAdapter(ProjectModule.class, null);
         if (pm != null) {
+            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleResources", pm.members());
             return pm.members();
         }
+    
+        Trace.tracePoint("Exit ", "DeploymentUtils.getModuleResources", null);
         return null;
     }
     
+    
     private static String getModuleExtension(IModule module) {
-        if(GeronimoUtils.isEarModule(module)) {
+        Trace.tracePoint("Entry", "DeploymentUtils.getModuleExtension", module);
+    
+        if (GeronimoUtils.isEarModule(module)) {
+            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".ear");
             return ".ear";
-        }else if(GeronimoUtils.isWebModule(module)) {
+        }
+        else if (GeronimoUtils.isWebModule(module)) {
+            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".war");
             return ".war";
-        }else if(GeronimoUtils.isRARModule(module)) {
+        }
+        else if (GeronimoUtils.isRARModule(module)) {
+            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".rar");
             return ".rar";
-        }else if(GeronimoUtils.isAppClientModule(module)) {
+        }
+        else if (GeronimoUtils.isAppClientModule(module)) {
+            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".car");
             return ".car";
         }
 
+        Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".jar");
         return ".jar";
     }
 
+
     public static File createJarFile(IModule module, IPath outputPath) {
+        Trace.tracePoint("Entry", "DeploymentUtils.createJarFile", module, outputPath);
+
         IDataModel model = getExportDataModel(module);
 
         if (model != null) {
@@ -141,6 +165,7 @@ public class DeploymentUtils {
             if (model != null) {
                 try {
                     model.getDefaultOperation().execute(null, null);
+                    Trace.tracePoint("Entry", "DeploymentUtils.createJarFile",new File(model.getStringProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION)));
                     return new File(model.getStringProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION));
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -148,10 +173,14 @@ public class DeploymentUtils {
             }
         }
 
+        Trace.tracePoint("Entry", "DeploymentUtils.createJarFile", null);
         return null;
     }
 
+
     public static IDataModel getExportDataModel(IModule module) {
+        Trace.tracePoint("Entry", "DeploymentUtils.getExportDataModel", module);
+
         String type = module.getModuleType().getId();
         if (IModuleConstants.JST_WEB_MODULE.equals(type)) {
             return DataModelFactory.createDataModel(new WebComponentExportDataModelProvider());
@@ -164,24 +193,36 @@ public class DeploymentUtils {
         } else if (IModuleConstants.JST_APPCLIENT_MODULE.equals(type)) {
             return DataModelFactory.createDataModel(new AppClientComponentExportDataModelProvider());
         }
+
+        Trace.tracePoint("Exit ", "DeploymentUtils.getExportDataModel", null);
         return null;
     }
     
+    
     public static TargetModuleID getTargetModuleID(IServer server, IModule module) throws TargetModuleIdNotFoundException {
+        Trace.tracePoint("Entry", "DeploymentUtils.getTargetModuleID", module);
+    
         String configId = ModuleArtifactMapper.getInstance().resolve(server, module);
         if(configId == null) {
             throw new TargetModuleIdNotFoundException("Could not do a local TargetModuleID lookup for module " + module.getName());
         }
         
         IGeronimoServer gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
+    
+        Trace.tracePoint("Exit ", "DeploymentUtils.generateExplodedConfiguration",gs.getVersionHandler().createTargetModuleId(configId));
         return gs.getVersionHandler().createTargetModuleId(configId);
     }
 
+
     public static TargetModuleID getTargetModuleID(DeploymentManager dm, String configId) throws TargetModuleIdNotFoundException {
+        Trace.tracePoint("Entry", "DeploymentUtils.getTargetModuleID", dm, configId);
 
         try {
             TargetModuleID id = isInstalledModule(dm,configId);
-            if (id!=null) return id;
+            if (id!=null) {
+                Trace.tracePoint("Entry", "DeploymentUtils.getTargetModuleID", id);
+                return id;
+            }
         } catch (IllegalStateException e) {
             e.printStackTrace();
         } catch (TargetException e) {
@@ -192,6 +233,7 @@ public class DeploymentUtils {
 
         throw new TargetModuleIdNotFoundException("Could not find TargetModuleID with configId " + configId);
     }
+
 
     /**
      * This method determines the last known config id for an IModule that has been deployed to the server.  The
@@ -204,6 +246,7 @@ public class DeploymentUtils {
      * @throws Exception 
      */
     public static String getLastKnownConfigurationId(IModule module, IServer server) throws Exception {
+        Trace.tracePoint("Entry", "DeploymentUtils.getLastKnownConfigurationId", module, server);
         
         IGeronimoServer gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
         String currentId = gs.getVersionHandler().getConfigID(module);
@@ -216,6 +259,7 @@ public class DeploymentUtils {
         
         try {
             getTargetModuleID(dm, query);
+            Trace.tracePoint("Exit ", "DeploymentUtils.getLastKnownConfigurationId", query);
             return query;
         } catch (TargetModuleIdNotFoundException e) {
             Trace.trace(Trace.INFO, e.getMessage());
@@ -224,18 +268,25 @@ public class DeploymentUtils {
         if(query != currentId) {
             try {
                 getTargetModuleID(dm, currentId);
+                Trace.tracePoint("Exit ", "DeploymentUtils.getLastKnownConfigurationId", currentId);
                 return currentId;
             } catch (TargetModuleIdNotFoundException e) {
                 Trace.trace(Trace.INFO, e.getMessage());
             }
         }
         
+        Trace.tracePoint("Exit ", "DeploymentUtils.getLastKnownConfigurationId", null);
         return null;
     }
     
     
     public static List<IModuleResourceDelta> getAffectedJSPFiles(IModuleResourceDelta delta) {
-        if (delta == null) return null;
+        Trace.tracePoint("Entry", "DeploymentUtils.getAffectedJSPFiles", delta);
+
+        if (delta == null) {
+            Trace.tracePoint("Exit ", "DeploymentUtils.getAffectedJSPFiles", null);
+            return null;
+        }
 
         IModuleResource resource = delta.getModuleResource();
         List<IModuleResourceDelta> fileList = new ArrayList<IModuleResourceDelta>();
@@ -245,27 +296,43 @@ public class DeploymentUtils {
             if (moduleFile.getName().endsWith(".jsp")) {
                 fileList.add(delta);
             }
-            else return null;   //not only jsp changed
+            else {
+                Trace.tracePoint("Exit ", "DeploymentUtils.getAffectedJSPFiles", null);
+                return null;   //not only jsp changed
+            }
         }
         else if (resource instanceof IModuleFolder) {
-             IModuleResourceDelta[] deltaArray = delta.getAffectedChildren();
-             for (IModuleResourceDelta childDelta : deltaArray) {
+            IModuleResourceDelta[] deltaArray = delta.getAffectedChildren();
+            for (IModuleResourceDelta childDelta : deltaArray) {
                 List<IModuleResourceDelta> deltaChildren = getAffectedJSPFiles(childDelta);
                 if (deltaChildren != null) fileList.addAll(deltaChildren);
-                else return null;
+                else {
+                    Trace.tracePoint("Exit ", "DeploymentUtils.getAffectedJSPFiles", null);
+                    return null;
+                }
             }
         }
 
+        Trace.tracePoint("Exit ", "DeploymentUtils.getAffectedJSPFiles", fileList);
         return fileList;
     }
     
+    
     public static boolean isInstalledModule(IServer server, String configId) {
+        Trace.tracePoint("Entry", "DeploymentUtils.isInstalledModule", server, configId);
+    
         DeploymentManager dm;
         try {
             dm = DeploymentCommandFactory.getDeploymentManager(server);
             TargetModuleID id=isInstalledModule(dm,configId);
-            if (id==null) return false;
-            else return true;
+            if (id==null) {
+                Trace.tracePoint("Exit ", "DeploymentUtils.isInstalledModule", false);
+                return false;
+            } 
+            else {
+                Trace.tracePoint("Exit ", "DeploymentUtils.isInstalledModule", true);
+                return true;
+            }
         } catch (CoreException e) {
             e.printStackTrace();
             return false;
@@ -279,18 +346,26 @@ public class DeploymentUtils {
         
     }
     
+    
     private static TargetModuleID isInstalledModule(DeploymentManager dm, String configId) throws CoreException, IllegalStateException, TargetException{
+        Trace.tracePoint("Entry", "DeploymentUtils.isInstalledModule", dm, configId);
         
         TargetModuleID[] ids = dm.getAvailableModules(null, dm.getTargets());
-        if(ids == null) return null;
+        if(ids == null) {
+            Trace.tracePoint("Exit ", "DeploymentUtils.isInstalledModule", null);
+            return null;
+        }
         if (ids != null) {
             for (int i = 0; i < ids.length; i++) {
                 if (ids[i].getModuleID().equals(configId)) {
                     Trace.trace(Trace.INFO, "Found configuration " + configId +  " on server.");
+                    Trace.tracePoint("Exit ", "DeploymentUtils.isInstalledModule", ids[i]);
                     return ids[i];
                 }
             }
         }
+        
+        Trace.tracePoint("Exit ", "DeploymentUtils.isInstalledModule", null);
         return null;
     }
 }

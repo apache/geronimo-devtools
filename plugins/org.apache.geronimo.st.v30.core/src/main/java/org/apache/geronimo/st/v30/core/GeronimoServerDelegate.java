@@ -85,6 +85,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 
     public abstract String getContextRoot(IModule module) throws Exception ;
 
+
     /*
      * (non-Javadoc)
      * 
@@ -92,19 +93,25 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
      *      org.eclipse.wst.server.core.IModule[])
      */
     public IStatus canModifyModules(IModule[] add, IModule[] remove) {
+        Trace.tracePoint("Entry", "GeronimoServerDelegate.canModifyModules", add, remove);
+
         if (add != null) {
             for (int i = 0; i < add.length; i++) {
                 IModule module = add[i];
                 if (module.getProject() != null) {
                     IStatus status = FacetUtil.verifyFacets(module.getProject(), getServer());
                     if (status != null && !status.isOK()) {
+                        Trace.tracePoint("Exit ", "GeronimoServerDelegate.canModifyModules", status);
                         return status;
                     }
                 }
             }
         }
+
+        Trace.tracePoint("Exit ", "GeronimoServerDelegate.canModifyModules", Status.OK_STATUS);
         return Status.OK_STATUS;
     }
+
 
     /*
      * (non-Javadoc)
@@ -114,9 +121,14 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
      *      org.eclipse.core.runtime.IProgressMonitor)
      */
     public void modifyModules(IModule[] add, IModule[] remove, IProgressMonitor monitor) throws CoreException {
+        Trace.tracePoint("Entry", "GeronimoServerDelegate.modifyModules", add, remove, monitor);
+
         // TODO servermodule.info should be pushed to here and set as instance
         // property
+
+        Trace.tracePoint("Exit ", "GeronimoServerDelegate.modifyModules");
     }
+
 
     /*
      * (non-Javadoc)
@@ -124,16 +136,25 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
      * @see org.eclipse.wst.server.core.model.ServerDelegate#getRootModules(org.eclipse.wst.server.core.IModule)
      */
     public IModule[] getRootModules(IModule module) throws CoreException {
+        Trace.tracePoint("Entry", "GeronimoServerDelegate.getRootModules", module);
+
         IStatus status = canModifyModules(new IModule[] { module }, null);
         if (status != null && !status.isOK())
             throw new CoreException(status);
         IModule[] childs = doGetParentModules(module);
-        if (childs.length > 0)
+        if (childs.length > 0) {
+            Trace.tracePoint("Exit ", "GeronimoServerDelegate.getRootModules", childs);
             return childs;
+        }
+
+        Trace.tracePoint("Exit ", "GeronimoServerDelegate.getRootModules", new IModule[] { module });
         return new IModule[] { module };
     }
 
+
     private IModule[] doGetParentModules(IModule module) {
+        Trace.tracePoint("Entry", "GeronimoServerDelegate.doGetParentModules", module);
+
         ArrayList<IModule> parents = new ArrayList<IModule>();
         parents.addAll(getApplicationModules(module));
 
@@ -145,10 +166,15 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
                 parents.add(wars[i]);
             }
         }
+
+        Trace.tracePoint("Exit ", "GeronimoServerDelegate.doGetParentModules", (IModule[]) parents.toArray(new IModule[parents.size()]));
         return (IModule[]) parents.toArray(new IModule[parents.size()]);
     }
 
+
     private List<IModule> getApplicationModules(IModule module) {
+        Trace.tracePoint("Entry", "GeronimoServerDelegate.getApplicationModules", module);
+
         IModule[] ears = ServerUtil.getModules(IModuleConstants.JST_EAR_MODULE);
         ArrayList<IModule> list = new ArrayList<IModule>();
         for (int i = 0; i < ears.length; i++) {
@@ -159,8 +185,11 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
                     list.add(ears[i]);
             }
         }
+
+        Trace.tracePoint("Exit ", "GeronimoServerDelegate.getApplicationModules", list);
         return list;
     }
+
 
     /*
      * (non-Javadoc)
@@ -168,8 +197,12 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
      * @see org.eclipse.wst.server.core.model.ServerDelegate#getChildModules(org.eclipse.wst.server.core.IModule[])
      */
     public IModule[] getChildModules(IModule[] module) {
-        if (module == null)
+        Trace.tracePoint("Entry", "GeronimoServerDelegate.getChildModules", module);
+
+        if (module == null) {
+            Trace.tracePoint("Exit ", "GeronimoServerDelegate.getChildModules", null);
             return null;
+        }
 
         if (module.length == 1 && module[0] != null) {
             IModuleType moduleType = module[0].getModuleType();
@@ -178,22 +211,28 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
                     IEnterpriseApplication enterpriseApplication = (IEnterpriseApplication) module[0].loadAdapter(IEnterpriseApplication.class, null);
                     if (enterpriseApplication != null) {
                         IModule[] modules = enterpriseApplication.getModules();
-                        if (modules != null)
+                        if (modules != null) {
+                            Trace.tracePoint("Exit ", "GeronimoServerDelegate.getChildModules", modules);
                             return modules;
+                        }
                     }
                 } else if (IModuleConstants.JST_WEB_MODULE.equals(moduleType.getId())) {
                     IWebModule webModule = (IWebModule) module[0].loadAdapter(IWebModule.class, null);
                     if (webModule != null) {
                         IModule[] modules = webModule.getModules();
-                        if (modules != null)
+                        if (modules != null) {
+                            Trace.tracePoint("Exit ", "GeronimoServerDelegate.getChildModules", modules);
                             return modules;
+                        }
                     }
                 }
             }
         }
 
+        Trace.tracePoint("Exit ", "GeronimoServerDelegate.getChildModules", new IModule[] {});
         return new IModule[] {};
     }
+
 
     /*
      * (non-Javadoc)
@@ -201,11 +240,16 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
      * @see org.eclipse.wst.server.core.model.ServerDelegate#getServerPorts()
      */
     public ServerPort[] getServerPorts() {
+        Trace.tracePoint("Entry", "GeronimoServerDelegate.getServerPorts");
+
         List<ServerPort> ports = new ArrayList<ServerPort>();
         ports.add(new ServerPort(PROPERTY_HTTP_PORT, "Web Connector", Integer.parseInt(getHTTPPort()), "http"));
         ports.add(new ServerPort(PROPERTY_RMI_PORT, "RMI Naming", Integer.parseInt(getRMINamingPort()), "rmi"));
+
+        Trace.tracePoint("Entry", "GeronimoServerDelegate.getServerPorts;", (ServerPort[]) ports.toArray(new ServerPort[ports.size()]));
         return (ServerPort[]) ports.toArray(new ServerPort[ports.size()]);
     }
+
 
     /*
      * (non-Javadoc)
@@ -213,6 +257,8 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
      * @see org.eclipse.wst.server.core.model.IURLProvider#getModuleRootURL(org.eclipse.wst.server.core.IModule)
      */
     public URL getModuleRootURL(IModule module) {
+        Trace.tracePoint("Entry", "GeronimoServerDelegate.getModuleRootURL", module);
+
         try {
             if (module == null
                     || module.loadAdapter(IWebModule.class, null) == null)
@@ -235,6 +281,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
             if (!url.endsWith("/"))
                 url += "/";
 
+            Trace.tracePoint("Exit ", "GeronimoServerDelegate.getModuleRootURL", new URL(url));
             return new URL(url);
         } catch (Exception e) {
             Trace.trace(Trace.SEVERE, "Could not get root URL", e);
@@ -242,6 +289,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         }
 
     }
+
 
     public String getAdminID() {
         return getInstanceProperty(PROPERTY_ADMIN_ID);
@@ -424,5 +472,4 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         setAttribute(GeronimoRuntimeDelegate.SERVER_INSTANCE_PROPERTIES, map);
     }
 
-    
 }
