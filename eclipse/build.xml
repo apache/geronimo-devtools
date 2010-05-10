@@ -23,11 +23,17 @@
  |                                                                                             
  | @version $Rev$ $Date$
  -->
-<project name="HeliosArtifacts">
+<project name="HeliosArtifacts">   
+    <condition property="is64bitJDK">
+        <!--We only check JVM bit model here.It works fine even 32-bit JVM is used on 64-bit OS -->
+        <equals arg1="${sun.arch.data.model}" arg2="64" />
+    </condition>
+
 
     <target name="init">
         <property name="helios_url"                     value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/helios/M6"/>
         <property name="helios_jee_win32"               value="eclipse-jee-helios-M6-win32.zip"/>
+        <property name="helios_jee_win64"               value="eclipse-jee-helios-M6-win32_64.zip"/>
         <property name="helios_jee_linux"               value="eclipse-jee-helios-M6-linux-gtk.tar"/>
         <property name="helios_jee_linux-x86_64"        value="eclipse-jee-helios-M6-linux-gtk-x86_64.tar"/>
         <property name="helios_jee_macos"               value="eclipse-jee-helios-M6-macosx-carbon.tar"/>
@@ -40,6 +46,9 @@
         <property name="tptp-runtime-url"               value="http://www.eclipse.org/downloads/download.php?file=/tptp/4.7.0/TPTP-4.7.0M6-201003152345"/>
         
         <property name="protocol"                       value="&amp;r=1&amp;protocol=http"/>
+
+	
+
     </target>
 
     <target name="tptp" depends="init" description="Download and extract TPTP runtime package">
@@ -66,7 +75,12 @@
                    overwrite="true"/>
     </target>
 
-    <target name="win32" depends="init" description="Download Windows-specific artifact(s)">
+    <target name="win" depends="init" description="Download Windows-specific artifact(s)">
+           <antcall target="win64"></antcall>
+           <antcall target="win32"></antcall>
+    </target>
+
+    <target name="win32" unless="is64bitJDK" description="Download Windows 32-bit-specific artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
         <echo>## Downloading: ${helios_jee_win32}                                              </echo>
@@ -92,7 +106,40 @@
                overwrite="true"/>
     </target>
 
-    <target name="linux" depends="init" description="Download Linux-specific artifact(s)">
+    <target name="win64" if="is64bitJDK" description="Download Windows 64-bit-specific artifact(s)">
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Downloading: ${helios_jee_win64}                                              </echo>
+        <echo>##                                                                               </echo>
+        <echo>## From: ${helios_url}                                                           </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
+        <get src="${helios_url}/${helios_jee_win64}${protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_win64}" 
+             verbose="true"
+             ignoreerrors="true"
+             usetimestamp="true"/>
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Unzipping: ${helios_jee_win64}                                                </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/>
+        <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
+        <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_win64}" 
+               dest="${LOCAL_M2_REPO}/eclipse"
+               overwrite="true"/>
+     </target>
+
+
+     <target name="linux" depends="init" description="Download Linux-specific artifact(s)">
+           <antcall target="linux_x86"></antcall>
+           <antcall target="linux-x86_64"></antcall>
+    </target>
+
+    <target name="linux_x86" unless="is64bitJDK" description="Download Linux 32-bit-specific artifact(s)">
+	
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
         <echo>## Downloading: ${helios_jee_linux_gz}                                           </echo>
@@ -119,7 +166,7 @@
                 overwrite="true"/>
     </target>
 
-    <target name="linux-x86_64" depends="init" description="Download Linux-specific artifact(s)">
+    <target name="linux-x86_64" if="is64bitJDK" description="Download Linux 64-bit-specific artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
         <echo>## Downloading: ${helios_jee_linux-x86_64_gz}                                    </echo>
