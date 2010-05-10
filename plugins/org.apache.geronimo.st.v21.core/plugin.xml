@@ -93,7 +93,7 @@
         <project-facet-version facet="org.apache.geronimo.facet" version="1.2">
             <action type="install" id="geronimo.plan.install.v21">
                 <delegate class="org.apache.geronimo.st.v21.core.operations.GeronimoV21FacetInstallDelegate"/>
-                <config-factory class="org.apache.geronimo.st.v21.core.DeploymentPlanInstallConfig$Factory"/>
+                <config-factory class="org.apache.geronimo.st.core.DeploymentPlanInstallConfig$Factory"/>
             </action>
             <constraint>
                 <or>
@@ -136,6 +136,10 @@
             <runtime-component id="org.apache.geronimo.runtime" version="2.1"/>
             <facet id="org.apache.geronimo.facet" version="1.2"/>
         </default-facets>
+    </extension>
+    
+    <extension point="org.apache.geronimo.st.core.JAXBUtilsProvider">
+       <provider class="org.apache.geronimo.st.v21.core.jaxb.JAXB21Utils" version="2.0,2.1,2.2,3.0"/>
     </extension>
 
 </plugin>

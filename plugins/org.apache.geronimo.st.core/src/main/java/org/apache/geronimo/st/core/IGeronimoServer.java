@@ -21,6 +21,7 @@ import java.util.List;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 
+import org.apache.geronimo.st.core.operations.IGeronimoServerPluginManager;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.wst.server.core.model.IURLProvider;
 
@@ -64,5 +65,7 @@ public interface IGeronimoServer extends IURLProvider {
 	public int getMaxPings();
 	
 	public long getPublishTimeout();
+	
+	public IGeronimoServerPluginManager getServerPluginManager();
 
 }

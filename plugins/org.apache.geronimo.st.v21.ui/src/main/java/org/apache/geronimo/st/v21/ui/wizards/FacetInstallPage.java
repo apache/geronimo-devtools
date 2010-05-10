@@ -17,7 +17,7 @@
 package org.apache.geronimo.st.v21.ui.wizards;
 
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.v21.core.DeploymentPlanInstallConfig;
+import org.apache.geronimo.st.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.v21.ui.internal.Trace;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

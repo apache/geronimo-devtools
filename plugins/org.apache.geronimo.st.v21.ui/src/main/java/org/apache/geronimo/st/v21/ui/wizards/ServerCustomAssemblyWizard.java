@@ -18,9 +18,9 @@ package org.apache.geronimo.st.v21.ui.wizards;
 
 import java.util.List;
 
+import org.apache.geronimo.st.core.operations.IGeronimoServerPluginManager;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.wizards.AbstractWizard;
-import org.apache.geronimo.st.v21.core.operations.GeronimoServerPluginManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -46,9 +46,9 @@ public class ServerCustomAssemblyWizard extends AbstractWizard {
     protected Text type;
     protected Text serverPath;
 
-    protected GeronimoServerPluginManager customAssembly;
+    protected IGeronimoServerPluginManager customAssembly;
 
-    public ServerCustomAssemblyWizard(GeronimoServerPluginManager customAssembly) {
+    public ServerCustomAssemblyWizard(IGeronimoServerPluginManager customAssembly) {
         super();
         this.customAssembly = customAssembly;
     }

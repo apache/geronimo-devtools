@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.core.jaxb;
+package org.apache.geronimo.st.v21.core.jaxb;
 
 import javax.xml.bind.Marshaller;
 

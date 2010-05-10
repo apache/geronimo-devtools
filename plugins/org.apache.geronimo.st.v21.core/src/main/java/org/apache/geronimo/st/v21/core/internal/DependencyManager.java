@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.geronimo.st.core.internal;
+package org.apache.geronimo.st.v21.core.internal;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,7 +40,7 @@ import org.apache.geronimo.jee.deployment.Artifact;
  * <p>The initial usage of this DependencyManager in the GEP is somewhat limited but other usages 
  * are possible<p>
  * 
- * @version $Rev$ $Date$
+ * @version $Rev: 680897 $ $Date: 2008-07-30 09:18:42 +0800 (Wed, 30 Jul 2008) $
  */
 public class DependencyManager {
 

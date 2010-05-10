@@ -4,13 +4,13 @@ Bundle-Name: Geronimo Common Runtime Plug-in
 Bundle-SymbolicName: org.apache.geronimo.runtime.common;singleton:=true
 Bundle-Version: 3.0.0
 Bundle-ClassPath: 
- lib/geronimo-j2ee-deployment_1.1_spec-1.1.jar,
  lib/commons-logging-1.1.1.jar,
  lib/cglib-nodep-2.1_3.jar,
  lib/jaxb-api-2.0.jar,
  lib/jaxb-impl-2.0.5.jar,
  lib/geronimo-stax-api_1.0_spec-1.0.1.jar,
- lib/geronimo-activation_1.1_spec-1.0.3-SNAPSHOT.jar
+ lib/geronimo-activation_1.1_spec-1.0.3-SNAPSHOT.jar,
+ lib/geronimo-javaee-deployment_1.1MR3_spec-1.0.1-SNAPSHOT.jar
 Export-Package: 
  com.sun.istack,
  com.sun.xml.bind,

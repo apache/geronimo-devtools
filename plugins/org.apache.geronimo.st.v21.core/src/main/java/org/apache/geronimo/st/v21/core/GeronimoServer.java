@@ -25,6 +25,8 @@ import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
 import org.apache.geronimo.st.core.GeronimoRuntimeDelegate;
 import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.core.IGeronimoVersionHandler;
+import org.apache.geronimo.st.core.operations.IGeronimoServerPluginManager;
+import org.apache.geronimo.st.v21.core.operations.GeronimoServerV21PluginManager;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -203,4 +205,9 @@ public class GeronimoServer extends GeronimoServerDelegate {
     public boolean isNotRedeployJSPFiles() {
         return getAttribute(PROPERTY_NOT_REDEPLOY_JSP_FILES,false);
     }
+
+	@Override
+	public IGeronimoServerPluginManager getServerPluginManager() {
+		return new GeronimoServerV21PluginManager(this.getServer());
+	}
 }

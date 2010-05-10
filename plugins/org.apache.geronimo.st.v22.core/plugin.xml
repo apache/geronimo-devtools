@@ -66,8 +66,8 @@
     <extension point="org.eclipse.wst.common.project.facet.core.facets">
         <project-facet-version facet="org.apache.geronimo.facet" version="1.2">
             <action type="install" id="geronimo.plan.install.v22">
-                <delegate class="org.apache.geronimo.st.v21.core.operations.GeronimoV21FacetInstallDelegate"/>
-                <config-factory class="org.apache.geronimo.st.v21.core.DeploymentPlanInstallConfig$Factory"/>
+                <delegate class="org.apache.geronimo.st.v22.core.operations.GeronimoV21FacetInstallDelegate"/>
+                <config-factory class="org.apache.geronimo.st.core.DeploymentPlanInstallConfig$Factory"/>
             </action>
             <constraint>
                 <or>

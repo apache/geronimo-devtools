@@ -7,18 +7,14 @@ Bundle-Activator: org.apache.geronimo.st.core.Activator
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: 
- org.apache.geronimo.runtime.common,
- org.apache.geronimo.runtime.v22,
- org.apache.geronimo.jee.v21.jaxbmodel,
+ org.apache.geronimo.runtime.common;visibility:=reexport,
  org.eclipse.core.runtime,
- org.eclipse.wst.server.core,
  org.eclipse.jst.j2ee,
  org.eclipse.jst.j2ee.web,
  org.eclipse.jst.j2ee.ejb,
  org.eclipse.jst.j2ee.jca,
  org.eclipse.wst.common.frameworks;visibility:=reexport,
  org.eclipse.core.commands;visibility:=reexport,
- org.eclipse.wst.server.core,
  org.eclipse.jst.server.core;visibility:=reexport,
  org.eclipse.jdt.launching;visibility:=reexport,
  org.eclipse.wst.common.project.facet.core,
@@ -31,7 +27,8 @@ Require-Bundle:
  org.eclipse.hyades.trace.ui;resolution:=optional,
  org.eclipse.tptp.trace.jvmti.client;resolution:=optional,
  org.eclipse.tptp.platform.profile.server.core;resolution:=optional,
- org.eclipse.tptp.platform.jvmti.client;resolution:=optional
+ org.eclipse.tptp.platform.jvmti.client;resolution:=optional,
+ org.eclipse.wst.server.core
 Bundle-ActivationPolicy: lazy
 Export-Package: 
  org.apache.geronimo.st.core,

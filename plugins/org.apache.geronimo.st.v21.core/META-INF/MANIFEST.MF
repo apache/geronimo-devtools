@@ -6,10 +6,10 @@ Bundle-Version: 3.0.0
 Bundle-Activator: org.apache.geronimo.st.v21.core.Activator
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.jst.j2ee,
- org.apache.geronimo.runtime.v22,
- org.apache.geronimo.st.core,
+Require-Bundle: org.apache.geronimo.st.core,
  org.apache.geronimo.jee.v21.jaxbmodel,
+ org.apache.geronimo.runtime.v21;bundle-version="3.0.0",
+ org.eclipse.jst.j2ee,
  org.eclipse.core.runtime,
  org.eclipse.wst.server.core,
  org.eclipse.debug.core,
@@ -22,3 +22,4 @@ Export-Package:
  org.apache.geronimo.st.v21.core.internal,
  org.apache.geronimo.st.v21.core.jaxb,
  org.apache.geronimo.st.v21.core.operations
+Import-Package: junit.framework

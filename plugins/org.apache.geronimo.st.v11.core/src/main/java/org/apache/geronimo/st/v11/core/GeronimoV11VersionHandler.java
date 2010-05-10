@@ -20,7 +20,6 @@ import javax.enterprise.deploy.spi.TargetModuleID;
 
 import org.apache.geronimo.deployment.plugin.TargetModuleIDImpl;
 import org.apache.geronimo.st.core.IGeronimoVersionHandler;
-import org.apache.geronimo.st.v21.core.GeronimoV21Utils;
 import org.eclipse.wst.server.core.IModule;
 
 /**

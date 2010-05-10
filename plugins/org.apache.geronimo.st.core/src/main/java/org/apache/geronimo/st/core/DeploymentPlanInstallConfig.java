@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v21.core;
+package org.apache.geronimo.st.core;
 
-import org.apache.geronimo.st.v21.core.internal.Trace;
+import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEPlugin;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEPreferences;
 import org.eclipse.wst.common.project.facet.core.IActionConfigFactory;

@@ -30,7 +30,7 @@ import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.core.operations.DeploymentPlanCreationOperation;
-import org.apache.geronimo.st.v21.core.DeploymentPlanInstallConfig;
+import org.apache.geronimo.st.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.v21.core.internal.Trace;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;

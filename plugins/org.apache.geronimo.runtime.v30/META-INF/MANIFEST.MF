@@ -3,7 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo V30 Runtime Plug-in
 Bundle-SymbolicName: org.apache.geronimo.runtime.v30;singleton:=true
 Bundle-Version: 3.0.0
-Require-Bundle: org.apache.geronimo.runtime.common;visibility:=reexport
+Require-Bundle: org.apache.geronimo.runtime.common;visibility:=reexport,
+ org.eclipse.osgi;bundle-version="3.6.0"
 Bundle-ClassPath: lib/geronimo-common-3.0-SNAPSHOT.jar,
  lib/geronimo-deploy-jsr88-3.0-SNAPSHOT.jar,
  lib/geronimo-deployment-3.0-SNAPSHOT.jar,
@@ -21,14 +22,6 @@ Bundle-ClassPath: lib/geronimo-common-3.0-SNAPSHOT.jar,
  lib/org.osgi.compendium-4.2.0.jar,
  lib/org.osgi.core-4.2.0.jar
 Export-Package: 
- javax.enterprise.deploy.model,
- javax.enterprise.deploy.model.exceptions,
- javax.enterprise.deploy.shared,
- javax.enterprise.deploy.shared.factories,
- javax.enterprise.deploy.spi,
- javax.enterprise.deploy.spi.exceptions,
- javax.enterprise.deploy.spi.factories,
- javax.enterprise.deploy.spi.status,
  org.apache.geronimo.common,
  org.apache.geronimo.common.propertyeditor,
  org.apache.geronimo.deployment,

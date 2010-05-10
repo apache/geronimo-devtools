@@ -23,6 +23,7 @@ import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
 import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
 import org.apache.geronimo.st.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.core.IGeronimoVersionHandler;
+import org.apache.geronimo.st.core.operations.IGeronimoServerPluginManager;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.util.SocketUtil;
@@ -112,5 +113,11 @@ public class GeronimoServer extends GeronimoServerDelegate {
 	
 	 public boolean isNotRedeployJSPFiles() {
 	        return getAttribute(PROPERTY_NOT_REDEPLOY_JSP_FILES,false);
+	}
+
+	@Override
+	public IGeronimoServerPluginManager getServerPluginManager() {
+		// TODO:implement GeronimoServlerPluginManager for v11 adapter
+		return null;
 	}
 }

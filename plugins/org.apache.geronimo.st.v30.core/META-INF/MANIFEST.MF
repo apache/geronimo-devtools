@@ -10,6 +10,7 @@ Require-Bundle:
  org.apache.geronimo.jee.v21.jaxbmodel,
  org.apache.geronimo.runtime.v30,
  org.eclipse.core.commands,
+ org.eclipse.jst.j2ee,
  org.eclipse.core.runtime,
  org.eclipse.debug.core,
  org.eclipse.emf.ecore,

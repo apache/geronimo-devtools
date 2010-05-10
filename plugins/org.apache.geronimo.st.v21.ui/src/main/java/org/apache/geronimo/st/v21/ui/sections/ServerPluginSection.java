@@ -16,10 +16,11 @@
  */
 package org.apache.geronimo.st.v21.ui.sections;
 
+import org.apache.geronimo.st.core.operations.IGeronimoServerPluginManager;
 import org.apache.geronimo.st.v21.core.internal.Trace;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractServerEditorSection;
-import org.apache.geronimo.st.v21.core.operations.GeronimoServerPluginManager;
+import org.apache.geronimo.st.v21.core.operations.GeronimoServerV21PluginManager;
 import org.apache.geronimo.st.v21.ui.wizards.ServerCustomAssemblyWizard;
 import org.apache.geronimo.st.v21.ui.wizards.ServerPluginManagerDialog;
 import org.apache.geronimo.st.v21.ui.wizards.ServerPluginManagerWizard;
@@ -86,7 +87,7 @@ public class ServerPluginSection extends AbstractServerEditorSection {
             public void widgetSelected(SelectionEvent e) {
                 // if the server is started, then we can bring up the dialog
                 if (isServerRunning()) {
-                    GeronimoServerPluginManager pluginManager = new GeronimoServerPluginManager (gs.getServer());
+                	IGeronimoServerPluginManager pluginManager = gs.getServerPluginManager();
                     ServerCustomAssemblyWizard wizard = new ServerCustomAssemblyWizard (pluginManager);
                     WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
                     dialog.open();
@@ -107,7 +108,7 @@ public class ServerPluginSection extends AbstractServerEditorSection {
             public void widgetSelected(SelectionEvent e) {
                 // if the server is started, then we can bring up the dialog
                 if (isServerRunning()) {
-                    GeronimoServerPluginManager pluginManager = new GeronimoServerPluginManager (gs.getServer());
+                    GeronimoServerV21PluginManager pluginManager = new GeronimoServerV21PluginManager (gs.getServer());
                     ServerPluginManagerWizard wizard = new ServerPluginManagerWizard (pluginManager);
                     ServerPluginManagerDialog dialog = new ServerPluginManagerDialog(Display.getCurrent().getActiveShell(), wizard);
                     dialog.open();

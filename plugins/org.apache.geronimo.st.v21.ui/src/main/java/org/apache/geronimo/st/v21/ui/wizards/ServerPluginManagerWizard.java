@@ -31,7 +31,7 @@ import org.apache.geronimo.system.plugin.model.PluginType;
 import org.apache.geronimo.system.plugin.model.PrerequisiteType;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.wizards.AbstractWizard;
-import org.apache.geronimo.st.v21.core.operations.GeronimoServerPluginManager;
+import org.apache.geronimo.st.v21.core.operations.GeronimoServerV21PluginManager;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -75,10 +75,10 @@ public class ServerPluginManagerWizard extends AbstractWizard {
 
     // pageVisible is used to keep track of exactly which page we are viewing
     protected int pageVisible;
-    protected GeronimoServerPluginManager pluginManager;
+    protected GeronimoServerV21PluginManager pluginManager;
     protected PluginType metadata;
 
-    public ServerPluginManagerWizard(GeronimoServerPluginManager customAssembly) {
+    public ServerPluginManagerWizard(GeronimoServerV21PluginManager customAssembly) {
         super();
         this.pluginManager = customAssembly;
         pageVisible = 0;

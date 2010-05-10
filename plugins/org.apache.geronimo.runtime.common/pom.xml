@@ -106,7 +106,7 @@
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.specs</groupId>
-                                    <artifactId>geronimo-j2ee-deployment_1.1_spec</artifactId>
+                                    <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>commons-logging</groupId>
@@ -184,7 +184,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-j2ee-deployment_1.1_spec</artifactId>
+            <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.xml.bind</groupId>

@@ -18,8 +18,8 @@ package org.apache.geronimo.st.v11.core.operations;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.st.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.core.operations.DeploymentPlanCreationOperation;
-import org.apache.geronimo.st.v21.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;

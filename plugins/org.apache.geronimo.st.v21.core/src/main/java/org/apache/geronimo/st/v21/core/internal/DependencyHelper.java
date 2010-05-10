@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.geronimo.st.core.internal;
+package org.apache.geronimo.st.v21.core.internal;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -54,7 +54,7 @@ import org.eclipse.wst.server.core.model.ServerBehaviourDelegate;
  *      <li><b>TODO:</b> Query the server searching for missing dependencies
  * </ol>
  * 
- * @version $Rev$ $Date$
+ * @version $Rev: 817996 $ $Date: 2009-09-23 16:04:12 +0800 (Wed, 23 Sep 2009) $
  */
 public class DependencyHelper {
 

@@ -14,15 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v21.core.operations;
+package org.apache.geronimo.st.v22.core.operations;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -56,6 +56,7 @@ import org.apache.geronimo.st.core.CommonMessages;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
+import org.apache.geronimo.st.core.operations.IGeronimoServerPluginManager;
 import org.apache.geronimo.st.v21.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.apache.geronimo.system.plugin.PluginInstaller;
@@ -72,7 +73,7 @@ import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 /**
  * @version $Rev$ $Date$
  */
-public class GeronimoServerPluginManager {
+public class GeronimoServerV22PluginManager implements IGeronimoServerPluginManager{
 
     private IServer server;
     private PluginListType data;
@@ -81,7 +82,7 @@ public class GeronimoServerPluginManager {
     private PluginInstaller pluginInstaller;
 
     // The ServerWorkingCopy is passed in, not the IServer itself
-    public GeronimoServerPluginManager (IServer aServer) {
+    public GeronimoServerV22PluginManager (IServer aServer) {
         ServerWorkingCopy copy = (ServerWorkingCopy)aServer;
         server = copy.getOriginal();
         try {
