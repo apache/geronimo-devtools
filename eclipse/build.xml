@@ -24,11 +24,11 @@
  | @version $Rev$ $Date$
  -->
 <project name="HeliosArtifacts">   
+
     <condition property="is64bitJDK">
         <!--We only check JVM bit model here.It works fine even 32-bit JVM is used on 64-bit OS -->
         <equals arg1="${sun.arch.data.model}" arg2="64" />
     </condition>
-
 
     <target name="init">
         <property name="helios_url"                     value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/helios/M7"/>
@@ -46,9 +46,6 @@
         <property name="tptp-runtime-url"               value="http://www.eclipse.org/downloads/download.php?file=/tptp/4.7.0/TPTP-4.7.0M7-201005041505"/>
         
         <property name="protocol"                       value="&amp;r=1&amp;protocol=http"/>
-
-	
-
     </target>
 
     <target name="tptp" depends="init" description="Download and extract TPTP runtime package">
@@ -130,12 +127,11 @@
         <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_win64}" 
                dest="${LOCAL_M2_REPO}/eclipse"
                overwrite="true"/>
-     </target>
+    </target>
 
-
-     <target name="linux" depends="init" description="Download Linux-specific artifact(s)">
-           <antcall target="linux_x86"></antcall>
-           <antcall target="linux-x86_64"></antcall>
+    <target name="linux" depends="init" description="Download Linux-specific artifact(s)">
+        <antcall target="linux_x86"></antcall>
+        <antcall target="linux-x86_64"></antcall>
     </target>
 
     <target name="linux_x86" unless="is64bitJDK" description="Download Linux 32-bit-specific artifact(s)">

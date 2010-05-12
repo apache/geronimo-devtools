@@ -38,14 +38,17 @@ import org.eclipse.wst.server.core.util.SocketUtil;
 
 /**
  * <b>GeronimoServer</b> is the implementation of the Geronimo Server Configuration defined in the
- * org.apache.geronimo.st.v30.core plugin
+ * org.apache.geronimo.st.v30.core plugin (i.e., it extends the 
+ * <code>org.eclipse.wst.server.core.serverTypes</code> extension point using the <code>class</code> attribute)
+ * 
+ * <p>One of the primary functions of <b>GeronimoServer</b> is to persist the state of the Geronimo server across
+ * workbench sessions by using various attributes 
+ * 
+ * @see org.apache.geronimo.st.v30.core.GeronimoServerDelegate
  * 
  * @version $Rev$ $Date$
  */
 public class GeronimoServer extends GeronimoServerDelegate {
-
-    public static final String PROPERTY_IN_PLACE_SHARED_LIB = "inPlaceSharedLib";
-    public static final String PROPERTY_RUN_FROM_WORKSPACE = "runFromWorkspace";
 
     private static IGeronimoVersionHandler versionHandler = null;
 
@@ -182,38 +185,10 @@ public class GeronimoServer extends GeronimoServerDelegate {
     }
 
     /* (non-Javadoc)
-     * @see org.apache.geronimo.st.v30.core.IGeronimoServer#isInPlace()
-     */
-    public boolean isInPlaceSharedLib() {
-        return getAttribute(PROPERTY_IN_PLACE_SHARED_LIB, false);
-    }
-
-    /* (non-Javadoc)
-     * @see org.apache.geronimo.st.v30.core.IGeronimoServer#isRunFromWorkspace()
-     */
-    public boolean isRunFromWorkspace() {
-        return getAttribute(PROPERTY_RUN_FROM_WORKSPACE, false);
-    }
-
-    public void setInPlaceSharedLib(boolean enable) {
-        setAttribute(PROPERTY_IN_PLACE_SHARED_LIB, enable);
-    }
-
-    public void setRunFromWorkspace(boolean enable) {
-        setAttribute(PROPERTY_RUN_FROM_WORKSPACE, enable);
-    }
-
-    /* (non-Javadoc)
      * @see org.apache.geronimo.st.v30.core.GeronimoServerDelegate#setDefaults(org.eclipse.core.runtime.IProgressMonitor)
      */
     public void setDefaults(IProgressMonitor monitor) {
         super.setDefaults(monitor);
-        setInPlaceSharedLib(false);
-        setRunFromWorkspace(false);
-    }
-
-    public boolean isNotRedeployJSPFiles() {
-        return getAttribute(PROPERTY_NOT_REDEPLOY_JSP_FILES,false);
     }
 
 }
