@@ -160,9 +160,5 @@
             <artifactId>org.apache.geronimo.runtime.v30</artifactId>
             <version>${version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.ibm.etools</groupId>
-            <artifactId>com.ibm.etools.aries.core</artifactId>
-        </dependency>
     </dependencies>
 </project>

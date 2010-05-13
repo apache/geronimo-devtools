@@ -20,6 +20,7 @@ import javax.enterprise.deploy.spi.TargetModuleID;
 
 import org.apache.geronimo.deployment.plugin.TargetModuleIDImpl;
 import org.apache.geronimo.st.v30.core.IGeronimoVersionHandler;
+import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.eclipse.wst.server.core.IModule;
 
 /**
@@ -33,6 +34,9 @@ public class GeronimoVersionHandler implements IGeronimoVersionHandler {
      * @see org.apache.geronimo.st.core.IGeronimoVersionHandler#getConfigID(org.eclipse.wst.server.core.IModule)
      */
     public String getConfigID(IModule module) throws Exception {
+        Trace.tracePoint("Entry", "GeronimoVersionHandler.getConfigID", module);
+
+        Trace.tracePoint("Exit ", "GeronimoVersionHandler.getConfigID", GeronimoUtils.getConfigId(module));
         return GeronimoUtils.getConfigId(module);
     }
     
@@ -40,6 +44,9 @@ public class GeronimoVersionHandler implements IGeronimoVersionHandler {
      * @see org.apache.geronimo.st.core.IGeronimoVersionHandler#createTargetModuleId(java.lang.String)
      */
     public TargetModuleID createTargetModuleId(String configId) {
+        Trace.tracePoint("Entry", "GeronimoVersionHandler.createTargetModuleId", configId);
+    
+        Trace.tracePoint("Exit ", "GeronimoVersionHandler.createTargetModuleId", new TargetModuleIDImpl(null, configId));
         return new TargetModuleIDImpl(null, configId);
     }
 }

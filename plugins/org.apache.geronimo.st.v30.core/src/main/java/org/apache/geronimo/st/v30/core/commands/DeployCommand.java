@@ -38,7 +38,19 @@ abstract public class DeployCommand extends AbstractDeploymentCommand {
         super(server, module);
     }
 
+    /**
+     * Create a zipped/jar file of the module (being deployed) on the file system relative to the Eclipse workspace and the 
+     * server that the module is being deployed to. For example:
+     * 
+     * <pre>
+     * C:\ECLIPSE\WORKSPACES\runtime-New_configuration\.metadata\.plugins\org.apache.geronimo.st.v30.core\server_Apache Geronimo v3.0 Server at localhost\web.war
+     * </pre>
+     * 
+     * @return A File representation of the zipped/jar file 
+     */
     public File getTargetFile() {
+        Trace.tracePoint("Entry", "DeployCommand.getTargetFile");
+
         File file = null;
         IGeronimoServer gs = getGeronimoServer();
         if (gs.isRunFromWorkspace()) {
@@ -50,7 +62,8 @@ abstract public class DeployCommand extends AbstractDeploymentCommand {
             outputDir.toFile().mkdirs();
             file = DeploymentUtils.createJarFile(getModule(), outputDir);
         }
-        Trace.trace(Trace.INFO, "File: " + file.getAbsolutePath());
+
+        Trace.tracePoint("Exit ", "DeployCommand.getTargetFile", file);
         return file;
     }
 

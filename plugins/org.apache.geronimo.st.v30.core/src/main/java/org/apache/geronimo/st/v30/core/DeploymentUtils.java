@@ -16,6 +16,10 @@
  */
 package org.apache.geronimo.st.v30.core;
 
+import com.ibm.etools.aries.internal.core.IAriesModuleConstants;
+import com.ibm.etools.aries.internal.core.datatransfer.exportmodel.ApplicationExportDataModelProvider;
+
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -136,6 +140,10 @@ public class DeploymentUtils {
             Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".car");
             return ".car";
         }
+        else if (GeronimoUtils.isEBAModule(module)) {
+            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".eba");
+            return ".eba";
+        }
 
         Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".jar");
         return ".jar";
@@ -154,6 +162,7 @@ public class DeploymentUtils {
             //Here, specific extension name should be got, in case module has no standard JEE descriptor file included
             String extensionName = getModuleExtension(module);
             
+            // TODO: Need to determine what properties to set for OSGi applications
             model.setProperty(J2EEComponentExportDataModelProvider.PROJECT_NAME, module.getProject());
             model.setProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION, outputPath.append(module.getName())
                     + extensionName);
@@ -165,7 +174,7 @@ public class DeploymentUtils {
             if (model != null) {
                 try {
                     model.getDefaultOperation().execute(null, null);
-                    Trace.tracePoint("Entry", "DeploymentUtils.createJarFile",new File(model.getStringProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION)));
+                    Trace.tracePoint("Exit ", "DeploymentUtils.createJarFile",new File(model.getStringProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION)));
                     return new File(model.getStringProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION));
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -173,7 +182,7 @@ public class DeploymentUtils {
             }
         }
 
-        Trace.tracePoint("Entry", "DeploymentUtils.createJarFile", null);
+        Trace.tracePoint("Exit ", "DeploymentUtils.createJarFile", null);
         return null;
     }
 
@@ -192,6 +201,8 @@ public class DeploymentUtils {
             return DataModelFactory.createDataModel(new ConnectorComponentExportDataModelProvider());
         } else if (IModuleConstants.JST_APPCLIENT_MODULE.equals(type)) {
             return DataModelFactory.createDataModel(new AppClientComponentExportDataModelProvider());
+        } else if (IAriesModuleConstants.OSGI_APP.equals(type)) {
+            return DataModelFactory.createDataModel(new ApplicationExportDataModelProvider());
         }
 
         Trace.tracePoint("Exit ", "DeploymentUtils.getExportDataModel", null);
@@ -220,7 +231,7 @@ public class DeploymentUtils {
         try {
             TargetModuleID id = isInstalledModule(dm,configId);
             if (id!=null) {
-                Trace.tracePoint("Entry", "DeploymentUtils.getTargetModuleID", id);
+                Trace.tracePoint("Exit ", "DeploymentUtils.getTargetModuleID", id);
                 return id;
             }
         } catch (IllegalStateException e) {

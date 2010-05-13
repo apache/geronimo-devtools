@@ -16,6 +16,8 @@
  */
 package org.apache.geronimo.st.v30.core;
 
+import com.ibm.etools.aries.internal.core.IAriesModuleConstants;
+
 import javax.enterprise.deploy.shared.ModuleType;
 import javax.xml.bind.JAXBElement;
 
@@ -58,23 +60,27 @@ public class GeronimoUtils {
     public static final String SERVICE_PLAN_NAME = "geronimo-service.xml";
 
     public static boolean isWebModule(IModule module) {
-        return "jst.web".equals(module.getModuleType().getId());
+        return IModuleConstants.JST_WEB_MODULE.equals(module.getModuleType().getId());
     }
 
     public static boolean isEjbJarModule(IModule module) {
-        return "jst.ejb".equals(module.getModuleType().getId());
+        return IModuleConstants.JST_EJB_MODULE.equals(module.getModuleType().getId());
     }
 
     public static boolean isEarModule(IModule module) {
-        return "jst.ear".equals(module.getModuleType().getId());
+        return IModuleConstants.JST_EAR_MODULE.equals(module.getModuleType().getId());
     }
 
     public static boolean isAppClientModule(IModule module) {
-        return "jst.appclient".equals(module.getModuleType().getId());
+        return IModuleConstants.JST_APPCLIENT_MODULE.equals(module.getModuleType().getId());
     }
 
     public static boolean isRARModule(IModule module) {
-        return "jst.connector".equals(module.getModuleType().getId());
+        return IModuleConstants.JST_CONNECTOR_MODULE.equals(module.getModuleType().getId());
+    }
+    
+    public static boolean isEBAModule(IModule module) {
+        return IAriesModuleConstants.OSGI_APP.equals(module.getModuleType().getId());
     }
     
     public static ModuleType getJSR88ModuleType(IModule module) {
