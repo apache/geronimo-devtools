@@ -83,6 +83,14 @@ public class GeronimoUtils {
         return IAriesModuleConstants.OSGI_APP.equals(module.getModuleType().getId());
     }
     
+    public static boolean isCBAModule(IModule module) {
+        return IAriesModuleConstants.OSGI_COMP_BUNDLE.equals(module.getModuleType().getId());
+    }
+    
+    public static boolean isBundleModule(IModule module) {
+        return IAriesModuleConstants.OSGI_BUNDLE.equals(module.getModuleType().getId());
+    }
+    
     public static ModuleType getJSR88ModuleType(IModule module) {
         if (isWebModule(module)) {
             return ModuleType.WAR;

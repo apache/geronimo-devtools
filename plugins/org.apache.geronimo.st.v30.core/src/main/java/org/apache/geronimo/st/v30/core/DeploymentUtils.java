@@ -18,6 +18,7 @@ package org.apache.geronimo.st.v30.core;
 
 import com.ibm.etools.aries.internal.core.IAriesModuleConstants;
 import com.ibm.etools.aries.internal.core.datatransfer.exportmodel.ApplicationExportDataModelProvider;
+import com.ibm.etools.aries.internal.core.datatransfer.exportmodel.BundleExportDataModelProvider;
 
 
 import java.io.File;
@@ -144,6 +145,14 @@ public class DeploymentUtils {
             Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".eba");
             return ".eba";
         }
+        else if (GeronimoUtils.isCBAModule(module)) {
+            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".cba");
+            return ".cba";
+        }
+        else if (GeronimoUtils.isBundleModule(module)) {
+            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".jar");
+            return ".jar";
+        }
 
         Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".jar");
         return ".jar";
@@ -203,6 +212,10 @@ public class DeploymentUtils {
             return DataModelFactory.createDataModel(new AppClientComponentExportDataModelProvider());
         } else if (IAriesModuleConstants.OSGI_APP.equals(type)) {
             return DataModelFactory.createDataModel(new ApplicationExportDataModelProvider());
+        } else if (IAriesModuleConstants.OSGI_COMP_BUNDLE.equals(type)) {   
+            return DataModelFactory.createDataModel(new ApplicationExportDataModelProvider());
+        } else if (IAriesModuleConstants.OSGI_BUNDLE.equals(type)) {
+            return DataModelFactory.createDataModel(new BundleExportDataModelProvider());
         }
 
         Trace.tracePoint("Exit ", "DeploymentUtils.getExportDataModel", null);

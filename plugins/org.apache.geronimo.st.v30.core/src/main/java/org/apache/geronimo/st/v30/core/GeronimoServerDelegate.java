@@ -18,6 +18,7 @@ package org.apache.geronimo.st.v30.core;
 
 import com.ibm.etools.aries.internal.core.IAriesModuleConstants;
 import com.ibm.etools.aries.internal.core.modules.IApplication;
+import com.ibm.etools.aries.internal.core.modules.IBundle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -199,6 +200,14 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
                     }
                 }
                 else if (IAriesModuleConstants.OSGI_APP.equals(moduleType.getId())) {
+                    IApplication osgiApplication = (IApplication) module[0].loadAdapter(IApplication.class, null);  
+                    IModule[] modules = osgiApplication.getModules();
+                    if (modules != null) {
+                        Trace.tracePoint("Exit ", "GeronimoServerDelegate.getChildModules", modules);
+                        return modules;
+                    }
+                }
+                else if (IAriesModuleConstants.OSGI_COMP_BUNDLE.equals(moduleType.getId())) {
                     IApplication osgiApplication = (IApplication) module[0].loadAdapter(IApplication.class, null);  
                     IModule[] modules = osgiApplication.getModules();
                     if (modules != null) {
@@ -541,13 +550,23 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
             }
         }
 
-        IModule[] bundles = ServerUtil.getModules(IAriesModuleConstants.OSGI_APP);
-        for (int i = 0; i < bundles.length; i++) {
-            IApplication bundle = (IApplication) bundles[i].loadAdapter(IApplication.class, null);
-            IModule[] childs = bundle.getModules();
+        IModule[] applicationBundles = ServerUtil.getModules(IAriesModuleConstants.OSGI_APP);
+        for (int i = 0; i < applicationBundles.length; i++) {
+            IApplication application = (IApplication) applicationBundles[i].loadAdapter(IApplication.class, null);
+            IModule[] childs = application.getModules();
             for (int j = 0; j < childs.length; j++) {
                 if (childs[j].equals(module))
-                    list.add(bundles[i]);
+                    list.add(applicationBundles[i]);
+            }
+        }
+
+        IModule[] compositeBundles = ServerUtil.getModules(IAriesModuleConstants.OSGI_COMP_BUNDLE);
+        for (int i = 0; i < compositeBundles.length; i++) {
+            IApplication application  = (IApplication) compositeBundles[i].loadAdapter(IApplication.class, null);
+            IModule[] childs = application.getModules();
+            for (int j = 0; j < childs.length; j++) {
+                if (childs[j].equals(module))
+                    list.add(compositeBundles[i]);
             }
         }
 

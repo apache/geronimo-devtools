@@ -249,22 +249,6 @@
                 <version>4.2.0</version>
             </dependency>
 
-            <!-- 
-             ###########################################################################################################
-             ##                                                                                                       ##
-             ## TODO: As a temporary solution the Aries tooling has to be manually downloaded to the plugins          ##
-             ##       directory of the Eclipse installation                                                           ##
-             ##                                                                                                       ##
-             ###########################################################################################################
-             -->
-            <dependency>
-                <groupId>com.ibm.etools</groupId>
-                <artifactId>com.ibm.etools.aries.core</artifactId>
-                <version>1.0.0.v20100506_2059</version>
-                <scope>system</scope>
-                <systemPath>C:/M2/eclipse/eclipse/plugins/com.ibm.etools.aries.core_1.0.0.v20100506_2059.jar</systemPath>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
                         

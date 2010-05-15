@@ -96,7 +96,7 @@
         <echo>## Unzipping: ${helios_jee_win32}                                                </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
-<!--    <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> -->
+        <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> 
         <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
         <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_win32}" 
                dest="${LOCAL_M2_REPO}/eclipse"
@@ -122,7 +122,7 @@
         <echo>## Unzipping: ${helios_jee_win64}                                                </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
-<!--    <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> -->
+        <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> 
         <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
         <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_win64}" 
                dest="${LOCAL_M2_REPO}/eclipse"
@@ -154,7 +154,7 @@
         <echo>## Unzipping: ${helios_jee_linux_gz}                                             </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
-<!--    <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> -->
+        <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> 
         <mkdir  dir="${LOCAL_M2_REPO}/eclipse"/>
         <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_linux_gz}"/>
         <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_linux}" 
@@ -181,7 +181,7 @@
         <echo>## Unzipping: ${helios_jee_linux-x86_64_gz}                                      </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
-<!--    <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> -->
+        <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> 
         <mkdir  dir="${LOCAL_M2_REPO}/eclipse"/>
         <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_linux-x86_64_gz}"/>
         <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_linux-x86_64}"
@@ -208,7 +208,7 @@
         <echo>## Unzipping: ${helios_jee_macos_gz}                                             </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
-<!--    <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> -->
+        <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> 
         <mkdir  dir="${LOCAL_M2_REPO}/eclipse"/>
         <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_macos_gz}"/>
         <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_macos}" 
