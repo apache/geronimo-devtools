@@ -24,24 +24,24 @@ import java.util.Set;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.j2ee.application.ApplicationType;
+import org.apache.geronimo.j2ee.applicationclient.ApplicationClientType;
+import org.apache.geronimo.j2ee.connector.ConnectorType;
+import org.apache.geronimo.j2ee.deployment.ArtifactType;
+import org.apache.geronimo.j2ee.deployment.DependenciesType;
+import org.apache.geronimo.j2ee.deployment.DependencyType;
+import org.apache.geronimo.j2ee.deployment.EnvironmentType;
+import org.apache.geronimo.j2ee.deployment.ObjectFactory;
+import org.apache.geronimo.j2ee.openejb_jar.OpenejbJarType;
+import org.apache.geronimo.j2ee.web.WebAppType;
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils;
 import org.apache.geronimo.st.core.DeploymentUtils;
 import org.apache.geronimo.st.core.GeronimoUtils;
-import org.apache.geronimo.st.core.jaxb.JAXBUtils;
-import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
-import org.apache.geronimo.xml.ns.deployment_1.DependenciesType;
-import org.apache.geronimo.xml.ns.deployment_1.DependencyType;
-import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
-import org.apache.geronimo.xml.ns.deployment_1.ObjectFactory;
-import org.apache.geronimo.xml.ns.j2ee.application_1.ApplicationType;
-import org.apache.geronimo.xml.ns.j2ee.application_client_1.ApplicationClientType;
-import org.apache.geronimo.xml.ns.j2ee.connector_1.ConnectorType;
-import org.apache.geronimo.xml.ns.j2ee.web_1.WebAppType;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.model.ServerBehaviourDelegate;
-import org.openejb.xml.ns.openejb_jar_2.OpenejbJarType;
 
 /**
  * <b>DependencyHelper</b> is a helper class with various methods to aid in the discovery of

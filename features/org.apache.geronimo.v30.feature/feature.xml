@@ -199,4 +199,11 @@
          install-size="72"
          version="3.0.0"
          unpack="false"/>
+
+     <plugin
+         id="org.apache.geronimo.jaxbmodel.common"
+         download-size="31"
+         install-size="31"
+         version="3.0.0"
+         unpack="false"/>
 </feature>

@@ -21,7 +21,7 @@ import java.io.IOException;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
-import org.apache.geronimo.st.core.jaxb.JAXBUtils;
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader;

@@ -19,8 +19,8 @@ package org.apache.geronimo.st.v11.ui.sections;
 import javax.xml.bind.JAXBElement;
 
 //import org.apache.geronimo.jee.web.WebApp;
+import org.apache.geronimo.j2ee.web.WebAppType;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.xml.ns.j2ee.web_1.WebAppType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;

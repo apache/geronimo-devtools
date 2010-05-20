@@ -18,6 +18,8 @@ package org.apache.geronimo.st.v11.ui.sections;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.j2ee.openejb_jar.ObjectFactory;
+import org.apache.geronimo.j2ee.openejb_jar.OpenejbJarType;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -29,8 +31,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.openejb.xml.ns.openejb_jar_2.ObjectFactory;
-import org.openejb.xml.ns.openejb_jar_2.OpenejbJarType;
 
 /**
  * @version $Rev$ $Date$

@@ -21,8 +21,8 @@ import java.io.IOException;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils;
 import org.apache.geronimo.st.core.GeronimoUtils;
-import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;

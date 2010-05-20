@@ -159,5 +159,10 @@
             <artifactId>org.apache.geronimo.st.v30.core</artifactId>
             <version>${version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.jaxbmodel.common</artifactId>
+            <version>${version}</version>
+        </dependency>
     </dependencies>
 </project>

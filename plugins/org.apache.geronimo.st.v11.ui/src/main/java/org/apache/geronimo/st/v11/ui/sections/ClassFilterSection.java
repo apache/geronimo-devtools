@@ -20,13 +20,13 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.j2ee.deployment.ClassFilterType;
+import org.apache.geronimo.j2ee.deployment.EnvironmentType;
+import org.apache.geronimo.j2ee.jaxbmodel.operations.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
-import org.apache.geronimo.st.v11.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v11.ui.Activator;
 import org.apache.geronimo.st.v11.ui.wizards.ClassFilterWizard;
-import org.apache.geronimo.xml.ns.deployment_1.ClassFilterType;
-import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;

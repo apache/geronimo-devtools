@@ -138,8 +138,5 @@
         </default-facets>
     </extension>
     
-    <extension point="org.apache.geronimo.st.core.JAXBUtilsProvider">
-       <provider class="org.apache.geronimo.st.v21.core.jaxb.JAXB21Utils" version="2.0,2.1,2.2,3.0"/>
-    </extension>
 
 </plugin>

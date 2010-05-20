@@ -22,12 +22,12 @@ import org.apache.geronimo.jee.naming.Port;
 import org.apache.geronimo.jee.naming.PortCompletion;
 import org.apache.geronimo.jee.naming.ServiceCompletion;
 import org.apache.geronimo.jee.naming.ServiceRef;
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTreeWizard;
-import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
-import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
+import org.apache.geronimo.jee.jaxbmodel.operations.JAXBModelUtils;
+import org.apache.geronimo.jee.jaxbmodel.operations.JAXBObjectFactoryImpl;
 
 /**
  * @version $Rev$ $Date$

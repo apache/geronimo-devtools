@@ -26,6 +26,7 @@ import java.util.Set;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.deployment.Pattern;
+import org.apache.geronimo.jee.jaxbmodel.operations.JAXBModelUtils;
 import org.apache.geronimo.jee.security.Role;
 import org.apache.geronimo.jee.security.RoleMappings;
 import org.apache.geronimo.jee.security.Security;
@@ -33,7 +34,6 @@ import org.apache.geronimo.jee.security.SubjectInfo;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
-import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.ui.wizards.SecurityRunAsSubjectWizard;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;

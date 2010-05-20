@@ -64,6 +64,13 @@
             <artifactId>xmlunit</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.jaxbmodel.common</artifactId>
+            <version>${version}</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -129,6 +136,10 @@
             </plugin>
             -->
             <plugin>
+                <groupId>org.apache.geronimo.devtools</groupId>
+                <artifactId>maven-eclipsepde-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -165,6 +176,9 @@
                   <storepass>${keystoreStorepass}</storepass>
                   <keypass>${keystoreKeypass}</keypass>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

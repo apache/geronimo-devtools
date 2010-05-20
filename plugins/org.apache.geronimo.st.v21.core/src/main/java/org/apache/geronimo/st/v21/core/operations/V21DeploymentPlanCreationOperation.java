@@ -18,6 +18,7 @@ package org.apache.geronimo.st.v21.core.operations;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils;
 import org.apache.geronimo.jee.application.Application;
 import org.apache.geronimo.jee.applicationclient.ApplicationClient;
 import org.apache.geronimo.jee.connector.Connector;
@@ -28,7 +29,6 @@ import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.web.WebApp;
-import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.core.operations.DeploymentPlanCreationOperation;
 import org.apache.geronimo.st.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.v21.core.internal.Trace;

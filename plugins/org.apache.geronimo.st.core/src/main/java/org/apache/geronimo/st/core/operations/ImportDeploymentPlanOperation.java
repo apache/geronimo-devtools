@@ -16,9 +16,9 @@
  */
 package org.apache.geronimo.st.core.operations;
 
+import org.apache.geronimo.jaxbmodel.common.operations.ConversionHelper;
 import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.core.internal.Trace;
-import org.apache.geronimo.st.core.jaxb.ConversionHelper;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdaptable;

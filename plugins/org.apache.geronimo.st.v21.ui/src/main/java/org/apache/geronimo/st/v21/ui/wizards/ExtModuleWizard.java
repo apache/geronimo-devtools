@@ -20,12 +20,12 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
-import org.apache.geronimo.st.core.jaxb.JAXBUtils;
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBObjectFactory;
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
+import org.apache.geronimo.jee.jaxbmodel.operations.JAXBObjectFactoryImpl;
 import org.apache.geronimo.jee.application.Application;
 import org.apache.geronimo.jee.application.ExtModule;
 import org.apache.geronimo.jee.application.Path;

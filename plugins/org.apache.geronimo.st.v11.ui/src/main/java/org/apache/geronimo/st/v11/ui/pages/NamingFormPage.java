@@ -16,6 +16,9 @@
  */
 package org.apache.geronimo.st.v11.ui.pages;
 
+import org.apache.geronimo.j2ee.applicationclient.ApplicationClientType;
+import org.apache.geronimo.j2ee.openejb_jar.OpenejbJarType;
+import org.apache.geronimo.j2ee.web.WebAppType;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
@@ -28,12 +31,9 @@ import org.apache.geronimo.st.v11.ui.sections.MessageDestSection;
 import org.apache.geronimo.st.v11.ui.sections.ResourceEnvRefSection;
 import org.apache.geronimo.st.v11.ui.sections.ResourceRefSection;
 import org.apache.geronimo.st.v11.ui.sections.ServiceRefSection;
-import org.apache.geronimo.xml.ns.j2ee.application_client_1.ApplicationClientType;
-import org.apache.geronimo.xml.ns.j2ee.web_1.WebAppType;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
-import org.openejb.xml.ns.openejb_jar_2.OpenejbJarType;
 
 /**
  * @version $Rev$ $Date$

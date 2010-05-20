@@ -18,15 +18,15 @@ package org.apache.geronimo.st.v11.ui.wizards;
 
 import java.util.List;
 
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
+import org.apache.geronimo.j2ee.connector.AdminobjectInstanceType;
+import org.apache.geronimo.j2ee.connector.AdminobjectType;
+import org.apache.geronimo.j2ee.connector.ConfigPropertySettingType;
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTreeWizard;
-import org.apache.geronimo.st.v11.core.jaxb.JAXBObjectFactoryImpl;
+import org.apache.geronimo.j2ee.jaxbmodel.operations.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v11.ui.sections.AdminObjectSection;
-import org.apache.geronimo.xml.ns.j2ee.connector_1.AdminobjectInstanceType;
-import org.apache.geronimo.xml.ns.j2ee.connector_1.AdminobjectType;
-import org.apache.geronimo.xml.ns.j2ee.connector_1.ConfigPropertySettingType;
 
 /**
  * @version $Rev: 720616 $ $Date: 2008-11-26 05:49:55 +0800 (Wed, 26 Nov 2008) $

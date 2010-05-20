@@ -20,10 +20,10 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.j2ee.application.ExtModuleType;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v11.ui.wizards.ExtModuleWizard;
-import org.apache.geronimo.xml.ns.j2ee.application_1.ExtModuleType;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;

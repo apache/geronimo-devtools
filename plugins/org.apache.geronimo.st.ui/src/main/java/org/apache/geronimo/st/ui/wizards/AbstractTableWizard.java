@@ -18,8 +18,8 @@ package org.apache.geronimo.st.ui.wizards;
 
 import java.util.List;
 
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
-import org.apache.geronimo.st.core.jaxb.JAXBUtils;
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBObjectFactory;
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.IWizardPage;

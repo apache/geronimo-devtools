@@ -18,17 +18,17 @@ package org.apache.geronimo.st.v11.ui.wizards;
 
 import java.util.List;
 
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
+import org.apache.geronimo.j2ee.security.DistinguishedNameType;
+import org.apache.geronimo.j2ee.security.LoginDomainPrincipalType;
+import org.apache.geronimo.j2ee.security.PrincipalType;
+import org.apache.geronimo.j2ee.security.RealmPrincipalType;
+import org.apache.geronimo.j2ee.security.RoleType;
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.ui.wizards.AbstractWizard;
 import org.apache.geronimo.st.v11.core.GeronimoServerInfo;
-import org.apache.geronimo.st.v11.core.jaxb.JAXBObjectFactoryImpl;
-import org.apache.geronimo.xml.ns.security_1.DistinguishedNameType;
-import org.apache.geronimo.xml.ns.security_1.LoginDomainPrincipalType;
-import org.apache.geronimo.xml.ns.security_1.PrincipalType;
-import org.apache.geronimo.xml.ns.security_1.RealmPrincipalType;
-import org.apache.geronimo.xml.ns.security_1.RoleType;
+import org.apache.geronimo.j2ee.jaxbmodel.operations.JAXBObjectFactoryImpl;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Combo;

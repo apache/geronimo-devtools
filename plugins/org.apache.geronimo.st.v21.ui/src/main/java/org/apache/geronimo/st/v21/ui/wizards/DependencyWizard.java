@@ -19,12 +19,12 @@ package org.apache.geronimo.st.v21.ui.wizards;
 import java.util.List;
 
 import org.apache.geronimo.jee.deployment.Dependency;
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
 import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
-import org.apache.geronimo.st.v21.core.jaxb.JAXBObjectFactoryImpl;
+import org.apache.geronimo.jee.jaxbmodel.operations.JAXBObjectFactoryImpl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;

@@ -20,6 +20,5 @@ Bundle-ActivationPolicy: lazy
 Export-Package: 
  org.apache.geronimo.st.v21.core,
  org.apache.geronimo.st.v21.core.internal,
- org.apache.geronimo.st.v21.core.jaxb,
  org.apache.geronimo.st.v21.core.operations
 Import-Package: junit.framework

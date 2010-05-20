@@ -8,7 +8,7 @@ Bundle-Vendor: Apache.org
 Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.runtime.v11,
  org.apache.geronimo.st.core,
- org.apache.geronimo.j2ee.v11.jaxbmodel;bundle-version="3.0.0",
+ org.apache.geronimo.j2ee.v11.jaxbmodel,
  org.eclipse.core.runtime,
  org.eclipse.wst.server.core,
  org.eclipse.debug.core,
@@ -20,6 +20,5 @@ Require-Bundle: org.apache.geronimo.runtime.v11,
 Bundle-ActivationPolicy: lazy
 Export-Package: org.apache.geronimo.st.v11.core,
  org.apache.geronimo.st.v11.core.internal,
- org.apache.geronimo.st.v11.core.jaxb,
  org.apache.geronimo.st.v11.core.operations
 

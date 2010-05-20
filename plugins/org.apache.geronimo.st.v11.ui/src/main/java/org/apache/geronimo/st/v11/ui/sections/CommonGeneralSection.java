@@ -21,16 +21,17 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.xml.ns.deployment_1.ObjectFactory;
+import org.apache.geronimo.j2ee.application.ApplicationType;
+import org.apache.geronimo.j2ee.connector.ConnectorType;
+import org.apache.geronimo.j2ee.deployment.ArtifactType;
+import org.apache.geronimo.j2ee.deployment.DependenciesType;
+import org.apache.geronimo.j2ee.deployment.DependencyType;
+import org.apache.geronimo.j2ee.deployment.EnvironmentType;
+import org.apache.geronimo.j2ee.deployment.ObjectFactory;
+import org.apache.geronimo.j2ee.openejb_jar.OpenejbJarType;
+import org.apache.geronimo.j2ee.web.WebAppType;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractSectionPart;
-import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
-import org.apache.geronimo.xml.ns.deployment_1.DependenciesType;
-import org.apache.geronimo.xml.ns.deployment_1.DependencyType;
-import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
-import org.apache.geronimo.xml.ns.j2ee.application_1.ApplicationType;
-import org.apache.geronimo.xml.ns.j2ee.connector_1.ConnectorType;
-import org.apache.geronimo.xml.ns.j2ee.web_1.WebAppType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -43,7 +44,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-import org.openejb.xml.ns.openejb_jar_2.OpenejbJarType;
 
 /**
  * @version $Rev$ $Date$
@@ -346,9 +346,9 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
         return null;
     }
     
-    protected org.apache.geronimo.xml.ns.deployment_1.ObjectFactory getDeploymentObjectFactory() {
+    protected org.apache.geronimo.j2ee.deployment.ObjectFactory getDeploymentObjectFactory() {
         if ( deploymentObjectFactory == null ) {
-            deploymentObjectFactory = new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory();
+            deploymentObjectFactory = new org.apache.geronimo.j2ee.deployment.ObjectFactory();
         }
         return deploymentObjectFactory;
     }

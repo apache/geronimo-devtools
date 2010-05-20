@@ -20,13 +20,13 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.j2ee.connector.AdminobjectInstanceType;
+import org.apache.geronimo.j2ee.connector.AdminobjectType;
+import org.apache.geronimo.j2ee.connector.ConfigPropertySettingType;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.v11.ui.Activator;
 import org.apache.geronimo.st.v11.ui.wizards.AdminObjectWizard;
-import org.apache.geronimo.xml.ns.j2ee.connector_1.AdminobjectInstanceType;
-import org.apache.geronimo.xml.ns.j2ee.connector_1.AdminobjectType;
-import org.apache.geronimo.xml.ns.j2ee.connector_1.ConfigPropertySettingType;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.wizard.Wizard;

@@ -21,13 +21,13 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 
 
+import org.apache.geronimo.j2ee.naming.PortCompletionType;
+import org.apache.geronimo.j2ee.naming.PortType;
+import org.apache.geronimo.j2ee.naming.ServiceRefType;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.v11.ui.Activator;
 import org.apache.geronimo.st.v11.ui.wizards.ServiceRefWizard;
-import org.apache.geronimo.xml.ns.naming_1.PortCompletionType;
-import org.apache.geronimo.xml.ns.naming_1.PortType;
-import org.apache.geronimo.xml.ns.naming_1.ServiceRefType;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.wizard.Wizard;

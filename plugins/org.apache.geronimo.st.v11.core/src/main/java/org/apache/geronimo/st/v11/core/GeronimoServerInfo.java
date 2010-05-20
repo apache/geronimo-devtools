@@ -31,6 +31,8 @@ import org.apache.geronimo.gbean.AbstractName;
 import org.apache.geronimo.gbean.AbstractNameQuery;
 import org.apache.geronimo.gbean.GAttributeInfo;
 import org.apache.geronimo.gbean.GBeanInfo;
+import org.apache.geronimo.j2ee.deployment.DependencyType;
+import org.apache.geronimo.j2ee.naming.PatternType;
 import org.apache.geronimo.kernel.GBeanNotFoundException;
 import org.apache.geronimo.kernel.InternalKernelException;
 import org.apache.geronimo.kernel.Kernel;
@@ -40,8 +42,6 @@ import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.v11.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
-import org.apache.geronimo.xml.ns.deployment_1.DependencyType;
-import org.apache.geronimo.xml.ns.naming_1.PatternType;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -63,7 +63,7 @@ public class GeronimoServerInfo {
     private ArrayList<PatternType> jmsDestinations;
     private ArrayList<PatternType> jdbcConnectionPools;
     private ArrayList<PatternType> javaMailResources;
-    private ArrayList<org.apache.geronimo.xml.ns.deployment_1.PatternType> credentialStores;
+    private ArrayList<org.apache.geronimo.j2ee.deployment.PatternType> credentialStores;
     private ArrayList<DependencyType> commonLibs;
 
     // singleton class
@@ -100,7 +100,7 @@ public class GeronimoServerInfo {
         return javaMailResources;
     }
 
-    public ArrayList<org.apache.geronimo.xml.ns.deployment_1.PatternType> getDeployedCredentialStores() {
+    public ArrayList<org.apache.geronimo.j2ee.deployment.PatternType> getDeployedCredentialStores() {
         return credentialStores;
     }
 
@@ -211,7 +211,7 @@ public class GeronimoServerInfo {
     }
 
     private void updateDeployedCredentialStores() {
-        credentialStores = new ArrayList<org.apache.geronimo.xml.ns.deployment_1.PatternType>();
+        credentialStores = new ArrayList<org.apache.geronimo.j2ee.deployment.PatternType>();
         Map map = Collections.singletonMap("j2eeType", "GBean");
         AbstractNameQuery query = new AbstractNameQuery(null, map,
                 Collections.EMPTY_SET);
@@ -226,7 +226,7 @@ public class GeronimoServerInfo {
                     if (attribInfo != null) {
                         Artifact artifact = abstractName.getArtifact();
                         Object name = abstractName.getName().get("name");
-                        org.apache.geronimo.xml.ns.deployment_1.PatternType pattern = new org.apache.geronimo.xml.ns.deployment_1.PatternType();
+                        org.apache.geronimo.j2ee.deployment.PatternType pattern = new org.apache.geronimo.j2ee.deployment.PatternType();
                         pattern.setArtifactId(artifact.getArtifactId());
                         pattern.setGroupId(artifact.getGroupId());
                         pattern.setType(artifact.getType());
@@ -395,9 +395,9 @@ public class GeronimoServerInfo {
     }
 
     protected void printDeploymentPatternList(
-            List<org.apache.geronimo.xml.ns.deployment_1.PatternType> patternList) {
+            List<org.apache.geronimo.j2ee.deployment.PatternType> patternList) {
         for (int i = 0; i < patternList.size(); i++) {
-        	org.apache.geronimo.xml.ns.deployment_1.PatternType pattern = patternList
+        	org.apache.geronimo.j2ee.deployment.PatternType pattern = patternList
                     .get(i);
             System.out.println("ArtifactID:" + pattern.getArtifactId()
                     + " GroupID:" + pattern.getGroupId() + " Module:"
@@ -436,7 +436,7 @@ public class GeronimoServerInfo {
         List<PatternType> javaMailResources = getJavaMailSessions();
         printNamingPatternList(javaMailResources);
         System.out.println("\n\nCredential Stores: \n");
-        List<org.apache.geronimo.xml.ns.deployment_1.PatternType> credentialStores = getDeployedCredentialStores();
+        List<org.apache.geronimo.j2ee.deployment.PatternType> credentialStores = getDeployedCredentialStores();
         printDeploymentPatternList(credentialStores);
         System.out.println("\n\nCommon Libs: \n");
         List<DependencyType> dependencies = getCommonLibs();

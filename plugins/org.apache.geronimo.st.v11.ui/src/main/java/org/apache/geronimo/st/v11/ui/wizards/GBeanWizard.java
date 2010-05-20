@@ -17,17 +17,18 @@
 package org.apache.geronimo.st.v11.ui.wizards;
 
 import javax.xml.bind.JAXBElement;
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
+
+import org.apache.geronimo.j2ee.deployment.AttributeType;
+import org.apache.geronimo.j2ee.deployment.GbeanType;
+import org.apache.geronimo.j2ee.deployment.ObjectFactory;
+import org.apache.geronimo.j2ee.deployment.PatternType;
+import org.apache.geronimo.j2ee.deployment.ReferenceType;
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTreeWizard;
-import org.apache.geronimo.st.v11.core.jaxb.JAXBModelUtils;
-import org.apache.geronimo.st.v11.core.jaxb.JAXBObjectFactoryImpl;
-import org.apache.geronimo.xml.ns.deployment_1.AttributeType;
-import org.apache.geronimo.xml.ns.deployment_1.GbeanType;
-import org.apache.geronimo.xml.ns.deployment_1.ObjectFactory;
-import org.apache.geronimo.xml.ns.deployment_1.PatternType;
-import org.apache.geronimo.xml.ns.deployment_1.ReferenceType;
+import org.apache.geronimo.j2ee.jaxbmodel.operations.JAXBModelUtils;
+import org.apache.geronimo.j2ee.jaxbmodel.operations.JAXBObjectFactoryImpl;
 
 /**
  * @version $Rev$ $Date$

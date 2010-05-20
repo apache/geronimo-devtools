@@ -141,6 +141,7 @@
         </pluginManagement>
     </build>
     <modules>
+        <module>org.apache.geronimo.jaxbmodel.common</module>
         <module>org.apache.geronimo.jee.v21.jaxbmodel</module>
         <module>org.apache.geronimo.j2ee.v11.jaxbmodel</module>
         <module>org.apache.geronimo.st.core</module>

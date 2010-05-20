@@ -16,11 +16,11 @@
  */
 package org.apache.geronimo.st.v11.ui.wizards;
 
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.apache.geronimo.st.v11.core.jaxb.JAXBObjectFactoryImpl;
+import org.apache.geronimo.j2ee.jaxbmodel.operations.JAXBObjectFactoryImpl;
 
 /**
  * @version $Rev$ $Date$

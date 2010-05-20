@@ -8,6 +8,7 @@ Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: 
  org.apache.geronimo.runtime.common;visibility:=reexport,
+ org.apache.geronimo.jaxbmodel.common;visibility:=reexport,
  org.eclipse.core.runtime,
  org.eclipse.jst.j2ee,
  org.eclipse.jst.j2ee.web,
@@ -35,6 +36,5 @@ Export-Package:
  org.apache.geronimo.st.core.commands,
  org.apache.geronimo.st.core.descriptor,
  org.apache.geronimo.st.core.internal,
- org.apache.geronimo.st.core.jaxb,
  org.apache.geronimo.st.core.operations
 Import-Package: junit.framework;version="3.8.2"

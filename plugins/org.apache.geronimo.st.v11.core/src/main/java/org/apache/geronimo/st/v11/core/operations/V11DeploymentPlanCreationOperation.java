@@ -18,23 +18,23 @@ package org.apache.geronimo.st.v11.core.operations;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.j2ee.application.ApplicationType;
+import org.apache.geronimo.j2ee.application.ObjectFactory;
+import org.apache.geronimo.j2ee.applicationclient.ApplicationClientType;
+import org.apache.geronimo.j2ee.connector.ResourceadapterType;
+import org.apache.geronimo.j2ee.deployment.ArtifactType;
+import org.apache.geronimo.j2ee.deployment.DependenciesType;
+import org.apache.geronimo.j2ee.deployment.DependencyType;
+import org.apache.geronimo.j2ee.deployment.EnvironmentType;
+import org.apache.geronimo.j2ee.deployment.ServiceType;
+import org.apache.geronimo.j2ee.openejb_jar.OpenejbJarType;
+import org.apache.geronimo.j2ee.web.WebAppType;
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils;
 import org.apache.geronimo.st.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.core.operations.DeploymentPlanCreationOperation;
 import org.apache.geronimo.st.v11.core.internal.Trace;
-import org.apache.geronimo.st.core.jaxb.JAXBUtils;
-import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
-import org.apache.geronimo.xml.ns.deployment_1.DependenciesType;
-import org.apache.geronimo.xml.ns.deployment_1.DependencyType;
-import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
-import org.apache.geronimo.xml.ns.deployment_1.ServiceType;
-import org.apache.geronimo.xml.ns.j2ee.application_1.ApplicationType;
-import org.apache.geronimo.xml.ns.j2ee.application_1.ObjectFactory;
-import org.apache.geronimo.xml.ns.j2ee.application_client_1.ApplicationClientType;
-import org.apache.geronimo.xml.ns.j2ee.connector_1.ResourceadapterType;
-import org.apache.geronimo.xml.ns.j2ee.web_1.WebAppType;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
-import org.openejb.xml.ns.openejb_jar_2.OpenejbJarType;
 
 /**
  * @version $Rev: 509704 $ $Date: 2007-02-20 13:42:24 -0500 (Tue, 20 Feb 2007) $
@@ -80,7 +80,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
   		Trace.tracePoint("Entry", "V11DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan",
 				dpFile, dpFile.getFullPath());
 
-  		org.apache.geronimo.xml.ns.j2ee.web_1.ObjectFactory webFactory = new org.apache.geronimo.xml.ns.j2ee.web_1.ObjectFactory();
+  		org.apache.geronimo.j2ee.web.ObjectFactory webFactory = new org.apache.geronimo.j2ee.web.ObjectFactory();
 		WebAppType web = webFactory.createWebAppType();
 
 		web.setContextRoot("/" + getProject().getName());
@@ -102,7 +102,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	public JAXBElement createOpenEjbDeploymentPlan(IFile dpFile) throws Exception {
   		Trace.tracePoint("Entry", "V11DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile);
 
-  		org.openejb.xml.ns.openejb_jar_2.ObjectFactory ejbFactory = new org.openejb.xml.ns.openejb_jar_2.ObjectFactory();
+  		org.apache.geronimo.j2ee.openejb_jar.ObjectFactory ejbFactory = new org.apache.geronimo.j2ee.openejb_jar.ObjectFactory();
 		OpenejbJarType ejbJar = ejbFactory.createOpenejbJarType();
 
 		ejbJar.setEnvironment(getConfigEnvironment());
@@ -122,8 +122,8 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	public JAXBElement createConnectorDeploymentPlan(IFile dpFile) throws Exception {
 		Trace.tracePoint("Entry", "V11DeploymentPlanCreationOperation.createConnectorDeploymentPlan", dpFile);
 
-		org.apache.geronimo.xml.ns.j2ee.connector_1.ObjectFactory connectorFactory = new org.apache.geronimo.xml.ns.j2ee.connector_1.ObjectFactory();
-		org.apache.geronimo.xml.ns.j2ee.connector_1.ConnectorType connector = connectorFactory.createConnectorType();
+		org.apache.geronimo.j2ee.connector.ObjectFactory connectorFactory = new org.apache.geronimo.j2ee.connector.ObjectFactory();
+		org.apache.geronimo.j2ee.connector.ConnectorType connector = connectorFactory.createConnectorType();
 		ResourceadapterType resourceadapter = connectorFactory.createResourceadapterType();
 	
 		connector.setEnvironment(getConfigEnvironment());
@@ -139,7 +139,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	public JAXBElement createGeronimoApplicationClientDeploymentPlan(IFile dpFile) throws Exception {
 		Trace.tracePoint("Entry","V11DeploymentPlanCreationOperation.createGeronimoApplicationClientDeploymentPlan", dpFile);
 
-		org.apache.geronimo.xml.ns.j2ee.application_client_1.ObjectFactory applicationClientFactory = new org.apache.geronimo.xml.ns.j2ee.application_client_1.ObjectFactory();
+		org.apache.geronimo.j2ee.applicationclient.ObjectFactory applicationClientFactory = new org.apache.geronimo.j2ee.applicationclient.ObjectFactory();
 		ApplicationClientType applicationClient = applicationClientFactory.createApplicationClientType();
 
         applicationClient.setServerEnvironment(getConfigEnvironment());
@@ -155,7 +155,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	public JAXBElement createServiceDeploymentPlan(IFile dpFile) throws Exception {
 		Trace.tracePoint("Entry","V11DeploymentPlanCreationOperation.createServiceDeploymentPlan", dpFile);
 
-		org.apache.geronimo.xml.ns.deployment_1.ObjectFactory artifactFactory = new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory();
+		org.apache.geronimo.j2ee.deployment.ObjectFactory artifactFactory = new org.apache.geronimo.j2ee.deployment.ObjectFactory();
 		ServiceType service = artifactFactory.createServiceType();
 
         
@@ -183,7 +183,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 				: "car";
 
 		ArtifactType artifact = createArtifact(groupId, artifactId, version, type);
-		org.apache.geronimo.xml.ns.deployment_1.ObjectFactory serviceFactory = new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory();
+		org.apache.geronimo.j2ee.deployment.ObjectFactory serviceFactory = new org.apache.geronimo.j2ee.deployment.ObjectFactory();
    
 		EnvironmentType env = serviceFactory.createEnvironmentType();
 		env.setModuleId(artifact);
@@ -206,7 +206,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	public static ArtifactType createArtifact(String groupId, String artifactId, String version, String type) {
   		Trace.tracePoint("Entry", "V11DeploymentPlanCreationOperation.createArtifact", groupId, artifactId, version, type);
 
-  		org.apache.geronimo.xml.ns.deployment_1.ObjectFactory serviceFactory = new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory();
+  		org.apache.geronimo.j2ee.deployment.ObjectFactory serviceFactory = new org.apache.geronimo.j2ee.deployment.ObjectFactory();
 		ArtifactType artifact = serviceFactory.createArtifactType();
 
 		if (groupId != null)
@@ -224,7 +224,7 @@ public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	public static DependencyType createDependency(String groupId, String artifactId, String version, String type) {
   		Trace.tracePoint("Entry", "V11DeploymentPlanCreationOperation.createDependency", groupId, artifactId, version, type);
 
-  		org.apache.geronimo.xml.ns.deployment_1.ObjectFactory serviceFactory = new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory();
+  		org.apache.geronimo.j2ee.deployment.ObjectFactory serviceFactory = new org.apache.geronimo.j2ee.deployment.ObjectFactory();
 		DependencyType dependency = serviceFactory.createDependencyType();
 		if (groupId != null)
 			dependency.setGroupId(groupId);

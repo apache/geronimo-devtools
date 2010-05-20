@@ -20,15 +20,15 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
-import org.apache.geronimo.st.core.jaxb.JAXBUtils;
+import org.apache.geronimo.j2ee.naming.MessageDestinationType;
+import org.apache.geronimo.j2ee.naming.PatternType;
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBObjectFactory;
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.apache.geronimo.st.v11.core.jaxb.JAXBModelUtils;
-import org.apache.geronimo.st.v11.core.jaxb.JAXBObjectFactoryImpl;
-import org.apache.geronimo.xml.ns.naming_1.MessageDestinationType;
-import org.apache.geronimo.xml.ns.naming_1.PatternType;
+import org.apache.geronimo.j2ee.jaxbmodel.operations.JAXBModelUtils;
+import org.apache.geronimo.j2ee.jaxbmodel.operations.JAXBObjectFactoryImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

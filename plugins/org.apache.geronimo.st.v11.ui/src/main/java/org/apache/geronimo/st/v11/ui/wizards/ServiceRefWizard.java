@@ -17,16 +17,17 @@
 package org.apache.geronimo.st.v11.ui.wizards;
 
 import javax.xml.bind.JAXBElement;
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
+
+import org.apache.geronimo.j2ee.naming.PortCompletionType;
+import org.apache.geronimo.j2ee.naming.PortType;
+import org.apache.geronimo.j2ee.naming.ServiceCompletionType;
+import org.apache.geronimo.j2ee.naming.ServiceRefType;
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTreeWizard;
-import org.apache.geronimo.st.v11.core.jaxb.JAXBModelUtils;
-import org.apache.geronimo.st.v11.core.jaxb.JAXBObjectFactoryImpl;
-import org.apache.geronimo.xml.ns.naming_1.PortCompletionType;
-import org.apache.geronimo.xml.ns.naming_1.PortType;
-import org.apache.geronimo.xml.ns.naming_1.ServiceCompletionType;
-import org.apache.geronimo.xml.ns.naming_1.ServiceRefType;
+import org.apache.geronimo.j2ee.jaxbmodel.operations.JAXBModelUtils;
+import org.apache.geronimo.j2ee.jaxbmodel.operations.JAXBObjectFactoryImpl;
 
 /**
  * @version $Rev$ $Date$

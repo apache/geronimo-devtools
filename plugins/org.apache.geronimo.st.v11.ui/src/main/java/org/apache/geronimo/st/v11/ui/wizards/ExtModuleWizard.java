@@ -20,14 +20,14 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
+import org.apache.geronimo.j2ee.application.ApplicationType;
+import org.apache.geronimo.j2ee.application.ExtModuleType;
+import org.apache.geronimo.j2ee.application.PathType;
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.apache.geronimo.st.v11.core.jaxb.JAXBObjectFactoryImpl;
-import org.apache.geronimo.xml.ns.j2ee.application_1.ApplicationType;
-import org.apache.geronimo.xml.ns.j2ee.application_1.ExtModuleType;
-import org.apache.geronimo.xml.ns.j2ee.application_1.PathType;
+import org.apache.geronimo.j2ee.jaxbmodel.operations.JAXBObjectFactoryImpl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;

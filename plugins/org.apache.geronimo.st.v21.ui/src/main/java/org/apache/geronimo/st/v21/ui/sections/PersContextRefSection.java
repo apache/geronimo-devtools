@@ -21,11 +21,11 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.jee.jaxbmodel.operations.JAXBModelUtils;
 import org.apache.geronimo.jee.naming.PersistenceContextRef;
 import org.apache.geronimo.jee.naming.Property;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
-import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.wizards.PersContextRefWizard;
 import org.eclipse.jface.viewers.ILabelProvider;

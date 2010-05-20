@@ -21,6 +21,8 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils;
+import org.apache.geronimo.jee.jaxbmodel.operations.JAXBModelUtils;
 import org.apache.geronimo.jee.security.DistinguishedName;
 import org.apache.geronimo.jee.security.LoginDomainPrincipal;
 import org.apache.geronimo.jee.security.Principal;
@@ -32,10 +34,8 @@ import org.apache.geronimo.st.core.descriptor.AbstractDeploymentDescriptor;
 import org.apache.geronimo.st.core.descriptor.ApplicationDeploymentDescriptor;
 import org.apache.geronimo.st.core.descriptor.EjbDeploymentDescriptor;
 import org.apache.geronimo.st.core.descriptor.WebDeploymentDescriptor;
-import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
-import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.wizards.SecurityRoleMappingWizard;
 import org.eclipse.jface.action.IAction;

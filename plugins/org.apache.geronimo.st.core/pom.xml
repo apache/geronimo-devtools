@@ -143,15 +143,10 @@
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.common</artifactId>
             <version>${version}</version>
-        </dependency>
+        </dependency>      
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.runtime.v22</artifactId>
-            <version>${version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.jee.v21.jaxbmodel</artifactId>
+            <artifactId>org.apache.geronimo.jaxbmodel.common</artifactId>
             <version>${version}</version>
         </dependency>
     </dependencies>

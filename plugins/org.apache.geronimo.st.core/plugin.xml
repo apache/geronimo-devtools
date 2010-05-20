@@ -21,7 +21,6 @@
 
 <plugin>
     <extension-point id="sourcePathComputerMapping" name="Geronimo Deployment Plan Loader" schema="schema/sourcePathComputerMapping.exsd"/>
-    <extension-point id="JAXBUtilsProvider" name="Geronimo JAXB Utils" schema="schema/JAXBUtilsProvider.exsd"/>
 
     <extension point="org.eclipse.debug.core.launchConfigurationTypes">
         <launchConfigurationType

@@ -48,7 +48,7 @@
                     <include>plugin.xml</include>
                     <include>plugin.properties</include>
                     <include>.options</include>
-		    		<include>about.ini</include>
+		    <include>about.ini</include>
                 </includes>
             </resource>
             <!--
@@ -133,11 +133,6 @@
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.st.v21.core</artifactId>
-            <version>${version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.j2ee.v11.jaxbmodel</artifactId>
             <version>${version}</version>
         </dependency>
@@ -149,6 +144,11 @@
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.common</artifactId>
+            <version>${version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.jaxbmodel.common</artifactId>
             <version>${version}</version>
         </dependency>
     </dependencies>
