@@ -47,6 +47,7 @@
                                 <ant antfile="${basedir}/build.xml">
                                     <target name="${eclipsePlatformFamily}"></target>
                                     <target name="tptp"></target>
+                                    <target name="free_aries_tool"></target>
                                 </ant>
                             </tasks>
                         </configuration>
