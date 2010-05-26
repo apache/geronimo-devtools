@@ -150,6 +150,7 @@
         <module>org.apache.geronimo.st.v21.core</module>
         <module>org.apache.geronimo.st.v22.core</module>
         <module>org.apache.geronimo.st.v30.core</module>
+        <module>org.apache.geronimo.st.v30.jaxbmodel</module>
         <module>org.apache.geronimo.st.ui</module>
         <module>org.apache.geronimo.st.v11.schemas</module>
         <module>org.apache.geronimo.st.schemas</module>

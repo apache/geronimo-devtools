@@ -210,11 +210,11 @@ public class DeploymentUtils {
             return DataModelFactory.createDataModel(new ConnectorComponentExportDataModelProvider());
         } else if (IModuleConstants.JST_APPCLIENT_MODULE.equals(type)) {
             return DataModelFactory.createDataModel(new AppClientComponentExportDataModelProvider());
-        } else if (IAriesModuleConstants.OSGI_APP_MODULE.equals(type)) {
+        } else if (IAriesModuleConstants.OSGI_APP.equals(type)) {
             return DataModelFactory.createDataModel(new ApplicationExportDataModelProvider());
         } else if (IAriesModuleConstants.OSGI_COMP_BUNDLE.equals(type)) {   
             return DataModelFactory.createDataModel(new ApplicationExportDataModelProvider());
-        } else if (IAriesModuleConstants.OSGI_MODULE.equals(type)) {
+        } else if (IAriesModuleConstants.OSGI_COMP_BUNDLE.equals(type)) {
             return DataModelFactory.createDataModel(new BundleExportDataModelProvider());
         }
 

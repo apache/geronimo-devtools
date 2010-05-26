@@ -199,7 +199,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
                         }
                     }
                 }
-                else if (IAriesModuleConstants.OSGI_APP_MODULE.equals(moduleType.getId())) {
+                else if (IAriesModuleConstants.OSGI_APP.equals(moduleType.getId())) {
                     IApplication osgiApplication = (IApplication) module[0].loadAdapter(IApplication.class, null);  
                     IModule[] modules = osgiApplication.getModules();
                     if (modules != null) {
@@ -550,7 +550,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
             }
         }
 
-        IModule[] applicationBundles = ServerUtil.getModules(IAriesModuleConstants.OSGI_APP_MODULE);
+        IModule[] applicationBundles = ServerUtil.getModules(IAriesModuleConstants.OSGI_APP);
         for (int i = 0; i < applicationBundles.length; i++) {
             IApplication application = (IApplication) applicationBundles[i].loadAdapter(IApplication.class, null);
             IModule[] childs = application.getModules();

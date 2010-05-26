@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Geronimo V30 JAXB Models
+Bundle-SymbolicName: org.apache.geronimo.st.v30.jaxbmodel;singleton:=true
+Bundle-Version: 3.0.0
+Bundle-ClassPath: .
+Bundle-Vendor: Apache Software Foundation
+Export-Package: 
+ org.apache.geronimo.jee.jaspi,
+ org.apache.geronimo.osgi.blueprint
+Import-Package: junit.framework;version="3.8.2"

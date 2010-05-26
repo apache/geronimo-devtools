@@ -525,7 +525,7 @@ public class GeronimoWebTest extends TestCase {
             assertTrue("Files are similar " + myDiff, myDiff.similar());
         }
         catch (AssertionFailedError e) {
-            System.out.println("Actual XML:\n" + actual + '\n');
+            System.out.println("[Actual XML] " + '\n' + actual + '\n');
             System.out.println("[Expected XML: " + fileExpected + "]\n" + expected + '\n');
             throw e;            
         }

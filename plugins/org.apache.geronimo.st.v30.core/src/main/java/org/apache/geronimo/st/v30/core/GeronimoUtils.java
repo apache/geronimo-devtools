@@ -80,7 +80,7 @@ public class GeronimoUtils {
     }
     
     public static boolean isEBAModule(IModule module) {
-        return IAriesModuleConstants.OSGI_APP_MODULE.equals(module.getModuleType().getId());
+        return IAriesModuleConstants.OSGI_APP.equals(module.getModuleType().getId());
     }
     
     public static boolean isCBAModule(IModule module) {
@@ -88,7 +88,7 @@ public class GeronimoUtils {
     }
     
     public static boolean isBundleModule(IModule module) {
-        return IAriesModuleConstants.OSGI_MODULE.equals(module.getModuleType().getId());
+        return IAriesModuleConstants.OSGI_BUNDLE.equals(module.getModuleType().getId());
     }
     
     public static ModuleType getJSR88ModuleType(IModule module) {
