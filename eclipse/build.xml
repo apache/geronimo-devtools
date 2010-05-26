@@ -45,11 +45,6 @@
         <property name="tptp"                           value="tptp.runtime-TPTP-${tptp-version}.zip"/>
         <property name="tptp-runtime-url"               value="http://www.eclipse.org/downloads/download.php?file=/tptp/4.7.0/TPTP-4.7.0M7-201005041505"/>
 
-        <!-- free Aries tool download URL from ibm site. -->
-        <property name="aries-tools-version"            value="1.0.0.0"/>      
-        <property name="ariestools"                     value="OSGI_Tools_${aries-tools-version}.zip"/>
-        <property name="free_aries_tool_url"            value="https://www6.software.ibm.com/sdfdl/v2/regs2/OSGI_Tools/Xa.2/Xb.Bhtd1U2AGuQI_IMsx-2bmOlvfZa89CHrFb1bAYveFA/Xc.OSGi_Tools_1.0.0.0.zip/Xd./Xf.LPr.U1ay/Xg.5462396/Xi.swg-osgitools/XY.regsrvs/XZ.RNxpGEd_bq2XMRbT9BTu6wl2SoM/OSGi_Tools_1.0.0.0.zip"/>
-        
         <property name="protocol"                       value="&amp;r=1&amp;protocol=http"/>
     </target>
 
@@ -74,30 +69,6 @@
             <echo>#################################################################################</echo>
             <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${tptp}" 
                    dest="${LOCAL_M2_REPO}/eclipse"
-                   overwrite="true"/>
-    </target>
-
-    <target name="free_aries_tool" depends="init" description="Download free Aries tools package">
-            <echo>#################################################################################</echo>
-            <echo>##                                                                               </echo>
-            <echo>## Downloading: ${ariestools}                                                    </echo>
-            <echo>##                                                                               </echo>
-            <echo>## From: ${free_aries_tool_url}                                                  </echo>
-            <echo>##                                                                               </echo>
-            <echo>#################################################################################</echo>
-            <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-            <get src="${free_aries_tool_url}"
-                 dest="${LOCAL_M2_REPO}/eclipse-downloads/${ariestools}" 
-                 verbose="true"
-                 ignoreerrors="true"
-                 usetimestamp="true"/>
-            <echo>#################################################################################</echo>
-            <echo>##                                                                               </echo>
-            <echo>## Unzipping: ${ariestools}                                                      </echo>
-            <echo>##                                                                               </echo>
-            <echo>#################################################################################</echo>
-            <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${ariestools}" 
-                   dest="${LOCAL_M2_REPO}/eclipse/eclipse"
                    overwrite="true"/>
     </target>
 

@@ -585,6 +585,15 @@
         </profile>
 
         <profile>
+            <id>no-eclipse-downloads</id>
+            <modules>
+                <module>plugins</module>
+                <module>features</module>
+                <module>assembly</module>
+            </modules>
+        </profile>
+
+        <profile>
             <id>apache-release</id>
             <build>
                 <plugins>
