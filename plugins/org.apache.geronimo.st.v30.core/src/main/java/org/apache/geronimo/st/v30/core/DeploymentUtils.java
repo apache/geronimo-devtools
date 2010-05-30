@@ -1,4 +1,4 @@
-/*
+/* 
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -16,11 +16,6 @@
  */
 package org.apache.geronimo.st.v30.core;
 
-import com.ibm.etools.aries.internal.core.IAriesModuleConstants;
-import com.ibm.etools.aries.internal.core.datatransfer.exportmodel.ApplicationExportDataModelProvider;
-import com.ibm.etools.aries.internal.core.datatransfer.exportmodel.BundleExportDataModelProvider;
-
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +27,8 @@ import javax.enterprise.deploy.spi.exceptions.TargetException;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.v30.core.commands.TargetModuleIdNotFoundException;
 import org.apache.geronimo.st.v30.core.internal.Trace;
+import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
+import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -142,16 +139,16 @@ public class DeploymentUtils {
             return ".car";
         }
         else if (GeronimoUtils.isEBAModule(module)) {
-            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".eba");
-            return ".eba";
+            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", OsgiConstants.APPLICATION_EXTENSION);
+            return OsgiConstants.APPLICATION_EXTENSION;
         }
         else if (GeronimoUtils.isCBAModule(module)) {
-            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".cba");
-            return ".cba";
+            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", OsgiConstants.COMPOSITE_BUNDLE_EXTENSION);
+            return OsgiConstants.COMPOSITE_BUNDLE_EXTENSION;
         }
         else if (GeronimoUtils.isBundleModule(module)) {
-            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".jar");
-            return ".jar";
+            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", OsgiConstants.BUNDLE_EXTENSION);
+            return OsgiConstants.BUNDLE_EXTENSION;
         }
 
         Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".jar");
@@ -210,12 +207,18 @@ public class DeploymentUtils {
             return DataModelFactory.createDataModel(new ConnectorComponentExportDataModelProvider());
         } else if (IModuleConstants.JST_APPCLIENT_MODULE.equals(type)) {
             return DataModelFactory.createDataModel(new AppClientComponentExportDataModelProvider());
-        } else if (IAriesModuleConstants.OSGI_APP.equals(type)) {
-            return DataModelFactory.createDataModel(new ApplicationExportDataModelProvider());
-        } else if (IAriesModuleConstants.OSGI_COMP_BUNDLE.equals(type)) {   
-            return DataModelFactory.createDataModel(new ApplicationExportDataModelProvider());
-        } else if (IAriesModuleConstants.OSGI_COMP_BUNDLE.equals(type)) {
-            return DataModelFactory.createDataModel(new BundleExportDataModelProvider());
+        }
+
+        if (AriesHelper.isAriesInstalled()) {
+            if (OsgiConstants.APPLICATION.equals(type)) {
+                return DataModelFactory.createDataModel(OsgiConstants.APPLICATION_DATAMODEL_PROVIDER_ID);
+            }
+            else if (OsgiConstants.COMPOSITE_BUNDLE.equals(type)) {
+                return DataModelFactory.createDataModel(OsgiConstants.COMPOSITE_BUNDLE_DATAMODEL_PROVIDER_ID);
+            }
+            else if (OsgiConstants.BUNDLE.equals(type)) {
+                return DataModelFactory.createDataModel(OsgiConstants.BUNDLE_DATAMODEL_PROVIDER_ID);
+            }
         }
 
         Trace.tracePoint("Exit ", "DeploymentUtils.getExportDataModel", null);

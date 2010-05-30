@@ -77,6 +77,12 @@
            
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.jaxbmodel.common</artifactId>
+            <version>${version}</version>
+        </dependency>
+           
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.common</artifactId>
             <version>${version}</version>
         </dependency>
@@ -189,6 +195,12 @@
             <version>${version}</version>
         </dependency>
            
+        <dependency>
+             <groupId>org.apache.geronimo.devtools</groupId>
+             <artifactId>org.apache.geronimo.st.v30.jaxbmodel</artifactId>
+             <version>${version}</version>
+         </dependency>
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v30.ui</artifactId>

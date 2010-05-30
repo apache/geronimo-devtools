@@ -114,6 +114,13 @@
          unpack="false"/>
          
     <plugin
+         id="org.apache.geronimo.st.v30.jaxbmodel"
+         download-size="20"
+         install-size="20"
+         version="3.0.0"
+         unpack="false"/>
+         
+    <plugin
          id="org.apache.geronimo.st.v30.ui"
          download-size="16"
          install-size="16"

@@ -59,7 +59,8 @@
             <outputDirectory>plugins/</outputDirectory>
             <unpack>false</unpack>
             <includes>
-            <include>org.apache.geronimo.devtools:org.apache.geronimo.j2ee.v11.jaxbmodel</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.j2ee.v11.jaxbmodel</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.jaxbmodel.common</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.jee.v21.jaxbmodel</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.common</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v11</include>
@@ -80,6 +81,7 @@
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v22.core</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v22.ui</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v30.core</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v30.jaxbmodel</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v30.ui</include>
              </includes>
         </dependencySet>

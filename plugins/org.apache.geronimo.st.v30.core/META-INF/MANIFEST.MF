@@ -7,7 +7,6 @@ Bundle-Activator: org.apache.geronimo.st.v30.core.Activator
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Require-Bundle: 
- com.ibm.etools.aries.core;resolution:=optional,
  org.apache.geronimo.jee.v21.jaxbmodel,
  org.apache.geronimo.st.v30.jaxbmodel,
  org.apache.geronimo.runtime.v30,
@@ -39,3 +38,5 @@ Export-Package:
  org.apache.geronimo.st.v30.core.internal,
  org.apache.geronimo.st.v30.core.jaxb,
  org.apache.geronimo.st.v30.core.operations
+Import-Package: 
+ com.ibm.etools.aries.internal.core.datatransfer.exportmodel

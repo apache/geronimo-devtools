@@ -8,7 +8,7 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.st.core,
  org.apache.geronimo.jee.v21.jaxbmodel,
- org.apache.geronimo.runtime.v21;bundle-version="3.0.0",
+ org.apache.geronimo.runtime.v21,
  org.eclipse.jst.j2ee,
  org.eclipse.core.runtime,
  org.eclipse.wst.server.core,

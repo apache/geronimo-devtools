@@ -16,10 +16,6 @@
  */
 package org.apache.geronimo.st.v30.core;
 
-import com.ibm.etools.aries.internal.core.IAriesModuleConstants;
-import com.ibm.etools.aries.internal.core.modules.IApplication;
-import com.ibm.etools.aries.internal.core.modules.IBundle;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,6 +27,8 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 import org.apache.geronimo.st.v30.core.internal.Trace;
+import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
+import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -47,6 +45,8 @@ import org.eclipse.wst.server.core.ServerPort;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.server.core.internal.ServerMonitorManager;
 import org.eclipse.wst.server.core.model.ServerDelegate;
+import org.eclipse.wst.web.internal.deployables.FlatComponentDeployable;
+
 
 /**
  * <b>GeronimoServerDelegate</b> contains the properties for the Geronimo server that are persisted across
@@ -152,10 +152,10 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         IStatus status = canModifyModules(new IModule[] { module }, null);
         if (status != null && !status.isOK())
             throw new CoreException(status);
-        IModule[] childs = doGetParentModules(module);
-        if (childs.length > 0) {
-            Trace.tracePoint("Exit ", "GeronimoServerDelegate.getRootModules", childs);
-            return childs;
+        IModule[] modules = doGetParentModules(module);
+        if (modules.length > 0) {
+            Trace.tracePoint("Exit ", "GeronimoServerDelegate.getRootModules", modules);
+            return modules;
         }
 
         Trace.tracePoint("Exit ", "GeronimoServerDelegate.getRootModules", new IModule[] { module });
@@ -199,20 +199,27 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
                         }
                     }
                 }
-                else if (IAriesModuleConstants.OSGI_APP.equals(moduleType.getId())) {
-                    IApplication osgiApplication = (IApplication) module[0].loadAdapter(IApplication.class, null);  
-                    IModule[] modules = osgiApplication.getModules();
-                    if (modules != null) {
-                        Trace.tracePoint("Exit ", "GeronimoServerDelegate.getChildModules", modules);
-                        return modules;
+
+                if (AriesHelper.isAriesInstalled()) {
+                    if (OsgiConstants.APPLICATION.equals(moduleType.getId())) {
+                        FlatComponentDeployable application = (FlatComponentDeployable) module[0].loadAdapter(FlatComponentDeployable.class,  null);
+                        if (application != null) {
+                            IModule[] modules = application.getModules();
+                            if (modules != null) {
+                                Trace.tracePoint("Exit ", "GeronimoServerDelegate.getChildModules", modules);
+                                return modules;
+                            }
+                        }
                     }
-                }
-                else if (IAriesModuleConstants.OSGI_COMP_BUNDLE.equals(moduleType.getId())) {
-                    IApplication osgiApplication = (IApplication) module[0].loadAdapter(IApplication.class, null);  
-                    IModule[] modules = osgiApplication.getModules();
-                    if (modules != null) {
-                        Trace.tracePoint("Exit ", "GeronimoServerDelegate.getChildModules", modules);
-                        return modules;
+                    else if (OsgiConstants.COMPOSITE_BUNDLE.equals(moduleType.getId())) {
+                        FlatComponentDeployable composite = (FlatComponentDeployable) module[0].loadAdapter(FlatComponentDeployable.class,  null);
+                        if (composite != null) {
+                            IModule[] modules = composite.getModules();
+                            if (modules != null) {
+                                Trace.tracePoint("Exit ", "GeronimoServerDelegate.getChildModules", modules);
+                                return modules;
+                            }
+                        }
                     }
                 }
             }
@@ -543,30 +550,32 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         IModule[] ears = ServerUtil.getModules(IModuleConstants.JST_EAR_MODULE);
         for (int i = 0; i < ears.length; i++) {
             IEnterpriseApplication ear = (IEnterpriseApplication) ears[i].loadAdapter(IEnterpriseApplication.class, null);
-            IModule[] childs = ear.getModules();
-            for (int j = 0; j < childs.length; j++) {
-                if (childs[j].equals(module))
+            IModule[] modules = ear.getModules();
+            for (int j = 0; j < modules.length; j++) {
+                if (modules[j].equals(module))
                     list.add(ears[i]);
             }
         }
 
-        IModule[] applicationBundles = ServerUtil.getModules(IAriesModuleConstants.OSGI_APP);
-        for (int i = 0; i < applicationBundles.length; i++) {
-            IApplication application = (IApplication) applicationBundles[i].loadAdapter(IApplication.class, null);
-            IModule[] childs = application.getModules();
-            for (int j = 0; j < childs.length; j++) {
-                if (childs[j].equals(module))
-                    list.add(applicationBundles[i]);
+        if (AriesHelper.isAriesInstalled()) {
+            IModule[] applications = ServerUtil.getModules(OsgiConstants.APPLICATION);
+            for (int i = 0; i < applications.length; i++) {
+                FlatComponentDeployable application = (FlatComponentDeployable) applications[i].loadAdapter(FlatComponentDeployable.class,  null);
+                IModule[] modules = application.getModules();
+                for (int j = 0; j < modules.length; j++) {
+                    if (modules[j].equals(module))
+                        list.add(applications[i]);
+                }
             }
-        }
-
-        IModule[] compositeBundles = ServerUtil.getModules(IAriesModuleConstants.OSGI_COMP_BUNDLE);
-        for (int i = 0; i < compositeBundles.length; i++) {
-            IApplication application  = (IApplication) compositeBundles[i].loadAdapter(IApplication.class, null);
-            IModule[] childs = application.getModules();
-            for (int j = 0; j < childs.length; j++) {
-                if (childs[j].equals(module))
-                    list.add(compositeBundles[i]);
+  
+            IModule[] composites = ServerUtil.getModules(OsgiConstants.COMPOSITE_BUNDLE);
+            for (int i = 0; i < composites.length; i++) {
+                FlatComponentDeployable composite = (FlatComponentDeployable) composites[i].loadAdapter(FlatComponentDeployable.class,  null);
+                IModule[] modules = composite.getModules();
+                for (int j = 0; j < modules.length; j++) {
+                    if (modules[j].equals(module))
+                        list.add(composites[i]);
+                }
             }
         }
 

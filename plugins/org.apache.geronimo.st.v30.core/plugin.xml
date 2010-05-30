@@ -430,6 +430,25 @@
      <extension-point id="JAXBUtilsProvider" name="Geronimo JAXB Utils" schema="schema/JAXBUtilsProvider.exsd"/>
      <extension point="org.apache.geronimo.st.v30.core.JAXBUtilsProvider">
          <provider class="org.apache.geronimo.st.v30.core.jaxb.JAXBUtilsProvider" version="3.0"/>
-     </extension>   
+     </extension>
+
+
+
+     <!-- 
+      ###################################################################################################################
+      ##                                                                                                               ##
+      ## DataModel Provider(s) - Specify the Aries datamodel providers for an OSGi application, composite bunder, and  ##
+      ##                         bundle                                                                                ##
+      ##                                                                                                               ##
+      ###################################################################################################################
+      -->
+     <extension point="org.eclipse.wst.common.frameworks.DataModelProviderExtension">
+        <DataModelProvider id="osgi.application.datamodelprovider"
+            class="com.ibm.etools.aries.internal.core.datatransfer.exportmodel.ApplicationExportDataModelProvider"/>
+        <DataModelProvider id="osgi.composite.datamodelprovider"
+            class="com.ibm.etools.aries.internal.core.datatransfer.exportmodel.ApplicationExportDataModelProvider"/>
+        <DataModelProvider id="osgi.bundle.datamodelprovider"
+            class="com.ibm.etools.aries.internal.core.datatransfer.exportmodel.BundleExportDataModelProvider"/>
+     </extension>
     
 </plugin>

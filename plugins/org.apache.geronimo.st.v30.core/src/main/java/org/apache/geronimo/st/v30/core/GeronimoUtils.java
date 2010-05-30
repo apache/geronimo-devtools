@@ -16,8 +16,6 @@
  */
 package org.apache.geronimo.st.v30.core;
 
-import com.ibm.etools.aries.internal.core.IAriesModuleConstants;
-
 import javax.enterprise.deploy.shared.ModuleType;
 import javax.xml.bind.JAXBElement;
 
@@ -29,6 +27,7 @@ import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBUtils;
+import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
@@ -80,15 +79,15 @@ public class GeronimoUtils {
     }
     
     public static boolean isEBAModule(IModule module) {
-        return IAriesModuleConstants.OSGI_APP.equals(module.getModuleType().getId());
+        return OsgiConstants.APPLICATION.equals(module.getModuleType().getId());
     }
     
     public static boolean isCBAModule(IModule module) {
-        return IAriesModuleConstants.OSGI_COMP_BUNDLE.equals(module.getModuleType().getId());
+        return OsgiConstants.COMPOSITE_BUNDLE.equals(module.getModuleType().getId());
     }
     
     public static boolean isBundleModule(IModule module) {
-        return IAriesModuleConstants.OSGI_BUNDLE.equals(module.getModuleType().getId());
+        return OsgiConstants.COMPOSITE_BUNDLE.equals(module.getModuleType().getId());
     }
     
     public static ModuleType getJSR88ModuleType(IModule module) {
