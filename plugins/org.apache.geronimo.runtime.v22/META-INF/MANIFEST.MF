@@ -4,18 +4,18 @@ Bundle-Name: Geronimo V22 Runtime Plug-in
 Bundle-SymbolicName: org.apache.geronimo.runtime.v22;singleton:=true
 Bundle-Version: 2.2.1
 Require-Bundle: org.apache.geronimo.runtime.common;visibility:=reexport
-Bundle-ClassPath: lib/geronimo-common-2.2.jar,
- lib/geronimo-deploy-jsr88-2.2.jar,
- lib/geronimo-deployment-2.2.jar,
- lib/geronimo-j2ee-schema-2.2.jar,
- lib/geronimo-kernel-2.2.jar,
- lib/geronimo-plugin-2.2.jar,
- lib/geronimo-system-2.2.jar,
- lib/geronimo-util-2.2.jar,
- lib/geronimo-deploy-config-2.2.jar,
+Bundle-ClassPath: lib/geronimo-common-2.2.1-SNAPSHOT.jar,
+ lib/geronimo-deploy-jsr88-2.2.1-SNAPSHOT.jar,
+ lib/geronimo-deployment-2.2.1-SNAPSHOT.jar,
+ lib/geronimo-j2ee-schema-2.2.1-SNAPSHOT.jar,
+ lib/geronimo-kernel-2.2.1-SNAPSHOT.jar,
+ lib/geronimo-plugin-2.2.1-SNAPSHOT.jar,
+ lib/geronimo-system-2.2.1-SNAPSHOT.jar,
+ lib/geronimo-util-2.2.1-SNAPSHOT.jar,
+ lib/geronimo-deploy-config-2.2.1-SNAPSHOT.jar,
  lib/geronimo-javaee-deployment_1.1MR3_spec-1.0.jar,
  lib/plexus-archiver-1.0-alpha-7.jar,
- lib/geronimo-crypto-2.2.jar,
+ lib/geronimo-crypto-2.2.1-SNAPSHOT.jar,
  lib/slf4j-api-1.4.3.jar,
  lib/slf4j-simple-1.4.3.jar
 Export-Package: 
