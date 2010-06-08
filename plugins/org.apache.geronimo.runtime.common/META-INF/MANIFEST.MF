@@ -4,6 +4,7 @@ Bundle-Name: Geronimo Common Runtime Plug-in
 Bundle-SymbolicName: org.apache.geronimo.runtime.common;singleton:=true
 Bundle-Version: 2.2.1
 Bundle-ClassPath: 
+ lib/geronimo-jaxb_2.1_spec-1.0.jar,
  lib/geronimo-j2ee-deployment_1.1_spec-1.0.jar,
  lib/commons-logging-1.0.4.jar,
  lib/cglib-nodep-2.1_3.jar,
@@ -39,14 +40,6 @@ Export-Package:
  com.sun.xml.txw2,
  com.sun.xml.txw2.annotation,
  com.sun.xml.txw2.output,
- javax.enterprise.deploy.model,
- javax.enterprise.deploy.model.exceptions,
- javax.enterprise.deploy.shared,
- javax.enterprise.deploy.shared.factories,
- javax.enterprise.deploy.spi,
- javax.enterprise.deploy.spi.exceptions,
- javax.enterprise.deploy.spi.factories,
- javax.enterprise.deploy.spi.status,
  javax.xml.bind,
  javax.xml.bind.annotation,
  javax.xml.bind.annotation.adapters,

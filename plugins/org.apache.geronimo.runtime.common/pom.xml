@@ -99,10 +99,6 @@
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>org.apache.geronimo.specs</groupId>
-                                    <artifactId>geronimo-j2ee-deployment_1.1_spec</artifactId>
-                                </artifactItem>
-                                <artifactItem>
                                     <groupId>commons-logging</groupId>
                                     <artifactId>commons-logging</artifactId>
                                 </artifactItem>
@@ -193,10 +189,7 @@
             <version>${version}</version>
             <type>pom</type>
         </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-j2ee-deployment_1.1_spec</artifactId>
-        </dependency>
+    
         <dependency>
                 <groupId>org.apache.geronimo.specs</groupId>
                 <artifactId>geronimo-jaxb_2.1_spec</artifactId>
@@ -212,10 +205,10 @@
                         <artifactId>jaxb-api</artifactId>
                     </exclusion>
                 </exclusions>
-            </dependency>
+        </dependency>
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-activation_1.1_spec</artifactId>
-        </dependency>
+          </dependency>
     </dependencies>
 </project>

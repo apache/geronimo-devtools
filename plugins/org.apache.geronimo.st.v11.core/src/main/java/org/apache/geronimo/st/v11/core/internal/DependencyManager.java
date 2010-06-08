@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
+import org.apache.geronimo.j2ee.deployment.ArtifactType;
 
 
 /**

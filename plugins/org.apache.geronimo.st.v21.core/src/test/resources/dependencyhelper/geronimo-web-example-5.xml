@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    (the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<!-- @version $Rev: 658553 $ $Date: 2008-05-21 12:55:52 +0800 (Wed, 21 May 2008) $ -->
+
+<web-app xmlns="http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1" xmlns:nam="http://geronimo.apache.org/xml/ns/naming-1.2" xmlns:sec="http://geronimo.apache.org/xml/ns/security-2.0" xmlns:sys="http://geronimo.apache.org/xml/ns/deployment-1.2">
+
+    <sys:environment>
+        <sys:moduleId>
+            <sys:groupId>default</sys:groupId>
+            <sys:artifactId>geronimo-web-3</sys:artifactId>
+            <sys:version>1.0</sys:version>
+            <sys:type>car</sys:type>
+        </sys:moduleId>
+        <sys:dependencies>
+            <sys:dependency>
+                <sys:groupId>org.apache.geronimo.configs</sys:groupId>
+                <sys:artifactId>tomcat6</sys:artifactId>
+                <sys:version>2.2-SNAPSHOT</sys:version>
+                <sys:type>car</sys:type>
+            </sys:dependency>
+        </sys:dependencies>
+    </sys:environment>
+    <context-root>/app</context-root>
+    <web-container>
+        <gbean-link>TomcatAppWebContainer</gbean-link>
+    </web-container>
+
+    <gbean name="TomcatAppWebContainer" class="org.apache.geronimo.tomcat.TomcatContainer">
+        <attribute name="catalinaHome">var/catalina</attribute>
+        <reference name="EngineGBean">
+            <name>TomcatAppEngine</name>
+        </reference>
+        <reference name="ServerInfo">
+            <name>ServerInfo</name>
+        </reference>
+        <reference name="WebManager">
+            <name>TomcatWebManager</name>
+        </reference>
+    </gbean>
+
+    <gbean name="TomcatAppWebConnector" class="org.apache.geronimo.tomcat.connector.Http11ConnectorGBean">
+        <attribute name="name">HTTP</attribute>
+        <attribute name="host">localhost</attribute>
+        <attribute name="port">8082</attribute>
+        <attribute name="maxHttpHeaderSize">8192</attribute>
+        <attribute name="maxThreads">150</attribute>
+        <attribute name="minSpareThreads">25</attribute>
+        <attribute name="maxSpareThreads">75</attribute>
+        <attribute name="enableLookups">false</attribute>
+        <attribute name="redirectPort">8443</attribute>
+        <attribute name="acceptCount">100</attribute>
+        <attribute name="connectionTimeout">20000</attribute>
+        <attribute name="disableUploadTimeout">true</attribute>
+        <reference name="TomcatContainer">
+            <name>TomcatAppWebContainer</name>
+        </reference>
+        <reference name="ServerInfo">
+            <name>ServerInfo</name>
+        </reference>
+        <dependency>
+            <name>default/zapp/1.0/car</name>
+        </dependency>
+    </gbean>
+
+    <gbean name="TomcatAppEngine" class="org.apache.geronimo.tomcat.EngineGBean">
+        <attribute name="className">org.apache.geronimo.tomcat.TomcatEngine</attribute>
+        <attribute name="initParams">
+            name=GeronimoApp
+        </attribute>
+        <reference name="DefaultHost">
+            <name>TomcatAppHost</name>
+        </reference>
+        <references name="Hosts">
+            <pattern>
+                <name>TomcatAppHost</name>
+            </pattern>
+        </references>
+        <reference name="RealmGBean">
+            <name>TomcatJAASRealm</name>
+        </reference>
+    </gbean>
+
+    <gbean name="TomcatAppHost" class="org.apache.geronimo.tomcat.HostGBean">
+        <attribute name="className">org.apache.catalina.core.StandardHost</attribute>
+        <attribute name="initParams">
+            name=app
+            appBase=
+            workDir=work
+        </attribute>
+    </gbean>
+</web-app>

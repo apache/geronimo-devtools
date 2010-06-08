@@ -25,8 +25,8 @@ import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
 import org.apache.geronimo.st.v11.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v11.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v11.ui.sections.ClassFilterSection;
-import org.apache.geronimo.xml.ns.deployment_1.ClassFilterType;
-import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
+import org.apache.geronimo.j2ee.deployment.ClassFilterType;
+import org.apache.geronimo.j2ee.deployment.EnvironmentType;
 
 /**
  * @version $Rev: 720616 $ $Date: 2008-11-26 05:49:55 +0800 (Wed, 26 Nov 2008) $

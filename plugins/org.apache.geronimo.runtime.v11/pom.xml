@@ -98,6 +98,11 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
+                                    <groupId>org.apache.geronimo.specs</groupId>
+                                    <artifactId>geronimo-j2ee-deployment_1.1_spec</artifactId>
+                                    <version>1.0</version>
+                                </artifactItem>
+                                <artifactItem>
                                     <groupId>geronimo</groupId>
                                     <artifactId>geronimo-kernel</artifactId>
                                     <version>${geronimoVersion}</version>
@@ -389,6 +394,11 @@
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.common</artifactId>
             <version>${version}</version>
+        </dependency>
+       <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-j2ee-deployment_1.1_spec</artifactId>
+                <version>1.0</version>
         </dependency>
     </dependencies>
 </project>

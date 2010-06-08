@@ -40,7 +40,6 @@ Export-Package: org.apache.geronimo.st.ui,
  org.apache.geronimo.st.ui.commands,
  org.apache.geronimo.st.ui.editors,
  org.apache.geronimo.st.ui.internal,
- org.apache.geronimo.st.ui.pages,
  org.apache.geronimo.st.ui.sections,
  org.apache.geronimo.st.ui.wizards,
  org.apache.geronimo.st.ui.refactoring

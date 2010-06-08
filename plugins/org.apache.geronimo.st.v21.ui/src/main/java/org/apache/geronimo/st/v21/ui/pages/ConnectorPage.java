@@ -18,8 +18,8 @@ package org.apache.geronimo.st.v21.ui.pages;
 
 import org.apache.geronimo.jee.application.Application;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
-import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
+import org.apache.geronimo.st.v21.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.apache.geronimo.st.v21.ui.pages.AbstractGeronimoFormPage;
 
 import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v21.ui.sections.DBPoolSection;

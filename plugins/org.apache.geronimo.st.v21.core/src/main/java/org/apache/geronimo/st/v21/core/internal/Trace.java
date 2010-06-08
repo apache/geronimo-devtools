@@ -71,8 +71,9 @@ public class Trace {
      *            a throwable
      */
     public static void trace(byte level, String s, Throwable t) {
-        if (!Activator.getDefault().isDebugging())
-            return;
+    	if (Activator.getDefault() == null
+				|| !Activator.getDefault().isDebugging())
+			return;
 
         System.out.println(Activator.PLUGIN_ID + ":  " + s);
         if (t != null)

@@ -6,20 +6,25 @@ Bundle-Version: 2.2.1
 Bundle-Activator: org.apache.geronimo.st.v21.core.Activator
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.jst.j2ee,
- org.apache.geronimo.runtime.v22,
+Require-Bundle: org.apache.geronimo.jee.v21.jaxbmodel,
+ org.apache.geronimo.runtime.v21,
  org.apache.geronimo.st.core,
- org.apache.geronimo.jee.v21.jaxbmodel,
+ org.eclipse.jst.j2ee,
  org.eclipse.core.runtime,
  org.eclipse.wst.server.core,
  org.eclipse.debug.core,
  org.eclipse.wst.common.project.facet.core,
  org.eclipse.jst.common.frameworks,
- org.eclipse.wst.common.modulecore
+ org.eclipse.wst.common.modulecore,
+ org.eclipse.jdt.core,
+ org.eclipse.jst.j2ee.jca,
+ org.eclipse.jst.j2ee.ejb,
+ org.eclipse.jst.j2ee.web,
+ org.eclipse.jem.util
 Bundle-ActivationPolicy: lazy
 Export-Package: 
  org.apache.geronimo.st.v21.core,
  org.apache.geronimo.st.v21.core.internal,
  org.apache.geronimo.st.v21.core.jaxb,
- org.apache.geronimo.st.v21.core.operations
+ org.apache.geronimo.st.v21.core.operations 
 Import-Package: junit.framework;version="3.8.2"

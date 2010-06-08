@@ -23,8 +23,8 @@ import javax.xml.bind.JAXBException;
 
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
-import org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader;
+import org.apache.geronimo.st.v21.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.apache.geronimo.st.v21.ui.editors.AbstractGeronimoFormContentLoader;
 import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v21.core.GeronimoV21Utils;
 import org.apache.geronimo.st.v21.ui.pages.AppClientGeneralPage;

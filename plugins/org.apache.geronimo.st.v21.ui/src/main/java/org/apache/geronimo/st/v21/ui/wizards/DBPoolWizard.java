@@ -39,7 +39,7 @@ import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.jee.deployment.Pattern;
 import org.apache.geronimo.st.core.jaxb.JAXBObjectFactory;
-import org.apache.geronimo.st.ui.Activator;
+import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;

@@ -25,7 +25,7 @@ import org.apache.geronimo.jee.deployment.Artifact;
 import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.web.WebApp;
-import org.apache.geronimo.st.core.GeronimoUtils;
+import org.apache.geronimo.st.v21.core.GeronimoUtils;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.eclipse.core.resources.IFile;

@@ -20,8 +20,8 @@ import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
-import org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader;
+import org.apache.geronimo.st.v11.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.apache.geronimo.st.v11.ui.editors.AbstractGeronimoFormContentLoader;
 import org.apache.geronimo.st.v11.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v11.core.GeronimoV11Utils;
 import org.apache.geronimo.st.v11.ui.pages.AppClientGeneralPage;

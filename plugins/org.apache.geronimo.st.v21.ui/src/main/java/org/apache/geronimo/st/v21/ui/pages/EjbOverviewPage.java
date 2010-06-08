@@ -16,7 +16,7 @@
  */
 package org.apache.geronimo.st.v21.ui.pages;
 
-import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
+import org.apache.geronimo.st.v21.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v21.ui.sections.OpenEjbJarCMPSection;
 import org.apache.geronimo.st.v21.ui.sections.OpenEjbJarGeneralSection;

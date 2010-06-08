@@ -18,14 +18,14 @@ package org.apache.geronimo.st.v11.core.jaxb;
 
 import javax.xml.bind.Marshaller;
 
-import org.apache.geronimo.xml.ns.j2ee.web_1.WebAppType;
-import org.apache.geronimo.xml.ns.naming_1.GbeanLocatorType;
-import org.apache.geronimo.xml.ns.naming_1.PatternType;
-import org.apache.geronimo.xml.ns.naming_1.ResourceLocatorType;
-import org.apache.geronimo.xml.ns.security_1.SecurityType;
-import org.openejb.xml.ns.openejb_jar_2.EjbRelationshipRoleType;
-import org.openejb.xml.ns.openejb_jar_2.OpenejbJarType;
-import org.openejb.xml.ns.openejb_jar_2.RelationshipsType;
+import org.apache.geronimo.j2ee.web.WebAppType;
+import org.apache.geronimo.j2ee.naming.GbeanLocatorType;
+import org.apache.geronimo.j2ee.naming.PatternType;
+import org.apache.geronimo.j2ee.naming.ResourceLocatorType;
+import org.apache.geronimo.j2ee.security.SecurityType;
+import org.apache.geronimo.j2ee.openejb_jar.EjbRelationshipRoleType;
+import org.apache.geronimo.j2ee.openejb_jar.OpenejbJarType;
+import org.apache.geronimo.j2ee.openejb_jar.RelationshipsType;
 
 public class MarshallerListener extends Marshaller.Listener{
 

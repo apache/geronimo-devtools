@@ -18,7 +18,7 @@ package org.apache.geronimo.st.v11.ui.sections;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.xml.ns.j2ee.connector_1.ConnectorType;
+import org.apache.geronimo.j2ee.connector.ConnectorType;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 

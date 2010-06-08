@@ -137,26 +137,45 @@
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.core</artifactId>
             <version>${version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.st.v21.core</artifactId>
-            <version>${version}</version>
+            <exclusions>
+                    <exclusion>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>jaxb-api</artifactId>
+                    </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.j2ee.v11.jaxbmodel</artifactId>
             <version>${version}</version>
+             <exclusions>
+                    <exclusion>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>jaxb-api</artifactId>
+                    </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.v11</artifactId>
             <version>${version}</version>
+            <exclusions>
+                    <exclusion>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>jaxb-api</artifactId>
+                    </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.common</artifactId>
             <version>${version}</version>
+            <exclusions>
+                    <exclusion>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>jaxb-api</artifactId>
+                    </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>

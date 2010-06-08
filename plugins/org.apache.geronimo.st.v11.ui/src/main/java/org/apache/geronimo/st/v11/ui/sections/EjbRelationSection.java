@@ -30,9 +30,9 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.openejb.xml.ns.openejb_jar_2.EjbRelationType;
-import org.openejb.xml.ns.openejb_jar_2.EjbRelationshipRoleType;
-import org.openejb.xml.ns.openejb_jar_2.RelationshipsType;
+import org.apache.geronimo.j2ee.openejb_jar.EjbRelationType;
+import org.apache.geronimo.j2ee.openejb_jar.EjbRelationshipRoleType;
+import org.apache.geronimo.j2ee.openejb_jar.RelationshipsType;
 
 /**
  * @version $Rev: 705002 $ $Date: 2008-10-16 03:34:27 +0800 (Thu, 16 Oct 2008) $
