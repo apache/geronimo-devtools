@@ -36,5 +36,114 @@
   		</wizard-pages>
 	</extension>  
 	
+	
+	 <!-- 
+     |
+     | Extend WTP wizardFragments to include the Geronimo runtime and server types                
+     | (defined in plugins\org.apache.geronimo.st.v*.core\plugin.xml) when defining either a       
+     | new Geronimo runtime (e.g., via Window->Preferences->Server->Installed Runtimes->Add)       
+     | or a new Geronimo server (e.g., via File->New->Other->Server)                              
+     |   
+     -->
+	<extension point="org.eclipse.wst.server.ui.wizardFragments">
+	   <fragment id="org.apache.geronimo.server.v11.wizardFragment"
+            typeIds="org.apache.geronimo.server.11"
+            class="org.apache.geronimo.st.v11.ui.internal.GeronimoServerWizardFragment"/>
+    </extension>
+    
+     <extension point="org.eclipse.ui.popupMenus">
+        <objectContribution
+                adaptable="true"
+                id="org.apache.geronimo.v11.ui.serveractions"
+                objectClass="org.eclipse.wst.server.core.IServer">
+            <enablement>
+                <test forcePluginActivation="true"
+                    property="org.eclipse.wst.server.ui.serverType"
+                    value="org.apache.geronimo.server.11" />
+            </enablement>
+            <action id="org.apache.geronimo.v11.ui.launchSupport"
+                label="%PopupMenus.launchSupport" icon="icons/obj16/littleG.gif"
+                class="org.apache.geronimo.st.v11.ui.actions.LaunchGeronimoSupportAction"
+                enablesFor="1">
+            </action>
+        </objectContribution>
+    </extension>
+
+    <extension point="org.eclipse.ui.popupMenus">
+        <objectContribution
+                adaptable="true"
+                id="org.apache.geronimo.v11.ui.serveractions"
+                objectClass="org.eclipse.wst.server.core.IServer">
+            <enablement>
+                <test forcePluginActivation="true"
+                    property="org.eclipse.wst.server.ui.serverType"
+                    value="org.apache.geronimo.server.11" />
+            </enablement>
+            <action id="org.apache.geronimo.v11.ui.launchconsole"
+                label="%PopupMenus.launchconsole" icon="icons/obj16/littleG.gif"
+                class="org.apache.geronimo.st.v11.ui.actions.LaunchGeronimoConsoleAction"
+                enablesFor="1">
+            </action>
+        </objectContribution>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.security" order="10"
+            insertionId="org.eclipse.wst.server.editor.overview.left"
+            typeIds="org.apache.geronimo.server.11"
+            class="org.apache.geronimo.st.v11.ui.sections.ServerEditorSecuritySection">
+        </section>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.publishAdvanced" order="10"
+            insertionId="org.eclipse.wst.server.editor.overview.right"
+            typeIds="org.apache.geronimo.server.11*"
+            class="org.apache.geronimo.st.v11.ui.sections.ServerEditorPublishAdvancedSection">
+        </section>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.port" order="10"
+            insertionId="org.eclipse.wst.server.editor.overview.right"
+            typeIds="org.apache.geronimo.server.11"
+            class="org.apache.geronimo.st.v11.ui.sections.ServerEditorPortsSection">
+        </section>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.loglevel" order="20"
+            insertionId="org.eclipse.wst.server.editor.overview.right"
+            typeIds="org.apache.geronimo.server.11"
+            class="org.apache.geronimo.st.v11.ui.sections.ServerEditorLogLevelSection">
+        </section>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.security" order="30"
+            insertionId="org.eclipse.wst.server.editor.overview.right"
+            typeIds="org.apache.geronimo.server.11"
+            class="org.apache.geronimo.st.v11.ui.sections.ServerEditorStartupSection">
+        </section>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.vmargs" order="40"
+            insertionId="org.eclipse.wst.server.editor.overview.right"
+            typeIds="org.apache.geronimo.server.11"
+            class="org.apache.geronimo.st.v11.ui.sections.ServerVMArgsSection">
+        </section>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.testenv" order="20"
+            insertionId="org.eclipse.wst.server.editor.overview.left"
+            typeIds="org.apache.geronimo.server.11"
+            class="org.apache.geronimo.st.v11.ui.sections.ServerEditorTestEnvSection">
+        </section>
+    </extension>
+    
+    
+    
 
 </plugin>

@@ -88,6 +88,7 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
 		artifactText = new Text(composite, SWT.BORDER);
 		artifactText.setLayoutData(createGridData());
 		
+		
 		Label versionLabel = new Label(composite, SWT.NONE);
 		versionLabel.setText(CommonMessages.version);
 

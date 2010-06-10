@@ -93,7 +93,7 @@
         <project-facet-version facet="org.apache.geronimo.facet" version="1.2">
             <action type="install" id="geronimo.plan.install.v21">
                 <delegate class="org.apache.geronimo.st.v21.core.operations.GeronimoV21FacetInstallDelegate"/>
-                <config-factory class="org.apache.geronimo.st.v21.core.DeploymentPlanInstallConfig$Factory"/>
+                <config-factory class="org.apache.geronimo.st.core.DeploymentPlanInstallConfig$Factory"/>
             </action>
             <constraint>
                 <or>
@@ -137,5 +137,53 @@
             <facet id="org.apache.geronimo.facet" version="1.2"/>
         </default-facets>
     </extension>
+    
+    
+    <extension point="org.apache.geronimo.st.core.JAXBUtilsProvider"> 
+       <provider class="org.apache.geronimo.st.v21.core.jaxb.JAXB21Utils" version="2.0,2.1,2.2"/>
+    </extension>
+    
+   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+        <launchConfigurationType
+            id="org.apache.geronimo.st.core.launchConfigurationType"
+            name="%geronimoLaunchConfigurationType"
+            delegate="org.apache.geronimo.st.v21.core.GeronimoLaunchConfigurationDelegate"
+            modes="run, debug, profile"
+            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+            sourcePathComputerId="org.apache.geronimo.st.core.sourcePathComputer"/>
+    </extension>
+    
+    <!-- 
+     |                                                                                           
+     | This extension point provides a way for a server to support the "Run on Server" scenario. 
+     | The id specifies a unique identifier for this extension point, and the class specifies the 
+     | fully qualified name of the Java class that extends LaunchableAdapterDelegate. 
+     |                                                                                           
+     --> 
+    <extension point="org.eclipse.wst.server.core.launchableAdapters">
+        <launchableAdapter
+            class="org.apache.geronimo.st.v21.core.GeronimoLaunchableAdapterDelegate"
+            id="org.eclipse.jst.server.geronimo.v11.web"/>
+    </extension>
+    
+    <extension id="GeronimoOpExtensions" name="GeronimoOpExtensions" point="org.eclipse.wst.common.frameworks.OperationExtension">
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentImportOperation"
+            postOperationClass="org.apache.geronimo.st.v21.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EJBComponentImportOperation"
+            postOperationClass="org.apache.geronimo.st.v21.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.archive.operations.EARComponentImportOperation"
+            postOperationClass="org.apache.geronimo.st.v21.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentImportOperation"
+            postOperationClass="org.apache.geronimo.st.v21.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+    </extension>
+
 
 </plugin>

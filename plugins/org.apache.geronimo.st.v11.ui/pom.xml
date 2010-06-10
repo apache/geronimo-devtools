@@ -139,17 +139,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.st.v21.core</artifactId>
-            <version>${version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.ui</artifactId>
-            <version>${version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.st.v21.ui</artifactId>
             <version>${version}</version>
         </dependency>
         <dependency>

@@ -14,21 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v21.ui.editors;
+package org.apache.geronimo.st.ui.editors;
 
-import java.io.IOException;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
 
-import org.apache.geronimo.st.v21.core.operations.ImportDeploymentPlanDataModelProvider;
-import org.apache.geronimo.st.v21.core.operations.ImportDeploymentPlanOperation;
 import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.internal.Trace;
-import org.apache.geronimo.st.v21.ui.pages.AbstractGeronimoFormPage;
-import org.apache.geronimo.st.v21.ui.pages.DeploymentPlanSourcePage;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -48,6 +43,7 @@ import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetProjectCr
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
@@ -108,7 +104,7 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
     }
 
 //    private void saveEditors(IFile file) throws IOException, JAXBException {
-//        JAXBContext jb = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.xml.ns.naming_1", Activator.class.getClassLoader() );
+//        JAXBContext jb = JAXBContext.newInstance( "org.apache.geronimo.xml.ns.j2ee.web_2_0:org.apache.geronimo.xml.ns.j2ee.application_2:org.apache.geronimo.xml.ns.deployment_1:org.apache.geronimo.j2ee.naming", Activator.class.getClassLoader() );
 //        jb.createMarshaller().marshal( deploymentPlan, new File( file.getLocationURI().toURL().getFile()) );
 //        commitFormPages(true);
 //    }
@@ -127,6 +123,17 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
     }
 
     abstract public void doAddPages() throws PartInitException;
+    
+    abstract protected StructuredTextEditor getDeploymentPlanSourcePage();
+
+    abstract protected IDataModelOperation getImportDeploymentPlanOperation(
+            IDataModel model) ;
+
+    abstract protected IDataModelProvider getImportDeploymentPlanDataModelProvider();
+	
+    abstract  protected void refreshPage(IFormPage page) ;
+
+    abstract protected boolean isValidPage(IFormPage page) ;
 
     /*
      * (non-Javadoc)
@@ -138,12 +145,15 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
     }
 
     protected void addSourcePage() throws PartInitException {
-        DeploymentPlanSourcePage source = new DeploymentPlanSourcePage(this);
+    	StructuredTextEditor source = getDeploymentPlanSourcePage();
         int index = addPage(source, getEditorInput());
         setPageText(index, Messages.editorTabSource);
     }
 
-    /*
+
+    
+    
+	/*
      * (non-Javadoc)
      * 
      * @see org.eclipse.ui.part.EditorPart#isSaveAsAllowed()
@@ -202,12 +212,12 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
             
             if(fix) {
                 IProject project = fei.getFile().getProject();
-                IDataModel model = DataModelFactory.createDataModel(new ImportDeploymentPlanDataModelProvider());
+                IDataModel model = DataModelFactory.createDataModel(getImportDeploymentPlanDataModelProvider());
                 model.setProperty(IFacetDataModelProperties.FACET_PROJECT_NAME, project.getName());
                 try {
                     IFacetedProject facetedProject = ProjectFacetsManager.create(project);
                     model.setProperty(IFacetProjectCreationDataModelProperties.FACET_RUNTIME, facetedProject.getPrimaryRuntime());
-                    IDataModelOperation op = new ImportDeploymentPlanOperation(model);
+                    IDataModelOperation op = getImportDeploymentPlanOperation(model);
                     op.execute(new NullProgressMonitor(), null);
                 } catch (Exception e) {
                    throw new PartInitException(e.getMessage());
@@ -226,7 +236,9 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
         }
     }
 
-    public void reloadDeploymentPlan() throws Exception {
+  
+
+	public void reloadDeploymentPlan() throws Exception {
         IEditorInput input = getEditorInput();
         if (input instanceof IFileEditorInput) {
             IFileEditorInput fei = (IFileEditorInput) input;
@@ -237,9 +249,9 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
                     IFormPage page = pages[i];
                     IManagedForm mform = page.getManagedForm();
                     if (mform != null) {
-                        if (page instanceof AbstractGeronimoFormPage) {
-                            AbstractGeronimoFormPage geronimoPage = (AbstractGeronimoFormPage)page;
-                            geronimoPage.refresh();
+                        if (isValidPage(page)) {
+                        	refreshPage(page);
+                           
                         }
                     }
                 }
@@ -247,7 +259,8 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
         }
     }
 
-    @Override
+   
+	@Override
     protected void pageChange(int newPageIndex) {
         if (isDirty()) {
             IFormPage[] pages = getPages();

@@ -16,7 +16,7 @@
  */
 package org.apache.geronimo.st.v21.ui.pages;
 
-import org.apache.geronimo.st.v21.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;

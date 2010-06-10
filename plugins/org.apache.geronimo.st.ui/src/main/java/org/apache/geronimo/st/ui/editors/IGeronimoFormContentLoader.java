@@ -16,23 +16,38 @@
  */
 package org.apache.geronimo.st.ui.editors;
 
-import java.io.IOException;
-
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.FormEditor;
+import org.eclipse.ui.forms.editor.IFormPage;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
+import org.eclipse.wst.sse.ui.StructuredTextEditor;
 
 /**
  * @version $Rev$ $Date$
  */
 public interface IGeronimoFormContentLoader {
-	
+
 	public JAXBElement loadDeploymentPlan(IFile file) throws Exception;
-	public void saveDeploymentPlan(JAXBElement deploymentPlan, IFile file) throws Exception;
-	
+
+	public void saveDeploymentPlan(JAXBElement deploymentPlan, IFile file)
+	        throws Exception;
+
 	public void doAddPages(FormEditor editor) throws PartInitException;
+
+	public StructuredTextEditor getDeploymentPlanSourcePage(AbstractGeronimoDeploymentPlanEditor editor);
+
+	public IDataModelOperation getImportDeploymentPlanOperation(
+	        IDataModel model);
+
+	public IDataModelProvider getImportDeploymentPlanDataModelProvider();
+	
+	public void refreshPage(IFormPage page);
+
+	public boolean isValidPage(IFormPage page);
 
 }

@@ -18,7 +18,6 @@ package org.apache.geronimo.st.v11.core.jaxb;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -45,9 +44,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.geronimo.st.core.jaxb.IJAXBUtilsProvider;
 import org.apache.geronimo.st.v11.core.Activator;
 import org.apache.geronimo.st.v11.core.internal.Trace;
-import org.apache.geronimo.st.core.jaxb.IJAXBUtilsProvider;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -70,17 +69,17 @@ public class JAXB11Utils implements IJAXBUtilsProvider{
     private static JAXBContext newJAXBContext() {
         try {
             return JAXBContext.newInstance( 
-                    "org.apache.geronimo.xml.ns.deployment_1:" +
-                    "org.apache.geronimo.xml.ns.j2ee.application_1:" +
-                    "org.apache.geronimo.xml.ns.j2ee.application_client_1:" +
-                    "org.apache.geronimo.xml.ns.j2ee.connector_1:" +
-                    "org.apache.geronimo.xml.ns.j2ee.web_1:" +
-                    "org.apache.geronimo.xml.ns.naming_1:" +
-                    "org.apache.geronimo.xml.ns.security_1:" +
-                    "org.openejb.xml.ns.openejb_jar_2:"+
-                    "org.openejb.xml.ns.pkgen_2:"+
-                    "org.openejb.xml.ns.corba_css_config_2:"+
-                    "org.openejb.xml.ns.corba_tss_config_2:", Activator.class.getClassLoader() );
+                    "org.apache.geronimo.j2ee.deployment:" +
+                    "org.apache.geronimo.j2ee.application:" +
+                    "org.apache.geronimo.j2ee.applicationclient:" +
+                    "org.apache.geronimo.j2ee.connector:" +
+                    "org.apache.geronimo.j2ee.web:" +
+                    "org.apache.geronimo.j2ee.naming:" +
+                    "org.apache.geronimo.j2ee.security:" +
+                    "org.apache.geronimo.j2ee.openejb_jar:"+
+                    "org.apache.geronimo.j2ee.pkgen:"+
+                    "org.apache.geronimo.j2ee.corba_css_config:"+
+                    "org.apache.geronimo.j2ee.corba_tss_config:", Activator.class.getClassLoader() );
         } catch (JAXBException e) {
             Trace.tracePoint("JAXBException", "JAXBContext.newInstance");
             e.printStackTrace();

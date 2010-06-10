@@ -23,15 +23,6 @@
     <extension-point id="sourcePathComputerMapping" name="Geronimo Deployment Plan Loader" schema="schema/sourcePathComputerMapping.exsd"/>
     <extension-point id="JAXBUtilsProvider" name="Geronimo JAXB Utils" schema="schema/JAXBUtilsProvider.exsd"/>
 
-    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
-        <launchConfigurationType
-            id="org.apache.geronimo.st.core.launchConfigurationType"
-            name="%geronimoLaunchConfigurationType"
-            delegate="org.apache.geronimo.st.core.GeronimoLaunchConfigurationDelegate"
-            modes="run, debug, profile"
-            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
-            sourcePathComputerId="org.apache.geronimo.st.core.sourcePathComputer"/>
-    </extension>
     
     <extension point="org.eclipse.debug.core.sourcePathComputers">
         <sourcePathComputer
@@ -40,20 +31,6 @@
     </extension>
       
       
-    <!-- 
-     |                                                                                           
-     | This extension point provides a way for a server to support the "Run on Server" scenario. 
-     | The id specifies a unique identifier for this extension point, and the class specifies the 
-     | fully qualified name of the Java class that extends LaunchableAdapterDelegate. 
-     |                                                                                           
-     --> 
-    <extension point="org.eclipse.wst.server.core.launchableAdapters">
-        <launchableAdapter
-            class="org.apache.geronimo.st.core.GeronimoLaunchableAdapterDelegate"
-            id="org.eclipse.jst.server.geronimo.web"/>
-    </extension>
-
-
     <!-- 
      |                                                                                           
      | Define the runtime component version(s) and the facets supported by each 
@@ -152,25 +129,6 @@
         </project-facet>
     </extension>
 
-
-    <extension id="GeronimoOpExtensions" name="GeronimoOpExtensions" point="org.eclipse.wst.common.frameworks.OperationExtension">
-        <operationExtension
-            id="org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentImportOperation"
-            postOperationClass="org.apache.geronimo.st.core.operations.ImportDeploymentPlanOperation">
-        </operationExtension>
-        <operationExtension
-            id="org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EJBComponentImportOperation"
-            postOperationClass="org.apache.geronimo.st.core.operations.ImportDeploymentPlanOperation">
-        </operationExtension>
-        <operationExtension
-            id="org.eclipse.jst.j2ee.internal.archive.operations.EARComponentImportOperation"
-            postOperationClass="org.apache.geronimo.st.core.operations.ImportDeploymentPlanOperation">
-        </operationExtension>
-        <operationExtension
-            id="org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentImportOperation"
-            postOperationClass="org.apache.geronimo.st.core.operations.ImportDeploymentPlanOperation">
-        </operationExtension>
-    </extension>
     
     <extension
        point="org.eclipse.hyades.trace.ui.launchConfigMechanismAssociator">
@@ -197,8 +155,5 @@
        </association>
    </extension>
    
-   <extension point="org.apache.geronimo.st.core.JAXBUtilsProvider">
-       <provider class="org.apache.geronimo.st.core.jaxb.JAXB21Utils" version="2.0,2.1,2.2"/>
-   </extension>
  
 </plugin>

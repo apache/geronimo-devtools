@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v21.core.internal;
+package org.apache.geronimo.st.v21.core.jaxb;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -45,12 +45,10 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.geronimo.st.core.Activator;
+import org.apache.geronimo.st.v21.core.Activator;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.apache.geronimo.st.core.jaxb.IJAXBUtilsProvider;
 import org.apache.geronimo.st.core.jaxb.NamespaceFilter;
-import org.apache.geronimo.st.v21.core.jaxb.MarshallerListener;
-import org.apache.geronimo.st.v21.core.jaxb.NamespacePrefix;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
