@@ -152,7 +152,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.runtime.v21</artifactId>
+            <artifactId>org.apache.geronimo.runtime.v22</artifactId>
             <version>${version}</version>
             <exclusions>
                     <exclusion>
