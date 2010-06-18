@@ -41,18 +41,21 @@ public class DependencySection extends AbstractTableSection {
 
     boolean isServerEnvironment;
     protected Environment environment;
+    private String runtimeVersionNumber;
 
-    public DependencySection(JAXBElement plan, Environment environment, Composite parent, FormToolkit toolkit, int style) {
-        this(plan, environment, parent, toolkit, style, true);
+    public DependencySection(JAXBElement plan, Environment environment, Composite parent, FormToolkit toolkit, int style,String runtimeVersion) {
+        this(plan, environment, parent, toolkit, style, true,runtimeVersion);
     }
 
-    public DependencySection(JAXBElement plan, Environment environment, Composite parent, FormToolkit toolkit, int style, boolean isServerEnvironment) {
+    public DependencySection(JAXBElement plan, Environment environment, Composite parent, FormToolkit toolkit, int style, boolean isServerEnvironment,String runtimeVersion) {
         super(plan, parent, toolkit, style);
         this.environment = environment;
         this.isServerEnvironment = isServerEnvironment; 
         this.COLUMN_NAMES = new String[] {
                 CommonMessages.groupId, CommonMessages.artifactId, CommonMessages.version, CommonMessages.artifactType
         };
+        
+        runtimeVersionNumber = runtimeVersion;        
         createClient();
         getSection().setExpanded(false);
     }
@@ -138,5 +141,9 @@ public class DependencySection extends AbstractTableSection {
                 return "";
             }
         };
+    }
+    
+    public String getRuntimeVersion(){
+        return runtimeVersionNumber;
     }
 }

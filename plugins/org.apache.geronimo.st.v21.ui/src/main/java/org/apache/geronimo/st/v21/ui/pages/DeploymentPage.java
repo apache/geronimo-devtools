@@ -22,7 +22,7 @@ import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.v21.ui.pages.AbstractGeronimoFormPage;
-import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
+import org.apache.geronimo.st.v21.core.GeronimoServerInfoManager;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.ui.sections.AdminObjectSection;
 import org.apache.geronimo.st.v21.ui.sections.ClassFilterSection;
@@ -49,7 +49,7 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
      * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
     protected void fillBody(IManagedForm managedForm) {
-        managedForm.addPart(new DependencySection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan()), body, toolkit, getStyle()));
+        managedForm.addPart(new DependencySection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan()), body, toolkit, getStyle(),getRuntimeVersion()));
         managedForm.addPart(new GBeanSection(getDeploymentPlan(), JAXBModelUtils.getGbeans(getDeploymentPlan()), body, toolkit, getStyle()));
         managedForm.addPart(new ClassFilterSection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan()), body, toolkit, getStyle(), true, true));
         managedForm.addPart(new ClassFilterSection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan()), body, toolkit, getStyle(), true, false));
@@ -64,7 +64,7 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
             managedForm.addPart(new AdminObjectSection(getDeploymentPlan(), body, toolkit, getStyle(), connector.getAdminobject()));
         }
         if (ApplicationClient.class.isInstance(getDeploymentPlan().getValue())) {
-            managedForm.addPart(new DependencySection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan(), false), body, toolkit, getStyle(), false));
+            managedForm.addPart(new DependencySection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan(), false), body, toolkit, getStyle(), false,getRuntimeVersion()));
             managedForm.addPart(new ClassFilterSection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan(), false), body, toolkit, getStyle(), false, true));
             managedForm.addPart(new ClassFilterSection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan(), false), body, toolkit, getStyle(), false, false));
         }
@@ -88,7 +88,7 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
 
     @Override
     protected void triggerGeronimoServerInfoUpdate() {
-        GeronimoServerInfo.getInstance().updateInfo();
+        GeronimoServerInfoManager.getProvider(getRuntimeVersion()).updateInfo();
     }
 
 }

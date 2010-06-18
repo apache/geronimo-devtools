@@ -122,6 +122,10 @@
                                     <groupId>org.apache.geronimo.specs</groupId>
                                     <artifactId>geronimo-activation_1.1_spec</artifactId>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.geronimo.specs</groupId>
+                                    <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
+                                </artifactItem>
                             </artifactItems>
                         </configuration>
                     </execution>

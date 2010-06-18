@@ -16,16 +16,12 @@
  */
 package org.apache.geronimo.st.v21.ui.editors;
 
-import java.io.IOException;
-
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
 
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
-import org.apache.geronimo.st.v21.ui.editors.AbstractGeronimoFormContentLoader;
-import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
+import org.apache.geronimo.st.v21.core.GeronimoServerInfoManager;
 import org.apache.geronimo.st.v21.core.GeronimoV21Utils;
 import org.apache.geronimo.st.v21.core.operations.ImportDeploymentPlanDataModelProvider;
 import org.apache.geronimo.st.v21.core.operations.ImportDeploymentPlanOperation;
@@ -54,6 +50,7 @@ import org.eclipse.wst.sse.ui.StructuredTextEditor;
  * @version $Rev$ $Date$
  */
 public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader {
+	
 
     /*
      * (non-Javadoc)
@@ -136,8 +133,8 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
         return new DeploymentPage(editor, "deploymentpage", CommonMessages.editorTabDeployment);
     }
 
-    public void triggerGeronimoServerInfoUpdate() {
-        GeronimoServerInfo.getInstance().updateInfo();
+    public void triggerGeronimoServerInfoUpdate(String runtimeVersion) {
+        GeronimoServerInfoManager.getProvider(runtimeVersion).updateInfo();
     }
 
 	public StructuredTextEditor getDeploymentPlanSourcePage(AbstractGeronimoDeploymentPlanEditor editor) {
@@ -161,5 +158,6 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
            geronimoPage.refresh();
 	    
     }
+
 
 }

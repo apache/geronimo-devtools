@@ -51,23 +51,6 @@
             class="org.apache.geronimo.st.v11.ui.internal.GeronimoServerWizardFragment"/>
     </extension>
     
-     <extension point="org.eclipse.ui.popupMenus">
-        <objectContribution
-                adaptable="true"
-                id="org.apache.geronimo.v11.ui.serveractions"
-                objectClass="org.eclipse.wst.server.core.IServer">
-            <enablement>
-                <test forcePluginActivation="true"
-                    property="org.eclipse.wst.server.ui.serverType"
-                    value="org.apache.geronimo.server.11" />
-            </enablement>
-            <action id="org.apache.geronimo.v11.ui.launchSupport"
-                label="%PopupMenus.launchSupport" icon="icons/obj16/littleG.gif"
-                class="org.apache.geronimo.st.v11.ui.actions.LaunchGeronimoSupportAction"
-                enablesFor="1">
-            </action>
-        </objectContribution>
-    </extension>
 
     <extension point="org.eclipse.ui.popupMenus">
         <objectContribution

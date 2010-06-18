@@ -41,26 +41,11 @@
             initialState="stopped" supportsRemoteHosts="true"
             startTimeout="240000" stopTimeout="30000" startBeforePublish="true"
             runtimeTypeId="org.apache.geronimo.runtime.11"
-            launchConfigId="org.apache.geronimo.st.core.launchConfigurationType"
+            launchConfigId="org.apache.geronimo.st.v11.core.launchConfigurationType"
             behaviourClass="org.apache.geronimo.st.v11.core.GeronimoServerBehaviour"
             hasConfiguration="false" launchModes="run,debug,profile">
         </serverType>
     </extension>
-    
-    <!-- extension point="org.eclipse.wst.server.core.installableRuntimes">
-        <installableRuntime id="org.apache.geronimo.runtime.tomcat.11"
-            featureVersion="1.1.1"
-            featureId="org.apache.geronimo.installableruntime.tomcat.feature"
-            featureSite="http://www.apache.org/dist/geronimo/eclipse/updates/"
-            path="geronimo-tomcat-j2ee-1.1.1.zip">
-        </installableRuntime>
-        <installableRuntime id="org.apache.geronimo.runtime.jetty.11"
-            featureVersion="1.1.1"
-            featureId="org.apache.geronimo.installableruntime.jetty.feature"
-            featureSite="http://www.apache.org/dist/geronimo/eclipse/updates/"
-            path="geronimo-jetty-j2ee-1.1.1.zip">
-        </installableRuntime>
-    </extension -->
     
     <extension point="org.eclipse.jst.server.core.runtimeFacetMappings">
         <runtimeFacetMapping
@@ -155,4 +140,29 @@
             postOperationClass="org.apache.geronimo.st.v11.core.operations.ImportDeploymentPlanOperation">
         </operationExtension>
     </extension>
+    
+    <extension
+       point="org.eclipse.hyades.trace.ui.launchConfigMechanismAssociator">
+       <association            
+           launchConfigID = "org.apache.geronimo.st.v11.core.launchConfigurationType">
+   
+           <mechanism mechanismID = "org.eclipse.tptp.trace.ui.jvmpiMechanism"> 
+               <configuration
+                   launchDelegate = "org.eclipse.tptp.trace.ui.internal.launcher.deleg.application.PIAttachLauncherDelegate"
+                   configurationId = "org.eclipse.tptp.trace.ui.jvmpiConfiguration"
+                   associatedAgent = "org.eclipse.tptp.trace.ui.jvmpiAgent"        
+                   filter = "org.eclipse.tptp.platform.profile.server.core.internal.PICollectorFiltration">                
+               </configuration>            
+           </mechanism>        
+           
+           <mechanism mechanismID = "org.eclipse.tptp.trace.jvmti.jvmtiMechanism"> 
+               <configuration
+                   launchDelegate = "org.eclipse.tptp.platform.jvmti.client.internal.launcher.TIAttachLauncherDelegate"
+                   configurationId = "org.eclipse.tptp.trace.jvmti.tiConfiguration"
+                   associatedAgent = "org.eclipse.tptp.platform.jvmti.TIAgent"
+                   filter = "org.eclipse.tptp.platform.profile.server.core.internal.TICollectorFiltration">                            
+               </configuration>            
+           </mechanism>    
+       </association>
+   </extension>
 </plugin>

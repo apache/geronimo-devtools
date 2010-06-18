@@ -7,7 +7,7 @@ Bundle-Activator: org.apache.geronimo.st.v21.core.Activator
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.runtime.v20,
- org.apache.geronimo.st.v21.core,
+ org.apache.geronimo.st.v21.core;visibility:=reexport,
  org.apache.geronimo.st.core,
  org.apache.geronimo.jee.v21.jaxbmodel,
  org.eclipse.core.runtime,

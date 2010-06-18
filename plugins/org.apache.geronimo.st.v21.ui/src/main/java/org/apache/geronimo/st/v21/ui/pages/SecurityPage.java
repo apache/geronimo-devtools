@@ -18,7 +18,7 @@ package org.apache.geronimo.st.v21.ui.pages;
 
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.v21.ui.pages.AbstractGeronimoFormPage;
-import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
+import org.apache.geronimo.st.v21.core.GeronimoServerInfoManager;
 import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v21.ui.sections.SecurityAdvancedSection;
 import org.apache.geronimo.st.v21.ui.sections.SecurityRealmSection;
@@ -42,9 +42,9 @@ public class SecurityPage extends AbstractGeronimoFormPage {
      * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
     protected void fillBody(IManagedForm managedForm) {
-    	managedForm.addPart(new SecurityRealmSection(getDeploymentPlan(),JAXBModelUtils.getGbeans(getDeploymentPlan()), body, toolkit, getStyle()));	
-        managedForm.addPart(new SecurityRoleMappingSection(getDeploymentPlan(), getDeploymentDescriptor(), body, toolkit, getStyle()));
-        managedForm.addPart(new SecurityAdvancedSection(getDeploymentPlan(), body, toolkit, getStyle()));
+    	managedForm.addPart(new SecurityRealmSection(getDeploymentPlan(),JAXBModelUtils.getGbeans(getDeploymentPlan()), body, toolkit, getStyle(),getRuntimeVersion()));	
+        managedForm.addPart(new SecurityRoleMappingSection(getDeploymentPlan(), getDeploymentDescriptor(), body, toolkit, getStyle(),getRuntimeVersion()));
+        managedForm.addPart(new SecurityAdvancedSection(getDeploymentPlan(), body, toolkit, getStyle(),getRuntimeVersion()));
     }
 
     /*
@@ -69,7 +69,7 @@ public class SecurityPage extends AbstractGeronimoFormPage {
 
     @Override
     protected void triggerGeronimoServerInfoUpdate() {
-        GeronimoServerInfo.getInstance().updateInfo();
+        GeronimoServerInfoManager.getProvider(getRuntimeVersion()).updateInfo();
     }
 
 }

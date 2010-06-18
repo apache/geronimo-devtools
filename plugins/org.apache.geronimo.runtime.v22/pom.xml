@@ -144,10 +144,6 @@
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
                                 <artifactItem>
-                                    <groupId>org.apache.geronimo.specs</groupId>
-                                    <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
-                                </artifactItem>
-                                <artifactItem>
                                     <groupId>org.codehaus.plexus</groupId>
                                     <artifactId>plexus-archiver</artifactId>
                                 </artifactItem>

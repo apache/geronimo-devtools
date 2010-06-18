@@ -39,7 +39,7 @@
     <extension point="org.eclipse.wst.server.ui.editorPages">
         <page id="org.eclipse.wst.server.editor.plugins" order="10"
               name="%serverEditorPluginPage"
-              typeIds="org.apache.geronimo.server.*"
+              typeIds="org.apache.geronimo.server.21"
               insertionIds="org.eclipse.wst.server.editor.plugins"
               class="org.apache.geronimo.st.v21.ui.pages.ServerPluginPage"/>
     </extension>
@@ -47,7 +47,7 @@
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.plugins" order="10"
             insertionId="org.eclipse.wst.server.editor.plugins"
-            typeIds="org.apache.geronimo.server.*"
+            typeIds="org.apache.geronimo.server.21"
             class="org.apache.geronimo.st.v21.ui.sections.ServerPluginSection">
         </section>
     </extension>
@@ -66,24 +66,6 @@
                      org.apache.geronimo.server.21,
                      org.apache.geronimo.server.22"
             class="org.apache.geronimo.st.v21.ui.internal.GeronimoServerWizardFragment"/>
-    </extension>
-    
-     <extension point="org.eclipse.ui.popupMenus">
-        <objectContribution
-                adaptable="true"
-                id="org.apache.geronimo.v21.ui.serveractions"
-                objectClass="org.eclipse.wst.server.core.IServer">
-            <enablement>
-                <test forcePluginActivation="true"
-                    property="org.eclipse.wst.server.ui.serverType"
-                    value="org.apache.geronimo.server.2*" />
-            </enablement>
-            <action id="org.apache.geronimo.v21.ui.launchSupport"
-                label="%PopupMenus.launchSupport" icon="icons/obj16/littleG.gif"
-                class="org.apache.geronimo.st.v21.ui.actions.LaunchGeronimoSupportAction"
-                enablesFor="1">
-            </action>
-        </objectContribution>
     </extension>
 
     <extension point="org.eclipse.ui.popupMenus">

@@ -22,6 +22,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
 import org.apache.geronimo.st.ui.editors.IGeronimoFormContentLoader;
+import org.apache.geronimo.st.ui.editors.SharedDeploymentPlanEditor;
 import org.apache.geronimo.st.v21.core.GeronimoUtils;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.eclipse.core.resources.IFile;
@@ -39,7 +40,7 @@ public abstract class AbstractGeronimoFormContentLoader implements IGeronimoForm
 	 * @see org.apache.geronimo.st.ui.editors.IGeronimoFormContentLoader#doAddPages(org.eclipse.ui.forms.editor.FormEditor)
 	 */
 	public void doAddPages(FormEditor editor) throws PartInitException{
-        triggerGeronimoServerInfoUpdate();
+        triggerGeronimoServerInfoUpdate(((SharedDeploymentPlanEditor)editor).getRuntimeVersion());
 		IEditorInput input = editor.getEditorInput();
 		if(input instanceof IFileEditorInput) {
 			String planFileName = ((IFileEditorInput) input).getFile().getName();
@@ -57,7 +58,7 @@ public abstract class AbstractGeronimoFormContentLoader implements IGeronimoForm
 		}
 	}
 	
-	abstract public void triggerGeronimoServerInfoUpdate() throws PartInitException;
+	abstract public void triggerGeronimoServerInfoUpdate(String runtimeVersion) throws PartInitException;
 	
 	abstract public void addWebPlanPages(FormEditor editor) throws PartInitException;
 	

@@ -138,10 +138,6 @@
                                     <artifactId>geronimo-deploy-config</artifactId>
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.apache.geronimo.specs</groupId>
-                                    <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
-                                </artifactItem>
                             </artifactItems>
                             <outputDirectory>lib</outputDirectory>
                         </configuration>

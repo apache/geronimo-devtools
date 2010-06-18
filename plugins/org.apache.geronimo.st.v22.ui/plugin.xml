@@ -35,5 +35,22 @@
     		<page class="org.apache.geronimo.st.v21.ui.wizards.FacetInstallPage"/>
   		</wizard-pages>
 	</extension>  
+	
+	
+    <extension point="org.eclipse.wst.server.ui.editorPages">
+        <page id="org.eclipse.wst.server.editor.plugins" order="10"
+              name="%serverEditorPluginPage"
+              typeIds="org.apache.geronimo.server.22"
+              insertionIds="org.eclipse.wst.server.editor.plugins"
+              class="org.apache.geronimo.st.v22.ui.pages.ServerPluginPage"/>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.plugins" order="10"
+            insertionId="org.eclipse.wst.server.editor.plugins"
+            typeIds="org.apache.geronimo.server.22"
+            class="org.apache.geronimo.st.v22.ui.sections.ServerPluginSection">
+        </section>
+    </extension>
 
 </plugin>

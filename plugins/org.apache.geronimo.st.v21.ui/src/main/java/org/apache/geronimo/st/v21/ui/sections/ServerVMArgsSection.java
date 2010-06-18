@@ -16,8 +16,8 @@
  */
 package org.apache.geronimo.st.v21.ui.sections;
 
-import org.apache.geronimo.st.v21.ui.commands.SetVMArgsCommand;
 import org.apache.geronimo.st.ui.internal.Messages;
+import org.apache.geronimo.st.v21.ui.commands.SetVMArgsCommand;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.jdt.internal.debug.ui.launcher.LauncherMessages;
