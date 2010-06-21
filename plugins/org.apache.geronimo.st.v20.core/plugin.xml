@@ -33,7 +33,8 @@
             <moduleType types="jst.utility" versions="1.0"/>
 	        <moduleType types="jst.appclient" versions="1.2, 1.3, 1.4, 5.0"/>
         </runtimeType>
-    </extension>
+    </extension>    
+    
     
     <extension point="org.eclipse.wst.server.core.serverTypes">
         <serverType id="org.apache.geronimo.server.20"
@@ -43,7 +44,7 @@
             initialState="stopped" supportsRemoteHosts="true"
             startTimeout="240000" stopTimeout="30000" startBeforePublish="true"
             runtimeTypeId="org.apache.geronimo.runtime.20"
-            launchConfigId="org.apache.geronimo.st.v20.core.launchConfigurationType"
+            launchConfigId="org.apache.geronimo.st.v21.core.launchConfigurationType"
             behaviourClass="org.apache.geronimo.st.v21.core.GeronimoServerBehaviour"
             hasConfiguration="false" launchModes="run,debug,profile">
         </serverType>

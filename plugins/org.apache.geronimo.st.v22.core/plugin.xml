@@ -43,7 +43,7 @@
             initialState="stopped" supportsRemoteHosts="true"
             startTimeout="240000" stopTimeout="30000" startBeforePublish="true"
             runtimeTypeId="org.apache.geronimo.runtime.22"
-            launchConfigId="org.apache.geronimo.st.v22.core.launchConfigurationType"
+            launchConfigId="org.apache.geronimo.st.v21.core.launchConfigurationType"
             behaviourClass="org.apache.geronimo.st.v22.core.GeronimoServerBehaviour"
             hasConfiguration="false" launchModes="run,debug,profile">
         </serverType>

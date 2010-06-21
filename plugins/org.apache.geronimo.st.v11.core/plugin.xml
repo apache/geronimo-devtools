@@ -101,7 +101,7 @@
     
      <extension point="org.eclipse.debug.core.launchConfigurationTypes">
         <launchConfigurationType
-            id="org.apache.geronimo.st.core.launchConfigurationType"
+            id="org.apache.geronimo.st.v11.core.launchConfigurationType"
             name="%geronimoLaunchConfigurationType"
             delegate="org.apache.geronimo.st.v11.core.GeronimoLaunchConfigurationDelegate"
             modes="run, debug, profile"
