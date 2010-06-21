@@ -48,7 +48,7 @@ public class GeronimoServerInfoManager {
 				try {
 					IGeronimoServerInfo provider = (IGeronimoServerInfo) element
 							.createExecutableExtension("class");
-					String versions = element.getAttribute("version");
+					String versions = element.getAttribute("versions");
 					String[] versionArray = versions.split(",");
 					for (int j = 0; j < versionArray.length; j++) {
 						providers.put(versionArray[j], provider);
@@ -63,12 +63,7 @@ public class GeronimoServerInfoManager {
 
 		Trace.tracePoint("EXIT", "GeronimoServerInfo.loadExtensionPoints");
 	}
-	
-
-    // singleton class
-    private GeronimoServerInfoManager() {
-    }
-
+	 
 
     public static IGeronimoServerInfo getProvider(String version) {
         return providers.get(version);

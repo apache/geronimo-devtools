@@ -69,9 +69,6 @@ public class GeronimoV22ServerInfo implements IGeronimoServerInfo{
     private HashMap<org.apache.geronimo.jee.deployment.Pattern,HashMap<String,ArrayList<String>>> credentialStoreAttributes;
     private ArrayList<Dependency> commonLibs;
 
-    // singleton class
-    private GeronimoV22ServerInfo() {
-    }
 
     private static GeronimoV22ServerInfo instance = new GeronimoV22ServerInfo();
 
