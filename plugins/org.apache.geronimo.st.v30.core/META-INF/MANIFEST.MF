@@ -7,9 +7,10 @@ Bundle-Activator: org.apache.geronimo.st.v30.core.Activator
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Require-Bundle: 
- org.apache.geronimo.jee.v21.jaxbmodel,
- org.apache.geronimo.st.v30.jaxbmodel,
  org.apache.geronimo.runtime.v30,
+ org.apache.geronimo.jaxbmodel.common,
+ org.apache.geronimo.jee.v21.jaxbmodel,
+ org.apache.geronimo.st.v30.jaxbmodel, 
  org.eclipse.core.commands,
  org.eclipse.jst.j2ee,
  org.eclipse.core.runtime,
@@ -28,6 +29,10 @@ Require-Bundle:
  org.eclipse.wst.common.frameworks,
  org.eclipse.wst.common.project.facet.core,
  org.eclipse.wst.server.core,
+ org.eclipse.hyades.trace.ui;resolution:=optional,
+ org.eclipse.tptp.trace.jvmti.client;resolution:=optional,
+ org.eclipse.tptp.platform.profile.server.core;resolution:=optional,
+ org.eclipse.tptp.platform.jvmti.client;resolution:=optional,
  org.eclipse.wst.web
 Bundle-ActivationPolicy: lazy
 Export-Package: 

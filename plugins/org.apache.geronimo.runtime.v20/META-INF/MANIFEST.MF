@@ -11,8 +11,7 @@ Bundle-ClassPath: lib/geronimo-common-2.0.2.jar,
  lib/geronimo-kernel-2.0.2.jar,
  lib/geronimo-system-2.0.2.jar,
  lib/geronimo-util-2.0.2.jar,
- lib/geronimo-deploy-config-2.0.2.jar,
- lib/geronimo-javaee-deployment_1.1MR3_spec-1.0.1-SNAPSHOT.jar
+ lib/geronimo-deploy-config-2.0.2.jar
 Export-Package: 
  org.apache.geronimo.common,
  org.apache.geronimo.common.propertyeditor,

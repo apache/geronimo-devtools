@@ -6,7 +6,8 @@ Bundle-Version: 3.0.0
 Bundle-ClassPath: .
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
-Require-Bundle: org.apache.geronimo.jaxbmodel.common,
+Require-Bundle: org.apache.geronimo.runtime.common,
+ org.apache.geronimo.jaxbmodel.common,
  org.eclipse.core.runtime,
  org.eclipse.core.resources
 Export-Package: org.apache.geronimo.jee.application,
