@@ -22,7 +22,7 @@
                 
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>eclipse-plugins-parent</artifactId>
-    <version>3.0_M1-SNAPSHOT</version>
+    <version>3.0.0</version>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin :: Plugins</name>
                 
