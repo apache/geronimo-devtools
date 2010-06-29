@@ -21,7 +21,7 @@
                                                 
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>eclipse</artifactId>
-    <version>3.0_M1-SNAPSHOT</version>
+    <version>3.0.0</version>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin :: Eclipse</name>
                                                 
@@ -57,6 +57,18 @@
                 </executions>
             </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+               <!-- skip deploy child artifacts in release process-->
+               <plugin>
+                   <artifactId>maven-deploy-plugin</artifactId>             
+                   <configuration>
+                     <skip>true</skip>
+                  </configuration>
+               </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
                                                 
     <profiles>

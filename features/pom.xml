@@ -29,9 +29,23 @@
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.0_M1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+
+    <build>
+         <pluginManagement>
+            <plugins>
+               <!-- skip deploy child artifacts in release process-->
+               <plugin>
+                   <artifactId>maven-deploy-plugin</artifactId>             
+                   <configuration>
+                     <skip>true</skip>
+                  </configuration>
+               </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
     <modules>
         <module>org.apache.geronimo.v30.feature</module>
