@@ -43,5 +43,4 @@ Export-Package:
  org.apache.geronimo.st.v30.core.internal,
  org.apache.geronimo.st.v30.core.jaxb,
  org.apache.geronimo.st.v30.core.operations
-Import-Package: 
- com.ibm.etools.aries.internal.core.datatransfer.exportmodel
+

@@ -21,14 +21,14 @@
 
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>org.apache.geronimo.runtime.common</artifactId>
-    <version>3.0.0</version>
+    <version>3.0_M1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>${artifactId}</name>
 
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>eclipse-plugins-parent</artifactId>
-        <version>3.0.0</version>
+        <version>3.0_M1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -107,30 +107,37 @@
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.specs</groupId>
                                     <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
+                                    <version>1.0.1</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>commons-logging</groupId>
                                     <artifactId>commons-logging</artifactId>
+                                    <version>1.1.1</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>cglib</groupId>
                                     <artifactId>cglib-nodep</artifactId>
+                                    <version>2.1_3</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.specs</groupId>
                                     <artifactId>geronimo-stax-api_1.2_spec</artifactId>
+                                    <version>1.0</version>
                                 </artifactItem>
                                 <artifactItem>
                                    <groupId>org.apache.geronimo.specs</groupId>
-									<artifactId>geronimo-jaxb_2.2_spec</artifactId>
+				   				   <artifactId>geronimo-jaxb_2.2_spec</artifactId>
+				   				   <version>1.0</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.bundles</groupId>
                                     <artifactId>jaxb-impl</artifactId>
+                                    <version>2.2_1</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.specs</groupId>
                                     <artifactId>geronimo-activation_1.1_spec</artifactId>
+                                    <version>1.1</version>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
