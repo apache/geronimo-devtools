@@ -6,8 +6,8 @@ Helpful URLs
 Geronimo Devtools:                          http://geronimo.apache.org/development-tools.html
 Geronimo Eclipse Update Site:               http://www.apache.org/dist/geronimo/eclipse/updates
 Bug Tracking:                               http://issues.apache.org/jira/browse/GERONIMODEVTOOLS
-Quick start - fast and easy development:    http://cwiki.apache.org/GMOxDOC22/quick-start-fast-and-easy-development.html
-5-minute Tutorial using GEP:                http://cwiki.apache.org/GMOxDOC22/5-minute-tutorial-on-enterprise-application-development-with-eclipse-and-geronimo.html
+Quick start - fast and easy development:    http://cwiki.apache.org/GMOxDOC30/quick-start-fast-and-easy-development.html
+5-minute Tutorial using GEP:                http://cwiki.apache.org/GMOxDOC30/5-minute-tutorial-on-enterprise-application-development-with-eclipse-and-geronimo.html
 
 
 System Requirements
@@ -57,13 +57,24 @@ Geronimo Eclipse Plugin Version ${pom.version} Enhancements
 Installation Instructions
 -------------------------
 
-See http://cwiki.apache.org/GMOxDOC22/installing-geronimo-eclipse-plugin.html
+See http://cwiki.apache.org/GMOxDOC30/installing-geronimo-eclipse-plugin.html
 
 
 Bug Fixed and New Features
 --------------------------
 
-
+GERONIMODEVTOOLS-647	Synchronize dependency version with Geronimo 3.0 M1
+GERONIMODEVTOOLS-646	Upgrade to eclipse Helios
+GERONIMODEVTOOLS-643	Refactor GEP 3.0 code to decouple various server adapters
+GERONIMODEVTOOLS-641	To release GEP with maven release plugin
+GERONIMODEVTOOLS-640	Support Eclipse 3.6 (and latest versions of WTP, etc.)
+GERONIMODEVTOOLS-639	Enhance GEP to support Geronimo 3.0 server
+GERONIMODEVTOOLS-621	Extend new Aries tooling to provide new OSGi PDE enhancements specific to Geronimo runtime
+GERONIMODEVTOOLS-614	Support free (not open-source) Aries tooling
+GERONIMODEVTOOLS-606	Support Eclipse Halios
+GERONIMODEVTOOLS-605	Generate classes with JAXB from new schema files for Java EE6
+GERONIMODEVTOOLS-604	Upgrade to eclipse 3.5.2
+GERONIMODEVTOOLS-603	Make Geronimo 3.0 server runnable with GEP
 
 
 Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
