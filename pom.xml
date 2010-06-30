@@ -370,7 +370,7 @@
                 <inherited>false</inherited>
                 <executions>
                     <execution>
-                        <phase>install</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>clean</goal>
                             <goal>genkey</goal>

@@ -32,8 +32,8 @@ and are placed here unaltered.
  *     IBM Corporation - Initial API and implementation
  *******************************************************************************/
 
-For the geronimo-util jar in org.apache.geronimo.runtime.v20,
-and the geronimo-crypto jar in org.apache.geronimo.runtime.v21:
+For the geronimo-util jar in org.apache.geronimo.runtime.*,
+and the geronimo-crypto jar in org.apache.geronimo.runtime.*:
 
 =========================================================================
 ==  Bouncy Castle Notice                                               ==
@@ -45,7 +45,7 @@ package) which was developed by the Bouncy Castle project.
 
      Copyright (c) 2000-2005 The Legion Of The Bouncy Castle (http://www.bouncycastle.org)
 
-For jaxb-api and jaxb-impl jars in org.apache.geronimo.runtime.common.jar:
+For jaxb-impl jars in org.apache.geronimo.runtime.common.jar:
 
 =========================================================================
 ==  Sun CDDL Notice                                                    ==
@@ -54,7 +54,7 @@ For jaxb-api and jaxb-impl jars in org.apache.geronimo.runtime.common.jar:
 This product includes software developed for the JAXB Reference 
 Implementation project. (https://jaxb.dev.java.net/)
 
-For plexus-archiver jar in org.apache.geronimo.runtime.v21.jar:
+For plexus-archiver jar in org.apache.geronimo.runtime.*.jar:
 
 =========================================================================
 ==  Plexus Notice                                                      ==
