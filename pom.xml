@@ -27,9 +27,9 @@
     <name>Geronimo Eclipse Plugin</name>
                         
     <parent>
-        <groupId>org.apache</groupId>
-        <artifactId>apache</artifactId>
-        <version>5</version>
+      <groupId>org.apache</groupId>
+      <artifactId>apache</artifactId>
+      <version>6</version>
     </parent>
                         
     <description>Apache Geronimo Eclipse Plugin and WTP Server Adapter</description>
@@ -233,9 +233,8 @@
         <sourceDirectory>src/main/</sourceDirectory>
                         
         <pluginManagement>
-            <plugins>
-                
-                <plugin>
+             <plugins>
+               <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-antrun-plugin</artifactId>
                     <version>1.3</version>
@@ -270,7 +269,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <version>2.2-beta-1</version>
+                    <version>2.2-beta-4</version>
                 </plugin>
                 
                 <plugin>
@@ -303,16 +302,25 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>2.0-beta-9</version>
-                    <configuration>
-                        <useReleaseProfile>false</useReleaseProfile>
+                   <configuration>
+                        <useReleaseProfile>false</useReleaseProfile> 
+                        <allowTimestampedSnapshots>false</allowTimestampedSnapshots>
+                        <preparationGoals>clean install</preparationGoals>
                         <goals>deploy</goals>
-                        <arguments>-Papache-release</arguments>
                     </configuration>
                 </plugin>
 
+                <!-- skip javadoc generation during release:prepare, which is a built-in process from org.apache 6 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.5</version>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                </plugin>
+           </plugins>
 
-            </plugins>
         </pluginManagement>
                 
         <plugins>
@@ -568,67 +576,62 @@
                 <module>assembly</module>
             </modules>
         </profile>
-
-        <profile>
+            
+         <!-- this profile is copied from genesis-default-flava and genesis 2.0  -->
+         <profile>
             <id>apache-release</id>
+            <activation>
+                <property>
+                   <name>apache-release</name>
+                </property>
+            </activation>
             <build>
-                <plugins>
-                    <!-- Create a source-release artifact that contains the fully buildable 
-                         project directory source structure. This is the artifact which is 
-                         the official subject of any release vote. -->
-                    <plugin>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.apache.apache.resources</groupId>
-                                <artifactId>apache-source-release-assembly-descriptor</artifactId>
-                                <version>1.0.2</version>
-                            </dependency>
-                        </dependencies>
-                        <executions>
-                            <execution>
-                                <id>source-release-assembly</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>single</goal>
-                                </goals>
-                                <configuration>
-                                    <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
-                                    <descriptorRefs>
-                                        <descriptorRef>source-release</descriptorRef>
-                                    </descriptorRefs>
-                                    <tarLongFileFormat>gnu</tarLongFileFormat>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <!-- We want to sign the artifact, the POM, and all attached artifacts -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <configuration>
-                            <passphrase>${gpg.passphrase}</passphrase>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <!-- We want to deploy the artifact to a staging location for perusal -->
-                    <plugin>
-                        <inherited>true</inherited>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-deploy-plugin</artifactId>
-                        <configuration>
-                            <updateReleaseInfo>true</updateReleaseInfo>
-                        </configuration>
-                    </plugin>
-                </plugins>
+            <plugins>
+                <!-- waiting for release -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                             <goal>single</goal>
+                            </goals>
+                            <phase>package</phase>
+                            <configuration>
+                                <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+                                <descriptorRefs>
+                                    <descriptorRef>source-release</descriptorRef>
+                                </descriptorRefs>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <!-- apache version not yet released -->
+                            <!--<groupId>org.apache</groupId>-->
+                            <groupId>org.apache.geronimo.genesis</groupId>
+                            <artifactId>apache-source-release-assembly-descriptor</artifactId>
+                            <!-- apache version not yet known -->
+                            <version>2.0</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.geronimo.genesis</groupId>
+                    <artifactId>genesis-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                              <goal>validate-release-configuration</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
             </build>
-        </profile>
+         </profile>
+        
     </profiles>
                         
 </project>
