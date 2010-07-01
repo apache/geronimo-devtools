@@ -51,7 +51,7 @@
          |
          -->
         <dependencySet>
-            <outputFileNameMapping>${artifactId}_${version}.${extension}</outputFileNameMapping>
+            <outputFileNameMapping>${artifact.artifactId}_${artifact.version}.${artifact.extension}</outputFileNameMapping>
             <outputDirectory>eclipse/plugins/</outputDirectory>
             <unpack>false</unpack>
             <includes>
@@ -88,7 +88,7 @@
          |
          -->
         <dependencySet>
-            <outputFileNameMapping>${artifactId}_${version}</outputFileNameMapping>
+            <outputFileNameMapping>${artifact.artifactId}_${artifact.version}</outputFileNameMapping>
             <outputDirectory>eclipse/features/</outputDirectory>
             <unpack>true</unpack>
             <includes>
