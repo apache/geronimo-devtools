@@ -58,6 +58,7 @@ import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.core.operations.IGeronimoServerPluginManager;
 import org.apache.geronimo.st.v21.core.internal.Trace;
+import org.apache.geronimo.st.v21.core.plugin.JAXB21PluginUtils;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.apache.geronimo.system.plugin.PluginInstaller;
 import org.apache.geronimo.system.plugin.model.ArtifactType;
@@ -415,7 +416,7 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
 
     public PluginListType loadPluginList (InputStream in) {
         try {
-            JAXBElement pluginListElement = JAXBUtils.unmarshalPlugin(in);
+            JAXBElement pluginListElement = JAXB21PluginUtils.unmarshalPlugin(in);
             return (PluginListType)pluginListElement.getValue();
         }
         catch (Throwable e) {
@@ -428,7 +429,7 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
         try {
             ObjectFactory jeeFactory = new ObjectFactory();
             JAXBElement element = jeeFactory.createGeronimoPluginList(pluginList);
-            JAXBUtils.marshalPlugin(element, out);
+            JAXB21PluginUtils.marshalPlugin(element, out);
         }
         catch (Throwable e) {
             e.printStackTrace();
@@ -439,7 +440,7 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
         try {
             ObjectFactory jeeFactory = new ObjectFactory();
             JAXBElement element = jeeFactory.createGeronimoPlugin(metadata);
-            JAXBUtils.marshalPlugin(element, out);
+            JAXB21PluginUtils.marshalPlugin(element, out);
         }
         catch (Throwable e) {
             e.printStackTrace();

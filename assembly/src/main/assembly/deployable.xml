@@ -88,8 +88,7 @@
          |
          -->
         <dependencySet>
-            <outputFileNameMapping>${artifact.artifactId}_${artifact.version}</outputFileNameMapping>
-            <outputDirectory>eclipse/features/</outputDirectory>
+            <outputDirectory>eclipse/features/${artifact.artifactId}_${artifact.version}</outputDirectory>
             <unpack>true</unpack>
             <includes>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.v30.feature</include>

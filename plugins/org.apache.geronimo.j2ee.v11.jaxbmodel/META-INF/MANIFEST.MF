@@ -28,3 +28,4 @@ Export-Package:
  org.apache.geronimo.j2ee.web
 Import-Package: junit.framework;version="3.8.2"
 Bundle-Activator: org.apache.geronimo.j2ee.jaxbmodel.Activator
+Bundle-ActivationPolicy: lazy
