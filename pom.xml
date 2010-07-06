@@ -591,6 +591,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
+                    <inherited>false</inherited>
                     <executions>
                         <execution>
                             <goals>
@@ -598,7 +599,7 @@
                             </goals>
                             <phase>package</phase>
                             <configuration>
-                                <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+                                <runOnlyAtExecutionRoot>false</runOnlyAtExecutionRoot>
                                 <descriptorRefs>
                                     <descriptorRef>source-release</descriptorRef>
                                 </descriptorRefs>

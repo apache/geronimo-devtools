@@ -63,6 +63,8 @@ See http://cwiki.apache.org/GMOxDOC30/installing-geronimo-eclipse-plugin.html
 Bug Fixed and New Features
 --------------------------
 
+GERONIMODEVTOOLS-651    No deployment plan can be generated with 3.0 M1
+GERONIMODEVTOOLS-650    The sections of server editor page "overview" cann't display
 GERONIMODEVTOOLS-647	Synchronize dependency version with Geronimo 3.0 M1
 GERONIMODEVTOOLS-646	Upgrade to eclipse Helios
 GERONIMODEVTOOLS-643	Refactor GEP 3.0 code to decouple various server adapters
