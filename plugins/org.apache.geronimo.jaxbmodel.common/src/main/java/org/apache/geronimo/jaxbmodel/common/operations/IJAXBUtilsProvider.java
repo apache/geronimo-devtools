@@ -29,7 +29,5 @@ import org.eclipse.core.resources.IFile;
 public interface IJAXBUtilsProvider {
 	 public JAXBContext getJAXBContext();
 	 public void marshalDeploymentPlan(JAXBElement jaxbElement, IFile file) throws Exception;
-	 public void marshalPlugin(JAXBElement jaxbElement, OutputStream outputStream) throws Exception;
 	 public JAXBElement unmarshalFilterDeploymentPlan(IFile file) throws Exception;
-	 public JAXBElement unmarshalPlugin(InputStream inputStream);
 }

@@ -126,15 +126,15 @@ public class JAXBUtils {
     	return provider.unmarshalFilterDeploymentPlan(file);
     }
 
-    public static void marshalPlugin(JAXBElement jaxbElement, OutputStream outputStream) throws Exception {
-        //currently only JAXB21Utils provide this method,so invoke it directly
-    	providers.get("2.1").marshalPlugin(jaxbElement, outputStream);
-    }
-
-    public static JAXBElement unmarshalPlugin(InputStream inputStream) {
-    	//currently only JAXB21Utils provide this method,so invoke it directly
-    	return providers.get("2.1").unmarshalPlugin(inputStream);
-    }
+//    public static void marshalPlugin(JAXBElement jaxbElement, OutputStream outputStream) throws Exception {
+//        //currently only JAXB21Utils provide this method,so invoke it directly
+//    	providers.get("2.1").marshalPlugin(jaxbElement, outputStream);
+//    }
+//
+//    public static JAXBElement unmarshalPlugin(InputStream inputStream) {
+//    	//currently only JAXB21Utils provide this method,so invoke it directly
+//    	return providers.get("2.1").unmarshalPlugin(inputStream);
+//    }
 
     public static Object getValue( Object element, String name ) throws Exception {
         try {

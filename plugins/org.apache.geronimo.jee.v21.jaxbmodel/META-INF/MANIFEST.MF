@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.apache.geronimo.jee.v21.jaxbmodel;singleton:=true
 Bundle-Version: 3.0.0
 Bundle-ClassPath: .
 Bundle-Vendor: Apache Software Foundation
-Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.runtime.common,
  org.apache.geronimo.jaxbmodel.common,
  org.eclipse.core.runtime,
@@ -22,3 +21,4 @@ Export-Package: org.apache.geronimo.jee.application,
  org.apache.geronimo.jee.security,
  org.apache.geronimo.jee.web
 Import-Package: junit.framework;version="3.8.2"
+Bundle-ActivationPolicy: lazy

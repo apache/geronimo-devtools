@@ -33,7 +33,7 @@
     </parent>
 
     <properties>
-        <geronimoVersion>2.1.4</geronimoVersion>
+        <geronimoVersion>2.1.5</geronimoVersion>
     </properties>
     <build>
         <resources>

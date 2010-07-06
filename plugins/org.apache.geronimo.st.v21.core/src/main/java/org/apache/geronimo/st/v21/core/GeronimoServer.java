@@ -206,8 +206,8 @@ public class GeronimoServer extends GeronimoServerDelegate {
         return getAttribute(PROPERTY_NOT_REDEPLOY_JSP_FILES,false);
     }
 
-	@Override
-	public IGeronimoServerPluginManager getServerPluginManager() {
-		return new GeronimoServerV21PluginManager(this.getServer());
-	}
+    public IGeronimoServerPluginManager getServerPluginManager() {
+        return new GeronimoServerV21PluginManager(this.getServer());
+    }
+
 }
