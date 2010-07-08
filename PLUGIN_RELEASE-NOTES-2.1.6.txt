@@ -14,7 +14,7 @@ System Requirements
 -------------------
 1. Java J2SE 1.5.0 or greater, and a platform that supports it
 
-2. Eclipse IDE for Java EE Developers (Ganymede or Europa), which is platform-specific
+2. Eclipse IDE for Java EE Developers (Galileo or Helios), which is platform-specific
 
    -- Get Eclipse from http://www.eclipse.org/downloads/
 
@@ -46,13 +46,9 @@ that each argument has to be on seperate lines:
 Geronimo Eclipse Plugin Version ${pom.version} Enhancements
 --------------------------------------------------
 
-1. Numerous enhancements to the Geronimo deployment plan editors
+1. Support Geronimo Server 2.1.6
 
-2. Add Database pool wizard  
-
-3. Add Security Realm Wizard
-
-4. Support Eclipse Galileo
+2. Support Eclipse Helios
 
 
 Installation Instructions
@@ -63,37 +59,10 @@ See http://cwiki.apache.org/GMOxDOC21/how-to-install-geronimo-eclipse-plugin-v21
 Bug Fixes and New Features
 --------------------------
 
-[GERONIMODEVTOOLS-455] - Add Database pool wizard in GEP to enable application specific pools
-[GERONIMODEVTOOLS-456] - Add Security Realm Wizard to GEP to deploy security realm directly from GEP
-[GERONIMODEVTOOLS-504] - advanced security section does not allow setting of credential store
-[GERONIMODEVTOOLS-255] - Can deploy and EAR file from the admin console without an application.xml file, but fails from the Eclipse plugin
-[GERONIMODEVTOOLS-289] - Unable to deploy EJB application on AG 2.1 through Eclipse
-[GERONIMODEVTOOLS-361] - GEP DependencyHelper not interrogating all contents of EAR files for dependencies
-[GERONIMODEVTOOLS-362] - GEP DependencyHelper not interrogating server for already-deployed dependencies
-[GERONIMODEVTOOLS-510] - Deployment plan editor warning message when opening source tab for openejb-jar.xml file
-[GERONIMODEVTOOLS-567] - EJB projected created by WTP without openejb-jar.xml cannot be published to Geronimo 2.1.4 server via GEP 2.1.4
-[GERONIMODEVTOOLS-571] - "Next" or "Finish" Button displays when required fields are not selected or checked during convert plugin
-[GERONIMODEVTOOLS-574] - WAR deploy requires a geronimo-web.xml
-[GERONIMODEVTOOLS-575] - GEP errors that are logged to the Eclipse error log are not always seen by end-user
-[GERONIMODEVTOOLS-577] - Appclient server and client environment module ID are the same resulting in deployment error.
-[GERONIMODEVTOOLS-579] - java specs are not included into G server runtime by default
-[GERONIMODEVTOOLS-581] - GEP 2.2 can't be installed on WTP 3.1 used by Eclipse 3.5 Galileo
-[GERONIMODEVTOOLS-582] - Plugin list contains non-car modules when create plugin
-[GERONIMODEVTOOLS-586] - Index.jsp can not find servlet in the same project when use <jsp:include page="/ConverterHandler" />
-[GERONIMODEVTOOLS-587] - Using GEP to convert an application to a plugin, if add prerequisite module,will encouter an error when install the plugin
-[GERONIMODEVTOOLS-590] - org.eclipse.ltk.core.refactoring added in Require-Bundle must be set visibility:=reexport,
-[GERONIMODEVTOOLS-591] - "Next" can go to next step without application chosen after click "back" button.
-[GERONIMODEVTOOLS-593] - "tptp.runtime-TPTP-4.6.0.zip " download URL is incorrect in build.xml
-[GERONIMODEVTOOLS-594] - Geronimo server can't be deleted when it has been stopped in GEP
-[GERONIMODEVTOOLS-604] - Upgrade to eclipse 3.5.2
-[GERONIMODEVTOOLS-453] - JAXB Classes support for schema geronimo-login-config-2.0.xsd
-[GERONIMODEVTOOLS-563] - Start geronimo server in profiling mode
-[GERONIMODEVTOOLS-580] - Servlet/JSP update forces a complete redeploy of a WAR
-[GERONIMODEVTOOLS-585] - Make GEP generate standard JEE deployment descriptor by default
-[GERONIMODEVTOOLS-598] - Support builds on Linux x86_64 based systems
-[GERONIMODEVTOOLS-320] - Provide facility to change id/pw associated with server instance (withing creating a new instance of the server)
-[GERONIMODEVTOOLS-283] - Refactoring a Dynamic Web Project's name doesn't refactor it's artifact id & context root
-[GERONIMODEVTOOLS-592] - Extend "rename" for ejb/connector/ear project,too, meanwhile rename artifactId in these deployment plans.
+GERONIMODEVTOOLS-646	Upgrade to eclipse Helios
+GERONIMODEVTOOLS-648	Source release assembly contains temporary files generated in build process
+GERONIMODEVTOOLS-655	Update version number to 2.1.6 for 21 branch
+GERONIMODEVTOOLS-654	The error log view will always show when publishing projects.
 
 
 
