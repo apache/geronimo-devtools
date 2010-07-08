@@ -168,7 +168,8 @@ public class SynchronizedDeploymentOp implements ProgressListener,
                 status.add(new Status(severity, Activator.PLUGIN_ID, 0,line, null));
             }
         } catch (IOException e) {
+        	  GeronimoUtils.displayEclipseErrorLog();
         }
-        GeronimoUtils.displayEclipseErrorLog();
+      
     }
 }
