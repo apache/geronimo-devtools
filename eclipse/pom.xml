@@ -56,6 +56,19 @@
                 </executions>
             </plugin>
         </plugins>
+
+
+        <pluginManagement>
+            <plugins>
+               <!-- skip deploy child artifacts in release process-->
+               <plugin>
+                   <artifactId>maven-deploy-plugin</artifactId>             
+                   <configuration>
+                     <skip>true</skip>
+                  </configuration>
+               </plugin>
+            </plugins>
+        </pluginManagement> 
     </build>
                                                 
     <profiles>
