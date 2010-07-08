@@ -35,7 +35,7 @@
     <url>http://geronimo.apache.org/devtools</url>
                         
     <prerequisites>
-        <maven>2.0.10</maven>
+        <maven>2.2.1</maven>
     </prerequisites>
                         
     <issueManagement>
@@ -65,9 +65,9 @@
     </mailingLists>
                         
     <scm>
-        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/tags/2.1.5</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/tags/2.1.5</developerConnection>
-        <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/tags/2.1.5</url>
+        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/tags/2.1.6</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/tags/2.1.6</developerConnection>
+        <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/tags/2.1.6</url>
     </scm>
                         
     <organization>
@@ -84,7 +84,7 @@
                         
     <properties>
         <eclipseInstall>${settings.localRepository}/eclipse</eclipseInstall>
-        <org.apache.geronimo.v21.feature_version>2.1.5</org.apache.geronimo.v21.feature_version>
+        <org.apache.geronimo.v21.feature_version>2.1.6</org.apache.geronimo.v21.feature_version>
         <keystoreAlias>devtools</keystoreAlias> 
         <keystoreFile>keystore</keystoreFile> 
         <keystoreDname>CN=http://geronimo.apache.org,OU=Geronimo,O=Apache,L=Geronimo,S=Apache,C=US</keystoreDname> 

@@ -25,13 +25,13 @@
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>testsuite</artifactId>
     <packaging>pom</packaging>
-    <version>2.1.5</version>
+    <version>2.1.6</version>
     <name>Geronimo Eclipse Plugin :: Testsuite</name>
 
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
-        <version>2.1.5-SNAPSHOT</version>
+        <version>2.1.6-SNAPSHOT</version>
     </parent>
 
     <description>
@@ -39,7 +39,7 @@
     </description>
 
     <properties>
-        <geronimoVersion_1>2.1.4</geronimoVersion_1>
+        <geronimoVersion_1>2.1.6</geronimoVersion_1>
         <geronimoVersion_2>2.0.2</geronimoVersion_2>
     </properties>
 

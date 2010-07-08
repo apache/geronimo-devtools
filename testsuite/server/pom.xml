@@ -25,13 +25,13 @@
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>testsuite-server</artifactId>
     <packaging>pom</packaging>
-    <version>2.1.5</version>
+    <version>2.1.6</version>
     <name>Geronimo Eclipse Plugin :: Testsuite :: Server</name>
                                                 
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>testsuite</artifactId>
-        <version>2.1.5</version>
+        <version>2.1.6</version>
     </parent>
 
     <build>
@@ -47,13 +47,13 @@
                             <tasks>
                                 <!--
                                  |
-                                 | Unzip and rename the testsuite Geronimo server v2.1.4
+                                 | Unzip and rename the testsuite Geronimo server v2.1.6
                                  |
                                  -->
                                 <property name="geronimo_install1"       value="${basedir}/../launcher/"/>
                                 <property name="geronimo_assembly1"      value="org/apache/geronimo/assemblies"/>
                                 <property name="geronimo_name1"          value="geronimo-tomcat6-javaee5"/>
-                                <property name="geronimoVersion_1"       value="2.1.4"/>
+                                <property name="geronimoVersion_1"       value="2.1.6"/>
                                 <mkdir dir="${geronimo_install1}"/>
                                 <unzip src="${settings.localRepository}/${geronimo_assembly1}/${geronimo_name1}/${geronimoVersion_1}/${geronimo_name1}-${geronimoVersion_1}-bin.zip"
                                       dest="${geronimo_install1}"/>

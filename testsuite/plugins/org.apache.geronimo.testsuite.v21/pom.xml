@@ -25,13 +25,13 @@
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>org.apache.geronimo.testsuite.v21</artifactId>
     <packaging>jar</packaging>
-    <version>2.1.5</version>
+    <version>2.1.6</version>
     <name>${artifactId}</name>
 
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>testsuite-plugins</artifactId>
-        <version>2.1.5</version>
+        <version>2.1.6</version>
     </parent>
 
     <build>
@@ -82,9 +82,9 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <mkdir dir="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.v21-2.1.5"/>
-                                <unzip src="${project.build.directory}/org.apache.geronimo.testsuite.v21-2.1.5.jar"
-                                      dest="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.v21-2.1.5"/>
+                                <mkdir dir="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.v21-2.1.6"/>
+                                <unzip src="${project.build.directory}/org.apache.geronimo.testsuite.v21-2.1.6.jar"
+                                      dest="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.v21-2.1.6"/>
                             </tasks>
                         </configuration>
                     </execution>
