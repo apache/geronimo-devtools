@@ -23,7 +23,7 @@
     <artifactId>geronimo-eclipse-plugin</artifactId>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin</name>
-    <version>2.1.6-SNAPSHOT</version>
+    <version>2.1.6</version>
 
     <parent>
         <groupId>org.apache</groupId>
