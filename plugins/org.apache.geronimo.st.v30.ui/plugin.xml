@@ -304,7 +304,7 @@
             filenames="blueprint.xml"
             icon="icons/obj16/littleOSGi.gif"
             id="org.apache.geronimo.v30.ui.editors.BlueprintFormEditor" 
-            name="%BlueprintFormEditorName">
+            name="%BlueprintEditorName">
             <contentTypeBinding
                 contentTypeId="org.eclipse.core.runtime.xml"/>
             <contentTypeBinding
