@@ -42,13 +42,13 @@
     </url>
     
     <requires>
-    <import feature="org.eclipse.jst.server_ui.feature" version="2.0.2.v200802150100-77-CT9yJXEkuiKVeQrclqTHQ3648"
+    <import feature="org.eclipse.jst.server_ui.feature" version="3.2.0.v201005241530"
         match="greaterOrEqual"/>
-    <import feature="org.eclipse.jst.server_adapters.feature" version="2.0.2.v200802150100-787KE8iDUUEF6GwKwpHEQ"
+    <import feature="org.eclipse.jst.server_adapters.feature" version="3.2.0.v201005241530"
         match="greaterOrEqual"/>
-    <import feature="org.eclipse.jst.web_ui.feature" version="2.0.2.v200802150100-7B1DzCkuNa_RPevwkwB1iJ6z-0RH" 
+    <import feature="org.eclipse.jst.web_ui.feature" version="3.2.0.v201005250611" 
         match="greaterOrEqual"/>
-    <import feature="org.eclipse.jst.enterprise_ui.feature" version="2.0.2.v200802150100-7b7_Es8EU6AXOV9QLJSees1SQoYQ"
+    <import feature="org.eclipse.jst.enterprise_ui.feature" version="3.2.0.v201005241530"
         match="greaterOrEqual"/>
     </requires>
     
