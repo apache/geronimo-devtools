@@ -7,7 +7,6 @@ Bundle-Activator: org.apache.geronimo.st.v30.ui.Activator
 Bundle-Localization: plugin
 Require-Bundle: 
  org.apache.geronimo.jee.v21.jaxbmodel,
- org.apache.geronimo.jee.v22.jaxbmodel,
  org.apache.geronimo.st.v30.jaxbmodel,
  org.apache.geronimo.runtime.v30,
  org.apache.geronimo.st.v30.core,
