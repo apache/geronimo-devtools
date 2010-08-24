@@ -219,11 +219,12 @@ public class GeronimoServerPluginManager {
 
         Artifact artifact = Artifact.create(configId);
         File dir = new File (getArtifactLocation(artifact));
+        File artifactFile = new File(addFilename(dir.getAbsolutePath(),artifact));
 
-        if (!dir.isDirectory()) { // must be a packed (JAR-formatted) plugin
+        if (!artifactFile.isDirectory()) { // must be a packed (JAR-formatted) plugin
             try {
                 File temp = new File(dir.getParentFile(), dir.getName() + ".temp");
-                JarFile input = new JarFile(dir);
+                JarFile input = new JarFile(artifactFile);
                 Manifest manifest = input.getManifest();
                 JarOutputStream out = manifest == null ? new JarOutputStream(
                         new BufferedOutputStream(new FileOutputStream(temp)))
@@ -252,13 +253,13 @@ public class GeronimoServerPluginManager {
                 out.flush();
                 out.close();
                 input.close();
-                if (!dir.delete()) {
-                    String message = CommonMessages.bind(CommonMessages.errorDeletePlugin, dir.getAbsolutePath());
+                if (!artifactFile.delete()) {
+                    String message = CommonMessages.bind(CommonMessages.errorDeletePlugin, artifactFile.getAbsolutePath());
                     Trace.tracePoint("Throw", "GeronimoServerPluginManager.savePluginXML", message);
                     throw new Exception(message);
                 }
-                if (!temp.renameTo(dir)) {
-                    String message = CommonMessages.bind(CommonMessages.errorMovePlugin, temp.getAbsolutePath(), dir.getAbsolutePath());
+                if (!temp.renameTo(artifactFile)) {
+                    String message = CommonMessages.bind(CommonMessages.errorMovePlugin, temp.getAbsolutePath(), artifactFile.getAbsolutePath());
                     Trace.tracePoint("Throw", "GeronimoServerPluginManager.savePluginXML", message);
                     throw new Exception(message);
                 }

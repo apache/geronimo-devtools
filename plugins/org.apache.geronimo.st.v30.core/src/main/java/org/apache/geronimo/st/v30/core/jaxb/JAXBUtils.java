@@ -127,13 +127,13 @@ public class JAXBUtils {
     }
 
     public static void marshalPlugin(JAXBElement jaxbElement, OutputStream outputStream) throws Exception {
-        //currently only JAXB21Utils provide this method,so invoke it directly
-        providers.get("2.1").marshalPlugin(jaxbElement, outputStream);
+        //for 3.0 jaxb provider,invoke it directly
+       providers.get("3.0").marshalPlugin(jaxbElement, outputStream);
     }
 
     public static JAXBElement unmarshalPlugin(InputStream inputStream) {
-        //currently only JAXB21Utils provide this method,so invoke it directly
-        return providers.get("2.1").unmarshalPlugin(inputStream);
+        //for 3.0 jaxb provider,invoke it directly
+    	return providers.get("3.0").unmarshalPlugin(inputStream);
     }
 
     public static Object getValue( Object element, String name ) throws Exception {
