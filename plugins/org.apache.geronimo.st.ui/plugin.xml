@@ -176,17 +176,6 @@
     </extension>
     
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
-        <section id="org.apache.server.geronimo.vmargs" order="40"
-            insertionId="org.eclipse.wst.server.editor.overview.right"
-            typeIds="org.apache.geronimo.server.11,
-                     org.apache.geronimo.server.20,
-                     org.apache.geronimo.server.21,
-                     org.apache.geronimo.server.22"
-            class="org.apache.geronimo.st.ui.sections.ServerVMArgsSection">
-        </section>
-    </extension>
-    
-    <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.testenv" order="20"
             insertionId="org.eclipse.wst.server.editor.overview.left"
             typeIds="org.apache.geronimo.server.11,

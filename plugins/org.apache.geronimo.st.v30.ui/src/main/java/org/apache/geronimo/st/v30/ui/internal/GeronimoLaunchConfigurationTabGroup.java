@@ -16,6 +16,9 @@
  */
 package org.apache.geronimo.st.v30.ui.internal;
 
+import org.apache.geronimo.st.v30.core.GeronimoServerDelegate;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.CommonTab;
 import org.eclipse.debug.ui.EnvironmentTab;
@@ -24,6 +27,11 @@ import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.debug.ui.sourcelookup.SourceLookupTab;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaArgumentsTab;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaClasspathTab;
+import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.server.ui.ServerLaunchConfigurationTab;
 
 /**
@@ -53,5 +61,22 @@ public class GeronimoLaunchConfigurationTabGroup extends AbstractLaunchConfigura
         tabs[5].setLaunchConfigurationDialog(dialog);
         setTabs(tabs);
     }
+    
+    public void performApply(ILaunchConfigurationWorkingCopy configuration) {
+        //need to save all values to Geronimo-specific arguments. Eg, VMArguments
+         try {
+             super.performApply(configuration);
+             
+             IServer server = ServerUtil.getServer(configuration);
+             GeronimoServerDelegate sd = (GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class);
+             String oldValue = sd.getVMArgs();
+             String newValue = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, oldValue);
+             sd.setVMArgs(newValue);     
+                       
+         } catch (CoreException e) {
+        	  MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+         }
+         
+     }
 
 }
