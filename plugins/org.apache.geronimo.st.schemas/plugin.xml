@@ -25,87 +25,95 @@
          <catalogContribution>
          <uri
                name="http://geronimo.apache.org/xml/ns/attributes-1.2"
-               uri="v22/attributes-1.2.xsd">
+               uri="v30/attributes-1.2.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/j2ee/application-2.0"
-               uri="v22/geronimo-application-2.0.xsd">
+               uri="v30/geronimo-application-2.0.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/j2ee/application-client-2.0"
-               uri="v22/geronimo-application-client-2.0.xsd">
+               uri="v30/geronimo-application-client-2.0.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/j2ee/connector-1.2"
-               uri="v22/geronimo-connector-1.2.xsd">
+               uri="v30/geronimo-connector-1.2.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/credentialstore-1.0"
-               uri="v22/geronimo-credential-store-1.0.xsd">
+               uri="v30/geronimo-credential-store-1.0.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/deployment/javabean-1.0"
-               uri="v22/geronimo-javabean-xmlattribute-1.0.xsd">
+               uri="v30/geronimo-javabean-xmlattribute-1.0.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/j2ee/web/jetty-2.0.2"
-               uri="v22/geronimo-jetty-2.0.2.xsd">
+               uri="v30/geronimo-jetty-2.0.2.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/web/jetty/config-1.0.1"
-               uri="v22/geronimo-jetty-config-1.0.1.xsd">
+               uri="v30/geronimo-jetty-config-1.0.1.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/loginconfig-2.0"
-               uri="v22/geronimo-login-config-2.0.xsd">
+               uri="v30/geronimo-login-config-2.0.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/deployment-1.2"
-               uri="v22/geronimo-module-1.2.xsd">
+               uri="v30/geronimo-module-1.2.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/naming-1.2"
-               uri="v22/geronimo-naming-1.2.xsd">
+               uri="v30/geronimo-naming-1.2.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/j2ee/ejb/openejb-2.0"
-               uri="v22/geronimo-openejb-2.0.xsd">
+               uri="v30/geronimo-openejb-2.0.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/security-1.2"
-               uri="v22/geronimo-security-1.2.xsd">
+               uri="v30/geronimo-security-1.2.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/security-2.0"
-               uri="v22/geronimo-security-2.0.xsd">
+               uri="v30/geronimo-security-2.0.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/subject-info-1.0"
-               uri="v22/geronimo-subject-info-1.0.xsd">
+               uri="v30/geronimo-subject-info-1.0.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/j2ee/web/tomcat-2.0.1"
-               uri="v22/geronimo-tomcat-2.0.1.xsd">
+               uri="v30/geronimo-tomcat-2.0.1.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/web/tomcat/config-1.0"
-               uri="v22/geronimo-tomcat-config-1.0.xsd">
+               uri="v30/geronimo-tomcat-config-1.0.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1"
-               uri="v22/geronimo-web-2.0.1.xsd">
+               uri="v30/geronimo-web-2.0.1.xsd">
          </uri>
          <uri
                name="http://geronimo.apache.org/xml/ns/plugins-1.3"
-               uri="v22/plugins-1.3.xsd">
+               uri="v30/plugins-1.3.xsd">
          </uri>
           <uri
                name="http://openejb.apache.org/xml/ns/openejb-jar-2.2"
-               uri="v22/openejb-jar-2.2.xsd">
+               uri="v30/openejb-jar-2.2.xsd">
          </uri>
-            <uri
+         <uri
                name="http://openejb.apache.org/xml/ns/pkgen-2.1"
-               uri="v22/pkgen-2.1.xsd">
+               uri="v30/pkgen-2.1.xsd">
+         </uri>
+         <uri
+               name="http://geronimo.apache.org/xml/ns/geronimo-jaspi"
+               uri="v30/geronimo-jaspi.xsd">
+         </uri>
+         <uri
+               name="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+               uri="v30/blueprint.xsd">
          </uri>
          </catalogContribution>
    </extension>
