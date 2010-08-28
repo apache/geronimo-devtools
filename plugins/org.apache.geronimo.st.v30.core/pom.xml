@@ -73,7 +73,13 @@
                     <include>G-logo-32x32.gif</include>
                 </includes>
             </resource>
-
+            <resource>
+                <targetPath>org/apache/geronimo/st/v30/core/internal</targetPath>
+                <directory>src/main/java/org/apache/geronimo/st/v30/core/internal</directory>
+                <includes>
+                    <include>Messages.properties</include>
+                </includes>
+            </resource>
             <!-- The Geronimo covention puts license and notice for artifacts shipped in this jar 
                  in the jar's meta-inf directory -->
             <resource>
