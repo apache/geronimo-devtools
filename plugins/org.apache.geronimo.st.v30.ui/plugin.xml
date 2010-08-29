@@ -245,32 +245,8 @@
         </objectContribution>
     </extension>
 
-
-
-    <!-- 
-     ###################################################################################################################
-     ##                                                                                                               ##
-     ## Geronimo XML Editors - Define the XML editor class for the various Geronimo-specific XML files (except for    ##
-     ##                        geronimo-application-client.xml) and the corresponding Form editor                     ##
-     ##                                                                                                               ##
-     ###################################################################################################################
-     -->
-    <extension point="org.eclipse.ui.editors">
-        <editor class="org.apache.geronimo.st.v30.ui.editors.SharedDeploymentPlanEditor"
-            default="true" 
-            filenames="geronimo-web.xml,
-                       geronimo-application.xml,    
-                       openejb-jar.xml,
-                       geronimo-application-client.xml,
-                       geronimo-ra.xml"
-            icon="icons/obj16/littleG.gif"
-            id="org.apache.geronimo.v30.ui.editors.WebEditor" 
-            name="%deploymentPlanEditorName">
-        </editor>
-    </extension>
     
-    <extension-point id="loader" name="Geronimo Deployment Plan Form Loader" schema="schema/loader.exsd"/>
-    <extension point="org.apache.geronimo.st.v30.ui.loader">
+    <extension point="org.apache.geronimo.st.ui.loader">
            <loader class="org.apache.geronimo.st.v30.ui.editors.GeronimoFormContentLoader" version="3.0"/>
     </extension>
     

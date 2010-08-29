@@ -67,5 +67,5 @@ public interface IGeronimoServer extends IURLProvider {
 	public long getPublishTimeout();
 	
 	public IGeronimoServerPluginManager getServerPluginManager();
-
+	
 }

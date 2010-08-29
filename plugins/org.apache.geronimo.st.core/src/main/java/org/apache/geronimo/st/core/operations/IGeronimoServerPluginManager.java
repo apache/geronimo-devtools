@@ -17,12 +17,44 @@
 
 package org.apache.geronimo.st.core.operations;
 
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface IGeronimoServerPluginManager {
-	public List<String> getPluginList();
+    public List<String> getPluginList();
 
-	public void assembleServer(String group, String artifact, String version,
-			String format, String relativeServerPath, int[] selected);
+    public void assembleServer(String group, String artifact, String version, String format, String relativeServerPath,
+            int[] selected);
+
+    public void addGeronimoDependencies(Object data, List deps, boolean includeVersion);
+
+    public void exportCAR(String localRepoDir, String configId) throws Exception;
+
+    public List<String> getConfigurationList();
+
+    public Object getPluginMetadata(String configId);
+
+    public ArrayList<String> installPlugins(String localRepoDir, List pluginList);
+
+    public Object loadPluginList(InputStream in);
+
+    public Object readPluginList(String localRepoDir);
+
+    public void savePluginXML(String configId, Object metadata);
+
+    public Object toArtifact(Object id);
+
+    public Object toArtifactType(Object id);
+
+    public Object toArtifactType(String configId);
+
+    public Object toDependencyType(Object dep, boolean includeVersion);
+
+    public Object toDependencyType(String configId);
+
+    public void updatePluginList(String localRepoDir, Object metadata) throws Exception;
+
+    public boolean validatePlugin(Object plugin);
 
 }

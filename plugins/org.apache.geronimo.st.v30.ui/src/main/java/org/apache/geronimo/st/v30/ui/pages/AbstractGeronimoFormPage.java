@@ -21,7 +21,7 @@ import javax.xml.bind.JAXBElement;
 import org.apache.geronimo.st.v30.core.DeploymentDescriptorUtils;
 import org.apache.geronimo.st.v30.core.descriptor.AbstractDeploymentDescriptor;
 import org.apache.geronimo.st.v30.ui.Activator;
-import org.apache.geronimo.st.v30.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;

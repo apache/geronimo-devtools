@@ -18,17 +18,18 @@ package org.apache.geronimo.st.v21.ui.wizards;
 
 import java.util.List;
 
+import org.apache.geronimo.jaxbmodel.common.operations.JAXBObjectFactory;
+import org.apache.geronimo.jee.jaxbmodel.operations.JAXBObjectFactoryImpl;
 import org.apache.geronimo.jee.security.DistinguishedName;
 import org.apache.geronimo.jee.security.LoginDomainPrincipal;
 import org.apache.geronimo.jee.security.Principal;
 import org.apache.geronimo.jee.security.RealmPrincipal;
 import org.apache.geronimo.jee.security.Role;
-import org.apache.geronimo.jaxbmodel.common.operations.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.ui.wizards.AbstractWizard;
-import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
-import org.apache.geronimo.jee.jaxbmodel.operations.JAXBObjectFactoryImpl;
+import org.apache.geronimo.st.v21.core.GeronimoServerInfoManager;
+import org.apache.geronimo.st.v21.ui.sections.SecurityRoleMappingSection;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Combo;
@@ -63,8 +64,9 @@ public class SecurityRoleMappingWizard extends AbstractWizard {
         this.section = section;
     }
 
-    protected static String[] getSecurityRealms() {
-        List<String> securityRealms = GeronimoServerInfo.getInstance().getSecurityRealms();
+    protected String[] getSecurityRealms() {
+        String runtimeVersion  = ((SecurityRoleMappingSection)section).getRuntimeVersion();
+        List<String> securityRealms =  GeronimoServerInfoManager.getProvider(runtimeVersion).getSecurityRealms();
         return securityRealms.toArray(new String[securityRealms.size()]);
     }
 

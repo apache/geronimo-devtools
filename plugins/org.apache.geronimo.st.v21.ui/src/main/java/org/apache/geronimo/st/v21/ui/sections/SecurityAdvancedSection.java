@@ -33,7 +33,7 @@ import org.apache.geronimo.jee.security.Security;
 import org.apache.geronimo.jee.security.SubjectInfo;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
-import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
+import org.apache.geronimo.st.v21.core.GeronimoServerInfoManager;
 import org.apache.geronimo.st.v21.ui.wizards.SecurityRunAsSubjectWizard;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
@@ -71,10 +71,13 @@ public class SecurityAdvancedSection extends AbstractTableSection {
 
     protected Button useContextHandler;
     
+    protected String runtimeVersionNumber;
+    
     private HashMap<Pattern,HashMap<String,ArrayList<String>>> credentialStoreAttributes;
 
-    public SecurityAdvancedSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style) {
+    public SecurityAdvancedSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, String runtimeVersion) {
         super(plan, parent, toolkit, style);
+        runtimeVersionNumber=runtimeVersion;
         createClient();
     }
 
@@ -394,7 +397,7 @@ public class SecurityAdvancedSection extends AbstractTableSection {
             credentialStoreRef.add(""); //users will select this empty string to unset credentialStoreRef
         }
         
-        List<Pattern> deployedCredentialStores = GeronimoServerInfo.getInstance().getDeployedCredentialStores();
+        List<Pattern> deployedCredentialStores = GeronimoServerInfoManager.getProvider(runtimeVersionNumber).getDeployedCredentialStores();
         Pattern pattern = new Pattern();
         pattern.setCustomFoo(credentialStoreRefName);
         if (deployedCredentialStores.contains(pattern)) {
@@ -407,7 +410,7 @@ public class SecurityAdvancedSection extends AbstractTableSection {
             credentialStoreRef.add(credentialStoreName);
             credentialStoreList.put(credentialStoreName, deployedCredentialStores.get(i));
         }
-        credentialStoreAttributes = GeronimoServerInfo.getInstance().getDeployedCredentialStoreAttributes();
+        credentialStoreAttributes = GeronimoServerInfoManager.getProvider(runtimeVersionNumber).getDeployedCredentialStoreAttributes();
         credentialStoreRef.select(0);
     }
 

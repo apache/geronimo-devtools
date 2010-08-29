@@ -20,9 +20,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -44,7 +44,6 @@ import javax.xml.bind.JAXBElement;
 import org.apache.geronimo.deployment.plugin.jmx.RemoteDeploymentManager;
 import org.apache.geronimo.gbean.AbstractName;
 import org.apache.geronimo.gbean.AbstractNameQuery;
-import org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils;
 import org.apache.geronimo.kernel.Kernel;
 import org.apache.geronimo.kernel.config.ConfigurationData;
 import org.apache.geronimo.kernel.config.ConfigurationInfo;
@@ -216,9 +215,11 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
 
     // mimics org.apache.geronimo.system.plugin.PluginInstallerGBean.updatePluginMetadata
     // but puts the metadata in our local directory
-    public void savePluginXML (String configId, PluginType metadata) {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.savePluginXML", configId, metadata);
+    public void savePluginXML (String configId, Object pluginMetaData) {
+        Trace.tracePoint("Entry", "GeronimoServerPluginManager.savePluginXML", configId, pluginMetaData);
 
+        PluginType metadata = (PluginType) pluginMetaData;
+        
         Artifact artifact = Artifact.create(configId);
         File dir = new File (getArtifactLocation(artifact));
 
@@ -346,9 +347,11 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
         Trace.tracePoint("Exit", "GeronimoServerPluginManager.writeToZip");
     }
 
-    public void updatePluginList (String localRepoDir, PluginType metadata) throws Exception {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.updatePluginList", localRepoDir, metadata);
+    public void updatePluginList (String localRepoDir, Object data) throws Exception {
+        Trace.tracePoint("Entry", "GeronimoServerPluginManager.updatePluginList", localRepoDir, data);
 
+        PluginType metadata = (PluginType) data;
+        
         PluginListType pluginList = readPluginList(localRepoDir);
         File listFile = new File (localRepoDir, "geronimo-plugins.xml");
 
@@ -501,10 +504,11 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
     }
 
     public ArtifactType toArtifactType(String configId) {
-        return toArtifactType (Artifact.create(configId));
+        return (ArtifactType) toArtifactType (Artifact.create(configId));
     }
 
-    public ArtifactType toArtifactType(Artifact id) {
+    public ArtifactType toArtifactType(Object artifactId) {
+        Artifact id = (Artifact) artifactId;
         ArtifactType artifact = new ArtifactType();
         artifact.setGroupId(id.getGroupId());
         artifact.setArtifactId(id.getArtifactId());
@@ -513,11 +517,14 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
         return artifact;
     }
 
-    public Artifact toArtifact(ArtifactType id) {
+    public Artifact toArtifact(Object artifactTypeId) {
+        ArtifactType id = (ArtifactType) artifactTypeId;
         return new Artifact (id.getGroupId(), id.getArtifactId(), id.getVersion(), id.getType());
     }
 
-    public void addGeronimoDependencies(ConfigurationData data, List<DependencyType> deps, boolean includeVersion) {
+    public void addGeronimoDependencies(Object configuData, List depList, boolean includeVersion) {
+        List<DependencyType> deps = (List<DependencyType>) depList;
+        ConfigurationData data = (ConfigurationData) configuData;
         processDependencyList(data.getEnvironment().getDependencies(), deps, includeVersion);
         Map<String, ConfigurationData> children = data.getChildConfigurations();
         for (ConfigurationData child : children.values()) {
@@ -527,7 +534,7 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
 
     private void processDependencyList(List<Dependency> real, List<DependencyType> deps, boolean includeVersion) {
         for (Dependency dep : real) {
-            DependencyType dependency = toDependencyType(dep, includeVersion);
+            DependencyType dependency = (DependencyType) toDependencyType(dep, includeVersion);
             if (!deps.contains(dependency)) {
                 deps.add(dependency);
             }
@@ -535,10 +542,11 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
     }
 
     public DependencyType toDependencyType(String configId) {
-        return toDependencyType(new Dependency(Artifact.create(configId), ImportType.ALL), true);
+        return (DependencyType) toDependencyType(new Dependency(Artifact.create(configId), ImportType.ALL), true);
     }
 
-    public DependencyType toDependencyType(Dependency dep, boolean includeVersion) {
+    public DependencyType toDependencyType(Object dependencyObject, boolean includeVersion) {
+        Dependency dep = (Dependency) dependencyObject;
         Artifact id = dep.getArtifact();
         DependencyType dependency = new DependencyType();
         dependency.setGroupId(id.getGroupId());
@@ -550,8 +558,11 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
         return dependency;
     }
 
-    public boolean validatePlugin (PluginType plugin) {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.validatePlugin", plugin);
+    public boolean validatePlugin (Object pluginObject) {
+        Trace.tracePoint("Entry", "GeronimoServerPluginManager.validatePlugin", pluginObject);
+        
+        PluginType plugin = (PluginType) pluginObject;
+        
         boolean valid = true;
         try {
             pluginInstaller.validatePlugin(plugin);
@@ -565,9 +576,10 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
 
     // mimics org.apache.geronimo.system.plugin.PluginInstallerGbean.install
     // but uses our local directory to get the plugins
-    public ArrayList<String> installPlugins (String localRepoDir, List<PluginType> pluginList) {
+    public ArrayList<String> installPlugins (String localRepoDir, List plugins) {
         Trace.tracePoint("Entry", "GeronimoServerPluginManager.installPlugins", localRepoDir, pluginList);
         ArrayList<String> eventLog = new ArrayList<String>();
+        List<PluginType> pluginList = (List<PluginType>)plugins;
 
         //List<Artifact> downloadedArtifacts = new ArrayList<Artifact>();
         try {
@@ -760,4 +772,5 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
         }
         Trace.tracePoint("Exit", "GeronimoServerPluginManager.writeToRepository");
     }
+
 }

@@ -12,6 +12,7 @@ Require-Bundle:
  org.apache.geronimo.runtime.v30,
  org.apache.geronimo.jaxbmodel.common,
  org.apache.geronimo.st.v30.jaxbmodel,
+ org.apache.geronimo.st.core,
  org.eclipse.core.commands,
  org.eclipse.jst.j2ee,
  org.eclipse.core.runtime,

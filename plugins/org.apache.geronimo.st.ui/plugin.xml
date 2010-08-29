@@ -202,7 +202,8 @@
                        geronimo-ra.xml"
             icon="icons/obj16/littleG.gif"
             id="org.apache.geronimo.ui.editors.WebEditor" 
-            name="%deploymentPlanEditorName">
+            name="%deploymentPlanEditorName"
+            matchingStrategy="org.apache.geronimo.st.ui.editors.DeploymentPlanEditorMatcher">
         </editor>
     </extension>
     

@@ -10,6 +10,7 @@ Require-Bundle:
  org.apache.geronimo.st.v30.jaxbmodel,
  org.apache.geronimo.runtime.v30,
  org.apache.geronimo.st.v30.core,
+ org.apache.geronimo.st.ui,
  org.eclipse.core.filebuffers,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,

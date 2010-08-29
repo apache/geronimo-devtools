@@ -115,7 +115,9 @@ public class GeronimoServer extends GeronimoServerDelegate {
 	        return getAttribute(PROPERTY_NOT_REDEPLOY_JSP_FILES,false);
 	}
 
+    @Override
     public IGeronimoServerPluginManager getServerPluginManager() {
+        //Currently not support server plugin for 1.1 adapter
         return null;
     }
 

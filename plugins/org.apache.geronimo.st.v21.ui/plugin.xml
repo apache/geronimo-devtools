@@ -32,15 +32,15 @@
      -->
     <extension point="org.eclipse.wst.common.project.facet.ui.wizardPages">
         <wizard-pages action="geronimo.plan.install.v21">
-            <page class="org.apache.geronimo.st.ui.wizards.FacetInstallPage"/>
+            <page class="org.apache.geronimo.st.v21.ui.wizards.FacetInstallPage"/>
         </wizard-pages>
     </extension>
 
     <extension point="org.eclipse.wst.server.ui.editorPages">
         <page id="org.eclipse.wst.server.editor.plugins" order="10"
               name="%serverEditorPluginPage"
-              typeIds="org.apache.geronimo.server.1*,
-                       org.apache.geronimo.server.2*"
+              typeIds="org.apache.geronimo.server.21,
+                       org.apache.geronimo.server.22"
               insertionIds="org.eclipse.wst.server.editor.plugins"
               class="org.apache.geronimo.st.v21.ui.pages.ServerPluginPage"/>
     </extension>
@@ -48,19 +48,10 @@
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.plugins" order="10"
             insertionId="org.eclipse.wst.server.editor.plugins"
-            typeIds="org.apache.geronimo.server.1*,
-                     org.apache.geronimo.server.2*"
+            typeIds="org.apache.geronimo.server.21,
+                     org.apache.geronimo.server.22"
             class="org.apache.geronimo.st.v21.ui.sections.ServerPluginSection">
         </section>
     </extension>
     
-    <extension point="org.eclipse.debug.core.statusHandlers">
-        <statusHandler
-            id="com.example.ExampleIdentifier"
-            class="com.example.ExampleStatusHandler"
-            plugin="com.example.ExamplePluginId"
-            code="123">
-        </statusHandler>
-    </extension>
-
 </plugin>

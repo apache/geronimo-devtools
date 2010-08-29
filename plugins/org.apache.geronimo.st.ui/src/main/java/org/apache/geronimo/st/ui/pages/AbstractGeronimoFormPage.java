@@ -22,6 +22,7 @@ import org.apache.geronimo.st.core.DeploymentDescriptorUtils;
 import org.apache.geronimo.st.core.descriptor.AbstractDeploymentDescriptor;
 import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.apache.geronimo.st.ui.editors.SharedDeploymentPlanEditor;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
@@ -49,6 +50,9 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
     
     AbstractDeploymentDescriptor deploymentDescriptor;
 
+    //server runtime version
+    String runtimeVersion ;
+
     protected FormToolkit toolkit;
 
     protected Composite body;
@@ -60,14 +64,7 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
      */
     public AbstractGeronimoFormPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
-    }
-
-    /**
-     * @param id
-     * @param title
-     */
-    public AbstractGeronimoFormPage(String id, String title) {
-        super(id, title);
+        runtimeVersion = ((SharedDeploymentPlanEditor)editor).getRuntimeVersion();
     }
 
     public void refresh() {
@@ -174,5 +171,9 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
 
     public String getFormTitle() {
         return getTitle();
+    }
+    
+    protected String getRuntimeVersion(){
+        return runtimeVersion;
     }
 }

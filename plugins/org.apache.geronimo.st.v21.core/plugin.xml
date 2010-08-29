@@ -20,7 +20,7 @@
 <!-- $Rev: 589873 $ $Date: 2007-10-29 17:48:35 -0400 (Mon, 29 Oct 2007) $ -->
 
 <plugin>
-
+    <extension-point id="geronimoinfo" name="Geronimo Server Info" schema="schema/geronimoinfo.exsd"/>
 
     <!-- 
      | 
@@ -138,5 +138,13 @@
         </default-facets>
     </extension>
     
+   <extension
+          point="org.apache.geronimo.st.v21.core.geronimoinfo">
+       <provider
+             class="org.apache.geronimo.st.v21.core.GeronimoV21ServerInfo"
+             versions="2.1">
+       </provider>
+    </extension>
+
 
 </plugin>

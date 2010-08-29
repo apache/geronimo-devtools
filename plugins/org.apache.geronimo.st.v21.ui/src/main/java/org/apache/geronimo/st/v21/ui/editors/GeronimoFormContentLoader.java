@@ -25,7 +25,7 @@ import org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader;
-import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
+import org.apache.geronimo.st.v21.core.GeronimoV21ServerInfo;
 import org.apache.geronimo.st.v21.core.GeronimoV21Utils;
 import org.apache.geronimo.st.v21.ui.pages.AppClientGeneralPage;
 import org.apache.geronimo.st.v21.ui.pages.AppClientSecurityPage;
@@ -128,6 +128,6 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
     }
 
     public void triggerGeronimoServerInfoUpdate() {
-        GeronimoServerInfo.getInstance().updateInfo();
+        GeronimoV21ServerInfo.getInstance().updateInfo();
     }
 }

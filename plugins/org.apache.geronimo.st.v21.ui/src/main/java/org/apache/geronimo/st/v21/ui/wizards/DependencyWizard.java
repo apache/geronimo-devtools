@@ -18,13 +18,14 @@ package org.apache.geronimo.st.v21.ui.wizards;
 
 import java.util.List;
 
-import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.jaxbmodel.common.operations.JAXBObjectFactory;
+import org.apache.geronimo.jee.deployment.Dependency;
+import org.apache.geronimo.jee.jaxbmodel.operations.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
-import org.apache.geronimo.jee.jaxbmodel.operations.JAXBObjectFactoryImpl;
+import org.apache.geronimo.st.v21.core.GeronimoServerInfoManager;
+import org.apache.geronimo.st.v21.ui.sections.DependencySection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -110,7 +111,8 @@ public class DependencyWizard extends AbstractTableWizard {
         }
 
         public void populateTable() {
-            List<Dependency> serverList = GeronimoServerInfo.getInstance().getCommonLibs();
+            String runtimeVersion  = ((DependencySection)(DependencyWizard.this.section)).getRuntimeVersion();
+            List<Dependency> serverList = GeronimoServerInfoManager.getProvider(runtimeVersion).getCommonLibs();
             List<Dependency> alreadyAddedDependencies = (List<Dependency>) section.getObjectContainer();
             serverList.removeAll(alreadyAddedDependencies);
             for (int i = 0; i < serverList.size(); ++i) {

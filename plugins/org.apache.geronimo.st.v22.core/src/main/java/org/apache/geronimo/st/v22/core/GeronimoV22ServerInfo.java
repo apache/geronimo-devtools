@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.v21.core;
+package org.apache.geronimo.st.v22.core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +41,7 @@ import org.apache.geronimo.kernel.NoSuchAttributeException;
 import org.apache.geronimo.kernel.NoSuchOperationException;
 import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
+import org.apache.geronimo.st.v21.core.IGeronimoServerInfo;
 import org.apache.geronimo.st.v21.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -51,9 +52,9 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 
 /**
- * @version $Rev$ $Date$
+ * @version $Rev: 952535 $ $Date: 2010-06-08 12:40:16 +0800 (Tue, 08 Jun 2010) $
  */
-public class GeronimoServerInfo {
+public class GeronimoV22ServerInfo implements IGeronimoServerInfo{
     static final long serialVersionUID = 1L;
 
     private ArrayList<Kernel> kernels;
@@ -68,13 +69,10 @@ public class GeronimoServerInfo {
     private HashMap<org.apache.geronimo.jee.deployment.Pattern,HashMap<String,ArrayList<String>>> credentialStoreAttributes;
     private ArrayList<Dependency> commonLibs;
 
-    // singleton class
-    private GeronimoServerInfo() {
-    }
 
-    private static GeronimoServerInfo instance = new GeronimoServerInfo();
+    private static GeronimoV22ServerInfo instance = new GeronimoV22ServerInfo();
 
-    public static GeronimoServerInfo getInstance() {
+    public static GeronimoV22ServerInfo getInstance() {
         return instance;
     }
 

@@ -39,12 +39,12 @@
         <serverType id="org.apache.geronimo.server.22"
             name="%serverTypeName" description="%serverTypeDescription"
             runtime="true"
-            class="org.apache.geronimo.st.v21.core.GeronimoServer"
+            class="org.apache.geronimo.st.v22.core.GeronimoServer"
             initialState="stopped" supportsRemoteHosts="true"
             startTimeout="240000" stopTimeout="30000" startBeforePublish="true"
             runtimeTypeId="org.apache.geronimo.runtime.22"
             launchConfigId="org.apache.geronimo.st.core.launchConfigurationType"
-            behaviourClass="org.apache.geronimo.st.v21.core.GeronimoServerBehaviour"
+            behaviourClass="org.apache.geronimo.st.v22.core.GeronimoServerBehaviour"
             hasConfiguration="false" launchModes="run,debug,profile">
         </serverType>
     </extension>
@@ -66,7 +66,7 @@
     <extension point="org.eclipse.wst.common.project.facet.core.facets">
         <project-facet-version facet="org.apache.geronimo.facet" version="1.2">
             <action type="install" id="geronimo.plan.install.v22">
-                <delegate class="org.apache.geronimo.st.v22.core.operations.GeronimoV21FacetInstallDelegate"/>
+                <delegate class="org.apache.geronimo.st.v21.core.operations.GeronimoV21FacetInstallDelegate"/>
                 <config-factory class="org.apache.geronimo.st.core.DeploymentPlanInstallConfig$Factory"/>
             </action>
             <constraint>
@@ -111,5 +111,14 @@
             <facet id="org.apache.geronimo.facet" version="1.2"/>
         </default-facets>
     </extension>
+    
+    <extension
+          point="org.apache.geronimo.st.v21.core.geronimoinfo">
+       <provider
+             class="org.apache.geronimo.st.v22.core.GeronimoV22ServerInfo"
+             versions="2.2">
+       </provider>
+    </extension>
+    
   
 </plugin>

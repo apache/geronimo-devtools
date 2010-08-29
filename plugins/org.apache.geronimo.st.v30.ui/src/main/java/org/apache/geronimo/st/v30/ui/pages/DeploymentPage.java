@@ -20,7 +20,7 @@ import org.apache.geronimo.jee.application.Application;
 import org.apache.geronimo.jee.applicationclient.ApplicationClient;
 import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
-import org.apache.geronimo.st.v30.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.v30.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v30.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBModelUtils;

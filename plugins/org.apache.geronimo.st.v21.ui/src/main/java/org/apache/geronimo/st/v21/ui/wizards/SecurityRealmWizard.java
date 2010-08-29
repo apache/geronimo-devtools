@@ -42,7 +42,7 @@ import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
-import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
+import org.apache.geronimo.st.v21.core.GeronimoV21ServerInfo;
 import org.apache.geronimo.jee.jaxbmodel.operations.JAXBObjectFactoryImpl;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -845,7 +845,7 @@ public class SecurityRealmWizard extends AbstractTableWizard {
 	}
 
 	private void populateList(Combo combo) {
-	    ArrayList<Pattern> dbPool = GeronimoServerInfo.getInstance()
+	    ArrayList<Pattern> dbPool = GeronimoV21ServerInfo.getInstance()
 		    .getJdbcConnectionPools();
 	    for (int i = 0; i < dbPool.size(); i++) {
 		String str = dbPool.get(i).getName();

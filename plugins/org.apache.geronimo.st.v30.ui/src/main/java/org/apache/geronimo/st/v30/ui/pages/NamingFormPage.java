@@ -21,7 +21,7 @@ import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.v30.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
-import org.apache.geronimo.st.v30.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.v30.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v30.ui.sections.EjbLocalRefSection;
 import org.apache.geronimo.st.v30.ui.sections.EjbRefSection;

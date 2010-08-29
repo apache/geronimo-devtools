@@ -47,6 +47,8 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEd
 	private static Map loaders = new HashMap();
 
 	private IGeronimoFormContentLoader currentLoader = null;
+	
+	private String runtimeVersion = null;
 
 	static {
 		loadExtensionPoints();
@@ -122,6 +124,7 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEd
 					if (runtime == null) return null;
 					String version = runtime.getRuntimeType().getVersion();
 					currentLoader = (IGeronimoFormContentLoader) loaders.get(version);
+					runtimeVersion = version;
 				} catch (CoreException e) {
                     Trace.tracePoint("CoreException", "SharedDeploymentPlanEditor.getLoader");
 					e.printStackTrace();
@@ -136,4 +139,7 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEd
 		return currentLoader;
 	}
 
+	   public String getRuntimeVersion(){
+	        return runtimeVersion;
+	    }
 }

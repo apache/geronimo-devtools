@@ -26,8 +26,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.forms.ManagedForm;
-import org.eclipse.ui.forms.widgets.*;
-import org.eclipse.wst.server.ui.editor.*;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
+import org.eclipse.wst.server.ui.editor.ServerEditorPart;
 import org.eclipse.wst.server.ui.internal.ImageResource;
 
 /**
