@@ -135,6 +135,11 @@
             <artifactId>org.apache.geronimo.runtime.common</artifactId>
             <version>${version}</version>
         </dependency>
+         <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.st.v20.core</artifactId>
+            <version>${version}</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.core</artifactId>

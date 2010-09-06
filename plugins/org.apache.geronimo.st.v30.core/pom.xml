@@ -171,6 +171,16 @@
             <artifactId>org.apache.geronimo.runtime.v30</artifactId>
             <version>${version}</version>
         </dependency>
+      <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.st.core</artifactId>
+            <version>${version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.jee.v22.jaxbmodel</artifactId>
+            <version>${version}</version>
+        </dependency>       
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.jaxbmodel.common</artifactId>
