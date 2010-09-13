@@ -17,7 +17,7 @@
     limitations under the License.
 -->
 
-<!-- $Rev: 673951 $ $Date: 2008-07-04 16:10:56 +0800 (Fri, 04 Jul 2008) $ -->
+<!-- $Rev: 774466 $ $Date: 2009-05-13 11:18:23 -0700 (Wed, 13 May 2009) $ -->
 
 <xs:schema
     xmlns:web="http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1"
@@ -25,6 +25,7 @@
     xmlns:naming="http://geronimo.apache.org/xml/ns/naming-1.2"
     xmlns:app="http://geronimo.apache.org/xml/ns/j2ee/application-2.0"
     xmlns:sys="http://geronimo.apache.org/xml/ns/deployment-1.2"
+    xmlns:jaspi="http://geronimo.apache.org/xml/ns/geronimo-jaspi"
     xmlns:ee="http://java.sun.com/xml/ns/persistence"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     elementFormDefault="qualified"
@@ -35,7 +36,8 @@
     <xs:import namespace="http://geronimo.apache.org/xml/ns/j2ee/application-2.0" schemaLocation="geronimo-application-2.0.xsd"/>
     <xs:import namespace="http://geronimo.apache.org/xml/ns/deployment-1.2" schemaLocation="geronimo-module-1.2.xsd"/>
     <xs:import namespace="http://java.sun.com/xml/ns/persistence" schemaLocation="http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"/>
-
+    <xs:import namespace="http://geronimo.apache.org/xml/ns/geronimo-jaspi" schemaLocation="geronimo-jaspi.xsd"/>
+ 
     <xs:element name="web-app" type="web:web-appType"/>
     <xs:annotation>
         <xs:documentation>
@@ -94,6 +96,16 @@
 
             <xs:sequence minOccurs="0">
                 <xs:element name="security-realm-name" type="xs:string"/>
+                <xs:element name="authentication" type="web:authenticationType" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>
+                            The authentication element provides configuration for a specific
+                            jaspi AuthConfigProvider, ServerAuthConfig, ServerAuthContext, or ServerAuthModule
+                            to be used for authentication rather than a standard authentication method configured
+                            in web.xml.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
                 <xs:element ref="app:security" minOccurs="0"/>
             </xs:sequence>
 
@@ -111,6 +123,15 @@
             
 
         </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="authenticationType">
+        <xs:choice minOccurs="0">
+            <xs:element ref="jaspi:configProvider"/>
+            <xs:element ref="jaspi:serverAuthConfig"/>
+            <xs:element ref="jaspi:serverAuthContext"/>
+            <xs:element ref="jaspi:serverAuthModule"/>
+        </xs:choice>
     </xs:complexType>
 
     <xs:complexType name="container-configType">

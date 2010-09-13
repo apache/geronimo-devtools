@@ -16,16 +16,17 @@
     limitations under the License.
 -->
 
-<!-- $Rev: 673951 $ $Date: 2008-07-04 16:10:56 +0800 (Fri, 04 Jul 2008) $ -->
+<!-- $Rev: 957655 $ $Date: 2010-06-25 02:06:24 +0800 (Fri, 25 Jun 2010) $ -->
 
 <xs:schema xmlns:tomcat="http://geronimo.apache.org/xml/ns/j2ee/web/tomcat-2.0.1"
     targetNamespace="http://geronimo.apache.org/xml/ns/j2ee/web/tomcat-2.0.1"
     xmlns:naming="http://geronimo.apache.org/xml/ns/naming-1.2"
     xmlns:app="http://geronimo.apache.org/xml/ns/j2ee/application-2.0"
     xmlns:sys="http://geronimo.apache.org/xml/ns/deployment-1.2"
-    xmlns:ee="http://java.sun.com/xml/ns/persistence"
+    xmlns:jaspi="http://geronimo.apache.org/xml/ns/geronimo-jaspi"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
     attributeFormDefault="unqualified" version="1.1">
+    <!--xmlns:ee="http://java.sun.com/xml/ns/persistence"-->
 
     <xs:annotation>
         <xs:documentation>
@@ -77,8 +78,9 @@
         </xs:annotation>
     </xs:import>
 
-    <xs:import namespace="http://java.sun.com/xml/ns/persistence" schemaLocation="http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"/>
-
+    <!--<xs:import namespace="http://java.sun.com/xml/ns/persistence" schemaLocation="http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"/>-->
+    <xs:import namespace="http://geronimo.apache.org/xml/ns/geronimo-jaspi" schemaLocation="geronimo-jaspi.xsd"/>
+  
     <xs:element name="web-app" type="tomcat:web-appType">
         <xs:annotation>
             <xs:documentation>
@@ -246,6 +248,16 @@
                         </xs:documentation>
                     </xs:annotation>
                 </xs:element>
+                <xs:element name="authentication" type="tomcat:authenticationType" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>
+                            The authentication element provides configuration for a specific
+                            jaspi AuthConfigProvider, ServerAuthConfig, ServerAuthContext, or ServerAuthModule
+                            to be used for authentication rather than a standard authentication method configured
+                            in web.xml.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
                 <xs:element ref="app:security" minOccurs="0">
                     <xs:annotation>
                         <xs:documentation>
@@ -257,7 +269,7 @@
             </xs:sequence>
 
             <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element ref="sys:service" minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="sys:service">
                     <xs:annotation>
                         <xs:documentation>
                             Reference to abstract service element defined in imported
@@ -265,11 +277,21 @@
                         </xs:documentation>
                     </xs:annotation>
                 </xs:element>
-                <xs:element ref="ee:persistence"/>
+                <!--<xs:element ref="ee:persistence"/>-->
+                <xs:any namespace="http://java.sun.com/xml/ns/persistence"/>
             </xs:choice>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="emptyType" />
+
+    <xs:complexType name="authenticationType">
+        <xs:choice minOccurs="0">
+            <xs:element ref="jaspi:configProvider"/>
+            <xs:element ref="jaspi:serverAuthConfig"/>
+            <xs:element ref="jaspi:serverAuthContext"/>
+            <xs:element ref="jaspi:serverAuthModule"/>
+        </xs:choice>
+    </xs:complexType>
 
 </xs:schema>

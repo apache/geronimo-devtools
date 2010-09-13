@@ -17,7 +17,7 @@
     limitations under the License.
 -->
 
-<!-- $Rev: 673951 $ $Date: 2008-07-04 16:10:56 +0800 (Fri, 04 Jul 2008) $ -->
+<!-- $Rev: 741679 $ $Date: 2009-02-06 11:07:17 -0800 (Fri, 06 Feb 2009) $ -->
 
 <xsd:schema
         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -32,9 +32,10 @@
 
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
     <xsd:import namespace="http://geronimo.apache.org/xml/ns/j2ee/application-2.0" schemaLocation="geronimo-application-2.0.xsd"/>
-    <xsd:import namespace="http://geronimo.apache.org/xml/ns/deployment-1.2"  schemaLocation="geronimo-module-1.2.xsd"/>
+    <xsd:import namespace="http://geronimo.apache.org/xml/ns/deployment-1.2" schemaLocation="geronimo-module-1.2.xsd"/>
 
     <xsd:element name="security" type="geronimo:securityType" substitutionGroup="app:security"/>
+    <xsd:element name="security-ref" type="geronimo:security-refType" substitutionGroup="app:security"/>
     <xsd:element name="credential-store" type="sys:patternType"/>
     <xsd:element name="default-subject" type="geronimo:subject-infoType"/>
 
@@ -49,7 +50,6 @@
         </xsd:annotation>
         <xsd:complexContent>
             <xsd:extension base="app:abstract-securityType">
-
                 <xsd:sequence>
                     <xsd:element name="description" type="geronimo:descriptionType" minOccurs="0"
                                  maxOccurs="unbounded"/>
@@ -57,6 +57,13 @@
                     <xsd:element name="default-subject" type="geronimo:subject-infoType" minOccurs="0"/>
                     <xsd:element name="role-mappings" type="geronimo:role-mappingsType" minOccurs="0"/>
                 </xsd:sequence>
+                <xsd:attribute name="name" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>
+                            Name of standalone security configurations. Optional for security elements in ee apps.
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
                 <xsd:attribute name="doas-current-caller" type="xsd:boolean" default="false">
                     <xsd:annotation>
                         <xsd:documentation>
@@ -88,6 +95,22 @@
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="security-refType">
+        <xsd:annotation>
+            <xsd:documentation>
+                Reference to security element in a parent module.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="app:abstract-securityType">
+                <xsd:choice>
+                    <xsd:element name="name" type="xsd:string"/>
+                    <xsd:element name="ref" type="sys:patternType"/>
+                </xsd:choice>
+             </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
     <xsd:complexType name="descriptionType">
         <xsd:simpleContent>
             <xsd:extension base="xsd:string">
@@ -96,13 +119,13 @@
         </xsd:simpleContent>
     </xsd:complexType>
 
-    <xsd:complexType name="named-username-password-credentialType">
-        <xsd:sequence>
-            <xsd:element name="name" type="xsd:string"/>
-            <xsd:element name="username" type="xsd:string"/>
-            <xsd:element name="password" type="xsd:string"/>
-        </xsd:sequence>
-    </xsd:complexType>
+    <!--<xsd:complexType name="named-username-password-credentialType">-->
+    <!--<xsd:sequence>-->
+    <!--<xsd:element name="name" type="xsd:string"/>-->
+    <!--<xsd:element name="username" type="xsd:string"/>-->
+    <!--<xsd:element name="password" type="xsd:string"/>-->
+    <!--</xsd:sequence>-->
+    <!--</xsd:complexType>-->
 
     <xsd:complexType name="role-mappingsType">
         <xsd:sequence>
@@ -164,18 +187,18 @@
     </xsd:complexType>
 
     <!--<xsd:complexType name="credential-storeType">-->
-        <!--<xsd:sequence>-->
-            <!--<xsd:element name="pattern" type="sys:patternType">-->
-                <!--<xsd:annotation>-->
-                    <!--<xsd:documentation>-->
-                        <!--The pattern element defines a components of the-->
-                        <!--abstract name of GBean referred. It (optionally) includes-->
-                        <!--the groupId, artifactId, version,-->
-                        <!--module, type, and name of the GBean module.-->
-                    <!--</xsd:documentation>-->
-                <!--</xsd:annotation>-->
-            <!--</xsd:element>-->
-        <!--</xsd:sequence>-->
+    <!--<xsd:sequence>-->
+    <!--<xsd:element name="pattern" type="sys:patternType">-->
+    <!--<xsd:annotation>-->
+    <!--<xsd:documentation>-->
+    <!--The pattern element defines a components of the-->
+    <!--abstract name of GBean referred. It (optionally) includes-->
+    <!--the groupId, artifactId, version,-->
+    <!--module, type, and name of the GBean module.-->
+    <!--</xsd:documentation>-->
+    <!--</xsd:annotation>-->
+    <!--</xsd:element>-->
+    <!--</xsd:sequence>-->
     <!--</xsd:complexType>-->
 
 </xsd:schema>

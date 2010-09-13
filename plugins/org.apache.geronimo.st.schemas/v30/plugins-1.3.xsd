@@ -129,6 +129,15 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
+            <xs:element name="pluginGroup" type="xs:boolean" default="false" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Influences whether a geronimo plugin is a geronimo plugin group, which is
+                        just a list of other plugins to install. The dependencies listed for this 
+                        plugin will be treated as the list of actual plugins to install.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>             
             <xs:element name="description" type="xs:string">
                 <xs:annotation>
                     <xs:documentation>
@@ -450,6 +459,26 @@
 
         <xs:complexContent>
             <xs:extension base="list:artifactType">
+                <xs:sequence>
+                    <xs:element name="import" type="list:importType"
+                        minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The import element is restrictive element to
+                                defined type of dependency. The default (when
+                                omitted) is to include the specified dependency
+                                in the classloader (as a parent or URL). If
+                                defined as "classes" means that the classes must
+                                be included in the current module's classloader
+                                but the dependency does not need to be started.
+                                Specifying "services" means that the dependency
+                                (a module) must be started before the current
+                                module, but it is not included as a parent
+                                classloader.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
                 <xs:attribute name="start" use="optional" type="xs:boolean" default="true">
                     <xs:annotation>
                         <xs:documentation>
@@ -463,6 +492,52 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+
+    <xs:simpleType name="importType">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+            The import element is restrictive.  The default (when omitted) is to include the specified dependency in
+            the classloader (as a parent or URL) and (if the dependency is a module) make sure it is started
+            before starting the current module.  Specifying "classes" means that the classes must be included
+            in the current module's classloader but the dependency does not need to be started. (I'm not sure this
+            is actually possible, but it is what is meant).  Specifying "services" means that the dependency (a module)
+            must be started before the current module, but it is not included as a parent classloader.
+
+            You probably never need to use the import element.
+                ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="classes">
+                <xs:annotation>
+                    <xs:documentation>
+                        The value "classes" means that the classes must be
+                        included in the current module's classloader but the
+                        dependency does not need to be started.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="services">
+                <xs:annotation>
+                    <xs:documentation>
+                        The value "services" means that the dependency (a
+                        module) must be started before the current module, but
+                        it is not included as a parent classloader.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="all">
+                <xs:annotation>
+                    <xs:documentation>
+                        The value "all" means that the dependency (a
+                        module) must be started before the current module, and
+                        it is also included as a parent classloader.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:complexType name="hashType">
         <xs:annotation>

@@ -5,6 +5,26 @@ Bundle-SymbolicName: org.apache.geronimo.st.v30.jaxbmodel;singleton:=true
 Bundle-Version: 3.0.0
 Bundle-Vendor: Apache Software Foundation
 Export-Package: 
+ org.apache.geronimo.jee.application,
+ org.apache.geronimo.jee.applicationclient,
+ org.apache.geronimo.jee.attributes,
+ org.apache.geronimo.jee.connector,
+ org.apache.geronimo.jee.credentialstore,
+ org.apache.geronimo.jee.deployment,
+ org.apache.geronimo.jee.jaspi,
+ org.apache.geronimo.jee.javabean,
+ org.apache.geronimo.jee.jetty,
+ org.apache.geronimo.jee.jettyconfig,
+ org.apache.geronimo.jee.loginconfig,
+ org.apache.geronimo.jee.naming,
+ org.apache.geronimo.jee.openejb,
+ org.apache.geronimo.jee.persistence,
+ org.apache.geronimo.jee.plugins,
+ org.apache.geronimo.jee.security,
+ org.apache.geronimo.jee.subject_info,
+ org.apache.geronimo.jee.tomcat,
+ org.apache.geronimo.jee.tomcatconfig,
+ org.apache.geronimo.jee.web,
  org.apache.geronimo.osgi.blueprint
 Import-Package: junit.framework;version="3.8.2"
 Require-Bundle: org.apache.geronimo.runtime.common
