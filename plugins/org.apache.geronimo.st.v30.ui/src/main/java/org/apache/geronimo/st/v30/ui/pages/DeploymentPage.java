@@ -19,11 +19,9 @@ package org.apache.geronimo.st.v30.ui.pages;
 import org.apache.geronimo.jee.application.Application;
 import org.apache.geronimo.jee.applicationclient.ApplicationClient;
 import org.apache.geronimo.jee.connector.Connector;
-import org.apache.geronimo.st.v30.ui.CommonMessages;
-import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
-import org.apache.geronimo.st.v30.ui.pages.AbstractGeronimoFormPage;
-import org.apache.geronimo.st.v30.core.GeronimoServerInfo;
+import org.apache.geronimo.st.ui.editors.AbstractGeronimoJAXBBasedEditor;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBModelUtils;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.apache.geronimo.st.v30.ui.sections.AdminObjectSection;
 import org.apache.geronimo.st.v30.ui.sections.ClassFilterSection;
 import org.apache.geronimo.st.v30.ui.sections.DependencySection;
@@ -37,7 +35,7 @@ import org.eclipse.ui.forms.editor.FormEditor;
 /*
  * @version $Rev$ $Date$
  */
-public class DeploymentPage extends AbstractGeronimoFormPage {
+public class DeploymentPage extends AbstractDeploymentPlanFormPage {
     
     public DeploymentPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
@@ -49,24 +47,24 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
      * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
     protected void fillBody(IManagedForm managedForm) {
-        managedForm.addPart(new DependencySection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan()), body, toolkit, getStyle()));
-        managedForm.addPart(new GBeanSection(getDeploymentPlan(), JAXBModelUtils.getGbeans(getDeploymentPlan()), body, toolkit, getStyle()));
-        managedForm.addPart(new ClassFilterSection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan()), body, toolkit, getStyle(), true, true));
-        managedForm.addPart(new ClassFilterSection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan()), body, toolkit, getStyle(), true, false));
+        managedForm.addPart(new DependencySection(getRootElement(), JAXBModelUtils.getEnvironment(getRootElement()), body, toolkit, getStyle()));
+        managedForm.addPart(new GBeanSection(getRootElement(), JAXBModelUtils.getGbeans(getRootElement()), body, toolkit, getStyle()));
+        managedForm.addPart(new ClassFilterSection(getRootElement(), JAXBModelUtils.getEnvironment(getRootElement()), body, toolkit, getStyle(), true, true));
+        managedForm.addPart(new ClassFilterSection(getRootElement(), JAXBModelUtils.getEnvironment(getRootElement()), body, toolkit, getStyle(), true, false));
 
-        if (Application.class.isInstance(getDeploymentPlan().getValue())) {
-            Application application = (Application)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
-            managedForm.addPart(new ModuleSection(getDeploymentPlan(), body, toolkit, getStyle(), application.getModule()));
-            managedForm.addPart(new ExtModuleSection(getDeploymentPlan(), body, toolkit, getStyle(), application.getExtModule()));
+        if (Application.class.isInstance(getRootElement().getValue())) {
+            Application application = (Application)((AbstractGeronimoJAXBBasedEditor) getEditor()).getRootElement().getValue();
+            managedForm.addPart(new ModuleSection(getRootElement(), body, toolkit, getStyle(), application.getModule()));
+            managedForm.addPart(new ExtModuleSection(getRootElement(), body, toolkit, getStyle(), application.getExtModule()));
         } 
-        if (Connector.class.isInstance(getDeploymentPlan().getValue())) {
-            Connector connector = (Connector)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
-            managedForm.addPart(new AdminObjectSection(getDeploymentPlan(), body, toolkit, getStyle(), connector.getAdminobject()));
+        if (Connector.class.isInstance(getRootElement().getValue())) {
+            Connector connector = (Connector)((AbstractGeronimoJAXBBasedEditor) getEditor()).getRootElement().getValue();
+            managedForm.addPart(new AdminObjectSection(getRootElement(), body, toolkit, getStyle(), connector.getAdminobject()));
         }
-        if (ApplicationClient.class.isInstance(getDeploymentPlan().getValue())) {
-            managedForm.addPart(new DependencySection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan(), false), body, toolkit, getStyle(), false));
-            managedForm.addPart(new ClassFilterSection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan(), false), body, toolkit, getStyle(), false, true));
-            managedForm.addPart(new ClassFilterSection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan(), false), body, toolkit, getStyle(), false, false));
+        if (ApplicationClient.class.isInstance(getRootElement().getValue())) {
+            managedForm.addPart(new DependencySection(getRootElement(), JAXBModelUtils.getEnvironment(getRootElement(), false), body, toolkit, getStyle(), false));
+            managedForm.addPart(new ClassFilterSection(getRootElement(), JAXBModelUtils.getEnvironment(getRootElement(), false), body, toolkit, getStyle(), false, true));
+            managedForm.addPart(new ClassFilterSection(getRootElement(), JAXBModelUtils.getEnvironment(getRootElement(), false), body, toolkit, getStyle(), false, false));
         }
     }
     
@@ -86,9 +84,5 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
         return CommonMessages.deploymentPageTitle;
     }
 
-    @Override
-    protected void triggerGeronimoServerInfoUpdate() {
-        GeronimoServerInfo.getInstance().updateInfo();
-    }
 
 }

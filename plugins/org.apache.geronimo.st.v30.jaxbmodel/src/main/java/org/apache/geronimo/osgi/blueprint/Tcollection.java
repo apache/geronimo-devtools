@@ -61,19 +61,19 @@ import javax.xml.bind.annotation.XmlType;
 public class Tcollection extends TtypedCollection {
 
     @XmlElementRefs({
-        @XmlElementRef(name = "list",           namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "null",           namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "value",          namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "service",        namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "array",          namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "reference",      namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "idref",          namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "bean",           namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "props",          namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "map",            namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "ref",            namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "set",            namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "reference-list", namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class)
+        @XmlElementRef(name = "list",           namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Tcollection.class),
+        @XmlElementRef(name = "null",           namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Tnull.class),
+        @XmlElementRef(name = "value",          namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Tvalue.class),
+        @XmlElementRef(name = "service",        namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Tservice.class),
+        @XmlElementRef(name = "array",          namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Tcollection.class),
+        @XmlElementRef(name = "reference",      namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Treference.class),
+        @XmlElementRef(name = "idref",          namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Tref.class),
+        @XmlElementRef(name = "bean",           namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Tbean.class),
+        @XmlElementRef(name = "props",          namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Tprops.class),
+        @XmlElementRef(name = "map",            namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Tmap.class),
+        @XmlElementRef(name = "ref",            namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Tref.class),
+        @XmlElementRef(name = "set",            namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Tcollection.class),
+        @XmlElementRef(name = "reference-list", namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = TreferenceList.class)
     })
     @XmlAnyElement(lax = true)
     protected List<Object> gvalue;

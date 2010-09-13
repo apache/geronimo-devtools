@@ -148,7 +148,7 @@ public class MessageDestWizard extends AbstractTableWizard {
 
         if (eObject == null) {
             eObject = getEFactory().create(MessageDestination.class);
-            JAXBElement plan = section.getPlan();
+            JAXBElement plan = section.getRootElement();
 
             messageDest = (MessageDestination)eObject;
             msgPattern = (Pattern)getEFactory().create(Pattern.class);
@@ -181,7 +181,7 @@ public class MessageDestWizard extends AbstractTableWizard {
                 }
         }
         
-        if (section.getViewer().getInput() == section.getPlan()) {
+        if (section.getViewer().getInput() == section.getRootElement()) {
             section.getViewer().setInput(section.getInput());
         }
 

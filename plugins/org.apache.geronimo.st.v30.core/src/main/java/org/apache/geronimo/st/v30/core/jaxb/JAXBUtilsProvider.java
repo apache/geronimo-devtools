@@ -77,7 +77,10 @@ public class JAXBUtilsProvider implements IJAXBUtilsProvider{
                     "org.apache.geronimo.jee.applicationclient:" +
                     "org.apache.geronimo.jee.deployment:" +
                     "org.apache.geronimo.jee.naming:" +
-                    "org.apache.geronimo.jee.security:", Activator.class.getClassLoader() );
+                    "org.apache.geronimo.jee.security:" +
+                    "org.apache.geronimo.jee.jaspi:" +
+                    "org.apache.geronimo.osgi.blueprint:"
+                    , Activator.class.getClassLoader() );
         } catch (JAXBException e) {
             Trace.tracePoint("JAXBException", "JAXBContext.newInstance");
             e.printStackTrace();

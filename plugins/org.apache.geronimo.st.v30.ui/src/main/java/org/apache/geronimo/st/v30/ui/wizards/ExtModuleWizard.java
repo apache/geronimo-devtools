@@ -276,7 +276,7 @@ public class ExtModuleWizard extends AbstractTableWizard {
 
         if (eObject == null) {
             eObject = getEFactory().create(ExtModule.class);
-            JAXBElement plan = section.getPlan();
+            JAXBElement plan = section.getRootElement();
             extModule = (ExtModule)eObject;
             //This is the extModule field in plan(Application Type)
             List<ExtModule> extModuleList = ((Application)plan.getValue()).getExtModule();
@@ -323,7 +323,7 @@ public class ExtModuleWizard extends AbstractTableWizard {
             extModule.setInternalPath(null);
         }
 
-        if (section.getViewer().getInput() == section.getPlan()) {
+        if (section.getViewer().getInput() == section.getRootElement()) {
             section.getViewer().setInput(section.getInput());
         }
 

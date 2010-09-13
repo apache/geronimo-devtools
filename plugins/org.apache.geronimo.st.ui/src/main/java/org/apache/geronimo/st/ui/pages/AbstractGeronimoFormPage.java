@@ -21,7 +21,7 @@ import javax.xml.bind.JAXBElement;
 import org.apache.geronimo.st.core.DeploymentDescriptorUtils;
 import org.apache.geronimo.st.core.descriptor.AbstractDeploymentDescriptor;
 import org.apache.geronimo.st.ui.Activator;
-import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.apache.geronimo.st.ui.editors.AbstractGeronimoJAXBBasedEditor;
 import org.apache.geronimo.st.ui.editors.SharedDeploymentPlanEditor;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.action.Action;
@@ -83,7 +83,7 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
      * @see org.eclipse.ui.forms.editor.FormPage#createFormContent(org.eclipse.ui.forms.IManagedForm)
      */
     protected void createFormContent(IManagedForm managedForm) {
-        deploymentPlan = ((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan();
+        deploymentPlan = ((AbstractGeronimoJAXBBasedEditor) getEditor()).getRootElement();
         deploymentDescriptor = (AbstractDeploymentDescriptor) DeploymentDescriptorUtils
                 .getDeploymentDescriptor(getProject());
         body = managedForm.getForm().getBody();

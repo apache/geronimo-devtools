@@ -16,7 +16,7 @@
  */
 package org.apache.geronimo.st.v30.ui.pages;
 
-import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.apache.geronimo.st.ui.editors.AbstractGeronimoJAXBBasedEditor;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
@@ -27,9 +27,9 @@ import org.eclipse.wst.sse.ui.StructuredTextEditor;
  */
 public class DeploymentPlanSourcePage extends StructuredTextEditor {
     
-    protected AbstractGeronimoDeploymentPlanEditor editor;
+    protected AbstractGeronimoJAXBBasedEditor editor;
 
-    public DeploymentPlanSourcePage (AbstractGeronimoDeploymentPlanEditor editor) {
+    public DeploymentPlanSourcePage (AbstractGeronimoJAXBBasedEditor editor) {
         super();
         this.editor = editor;
     }
@@ -38,7 +38,7 @@ public class DeploymentPlanSourcePage extends StructuredTextEditor {
     public void doSave(IProgressMonitor progressMonitor) {
         super.doSave(progressMonitor);
         try {
-            editor.reloadDeploymentPlan();
+            editor.reloadFile();
         } catch (Exception e) {
             MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
         }

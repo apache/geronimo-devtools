@@ -150,7 +150,7 @@ public class EjbRelationWizard extends AbstractTreeWizard {
             relation = (EjbRelation)eObject;
             if (relation == null) {
                 relation = (EjbRelation)getEFactory().create(EjbRelation.class);
-                JAXBElement plan = section.getPlan();
+                JAXBElement plan = section.getRootElement();
                 
                 if (JAXBModelUtils.getEjbRelationships(plan) == null) {
                     Relationships relationships = (Relationships)getEFactory().create(Relationships.class);

@@ -16,15 +16,12 @@
  */
 package org.apache.geronimo.st.v21.ui.editors;
 
-import java.io.IOException;
-
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
 
 import org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader;
+import org.apache.geronimo.st.ui.editors.AbstractGeronimoJAXBBasedEditor;
 import org.apache.geronimo.st.v21.core.GeronimoV21ServerInfo;
 import org.apache.geronimo.st.v21.core.GeronimoV21Utils;
 import org.apache.geronimo.st.v21.ui.pages.AppClientGeneralPage;
@@ -98,8 +95,8 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
      * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader#addWebPlanPages()
      */
     public void addWebPlanPages(FormEditor editor) throws PartInitException {
-        AbstractGeronimoDeploymentPlanEditor geronimoEditor = (AbstractGeronimoDeploymentPlanEditor)editor;
-        JAXBElement plan = geronimoEditor.getDeploymentPlan();
+        AbstractGeronimoJAXBBasedEditor geronimoEditor = (AbstractGeronimoJAXBBasedEditor)editor;
+        JAXBElement plan = geronimoEditor.getRootElement();
         editor.addPage(new WebGeneralPage(editor, "generalpage", CommonMessages.editorTabGeneral));
         editor.addPage(createNamingFormPage(editor));
         editor.addPage(new SecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity));

@@ -18,13 +18,12 @@ package org.apache.geronimo.st.v30.ui.sections;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.jee.naming.ResourceLocator;
 import org.apache.geronimo.jee.naming.ObjectFactory;
 import org.apache.geronimo.jee.naming.Pattern;
+import org.apache.geronimo.jee.naming.ResourceLocator;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.apache.geronimo.st.v30.ui.internal.Messages;
-import org.apache.geronimo.st.v30.ui.sections.AbstractSectionPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;

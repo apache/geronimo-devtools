@@ -541,4 +541,27 @@ public class Messages extends NLS {
     public static String installable;
     public static String event;
     public static String prerequisites;
+    
+    //for blueprint editor
+    public static String editorTabService;
+    public static String editorTabReferenceList;
+    public static String editorTabBean;
+    public static String editorTabReference;
+    
+    public static String blueprintGeneralPageTitle;
+    public static String blueprintAttributeSectionTitle;
+    public static String defaultActivation;
+    public static String defaultTimeout; 
+    public static String defaultAvailability;
+    
+    public static String blueprintOtherElementsSection;
+    public static String blueprintOtherElementsSectionDescription;
+    
+    public static String blueprintAttributeSectionDescription;
+    public static String blueprintDescriptionSectionTitle;
+    public static String blueprintDescriptionSectionDescription;
+    
+    public static String blueprintTypeConverterSectionTitle;
+    public static String blueprintTypeConverterSectionDescription;
+ 
 }

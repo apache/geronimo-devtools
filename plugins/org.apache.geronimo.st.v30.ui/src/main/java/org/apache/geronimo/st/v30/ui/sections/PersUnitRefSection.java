@@ -22,10 +22,9 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.naming.PersistenceUnitRef;
-import org.apache.geronimo.st.v30.ui.CommonMessages;
-import org.apache.geronimo.st.v30.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v30.ui.Activator;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.apache.geronimo.st.v30.ui.wizards.PersUnitRefWizard;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -98,7 +97,7 @@ public class PersUnitRefSection extends AbstractTreeSection {
     public void removeItem(Object anItem) {
         if (JAXBElement.class.isInstance(anItem)) {
             getObjectContainer().remove(anItem);
-            JAXBModelUtils.getGbeanRefs(getPlan()).remove(anItem);
+            JAXBModelUtils.getGbeanRefs(getRootElement()).remove(anItem);
         }
     }
 

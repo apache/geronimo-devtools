@@ -30,11 +30,10 @@ import org.apache.geronimo.jee.security.Role;
 import org.apache.geronimo.jee.security.RoleMappings;
 import org.apache.geronimo.jee.security.Security;
 import org.apache.geronimo.jee.security.SubjectInfo;
-import org.apache.geronimo.st.v30.ui.CommonMessages;
-import org.apache.geronimo.st.v30.ui.sections.AbstractTableSection;
-import org.apache.geronimo.st.v30.ui.wizards.SecurityRunAsSubjectWizard;
 import org.apache.geronimo.st.v30.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBModelUtils;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.wizards.SecurityRunAsSubjectWizard;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -291,7 +290,7 @@ public class SecurityAdvancedSection extends AbstractTableSection {
 
     @Override
     public Object getInput() {
-        return SecurityRoleMappingSection.getRoleMappings(getPlan(), false);
+        return SecurityRoleMappingSection.getRoleMappings(getRootElement(), false);
     }
 
     @Override
@@ -361,7 +360,7 @@ public class SecurityAdvancedSection extends AbstractTableSection {
     }
 
     public Role getRole(String roleName) {
-        List<Role> roles = SecurityRoleMappingSection.getRoles(getPlan(), false);
+        List<Role> roles = SecurityRoleMappingSection.getRoles(getRootElement(), false);
         for (int i = 0; i < roles.size(); i++) {
             Role role = roles.get(i);
             if (role.getRoleName().equals(roleName)) {
@@ -372,7 +371,7 @@ public class SecurityAdvancedSection extends AbstractTableSection {
     }
 
     public String[] getRolesWithoutRunAsSubject() {
-        List<Role> roles = SecurityRoleMappingSection.getRoles(getPlan(), false);
+        List<Role> roles = SecurityRoleMappingSection.getRoles(getRootElement(), false);
         List<Role> rolesWithoutRunAsSubject = new ArrayList<Role>();
         for (int i = 0; i < roles.size(); i++) {
             Role role = roles.get(i);
@@ -438,7 +437,7 @@ public class SecurityAdvancedSection extends AbstractTableSection {
     }
 
     private Security getSecurity() {
-        return JAXBModelUtils.getSecurity(getPlan());
+        return JAXBModelUtils.getSecurity(getRootElement());
     }
 
     private String getCredentialStoreRefName() {

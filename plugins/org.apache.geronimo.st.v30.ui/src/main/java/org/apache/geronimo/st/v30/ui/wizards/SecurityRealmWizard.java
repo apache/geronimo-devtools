@@ -129,7 +129,7 @@ public class SecurityRealmWizard extends AbstractTableWizard {
 
     public boolean performFinish() {
     boolean isedit = false;
-    JAXBElement<?> plan = this.section.getPlan();
+    JAXBElement<?> plan = this.section.getRootElement();
     ObjectFactory objectFactory = new ObjectFactory();
     // all pages
     SecurityRealmBasicPage page0 = (SecurityRealmBasicPage) this

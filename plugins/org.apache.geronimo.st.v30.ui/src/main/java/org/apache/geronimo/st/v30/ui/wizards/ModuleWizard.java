@@ -171,7 +171,7 @@ public class ModuleWizard extends AbstractTableWizard {
 
         if (eObject == null) {
             eObject = getEFactory().create(Module.class);
-            JAXBElement plan = section.getPlan();
+            JAXBElement plan = section.getRootElement();
 
             module = (Module)eObject;
 
@@ -207,7 +207,7 @@ public class ModuleWizard extends AbstractTableWizard {
         path.setValue(altDD);
         module.setAltDd(path);
         
-        if (section.getViewer().getInput() == section.getPlan()) {
+        if (section.getViewer().getInput() == section.getRootElement()) {
             section.getViewer().setInput(section.getInput());
         }
 

@@ -16,80 +16,56 @@
  */
 package org.apache.geronimo.st.v30.ui.editors;
 
-import org.apache.geronimo.st.v30.ui.internal.Trace;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.ui.forms.editor.FormEditor;
+import javax.xml.bind.JAXBElement;
+
+import org.apache.geronimo.st.ui.editors.AbstractGeronimoJAXBBasedEditor;
+import org.apache.geronimo.st.v30.core.jaxb.JAXBUtils;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.pages.blueprint.BlueprintPage;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.PartInitException;
 
 /**
  * @version $Rev$ $Date$
  */
-public class BlueprintFormEditor extends FormEditor {
+public class BlueprintFormEditor extends AbstractGeronimoJAXBBasedEditor {
+    
+    private static String BLUEPRINT_NAME = "blueprint.xml";
+    
+    private JAXBElement blueprint ;
 
-    public BlueprintFormEditor() {
-        super();
+    @Override
+    public void doAddPages() throws PartInitException {
+       
+        addFormPages();
         
-        Trace.tracePoint("Entry", "BlueprintFormEditor.BlueprintFormEditor");
+        //add source page
+        addSourcePage();
         
-        // TODO
+    }
+
+    private void addFormPages() throws PartInitException {
+      //add General page
+      this.addPage(new BlueprintPage(this, "blueprintgeneralpage", CommonMessages.editorTabGeneral));
         
-        Trace.tracePoint("Exit", "BlueprintFormEditor.BlueprintFormEditor");
     }
 
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.forms.editor.FormEditor#addPages()
-     */
-    public void addPages() {
-        Trace.tracePoint("Entry", "BlueprintFormEditor.addPages");
-        
-        // TODO
-        
-        Trace.tracePoint("Exit", "BlueprintFormEditor.addPages");
+    @Override
+    public JAXBElement loadFile(IFile file) throws Exception {
+        if (file.getName().equals(BLUEPRINT_NAME) && file.exists()) {
+            blueprint =  JAXBUtils.unmarshalFilterDeploymentPlan(file);
+            return blueprint;
+        }else return null;
     }
 
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.part.EditorPart#isSaveAsAllowed()
-     */
-    public boolean isSaveAsAllowed() {
-        Trace.tracePoint("Entry", "BlueprintFormEditor.isSaveAsAllowed");
+    @Override
+    public void saveFile(IFile file) throws Exception {
+        JAXBUtils.marshalDeploymentPlan(blueprint, file);
         
-        // TODO
-        
-        Trace.tracePoint("Exit", "BlueprintFormEditor.isSaveAsAllowed, false");
-        return false;
     }
+    
+    
 
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.part.EditorPart#doSaveAs()
-     */
-    public final void doSaveAs() {
-        Trace.tracePoint("Entry", "BlueprintFormEditor.doSaveAs");
-        
-        // TODO
-        
-        Trace.tracePoint("Exit", "BlueprintFormEditor.doSaveAs");
-    }
-
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
-     */
-    public void doSave(IProgressMonitor monitor) {
-        Trace.tracePoint("Entry", "BlueprintFormEditor.doSave", monitor);
-        
-        // TODO
-        
-        Trace.tracePoint("Exit", "BlueprintFormEditor.doSave");
-    }
+    
 }

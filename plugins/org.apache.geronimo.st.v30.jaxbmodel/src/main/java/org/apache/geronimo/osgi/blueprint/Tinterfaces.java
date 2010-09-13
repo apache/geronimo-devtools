@@ -59,7 +59,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "interfaces")
 public class Tinterfaces {
 
-    @XmlElementRef(name = "value", namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class)
+    @XmlElementRef(name = "value", namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Tvalue.class)
     protected List<JAXBElement<String>> value;
 
     /**

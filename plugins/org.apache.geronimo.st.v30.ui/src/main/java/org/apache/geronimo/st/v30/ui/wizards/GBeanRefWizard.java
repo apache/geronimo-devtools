@@ -151,7 +151,7 @@ public class GBeanRefWizard extends AbstractTreeWizard {
             gbeanRef = (GbeanRef)eObject;
             if (gbeanRef == null) {
                 gbeanRef = (GbeanRef)getEFactory().create(GbeanRef.class);
-                JAXBElement plan = section.getPlan();
+                JAXBElement plan = section.getRootElement();
 
                 // if we have a WebApp, add the JAXBElement of the GBeanRef, not the GBeanRef
                 if (WebApp.class.isInstance(plan.getValue())) {

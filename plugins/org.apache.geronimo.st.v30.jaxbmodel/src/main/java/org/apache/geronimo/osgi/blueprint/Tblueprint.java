@@ -79,10 +79,10 @@ public class Tblueprint {
     @XmlElement(name = "type-converters")
     protected TtypeConverters typeConverters;
     @XmlElementRefs({
-        @XmlElementRef(name = "bean",           namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "reference-list", namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "service",        namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "reference",      namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class)
+        @XmlElementRef(name = "bean",           namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Tbean.class),
+        @XmlElementRef(name = "reference-list", namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = TreferenceList.class),
+        @XmlElementRef(name = "service",        namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Tservice.class),
+        @XmlElementRef(name = "reference",      namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Treference.class)
     })
     @XmlAnyElement(lax = true)
     protected List<Object> serviceOrReferenceListOrBean;

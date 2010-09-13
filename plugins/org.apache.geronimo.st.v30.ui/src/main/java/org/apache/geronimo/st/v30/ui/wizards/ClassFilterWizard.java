@@ -82,7 +82,7 @@ public class ClassFilterWizard extends AbstractTableWizard {
 
         if (eObject == null) {
             eObject = new String();
-            JAXBElement plan = section.getPlan();
+            JAXBElement plan = section.getRootElement();
 
             Environment environment = null;
             environment = JAXBModelUtils.getEnvironment(plan, isServerEnvironment);

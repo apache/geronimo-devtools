@@ -23,11 +23,9 @@ import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.naming.GbeanRef;
 import org.apache.geronimo.jee.naming.Pattern;
-import org.apache.geronimo.jee.web.WebApp;
-import org.apache.geronimo.st.v30.ui.CommonMessages;
-import org.apache.geronimo.st.v30.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v30.ui.Activator;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.apache.geronimo.st.v30.ui.wizards.GBeanRefWizard;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -116,7 +114,7 @@ public class GBeanRefSection extends AbstractTreeSection {
     public void removeItem(Object anItem) {
         if (GbeanRef.class.isInstance(anItem) || JAXBElement.class.isInstance(anItem)) {
             getObjectContainer().remove(anItem);
-            JAXBModelUtils.getGbeanRefs(getPlan()).remove(anItem);
+            JAXBModelUtils.getGbeanRefs(getRootElement()).remove(anItem);
         }
         else if (String.class.isInstance(anItem)) {
             Object object = tree.getSelection()[0].getParentItem().getData();

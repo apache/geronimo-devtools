@@ -21,7 +21,7 @@ import org.apache.geronimo.j2ee.applicationclient.ApplicationClientType;
 import org.apache.geronimo.j2ee.connector.ConnectorType;
 import org.apache.geronimo.j2ee.jaxbmodel.operations.JAXBModelUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.apache.geronimo.st.ui.editors.AbstractGeronimoJAXBBasedEditor;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v11.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v11.ui.sections.AdminObjectSection;
@@ -55,12 +55,12 @@ public class DeploymentPage extends AbstractGeronimoFormPage {
         managedForm.addPart(new ClassFilterSection(getDeploymentPlan(), JAXBModelUtils.getEnvironment(getDeploymentPlan()), body, toolkit, getStyle(), true, false));
 
         if (ApplicationType.class.isInstance(getDeploymentPlan().getValue())) {
-        	ApplicationType application = (ApplicationType)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
+        	ApplicationType application = (ApplicationType)((AbstractGeronimoJAXBBasedEditor) getEditor()).getRootElement().getValue();
             managedForm.addPart(new ModuleSection(getDeploymentPlan(), body, toolkit, getStyle(), application.getModule()));
             managedForm.addPart(new ExtModuleSection(getDeploymentPlan(), body, toolkit, getStyle(), application.getExtModule()));
         } 
         if (ConnectorType.class.isInstance(getDeploymentPlan().getValue())) {
-        	ConnectorType connector = (ConnectorType)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
+        	ConnectorType connector = (ConnectorType)((AbstractGeronimoJAXBBasedEditor) getEditor()).getRootElement().getValue();
             managedForm.addPart(new AdminObjectSection(getDeploymentPlan(), body, toolkit, getStyle(), connector.getAdminobject()));
         }
         if (ApplicationClientType.class.isInstance(getDeploymentPlan().getValue())) {

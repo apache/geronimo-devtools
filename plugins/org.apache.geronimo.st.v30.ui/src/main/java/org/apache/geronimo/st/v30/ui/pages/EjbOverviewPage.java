@@ -26,7 +26,7 @@ import org.eclipse.ui.forms.editor.FormEditor;
 /**
  * @version $Rev$ $Date$
  */
-public class EjbOverviewPage extends AbstractGeronimoFormPage {
+public class EjbOverviewPage extends AbstractDeploymentPlanFormPage {
 
     public EjbOverviewPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
@@ -38,12 +38,8 @@ public class EjbOverviewPage extends AbstractGeronimoFormPage {
      * @see org.apache.geronimo.st.v30.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
     protected void fillBody(IManagedForm managedForm) {
-        managedForm.addPart(new OpenEjbJarGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
-        managedForm.addPart(new OpenEjbJarCMPSection(body, toolkit, getStyle(), getDeploymentPlan()));
+        managedForm.addPart(new OpenEjbJarGeneralSection(body, toolkit, getStyle(), getRootElement()));
+        managedForm.addPart(new OpenEjbJarCMPSection(body, toolkit, getStyle(), getRootElement()));
     }
 
-    @Override
-    protected void triggerGeronimoServerInfoUpdate() {
-        GeronimoServerInfo.getInstance().updateInfo();
-    }
 }

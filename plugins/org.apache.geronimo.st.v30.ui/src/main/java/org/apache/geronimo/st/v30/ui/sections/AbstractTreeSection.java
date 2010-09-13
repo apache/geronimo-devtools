@@ -66,7 +66,7 @@ public abstract class AbstractTreeSection extends AbstractListSection {
         tree.setLayout(new TableLayout());
         tree.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
-                activateButtons();
+                activateButtons();               
             }
         });
         viewer = new TreeViewer(tree);

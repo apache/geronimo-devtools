@@ -21,17 +21,16 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.jee.web.WebApp;
+import org.apache.geronimo.jee.application.Application;
+import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.jee.deployment.Artifact;
 import org.apache.geronimo.jee.deployment.Dependencies;
 import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.jee.deployment.ObjectFactory;
-import org.apache.geronimo.jee.application.Application;
-import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
+import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
-import org.apache.geronimo.st.v30.ui.sections.AbstractSectionPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -290,7 +289,7 @@ public abstract class CommonGeneralSection extends AbstractSectionPart {
 
     protected Environment getEnvironment(boolean create) {
         Environment type = null;
-        Object plan = getPlan().getValue();
+        Object plan = getRootElement().getValue();
         if (WebApp.class.isInstance(plan)) {
             type = ((WebApp) plan).getEnvironment();
             if (type == null && create) {

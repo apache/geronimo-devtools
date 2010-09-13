@@ -22,7 +22,6 @@ import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.application.Module;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
-import org.apache.geronimo.st.v30.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v30.ui.wizards.ModuleWizard;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.wizard.Wizard;

@@ -42,7 +42,7 @@ import org.eclipse.wst.server.core.IRuntime;
 /**
  * @version $Rev$ $Date$
  */
-public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEditor {
+public class SharedDeploymentPlanEditor extends AbstractGeronimoJAXBBasedEditor {
 
 	private static Map loaders = new HashMap();
 
@@ -62,7 +62,7 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEd
 	public void doAddPages() throws PartInitException {
         Trace.tracePoint("ENTRY", "SharedDeploymentPlanEditor.doAddPages");
 
-		if (getDeploymentPlan() != null && getLoader() != null) {
+		if (getRootElement() != null && getLoader() != null) {
 			currentLoader.doAddPages(this);
 		}
 		addSourcePage();
@@ -97,16 +97,16 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEd
 	 * 
 	 * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor#loadDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
-	public JAXBElement loadDeploymentPlan(IFile file) throws Exception {
+	public JAXBElement loadFile(IFile file) throws Exception {
         Trace.tracePoint("ENTRY", "SharedDeploymentPlanEditor.loadDeploymentPlan", file);
         JAXBElement jaxbElement = getLoader() != null ? currentLoader.loadDeploymentPlan(file) : null;
         Trace.tracePoint("EXIT", "SharedDeploymentPlanEditor.loadDeploymentPlan", jaxbElement);
 		return jaxbElement;
 	}
 	
-	public void saveDeploymentPlan(IFile file) throws Exception {
+	public void saveFile(IFile file) throws Exception {
 		if (getLoader() != null) {
-			getLoader().saveDeploymentPlan(deploymentPlan, file);
+			getLoader().saveDeploymentPlan(this.rootJAXBElement, file);
 		}
 	}
 

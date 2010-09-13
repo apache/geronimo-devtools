@@ -146,7 +146,7 @@ public class SecurityRoleMappingSection extends AbstractTreeSection {
 
     @Override
     public List getObjectContainer() {
-        return getRoles(getPlan(), false);
+        return getRoles(getRootElement(), false);
     }
 
     public static List<Role> getRoles(JAXBElement plan, boolean create) {
@@ -189,7 +189,7 @@ public class SecurityRoleMappingSection extends AbstractTreeSection {
         if (declaredRoleNames == null || declaredRoleNames.size() <= 0) {
             return false;
         }
-        List<Role> definedRoles = getRoles(getPlan(), true);
+        List<Role> definedRoles = getRoles(getRootElement(), true);
         List<Role> newRoles = new ArrayList<Role>();
         for (int i = 0; i < declaredRoleNames.size(); i++) {
             String roleName = declaredRoleNames.get(i);
@@ -213,7 +213,7 @@ public class SecurityRoleMappingSection extends AbstractTreeSection {
     @Override
     public Object getInput() {
         addRolesFromDeploymentDescriptor();
-        return getRoleMappings(getPlan(), false);
+        return getRoleMappings(getRootElement(), false);
     }
 
     @Override

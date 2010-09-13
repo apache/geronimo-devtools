@@ -190,7 +190,7 @@ public class GBeanWizard extends AbstractTreeWizard {
             gbean = (Gbean)eObject;
             if (gbean == null) {
                 gbean = (Gbean)getEFactory().create(Gbean.class);
-                JAXBElement plan = section.getPlan();
+                JAXBElement plan = section.getRootElement();
                 
                 // add the JAXBElement of a GBean, not the GBean
                 ObjectFactory objectFactory = new ObjectFactory();

@@ -16,9 +16,7 @@
  */
 package org.apache.geronimo.st.v30.ui.pages;
 
-import org.apache.geronimo.st.v30.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
-import org.apache.geronimo.st.v30.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v30.ui.sections.WebContainerSection;
 import org.apache.geronimo.st.v30.ui.sections.WebGeneralSection;
 import org.eclipse.ui.forms.IManagedForm;
@@ -27,7 +25,7 @@ import org.eclipse.ui.forms.editor.FormEditor;
 /**
  * @version $Rev$ $Date$
  */
-public class WebGeneralPage extends AbstractGeronimoFormPage {
+public class WebGeneralPage extends AbstractDeploymentPlanFormPage {
 
     public WebGeneralPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
@@ -39,8 +37,8 @@ public class WebGeneralPage extends AbstractGeronimoFormPage {
      * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
     protected void fillBody(IManagedForm managedForm) {
-        managedForm.addPart(new WebGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
-        managedForm.addPart(new WebContainerSection(body, toolkit, getStyle(), getDeploymentPlan()));
+        managedForm.addPart(new WebGeneralSection(body, toolkit, getStyle(), getRootElement()));
+        managedForm.addPart(new WebContainerSection(body, toolkit, getStyle(), getRootElement()));
     }
 
     /*
@@ -52,8 +50,4 @@ public class WebGeneralPage extends AbstractGeronimoFormPage {
         return CommonMessages.webGeneralPageTitle;
     }
 
-    @Override
-    protected void triggerGeronimoServerInfoUpdate() {
-        GeronimoServerInfo.getInstance().updateInfo();
-    }
 }

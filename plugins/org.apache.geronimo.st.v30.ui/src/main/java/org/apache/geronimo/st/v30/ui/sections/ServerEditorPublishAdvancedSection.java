@@ -16,7 +16,6 @@
  */
 package org.apache.geronimo.st.v30.ui.sections;
 
-import org.apache.geronimo.st.v30.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.v30.ui.commands.SetPublishTimeoutCommand;
 import org.apache.geronimo.st.v30.ui.internal.Messages;
 import org.eclipse.swt.SWT;

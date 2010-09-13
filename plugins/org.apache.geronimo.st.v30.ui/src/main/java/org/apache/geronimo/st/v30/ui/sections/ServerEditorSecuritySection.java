@@ -16,7 +16,6 @@
  */
 package org.apache.geronimo.st.v30.ui.sections;
 
-import org.apache.geronimo.st.v30.core.IGeronimoServer;
 import org.apache.geronimo.st.v30.core.operations.GeronimoAccountManager;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.apache.geronimo.st.v30.ui.commands.SetPasswordCommand;
@@ -32,7 +31,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;

@@ -265,18 +265,12 @@
      ###################################################################################################################
      -->
     <extension point="org.eclipse.ui.editors">
-        <editor class="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart"
-            contributorClass="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorActionBarContributor"
-            symbolicFontName="org.eclipse.wst.sse.ui.textfont"
+        <editor class="org.apache.geronimo.st.v30.ui.editors.BlueprintFormEditor"
             default="true" 
             filenames="blueprint.xml"
             icon="icons/obj16/littleOSGi.gif"
             id="org.apache.geronimo.v30.ui.editors.BlueprintFormEditor" 
             name="%BlueprintEditorName">
-            <contentTypeBinding
-                contentTypeId="org.eclipse.core.runtime.xml"/>
-            <contentTypeBinding
-                contentTypeId="org.eclipse.wst.xml.core.xmlsource"/>
         </editor>
     </extension>
 

@@ -18,8 +18,8 @@ package org.apache.geronimo.st.v30.ui.sections;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.openejb.ObjectFactory;
+import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;

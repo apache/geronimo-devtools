@@ -19,7 +19,6 @@ package org.apache.geronimo.st.v30.ui.sections;
 import org.apache.geronimo.st.v30.core.operations.GeronimoServerPluginManager;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.apache.geronimo.st.v30.ui.internal.Trace;
-import org.apache.geronimo.st.v30.ui.sections.AbstractServerEditorSection;
 import org.apache.geronimo.st.v30.ui.wizards.ServerCustomAssemblyWizard;
 import org.apache.geronimo.st.v30.ui.wizards.ServerPluginManagerDialog;
 import org.apache.geronimo.st.v30.ui.wizards.ServerPluginManagerWizard;

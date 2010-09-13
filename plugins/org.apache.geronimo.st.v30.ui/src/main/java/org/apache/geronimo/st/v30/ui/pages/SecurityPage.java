@@ -30,7 +30,7 @@ import org.eclipse.ui.forms.editor.FormEditor;
 /**
  * @version $Rev$ $Date$
  */
-public class SecurityPage extends AbstractGeronimoFormPage {
+public class SecurityPage extends AbstractDeploymentPlanFormPage {
 
     public SecurityPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
@@ -42,9 +42,9 @@ public class SecurityPage extends AbstractGeronimoFormPage {
      * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
     protected void fillBody(IManagedForm managedForm) {
-        managedForm.addPart(new SecurityRealmSection(getDeploymentPlan(),JAXBModelUtils.getGbeans(getDeploymentPlan()), body, toolkit, getStyle()));    
-        managedForm.addPart(new SecurityRoleMappingSection(getDeploymentPlan(), getDeploymentDescriptor(), body, toolkit, getStyle()));
-        managedForm.addPart(new SecurityAdvancedSection(getDeploymentPlan(), body, toolkit, getStyle()));
+        managedForm.addPart(new SecurityRealmSection(getRootElement(),JAXBModelUtils.getGbeans(getRootElement()), body, toolkit, getStyle()));    
+        managedForm.addPart(new SecurityRoleMappingSection(getRootElement(), getDeploymentDescriptor(), body, toolkit, getStyle()));
+        managedForm.addPart(new SecurityAdvancedSection(getRootElement(), body, toolkit, getStyle()));
     }
 
     /*
@@ -67,9 +67,5 @@ public class SecurityPage extends AbstractGeronimoFormPage {
         return CommonMessages.securityPageTitle;
     }
 
-    @Override
-    protected void triggerGeronimoServerInfoUpdate() {
-        GeronimoServerInfo.getInstance().updateInfo();
-    }
 
 }

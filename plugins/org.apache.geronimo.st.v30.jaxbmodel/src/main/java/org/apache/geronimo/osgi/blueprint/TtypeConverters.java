@@ -67,12 +67,12 @@ import javax.xml.bind.annotation.XmlType;
 public class TtypeConverters {
 
     @XmlElementRefs({
-        @XmlElementRef(name = "bean",      namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "reference", namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "ref",       namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class)
+        @XmlElementRef(name = "bean",      namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Tbean.class),
+        @XmlElementRef(name = "reference", namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Treference.class),
+        @XmlElementRef(name = "ref",       namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Tref.class)
     })
     @XmlAnyElement(lax = true)
-    protected List<Object> beanOrReferenceOrRef;
+    protected List<Tcomponent> beanOrReferenceOrRef;
 
     /**
      * Gets the value of the beanOrReferenceOrRef property.
@@ -99,9 +99,9 @@ public class TtypeConverters {
      * 
      * 
      */
-    public List<Object> getBeanOrReferenceOrRef() {
+    public List<Tcomponent> getBeanOrReferenceOrRef() {
         if (beanOrReferenceOrRef == null) {
-            beanOrReferenceOrRef = new ArrayList<Object>();
+            beanOrReferenceOrRef = new ArrayList<Tcomponent>();
         }
         return this.beanOrReferenceOrRef;
     }

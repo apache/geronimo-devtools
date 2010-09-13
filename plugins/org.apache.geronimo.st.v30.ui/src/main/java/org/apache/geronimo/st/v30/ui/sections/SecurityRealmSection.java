@@ -28,7 +28,6 @@ import org.apache.geronimo.jee.deployment.Gbean;
 import org.apache.geronimo.jee.deployment.XmlAttributeType;
 import org.apache.geronimo.jee.loginconfig.LoginConfig;
 import org.apache.geronimo.jee.loginconfig.LoginModule;
-import org.apache.geronimo.st.v30.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v30.ui.pages.SecurityPage;
 import org.apache.geronimo.st.v30.ui.wizards.SecurityRealmWizard;
 import org.eclipse.jface.viewers.ITableLabelProvider;

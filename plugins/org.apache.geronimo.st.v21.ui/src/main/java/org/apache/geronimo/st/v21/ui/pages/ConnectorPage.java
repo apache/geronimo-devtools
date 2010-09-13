@@ -17,7 +17,7 @@
 package org.apache.geronimo.st.v21.ui.pages;
 
 import org.apache.geronimo.jee.application.Application;
-import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.apache.geronimo.st.ui.editors.AbstractGeronimoJAXBBasedEditor;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v21.core.GeronimoServerInfoManager;
 import org.apache.geronimo.st.v21.ui.sections.DBPoolSection;
@@ -38,8 +38,8 @@ public class ConnectorPage extends AbstractGeronimoFormPage {
 
 	@Override
 	protected void fillBody(IManagedForm managedForm) {
-		Application application = (Application) ((AbstractGeronimoDeploymentPlanEditor) getEditor())
-				.getDeploymentPlan().getValue();
+		Application application = (Application) ((AbstractGeronimoJAXBBasedEditor) getEditor())
+				.getRootElement().getValue();
 		managedForm.addPart(new DBPoolSection(getDeploymentPlan(), body,
 				toolkit, getStyle(), application.getExtModule()));	
 	}

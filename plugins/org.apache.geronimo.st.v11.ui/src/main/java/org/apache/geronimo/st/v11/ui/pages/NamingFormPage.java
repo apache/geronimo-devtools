@@ -20,7 +20,7 @@ import org.apache.geronimo.j2ee.applicationclient.ApplicationClientType;
 import org.apache.geronimo.j2ee.openejb_jar.OpenejbJarType;
 import org.apache.geronimo.j2ee.web.WebAppType;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
+import org.apache.geronimo.st.ui.editors.AbstractGeronimoJAXBBasedEditor;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
 import org.apache.geronimo.st.v11.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v11.ui.sections.EjbLocalRefSection;
@@ -51,7 +51,7 @@ public class NamingFormPage extends AbstractGeronimoFormPage {
      */
     protected void fillBody(IManagedForm managedForm) {
         if (WebAppType.class.isInstance (getDeploymentPlan().getValue())) {
-            WebAppType webapp = (WebAppType)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
+            WebAppType webapp = (WebAppType)((AbstractGeronimoJAXBBasedEditor) getEditor()).getRootElement().getValue();
             managedForm.addPart(new EjbRefSection(getDeploymentPlan(), body, toolkit, getStyle(), webapp.getEjbRef()));
             managedForm.addPart(new ResourceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), webapp.getResourceRef()));
             managedForm.addPart(new ServiceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), webapp.getServiceRef()));
@@ -61,7 +61,7 @@ public class NamingFormPage extends AbstractGeronimoFormPage {
             managedForm.addPart(new MessageDestSection(getDeploymentPlan(), body, toolkit, getStyle(), webapp.getMessageDestination()));
         }
         else if (ApplicationClientType.class.isInstance (getDeploymentPlan().getValue())){
-        	ApplicationClientType appClient = (ApplicationClientType)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
+        	ApplicationClientType appClient = (ApplicationClientType)((AbstractGeronimoJAXBBasedEditor) getEditor()).getRootElement().getValue();
             managedForm.addPart(new EjbRefSection(getDeploymentPlan(), body, toolkit, getStyle(), appClient.getEjbRef()));
             managedForm.addPart(new ResourceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), appClient.getResourceRef()));
             managedForm.addPart(new ServiceRefSection(getDeploymentPlan(), body, toolkit, getStyle(), appClient.getServiceRef()));
@@ -70,7 +70,7 @@ public class NamingFormPage extends AbstractGeronimoFormPage {
             managedForm.addPart(new MessageDestSection(getDeploymentPlan(), body, toolkit, getStyle(), appClient.getMessageDestination()));
         }
         else if (OpenejbJarType.class.isInstance (getDeploymentPlan().getValue())){
-        	OpenejbJarType ejbJar = (OpenejbJarType)((AbstractGeronimoDeploymentPlanEditor) getEditor()).getDeploymentPlan().getValue();
+        	OpenejbJarType ejbJar = (OpenejbJarType)((AbstractGeronimoJAXBBasedEditor) getEditor()).getRootElement().getValue();
             managedForm.addPart(new EjbRelationSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbJar.getRelationships()));
             managedForm.addPart(new MessageDestSection(getDeploymentPlan(), body, toolkit, getStyle(), ejbJar.getMessageDestination()));
         }

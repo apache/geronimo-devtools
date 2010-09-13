@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.apache.geronimo.j2ee.v11.jaxbmodel;singleton:=true
 Bundle-Version: 3.0.0
 Bundle-ClassPath: .
 Bundle-Vendor: Apache Software Foundation
-Bundle-Localization: plugin
 Require-Bundle: 
  org.apache.geronimo.runtime.common,
  org.apache.geronimo.jaxbmodel.common,

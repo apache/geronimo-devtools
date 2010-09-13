@@ -20,8 +20,8 @@ import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader;
+import org.apache.geronimo.st.ui.editors.AbstractGeronimoJAXBBasedEditor;
 import org.apache.geronimo.st.v11.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v11.core.GeronimoV11Utils;
 import org.apache.geronimo.st.v11.ui.pages.AppClientGeneralPage;
@@ -92,8 +92,8 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
      * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader#addWebPlanPages()
      */
     public void addWebPlanPages(FormEditor editor) throws PartInitException {
-        AbstractGeronimoDeploymentPlanEditor geronimoEditor = (AbstractGeronimoDeploymentPlanEditor)editor;
-        JAXBElement plan = geronimoEditor.getDeploymentPlan();
+        AbstractGeronimoJAXBBasedEditor geronimoEditor = (AbstractGeronimoJAXBBasedEditor)editor;
+        JAXBElement plan = geronimoEditor.getRootElement();
         editor.addPage(new WebGeneralPage(editor, "generalpage", CommonMessages.editorTabGeneral));
         editor.addPage(createNamingFormPage(editor));
         editor.addPage(new SecurityPage(editor, "securitypage", CommonMessages.editorTabSecurity));

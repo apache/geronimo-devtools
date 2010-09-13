@@ -26,7 +26,7 @@ import org.eclipse.ui.forms.editor.FormEditor;
 /**
  * @version $Rev$ $Date$
  */
-public class AppGeneralPage extends AbstractGeronimoFormPage {
+public class AppGeneralPage extends AbstractDeploymentPlanFormPage {
 
     public AppGeneralPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
@@ -38,7 +38,7 @@ public class AppGeneralPage extends AbstractGeronimoFormPage {
      * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
     protected void fillBody(IManagedForm managedForm) {
-        managedForm.addPart(new AppGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
+        managedForm.addPart(new AppGeneralSection(body, toolkit, getStyle(), getRootElement()));
     }
 
     /*
@@ -50,9 +50,5 @@ public class AppGeneralPage extends AbstractGeronimoFormPage {
         return CommonMessages.appGeneralPageTitle;
     }
 
-    @Override
-    protected void triggerGeronimoServerInfoUpdate() {
-        GeronimoServerInfo.getInstance().updateInfo();
-    }
 
 }

@@ -171,7 +171,7 @@ public class ServiceRefWizard extends AbstractTreeWizard {
             serviceRef = (ServiceRef)eObject;
             if (serviceRef == null) {
                 serviceRef = (ServiceRef)getEFactory().create(ServiceRef.class);
-                JAXBElement plan = section.getPlan();
+                JAXBElement plan = section.getRootElement();
                 JAXBModelUtils.getServiceRefs(plan).add(serviceRef);
             }
             serviceRef.setServiceRefName(textList.get(0).getText());

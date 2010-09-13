@@ -74,8 +74,8 @@ public class Tbean extends Tcomponent {
 
     protected Tdescription description;
     @XmlElementRefs({
-        @XmlElementRef(name = "property", namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class),
-        @XmlElementRef(name = "argument", namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = JAXBElement.class)
+        @XmlElementRef(name = "property", namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Tproperty.class),
+        @XmlElementRef(name = "argument", namespace = "http://www.osgi.org/xmlns/blueprint/v1.0.0", type = Targument.class)
     })
     @XmlAnyElement(lax = true)
     protected List<Object> argumentOrPropertyOrAny;

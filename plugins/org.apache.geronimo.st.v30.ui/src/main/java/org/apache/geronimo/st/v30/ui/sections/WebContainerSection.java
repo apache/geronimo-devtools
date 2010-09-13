@@ -23,7 +23,6 @@ import org.apache.geronimo.jee.naming.ObjectFactory;
 import org.apache.geronimo.jee.naming.Pattern;
 import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
-import org.apache.geronimo.st.v30.ui.sections.AbstractSectionPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;

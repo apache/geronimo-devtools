@@ -16,12 +16,10 @@
  */
 package org.apache.geronimo.st.ui.editors;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
 
 import org.apache.geronimo.st.core.operations.ImportDeploymentPlanDataModelProvider;
 import org.apache.geronimo.st.core.operations.ImportDeploymentPlanOperation;
@@ -50,16 +48,15 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
-import org.eclipse.wst.sse.ui.StructuredTextEditor;
 
 /**
- * @version $Rev$ $Date$
+ * @version $Rev: 939152 $ $Date: 2010-04-29 08:57:12 +0800 (Thu, 29 Apr 2010) $
  */
-public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
+public abstract class AbstractGeronimoJAXBBasedEditor extends FormEditor {
 
-    protected JAXBElement deploymentPlan;
+    protected JAXBElement rootJAXBElement;
 
-    public AbstractGeronimoDeploymentPlanEditor() {
+    public AbstractGeronimoJAXBBasedEditor() {
         super();
     }
 
@@ -74,8 +71,8 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
             IEditorInput input = getEditorInput();
             if (input instanceof IFileEditorInput) {
                 IFileEditorInput fei = (IFileEditorInput) input;
-                if (deploymentPlan != null) {
-                    saveDeploymentPlan(fei.getFile());
+                if (rootJAXBElement != null) {
+                    saveFile(fei.getFile());
                     commitFormPages(true);
                 }
 
@@ -83,13 +80,13 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
                     editorDirtyStateChanged();
                 } else {
                     getActiveEditor().doSave(monitor);
-                    if (deploymentPlan != null) {
+                    if (rootJAXBElement != null) {
 //                        if (deploymentPlan.eResource() != null) {
 //                            deploymentPlan.eResource().unload();
 //                        }
                         // TODO not sure if this is the best way to refresh
                         // model
-                        deploymentPlan = loadDeploymentPlan(fei.getFile());
+                        rootJAXBElement = loadFile(fei.getFile());
                     }
                 }
             }
@@ -101,8 +98,8 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
                 if (is != null)
                     is.close();
             } catch (Exception e) {
-            	Trace.trace(Trace.SEVERE, "Error saving", e);
-            	MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error saving", e.getMessage());
+                Trace.trace(Trace.SEVERE, "Error saving", e);
+                MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error saving", e.getMessage());
             }
         }
     }
@@ -172,8 +169,8 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
         return (IFormPage[]) formPages.toArray(new IFormPage[formPages.size()]);
     }
 
-    public JAXBElement getDeploymentPlan() {
-        return deploymentPlan;
+    public JAXBElement getRootElement() {
+        return rootJAXBElement;
     }
 
     /*
@@ -187,16 +184,16 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
         if (input instanceof IFileEditorInput) {
             IFileEditorInput fei = (IFileEditorInput) input;
             try {
-				deploymentPlan = loadDeploymentPlan(fei.getFile());
-			} catch (Exception e1) {
-				// throw new PartInitException("Error in loading deployment plan");
-				// if catching an exception , it will try to correct the plan 
-				// or open the plan with default editor
-				e1.printStackTrace();
-			}
+                rootJAXBElement = loadFile(fei.getFile());
+            } catch (Exception e1) {
+                // throw new PartInitException("Error in loading deployment plan");
+                // if catching an exception , it will try to correct the plan 
+                // or open the plan with default editor
+                e1.printStackTrace();
+            }
             
             boolean fix = false;
-            if(deploymentPlan == null) {
+            if(rootJAXBElement == null) {
                 fix = MessageDialog.openQuestion(Display.getDefault().getActiveShell(), Messages.errorOpenDialog, Messages.editorCorrect);
             }
             
@@ -214,24 +211,24 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
                 }
                 
                 try {
-					deploymentPlan = loadDeploymentPlan(fei.getFile());
-				} catch (Exception e) {
-					throw new PartInitException("Error in loading deployment plan");
-				}
+                    rootJAXBElement = loadFile(fei.getFile());
+                } catch (Exception e) {
+                    throw new PartInitException(e.getMessage());
+                }
                 
-                if (deploymentPlan == null) {    
+                if (rootJAXBElement == null) {    
                     MessageDialog.openInformation(Display.getDefault().getActiveShell(), Messages.errorOpenDialog, Messages.editorDefault);
                 }
             }
         }
     }
 
-    public void reloadDeploymentPlan() throws Exception {
+    public void reloadFile() throws Exception {
         IEditorInput input = getEditorInput();
         if (input instanceof IFileEditorInput) {
             IFileEditorInput fei = (IFileEditorInput) input;
-            if (deploymentPlan != null) {
-                deploymentPlan = loadDeploymentPlan(fei.getFile());
+            if (rootJAXBElement != null) {
+                rootJAXBElement = loadFile(fei.getFile());
                 IFormPage[] pages = getPages();
                 for (int i = 0; i < pages.length; i++) {
                     IFormPage page = pages[i];
@@ -266,7 +263,7 @@ public abstract class AbstractGeronimoDeploymentPlanEditor extends FormEditor {
         super.pageChange(newPageIndex);
     }
 
-    abstract public JAXBElement loadDeploymentPlan(IFile file) throws Exception;
-    abstract public void saveDeploymentPlan(IFile file) throws Exception;
+    abstract public JAXBElement loadFile(IFile file) throws Exception;
+    abstract public void saveFile(IFile file) throws Exception;
 
 }

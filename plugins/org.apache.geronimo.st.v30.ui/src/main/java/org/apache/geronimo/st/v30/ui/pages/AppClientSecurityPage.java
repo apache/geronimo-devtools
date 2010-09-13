@@ -27,7 +27,7 @@ import org.eclipse.ui.forms.editor.FormEditor;
 /**
  * @version $Rev$ $Date$
  */
-public class AppClientSecurityPage extends AbstractGeronimoFormPage {
+public class AppClientSecurityPage extends AbstractDeploymentPlanFormPage {
 
     public AppClientSecurityPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
@@ -39,7 +39,7 @@ public class AppClientSecurityPage extends AbstractGeronimoFormPage {
      * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
     protected void fillBody(IManagedForm managedForm) {
-        managedForm.addPart(new AppClientSecuritySection(body, toolkit, getStyle(), getDeploymentPlan()));
+        managedForm.addPart(new AppClientSecuritySection(body, toolkit, getStyle(), getRootElement()));
     }
 
     /*
@@ -62,9 +62,5 @@ public class AppClientSecurityPage extends AbstractGeronimoFormPage {
         return CommonMessages.securityPageTitle;
     }
 
-    @Override
-    protected void triggerGeronimoServerInfoUpdate() {
-        GeronimoServerInfo.getInstance().updateInfo();
-    }
 
 }

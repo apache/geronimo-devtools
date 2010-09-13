@@ -224,7 +224,7 @@ public class PersContextRefWizard extends AbstractTreeWizard {
             ObjectFactory objectFactory = new ObjectFactory();
             if (contextRef == null) {
                 contextRef = (PersistenceContextRef)getEFactory().create(PersistenceContextRef.class);
-                JAXBElement plan = section.getPlan();
+                JAXBElement plan = section.getRootElement();
 
                 // add the JAXBElement of the PersistenceContextRef
                 JAXBModelUtils.getGbeanRefs(plan).add(objectFactory.createPersistenceContextRef(contextRef));

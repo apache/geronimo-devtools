@@ -23,7 +23,6 @@ import org.apache.geronimo.jee.security.Description;
 import org.apache.geronimo.jee.security.ObjectFactory;
 import org.apache.geronimo.jee.security.SubjectInfo;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
-import org.apache.geronimo.st.v30.ui.sections.AbstractSectionPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -113,7 +112,7 @@ public class AppClientSecuritySection extends AbstractSectionPart {
     }
 
     private SubjectInfo getDefaultSubject () {
-        ApplicationClient client = (ApplicationClient)getPlan().getValue();
+        ApplicationClient client = (ApplicationClient)getRootElement().getValue();
         SubjectInfo subjectInfo = client.getDefaultSubject();
         if (subjectInfo == null) {
             subjectInfo = securityFactory.createSubjectInfo();

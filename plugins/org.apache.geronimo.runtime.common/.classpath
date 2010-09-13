@@ -5,7 +5,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-activation_1.1_spec-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-stax-api_1.2_spec-1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-javaee-deployment_1.1MR3_spec-1.0.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-jaxb_2.2_spec-1.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jaxb-impl-2.2_1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-jaxb_2.2_spec-1.0.jar" sourcepath="/geronimo-jaxb_2.2_spec"/>
+	<classpathentry exported="true" kind="lib" path="lib/jaxb-impl-2.2_1.jar" sourcepath="/jaxb-impl-2.2"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

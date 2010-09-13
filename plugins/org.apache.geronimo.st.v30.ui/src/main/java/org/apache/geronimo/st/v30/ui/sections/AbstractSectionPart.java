@@ -35,7 +35,7 @@ public abstract class AbstractSectionPart extends SectionPart {
 
     protected FormToolkit toolkit;
 
-    private JAXBElement plan;
+    private JAXBElement root;
 
     private AbstractDeploymentDescriptor descriptor;
 
@@ -43,17 +43,17 @@ public abstract class AbstractSectionPart extends SectionPart {
         super(section);
     }
 
-    public AbstractSectionPart(Composite parent, FormToolkit toolkit, int style, JAXBElement plan) {
+    public AbstractSectionPart(Composite parent, FormToolkit toolkit, int style, JAXBElement rootElement) {
         super(parent, toolkit, style);
         this.toolkit = toolkit;
-        this.plan = plan;
+        this.root = rootElement;
     }
 
-    public AbstractSectionPart(Composite parent, FormToolkit toolkit, int style, JAXBElement plan,
+    public AbstractSectionPart(Composite parent, FormToolkit toolkit, int style, JAXBElement rootElement,
             AbstractDeploymentDescriptor descriptor) {
         super(parent, toolkit, style);
         this.toolkit = toolkit;
-        this.plan = plan;
+        this.root = rootElement;
         this.descriptor = descriptor;
     }
 
@@ -77,8 +77,8 @@ public abstract class AbstractSectionPart extends SectionPart {
         return toolkit;
     }
 
-    public JAXBElement getPlan() {
-        return plan;
+    public JAXBElement getRootElement() {
+        return root;
     }
 
     public AbstractDeploymentDescriptor getDescriptor() {

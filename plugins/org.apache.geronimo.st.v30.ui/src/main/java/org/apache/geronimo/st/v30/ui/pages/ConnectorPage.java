@@ -17,13 +17,8 @@
 package org.apache.geronimo.st.v30.ui.pages;
 
 import org.apache.geronimo.jee.application.Application;
-import org.apache.geronimo.st.v30.ui.CommonMessages;
-import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
-import org.apache.geronimo.st.v30.ui.pages.AbstractGeronimoFormPage;
-
-import org.apache.geronimo.st.v30.core.GeronimoServerInfo;
+import org.apache.geronimo.st.ui.editors.AbstractGeronimoJAXBBasedEditor;
 import org.apache.geronimo.st.v30.ui.sections.DBPoolSection;
-
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
@@ -33,7 +28,7 @@ import org.eclipse.ui.forms.editor.FormEditor;
  * geronimo-application.xml,geronimo-web.xml,openejb-jar.xml It will contain two
  * sections,Database pool section and JMS resource section
  */
-public class ConnectorPage extends AbstractGeronimoFormPage {
+public class ConnectorPage extends AbstractDeploymentPlanFormPage {
 
     public ConnectorPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
@@ -41,9 +36,9 @@ public class ConnectorPage extends AbstractGeronimoFormPage {
 
     @Override
     protected void fillBody(IManagedForm managedForm) {
-        Application application = (Application) ((AbstractGeronimoDeploymentPlanEditor) getEditor())
-                .getDeploymentPlan().getValue();
-        managedForm.addPart(new DBPoolSection(getDeploymentPlan(), body,
+        Application application = (Application) ((AbstractGeronimoJAXBBasedEditor) getEditor())
+                .getRootElement().getValue();
+        managedForm.addPart(new DBPoolSection(getRootElement(), body,
                 toolkit, getStyle(), application.getExtModule()));  
     }
 
@@ -57,9 +52,5 @@ public class ConnectorPage extends AbstractGeronimoFormPage {
         return "Connector";//TODO
     }
 
-    @Override
-    protected void triggerGeronimoServerInfoUpdate() {
-        GeronimoServerInfo.getInstance().updateInfo();
-    }
 
 }

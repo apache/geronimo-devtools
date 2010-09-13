@@ -39,7 +39,7 @@ public class AppClientServerGeneralSection extends CommonGeneralSection {
 
     protected Environment getEnvironment(boolean create) {
         Environment type = null;
-        Object plan = getPlan().getValue();
+        Object plan = getRootElement().getValue();
         if (ApplicationClient.class.isInstance(plan)) {
             type = ((ApplicationClient) plan).getServerEnvironment();
             if (type == null && create) {

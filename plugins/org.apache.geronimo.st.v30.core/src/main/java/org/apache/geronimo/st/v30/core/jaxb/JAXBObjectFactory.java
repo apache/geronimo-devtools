@@ -22,4 +22,6 @@ package org.apache.geronimo.st.v30.core.jaxb;
 public interface JAXBObjectFactory {
 
     public Object create(Class type);
+    
+    public Object createBlueprintElement(Class type);
 }

@@ -121,7 +121,7 @@ public class DBPoolWizard extends AbstractTableWizard {
     }
 
     public boolean performFinish() {
-    JAXBElement plan = this.section.getPlan();
+    JAXBElement plan = this.section.getRootElement();
 
     // all pages
     ExternalPathPage page0 = (ExternalPathPage) getPages()[0];
@@ -251,7 +251,7 @@ public class DBPoolWizard extends AbstractTableWizard {
         outboundAdpater.getConnectionDefinition().add(definition);
         adapter.setOutboundResourceadapter(outboundAdpater);
 
-        if (section.getViewer().getInput() == section.getPlan()) {
+        if (section.getViewer().getInput() == section.getRootElement()) {
         section.getViewer().setInput(section.getInput());
         }
         return true;

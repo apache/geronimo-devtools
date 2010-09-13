@@ -48,6 +48,8 @@ public class NamespacePrefix extends NamespacePrefixMapper{
         prefixMap.put("http://geronimo.apache.org/xml/ns/security-2.0", "sec");
         prefixMap.put("http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1", "web");
         prefixMap.put("http://geronimo.apache.org/xml/ns/loginconfig-2.0", "log");
+        prefixMap.put("http://geronimo.apache.org/xml/ns/geronimo-jaspi", "jaspi");
+        prefixMap.put("http://www.osgi.org/xmlns/blueprint/v1.0.0", "bp");
     }
 	
 	public static void processPrefix( Node parent ) {

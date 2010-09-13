@@ -26,7 +26,7 @@ import org.eclipse.ui.forms.editor.FormEditor;
 /**
  * @version $Rev$ $Date$
  */
-public class ConnectorOverviewPage extends AbstractGeronimoFormPage {
+public class ConnectorOverviewPage extends AbstractDeploymentPlanFormPage {
 
     public ConnectorOverviewPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
@@ -38,7 +38,7 @@ public class ConnectorOverviewPage extends AbstractGeronimoFormPage {
      * @see org.apache.geronimo.ui.pages.AbstractGeronimoFormPage#fillBody(org.eclipse.ui.forms.IManagedForm)
      */
     protected void fillBody(IManagedForm managedForm) {
-        managedForm.addPart(new ConnectorGeneralSection(body, toolkit, getStyle(), getDeploymentPlan()));
+        managedForm.addPart(new ConnectorGeneralSection(body, toolkit, getStyle(), getRootElement()));
     }
 
     /*
@@ -50,9 +50,5 @@ public class ConnectorOverviewPage extends AbstractGeronimoFormPage {
         return CommonMessages.connectorOverViewPageTitle;
     }
 
-    @Override
-    protected void triggerGeronimoServerInfoUpdate() {
-        GeronimoServerInfo.getInstance().updateInfo();
-    }
 
 }

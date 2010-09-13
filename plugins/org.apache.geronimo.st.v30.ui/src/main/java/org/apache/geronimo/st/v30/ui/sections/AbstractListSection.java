@@ -73,6 +73,8 @@ public abstract class AbstractListSection extends AbstractSectionPart {
     protected Button removeButton;
 
     protected List objectContainer;
+    
+    protected boolean isEditing;
 
     public AbstractListSection(Section section) {
         super(section);
@@ -218,6 +220,7 @@ public abstract class AbstractListSection extends AbstractSectionPart {
         editButton = toolkit.createButton(buttonComp, CommonMessages.edit, SWT.NONE);
         editButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
+                isEditing = true;
                 Object selectedObject = ((StructuredSelection) getViewer().getSelection()).getFirstElement();
                 if (selectedObject != null) {
                     Wizard wizard = getWizard();
@@ -234,10 +237,15 @@ public abstract class AbstractListSection extends AbstractSectionPart {
                         }
                     }
                 }
+                isEditing = false; 
                 activateButtons();
             }
         });
         editButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+    }
+    
+    public boolean isEditing(){
+        return isEditing;
     }
     
     /**
@@ -287,7 +295,7 @@ public abstract class AbstractListSection extends AbstractSectionPart {
     }
 
     public Object getInput() {
-        return getPlan();
+        return getRootElement();
     }
 
     public class ContentProvider implements IStructuredContentProvider, ITreeContentProvider {
