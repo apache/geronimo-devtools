@@ -59,6 +59,7 @@ public class Activator extends Plugin {
         AbbotHelper aHelper = new AbbotHelper (workbenchShell);
         seleniumServer = new EclipseSeleniumServer(aHelper, workbenchShell);
         try {
+            System.out.println("--------------------");
             SafeRunner.run( seleniumServer );
             Thread.sleep(5000);
 //          new Exception("sdsfsdf").printStackTrace();

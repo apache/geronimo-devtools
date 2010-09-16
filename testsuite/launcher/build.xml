@@ -33,6 +33,9 @@
      |                                                                                             
      -->
     <target name="init">
+	    <!-- Prompt to install aries tools manually -->
+	    <input message="Please install aries tools manually and then press Enter to continue..."/>
+		
         <property name="eclipse-home" value="eclipse"/>
         <copy tofile="${eclipse-home}/eclipse/plugins/org.eclipse.equinox.launcher.jar">
             <fileset dir="${eclipse-home}/eclipse/plugins"

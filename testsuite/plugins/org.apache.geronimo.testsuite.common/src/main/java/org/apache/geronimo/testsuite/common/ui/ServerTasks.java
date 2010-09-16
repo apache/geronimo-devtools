@@ -89,7 +89,7 @@ public class ServerTasks {
         try {
             String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
             abbotHelper.clickMenuItem (workbenchShell,
-                    new String[] {"&Window", "Show &View", "Servers"});
+                    new String[] {"&Window", "Show View", "Servers"});
 
             if (restart == true) {
                 abbotHelper.rightClickItem (workbenchShell, serverDisplay,

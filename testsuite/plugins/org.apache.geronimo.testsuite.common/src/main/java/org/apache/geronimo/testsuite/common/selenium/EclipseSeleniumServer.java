@@ -17,16 +17,13 @@
 
 package org.apache.geronimo.testsuite.common.selenium;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
 
 import org.apache.geronimo.testsuite.common.ui.AbbotHelper;
 import org.eclipse.core.runtime.ISafeRunnable;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Shell;
 import org.openqa.selenium.server.SeleniumServer;
 import org.openqa.selenium.server.browserlaunchers.BrowserLauncherFactory;
+import org.openqa.selenium.server.browserlaunchers.Firefox3Launcher;
 
 /**
  * EclipseSeleniumServer
@@ -64,8 +61,9 @@ public class EclipseSeleniumServer implements ISafeRunnable{
 
     public void run() throws Exception {
         try {
-            BrowserLauncherFactory.addBrowserLauncher("EclipseBrowser", EclipseBrowserLauncher.class);
-            SeleniumServer.setDebugMode (true);
+            //BrowserLauncherFactory.addBrowserLauncher("EclipseBrowser", EclipseBrowserLauncher.class);
+            BrowserLauncherFactory.addBrowserLauncher("Firefox Browser", Firefox3Launcher.class);
+            //SeleniumServer.setDebugMode (true);
             server = new SeleniumServer();
             server.start();
         } catch (Throwable th) {

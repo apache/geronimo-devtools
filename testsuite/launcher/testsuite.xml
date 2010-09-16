@@ -43,7 +43,7 @@
     </macrodef>
 
     <target name="junit">
-        <ant antfile="${eclipse-home}/plugins/${testPlugin}/test.xml" dir="${eclipse-home}" />
+        <ant antfile="${eclipse-home}/plugins/${testPlugin}/test.xml" dir="${eclipse-home}"/>
         <antcall target="genResults" />
     </target>
 

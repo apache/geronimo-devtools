@@ -42,6 +42,7 @@
                     <include>test.xml</include>
                     <include>plugin.xml</include>
                     <include>plugin.properties</include>
+					<include>install.xml</include>
                 </includes>
             </resource>
 

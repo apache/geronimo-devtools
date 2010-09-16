@@ -76,22 +76,21 @@
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>unzip-common</id>
+                        <id>unzip-selenium</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
                         <configuration>
                             <tasks>
-                                <unzip src="${settings.localRepository}/org/openqa/selenium/client-drivers/selenium-java-client-driver/1.0-beta-1/selenium-java-client-driver-1.0-beta-1.jar"
-                                      dest="${project.build.directory}/classes"/>
-                                <unzip src="${settings.localRepository}/org/openqa/selenium/server/selenium-server/1.0-beta-1/selenium-server-1.0-beta-1-standalone.jar"
+                               <unzip src="${settings.localRepository}/org/seleniumhq/selenium/client-drivers/selenium-java-client-driver/1.0.2/selenium-java-client-driver-1.0.2.jar"/>
+                               <unzip src="${settings.localRepository}/org/seleniumhq/selenium/server/selenium-server/1.0.3/selenium-server-1.0.3-standalone.jar"
                                       dest="${project.build.directory}/classes"/>
                             </tasks>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>unzip-selenium</id>
+                        <id>unzip-common</id>
                         <phase>package</phase>
                         <goals>
                             <goal>run</goal>
@@ -176,20 +175,43 @@
             <artifactId>abbot.swt.eclipse</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.openqa.selenium.client-drivers</groupId>
-            <artifactId>selenium-java-client-driver</artifactId>
+        <dependency>            
+            <groupId>org.seleniumhq.selenium.client-drivers</groupId>
+             <artifactId>selenium-java-client-driver</artifactId>
+			<version>1.0.2</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.seleniumhq.selenium.server</groupId>
+					<artifactId>selenium-server</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.seleniumhq.selenium.server</groupId>
+					<artifactId>selenium-server-coreless</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>junit</groupId>
+					<artifactId>junit</artifactId>
+				</exclusion>
+			</exclusions>
         </dependency>
             
         <dependency>
-            <groupId>org.openqa.selenium.server</groupId>
-            <artifactId>selenium-server</artifactId>
-        </dependency>
-         
-        <dependency>
-            <groupId>org.openqa.selenium.core</groupId>
-            <artifactId>selenium-core</artifactId>
-        </dependency>
+            <groupId>org.seleniumhq.selenium.server</groupId>
+             <artifactId>selenium-server</artifactId>
+			<classifier>standalone</classifier>
+			<version>1.0.3</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.seleniumhq.selenium.server</groupId>
+					<artifactId>selenium-server-coreless</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.seleniumhq.selenium.core</groupId>
+					<artifactId>selenium-core</artifactId>
+				</exclusion>
+			</exclusions>
+        </dependency>         
+       
     </dependencies>
 
 </project>

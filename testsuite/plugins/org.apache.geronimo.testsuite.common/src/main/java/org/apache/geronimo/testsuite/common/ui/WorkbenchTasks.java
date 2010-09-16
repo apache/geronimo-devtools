@@ -38,7 +38,7 @@ public class WorkbenchTasks {
             Shell perspectiveShell = abbotHelper.clickMenuItem (workbenchShell,
                     new String[] {"&Window", "&Open Perspective", "&Other..." },
                     "Open Perspective");
-            abbotHelper.clickItem (perspectiveShell, "Java EE (default)");
+	    abbotHelper.clickItem (perspectiveShell, "Java EE");
             abbotHelper.clickButton (perspectiveShell, IDialogConstants.OK_LABEL);    
         }
         catch (Exception e) {

@@ -54,7 +54,6 @@
          -->
         <property name="extraVMargs" value="-XX:MaxPermSize=128m" />
 
-
         <!-- 
          #########################################################################
          ##                                                                     ##
@@ -65,8 +64,7 @@
         <mkdir dir="${jdt-folder}/src"/>
         <copy todir="${jdt-folder}/src">
             <fileset dir="${eclipse-home}/../../../plugins/org.apache.geronimo.testsuite.v30/src">
-                <include name="**/*.java"/>
-                <include name="**/*.jsp"/>
+				<include name="**/*"/>
             </fileset>
         </copy>
         
@@ -78,13 +76,91 @@
          ##                                                                     ##
          #########################################################################
          -->
-        <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+        <!--ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
             <property name="data-dir" value="${jdt-folder}"/>
             <property name="plugin-name" value="${plugin-name}"/>
             <property name="classname"
                       value="org.apache.geronimo.testsuite.v30.ui.EclipseUITest"/>
+        </ant-->
+		
+		<!--
+         #########################################################################
+         ##                                                                     ##
+         ## Run all aries test case                                             ##
+         ##                                                                     ##
+         #########################################################################
+        -->
+		
+		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+            <property name="data-dir" value="${jdt-folder}"/>
+            <property name="plugin-name" value="${plugin-name}"/>
+            <property name="classname"
+                      value="org.apache.geronimo.testsuite.v30.ui.aries.NewOSGiBundleTest"/>
         </ant>
-
+		<!--
+		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+            <property name="data-dir" value="${jdt-folder}"/>
+            <property name="plugin-name" value="${plugin-name}"/>
+            <property name="classname"
+                      value="org.apache.geronimo.testsuite.v30.ui.aries.NewOSGiCompositeBundleTest"/>
+        </ant>
+		
+		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+            <property name="data-dir" value="${jdt-folder}"/>
+            <property name="plugin-name" value="${plugin-name}"/>
+            <property name="classname"
+                      value="org.apache.geronimo.testsuite.v30.ui.aries.ImportBundleTest"/>
+        </ant>
+		
+		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+            <property name="data-dir" value="${jdt-folder}"/>
+            <property name="plugin-name" value="${plugin-name}"/>
+            <property name="classname"
+                      value="org.apache.geronimo.testsuite.v30.ui.aries.ImportEBATest"/>
+        </ant>
+		
+		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+            <property name="data-dir" value="${jdt-folder}"/>
+            <property name="plugin-name" value="${plugin-name}"/>
+            <property name="classname"
+                      value="org.apache.geronimo.testsuite.v30.ui.aries.ImportCBATest"/>
+        </ant>
+		
+		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+            <property name="data-dir" value="${jdt-folder}"/>
+            <property name="plugin-name" value="${plugin-name}"/>
+            <property name="classname"
+                      value="org.apache.geronimo.testsuite.v30.ui.aries.ExportBundleTest"/>
+        </ant>
+		
+		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+            <property name="data-dir" value="${jdt-folder}"/>
+            <property name="plugin-name" value="${plugin-name}"/>
+            <property name="classname"
+                      value="org.apache.geronimo.testsuite.v30.ui.aries.ExportEBATest"/>
+        </ant>
+		
+		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+            <property name="data-dir" value="${jdt-folder}"/>
+            <property name="plugin-name" value="${plugin-name}"/>
+            <property name="classname"
+                      value="org.apache.geronimo.testsuite.v30.ui.aries.ExportCBATest"/>
+        </ant>
+		
+		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+            <property name="data-dir" value="${jdt-folder}"/>
+            <property name="plugin-name" value="${plugin-name}"/>
+            <property name="classname"
+                      value="org.apache.geronimo.testsuite.v30.ui.aries.Tutorial5MinuteTest"/>
+        </ant>
+		
+		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+            <property name="data-dir" value="${jdt-folder}"/>
+            <property name="plugin-name" value="${plugin-name}"/>
+            <property name="classname"
+                      value="org.apache.geronimo.testsuite.v30.ui.aries.DownloadsTest"/>
+        </ant>
+		-->
     </target>
 
     <!-- This target holds code to cleanup the testing environment after -->

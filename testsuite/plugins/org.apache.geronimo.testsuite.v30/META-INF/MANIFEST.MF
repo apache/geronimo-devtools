@@ -24,7 +24,7 @@ Require-Bundle: abbot.swt,
  org.eclipse.ui.forms,
  org.eclipse.ui.ide,
  org.eclipse.ui.views,
- org.apache.geronimo.testsuite.common
+ org.apache.geronimo.testsuite.common,
+ org.junit;bundle-version="4.8.1"
 Bundle-ActivationPolicy: lazy
 Export-Package: org.apache.geronimo.testsuite.v30
-Import-Package: junit.framework;version="3.8.2"

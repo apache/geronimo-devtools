@@ -29,18 +29,19 @@
 <project name="TestsuiteArtifacts">
 
     <target name="init">
-        <property name="helios_url"                     value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/helios/M6"/>
-        <property name="helios_jee_win32"               value="eclipse-jee-helios-M6-win32.zip"/>
-        <property name="helios_jee_linux"               value="eclipse-jee-helios-M6-linux-gtk.tar"/>
-        <property name="helios_jee_linux-x86_64"        value="eclipse-jee-helios-M6-linux-gtk-x86_64.tar"/>
-        <property name="helios_jee_macos"               value="eclipse-jee-helios-M6-macosx-carbon.tar"/>
+        <property name="helios_url"                     value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/helios/R"/>
+        <property name="helios_jee_win32"               value="eclipse-jee-helios-win32.zip"/>
+		<property name="helios_jee_win64"               value="eclipse-jee-helios-win32_64.zip"/>
+        <property name="helios_jee_linux"               value="eclipse-jee-helios-linux-gtk.tar"/>
+        <property name="helios_jee_linux-x86_64"        value="eclipse-jee-helios-linux-gtk-x86_64.tar"/>
+        <property name="helios_jee_macos"               value="eclipse-jee-helios-macosx-carbon.tar"/>
         <property name="helios_jee_linux_gz"            value="${helios_jee_linux}.gz"/>
         <property name="helios_jee_linux-x86_64_gz"     value="${helios_jee_linux-x86_64}.gz"/>
         <property name="helios_jee_macos_gz"            value="${helios_jee_macos}.gz"/>
         
         <property name="test_eclipse"                   value="${basedir}/../launcher/eclipse/"/>
-        <property name="test_framework_url"             value="http://www.eclipse.org/downloads/download.php?file=/eclipse/downloads/drops/S-3.6M6-201003121448/"/>
-        <property name="test_framework"                 value="eclipse-test-framework-3.6M6.zip"/>
+        <property name="test_framework_url"             value="http://www.eclipse.org/downloads/download.php?file=/eclipse/downloads/drops/R-3.6-201006080911/eclipse-test-framework-3.6.zip"/>
+        <property name="test_framework"                 value="eclipse-test-framework-3.6.zip"/>
                                 
         
         <property name="abbot_swt_url"                  value="http://downloads.sourceforge.net/abbot"/>
@@ -172,7 +173,7 @@
         <antcall target="gep-features"/>
     </target>
 
-    <target name="cleanup" depends="init" description="Cleanup from previous invocatins of the testsuite">
+    <target name="cleanup" depends="init" description="Cleanup from previous invocations of the testsuite">
         <!--
         ##############################################################################################   
         ##                                                                                          ##
@@ -192,12 +193,14 @@
         <echo>## From: ${test_framework_url}                                                   </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
+		
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
         <get src="${test_framework_url}/${test_framework}${protocol}"
              dest="${LOCAL_M2_REPO}/eclipse-downloads/${test_framework}" 
              verbose="true"
              ignoreerrors="true"
              usetimestamp="true"/>
+	    
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
         <echo>## Unzipping: ${test_framework}                                                  </echo>
@@ -225,6 +228,49 @@
              verbose="true"
              ignoreerrors="true"
              usetimestamp="true"/>
+			 
+		<!--
+		Replace the MANIFEST.MF files of abbot.swt and abbot.swt.eclipse with new MF files in which 
+		the junit version is 4.8.1 
+		-->
+		
+		<mkdir dir="${basedir}/temp"/>
+		<unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${abbot_swt}"
+		       dest="${basedir}/temp"/>
+		
+		<mkdir dir="${basedir}/temp/plugins/abbot.swt.temp"/>
+		<unzip src="${basedir}/temp/plugins/abbot.swt_${abbot_swt_version}.jar" 
+			   dest="${basedir}/temp/plugins/abbot.swt.temp"/>
+		<copy file="${basedir}/metadata_abbot_swt/MANIFEST.MF"
+		      tofile="${basedir}/temp/plugins/abbot.swt.temp/META-INF/MANIFEST.MF"
+		      overwrite="true"/>
+		<zip destfile="${basedir}/temp/plugins/abbot.swt_${abbot_swt_version}.jar"
+		     basedir="${basedir}/temp/plugins/abbot.swt.temp"
+			 includes="**"
+			 update="true"/>
+		
+		<mkdir dir="${basedir}/temp/plugins/abbot.swt.eclipse.temp"/>
+		<unzip src="${basedir}/temp/plugins/abbot.swt.eclipse_${abbot_swt_version}.jar" 
+			   dest="${basedir}/temp/plugins/abbot.swt.eclipse.temp"/>
+		<copy file="${basedir}/metadata_abbot_swt_eclipse/MANIFEST.MF"
+			  tofile="${basedir}/temp/plugins/abbot.swt.eclipse.temp/META-INF/MANIFEST.MF"
+		      overwrite="true"/>
+		<zip destfile="${basedir}/temp/plugins/abbot.swt.eclipse_${abbot_swt_version}.jar"
+		     basedir="${basedir}/temp/plugins/abbot.swt.eclipse.temp"
+			 includes="**"
+		     update="true"/>
+		
+		<delete dir="${basedir}/temp/plugins/abbot.swt.temp"/>
+		<delete dir="${basedir}/temp/plugins/abbot.swt.eclipse.temp"/>
+		
+		<zip destfile="${LOCAL_M2_REPO}/eclipse-downloads/${abbot_swt}"
+		     basedir="${basedir}/temp"
+		     includes="**"
+		     update="true"/>
+			 
+		<delete dir="${basedir}/temp"/>
+		
+		
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
         <echo>## Unzipping: ${abbot_swt}                                                       </echo>
@@ -236,6 +282,7 @@
         <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${abbot_swt}"
                dest="${test_eclipse}eclipse"
                overwrite="true"/>
+		
         <!--
          |  
          | Copy the SWT jars to the local maven repo
@@ -262,6 +309,7 @@
               failonerror="true" />
     </target>
 
+	
     <target name="gep-plugins" depends="init" description="Copy the GEP plugin(s) into the test_eclipse installation">
         <!--
         |  
@@ -270,7 +318,16 @@
         -->
         <mkdir dir="${test_eclipse}"/>
         <copy todir="${test_eclipse}eclipse/plugins">
-            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.jee.v21.jaxbmodel/${gep_version}">
+			<fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.jaxbmodel.common/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.j2ee.v11.jaxbmodel/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
+			<fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.jee.v21.jaxbmodel/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
+			<fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.v30.jaxbmodel/${gep_version}">
                 <include name="**/*.jar"/>
             </fileset>
             <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.runtime.common/${gep_version}">
@@ -286,6 +343,9 @@
                 <include name="**/*.jar"/>
             </fileset>
             <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.runtime.v20/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
+			<fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.runtime.v11/${gep_version}">
                 <include name="**/*.jar"/>
             </fileset>
             <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.core/${gep_version}">
@@ -321,6 +381,15 @@
             <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.v20.ui/${gep_version}">
                 <include name="**/*.jar"/>
             </fileset>
+			<fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.v11.core/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
+			<fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.v11.schemas/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
+			<fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.st.v11.ui/${gep_version}">
+                <include name="**/*.jar"/>
+            </fileset>
         </copy>
     </target>
 
@@ -335,5 +404,5 @@
                dest="${test_eclipse}eclipse/features/org.apache.geronimo.v30.feature_${gep_version}"
                overwrite="true"/>
     </target>
-
+	
 </project>

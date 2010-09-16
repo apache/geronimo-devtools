@@ -17,12 +17,13 @@
 package org.apache.geronimo.testsuite.v21.ui;
 
 import org.apache.geronimo.testsuite.common.ui.AbbotHelper;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.widgets.Shell;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import abbot.swt.eclipse.junit.extensions.WorkbenchTestCase;
 import abbot.swt.eclipse.utils.Preferences;
-import abbot.swt.eclipse.utils.WorkbenchUtilities;
 import abbot.swt.eclipse.utils.Preferences.Mode;
 
 /*
@@ -32,6 +33,10 @@ public class EclipseUITest extends WorkbenchTestCase {
     Shell aShell;
     AbbotHelper aHelper;
 
+    public EclipseUITest(){
+    	super();
+    }
+    
     protected void setUp() throws Exception {
         super.setUp();
         Preferences.setPerspectiveSwitchPrompt(Mode.Always);
@@ -41,6 +46,7 @@ public class EclipseUITest extends WorkbenchTestCase {
         super.tearDown();
     }
 
+    @Test()
     public void testEclipseUI()
     {
         boolean success = false;
