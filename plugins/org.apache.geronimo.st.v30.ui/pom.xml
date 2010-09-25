@@ -147,11 +147,6 @@
             <version>${version}</version>
             <type>pom</type>
         </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.jee.v21.jaxbmodel</artifactId>
-            <version>${version}</version>
-        </dependency>
          <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.core</artifactId>
@@ -161,12 +156,7 @@
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.ui</artifactId>
             <version>${version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.jee.v22.jaxbmodel</artifactId>
-            <version>${version}</version>
-        </dependency>
+        </dependency>  
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v30.jaxbmodel</artifactId>
