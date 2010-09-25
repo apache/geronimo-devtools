@@ -46,7 +46,6 @@
                                 <property name="LOCAL_M2_REPO" value="${settings.localRepository}" />
                                 <ant antfile="${basedir}/build.xml">
                                     <target name="${eclipsePlatformFamily}" />
-                                    <target name="tptp" />
                                 </ant>
                             </tasks>
                         </configuration>

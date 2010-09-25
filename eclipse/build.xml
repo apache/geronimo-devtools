@@ -41,36 +41,9 @@
         <property name="helios_jee_linux-x86_64_gz"     value="${helios_jee_linux-x86_64}.gz"/>
         <property name="helios_jee_macos_gz"            value="${helios_jee_macos}.gz"/>
 
-        <property name="tptp-version"                   value="4.7.0"/>
-        <property name="tptp"                           value="tptp.runtime-TPTP-${tptp-version}.zip"/>
-        <property name="tptp-runtime-url"               value="http://www.eclipse.org/downloads/download.php?file=/tptp/4.7.0/TPTP-4.7.0"/>
-
         <property name="protocol"                       value="&amp;r=1&amp;protocol=http"/>
     </target>
 
-    <target name="tptp" depends="init" description="Download and extract TPTP runtime package">
-            <echo>#################################################################################</echo>
-            <echo>##                                                                               </echo>
-            <echo>## Downloading: ${tptp}                                                          </echo>
-            <echo>##                                                                               </echo>
-            <echo>## From: ${tptp-runtime-url}                                                     </echo>
-            <echo>##                                                                               </echo>
-            <echo>#################################################################################</echo>
-            <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-            <get src="${tptp-runtime-url}/${tptp}${protocol}"
-                 dest="${LOCAL_M2_REPO}/eclipse-downloads/${tptp}" 
-                 verbose="true"
-                 ignoreerrors="true"
-                 usetimestamp="true"/>
-            <echo>#################################################################################</echo>
-            <echo>##                                                                               </echo>
-            <echo>## Unzipping: ${tptp}                                                            </echo>
-            <echo>##                                                                               </echo>
-            <echo>#################################################################################</echo>
-            <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${tptp}" 
-                   dest="${LOCAL_M2_REPO}/eclipse"
-                   overwrite="true"/>
-    </target>
 
     <target name="win" depends="init" description="Download Windows-specific artifact(s)">
            <antcall target="win64"></antcall>
