@@ -31,15 +31,17 @@
     </condition>
 
     <target name="init">
-        <property name="helios_url"                     value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/helios/R"/>
-        <property name="helios_jee_win32"               value="eclipse-jee-helios-win32.zip"/>
-        <property name="helios_jee_win64"               value="eclipse-jee-helios-win32_64.zip"/>
-        <property name="helios_jee_linux"               value="eclipse-jee-helios-linux-gtk.tar"/>
-        <property name="helios_jee_linux-x86_64"        value="eclipse-jee-helios-linux-gtk-x86_64.tar"/>
-        <property name="helios_jee_macos"               value="eclipse-jee-helios-macosx-carbon.tar"/>
+        <property name="helios_url"                     value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/helios/SR1"/>
+        <property name="helios_jee_win32"               value="eclipse-jee-helios-SR1-win32.zip"/>
+        <property name="helios_jee_win64"               value="eclipse-jee-helios-SR1-win32_64.zip"/>
+        <property name="helios_jee_linux"               value="eclipse-jee-helios-SR1-linux-gtk.tar"/>
+        <property name="helios_jee_linux-x86_64"        value="eclipse-jee-helios-SR1-linux-gtk-x86_64.tar"/>
+        <property name="helios_jee_mac32"               value="eclipse-jee-helios-SR1-macosx-cocoa.tar"/>
+        <property name="helios_jee_mac64"               value="eclipse-jee-helios-SR1-macosx-cocoa-x86_64.tar"/>
         <property name="helios_jee_linux_gz"            value="${helios_jee_linux}.gz"/>
         <property name="helios_jee_linux-x86_64_gz"     value="${helios_jee_linux-x86_64}.gz"/>
-        <property name="helios_jee_macos_gz"            value="${helios_jee_macos}.gz"/>
+        <property name="helios_jee_mac32_gz"            value="${helios_jee_mac32}.gz"/>
+        <property name="helios_jee_mac64_gz"            value="${helios_jee_mac64}.gz"/>
 
         <property name="protocol"                       value="&amp;r=1&amp;protocol=http"/>
     </target>
@@ -162,29 +164,61 @@
                 overwrite="true"/>
     </target>
 
-    <target name="macos" depends="init" description="Download Mac-specific artifact(s)">
+    <target name="macos" depends="init" description="Download MacOS-specific artifact(s)">
+        <antcall target="macos_32"></antcall>
+        <antcall target="macos_64"></antcall>
+    </target>
+
+    <target name="macos_32" unless="is64bitJDK" description="Download MacOS 32-bit-specific artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading: ${helios_jee_macos_gz}                                           </echo>
+        <echo>## Downloading: ${helios_jee_mac32_gz}                                           </echo>
         <echo>##                                                                               </echo>
         <echo>## From: ${helios_url}                                                           </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-        <get src="${helios_url}/${helios_jee_macos_gz}${protocol}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_macos_gz}" 
+        <get src="${helios_url}/${helios_jee_mac32_gz}${protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_mac32_gz}" 
              verbose="true"
              ignoreerrors="true"
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${helios_jee_macos_gz}                                             </echo>
+        <echo>## Unzipping: ${helios_jee_mac32_gz}                                             </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> 
         <mkdir  dir="${LOCAL_M2_REPO}/eclipse"/>
-        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_macos_gz}"/>
-        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_macos}" 
+        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_mac32_gz}"/>
+        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_mac32}" 
+                dest="${LOCAL_M2_REPO}/eclipse"
+                overwrite="true"/>
+    </target>
+
+    <target name="macos_64" if="is64bitJDK" description="Download MacOS 64-bit-specific artifact(s)">
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Downloading: ${helios_jee_mac64_gz}                                           </echo>
+        <echo>##                                                                               </echo>
+        <echo>## From: ${helios_url}                                                           </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
+        <get src="${helios_url}/${helios_jee_mac64_gz}${protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_mac64_gz}" 
+             verbose="true"
+             ignoreerrors="true"
+             usetimestamp="true"/>
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Unzipping: ${helios_jee_mac64_gz}                                             </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+        <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> 
+        <mkdir  dir="${LOCAL_M2_REPO}/eclipse"/>
+        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_mac64_gz}"/>
+        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_mac64}" 
                 dest="${LOCAL_M2_REPO}/eclipse"
                 overwrite="true"/>
     </target>
