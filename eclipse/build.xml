@@ -20,122 +20,155 @@
  |  
  | Download eclipse artifacts and unzip them into the user's local maven repo     
  |                                                                                             
- |                                                                                             
  | @version $Rev$ $Date$
  -->
-<project name="EclipseArtifacts">   
+<project name="EclipseArtifacts" default="doit" >
 
-    <condition property="is64bitJDK">
-        <!--We only check JVM bit model here.It works fine even 32-bit JVM is used on 64-bit OS -->
+    <!-- Set common propeties -->
+
+    <property name="eclipse_name"                   value="helios" />
+    <property name="eclipse_release"                value="SR1" />
+    <property name="eclipse_basefilename"           value="eclipse-jee-${eclipse_name}-${eclipse_release}" />
+    <property name="eclipse_downloadserver"         value="http://www.eclipse.org/downloads/download.php?file=" />
+    <property name="eclipse_url"                    value="${eclipse_downloadserver}/technology/epp/downloads/release/${eclipse_name}/${eclipse_release}" />
+
+    <property name="protocol"                       value="&amp;r=1&amp;protocol=http" />
+
+    <!-- Set propeties based on environment: 32 or 64 bit JDK, OS (Mac, Unix or Windows) -->
+
+    <condition property="is64bitJDK" >
+        <!--We only check JVM bit model here.  It works fine even 32-bit JVM is used on 64-bit OS -->
         <equals arg1="${sun.arch.data.model}" arg2="64" />
     </condition>
 
-    <target name="init">
-        <property name="eclipse_name"                   value="helios"/>
-        <property name="eclipse_release"                value="SR1"/>
-        <property name="eclipse_basefilename"           value="eclipse-jee-${eclipse_name}-${eclipse_release}"/>
-        <property name="eclipse_downloadserver"         value="http://www.eclipse.org/downloads/download.php?file="/>
-        <property name="eclipse_url"                    value="${eclipse_downloadserver}/technology/epp/downloads/release/${eclipse_name}/${eclipse_release}"/>
+    <condition property="is32bitJDK" >
+        <not>
+            <isset property="is64bitJDK" />
+        </not>
+    </condition>
 
-        <property name="protocol"                       value="&amp;r=1&amp;protocol=http"/>
+    <condition property="isMac" >
+        <os family="mac" />
+    </condition>
+
+    <condition property="isUnix" >
+        <os family="unix" />
+    </condition>
+
+    <condition property="isWindows" >
+        <os family="windows" />
+    </condition>
+
+    <!-- unzip or gunzip and untar?  Set properties appropriately -->
+
+    <condition property="isZip" >
+        <isset property="isWindows" />
+    </condition>
+
+    <condition property="isTarGz" >
+        <or>
+            <isset property="isMac" />
+            <isset property="isUnix" />
+        </or>
+    </condition>
+
+    <!-- We will download ${eclipse_zip}, and untar ${eclipse_tar}.
+         Set ${eclipse_zip} name based on our environment (OS, 32/64 bit)
+     -->
+
+    <condition property="eclipse_zip" value="${eclipse_basefilename}-win32.zip" >
+        <and>
+            <isset property="isWindows" />
+            <isset property="is32bitJDK" />
+        </and>
+    </condition>
+
+    <condition property="eclipse_zip" value="${eclipse_basefilename}-win32_64.zip" >
+        <and>
+            <isset property="isWindows" />
+            <isset property="is64bitJDK" />
+        </and>
+    </condition>
+
+    <!-- ${eclipse_tar} not needed on windows, just mac and unix.
+         Set ${eclipse_zip} for them below by adding .gz
+     -->
+
+    <condition property="eclipse_tar" value="${eclipse_basefilename}-macosx-cocoa.tar" >
+        <and>
+            <isset property="isMac" />
+            <isset property="is32bitJDK" />
+        </and>
+    </condition>
+
+    <condition property="eclipse_tar" value="${eclipse_basefilename}-macosx-cocoa-x86_64.tar" >
+        <and>
+            <isset property="isMac" />
+            <isset property="is64bitJDK" />
+        </and>
+    </condition>
+
+    <condition property="eclipse_tar" value="${eclipse_basefilename}-linux-gtk.tar" >
+        <and>
+            <isset property="isUnix" />
+            <isset property="is32bitJDK" />
+        </and>
+    </condition>
+
+    <condition property="eclipse_tar" value="${eclipse_basefilename}-linux-gtk-x86_64.tar" >
+        <and>
+            <isset property="isUnix" />
+            <isset property="is64bitJDK" />
+        </and>
+    </condition>
+
+    <!-- Set ${eclipse_zip} if needed in TarGz environment.  -->
+
+    <condition property="eclipse_zip" value="${eclipse_tar}.gz" >
+        <isset property="isTarGz" />
+    </condition>
+
+    <target name="doit">
+           <antcall target="download" />
+           <antcall target="unzip"    />
+           <antcall target="untargz"  />
     </target>
 
+    <target name="download" description="Download artifact(s)" >
 
-    <target name="win" depends="init" description="Download Windows-specific artifact(s)">
-           <antcall target="win64"></antcall>
-           <antcall target="win32"></antcall>
-    </target>
-
-    <target name="common_download" description="Download artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
         <echo>## Downloading: ${eclipse_zip}                                                   </echo>
         <echo>##                                                                               </echo>
-        <echo>## From: ${eclipse_url}                                                           </echo>
+        <echo>## From: ${eclipse_url}                                                          </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
-        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
+        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads" />
         <get src="${eclipse_url}/${eclipse_zip}${protocol}"
              dest="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_zip}" 
              verbose="true"
              ignoreerrors="true"
-             usetimestamp="true"/>
+             usetimestamp="true" />
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
         <echo>## Unzipping: ${eclipse_zip}                                                     </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
-        <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> 
-        <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
+        <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true" /> 
+        <mkdir dir="${LOCAL_M2_REPO}/eclipse" />
     </target>
 
-    <target name="common_zip" description="Download and Unzip artifact(s)">
-        <antcall target="common_download">
-            <param name="eclipse_zip"   value="${eclipse_zip}"/>
-        </antcall>
+    <target name="unzip" if="isZip" description="Unzip artifact(s)" >
         <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_zip}" 
                dest="${LOCAL_M2_REPO}/eclipse"
-               overwrite="true"/>
+               overwrite="true" />
     </target>
 
-    <target name="common_targz" description="Download and Unzip artifact(s)">
-        <antcall target="common_download">
-            <param name="eclipse_zip"   value="${eclipse_zip}"/>
-        </antcall>
-        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_zip}"/>
+    <target name="untargz" if="isTarGz" description="Ungzip and Untar artifact(s)" >
+        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_zip}" />
         <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_tar}" 
                 dest="${LOCAL_M2_REPO}/eclipse"
-                overwrite="true"/>
-    </target>
-
-    <target name="win32" unless="is64bitJDK" description="Download Windows 32-bit-specific artifact(s)">
-        <antcall target="common_zip">
-            <param name="eclipse_zip"   value="${eclipse_basefilename}-win32.zip"/>
-        </antcall>
-    </target>
-
-    <target name="win64" if="is64bitJDK" description="Download Windows 64-bit-specific artifact(s)">
-        <antcall target="common_zip">
-            <param name="eclipse_zip"   value="${eclipse_basefilename}-win32_64.zip"/>
-        </antcall>
-    </target>
-
-    <target name="linux" depends="init" description="Download Linux-specific artifact(s)">
-        <antcall target="linux_x86"></antcall>
-        <antcall target="linux-x86_64"></antcall>
-    </target>
-
-    <target name="linux_x86" unless="is64bitJDK" description="Download Linux 32-bit-specific artifact(s)">
-        <antcall target="common_targz">
-            <param name="eclipse_tar"   value="${eclipse_basefilename}-linux-gtk.tar"/>
-            <param name="eclipse_zip"   value="${eclipse_basefilename}-linux-gtk.tar.gz"/>
-        </antcall>
-    </target>
-
-    <target name="linux-x86_64" if="is64bitJDK" description="Download Linux 64-bit-specific artifact(s)">
-        <antcall target="common_targz">
-            <param name="eclipse_tar"   value="${eclipse_basefilename}-linux-gtk-x86_64.tar"/>
-            <param name="eclipse_zip"   value="${eclipse_basefilename}-linux-gtk-x86_64.tar.gz"/>
-        </antcall>
-    </target>
-
-    <target name="macos" depends="init" description="Download MacOS-specific artifact(s)">
-        <antcall target="mac32"></antcall>
-        <antcall target="mac64"></antcall>
-    </target>
-
-    <target name="mac32" unless="is64bitJDK" description="Download MacOS 32-bit-specific artifact(s)">
-        <antcall target="common_targz">
-            <param name="eclipse_tar"   value="${eclipse_basefilename}-macosx-cocoa.tar"/>
-            <param name="eclipse_zip"   value="${eclipse_basefilename}-macosx-cocoa.tar.gz"/>
-        </antcall>
-    </target>
-
-    <target name="mac64" if="is64bitJDK" description="Download MacOS 64-bit-specific artifact(s)">
-        <antcall target="common_targz">
-            <param name="eclipse_tar"   value="${eclipse_basefilename}-macosx-cocoa-x86_64.tar"/>
-            <param name="eclipse_zip"   value="${eclipse_basefilename}-macosx-cocoa-x86_64.tar.gz"/>
-        </antcall>
+                overwrite="true" />
     </target>
 
 </project>
