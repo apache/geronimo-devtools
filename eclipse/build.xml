@@ -18,12 +18,12 @@
 
 <!--
  |  
- | Download Helios artifacts and unzip them into the user's local maven repo     
+ | Download eclipse artifacts and unzip them into the user's local maven repo     
  |                                                                                             
  |                                                                                             
  | @version $Rev$ $Date$
  -->
-<project name="HeliosArtifacts">   
+<project name="EclipseArtifacts">   
 
     <condition property="is64bitJDK">
         <!--We only check JVM bit model here.It works fine even 32-bit JVM is used on 64-bit OS -->
@@ -31,17 +31,11 @@
     </condition>
 
     <target name="init">
-        <property name="helios_url"                     value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/helios/SR1"/>
-        <property name="helios_jee_win32"               value="eclipse-jee-helios-SR1-win32.zip"/>
-        <property name="helios_jee_win64"               value="eclipse-jee-helios-SR1-win32_64.zip"/>
-        <property name="helios_jee_linux"               value="eclipse-jee-helios-SR1-linux-gtk.tar"/>
-        <property name="helios_jee_linux-x86_64"        value="eclipse-jee-helios-SR1-linux-gtk-x86_64.tar"/>
-        <property name="helios_jee_mac32"               value="eclipse-jee-helios-SR1-macosx-cocoa.tar"/>
-        <property name="helios_jee_mac64"               value="eclipse-jee-helios-SR1-macosx-cocoa-x86_64.tar"/>
-        <property name="helios_jee_linux_gz"            value="${helios_jee_linux}.gz"/>
-        <property name="helios_jee_linux-x86_64_gz"     value="${helios_jee_linux-x86_64}.gz"/>
-        <property name="helios_jee_mac32_gz"            value="${helios_jee_mac32}.gz"/>
-        <property name="helios_jee_mac64_gz"            value="${helios_jee_mac64}.gz"/>
+        <property name="eclipse_name"                   value="helios"/>
+        <property name="eclipse_release"                value="SR1"/>
+        <property name="eclipse_basefilename"           value="eclipse-jee-${eclipse_name}-${eclipse_release}"/>
+        <property name="eclipse_downloadserver"         value="http://www.eclipse.org/downloads/download.php?file="/>
+        <property name="eclipse_url"                    value="${eclipse_downloadserver}/technology/epp/downloads/release/${eclipse_name}/${eclipse_release}"/>
 
         <property name="protocol"                       value="&amp;r=1&amp;protocol=http"/>
     </target>
@@ -52,56 +46,58 @@
            <antcall target="win32"></antcall>
     </target>
 
-    <target name="win32" unless="is64bitJDK" description="Download Windows 32-bit-specific artifact(s)">
+    <target name="common_download" description="Download artifact(s)">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Downloading: ${helios_jee_win32}                                              </echo>
+        <echo>## Downloading: ${eclipse_zip}                                                   </echo>
         <echo>##                                                                               </echo>
-        <echo>## From: ${helios_url}                                                           </echo>
+        <echo>## From: ${eclipse_url}                                                           </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-        <get src="${helios_url}/${helios_jee_win32}${protocol}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_win32}" 
+        <get src="${eclipse_url}/${eclipse_zip}${protocol}"
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_zip}" 
              verbose="true"
              ignoreerrors="true"
              usetimestamp="true"/>
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${helios_jee_win32}                                                </echo>
+        <echo>## Unzipping: ${eclipse_zip}                                                     </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> 
         <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
-        <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_win32}" 
+    </target>
+
+    <target name="common_zip" description="Download and Unzip artifact(s)">
+        <antcall target="common_download">
+            <param name="eclipse_zip"   value="${eclipse_zip}"/>
+        </antcall>
+        <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_zip}" 
                dest="${LOCAL_M2_REPO}/eclipse"
                overwrite="true"/>
     </target>
 
+    <target name="common_targz" description="Download and Unzip artifact(s)">
+        <antcall target="common_download">
+            <param name="eclipse_zip"   value="${eclipse_zip}"/>
+        </antcall>
+        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_zip}"/>
+        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_tar}" 
+                dest="${LOCAL_M2_REPO}/eclipse"
+                overwrite="true"/>
+    </target>
+
+    <target name="win32" unless="is64bitJDK" description="Download Windows 32-bit-specific artifact(s)">
+        <antcall target="common_zip">
+            <param name="eclipse_zip"   value="${eclipse_basefilename}-win32.zip"/>
+        </antcall>
+    </target>
+
     <target name="win64" if="is64bitJDK" description="Download Windows 64-bit-specific artifact(s)">
-        <echo>#################################################################################</echo>
-        <echo>##                                                                               </echo>
-        <echo>## Downloading: ${helios_jee_win64}                                              </echo>
-        <echo>##                                                                               </echo>
-        <echo>## From: ${helios_url}                                                           </echo>
-        <echo>##                                                                               </echo>
-        <echo>#################################################################################</echo>
-        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-        <get src="${helios_url}/${helios_jee_win64}${protocol}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_win64}" 
-             verbose="true"
-             ignoreerrors="true"
-             usetimestamp="true"/>
-        <echo>#################################################################################</echo>
-        <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${helios_jee_win64}                                                </echo>
-        <echo>##                                                                               </echo>
-        <echo>#################################################################################</echo>
-        <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> 
-        <mkdir dir="${LOCAL_M2_REPO}/eclipse"/>
-        <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_win64}" 
-               dest="${LOCAL_M2_REPO}/eclipse"
-               overwrite="true"/>
+        <antcall target="common_zip">
+            <param name="eclipse_zip"   value="${eclipse_basefilename}-win32_64.zip"/>
+        </antcall>
     </target>
 
     <target name="linux" depends="init" description="Download Linux-specific artifact(s)">
@@ -110,117 +106,36 @@
     </target>
 
     <target name="linux_x86" unless="is64bitJDK" description="Download Linux 32-bit-specific artifact(s)">
-	
-        <echo>#################################################################################</echo>
-        <echo>##                                                                               </echo>
-        <echo>## Downloading: ${helios_jee_linux_gz}                                           </echo>
-        <echo>##                                                                               </echo>
-        <echo>## From: ${helios_url}                                                           </echo>
-        <echo>##                                                                               </echo>
-        <echo>#################################################################################</echo>
-        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-        <get src="${helios_url}/${helios_jee_linux_gz}${protocol}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_linux_gz}" 
-             verbose="true"
-             ignoreerrors="true"
-             usetimestamp="true"/>
-        <echo>#################################################################################</echo>
-        <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${helios_jee_linux_gz}                                             </echo>
-        <echo>##                                                                               </echo>
-        <echo>#################################################################################</echo>
-        <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> 
-        <mkdir  dir="${LOCAL_M2_REPO}/eclipse"/>
-        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_linux_gz}"/>
-        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_linux}" 
-                dest="${LOCAL_M2_REPO}/eclipse"
-                overwrite="true"/>
+        <antcall target="common_targz">
+            <param name="eclipse_tar"   value="${eclipse_basefilename}-linux-gtk.tar"/>
+            <param name="eclipse_zip"   value="${eclipse_basefilename}-linux-gtk.tar.gz"/>
+        </antcall>
     </target>
 
     <target name="linux-x86_64" if="is64bitJDK" description="Download Linux 64-bit-specific artifact(s)">
-        <echo>#################################################################################</echo>
-        <echo>##                                                                               </echo>
-        <echo>## Downloading: ${helios_jee_linux-x86_64_gz}                                    </echo>
-        <echo>##                                                                               </echo>
-        <echo>## From: ${helios_url}                                                           </echo>
-        <echo>##                                                                               </echo>
-        <echo>#################################################################################</echo>
-        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-        <get src="${helios_url}/${helios_jee_linux-x86_64_gz}${protocol}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_linux-x86_64_gz}"
-             verbose="true"
-             ignoreerrors="true"
-             usetimestamp="true"/>
-        <echo>#################################################################################</echo>
-        <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${helios_jee_linux-x86_64_gz}                                      </echo>
-        <echo>##                                                                               </echo>
-        <echo>#################################################################################</echo>
-        <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> 
-        <mkdir  dir="${LOCAL_M2_REPO}/eclipse"/>
-        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_linux-x86_64_gz}"/>
-        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_linux-x86_64}"
-                dest="${LOCAL_M2_REPO}/eclipse"
-                overwrite="true"/>
+        <antcall target="common_targz">
+            <param name="eclipse_tar"   value="${eclipse_basefilename}-linux-gtk-x86_64.tar"/>
+            <param name="eclipse_zip"   value="${eclipse_basefilename}-linux-gtk-x86_64.tar.gz"/>
+        </antcall>
     </target>
 
     <target name="macos" depends="init" description="Download MacOS-specific artifact(s)">
-        <antcall target="macos_32"></antcall>
-        <antcall target="macos_64"></antcall>
+        <antcall target="mac32"></antcall>
+        <antcall target="mac64"></antcall>
     </target>
 
-    <target name="macos_32" unless="is64bitJDK" description="Download MacOS 32-bit-specific artifact(s)">
-        <echo>#################################################################################</echo>
-        <echo>##                                                                               </echo>
-        <echo>## Downloading: ${helios_jee_mac32_gz}                                           </echo>
-        <echo>##                                                                               </echo>
-        <echo>## From: ${helios_url}                                                           </echo>
-        <echo>##                                                                               </echo>
-        <echo>#################################################################################</echo>
-        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-        <get src="${helios_url}/${helios_jee_mac32_gz}${protocol}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_mac32_gz}" 
-             verbose="true"
-             ignoreerrors="true"
-             usetimestamp="true"/>
-        <echo>#################################################################################</echo>
-        <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${helios_jee_mac32_gz}                                             </echo>
-        <echo>##                                                                               </echo>
-        <echo>#################################################################################</echo>
-        <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> 
-        <mkdir  dir="${LOCAL_M2_REPO}/eclipse"/>
-        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_mac32_gz}"/>
-        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_mac32}" 
-                dest="${LOCAL_M2_REPO}/eclipse"
-                overwrite="true"/>
+    <target name="mac32" unless="is64bitJDK" description="Download MacOS 32-bit-specific artifact(s)">
+        <antcall target="common_targz">
+            <param name="eclipse_tar"   value="${eclipse_basefilename}-macosx-cocoa.tar"/>
+            <param name="eclipse_zip"   value="${eclipse_basefilename}-macosx-cocoa.tar.gz"/>
+        </antcall>
     </target>
 
-    <target name="macos_64" if="is64bitJDK" description="Download MacOS 64-bit-specific artifact(s)">
-        <echo>#################################################################################</echo>
-        <echo>##                                                                               </echo>
-        <echo>## Downloading: ${helios_jee_mac64_gz}                                           </echo>
-        <echo>##                                                                               </echo>
-        <echo>## From: ${helios_url}                                                           </echo>
-        <echo>##                                                                               </echo>
-        <echo>#################################################################################</echo>
-        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-        <get src="${helios_url}/${helios_jee_mac64_gz}${protocol}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_mac64_gz}" 
-             verbose="true"
-             ignoreerrors="true"
-             usetimestamp="true"/>
-        <echo>#################################################################################</echo>
-        <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${helios_jee_mac64_gz}                                             </echo>
-        <echo>##                                                                               </echo>
-        <echo>#################################################################################</echo>
-        <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true"/> 
-        <mkdir  dir="${LOCAL_M2_REPO}/eclipse"/>
-        <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_mac64_gz}"/>
-        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${helios_jee_mac64}" 
-                dest="${LOCAL_M2_REPO}/eclipse"
-                overwrite="true"/>
+    <target name="mac64" if="is64bitJDK" description="Download MacOS 64-bit-specific artifact(s)">
+        <antcall target="common_targz">
+            <param name="eclipse_tar"   value="${eclipse_basefilename}-macosx-cocoa-x86_64.tar"/>
+            <param name="eclipse_zip"   value="${eclipse_basefilename}-macosx-cocoa-x86_64.tar.gz"/>
+        </antcall>
     </target>
 
 </project>
