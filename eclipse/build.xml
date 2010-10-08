@@ -17,9 +17,9 @@
   -->
 
 <!--
- |  
- | Download eclipse artifacts and unzip them into the user's local maven repo     
- |                                                                                             
+ |
+ | Download eclipse artifacts and unzip them into the user's local maven repo
+ |
  | @version $Rev$ $Date$
  -->
 <project name="EclipseArtifacts" default="doit" >
@@ -128,7 +128,7 @@
         <isset property="isTarGz" />
     </condition>
 
-    <target name="doit">
+    <target name="doit" >
            <antcall target="download" />
            <antcall target="unzip"    />
            <antcall target="untargz"  />
@@ -145,7 +145,7 @@
         <echo>#################################################################################</echo>
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads" />
         <get src="${eclipse_url}/${eclipse_zip}${protocol}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_zip}" 
+             dest="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_zip}"
              verbose="true"
              ignoreerrors="true"
              usetimestamp="true" />
@@ -154,19 +154,19 @@
         <echo>## Unzipping: ${eclipse_zip}                                                     </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
-        <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true" /> 
+        <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true" />
         <mkdir dir="${LOCAL_M2_REPO}/eclipse" />
     </target>
 
     <target name="unzip" if="isZip" description="Unzip artifact(s)" >
-        <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_zip}" 
+        <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_zip}"
                dest="${LOCAL_M2_REPO}/eclipse"
                overwrite="true" />
     </target>
 
     <target name="untargz" if="isTarGz" description="Ungzip and Untar artifact(s)" >
         <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_zip}" />
-        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_tar}" 
+        <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_tar}"
                 dest="${LOCAL_M2_REPO}/eclipse"
                 overwrite="true" />
     </target>
