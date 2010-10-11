@@ -40,7 +40,7 @@
         <property name="helios_jee_macos_gz"            value="${helios_jee_macos}.gz"/>
         
         <property name="test_eclipse"                   value="${basedir}/../launcher/eclipse/"/>
-        <property name="test_framework_url"             value="http://www.eclipse.org/downloads/download.php?file=/eclipse/downloads/drops/R-3.6-201006080911/eclipse-test-framework-3.6.zip"/>
+        <property name="test_framework_url"             value="http://download.eclipse.org/eclipse/downloads/drops/R-3.6-201006080911/eclipse-test-framework-3.6.zip" />
         <property name="test_framework"                 value="eclipse-test-framework-3.6.zip"/>
                                 
         
@@ -195,7 +195,7 @@
         <echo>#################################################################################</echo>
 		
         <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
-        <get src="${test_framework_url}/${test_framework}${protocol}"
+        <get src="${test_framework_url}"
              dest="${LOCAL_M2_REPO}/eclipse-downloads/${test_framework}" 
              verbose="true"
              ignoreerrors="true"
