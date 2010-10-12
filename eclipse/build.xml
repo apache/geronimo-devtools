@@ -32,6 +32,14 @@
     <property name="eclipse_downloadserver"         value="http://www.eclipse.org/downloads/download.php?file=" />
     <property name="eclipse_url"                    value="${eclipse_downloadserver}/technology/epp/downloads/release/${eclipse_name}/${eclipse_release}" />
 
+    <!-- Set property where eclipse will be extracted to -->
+    <condition property="extract_to" value="${LOCAL_M2_REPO}/eclipse" >
+        <!-- property set when called from testsuite/eclipse/build.xml when getting eclipse for the testsuite. -->
+        <not>
+            <isset property="extract_to" />
+        </not>
+    </condition>
+
     <property name="protocol"                       value="&amp;r=1&amp;protocol=http" />
 
     <!-- Set propeties based on environment: 32 or 64 bit JDK, OS (Mac, Unix or Windows) -->
@@ -129,9 +137,9 @@
     </condition>
 
     <target name="doit" >
-           <antcall target="download" />
-           <antcall target="unzip"    />
-           <antcall target="untargz"  />
+        <antcall target="download" />
+        <antcall target="unzip"    />
+        <antcall target="untargz"  />
     </target>
 
     <target name="download" description="Download artifact(s)" >
@@ -143,31 +151,31 @@
         <echo>## From: ${eclipse_url}                                                          </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
-        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads" />
-        <get src="${eclipse_url}/${eclipse_zip}${protocol}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_zip}"
-             verbose="true"
-             ignoreerrors="true"
-             usetimestamp="true" />
+        <mkdir  dir="${LOCAL_M2_REPO}/eclipse-downloads" />
+        <get    src="${eclipse_url}/${eclipse_zip}${protocol}"
+                dest="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_zip}"
+                verbose="true"
+                ignoreerrors="true"
+                usetimestamp="true" />
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
         <echo>## Unzipping: ${eclipse_zip}                                                     </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <delete dir="${LOCAL_M2_REPO}/eclipse" quiet="true" />
-        <mkdir dir="${LOCAL_M2_REPO}/eclipse" />
+        <mkdir  dir="${LOCAL_M2_REPO}/eclipse" />
     </target>
 
     <target name="unzip" if="isZip" description="Unzip artifact(s)" >
-        <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_zip}"
-               dest="${LOCAL_M2_REPO}/eclipse"
-               overwrite="true" />
+        <unzip  src="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_zip}"
+                dest="${extract_to}"
+                overwrite="true" />
     </target>
 
     <target name="untargz" if="isTarGz" description="Ungzip and Untar artifact(s)" >
         <gunzip src="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_zip}" />
         <untar  src="${LOCAL_M2_REPO}/eclipse-downloads/${eclipse_tar}"
-                dest="${LOCAL_M2_REPO}/eclipse"
+                dest="${extract_to}"
                 overwrite="true" />
     </target>
 
