@@ -34,7 +34,8 @@
      -->
     <target name="init">
 	    <!-- Prompt to install aries tools manually -->
-        <input message="Please install aries tools manually for eclipse under testsuite/launcher/eclipse and then press Enter to continue..."/>
+        <input message="&#10;Free Aries Tools download URL is http://www.ibm.com/developerworks/rational/downloads/10/rationaldevtoolsforosgiapplications.html&#10;Please install aries tools manually for eclipse under testsuite/launcher/eclipse and then press Enter to continue..."/>
+        
 		
         <property name="eclipse-home" value="eclipse"/>
         <copy tofile="${eclipse-home}/eclipse/plugins/org.eclipse.equinox.launcher.jar">
