@@ -42,16 +42,18 @@ public class ServerTasks {
         try {
             // Launch the New Project wizard and aHelper.wait for it to open.
             Shell wizardShell = abbotHelper.clickMenuItem (workbenchShell,
-                    new String[] {"&File", "&New\tAlt+Shift+N", "&Other..."},
+                    new String[] {"&File", "&New\tShift+Alt+N", "&Other..."},
                     "New");
-
+          
             // Having 2 tree items with the same name is not very good design
             abbotHelper.clickTreeItem (wizardShell,
                     new String[] {"Server", "Server"});
+         //   abbotHelper.clickTreeItem(wizardShell,"Server");
             abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
 
+            
             // Select the proper Server. why do we have this in there twice?
-            abbotHelper.clickItem (wizardShell, Constants.getConstant(serverVersion, Constants.SERVERNAME));
+            abbotHelper.clickTreeItem(wizardShell,Constants.getConstant(serverVersion, Constants.SERVERNAME));
             abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
 
             // TODO would be nice to install the server instead of have to know where it is in advance

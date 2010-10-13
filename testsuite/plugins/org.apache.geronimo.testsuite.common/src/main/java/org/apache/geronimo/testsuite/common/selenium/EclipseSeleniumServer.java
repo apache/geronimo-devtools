@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.swt.widgets.Shell;
 import org.openqa.selenium.server.SeleniumServer;
 import org.openqa.selenium.server.browserlaunchers.BrowserLauncherFactory;
-import org.openqa.selenium.server.browserlaunchers.Firefox3Launcher;
+import org.openqa.selenium.server.browserlaunchers.MockBrowserLauncher;
 
 /**
  * EclipseSeleniumServer
@@ -61,8 +61,8 @@ public class EclipseSeleniumServer implements ISafeRunnable{
 
     public void run() throws Exception {
         try {
-            //BrowserLauncherFactory.addBrowserLauncher("EclipseBrowser", EclipseBrowserLauncher.class);
-            BrowserLauncherFactory.addBrowserLauncher("Firefox Browser", Firefox3Launcher.class);
+            BrowserLauncherFactory.addBrowserLauncher("MockBrowser", MockBrowserLauncher.class);
+            //BrowserLauncherFactory.addBrowserLauncher("Firefox Browser", Firefox3Launcher.class);
             //SeleniumServer.setDebugMode (true);
             server = new SeleniumServer();
             server.start();

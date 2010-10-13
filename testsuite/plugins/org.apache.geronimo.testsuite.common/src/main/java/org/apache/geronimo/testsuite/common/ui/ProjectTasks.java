@@ -69,7 +69,7 @@ public class ProjectTasks {
 
     private void createEARProject() throws MultipleFoundException, NotFoundException {
         Shell wizardShell = abbotHelper.clickMenuItem (workbenchShell,
-                new String[] {"&File", "&New\tAlt+Shift+N", "&Other..."},
+                new String[] {"&File", "&New\tShift+Alt+N", "&Other..."},
                 "New");
 
         abbotHelper.clickTreeItem (wizardShell,
@@ -89,7 +89,7 @@ public class ProjectTasks {
 
     private void createEJBProject() throws MultipleFoundException, NotFoundException {
         Shell wizardShell = abbotHelper.clickMenuItem (workbenchShell,
-                new String[] {"&File", "&New\tAlt+Shift+N", "&Other..."},
+                new String[] {"&File", "&New\tShift+Alt+N", "&Other..."},
                 "New");
 
         abbotHelper.clickTreeItem (wizardShell,
@@ -118,7 +118,7 @@ public class ProjectTasks {
 
     private void createWARProject() throws MultipleFoundException, NotFoundException {
         Shell wizardShell = abbotHelper.clickMenuItem (workbenchShell,
-                new String[] {"&File", "&New\tAlt+Shift+N", "&Other..."},
+                new String[] {"&File", "&New\tShift+Alt+N", "&Other..."},
                 "New");
 
         abbotHelper.clickTreeItem (wizardShell,

@@ -102,6 +102,13 @@ public class AbbotHelper {
         ItemTester.getItemTester().actionClick (item, 3, 3);       
         waitTime (WAIT_STANDARD);
     }
+    
+    // helper method
+    public void clickTreeItem (Shell aShell, String itemText) throws MultipleFoundException, NotFoundException {
+    	TreeItem item = (TreeItem) finder.find (aShell, new WidgetTextMatcher (itemText, TreeItem.class));
+        TreeItemTester.getTreeItemTester().actionClickItem(item);       
+        waitTime (WAIT_STANDARD);
+    }
 
     // helper method
     public void clickCombo(Shell aShell, String itemText) throws MultipleFoundException, NotFoundException {
