@@ -45,9 +45,10 @@
                         <phase>validate</phase>
                         <configuration>
                             <tasks>
+                                <property name="download_to" value="${eclipseDownload}"/>
+                                <property name="extract_to"  value="${basedir}/../launcher/eclipse"/>
                                 <property name="LOCAL_M2_REPO" value="${settings.localRepository}"/>
-                                <ant antfile="${basedir}/build.xml">
-                                </ant>
+                                <ant antfile="${basedir}/build.xml" />
                             </tasks>
                         </configuration>
                         <goals>

@@ -28,9 +28,37 @@
  -->
 <project name="TestsuiteArtifacts" default="common" >
 
+    <!-- expected input properties:
+        1. download_to   - The directory to download eclipse_zip to.
+        2. extract_to    - The directory to extract  ecslipe_zip to.
+        3. LOCAL_M2_REPO - Local M2 repo for various jars...
+      -->
+    <fail message="required download_to property not set.">
+        <condition>
+            <not>
+                <isset property="download_to" />
+            </not>
+        </condition>
+    </fail>
+    <fail message="required extract_to property not set.">
+        <condition>
+            <not>
+                <isset property="extract_to" />
+            </not>
+        </condition>
+    </fail>
+    <fail message="required LOCAL_M2_REPO property not set.">
+        <condition>
+            <not>
+                <isset property="LOCAL_M2_REPO" />
+            </not>
+        </condition>
+    </fail>
+
+
     <target name="init">
 
-        <property name="test_eclipse"                   value="${basedir}/../launcher/eclipse/"/>
+        <property name="test_eclipse"                   value="${extract_to}/"/>
         <property name="test_framework_url"             value="http://download.eclipse.org/eclipse/downloads/drops/R-3.6-201006080911/eclipse-test-framework-3.6.zip" />
         <property name="test_framework"                 value="eclipse-test-framework-3.6.zip"/>
 
@@ -77,9 +105,9 @@
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
 
-        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
+        <mkdir dir="${download_to}"/>
         <get src="${test_framework_url}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${test_framework}"
+             dest="${download_to}/${test_framework}"
              verbose="true"
              ignoreerrors="true"
              usetimestamp="true"/>
@@ -92,7 +120,7 @@
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${test_eclipse}"/>
-        <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${test_framework}"
+        <unzip src="${download_to}/${test_framework}"
                dest="${test_eclipse}"
                overwrite="true"/>
     </target>
@@ -105,9 +133,9 @@
         <echo>## From: ${abbot_swt_url}                                                        </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
-        <mkdir dir="${LOCAL_M2_REPO}/eclipse-downloads"/>
+        <mkdir dir="${download_to}"/>
         <get src="${abbot_swt_url}/${abbot_swt}${abbot_protocol}"
-             dest="${LOCAL_M2_REPO}/eclipse-downloads/${abbot_swt}"
+             dest="${download_to}/${abbot_swt}"
              verbose="true"
              ignoreerrors="true"
              usetimestamp="true"/>
@@ -118,7 +146,7 @@
 		-->
 
 		<mkdir dir="${basedir}/temp"/>
-		<unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${abbot_swt}"
+		<unzip src="${download_to}/${abbot_swt}"
 		       dest="${basedir}/temp"/>
 
 		<mkdir dir="${basedir}/temp/plugins/abbot.swt.temp"/>
@@ -146,7 +174,7 @@
 		<delete dir="${basedir}/temp/plugins/abbot.swt.temp"/>
 		<delete dir="${basedir}/temp/plugins/abbot.swt.eclipse.temp"/>
 
-		<zip destfile="${LOCAL_M2_REPO}/eclipse-downloads/${abbot_swt}"
+		<zip destfile="${download_to}/${abbot_swt}"
 		     basedir="${basedir}/temp"
 		     includes="**"
 		     update="true"/>
@@ -158,12 +186,12 @@
         <echo>##                                                                               </echo>
         <echo>## Unzipping: ${abbot_swt}                                                       </echo>
         <echo>##                                                                               </echo>
-        <echo>## To: ${test_eclipse}eclipse                                                    </echo>
+        <echo>## To: ${test_eclipse}/eclipse                                                    </echo>
         <echo>##                                                                               </echo>
         <echo>#################################################################################</echo>
         <mkdir dir="${test_eclipse}"/>
-        <unzip src="${LOCAL_M2_REPO}/eclipse-downloads/${abbot_swt}"
-               dest="${test_eclipse}eclipse"
+        <unzip src="${download_to}/${abbot_swt}"
+               dest="${test_eclipse}/eclipse"
                overwrite="true"/>
 
         <!--
@@ -172,11 +200,11 @@
          |
          -->
         <mkdir dir="${LOCAL_M2_REPO}/abbot/abbot.swt/0.1.0.20080305_1254"/>
-        <copy file="${test_eclipse}eclipse/plugins/abbot.swt_0.1.0.20080305_1254.jar"
+        <copy file="${test_eclipse}/eclipse/plugins/abbot.swt_0.1.0.20080305_1254.jar"
               tofile="${LOCAL_M2_REPO}/abbot/abbot.swt/0.1.0.20080305_1254/abbot.swt-0.1.0.20080305_1254.jar"
               failonerror="true" />
         <mkdir dir="${LOCAL_M2_REPO}/abbot/abbot.swt.eclipse/0.1.0.20080305_1254"/>
-        <copy file="${test_eclipse}eclipse/plugins/abbot.swt.eclipse_0.1.0.20080305_1254.jar"
+        <copy file="${test_eclipse}/eclipse/plugins/abbot.swt.eclipse_0.1.0.20080305_1254.jar"
               tofile="${LOCAL_M2_REPO}/abbot/abbot.swt.eclipse/0.1.0.20080305_1254/abbot.swt.eclipse-0.1.0.20080305_1254.jar"
               failonerror="true" />
         <!--
@@ -184,10 +212,10 @@
          | Copy the SWT jars to the Eclipse plugins in the local maven repo
          |
          -->
-        <copy file="${test_eclipse}eclipse/plugins/abbot.swt_0.1.0.20080305_1254.jar"
+        <copy file="${test_eclipse}/eclipse/plugins/abbot.swt_0.1.0.20080305_1254.jar"
               tofile="${LOCAL_M2_REPO}/eclipse/eclipse/plugins/abbot.swt-0.1.0.20080305_1254.jar"
               failonerror="true" />
-        <copy file="${test_eclipse}eclipse/plugins/abbot.swt.eclipse_0.1.0.20080305_1254.jar"
+        <copy file="${test_eclipse}/eclipse/plugins/abbot.swt.eclipse_0.1.0.20080305_1254.jar"
               tofile="${LOCAL_M2_REPO}/eclipse/eclipse/plugins/abbot.swt.eclipse-0.1.0.20080305_1254.jar"
               failonerror="true" />
     </target>
@@ -200,7 +228,7 @@
         |
         -->
         <mkdir dir="${test_eclipse}"/>
-        <copy todir="${test_eclipse}eclipse/plugins">
+        <copy todir="${test_eclipse}/eclipse/plugins">
 	    <fileset dir="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.jaxbmodel.common/${gep_version}">
                 <include name="**/*.jar"/>
             </fileset>
@@ -284,7 +312,7 @@
         -->
         <mkdir dir="${test_eclipse}"/>
         <unzip src="${LOCAL_M2_REPO}/org/apache/geronimo/devtools/org.apache.geronimo.v30.feature/${gep_version}/org.apache.geronimo.v30.feature-${gep_version}.jar"
-               dest="${test_eclipse}eclipse/features/org.apache.geronimo.v30.feature_${gep_version}"
+               dest="${test_eclipse}/eclipse/features/org.apache.geronimo.v30.feature_${gep_version}"
                overwrite="true"/>
     </target>
 
