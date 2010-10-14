@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.apache.geronimo.st.v22.core;singleton:=true
 Bundle-Version: 3.0.0
-Bundle-Activator: org.apache.geronimo.st.v21.core.Activator
+Bundle-Activator: org.apache.geronimo.st.v22.core.Activator
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.runtime.v22,

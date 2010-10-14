@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.bind.JAXBElement;
 
@@ -67,6 +68,9 @@ public class DependencyHelper {
     private List<JAXBElement> inputJAXBElements = new ArrayList();
     private List<JAXBElement> reorderedJAXBElements = new ArrayList();
 
+    
+    //provide a cache
+    private ConcurrentHashMap<IModule, Environment> environmentCache = new ConcurrentHashMap<IModule, Environment>();
 
     /**
      * Reorder the publish order of the modules based on any discovered dependencies
@@ -78,6 +82,10 @@ public class DependencyHelper {
      */
     public List reorderModules(IServer server, List modules, List deltaKind ) {
         Trace.tracePoint("Entry", "DependencyHelper.reorderModules", modules, deltaKind);
+        
+        //provide a cache
+        ConcurrentHashMap<String,Boolean> verifiedModules = new ConcurrentHashMap<String,Boolean>();
+
 
         if (modules.size() == 0) {
             List reorderedLists = new ArrayList(2);
@@ -125,8 +133,23 @@ public class DependencyHelper {
 	                            if (dep.getType()!=null)
 	                            	configId.append(dep.getType());
 	                            
-	                            if (!DeploymentUtils.isInstalledModule(server,configId.toString()))
-	                               	dm.addDependency( child, parent );
+	                            //get install flag from the cache
+								Boolean isInstalledModule = verifiedModules
+										.get(configId.toString());
+								if (isInstalledModule == null) {
+									// not in the cache, invoke
+									// isInstalledModule() method
+									isInstalledModule = DeploymentUtils
+											.isInstalledModule(server,
+													configId.toString());
+									// put install flag into the cache for next
+									// retrieve
+									verifiedModules.put(configId.toString(),
+											isInstalledModule);
+								}
+
+								if (!isInstalledModule)
+                                    dm.addDependency( child, parent );
 	                        }
 	                    }
 	                }
@@ -374,6 +397,11 @@ public class DependencyHelper {
      */
     private Environment getEnvironment(IModule module) {
         Trace.tracePoint("Enter", "DependencyHelper.getEnvironment", module);
+        
+        // if module's environment is in the cache, get it from the cache
+        if(environmentCache.containsKey(module)) {
+             return environmentCache.get(module);
+        }
 
         Environment environment = null;
         if (GeronimoUtils.isWebModule(module)) {
@@ -410,6 +438,9 @@ public class DependencyHelper {
                     environment = plan.getServerEnvironment();
             }
         }
+        
+        //put module's environment into the cache for next retrieve
+        environmentCache.put(module, environment);
 
         Trace.tracePoint("Exit ", "DependencyHelper.getEnvironment", environment);
         return environment;
