@@ -40,6 +40,9 @@
                 <plugin>
                     <groupId>org.apache.geronimo.devtools</groupId>
                     <artifactId>maven-eclipsepde-plugin</artifactId>
+                    <configuration>
+                        <eclipseHome>${basedir}/../../launcher/eclipse/eclipse</eclipseHome>
+                    </configuration>
                     <executions>
                         <execution>
                             <id>initialize</id>
