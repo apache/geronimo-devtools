@@ -75,13 +75,14 @@
 
     <target name="common" depends="init" description="Download artifacts common to all OS'es">
         <antcall target="cleanup"/>
+        <!-- note that ../../eclipse/build.xml also deletes ${test_eclipse}, like cleanup -->
+        <ant antfile="../../eclipse/build.xml">
+            <property name="extract_to"   value="${test_eclipse}" />
+        </ant>
         <antcall target="test-framework"/>
         <antcall target="abbot"/>
         <antcall target="gep-plugins"/>
         <antcall target="gep-features"/>
-        <ant antfile="../../eclipse/build.xml">
-            <property name="extract_to"   value="${test_eclipse}" />
-        </ant>
     </target>
 
     <target name="cleanup" depends="init" description="Cleanup from previous invocations of the testsuite">
