@@ -190,7 +190,7 @@
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>eclipse</artifactId>
-            <version>${version}</version>
+            <version>${pom.version}</version>
             <type>pom</type>
         </dependency>
         <dependency>
