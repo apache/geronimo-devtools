@@ -24,7 +24,19 @@
  | @version $Rev$ $Date$
  |
  -->
-<project name="GEP Automated Testsuite Launcher">
+<project name="GEP Automated Testsuite Launcher" default="launch" >
+
+    <condition property="isMac" >
+        <os family="mac" />
+    </condition>
+
+    <condition property="isUnix" >
+        <os family="unix" />
+    </condition>
+
+    <condition property="isWindows" >
+        <os family="windows" />
+    </condition>
 
     <!--
      |
@@ -34,8 +46,14 @@
      -->
     <target name="init">
         <!-- Prompt to install aries tools manually -->
-        <input message="&#10;Free Aries Tools download URL is http://www.ibm.com/developerworks/rational/downloads/10/rationaldevtoolsforosgiapplications.html&#10;Please install aries tools manually for eclipse under testsuite/launcher/eclipse and then press Enter to continue..."/>
+        <input>
+&#10;
+Please install Aries tools manually for eclipse under testsuite/launcher/eclipse,
+&#10;
+Free Aries tools download URL is http://www.ibm.com/developerworks/rational/downloads/10/rationaldevtoolsforosgiapplications.html
 
+Press Enter to continue...
+        </input>
 
         <property name="eclipse-home" value="eclipse"/>
         <copy tofile="${eclipse-home}/eclipse/plugins/org.eclipse.equinox.launcher.jar">
@@ -48,35 +66,38 @@
         </copy>
     </target>
 
+    <target name="setOSproperties" >
+        <antcall target="mac" />
+        <antcall target="unix" />
+        <antcall target="windows" />
+    </target>
 
-    <!--
-     |
-     | Start Eclipse via the Equinox launcher (Windows)
-     |
-     -->
-    <target name="win32" depends="init" description="Start Equinox launcher on Windows">
-        <java classname="org.eclipse.equinox.launcher.Main"
-              failonerror="true"
-              fork="true">
-            <classpath>
-                <pathelement path="${eclipse-home}/eclipse/plugins/org.eclipse.equinox.launcher.jar"/>
-            </classpath>
-            <arg line="-data workspace" />
-            <arg line="-application org.eclipse.ant.core.antRunner"/>
-            <arg line="-file testsuite.xml"/>
-            <arg value="all"/>
-            <arg value="-Dos=win32"/>
-            <arg value="-Dws=win32"/>
-            <arg value="-Darch=x86"/>
-        </java>
+    <target name="mac" if="isMac" >
+        <property name="osName" value="mac" />
+        <property name="os_property" value="macosx" />
+        <property name="ws_property" value="cocoa" />
+    </target>
+    <target name="unix" if="isUnix" >
+        <property name="osName" value="unix" />
+        <property name="os_property" value="linux" />
+        <property name="ws_property" value="gtk" />
+    </target>
+
+    <target name="windows" if="isWindows" >
+        <property name="osName" value="windows" />
+        <property name="os_property" value="win32" />
+        <property name="ws_property" value="win32" />
     </target>
 
     <!--
      |
-     | Start Eclipse via the Equinox launcher (Linux)
+     | Start Eclipse via the Equinox launcher
      |
      -->
-    <target name="linux" depends="init" description="Start Equinox launcher on Linux">
+    <target name="launch" depends="init, setOSproperties" description="Start Equinox launcher">
+        <echo>
+Launching Equinox on ${osName} with -Dos=${os_property} -Dws=${ws_property}
+        </echo>
         <java classname="org.eclipse.equinox.launcher.Main"
               failonerror="true"
               fork="true">
@@ -87,30 +108,8 @@
             <arg line="-application org.eclipse.ant.core.antRunner"/>
             <arg line="-file testsuite.xml"/>
             <arg value="all"/>
-            <arg value="-Dos=linux"/>
-            <arg value="-Dws=gtk"/>
-            <arg value="-Darch=x86"/>
-        </java>
-    </target>
-
-    <!--
-     |
-     | Start Eclipse via the Equinox launcher (Mac)
-     |
-     -->
-    <target name="macos" depends="init" description="Start Equinox launcher on Mac">
-        <java classname="org.eclipse.equinox.launcher.Main"
-              failonerror="true"
-              fork="true">
-            <classpath>
-                <pathelement path="${eclipse-home}/eclipse/plugins/org.eclipse.equinox.launcher.jar"/>
-            </classpath>
-            <arg line="-data workspace" />
-            <arg line="-application org.eclipse.ant.core.antRunner"/>
-            <arg line="-file testsuite.xml"/>
-            <arg value="all"/>
-            <arg value="-Dos=macosx"/>
-            <arg value="-Dws=carbon"/>
+            <arg value="-Dos=${os_property}"/>
+            <arg value="-Dws=${ws_property}"/>
             <arg value="-Darch=x86"/>
         </java>
     </target>
