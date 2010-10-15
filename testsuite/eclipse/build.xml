@@ -55,25 +55,20 @@
         </condition>
     </fail>
 
+    <property name="test_eclipse"                   value="${extract_to}/"/>
+    <property name="test_framework_url"             value="http://download.eclipse.org/eclipse/downloads/drops/R-3.6-201006080911/eclipse-test-framework-3.6.zip" />
+    <property name="test_framework"                 value="eclipse-test-framework-3.6.zip"/>
 
-    <target name="init">
+    <property name="abbot_swt_url"                  value="http://downloads.sourceforge.net/abbot"/>
+    <property name="abbot_swt_version"              value="0.1.0.20080305_1254"/>
+    <property name="abbot_swt"                      value="abbot.swt-${abbot_swt_version}.zip"/>
+    <property name="abbot_protocol"                 value="?modtime=12047243638&amp;protocol=http"/>
 
-        <property name="test_eclipse"                   value="${extract_to}/"/>
-        <property name="test_framework_url"             value="http://download.eclipse.org/eclipse/downloads/drops/R-3.6-201006080911/eclipse-test-framework-3.6.zip" />
-        <property name="test_framework"                 value="eclipse-test-framework-3.6.zip"/>
+    <property name="gep_version"                    value="3.0.0"/>
 
+    <property name="protocol"                       value="&amp;r=1&amp;protocol=http"/>
 
-        <property name="abbot_swt_url"                  value="http://downloads.sourceforge.net/abbot"/>
-        <property name="abbot_swt_version"              value="0.1.0.20080305_1254"/>
-        <property name="abbot_swt"                      value="abbot.swt-${abbot_swt_version}.zip"/>
-        <property name="abbot_protocol"                 value="?modtime=12047243638&amp;protocol=http"/>
-
-        <property name="gep_version"                    value="3.0.0"/>
-
-        <property name="protocol"                       value="&amp;r=1&amp;protocol=http"/>
-    </target>
-
-    <target name="common" depends="init" description="Download artifacts common to all OS'es">
+    <target name="common" description="Download artifacts common to all OS'es">
         <antcall target="cleanup"/>
         <!-- note that ../../eclipse/build.xml also deletes ${test_eclipse}, like cleanup -->
         <ant antfile="../../eclipse/build.xml">
@@ -85,7 +80,7 @@
         <antcall target="gep-features"/>
     </target>
 
-    <target name="cleanup" depends="init" description="Cleanup from previous invocations of the testsuite">
+    <target name="cleanup" description="Cleanup from previous invocations of the testsuite">
         <!--
         ##############################################################################################
         ##                                                                                          ##
@@ -97,7 +92,7 @@
         <delete dir="${test_eclipse}" quiet="true"/>
     </target>
 
-    <target name="test-framework" depends="init" description="JUnit Plugin Tests and Automated Testing Framework artifact">
+    <target name="test-framework" description="JUnit Plugin Tests and Automated Testing Framework artifact">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
         <echo>## Downloading: ${test_framework}                                                </echo>
@@ -126,7 +121,7 @@
                overwrite="true"/>
     </target>
 
-    <target name="abbot" depends="init" description="Download Abbot SWT plugin artifacts">
+    <target name="abbot" description="Download Abbot SWT plugin artifacts">
         <echo>#################################################################################</echo>
         <echo>##                                                                               </echo>
         <echo>## Downloading: ${abbot_swt}                                                     </echo>
@@ -222,7 +217,7 @@
     </target>
 
 
-    <target name="gep-plugins" depends="init" description="Copy the GEP plugin(s) into the test_eclipse installation">
+    <target name="gep-plugins" description="Copy the GEP plugin(s) into the test_eclipse installation">
         <!--
         |
         | Copy the GEP plugins to the launcher Eclipse plugins directory
@@ -305,7 +300,7 @@
         </copy>
     </target>
 
-    <target name="gep-features" depends="init" description="Unzip the GEP latest feature to the launcher Eclipse features directory">
+    <target name="gep-features" description="Unzip the GEP latest feature to the launcher Eclipse features directory">
         <!--
         |
         | Unzip the GEP latest feature to the launcher Eclipse features directory (for one branding testcase)
