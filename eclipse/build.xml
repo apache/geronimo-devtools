@@ -18,15 +18,15 @@
 
 <!--
  |
- | Download eclipse artifacts and unzip them into the user's local maven repo
+ | Download eclipse_zip to ${download_to} directory and unzip them to ${extract_to} directory.
  |
  | @version $Rev$ $Date$
  -->
-<project name="EclipseArtifacts" default="doit" >
+<project name="EclipseArtifacts" default="GetEclipse" >
 
     <!-- expected input properties:
-        1. download_to   - The directory to download eclipse_zip to.
-        2. extract_to    - The directory to extract  ecslipe_zip to.
+        1. download_to   - The directory to download eclipseZip to.
+        2. extract_to    - The directory to extract  eclsipeZip to.
       -->
     <fail message="required download_to property not set.">
         <condition>
@@ -71,123 +71,128 @@
     </condition>
 
     <condition property="isUnix" >
-        <os family="unix" />
+        <and>
+            <os family="unix" />
+            <!-- MacOSX has os family of mac and unix both being true! -->
+            <not>
+                <isset property="isMac" />
+            </not>
+        </and>
     </condition>
 
     <condition property="isWindows" >
         <os family="windows" />
     </condition>
 
-    <!-- unzip or gunzip and untar?  Set properties appropriately -->
+    <macrodef name="download" description="Download artifact" >
+        <attribute name="eclipseZip" />
+        <sequential>
+            <echo>#################################################################################</echo>
+            <echo>##                                                                               </echo>
+            <echo>## Downloading: @{eclipseZip}                                                    </echo>
+            <echo>##                                                                               </echo>
+            <echo>## From: ${eclipse_url}                                                          </echo>
+            <echo>##                                                                               </echo>
+            <echo>#################################################################################</echo>
+            <mkdir  dir="${download_to}" />
+            <get    src="${eclipse_url}/@{eclipseZip}${protocol}"
+                    dest="${download_to}/@{eclipseZip}"
+                    verbose="true"
+                    ignoreerrors="true"
+                    usetimestamp="true" />
+        </sequential>
+    </macrodef>
 
-    <condition property="isZip" >
-        <isset property="isWindows" />
-    </condition>
+    <macrodef name="wunzip" description="Unzip artifact" >
+        <attribute name="eclipseZip" />
+        <sequential>
+            <echo>#################################################################################</echo>
+            <echo>##                                                                               </echo>
+            <echo>## Unzipping: @{eclipseZip}                                                      </echo>
+            <echo>##                                                                               </echo>
+            <echo>#################################################################################</echo>
+            <delete dir="${extract_to}" quiet="true" />
+            <mkdir  dir="${extract_to}" />
+            <unzip  src="${download_to}/@{eclipseZip}"
+                    dest="${extract_to}"
+                    overwrite="true" />
+        </sequential>
+    </macrodef>
 
-    <condition property="isTarGz" >
-        <or>
-            <isset property="isMac" />
-            <isset property="isUnix" />
-        </or>
-    </condition>
+    <macrodef name="untargz" description="Ungzip and Untar artifact" >
+        <attribute name="eclipseTar" />
+        <attribute name="eclipseZip" default="@{eclipseTar}.gz" />
+        <sequential>
+            <echo>#################################################################################</echo>
+            <echo>##                                                                               </echo>
+            <echo>## Gunzipping: @{eclipseZip}  Untarring: @{eclipseTar}                           </echo>
+            <echo>##                                                                               </echo>
+            <echo>#################################################################################</echo>
+            <delete dir="${extract_to}" quiet="true" />
+            <mkdir  dir="${extract_to}" />
+            <gunzip src="${download_to}/@{eclipseZip}" />
+            <untar  src="${download_to}/@{eclipseTar}"
+                    dest="${extract_to}"
+                    overwrite="true" />
+        </sequential>
+    </macrodef>
 
-    <!-- We will download ${eclipse_zip}, and untar ${eclipse_tar}.
-         Set ${eclipse_zip} name based on our environment (OS, 32/64 bit)
-     -->
-
-    <condition property="eclipse_zip" value="${eclipse_basefilename}-win32.zip" >
-        <and>
-            <isset property="isWindows" />
-            <isset property="is32bitJDK" />
-        </and>
-    </condition>
-
-    <condition property="eclipse_zip" value="${eclipse_basefilename}-win32_64.zip" >
-        <and>
-            <isset property="isWindows" />
-            <isset property="is64bitJDK" />
-        </and>
-    </condition>
-
-    <!-- ${eclipse_tar} not needed on windows, just mac and unix.
-         Set ${eclipse_zip} for them below by adding .gz
-     -->
-
-    <condition property="eclipse_tar" value="${eclipse_basefilename}-macosx-cocoa.tar" >
-        <and>
-            <isset property="isMac" />
-            <isset property="is32bitJDK" />
-        </and>
-    </condition>
-
-    <condition property="eclipse_tar" value="${eclipse_basefilename}-macosx-cocoa-x86_64.tar" >
-        <and>
-            <isset property="isMac" />
-            <isset property="is64bitJDK" />
-        </and>
-    </condition>
-
-    <condition property="eclipse_tar" value="${eclipse_basefilename}-linux-gtk.tar" >
-        <and>
-            <isset property="isUnix" />
-            <isset property="is32bitJDK" />
-        </and>
-    </condition>
-
-    <condition property="eclipse_tar" value="${eclipse_basefilename}-linux-gtk-x86_64.tar" >
-        <and>
-            <isset property="isUnix" />
-            <isset property="is64bitJDK" />
-        </and>
-    </condition>
-
-    <!-- Set ${eclipse_zip} if needed in TarGz environment.  -->
-
-    <condition property="eclipse_zip" value="${eclipse_tar}.gz" >
-        <isset property="isTarGz" />
-    </condition>
-
-    <target name="doit" >
-        <antcall target="download" />
-        <antcall target="unzip"    />
-        <antcall target="untargz"  />
+    <target name="GetEclipse" >
+        <antcall target="mac" />
+        <antcall target="unix" />
+        <antcall target="windows" />
     </target>
 
-    <target name="download" description="Download artifact(s)" >
+    <target name="mac" if="isMac" description="GetEclipse on mac" >
 
-        <echo>#################################################################################</echo>
-        <echo>##                                                                               </echo>
-        <echo>## Downloading: ${eclipse_zip}                                                   </echo>
-        <echo>##                                                                               </echo>
-        <echo>## From: ${eclipse_url}                                                          </echo>
-        <echo>##                                                                               </echo>
-        <echo>#################################################################################</echo>
-        <mkdir  dir="${download_to}" />
-        <get    src="${eclipse_url}/${eclipse_zip}${protocol}"
-                dest="${download_to}/${eclipse_zip}"
-                verbose="true"
-                ignoreerrors="true"
-                usetimestamp="true" />
-        <echo>#################################################################################</echo>
-        <echo>##                                                                               </echo>
-        <echo>## Unzipping: ${eclipse_zip}                                                     </echo>
-        <echo>##                                                                               </echo>
-        <echo>#################################################################################</echo>
-        <delete dir="${extract_to}" quiet="true" />
-        <mkdir  dir="${extract_to}" />
+        <condition property="eclipseTar" value="${eclipse_basefilename}-macosx-cocoa.tar" >
+            <isset property="is32bitJDK" />
+        </condition>
+
+        <condition property="eclipseTar" value="${eclipse_basefilename}-macosx-cocoa-x86_64.tar" >
+            <isset property="is64bitJDK" />
+        </condition>
+
+        <property name="eclipseZip" value="${eclipseTar}.gz" />
+
+        <download eclipseZip="${eclipseZip}" />
+
+        <untargz  eclipseZip="${eclipseZip}" eclipseTar="${eclipseTar}" />
+
     </target>
 
-    <target name="unzip" if="isZip" description="Unzip artifact(s)" >
-        <unzip  src="${download_to}/${eclipse_zip}"
-                dest="${extract_to}"
-                overwrite="true" />
+    <target name="unix" if="isUnix" description="GetEclipse on unix" >
+
+        <condition property="eclipseTar" value="${eclipse_basefilename}-linux-gtk.tar" >
+            <isset property="is32bitJDK" />
+        </condition>
+
+        <condition property="eclipseTar" value="${eclipse_basefilename}-linux-gtk-x86_64.tar" >
+            <isset property="is64bitJDK" />
+        </condition>
+
+        <property name="eclipseZip" value="${eclipseTar}.gz" />
+
+        <download eclipseZip="${eclipseZip}" />
+
+        <untargz  eclipseZip="${eclipseZip}" eclipseTar="${eclipseTar}" />
+
     </target>
 
-    <target name="untargz" if="isTarGz" description="Ungzip and Untar artifact(s)" >
-        <gunzip src="${download_to}/${eclipse_zip}" />
-        <untar  src="${download_to}/${eclipse_tar}"
-                dest="${extract_to}"
-                overwrite="true" />
+    <target name="windows" if="isWindows" description="GetEclipse on windows" >
+
+        <condition property="eclipseZip" value="${eclipse_basefilename}-win32.zip" >
+            <isset property="is32bitJDK" />
+        </condition>
+
+        <condition property="eclipseZip" value="${eclipse_basefilename}-win32_64.zip" >
+            <isset property="is64bitJDK" />
+        </condition>
+
+        <download eclipseZip="${eclipseZip}" />
+
+        <wunzip   eclipseZip="${eclipseZip}" />
+
     </target>
 
 </project>
