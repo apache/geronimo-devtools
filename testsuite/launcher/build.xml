@@ -26,6 +26,21 @@
  -->
 <project name="GEP Automated Testsuite Launcher" >
 
+    <condition property="is64bitJDK" >
+        <!--We only check JVM bit model here.  It works fine even 32-bit JVM is used on 64-bit OS -->
+        <equals arg1="${sun.arch.data.model}" arg2="64" />
+    </condition>
+
+    <condition property="arch" value="x86_64" >
+        <isset property="is64bitJDK" />
+    </condition>
+
+    <condition property="arch" value="x86" >
+        <not>
+            <isset property="is64bitJDK" />
+        </not>
+    </condition>
+
     <!--
      |
      | Copy and rename the eqiunox launcher jar,
@@ -62,7 +77,7 @@ Press Enter to continue...
         <attribute name="os" />
         <attribute name="ws" />
         <sequential>
-            <echo message="Launching Equinox with -Dos=@{os} -Dws=@{ws}" />
+            <echo message="Launching Equinox with -Dos=@{os} -Dws=@{ws} -Darch=${arch}" />
             <java classname="org.eclipse.equinox.launcher.Main"
                   failonerror="true"
                   fork="true">
@@ -75,7 +90,7 @@ Press Enter to continue...
                 <arg value="all"/>
                 <arg value="-Dos=@{os}"/>
                 <arg value="-Dws=@{ws}"/>
-                <arg value="-Darch=x86"/>
+                <arg value="-Darch=${arch}"/>
             </java>
         </sequential>
     </macrodef>
