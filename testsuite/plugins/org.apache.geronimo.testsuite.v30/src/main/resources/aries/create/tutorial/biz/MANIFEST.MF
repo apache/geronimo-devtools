@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: OSGiServiceImplBundleSample
+Bundle-SymbolicName: OSGiServiceImplBundleSample
+Bundle-Version: 1.0.0.qualifier
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: com.example.helloworld.api
