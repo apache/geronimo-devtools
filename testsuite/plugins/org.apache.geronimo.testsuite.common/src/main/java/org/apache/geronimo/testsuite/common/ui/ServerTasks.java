@@ -42,7 +42,7 @@ public class ServerTasks {
         try {
             // Launch the New Project wizard and aHelper.wait for it to open.
             Shell wizardShell = abbotHelper.clickMenuItem (workbenchShell,
-                    new String[] {"&File", "&New\tShift+Alt+N", "&Other..."},
+                    new String[] {"&File", "&New\tAlt+Shift+N", "&Other..."},
                     "New");
           
             // Having 2 tree items with the same name is not very good design
