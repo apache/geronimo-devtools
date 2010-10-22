@@ -434,7 +434,6 @@ public class Messages extends NLS {
 
     public static String gBeanLink;
     public static String moduleId;
-    public static String seeRestrictions;
 
     public static String useGBeanLink;
     public static String useGBeanPattern;
