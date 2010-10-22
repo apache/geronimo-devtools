@@ -76,12 +76,12 @@
          ##                                                                     ##
          #########################################################################
          -->
-        <!--ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+        <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
             <property name="data-dir" value="${jdt-folder}"/>
             <property name="plugin-name" value="${plugin-name}"/>
             <property name="classname"
                       value="org.apache.geronimo.testsuite.v30.ui.EclipseUITest"/>
-        </ant-->
+        </ant>
 
         <!--
          #########################################################################
