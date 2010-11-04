@@ -14,7 +14,7 @@ System Requirements
 -------------------
 1. Java J2SE 1.6.0 or greater, and a platform that supports it
 
-2. Eclipse IDE for Java EE Developers (Galileo or Halios), which is platform-specific
+2. Eclipse IDE for Java EE Developers (Galileo or Helios), which is platform-specific
 
    -- Get Eclipse from http://www.eclipse.org/downloads/
 
@@ -48,7 +48,7 @@ Geronimo Eclipse Plugin Version ${pom.version} Enhancements
 
 1. Support Geronimo Server 3.0 Milestone 1
 
-2. Support Eclipse Halios, WTP 3.2 and Java EE 6 facet
+2. Support Eclipse Helios, WTP 3.2 and Java EE 6 facet
 
 3. Support OSGI application programming tools
 
@@ -74,7 +74,7 @@ GERONIMODEVTOOLS-640	Support Eclipse 3.6 (and latest versions of WTP, etc.)
 GERONIMODEVTOOLS-639	Enhance GEP to support Geronimo 3.0 server
 GERONIMODEVTOOLS-621	Extend new Aries tooling to provide new OSGi PDE enhancements specific to Geronimo runtime
 GERONIMODEVTOOLS-614	Support free (not open-source) Aries tooling
-GERONIMODEVTOOLS-606	Support Eclipse Halios
+GERONIMODEVTOOLS-606	Support Eclipse Helios
 GERONIMODEVTOOLS-605	Generate classes with JAXB from new schema files for Java EE6
 GERONIMODEVTOOLS-604	Upgrade to eclipse 3.5.2
 GERONIMODEVTOOLS-603	Make Geronimo 3.0 server runnable with GEP
