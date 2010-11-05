@@ -62,6 +62,8 @@
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.j2ee.v11.jaxbmodel</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.jaxbmodel.common</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.jee.v21.jaxbmodel</include>
+                <!-- need to add jee.v22.jaxbmodel -->
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.jee.v22.jaxbmodel</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.common</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v11</include>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v20</include>
