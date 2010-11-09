@@ -23,55 +23,68 @@
         <format>zip</format>
     </formats>
     <includeBaseDirectory>false</includeBaseDirectory>
-    <dependencySets>
-
-        <!-- Plug-ins -->
-        <dependencySet>
-            <outputFileNameMapping>${artifactId}_${version}.${extension}</outputFileNameMapping>
-            <outputDirectory>plugins/</outputDirectory>
-            <unpack>false</unpack>
+    <fileSets>
+        <fileSet>
+            <directory>..</directory>
+            <outputDirectory></outputDirectory>
             <includes>
-<!--            <include>org.apache.geronimo.devtools:org.apache.geronimo.deployment.model</include>        -->
-<!--            <include>org.apache.geronimo.devtools:org.apache.geronimo.deployment.model.edit</include>   -->
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.common</include>
-<!--            <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v1</include>      -->
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v11</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v20</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v21</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.core</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.ui</include>
-<!--            <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v1.core</include>      -->
-<!--            <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v1.ui</include>        -->
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v11.core</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v11.ui</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v20.core</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v20.ui</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v21.core</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v21.ui</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.v11.deployment.model</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.v11.deployment.model.edit</include>
+                <include>LICENSE.txt</include>
+                <include>NOTICE.txt</include>
             </includes>
-        </dependencySet>
-
-        <!-- Features -->
-        <dependencySet>
-            <outputFileNameMapping>${artifactId}_${version}.${extension}</outputFileNameMapping>
-            <outputDirectory>features/</outputDirectory>
-            <includes>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.feature</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.installableruntime.jetty.feature</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.installableruntime.tomcat.feature</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.v11.feature</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.v20.feature</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.v21.feature</include>
-            </includes>
-        </dependencySet>
-
-    </dependencySets>
+        </fileSet>
+    </fileSets>
     <files>
         <file>
             <source>${basedir}/src/main/assembly/site.xml</source>
             <outputDirectory>/</outputDirectory>
         </file>
+        <file>
+            <source>../features/org.apache.geronimo.v21.feature/target/classes/about_files/PLUGIN_RELEASE-NOTES-${pom.version}.txt</source>
+            <outputDirectory></outputDirectory>
+            <!--  <filtered>true</filtered>
+                 ${pom.version} does not get expanded by this filtering :-(
+                 so I take a filtered version from earlier in the build for GERONIMODEVTOOLS-505
+              -->
+        </file>
     </files>
+    <dependencySets>
+
+        <!-- 
+         |
+         | Plug-ins
+         |
+         -->
+        <dependencySet>
+            <outputFileNameMapping>${artifact.artifactId}_${artifact.version}.${artifact.extension}</outputFileNameMapping>
+            <outputDirectory>plugins/</outputDirectory>
+            <unpack>false</unpack>
+            <includes>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.jee.v21.jaxbmodel</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.common</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v20</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v21</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.core</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.ui</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.schemas</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v20.core</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v20.ui</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v21.core</include>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v21.ui</include>
+            </includes>
+        </dependencySet>
+
+        <!-- 
+         |
+         | Features
+         |
+         -->
+        <dependencySet>
+            <outputFileNameMapping>${artifact.artifactId}_${artifact.version}.${artifact.extension}</outputFileNameMapping>
+            <outputDirectory>features/</outputDirectory>
+            <includes>
+                <include>org.apache.geronimo.devtools:org.apache.geronimo.v21.feature</include>
+            </includes>
+        </dependencySet>
+
+    </dependencySets>
 </assembly>

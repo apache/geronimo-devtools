@@ -21,43 +21,51 @@
 
 <plugin>
 
-	<extension-point id="sourcePathComputerMapping" name="Geronimo Deployment Plan Loader" schema="schema/sourcePathComputerMapping.exsd"/>
+    <extension-point id="sourcePathComputerMapping" name="Geronimo Deployment Plan Loader" schema="schema/sourcePathComputerMapping.exsd"/>
 
-	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
-		<launchConfigurationType
-	        id="org.apache.geronimo.st.core.launchConfigurationType"
-	        name="%geronimoLaunchConfigurationType"
-	        delegate="org.apache.geronimo.st.core.GeronimoLaunchConfigurationDelegate"
-	        modes="run, debug, profile"
-	        sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
-	        sourcePathComputerId="org.apache.geronimo.st.core.sourcePathComputer"/>
-	</extension>
-	
-	<extension point="org.eclipse.debug.core.sourcePathComputers">
-    	<sourcePathComputer
-        	id="org.apache.geronimo.st.core.sourcePathComputer"
-        	class="org.apache.geronimo.st.core.GeronimoSourcePathComputerDelegate"/>
-  	</extension>
-	  
-	<extension point="org.eclipse.wst.server.core.launchableAdapters">
-      	<launchableAdapter
-        	class="org.apache.geronimo.st.core.GeronimoLaunchableAdapterDelegate"
-         	id="org.eclipse.jst.server.generic.web"/>
- 	</extension>
+    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+        <launchConfigurationType
+            id="org.apache.geronimo.st.core.launchConfigurationType"
+            name="%geronimoLaunchConfigurationType"
+            delegate="org.apache.geronimo.st.core.GeronimoLaunchConfigurationDelegate"
+            modes="run, debug, profile"
+            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+            sourcePathComputerId="org.apache.geronimo.st.core.sourcePathComputer"/>
+    </extension>
+    
+    <extension point="org.eclipse.debug.core.sourcePathComputers">
+        <sourcePathComputer
+            id="org.apache.geronimo.st.core.sourcePathComputer"
+            class="org.apache.geronimo.st.core.GeronimoSourcePathComputerDelegate"/>
+    </extension>
+      
+
+    <!-- 
+     |                                                                                           
+     | This extension point provides a way for a server to support the "Run on Server" scenario. 
+     | The id specifies a unique identifier for this extension point, and the class specifies the 
+     | fully qualified name of the Java class that extends LaunchableAdapterDelegate. 
+     |                                                                                           
+     --> 
+    <extension point="org.eclipse.wst.server.core.launchableAdapters">
+        <launchableAdapter
+            class="org.apache.geronimo.st.core.GeronimoLaunchableAdapterDelegate"
+            id="org.eclipse.jst.server.geronimo.web"/>
+    </extension>
 
 
-    <!-- ======================================================================================= -->
-    <!--                                                                                         -->
-    <!-- Define the runtime component version(s) and the facets supported by each Geronimo       -->
-    <!-- runtime component                                                                       -->
-    <!--                                                                                         -->
-    <!-- ======================================================================================= -->
-	<extension point="org.eclipse.wst.common.project.facet.core.runtimes">
+    <!-- 
+     |                                                                                           
+     | Define the runtime component version(s) and the facets supported by each 
+     | Geronimo runtime component                                                                       
+     |                                                                                           
+     --> 
+    <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
         <runtime-component-type id="org.apache.geronimo.runtime"/>
-        <runtime-component-version type="org.apache.geronimo.runtime" version="1.0"/>
-        <runtime-component-version type="org.apache.geronimo.runtime" version="1.1"/>
         <runtime-component-version type="org.apache.geronimo.runtime" version="2.0"/>
         <runtime-component-version type="org.apache.geronimo.runtime" version="2.1"/>
+
+        <!-- GERONIMODEVTOOLS-331 -->
         <adapter>
             <runtime-component id="org.apache.geronimo.runtime"/>
             <factory
@@ -65,44 +73,27 @@
             <type
                 class="org.eclipse.jst.common.project.facet.core.IClasspathProvider"/>
         </adapter>
-        <supported>
-            <runtime-component id="org.apache.geronimo.runtime" version="1.0"/>
-            <facet id="org.apache.geronimo.facet" version="1.0"/>
-            <facet id="jst.web" version="2.2,2.3,2.4"/>
-            <facet id="jst.ejb" version="1.1,2.0,2.1"/>
-            <facet id="jst.ear" version="1.2,1.3,1.4"/>
-            <facet id="jst.connector" version="1.0,1.5"/>
-            <facet id="jst.appclient" version="1.2,1.3,1.4"/>
-        </supported>
-        <supported>
-            <runtime-component id="org.apache.geronimo.runtime" version="1.1"/>
-            <facet id="org.apache.geronimo.facet" version="1.1"/>
-            <facet id="jst.web" version="2.2,2.3,2.4"/>
-            <facet id="jst.ejb" version="1.1,2.0,2.1"/>
-            <facet id="jst.ear" version="1.2,1.3,1.4"/>
-            <facet id="jst.connector" version="1.0,1.5"/>
-            <facet id="jst.appclient" version="1.2,1.3,1.4"/>
-            <facet id="jst.utility" version="1.0"/>
-        </supported>
+
         <supported>
             <runtime-component id="org.apache.geronimo.runtime" version="2.0"/>
-            <facet id="org.apache.geronimo.facet" version="1.1"/>
-            <facet id="jst.web" version="2.2,2.3,2.4,2.5"/>
-            <facet id="jst.ejb" version="1.1,2.0,2.1,3.0"/>
-            <facet id="jst.ear" version="1.2,1.3,1.4,5.0"/>
-            <facet id="jst.connector" version="1.0,1.5"/>
-            <facet id="jst.appclient" version="1.2,1.3,1.4,5.0"/>
-            <facet id="jst.utility" version="1.0"/>
+            <facet id="org.apache.geronimo.facet" version="1.2"/>
+            <facet id="jst.web"         version="2.2,2.3,2.4,2.5"/>
+            <facet id="jst.ejb"         version="1.1,2.0,2.1,3.0"/>
+            <facet id="jst.ear"         version="1.2,1.3,1.4,5.0"/>
+            <facet id="jst.connector"   version="1.0,1.5"/>
+            <facet id="jst.appclient"   version="1.2,1.3,1.4,5.0"/>
+            <facet id="jst.utility"     version="1.0"/>
         </supported>
+
         <supported>
             <runtime-component id="org.apache.geronimo.runtime" version="2.1"/>
-            <facet id="org.apache.geronimo.facet" version="1.1"/>
-            <facet id="jst.web" version="2.2,2.3,2.4,2.5"/>
-            <facet id="jst.ejb" version="1.1,2.0,2.1,3.0"/>
-            <facet id="jst.ear" version="1.2,1.3,1.4,5.0"/>
-            <facet id="jst.connector" version="1.0,1.5"/>
-            <facet id="jst.appclient" version="1.2,1.3,1.4,5.0"/>
-            <facet id="jst.utility" version="1.0"/>
+            <facet id="org.apache.geronimo.facet" version="1.2"/>
+            <facet id="jst.web"         version="2.2,2.3,2.4,2.5"/>
+            <facet id="jst.ejb"         version="1.1,2.0,2.1,3.0"/>
+            <facet id="jst.ear"         version="1.2,1.3,1.4,5.0"/>
+            <facet id="jst.connector"   version="1.0,1.5"/>
+            <facet id="jst.appclient"   version="1.2,1.3,1.4,5.0"/>
+            <facet id="jst.utility"     version="1.0"/>
         </supported>
     </extension>
     
@@ -114,10 +105,10 @@
     <!-- Geronimo runtime                                                                        -->
     <!--                                                                                         -->
     <!-- ======================================================================================= -->
-	<extension point="org.eclipse.jst.server.core.runtimeClasspathProviders">
-		<runtimeClasspathProvider id="org.apache.geronimo.runtimeClasspathProvider"
-			runtimeTypeIds="org.apache.geronimo.runtime.*"
-			class="org.apache.geronimo.st.core.GeronimoServerRuntimeTargetHandler"/>
+    <extension point="org.eclipse.jst.server.core.runtimeClasspathProviders">
+        <runtimeClasspathProvider id="org.apache.geronimo.runtimeClasspathProvider"
+            runtimeTypeIds="org.apache.geronimo.runtime.*"
+            class="org.apache.geronimo.st.core.GeronimoServerRuntimeTargetHandler"/>
     </extension>
     
     
@@ -157,4 +148,28 @@
         </operationExtension>
     </extension>
  
+ 	<extension
+       point="org.eclipse.hyades.trace.ui.launchConfigMechanismAssociator">
+       <association            
+           launchConfigID = "org.apache.geronimo.st.core.launchConfigurationType">
+   
+           <mechanism mechanismID = "org.eclipse.tptp.trace.ui.jvmpiMechanism"> 
+               <configuration
+                   launchDelegate = "org.eclipse.tptp.trace.ui.internal.launcher.deleg.application.PIAttachLauncherDelegate"
+                   configurationId = "org.eclipse.tptp.trace.ui.jvmpiConfiguration"
+                   associatedAgent = "org.eclipse.tptp.trace.ui.jvmpiAgent"        
+                   filter = "org.eclipse.tptp.platform.profile.server.core.internal.PICollectorFiltration">                
+               </configuration>            
+           </mechanism>        
+           
+           <mechanism mechanismID = "org.eclipse.tptp.trace.jvmti.jvmtiMechanism"> 
+               <configuration
+                   launchDelegate = "org.eclipse.tptp.platform.jvmti.client.internal.launcher.TIAttachLauncherDelegate"
+                   configurationId = "org.eclipse.tptp.trace.jvmti.tiConfiguration"
+                   associatedAgent = "org.eclipse.tptp.platform.jvmti.TIAgent"
+                   filter = "org.eclipse.tptp.platform.profile.server.core.internal.TICollectorFiltration">                            
+               </configuration>            
+           </mechanism>    
+       </association>
+   </extension>
 </plugin>

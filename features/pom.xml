@@ -16,25 +16,37 @@
   ~ limitations under the License.
   -->
 <!-- $Rev$ $Date$ -->
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>eclipse-features-parent</artifactId>
+    <version>2.1.7</version>
     <packaging>pom</packaging>
-    <name>${artifactId}</name>
+    <name>Geronimo Eclipse Plugin :: Features</name>
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
-        <version>2.1.0</version>
+        <version>2.1.7-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+
+    <build>
+         <pluginManagement>
+            <plugins>
+               <!-- skip deploy child artifacts in release process-->
+               <plugin>
+                   <artifactId>maven-deploy-plugin</artifactId>             
+                   <configuration>
+                     <skip>true</skip>
+                  </configuration>
+               </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
     <modules>
-        <module>org.apache.geronimo.feature</module>
-<!--    <module>org.apache.geronimo.v10.feature</module>    -->
-        <module>org.apache.geronimo.v11.feature</module>
-        <module>org.apache.geronimo.v20.feature</module>
         <module>org.apache.geronimo.v21.feature</module>
-        <module>org.apache.geronimo.installableruntime.jetty.feature</module>
-        <module>org.apache.geronimo.installableruntime.tomcat.feature</module>
     </modules>
+
+    
 </project>

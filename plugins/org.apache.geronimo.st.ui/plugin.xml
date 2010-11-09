@@ -21,9 +21,10 @@
 
 <plugin>
 
- 	<extension-point id="loader" name="Source Path Computer Mapping" schema="schema/loader.exsd"/>
- 	
- 	
+    <extension-point id="loader" name="Source Path Computer Mapping" schema="schema/loader.exsd"/>
+    <extension-point id="actionURLs" name="Action ID and URL" schema="schema/actionURLs.exsd"/>
+    
+    
     <!-- ======================================================================================= -->
     <!--                                                                                         -->
     <!-- Define the icon for the Geronimo <runtime-component-type> and the "Geronimo Deployment" -->
@@ -38,70 +39,79 @@
     </extension>
     
 
-    <!-- ======================================================================================= -->
-    <!--                                                                                         -->
-    <!-- Define the icon for the Geronimo runtime and server types                               -->
-    <!-- (defined in plugins\org.apache.geronimo.st.v*.core\plugin.xml)                          --> 
-    <!--                                                                                         -->
-    <!-- ======================================================================================= -->
+    <!-- 
+     |
+     | Define the icon for the Geronimo runtime and server types                               
+     | (defined in plugins\org.apache.geronimo.st.v*.core\plugin.xml)                          
+     |   
+     -->
     <extension point="org.eclipse.wst.server.ui.serverImages">
 
-    	<image id="org.apache.geronimo.runtime.image" 
-    		icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.runtime.10,
-            		 org.apache.geronimo.runtime.11,
-            		 org.apache.geronimo.runtime.20,
-            		 org.apache.geronimo.runtime.21"/>
+        <image id="org.apache.geronimo.runtime.image" 
+            icon="icons/obj16/littleG.gif"
+            typeIds="org.apache.geronimo.runtime.20,
+                     org.apache.geronimo.runtime.21"/>
 
         <image id="org.apache.geronimo.server.image" 
-        	icon="icons/obj16/littleG.gif"
-            typeIds="org.apache.geronimo.server.10,
-            		 org.apache.geronimo.server.11,
-            		 org.apache.geronimo.server.20,
-            		 org.apache.geronimo.server.21"/>
+            icon="icons/obj16/littleG.gif"
+            typeIds="org.apache.geronimo.server.20,
+                     org.apache.geronimo.server.21"/>
     </extension>
 
 
-    <!-- ======================================================================================= -->
-    <!--                                                                                         -->
-    <!-- Extend WTP wizardFragments to include the Geronimo runtime and server types             -->
-    <!-- (defined in plugins\org.apache.geronimo.st.v*.core\plugin.xml) when defining either a   --> 
-    <!-- new Geronimo runtime (e.g., via Window->Preferences->Server->Installed Runtimes->Add)   --> 
-    <!-- or a new Geronimo server (e.g., via File->New->Other->Server)                           -->
-    <!--                                                                                         -->
-    <!-- ======================================================================================= -->
+    <!-- 
+     |
+     | Extend WTP wizardFragments to include the Geronimo runtime and server types                
+     | (defined in plugins\org.apache.geronimo.st.v*.core\plugin.xml) when defining either a       
+     | new Geronimo runtime (e.g., via Window->Preferences->Server->Installed Runtimes->Add)       
+     | or a new Geronimo server (e.g., via File->New->Other->Server)                              
+     |   
+     -->
     <extension point="org.eclipse.wst.server.ui.wizardFragments">
         <fragment id="org.apache.geronimo.runtime.wizardFragment"
-            typeIds="org.apache.geronimo.runtime.10,
-            		 org.apache.geronimo.runtime.11,
-            		 org.apache.geronimo.runtime.20,
+            typeIds="org.apache.geronimo.runtime.20,
                      org.apache.geronimo.runtime.21"
             class="org.apache.geronimo.st.ui.internal.GeronimoRuntimeWizardFragment"/>
         <fragment id="org.apache.geronimo.server.wizardFragment"
-            typeIds="org.apache.geronimo.server.10,
-            		 org.apache.geronimo.server.11,
-            		 org.apache.geronimo.server.20,
+            typeIds="org.apache.geronimo.server.20,
                      org.apache.geronimo.server.21"
             class="org.apache.geronimo.st.ui.internal.GeronimoServerWizardFragment"/>
     </extension>
 
+    <extension point="org.eclipse.ui.popupMenus">
+        <objectContribution
+                adaptable="true"
+                id="org.apache.geronimo.ui.serveractions"
+                objectClass="org.eclipse.wst.server.core.IServer">
+            <enablement>
+                <test forcePluginActivation="true"
+                    property="org.eclipse.wst.server.ui.serverType"
+                    value="org.apache.geronimo.*" />
+            </enablement>
+            <action id="org.apache.geronimo.ui.launchSupport"
+                label="%PopupMenus.launchSupport" icon="icons/obj16/littleG.gif"
+                class="org.apache.geronimo.st.ui.actions.LaunchGeronimoSupportAction"
+                enablesFor="1">
+            </action>
+        </objectContribution>
+    </extension>
 
-	<extension point="org.eclipse.ui.popupMenus">
-		<objectContribution
-	      		adaptable="true"
-	      		id="org.apache.geronimo.ui.serveractions"
-	      		objectClass="org.eclipse.wst.server.core.IServer">
-	      	<enablement>
-	        	<test forcePluginActivation="true"
-	            	property="org.eclipse.wst.server.ui.serverType"
-	           		value="org.apache.geronimo.*" />
-	      	</enablement>
-	        <action id="org.apache.geronimo.ui.launchconsole"
-	        	label="%PopupMenus.launchconsole" icon="icons/obj16/littleG.gif"
-	            class="org.apache.geronimo.st.ui.actions.LaunchGeronimoConsoleAction"
-	           	enablesFor="1">
-	        </action>
-    	</objectContribution>
+    <extension point="org.eclipse.ui.popupMenus">
+        <objectContribution
+                adaptable="true"
+                id="org.apache.geronimo.ui.serveractions"
+                objectClass="org.eclipse.wst.server.core.IServer">
+            <enablement>
+                <test forcePluginActivation="true"
+                    property="org.eclipse.wst.server.ui.serverType"
+                    value="org.apache.geronimo.*" />
+            </enablement>
+            <action id="org.apache.geronimo.ui.launchconsole"
+                label="%PopupMenus.launchconsole" icon="icons/obj16/littleG.gif"
+                class="org.apache.geronimo.st.ui.actions.LaunchGeronimoConsoleAction"
+                enablesFor="1">
+            </action>
+        </objectContribution>
     </extension>
     
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
@@ -109,6 +119,14 @@
             insertionId="org.eclipse.wst.server.editor.overview.left"
             typeIds="org.apache.geronimo.server.*"
             class="org.apache.geronimo.st.ui.sections.ServerEditorSecuritySection">
+        </section>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.publishAdvanced" order="10"
+            insertionId="org.eclipse.wst.server.editor.overview.right"
+            typeIds="org.apache.geronimo.server.*"
+            class="org.apache.geronimo.st.ui.sections.ServerEditorPublishAdvancedSection">
         </section>
     </extension>
     
@@ -147,38 +165,67 @@
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.testenv" order="20"
             insertionId="org.eclipse.wst.server.editor.overview.left"
-            typeIds="org.apache.geronimo.server.11, 
-                     org.apache.geronimo.server.20,
-                     org.apache.geronimo.server.21"
+            typeIds="org.apache.geronimo.server.*"
             class="org.apache.geronimo.st.ui.sections.ServerEditorTestEnvSection">
         </section>
     </extension>
     
+    <!-- 
+     |
+     | Define the Web editor class for the various Geronimo-specific XML files
+     | (except for geronimo-application-client.xml)
+     |   
+     -->
     <extension point="org.eclipse.ui.editors">
         <editor class="org.apache.geronimo.st.ui.editors.SharedDeploymentPlanEditor"
             default="true" 
-            filenames="geronimo-web.xml,geronimo-application.xml,openejb-jar.xml,geronimo-ra.xml"
+            filenames="geronimo-web.xml,
+                       geronimo-application.xml,    
+                       openejb-jar.xml,
+                       geronimo-application-client.xml,
+                       geronimo-ra.xml"
             icon="icons/obj16/littleG.gif"
             id="org.apache.geronimo.ui.editors.WebEditor" 
             name="%deploymentPlanEditorName">
         </editor>
     </extension>
     
-  	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
-    	<launchConfigurationTypeImage
-      		id="org.apache.geronimo.st.ui.launchConfigurationTypeImage"
-      		configTypeID="org.apache.geronimo.st.core.launchConfigurationType"
-      		icon="icons/obj16/littleG.gif">
-    	</launchConfigurationTypeImage>
-  	</extension>
-  	
-  	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
-    	<launchConfigurationTabGroup
-      		id="org.apache.geronimo.st.ui.launchConfigurationTabGroup"
-      		type="org.apache.geronimo.st.core.launchConfigurationType"
-      		class="org.apache.geronimo.st.ui.internal.GeronimoLaunchConfigurationTabGroup">
-    	</launchConfigurationTabGroup>
-  	</extension>
+    
+    <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+        <launchConfigurationTypeImage
+            id="org.apache.geronimo.st.ui.launchConfigurationTypeImage"
+            configTypeID="org.apache.geronimo.st.core.launchConfigurationType"
+            icon="icons/obj16/littleG.gif">
+        </launchConfigurationTypeImage>
+    </extension>
+    
+    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+        <launchConfigurationTabGroup
+            id="org.apache.geronimo.st.ui.launchConfigurationTabGroup"
+            type="org.apache.geronimo.st.core.launchConfigurationType"
+            class="org.apache.geronimo.st.ui.internal.GeronimoLaunchConfigurationTabGroup">
+        </launchConfigurationTabGroup>
+    </extension>
+    
+    
+    <extension point="org.apache.geronimo.st.ui.actionURLs">
+        <server_prefix>org.apache.geronimo.</server_prefix>
+        <action_URL class="org.apache.geronimo.st.ui.actions.LaunchGeronimoSupportAction"
+                    URL="http://geronimo.apache.org/" />
+    </extension>
+   
+    <extension point="org.eclipse.ltk.core.refactoring.renameParticipants">    
+		<renameParticipant    
+			id="org.apache.geronimo.st.ui.refactoring.rename"    
+			name="Rename a project with renaming additional info in deployment plan"     
+			class="org.apache.geronimo.st.ui.refactoring.GeronimoProjectRenameParticipant">     
+			<enablement>
+				<with variable="element">
+					<instanceof value="org.eclipse.core.resources.IProject">
+					</instanceof>
+				</with> 
+			</enablement>        
+		</renameParticipant>    
+	</extension>
     
 </plugin>
- 

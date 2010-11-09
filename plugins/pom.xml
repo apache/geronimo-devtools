@@ -16,21 +16,23 @@
   ~ limitations under the License.
   -->
 <!-- $Rev$ $Date$ -->
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>eclipse-plugins-parent</artifactId>
+    <version>2.1.7</version>
     <packaging>pom</packaging>
-    <name>${artifactId}</name>
+    <name>Geronimo Eclipse Plugin :: Plugins</name>
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
-        <version>2.1.0</version>
+        <version>2.1.7-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <inherited>false</inherited>
                 <configuration>
@@ -73,6 +75,7 @@
                     </executions>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <configuration>
                         <archive>
@@ -81,6 +84,7 @@
                     </configuration>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-antrun-plugin</artifactId>
                     <executions>
                         <!-- workaround for bugzilla 147936 -->
@@ -89,8 +93,8 @@
                             <phase>process-sources</phase>
                             <configuration>
                                 <tasks>
-                                    <copy file="${basedir}/.classpath" todir="${project.build.directory}" overwrite="false" failonerror="false"/>
-                                    <copy file="${basedir}/.project" todir="${project.build.directory}" overwrite="false" failonerror="false"/>
+                                    <copy file="${basedir}/.classpath" todir="${project.build.directory}" overwrite="false" failonerror="false" />
+                                    <copy file="${basedir}/.project" todir="${project.build.directory}" overwrite="false" failonerror="false" />
                                 </tasks>
                             </configuration>
                             <goals>
@@ -102,8 +106,8 @@
                             <phase>compile</phase>
                             <configuration>
                                 <tasks>
-                                    <copy file="${project.build.directory}/.classpath" todir="${basedir}" overwrite="true" failonerror="false"/>
-                                    <copy file="${project.build.directory}/.project" todir="${basedir}" overwrite="true" failonerror="false"/>
+                                    <copy file="${project.build.directory}/.classpath" todir="${basedir}" overwrite="true" failonerror="false" />
+                                    <copy file="${project.build.directory}/.project" todir="${basedir}" overwrite="true" failonerror="false" />
                                 </tasks>
                             </configuration>
                             <goals>
@@ -114,6 +118,7 @@
                     </executions>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
                     <configuration>
                         <filesets>
@@ -126,27 +131,26 @@
                         </filesets>
                     </configuration>
                 </plugin>
+                <!-- skip deploy child artifacts in release process-->
+               <plugin>
+                   <artifactId>maven-deploy-plugin</artifactId>             
+                   <configuration>
+                     <skip>true</skip>
+                  </configuration>
+               </plugin>
             </plugins>
         </pluginManagement>
     </build>
     <modules>
+        <module>org.apache.geronimo.jee.v21.jaxbmodel</module>
         <module>org.apache.geronimo.st.core</module>
-<!--    <module>org.apache.geronimo.st.v1.core</module>     -->
-        <module>org.apache.geronimo.st.v11.core</module>
         <module>org.apache.geronimo.st.v20.core</module>
         <module>org.apache.geronimo.st.v21.core</module>
         <module>org.apache.geronimo.st.ui</module>
-<!--    <module>org.apache.geronimo.st.v1.ui</module>       -->
-        <module>org.apache.geronimo.st.v11.ui</module>
+        <module>org.apache.geronimo.st.schemas</module>
         <module>org.apache.geronimo.st.v20.ui</module>
         <module>org.apache.geronimo.st.v21.ui</module>
-<!--    <module>org.apache.geronimo.deployment.model</module>       -->
-<!--    <module>org.apache.geronimo.deployment.model.edit</module>  -->
-        <module>org.apache.geronimo.v11.deployment.model</module>
-        <module>org.apache.geronimo.v11.deployment.model.edit</module>
         <module>org.apache.geronimo.runtime.common</module>
-<!--    <module>org.apache.geronimo.runtime.v1</module>     -->
-        <module>org.apache.geronimo.runtime.v11</module>
         <module>org.apache.geronimo.runtime.v20</module>
         <module>org.apache.geronimo.runtime.v21</module>
     </modules>

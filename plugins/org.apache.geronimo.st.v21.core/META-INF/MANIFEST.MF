@@ -1,22 +1,25 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Geronimo v21 Server Tools Core Plug-in
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.apache.geronimo.st.v21.core;singleton:=true
-Bundle-Version: 2.1.0
+Bundle-Version: 2.1.7
 Bundle-Activator: org.apache.geronimo.st.v21.core.Activator
-Bundle-Vendor: Apache.org
+Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.jst.j2ee, 
+ org.apache.geronimo.runtime.v21,
+ org.apache.geronimo.st.core,
+ org.apache.geronimo.jee.v21.jaxbmodel,
+ org.eclipse.core.runtime,
  org.eclipse.wst.server.core,
  org.eclipse.debug.core,
  org.eclipse.wst.common.project.facet.core,
- org.apache.geronimo.runtime.v21,
- org.apache.geronimo.st.core,
  org.eclipse.jst.common.frameworks,
- org.eclipse.wst.common.modulecore,
- org.apache.geronimo.v11.deployment.model
-Eclipse-LazyStart: true
+ org.eclipse.wst.common.modulecore
+Bundle-ActivationPolicy: lazy
 Export-Package: 
  org.apache.geronimo.st.v21.core,
  org.apache.geronimo.st.v21.core.internal,
+ org.apache.geronimo.st.v21.core.jaxb,
  org.apache.geronimo.st.v21.core.operations
+Import-Package: junit.framework;version="3.8.2"

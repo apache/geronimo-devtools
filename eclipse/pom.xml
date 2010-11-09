@@ -15,18 +15,20 @@
   ~ limitations under the License.
   -->
 <!-- $Rev: 529767 $ $Date: 2007-04-17 17:21:24 -0400 (Tue, 17 Apr 2007) $ -->
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
                                                 
     <modelVersion>4.0.0</modelVersion>
+                                                
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>eclipse</artifactId>
+    <version>2.1.7</version>
     <packaging>pom</packaging>
-    <name>${artifactId}</name>
+    <name>Geronimo Eclipse Plugin :: Eclipse</name>
                                                 
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
-        <version>2.1.0</version>
+        <version>2.1.7-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
                                                 
@@ -41,9 +43,9 @@
                         <phase>validate</phase>
                         <configuration>
                             <tasks>
-                                <property name="LOCAL_M2_REPO" value="${settings.localRepository}"/>
+                                <property name="LOCAL_M2_REPO" value="${settings.localRepository}" />
                                 <ant antfile="${basedir}/build.xml">
-                                    <target name="${eclipsePlatformFamily}"></target>
+                                    <target name="${eclipsePlatformFamily}" />
                                 </ant>
                             </tasks>
                         </configuration>
@@ -54,6 +56,54 @@
                 </executions>
             </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+               <!-- skip deploy child artifacts in release process-->
+               <plugin>
+                   <artifactId>maven-deploy-plugin</artifactId>             
+                   <configuration>
+                     <skip>true</skip>
+                  </configuration>
+               </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
+                                                
+    <profiles>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <properties>
+                <eclipsePlatformFamily>win</eclipsePlatformFamily>
+            </properties>
+        </profile>
+        <profile>
+            <id>unix-x86</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                </os>
+            </activation>
+            <properties>
+                <eclipsePlatformFamily>linux</eclipsePlatformFamily>
+            </properties>
+        </profile>
+        <profile>
+            <id>mac</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+            </activation>
+            <properties>
+                <eclipsePlatformFamily>macos</eclipsePlatformFamily>
+            </properties>
+        </profile>
+    </profiles>
                                                 
 </project>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!-- @version $Rev$ $Date$ -->
+
+<project>
+                                                
+    <modelVersion>4.0.0</modelVersion>
+                                                
+    <groupId>org.apache.geronimo.devtools</groupId>
+    <artifactId>testsuite-eclipse</artifactId>
+    <packaging>pom</packaging>
+    <version>2.1.7</version>
+    <name>Geronimo Eclipse Plugin :: Testsuite :: Eclipse</name>
+                                                
+    <parent>
+        <groupId>org.apache.geronimo.devtools</groupId>
+        <artifactId>testsuite</artifactId>
+        <version>2.1.7</version>
+    </parent>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>create-launcher-eclipse</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <tasks>
+                                <property name="LOCAL_M2_REPO" value="${settings.localRepository}"/>
+                                <ant antfile="${basedir}/build.xml">
+                                    <target name="${eclipsePlatformFamily}"></target>
+                                </ant>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+                                                
+    <profiles>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <properties>
+                <eclipsePlatformFamily>win32</eclipsePlatformFamily>
+            </properties>
+        </profile>
+        <profile>
+            <id>unix-x86</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                    <arch>i386</arch>
+                </os>
+            </activation>
+            <properties>
+                <eclipsePlatformFamily>linux</eclipsePlatformFamily>
+            </properties>
+        </profile>
+        <profile>
+            <id>unix-x86_64</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                    <arch>amd64</arch>
+                </os>
+            </activation>
+            <properties>
+                <eclipsePlatformFamily>linux-x86_64</eclipsePlatformFamily>
+            </properties>
+        </profile>
+        <profile>
+            <id>mac</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+            </activation>
+            <properties>
+                <eclipsePlatformFamily>macos</eclipsePlatformFamily>
+            </properties>
+        </profile>
+    </profiles>
+                                                
+</project>

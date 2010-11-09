@@ -16,10 +16,11 @@
   ~ limitations under the License.
   -->
 
+<!-- @version $Rev$ $Date$ -->
 <feature
       id="org.apache.geronimo.v21.feature"
       label="Geronimo v2.1 Server Adapter"
-      version="2.1.0"
+      version="2.1.6"
       provider-name="%providerName"
       plugin="org.apache.geronimo.st.v21.core"
       image="bigG.gif">
@@ -28,11 +29,11 @@
       %description
     </description>
     
-    <copyright url="http://www.apache.org/licenses/LICENSE-2.0.txt">
+    <copyright url="license.html">
       %copyright
     </copyright>
     
-    <license url="http://www.apache.org/licenses/LICENSE-2.0.txt">
+    <license url="license.html">
       %license
     </license>
     
@@ -40,47 +41,91 @@
         <update label="Apache Geronimo Eclipse Update Site" url="http://www.apache.org/dist/geronimo/eclipse/updates/"/>
     </url>
     
-    <includes
-        id="org.apache.geronimo.v11.feature"
-        version="2.1.0"
-        name="Geronimo v1.1.x Server Adapter"/>
-        
     <requires>
-        <import feature="org.eclipse.jst" version="2.0.0" match="compatible"/>
+	<import feature="org.eclipse.jst.server_ui.feature" version="2.0.2.v200802150100-77-CT9yJXEkuiKVeQrclqTHQ3648"
+		match="greaterOrEqual"/>
+	<import feature="org.eclipse.jst.server_adapters.feature" version="2.0.2.v200802150100-787KE8iDUUEF6GwKwpHEQ"
+		match="greaterOrEqual"/>
+	<import feature="org.eclipse.jst.web_ui.feature" version="2.0.2.v200802150100-7B1DzCkuNa_RPevwkwB1iJ6z-0RH" 
+		match="greaterOrEqual"/>
+  	<import feature="org.eclipse.jst.enterprise_ui.feature" version="2.0.2.v200802150100-7b7_Es8EU6AXOV9QLJSees1SQoYQ"
+		match="greaterOrEqual"/>
     </requires>
+
     
     <plugin
+         id="org.apache.geronimo.st.core"
+         download-size="132"
+         install-size="132"
+         version="2.1.6"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.geronimo.st.ui"
+         download-size="164"
+         install-size="164"
+         version="2.1.6"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.geronimo.st.schemas"
+         download-size="72"
+         install-size="72"
+         version="2.1.6"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.geronimo.runtime.common"
+         download-size="1160"
+         install-size="1160"
+         version="2.1.6"/>
+        
+    <plugin
          id="org.apache.geronimo.st.v21.core"
-         download-size="0"
-         install-size="0"
-         version="2.1.0"
+         download-size="48"
+         install-size="48"
+         version="2.1.6"
          unpack="false"/>
     
     <plugin
          id="org.apache.geronimo.st.v21.ui"
-         download-size="0"
-         install-size="0"
-         version="2.1.0"
+         download-size="164"
+         install-size="164"
+         version="2.1.6"
          unpack="false"/>
 
     <plugin
          id="org.apache.geronimo.runtime.v21"
-         download-size="0"
-         install-size="0"
-         version="2.1.0"/>
+         download-size="1252"
+         install-size="1252"
+         version="2.1.6"/>
 
     <plugin
-         id="org.apache.geronimo.v11.deployment.model"
-         download-size="0"
-         install-size="0"
-         version="2.1.0"
-         unpack="false"/>
-    
-    <plugin
-         id="org.apache.geronimo.v11.deployment.model.edit"
-         download-size="0"
-         install-size="0"
-         version="2.1.0"
+         id="org.apache.geronimo.jee.v21.jaxbmodel"
+         download-size="140"
+         install-size="140"
+         version="2.1.6"
          unpack="false"/>
          
+    <plugin
+         id="org.apache.geronimo.st.v20.core"
+         download-size="20"
+         install-size="20"
+         version="2.1.6"
+         unpack="false"/>
+         
+    <plugin
+         id="org.apache.geronimo.st.v20.ui"
+         download-size="16"
+         install-size="16"
+         version="2.1.6"
+         unpack="false"/>
+         
+    <plugin
+         id="org.apache.geronimo.runtime.v20"
+         download-size="1052"
+         install-size="1052"
+         version="2.1.6"/>
+    
+    
 </feature>

@@ -16,26 +16,26 @@
   ~ limitations under the License.
   -->
 <!-- $Rev$ $Date$ -->
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
                         
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>geronimo-eclipse-plugin</artifactId>
     <packaging>pom</packaging>
-    <name>${artifactId}</name>
-    <version>2.1.0</version>
-                        
+    <name>Geronimo Eclipse Plugin</name>
+    <version>2.1.7-SNAPSHOT</version>
+
     <parent>
         <groupId>org.apache</groupId>
         <artifactId>apache</artifactId>
-        <version>4</version>
+        <version>6</version>
     </parent>
                         
     <description>Apache Geronimo Eclipse Plugin and WTP Server Adapter</description>
     <url>http://geronimo.apache.org/devtools</url>
                         
     <prerequisites>
-        <maven>2.0.4</maven>
+        <maven>2.2.1</maven>
     </prerequisites>
                         
     <issueManagement>
@@ -65,9 +65,9 @@
     </mailingLists>
                         
     <scm>
-        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</developerConnection>
-        <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</url>
+        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/branches/2.1.7</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/branches/2.1.7</developerConnection>
+        <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/branches/2.1.7</url>
     </scm>
                         
     <organization>
@@ -84,44 +84,163 @@
                         
     <properties>
         <eclipseInstall>${settings.localRepository}/eclipse</eclipseInstall>
-        <org.apache.geronimo.feature_version>2.1.0</org.apache.geronimo.feature_version>
-<!--    <org.apache.geronimo.v10.feature_version>2.1.0</org.apache.geronimo.v10.feature_version> -->
-        <org.apache.geronimo.v11.feature_version>2.1.0</org.apache.geronimo.v11.feature_version>
-        <org.apache.geronimo.v20.feature_version>2.1.0</org.apache.geronimo.v20.feature_version>
-        <org.apache.geronimo.v21.feature_version>2.1.0</org.apache.geronimo.v21.feature_version>
-        <org.apache.geronimo.installableruntime.tomcat.feature_version>2.1.0</org.apache.geronimo.installableruntime.tomcat.feature_version>
-        <org.apache.geronimo.installableruntime.jetty.feature_version>2.1.0</org.apache.geronimo.installableruntime.jetty.feature_version>
+        <org.apache.geronimo.v21.feature_version>2.1.7</org.apache.geronimo.v21.feature_version>
+        <keystoreAlias>devtools</keystoreAlias> 
+        <keystoreFile>keystore</keystoreFile> 
+        <keystoreDname>CN=http://geronimo.apache.org,OU=Geronimo,O=Apache,L=Geronimo,S=Apache,C=US</keystoreDname> 
+        <keystoreKeypass>devtools</keystoreKeypass> 
+        <keystoreStorepass>geronimo</keystoreStorepass> 
+        <keystoreValDays>3650</keystoreValDays>
     </properties>
                         
     <dependencyManagement>
         <dependencies>
+                        
             <dependency>
-                <groupId>com.thoughtworks.xstream</groupId>
-                <artifactId>xstream</artifactId>
-                <version>1.2.2</version>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>3.8.1</version>
+                <scope>compile</scope>
             </dependency>
+                        
             <dependency>
-                <groupId>xpp3</groupId>
-                <artifactId>xpp3</artifactId>
-                <version>1.1.3.3</version>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>2.0</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>jsr173_api</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
+                        
             <dependency>
-                <groupId>org.apache.xmlbeans</groupId>
-                <artifactId>xmlbeans</artifactId>
-                <version>2.3.0</version>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-xjc</artifactId>
+                <version>2.0.5</version>
+            </dependency>
+                        
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>2.0.5</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>jsr173_api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>activation</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+                        
+            <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-archiver</artifactId>
+                <version>1.0-alpha-7</version>
+            </dependency>
+                        
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.0.4</version>
+            </dependency>
+                        
+            <dependency>
+                <groupId>cglib</groupId>
+                <artifactId>cglib-nodep</artifactId>
+                <version>2.1_3</version>
+            </dependency>
+                        
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-activation_1.1_spec</artifactId>
+                <version>1.0.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-j2ee-deployment_1.1_spec</artifactId>
+                <version>1.0</version>
+            </dependency>
+                        
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
+                <version>1.0</version>
+            </dependency>
+                        
+            <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                <version>1.0.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>xmlunit</groupId>
+                <artifactId>xmlunit</artifactId>
+                <version>1.1</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.4.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>1.4.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>abbot</groupId>
+                <artifactId>abbot.swt</artifactId>
+                <version>0.1.0.20080305_1254</version>
+            </dependency>
+
+            <dependency>
+                <groupId>abbot</groupId>
+                <artifactId>abbot.swt.eclipse</artifactId>
+                <version>0.1.0.20080305_1254</version>
+            </dependency>
+             
+            <dependency>
+                <groupId>org.openqa.selenium.client-drivers</groupId>
+                <artifactId>selenium-java-client-driver</artifactId>
+                <version>1.0-beta-1</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.openqa.selenium.server</groupId>
+                <artifactId>selenium-server</artifactId>
+                <version>1.0-beta-1</version>
+            </dependency>
+             
+            <dependency>
+                <groupId>org.openqa.selenium.core</groupId>
+                <artifactId>selenium-core</artifactId>
+                <version>1.0-beta-1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
                         
     <build>
         <defaultGoal>install</defaultGoal>
-        <sourceDirectory>src/</sourceDirectory>
+        <sourceDirectory>src/main/</sourceDirectory>
+                        
         <pluginManagement>
             <plugins>
                 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.1</version>
                     <dependencies>
                         <dependency>
                             <groupId>oro</groupId>
@@ -144,28 +263,71 @@
                 <plugin>
                     <groupId>org.apache.geronimo.devtools</groupId>
                     <artifactId>maven-eclipsepde-plugin</artifactId>
-                    <version>1.0</version>
+                    <version>1.1</version>
                     <configuration>
                         <eclipseHome>${settings.localRepository}/eclipse/eclipse/</eclipseHome>
                     </configuration>
                 </plugin>
                 
                 <plugin>
-                    <groupId>org.apache.geronimo.devtools</groupId>
-                    <artifactId>maven-emf-plugin</artifactId>
-                    <version>1.0</version>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>2.2-beta-4</version>
+                </plugin>
+                
+                <plugin>
+                   <groupId>com.sun.tools.xjc.maven2</groupId>
+                   <artifactId>maven-jaxb-plugin</artifactId>
+                   <version>1.1</version>
                 </plugin>
                 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-assembly-plugin</artifactId>
-                    <version>2.2-beta-1</version>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                        <failIfNoTests>false</failIfNoTests>
+                    </configuration>
                 </plugin>
-                
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>buildnumber-maven-plugin</artifactId>
+                    <version>1.0-beta-1</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>keytool-maven-plugin</artifactId>
+                    <version>1.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                   <configuration>
+                        <useReleaseProfile>false</useReleaseProfile> 
+                        <allowTimestampedSnapshots>false</allowTimestampedSnapshots>
+                        <preparationGoals>clean install</preparationGoals>
+                        <goals>deploy</goals>
+                    </configuration>
+                </plugin>
+
+                <!-- skip javadoc generation during release:prepare, which is a built-in process from org.apache 6 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.5</version>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
+                
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <source>1.5</source>
@@ -173,16 +335,64 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
+                <version>2.2</version>
                 <configuration>
                     <filesets>
                         <fileset>
                             <directory>${pom.basedir}</directory>
                             <includes>
                                 <include>*.log</include>
+                                <include>keystore</include>
                             </includes>
                         </fileset>
                     </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <configuration>
+                    <format>{0,date,yyyyMMddHHmmss}</format>
+                    <items>
+                        <item>timestamp</item>
+                    </items>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>keytool-maven-plugin</artifactId>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>clean</goal>
+                            <goal>genkey</goal>
+                       </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <alias>${keystoreAlias}</alias>
+                    <keystore>${keystoreFile}</keystore>
+                    <dname>${keystoreDname}</dname>
+                    <keypass>${keystoreKeypass}</keypass>
+                    <storepass>${keystoreStorepass}</storepass>
+                    <validity>${keystoreValDays}</validity>
                 </configuration>
             </plugin>
         </plugins>
@@ -203,6 +413,7 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
+  
         <repository>
             <id>apache.incubator</id>
             <name>Apache Incubator Repository</name>
@@ -217,10 +428,61 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
+  
         <repository>
             <id>codehaus-snapshots</id>
             <name>Codehaus Snapshots Repository</name>
             <url>http://snapshots.repository.codehaus.org</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+  
+        <!--
+         |
+         | Added for jaxb-api, jaxb-impl, jaxb-xjc artifacts (and is the same repo used by the server)
+         |
+         -->
+        <repository>
+            <id>java.net</id>
+            <name>java.net Maven Repository</name>
+            <url>http://download.java.net/maven/1/</url>
+            <layout>legacy</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+
+        <!--
+         |
+         | Added for Selenium artifacts (and is the same repo used by the server)
+         |
+         -->
+        <repository>
+            <id>releases.openqa.org</id>
+            <name>Openqa Release Repository</name>
+            <url>http://archiva.openqa.org/repository/releases</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>snapshots.openqa.org</id>
+            <name>Openqa Snapshot Repository</name>
+            <url>http://archiva.openqa.org/repository/snapshots</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>true</enabled>
@@ -245,6 +507,7 @@
                 <enabled>true</enabled>
             </snapshots>
         </pluginRepository>
+                        
         <pluginRepository>
             <id>tlc</id>
             <name>TLC Repository</name>
@@ -256,50 +519,106 @@
                 <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
+                        
+        <!--
+         |
+         | Added for maven-jaxb-plugin artifact (and is the same repo used by the server)
+         |
+         -->
+        <pluginRepository>
+            <id>java.net</id>
+            <name>java.net Maven Repository</name>
+            <url>http://download.java.net/maven/1/</url>
+            <layout>legacy</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
     </pluginRepositories>
                         
     <profiles>
         <profile>
-            <id>windows</id>
+            <id>default</id>
             <activation>
-                <os>
-                    <family>windows</family>
-                </os>
+                <activeByDefault>true</activeByDefault>
             </activation>
-            <properties>
-                <eclipsePlatformFamily>win32</eclipsePlatformFamily>
-            </properties>
+            <modules>
+                <module>eclipse</module>
+                <module>plugins</module>
+                <module>features</module>
+                <module>assembly</module>
+            </modules>
         </profile>
+
         <profile>
-            <id>unix</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                </os>
-            </activation>
-            <properties>
-                <eclipsePlatformFamily>linux</eclipsePlatformFamily>
-            </properties>
+            <id>testsuite</id>
+            <modules>
+                <module>eclipse</module>
+                <module>plugins</module>
+                <module>features</module>
+                <module>assembly</module>
+                <module>testsuite</module>
+            </modules>
         </profile>
-        <profile>
-            <id>mac</id>
+
+     <!-- this profile is copied from genesis-default-flava and genesis 2.0  -->
+         <profile>
+            <id>apache-release</id>
             <activation>
-                <os>
-                    <family>mac</family>
-                </os>
+                <property>
+                   <name>apache-release</name>
+                </property>
             </activation>
-            <properties>
-                <eclipsePlatformFamily>macos</eclipsePlatformFamily>
-            </properties>
-        </profile>
+            <build>
+            <plugins>
+                <!-- waiting for release -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <inherited>false</inherited>
+                    <executions>
+                        <execution>
+                            <goals>
+                             <goal>single</goal>
+                            </goals>
+                            <phase>package</phase>
+                            <configuration>
+                                <runOnlyAtExecutionRoot>false</runOnlyAtExecutionRoot>
+                                <descriptorRefs>
+                                    <descriptorRef>source-release</descriptorRef>
+                                </descriptorRefs>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <!-- apache version not yet released -->
+                            <!--<groupId>org.apache</groupId>-->
+                            <groupId>org.apache.geronimo.genesis</groupId>
+                            <artifactId>apache-source-release-assembly-descriptor</artifactId>
+                            <!-- apache version not yet known -->
+                            <version>2.0</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.geronimo.genesis</groupId>
+                    <artifactId>genesis-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                              <goal>validate-release-configuration</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+            </build>
+         </profile>
     </profiles>
-                        
-    <modules>
-        <module>eclipse</module>
-        <module>emf</module>
-        <module>plugins</module>
-        <module>features</module>
-        <module>assembly</module>
-    </modules>
                         
 </project>

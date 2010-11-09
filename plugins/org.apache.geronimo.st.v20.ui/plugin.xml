@@ -21,20 +21,22 @@
 
 <plugin>
     <extension point="org.apache.geronimo.st.ui.loader">
-    	<loader class="org.apache.geronimo.st.v20.ui.editors.GeronimoFormContentLoader" version="1.1"/>
+    	<loader class="org.apache.geronimo.st.v21.ui.editors.GeronimoFormContentLoader" version="1.1"/>
     </extension>
     
     <extension point="org.apache.geronimo.st.ui.loader">
-    	<loader class="org.apache.geronimo.st.v20.ui.editors.GeronimoFormContentLoader" version="1.2"/>
-    </extension>
-    
-    <extension point="org.apache.geronimo.st.ui.loader">
- 	  	<loader class="org.apache.geronimo.st.v20.ui.editors.GeronimoFormContentLoader" version="2.0"/>
+ 	  	<loader class="org.apache.geronimo.st.v21.ui.editors.GeronimoFormContentLoader" version="2.0"/>
     </extension>
 
+    <!-- 
+     |
+     | Map the action defined for the "Geronimo Deployment" project-facet to a specific class
+     |
+     -->
     <extension point="org.eclipse.wst.common.project.facet.ui.wizardPages">
-  		<wizard-pages action="geronimo.plan.install">
-    		<page class="org.apache.geronimo.st.v11.ui.wizards.FacetInstallPage"/>
+  		<wizard-pages action="geronimo.plan.install.v20">
+    		<page class="org.apache.geronimo.st.v21.ui.wizards.FacetInstallPage"/>
   		</wizard-pages>
 	</extension>  
+
 </plugin>

@@ -15,7 +15,7 @@
   ~ limitations under the License.
   -->
 <!-- $Rev$ $Date$ -->
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.apache.geronimo.runtime.v20</artifactId>
     <packaging>jar</packaging>
@@ -23,14 +23,21 @@
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>eclipse-plugins-parent</artifactId>
-        <version>2.1.0</version>
+        <version>2.1.7</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <properties>
-        <geronimoVersion>2.0.1</geronimoVersion>
+        <geronimoVersion>2.0.2</geronimoVersion>
     </properties>
     <build>
         <resources>
+            <resource>
+                <directory>..</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>about.html</include>
+                </includes>
+            </resource>
             <resource>
                 <directory>.</directory>
                 <includes>
@@ -44,12 +51,35 @@
                     <include>*.jar</include>
                 </includes>
             </resource>
+            <!-- The Geronimo covention puts license and notice for artifacts shipped in this jar 
+                 in the jar's meta-inf directory -->
             <resource>
                 <targetPath>META-INF</targetPath>
                 <directory>.</directory>
                 <includes>
-                    <include>LICENSE</include>
-                    <include>NOTICE</include>
+                    <include>LICENSE.txt</include>
+                    <include>NOTICE.txt</include>
+                </includes>
+            </resource>
+            <!-- GERONIMODEVTOOLS-406 Display license and notice in Eclipse Update Manager 
+                 See also http://www.eclipse.org/legal/guidetolegaldoc.php
+                 about.html references about_files to show licenses and notices to the user
+                 at install time using Eclipse Update Manager, and after install.
+              -->
+            <resource>
+                <targetPath>about_files</targetPath>
+                <directory>.</directory>
+                <includes>
+                    <include>LICENSE.txt</include>
+                    <include>NOTICE.txt</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>about_files</targetPath>
+                <directory>../..</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>PLUGIN_RELEASE-NOTES-${pom.version}.txt</include>
                 </includes>
             </resource>
         </resources>
@@ -95,46 +125,6 @@
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.modules</groupId>
-                                    <artifactId>geronimo-service-builder</artifactId>
-                                    <version>${geronimoVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.apache.geronimo.modules</groupId>
-                                    <artifactId>geronimo-connector-builder</artifactId>
-                                    <version>${geronimoVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.apache.geronimo.modules</groupId>
-                                    <artifactId>geronimo-web-2.5-builder</artifactId>
-                                    <version>${geronimoVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.apache.geronimo.schema</groupId>
-                                    <artifactId>geronimo-schema-jee_5</artifactId>
-                                    <version>1.1</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.apache.geronimo.modules</groupId>
-                                    <artifactId>geronimo-naming-builder</artifactId>
-                                    <version>${geronimoVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.apache.geronimo.modules</groupId>
-                                    <artifactId>geronimo-j2ee-builder</artifactId>
-                                    <version>${geronimoVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.apache.geronimo.modules</groupId>
-                                    <artifactId>geronimo-openejb-builder</artifactId>
-                                    <version>${geronimoVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.apache.geronimo.modules</groupId>
-                                    <artifactId>geronimo-security-builder</artifactId>
-                                    <version>${geronimoVersion}</version>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.apache.geronimo.modules</groupId>
                                     <artifactId>geronimo-system</artifactId>
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
@@ -151,7 +141,6 @@
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.specs</groupId>
                                     <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
-                                    <version>1.0</version>
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>lib</outputDirectory>
@@ -180,7 +169,21 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                  <execution>
+                    <goals>
+                      <goal>sign</goal>
+                    </goals>
+                  </execution>
+                </executions>
+                <configuration>
+                  <keystore>../../${keystoreFile}</keystore>
+                  <alias>${keystoreAlias}</alias>
+                  <storepass>${keystoreStorepass}</storepass>
+                  <keypass>${keystoreKeypass}</keypass>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
@@ -234,46 +237,6 @@
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.modules</groupId>
-            <artifactId>geronimo-service-builder</artifactId>
-            <version>${geronimoVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.modules</groupId>
-            <artifactId>geronimo-connector-builder</artifactId>
-            <version>${geronimoVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.modules</groupId>
-            <artifactId>geronimo-web-2.5-builder</artifactId>
-            <version>${geronimoVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.schema</groupId>
-            <artifactId>geronimo-schema-jee_5</artifactId>
-            <version>1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.modules</groupId>
-            <artifactId>geronimo-naming-builder</artifactId>
-            <version>${geronimoVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.modules</groupId>
-            <artifactId>geronimo-j2ee-builder</artifactId>
-            <version>${geronimoVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.modules</groupId>
-            <artifactId>geronimo-openejb-builder</artifactId>
-            <version>${geronimoVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.modules</groupId>
-            <artifactId>geronimo-security-builder</artifactId>
-            <version>${geronimoVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.modules</groupId>
             <artifactId>geronimo-system</artifactId>
             <version>${geronimoVersion}</version>
         </dependency>
@@ -290,7 +253,6 @@
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
-            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>

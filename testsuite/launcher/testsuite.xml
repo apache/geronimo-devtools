@@ -1,0 +1,69 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!-- @version $Rev$ $Date$ -->
+
+<project name="GEP Automated Testsuite" basedir="." >
+
+    <property file="testsuite.properties" />
+    <property name="eclipse-home" value="${basedir}/eclipse/eclipse" />
+    <property name="results" value="${basedir}/results" />
+    <property name="junit-report-output" value="${results}/junit" />
+
+    <target name="init">
+        <mkdir dir="${results}/xml" />
+        <mkdir dir="${results}/html" />
+        <mkdir dir="${junit-report-output}" />
+    </target>
+
+    <macrodef name="runTests">
+        <attribute name="testPlugin" />
+        <sequential>
+            <property name="test.target" value="junit" />
+            <property name="report" value="@{testPlugin}" />
+            <antcall target="${test.target}">
+                <param name="testPlugin" value="${@{testPlugin}}" />
+                <param name="output-file" value="@{testPlugin}.xml" />
+            </antcall>
+        </sequential>
+    </macrodef>
+
+    <target name="junit">
+        <ant antfile="${eclipse-home}/plugins/${testPlugin}/test.xml" dir="${eclipse-home}" />
+        <antcall target="genResults" />
+    </target>
+
+    <target name="genResults">
+        <copy file="${eclipse-home}/${report}.xml" tofile="${results}/xml/${report}.xml" failonerror="false" />
+        <style style="${eclipse-home}/plugins/org.eclipse.test/JUNIT.XSL" basedir="${results}/xml" destdir="${results}/html" />
+    </target>
+
+    <target name="testsuite.v21">
+        <runTests testPlugin="org.apache.geronimo.testsuite.v21"/>
+    </target>
+
+    <target name="testsuite.v20">
+        <runTests testPlugin="org.apache.geronimo.testsuite.v20"/>
+    </target>
+
+    <target name="all">
+        <antcall target="testsuite.v21" />
+        <antcall target="testsuite.v20" />
+    </target>
+
+</project>
+

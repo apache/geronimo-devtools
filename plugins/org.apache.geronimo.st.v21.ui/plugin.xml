@@ -20,34 +20,36 @@
 <!-- $Rev: 570837 $ $Date: 2007-08-29 11:25:39 -0400 (Wed, 29 Aug 2007) $ -->
 
 <plugin>
-    <extension point="org.apache.geronimo.st.ui.loader">
-    	<loader class="org.apache.geronimo.st.v21.ui.editors.GeronimoFormContentLoader" version="1.1"/>
-    </extension>
-    
-    <extension point="org.apache.geronimo.st.ui.loader">
-    	<loader class="org.apache.geronimo.st.v21.ui.editors.GeronimoFormContentLoader" version="1.2"/>
-    </extension>
-    
-    <extension point="org.apache.geronimo.st.ui.loader">
- 	  	<loader class="org.apache.geronimo.st.v21.ui.editors.GeronimoFormContentLoader" version="2.0"/>
-    </extension>
 
     <extension point="org.apache.geronimo.st.ui.loader">
- 	  	<loader class="org.apache.geronimo.st.v21.ui.editors.GeronimoFormContentLoader" version="2.1"/>
+           <loader class="org.apache.geronimo.st.v21.ui.editors.GeronimoFormContentLoader" version="2.1"/>
     </extension>
 
-
-    <!-- ======================================================================================= -->
-    <!--                                                                                         -->
-    <!-- Map the <runtime-component> (defined in org.apache.geronimo.st.core\plugin.xml) to a    -->
-    <!-- specific version of the "Geronimo Deployment" <project-facet>. Note that the 1.1        -->
-    <!-- version is the only supported <project-facet-version> for the 2.1 Geronimo server.      -->
-    <!--                                                                                         -->
-    <!-- ======================================================================================= -->
+    <!-- 
+     |
+     | Map the action defined for the "Geronimo Deployment" project-facet to a specific class
+     |
+     -->
     <extension point="org.eclipse.wst.common.project.facet.ui.wizardPages">
-  		<wizard-pages action="geronimo.plan.install">
-    		<page class="org.apache.geronimo.st.v11.ui.wizards.FacetInstallPage"/>
-  		</wizard-pages>
-	</extension>  
+        <wizard-pages action="geronimo.plan.install.v21">
+            <page class="org.apache.geronimo.st.v21.ui.wizards.FacetInstallPage"/>
+        </wizard-pages>
+    </extension>
+
+    <extension point="org.eclipse.wst.server.ui.editorPages">
+        <page id="org.eclipse.wst.server.editor.plugins" order="10"
+              name="%serverEditorPluginPage"
+              typeIds="org.apache.geronimo.server.*"
+              insertionIds="org.eclipse.wst.server.editor.plugins"
+              class="org.apache.geronimo.st.v21.ui.pages.ServerPluginPage"/>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.plugins" order="10"
+            insertionId="org.eclipse.wst.server.editor.plugins"
+            typeIds="org.apache.geronimo.server.*"
+            class="org.apache.geronimo.st.v21.ui.sections.ServerPluginSection">
+        </section>
+    </extension>
 
 </plugin>

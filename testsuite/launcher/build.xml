@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!--
+ |  
+ | Ant script to start Eclipse via the Equinox launcher
+ |                                                                                             
+ |                                                                                             
+ | @version $Rev$ $Date$                                                                                            
+ |                                                                                             
+ -->
+<project name="GEP Automated Testsuite Launcher">
+
+    <!--
+     |  
+     | Copy and rename the eqiunox launcher jar, 
+     | Copy and rename the org.eclipse.test folder
+     |                                                                                             
+     -->
+    <target name="init">
+        <property name="eclipse-home" value="eclipse"/>
+        <copy tofile="${eclipse-home}/eclipse/plugins/org.eclipse.equinox.launcher.jar">
+            <fileset dir="${eclipse-home}/eclipse/plugins"
+              includes="**/org.eclipse.equinox.launcher_*.jar"/>
+        </copy>
+        <mkdir dir="${eclipse-home}/eclipse/plugins/org.eclipse.test"/>
+        <copy todir="${eclipse-home}/eclipse/plugins/org.eclipse.test">
+            <fileset dir="${eclipse-home}/eclipse/plugins/org.eclipse.test_3.2.0"/>
+        </copy>
+    </target>
+
+
+    <!--
+     |  
+     | Start Eclipse via the Equinox launcher (Windows)
+     |                                                                                             
+     -->
+    <target name="win32" depends="init" description="Start Equinox launcher on Windows">
+        <java classname="org.eclipse.equinox.launcher.Main" 
+              failonerror="true"
+              fork="true">
+            <classpath>
+                <pathelement path="${eclipse-home}/eclipse/plugins/org.eclipse.equinox.launcher.jar"/>
+            </classpath>
+            <arg line="-data workspace" />
+            <arg line="-application org.eclipse.ant.core.antRunner"/>
+            <arg line="-file testsuite.xml"/>
+            <arg value="all"/>
+            <arg value="-Dos=win32"/>
+            <arg value="-Dws=win32"/>
+            <arg value="-Darch=x86"/>
+        </java>
+    </target>                                         
+
+    <!--
+     |  
+     | Start Eclipse via the Equinox launcher (Linux)
+     |                                                                                             
+     -->
+    <target name="linux" depends="init" description="Start Equinox launcher on Linux">
+        <java classname="org.eclipse.equinox.launcher.Main" 
+              failonerror="true"
+              fork="true">
+            <classpath>
+                <pathelement path="${eclipse-home}/eclipse/plugins/org.eclipse.equinox.launcher.jar"/>
+            </classpath>
+            <arg line="-data workspace" />
+            <arg line="-application org.eclipse.ant.core.antRunner"/>
+            <arg line="-file testsuite.xml"/>
+            <arg value="all"/>
+            <arg value="-Dos=linux"/>
+            <arg value="-Dws=gtk"/>
+            <arg value="-Darch=x86"/>
+        </java>
+    </target>
+
+    <!--
+     |  
+     | Start Eclipse via the Equinox launcher (Mac)
+     |                                                                                             
+     -->
+    <target name="macos" depends="init" description="Start Equinox launcher on Mac">
+        <java classname="org.eclipse.equinox.launcher.Main" 
+              failonerror="true"
+              fork="true">
+            <classpath>
+                <pathelement path="${eclipse-home}/eclipse/plugins/org.eclipse.equinox.launcher.jar"/>
+            </classpath>
+            <arg line="-data workspace" />
+            <arg line="-application org.eclipse.ant.core.antRunner"/>
+            <arg line="-file testsuite.xml"/>
+            <arg value="all"/>
+            <arg value="-Dos=macosx"/>
+            <arg value="-Dws=carbon"/>
+            <arg value="-Darch=x86"/>
+        </java>
+    </target>
+
+</project>
+

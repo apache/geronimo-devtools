@@ -14,17 +14,17 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<!-- $Rev: 609739 $ $Date: 2008-01-07 13:54:14 -0500 (Mon, 07 Jan 2008) $ -->
-<project>
+<!-- $Rev$ $Date$ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.apache.geronimo.v21.feature</artifactId>
     <packaging>jar</packaging>
-    <version>${org.apache.geronimo.v21.feature_version}</version>
+    <version>2.1.7</version>
     <name>${artifactId}</name>
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>eclipse-features-parent</artifactId>
-        <version>2.1.0</version>
+        <version>2.1.7</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <build>
@@ -35,14 +35,7 @@
                 <includes>
                     <include>feature.xml</include>
                     <include>feature.properties</include>
-                </includes>
-            </resource>
-            <resource>
-                <targetPath>META-INF</targetPath>
-                <directory>..</directory>
-                <includes>
-                    <include>LICENSE</include>
-                    <include>NOTICE</include>
+                    <include>license.html</include>
                 </includes>
             </resource>
             <resource>
@@ -51,6 +44,72 @@
                     <include>bigG.gif</include>
                 </includes>
             </resource>
+            <!-- The Geronimo covention puts license and notice for artifacts shipped in this jar 
+                 in the jar's meta-inf directory -->
+            <resource>
+                <targetPath>META-INF</targetPath>
+                <directory>.</directory>
+                <includes>
+                    <include>LICENSE.txt</include>
+                    <include>NOTICE.txt</include>
+                </includes>
+            </resource>
+            <!-- GERONIMODEVTOOLS-406 Display license and notice in Eclipse Update Manager 
+                 See also http://www.eclipse.org/legal/guidetolegaldoc.php
+                 This is the place/mechanism for user to see licenses associated with
+                 all plugins in the feature.  The plugin with all the unique content
+                 is the runtime plugin, so use its licenses and notices to display to user.
+              -->
+            <resource>
+                <targetPath>about_files</targetPath>
+                <directory>../..</directory>
+                <includes>
+                    <include>LICENSE.txt</include>
+                    <include>NOTICE.txt</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>about_files</targetPath>
+                <directory>../..</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>PLUGIN_RELEASE-NOTES-${pom.version}.txt</include>
+                </includes>
+            </resource>
         </resources>
+
+	    <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${pom.basedir}</directory>
+                            <includes>
+                                <include>bin</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                  <execution>
+                    <goals>
+                      <goal>sign</goal>
+                    </goals>
+                  </execution>
+                </executions>
+                <configuration>
+                  <keystore>../../${keystoreFile}</keystore>
+                  <alias>${keystoreAlias}</alias>
+                  <storepass>${keystoreStorepass}</storepass>
+                  <keypass>${keystoreKeypass}</keypass>
+                </configuration>
+            </plugin>
+        </plugins>
+
     </build>
 </project>

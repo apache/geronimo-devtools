@@ -22,11 +22,11 @@
 <plugin>
 
 
-    <!-- ======================================================================================= -->
-    <!--                                                                                         -->
-    <!-- Extend WTP runtimeTypes to include the new Geronimo runtime type                        -->
-    <!--                                                                                         -->
-    <!-- ======================================================================================= -->
+    <!-- 
+     | 
+     | Extend WTP runtimeTypes to include the 2.1 version of the "Geronimo Runtime Type"
+     | 
+     -->
     <extension point="org.eclipse.wst.server.core.runtimeTypes">
         <runtimeType id="org.apache.geronimo.runtime.21" version="2.1"
             name="%runtimeTypeName"
@@ -38,6 +38,7 @@
             <moduleType types="jst.connector" versions="1.0, 1.5"/>
             <moduleType types="jst.ear"       versions="1.2, 1.3, 1.4, 5.0"/>
             <moduleType types="jst.utility"   versions="1.0"/>
+	  		<moduleType types="jst.appclient" versions="1.2, 1.3, 1.4, 5.0"/>
         </runtimeType>
     </extension>
     
@@ -70,28 +71,6 @@
     
     <!-- ======================================================================================= -->
     <!--                                                                                         -->
-    <!-- Extend WTP installableRuntimes so that the new Geronimo server or runtime type          -->
-    <!-- can be discovered via the GeronimoRuntimeWizardFragment extension                       -->
-    <!--                                                                                         -->
-    <!-- ======================================================================================= -->
-    <extension point="org.eclipse.wst.server.core.installableRuntimes">
-        <installableRuntime id="org.apache.geronimo.runtime.tomcat.21"
-            featureVersion="2.1.0"
-            featureId="org.apache.geronimo.installableruntime.tomcat.feature"
-            featureSite="http://people.apache.org/~mcconne/releases/2.1.0/RC1/staging_site/"
-            path="geronimo-tomcat6-javaee5-2.1.0.zip">
-        </installableRuntime>
-        <installableRuntime id="org.apache.geronimo.runtime.jetty.21"
-            featureVersion="2.1.0"
-            featureId="org.apache.geronimo.installableruntime.jetty.feature"
-            featureSite="http://people.apache.org/~mcconne/releases/2.1.0/RC1/staging_site/"
-            path="geronimo-jetty6-javaee5-2.1.0.zip">
-        </installableRuntime>
-    </extension>
-    
-
-    <!-- ======================================================================================= -->
-    <!--                                                                                         -->
     <!-- Map the runtime-component (defined in plugins\org.apache.geronimo.st.core\plugin.xml)   -->
     <!-- to the new Geronimo runtime type (defined above)                                        -->
     <!--                                                                                         -->
@@ -103,16 +82,16 @@
     </extension>
     
 
-    <!-- ======================================================================================= -->
-    <!--                                                                                         -->
-    <!-- Declare the 2.1 version of the "Geronimo Deployment" <project-facet> and the <action>   -->
-    <!-- that the user can perform on the facet (i.e., install)                                  -->
-    <!--                                                                                         -->
-    <!-- ======================================================================================= -->
     <!-- 
+     | 
+     | Declare the 1.2 version of the "Geronimo Deployment" project-facet and the action
+     | that the user can perform on the facet (i.e., install). Note that the id associated 
+     | action must be unique across all plugins. 
+     | 
+     -->
     <extension point="org.eclipse.wst.common.project.facet.core.facets">
-        <project-facet-version facet="org.apache.geronimo.facet" version="2.1">
-            <action type="install" id="geronimo.plan.install">
+        <project-facet-version facet="org.apache.geronimo.facet" version="1.2">
+            <action type="install" id="geronimo.plan.install.v21">
                 <delegate class="org.apache.geronimo.st.v21.core.operations.GeronimoV21FacetInstallDelegate"/>
                 <config-factory class="org.apache.geronimo.st.v21.core.DeploymentPlanInstallConfig$Factory"/>
             </action>
@@ -126,6 +105,7 @@
                     <requires facet="jst.appclient" version="1.2"/>
                     <requires facet="jst.appclient" version="1.3"/>
                     <requires facet="jst.appclient" version="1.4"/>
+                    <requires facet="jst.appclient" version="5.0"/>
                     <requires facet="jst.connector" version="1.0"/>
                     <requires facet="jst.connector" version="1.5"/>
                     <requires facet="jst.ejb" version="1.1"/>
@@ -141,22 +121,20 @@
             </constraint>
         </project-facet-version>
     </extension>
-    -->
     
 
-    <!-- ======================================================================================= -->
-    <!--                                                                                         -->
-    <!-- Map the <runtime-component> (defined in org.apache.geronimo.st.core\plugin.xml) to a    -->
-    <!-- specific version of the "Geronimo Deployment" <project-facet>. Note that the 1.1        -->
-    <!-- version is the only supported <project-facet-version> for the 2.1 Geronimo server.      -->
-    <!--                                                                                         -->
-    <!-- ======================================================================================= -->
+    <!-- 
+     |
+     | Map the <runtime-component> (defined in org.apache.geronimo.st.core\plugin.xml) 
+     | to a specific version of the "Geronimo Deployment" <project-facet>
+     |
+     -->
     <extension point="org.eclipse.wst.common.project.facet.core.defaultFacets"
         id="org.apache.geronimo.defaultFacets"
         name="Geronimo Default Facets">
         <default-facets>
             <runtime-component id="org.apache.geronimo.runtime" version="2.1"/>
-            <facet id="org.apache.geronimo.facet" version="1.1"/>
+            <facet id="org.apache.geronimo.facet" version="1.2"/>
         </default-facets>
     </extension>
 

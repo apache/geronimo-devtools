@@ -1,0 +1,71 @@
+Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
+
+
+Helpful URLs
+------------
+Geronimo Devtools:                          http://geronimo.apache.org/development-tools.html
+Geronimo Eclipse Update Site:               http://www.apache.org/dist/geronimo/eclipse/updates
+Bug Tracking:                               http://issues.apache.org/jira/browse/GERONIMODEVTOOLS
+Quick start - fast and easy development:    http://cwiki.apache.org/GMOxDOC21/quick-start-fast-and-easy-development.html
+5-minute Tutorial using GEP:                http://cwiki.apache.org/GMOxDOC21/5-minute-tutorial-on-enterprise-application-development-with-eclipse-and-geronimo.html
+
+
+System Requirements
+-------------------
+1. Java J2SE 1.5.0 or greater, and a platform that supports it
+
+2. Eclipse IDE for Java EE Developers (Galileo or Helios), which is platform-specific
+
+   -- Get Eclipse from http://www.eclipse.org/downloads/
+
+3. Geronimo server (2.0.x or 2.1.x)
+
+   -- Get a Geronimo server from http://geronimo.apache.org/downloads.html
+
+
+
+Notes
+-----
+You will likely need to increase the default setting for maximum PermGen size
+for your Eclipse installation (especially for Sun's JDK 1.5.0_x on the Windows
+platform) to prevent "java.lang.OutOfMemoryError: PermGen" errors. From the
+command line you can use:
+
+        eclipse -vmargs -Xms128m -Xmx512m -XX:MaxPermSize=128m
+
+Or you can edit your eclipse.ini file. An example is shown below but remember
+that each argument has to be on seperate lines:
+
+        -vmargs
+        -Xms128m
+        -Xmx512m
+        -XX:MaxPermSize=128m
+
+
+
+Geronimo Eclipse Plugin Version ${pom.version} Enhancements
+--------------------------------------------------
+
+1. Support Geronimo Server 2.1.6
+
+2. Support Eclipse Helios
+
+
+Installation Instructions
+-------------------------
+
+See http://cwiki.apache.org/GMOxDOC21/how-to-install-geronimo-eclipse-plugin-v214.html
+
+Bug Fixes and New Features
+--------------------------
+
+GERONIMODEVTOOLS-646	Upgrade to eclipse Helios
+GERONIMODEVTOOLS-648	Source release assembly contains temporary files generated in build process
+GERONIMODEVTOOLS-655	Update version number to 2.1.6 for 21 branch
+GERONIMODEVTOOLS-654	The error log view will always show when publishing projects.
+
+
+
+Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
+
+@version $Rev$ $Date$
