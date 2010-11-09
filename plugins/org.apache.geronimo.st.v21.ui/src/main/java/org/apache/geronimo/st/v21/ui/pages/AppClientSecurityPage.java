@@ -17,8 +17,8 @@
 package org.apache.geronimo.st.v21.ui.pages;
 
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
-import org.apache.geronimo.st.v21.core.GeronimoServerInfo;
+import org.apache.geronimo.st.v21.ui.pages.AbstractGeronimoFormPage;
+import org.apache.geronimo.st.v21.core.GeronimoServerInfoManager;
 import org.apache.geronimo.st.v21.ui.sections.AppClientSecuritySection;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.ui.forms.IManagedForm;
@@ -64,7 +64,7 @@ public class AppClientSecurityPage extends AbstractGeronimoFormPage {
 
     @Override
     protected void triggerGeronimoServerInfoUpdate() {
-        GeronimoServerInfo.getInstance().updateInfo();
+        GeronimoServerInfoManager.getProvider(getRuntimeVersion()).updateInfo();
     }
 
 }

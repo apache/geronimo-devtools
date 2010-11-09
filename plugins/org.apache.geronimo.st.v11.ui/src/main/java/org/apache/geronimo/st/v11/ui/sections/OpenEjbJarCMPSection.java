@@ -21,9 +21,9 @@ import javax.xml.bind.JAXBElement;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.sections.AbstractSectionPart;
-import org.apache.geronimo.xml.ns.naming_1.ObjectFactory;
-import org.apache.geronimo.xml.ns.naming_1.PatternType;
-import org.apache.geronimo.xml.ns.naming_1.ResourceLocatorType;
+import org.apache.geronimo.j2ee.naming.ObjectFactory;
+import org.apache.geronimo.j2ee.naming.PatternType;
+import org.apache.geronimo.j2ee.naming.ResourceLocatorType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-import org.openejb.xml.ns.openejb_jar_2.OpenejbJarType;
+import org.apache.geronimo.j2ee.openejb_jar.OpenejbJarType;
 
 /**
  * @version $Rev: 700249 $ $Date: 2008-09-30 04:50:12 +0800 (Tue, 30 Sep 2008) $

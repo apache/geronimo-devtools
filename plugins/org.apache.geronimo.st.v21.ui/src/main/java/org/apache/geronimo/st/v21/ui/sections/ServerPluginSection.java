@@ -17,7 +17,7 @@
 package org.apache.geronimo.st.v21.ui.sections;
 
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.ui.sections.AbstractServerEditorSection;
+import org.apache.geronimo.st.v21.ui.sections.AbstractServerEditorSection;
 import org.apache.geronimo.st.v21.core.operations.GeronimoServerPluginManager;
 import org.apache.geronimo.st.v21.ui.wizards.ServerCustomAssemblyWizard;
 import org.apache.geronimo.st.v21.ui.wizards.ServerPluginManagerDialog;

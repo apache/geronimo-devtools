@@ -33,9 +33,9 @@ import org.apache.geronimo.kernel.config.Configuration;
 import org.apache.geronimo.kernel.config.InvalidConfigException;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
-import org.apache.geronimo.st.core.Activator;
-import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
-import org.apache.geronimo.st.core.internal.DependencyHelper;
+import org.apache.geronimo.st.v21.core.Activator;
+import org.apache.geronimo.st.v21.core.GeronimoServerBehaviourDelegate;
+import org.apache.geronimo.st.v21.core.internal.DependencyHelper;
 import org.apache.geronimo.st.v21.core.internal.Trace;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.runtime.IPath;
@@ -93,7 +93,7 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.st.core.IGeronimoServerBehavior#isKernelAlive()
+	 * @see org.apache.geronimo.st.v21.core.IGeronimoServerBehavior#isKernelAlive()
 	 */
 	public boolean isKernelAlive() {
 		try {
@@ -150,7 +150,7 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.apache.geronimo.st.core.IGeronimoServerBehavior#isFullyStarted()
+	 * @see org.apache.geronimo.st.v21.core.IGeronimoServerBehavior#isFullyStarted()
 	 */
 	public boolean isFullyStarted() {
 		if (isKernelAlive()) {

@@ -16,12 +16,10 @@
  */
 package org.apache.geronimo.st.ui.editors;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
 
 import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.ui.internal.Trace;
@@ -35,18 +33,25 @@ import org.eclipse.jst.server.core.FacetUtil;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.forms.editor.IFormPage;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.server.core.IRuntime;
+import org.eclipse.wst.sse.ui.StructuredTextEditor;
 
 /**
- * @version $Rev$ $Date$
+ * @version $Rev: 817996 $ $Date: 2009-09-23 16:04:12 +0800 (Wed, 23 Sep 2009) $
  */
 public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEditor {
 
 	private static Map loaders = new HashMap();
 
 	private IGeronimoFormContentLoader currentLoader = null;
+	
+	private String runtimeVersion = null;
 
 	static {
 		loadExtensionPoints();
@@ -122,6 +127,7 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEd
 					if (runtime == null) return null;
 					String version = runtime.getRuntimeType().getVersion();
 					currentLoader = (IGeronimoFormContentLoader) loaders.get(version);
+					runtimeVersion = version;
 				} catch (CoreException e) {
                     Trace.tracePoint("CoreException", "SharedDeploymentPlanEditor.getLoader");
 					e.printStackTrace();
@@ -135,5 +141,38 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoDeploymentPlanEd
         Trace.tracePoint("EXIT", "SharedDeploymentPlanEditor.getLoader", currentLoader);
 		return currentLoader;
 	}
+	
+	public String getRuntimeVersion(){
+		return runtimeVersion;
+	}
 
+	@Override
+    protected StructuredTextEditor getDeploymentPlanSourcePage() {
+		return getLoader().getDeploymentPlanSourcePage(this);
+    }
+
+
+	@Override
+    protected IDataModelOperation getImportDeploymentPlanOperation(
+            IDataModel model) {
+	    return getLoader().getImportDeploymentPlanOperation(model);
+    }
+
+	@Override
+    protected boolean isValidPage(IFormPage page) {
+	    return getLoader().isValidPage(page);
+    }
+
+	@Override
+    protected void refreshPage(IFormPage page) {
+		getLoader().refreshPage(page);
+	    
+    }
+
+	@Override
+    protected IDataModelProvider getImportDeploymentPlanDataModelProvider() {
+	    return getLoader().getImportDeploymentPlanDataModelProvider();
+    }
+	
+	
 }

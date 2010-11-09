@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>eclipse-plugins-parent</artifactId>
-        <version>2.2.0</version>
+        <version>2.2.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <build>
@@ -138,6 +138,7 @@
         </plugins>
     </build>
     <dependencies>
+        
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>eclipse</artifactId>
@@ -151,8 +152,14 @@
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
-            <artifactId>org.apache.geronimo.runtime.v22</artifactId>
+            <artifactId>org.apache.geronimo.runtime.v21</artifactId>
             <version>${version}</version>
+            <exclusions>
+                    <exclusion>
+                        <groupId>javax.xml.bind</groupId>
+                        <artifactId>jaxb-api</artifactId>
+                    </exclusion>
+             </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
@@ -164,5 +171,14 @@
             <artifactId>org.apache.geronimo.jee.v21.jaxbmodel</artifactId>
             <version>${version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+        </dependency>
+           <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-activation_1.1_spec</artifactId>
+        </dependency>
+
     </dependencies>
 </project>

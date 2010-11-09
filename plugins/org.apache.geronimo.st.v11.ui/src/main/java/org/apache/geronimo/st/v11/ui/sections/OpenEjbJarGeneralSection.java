@@ -29,8 +29,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.openejb.xml.ns.openejb_jar_2.ObjectFactory;
-import org.openejb.xml.ns.openejb_jar_2.OpenejbJarType;
+import org.apache.geronimo.j2ee.openejb_jar.ObjectFactory;
+import org.apache.geronimo.j2ee.openejb_jar.OpenejbJarType;
 
 /**
  * @version $Rev$ $Date$

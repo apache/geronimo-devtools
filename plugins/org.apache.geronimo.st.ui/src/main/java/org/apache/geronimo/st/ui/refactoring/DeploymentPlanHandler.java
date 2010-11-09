@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -34,7 +33,6 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class DeploymentPlanHandler extends DefaultHandler {
 	protected String file;
-	protected Locator locator;
 	protected List<DeploymentPlanTextNode> nodeList = new ArrayList<DeploymentPlanTextNode>();
 
 	protected static final int START = 0, IN_ROOT_ELEMENT = 1,
@@ -66,48 +64,38 @@ public class DeploymentPlanHandler extends DefaultHandler {
 		}
 		return null;
 	}
-
-	public void setDocumentLocator(Locator locator) {
-		this.locator = locator;
-	}
-
+	
 	public void characters(char[] ch, int start, int length)
 			throws SAXException {
-		String value = null;
 		DeploymentPlanTextNode wtn = null;
+		String name = null;
+		
 		switch (state) {
-		case IN_CONTEXT_ROOT:
-			value = new String(ch, start, length);
-			wtn = new DeploymentPlanTextNode();
-			try {
-				int offset = getOffset(locator.getLineNumber(), locator
-						.getColumnNumber());
-				wtn.setName(DeploymentPlanTextNode.CONTEXT_ROOT);
-				wtn.setValue(value);
-				wtn.setOffset(offset - length);
-				nodeList.add(wtn);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			break;
-		case IN_ARTIFACTID:
-			value = new String(ch, start, length);
-			wtn = new DeploymentPlanTextNode();
-			try {
-				int offset = getOffset(locator.getLineNumber(), locator
-						.getColumnNumber());
-				wtn.setName(DeploymentPlanTextNode.ARTIFACT_ID);
-				wtn.setValue(value);
-				wtn.setOffset(offset - length);
-				nodeList.add(wtn);
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			break;
-		default:
-			break;
+			case IN_CONTEXT_ROOT:
+				name = DeploymentPlanTextNode.CONTEXT_ROOT;
+				break;
+			case IN_ARTIFACTID:
+				name = DeploymentPlanTextNode.ARTIFACT_ID;
+				break;
+			default:
+				return;
 		}
+		
+		String value = new String(ch, start, length);
+		wtn = new DeploymentPlanTextNode();
+		
+		wtn.setName(name);
+		wtn.setValue(value);
+		try {
+			//ch doesn't contains XML declare statement at the beginning of deployment plan
+			//get the character number of first line
+			int xmlDeclareLength = getXMLDeclareLength();
+			wtn.setOffset(xmlDeclareLength + start);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		nodeList.add(wtn);	
+		
 	}
 
 	public void startElement(String uri, String localName, String qName,
@@ -168,25 +156,18 @@ public class DeploymentPlanHandler extends DefaultHandler {
 		}
 	}
 
-	// return the offset of the DeploymentPlanTextNode's end
-	protected int getOffset(int lineNumber, int columnNumber)
+	// return the character number of first line in deployment plan
+	protected int getXMLDeclareLength()
 			throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(file));
-
-		if (lineNumber < 1 || columnNumber < 1)
-			return -1;
 
 		int current;
 		int offset = 0;
 
-		for (int i = 1; i < lineNumber;) {
-			do {
-				current = br.read();
-				offset++;
-			} while (current != '\n');
-			i++;
-		}
-		offset += (columnNumber - 1);
+		do {
+			current = br.read();
+			offset++;
+		} while (current != '>');
 
 		br.close();
 

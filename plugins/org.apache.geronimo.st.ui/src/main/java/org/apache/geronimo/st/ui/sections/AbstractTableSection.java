@@ -47,7 +47,8 @@ public abstract class AbstractTableSection extends AbstractListSection {
 
     protected String[] COLUMN_NAMES = new String[] {};
 
-    public Listener sortListener = null;
+    public Listener sortListener = null;   
+    
     
     public AbstractTableSection(Section section) {
         super(section);

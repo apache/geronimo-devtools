@@ -21,7 +21,7 @@ import javax.xml.bind.JAXBElement;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor;
-import org.apache.geronimo.st.ui.editors.AbstractGeronimoFormContentLoader;
+import org.apache.geronimo.st.v11.ui.editors.AbstractGeronimoFormContentLoader;
 import org.apache.geronimo.st.v11.core.GeronimoServerInfo;
 import org.apache.geronimo.st.v11.core.GeronimoV11Utils;
 import org.apache.geronimo.st.v11.ui.pages.AppClientGeneralPage;
@@ -32,9 +32,18 @@ import org.apache.geronimo.st.v11.ui.pages.EjbOverviewPage;
 import org.apache.geronimo.st.v11.ui.pages.NamingFormPage;
 import org.apache.geronimo.st.v11.ui.pages.SecurityPage;
 import org.apache.geronimo.st.v11.ui.pages.WebGeneralPage;
+import org.apache.geronimo.st.v11.core.operations.ImportDeploymentPlanDataModelProvider;
+import org.apache.geronimo.st.v11.core.operations.ImportDeploymentPlanOperation;
+import org.apache.geronimo.st.v11.ui.pages.AbstractGeronimoFormPage;
+import org.apache.geronimo.st.v11.ui.pages.DeploymentPlanSourcePage;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.FormEditor;
+import org.eclipse.ui.forms.editor.IFormPage;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
+import org.eclipse.wst.sse.ui.StructuredTextEditor;
 
 /**
  * @version $Rev$ $Date$
@@ -124,4 +133,27 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
     public void triggerGeronimoServerInfoUpdate() {
         GeronimoServerInfo.getInstance().updateInfo();
     }
+
+    public StructuredTextEditor getDeploymentPlanSourcePage(AbstractGeronimoDeploymentPlanEditor editor) {
+	    return new DeploymentPlanSourcePage(editor);
+    }
+
+	public IDataModelProvider getImportDeploymentPlanDataModelProvider() {
+	    return new ImportDeploymentPlanDataModelProvider();
+    }
+
+	public IDataModelOperation getImportDeploymentPlanOperation(IDataModel model) {
+	    return new ImportDeploymentPlanOperation(model);
+    }
+
+	public boolean isValidPage(IFormPage page) {
+	    return page instanceof AbstractGeronimoFormPage;
+    }
+
+	public void refreshPage(IFormPage page) {
+		   AbstractGeronimoFormPage geronimoPage = (AbstractGeronimoFormPage)page;
+           geronimoPage.refresh();
+	    
+    }
+
 }

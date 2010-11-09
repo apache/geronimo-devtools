@@ -25,9 +25,9 @@ import org.apache.geronimo.st.ui.wizards.AbstractTreeWizard;
 import org.apache.geronimo.st.v11.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v11.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v11.ui.sections.EjbRelationSection;
-import org.openejb.xml.ns.openejb_jar_2.EjbRelationType;
-import org.openejb.xml.ns.openejb_jar_2.EjbRelationshipRoleType;
-import org.openejb.xml.ns.openejb_jar_2.RelationshipsType;
+import org.apache.geronimo.j2ee.openejb_jar.EjbRelationType;
+import org.apache.geronimo.j2ee.openejb_jar.EjbRelationshipRoleType;
+import org.apache.geronimo.j2ee.openejb_jar.RelationshipsType;
 
 /**
  * @version $Rev: 720616 $ $Date: 2008-11-26 05:49:55 +0800 (Wed, 26 Nov 2008) $

@@ -20,14 +20,14 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
-import org.apache.geronimo.xml.ns.j2ee.application_1.ApplicationType;
-import org.apache.geronimo.xml.ns.j2ee.application_client_1.ApplicationClientType;
-import org.apache.geronimo.xml.ns.j2ee.connector_1.ConnectorType;
-import org.apache.geronimo.xml.ns.j2ee.web_1.WebAppType;
-import org.apache.geronimo.xml.ns.security_1.SecurityType;
-import org.openejb.xml.ns.openejb_jar_2.OpenejbJarType;
-import org.openejb.xml.ns.openejb_jar_2.RelationshipsType;
+import org.apache.geronimo.j2ee.deployment.EnvironmentType;
+import org.apache.geronimo.j2ee.application.ApplicationType;
+import org.apache.geronimo.j2ee.applicationclient.ApplicationClientType;
+import org.apache.geronimo.j2ee.connector.ConnectorType;
+import org.apache.geronimo.j2ee.web.WebAppType;
+import org.apache.geronimo.j2ee.security.SecurityType;
+import org.apache.geronimo.j2ee.openejb_jar.OpenejbJarType;
+import org.apache.geronimo.j2ee.openejb_jar.RelationshipsType;
 
 /**
  * @version $Rev: 705268 $ $Date: 2008-10-16 23:54:29 +0800 (Thu, 16 Oct 2008) $
@@ -39,29 +39,29 @@ public class JAXBModelUtils {
         Object plan = element;
         if (WebAppType.class.isInstance (plan)) {
             if (((WebAppType)plan).getSecurity() == null) {
-                setSecurity (element, new org.apache.geronimo.xml.ns.security_1.ObjectFactory().createSecurityType());
+                setSecurity (element, new org.apache.geronimo.j2ee.security.ObjectFactory().createSecurityType());
             }
             SecurityType security = (SecurityType)((WebAppType)plan).getSecurity();
             if (security.getRoleMappings() == null) {
-                security.setRoleMappings (new org.apache.geronimo.xml.ns.security_1.ObjectFactory().createRoleMappingsType());
+                security.setRoleMappings (new org.apache.geronimo.j2ee.security.ObjectFactory().createRoleMappingsType());
             }
             return security;
         } else if (ApplicationType.class.isInstance (plan)) {
             if (((ApplicationType)plan).getSecurity() == null) {
-                setSecurity (element, new org.apache.geronimo.xml.ns.security_1.ObjectFactory().createSecurityType());
+                setSecurity (element, new org.apache.geronimo.j2ee.security.ObjectFactory().createSecurityType());
             }
             SecurityType security = (SecurityType)((ApplicationType)plan).getSecurity();
             if (security.getRoleMappings() == null) {
-                security.setRoleMappings (new org.apache.geronimo.xml.ns.security_1.ObjectFactory().createRoleMappingsType());
+                security.setRoleMappings (new org.apache.geronimo.j2ee.security.ObjectFactory().createRoleMappingsType());
             }
             return security;
         } else if (OpenejbJarType.class.isInstance (plan)) {
             if (((OpenejbJarType)plan).getSecurity() == null) {
-                setSecurity (element, new org.apache.geronimo.xml.ns.security_1.ObjectFactory().createSecurityType());
+                setSecurity (element, new org.apache.geronimo.j2ee.security.ObjectFactory().createSecurityType());
             }
             SecurityType security = (SecurityType)((OpenejbJarType)plan).getSecurity();
             if (security.getRoleMappings() == null) {
-                security.setRoleMappings (new org.apache.geronimo.xml.ns.security_1.ObjectFactory().createRoleMappingsType());
+                security.setRoleMappings (new org.apache.geronimo.j2ee.security.ObjectFactory().createRoleMappingsType());
             }
             return security;
         }
@@ -71,11 +71,11 @@ public class JAXBModelUtils {
     public static void setSecurity (JAXBElement element, SecurityType security) {
         Object plan = element;
         if (WebAppType.class.isInstance (plan)) {
-            ((WebAppType)plan).setSecurity((new org.apache.geronimo.xml.ns.security_1.ObjectFactory()).createSecurity( security ).getValue() );
+            ((WebAppType)plan).setSecurity((new org.apache.geronimo.j2ee.security.ObjectFactory()).createSecurity( security ).getValue() );
         } else if (ApplicationType.class.isInstance(plan)) {
-            ((ApplicationType)plan).setSecurity((new org.apache.geronimo.xml.ns.security_1.ObjectFactory()).createSecurity( security ).getValue() );
+            ((ApplicationType)plan).setSecurity((new org.apache.geronimo.j2ee.security.ObjectFactory()).createSecurity( security ).getValue() );
         } else if (OpenejbJarType.class.isInstance(plan)) {
-            ((OpenejbJarType)plan).setSecurity((new org.apache.geronimo.xml.ns.security_1.ObjectFactory()).createSecurity( security ).getValue() );
+            ((OpenejbJarType)plan).setSecurity((new org.apache.geronimo.j2ee.security.ObjectFactory()).createSecurity( security ).getValue() );
         }
     }
 

@@ -18,18 +18,18 @@ package org.apache.geronimo.st.v11.core;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.st.core.GeronimoUtils;
+import org.apache.geronimo.st.v11.core.GeronimoUtils;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.apache.geronimo.st.core.jaxb.JAXBUtils;
-import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
-import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
-import org.apache.geronimo.xml.ns.j2ee.application_1.ApplicationType;
-import org.apache.geronimo.xml.ns.j2ee.connector_1.ConnectorType;
-import org.apache.geronimo.xml.ns.j2ee.web_1.WebAppType;
+import org.apache.geronimo.j2ee.deployment.ArtifactType;
+import org.apache.geronimo.j2ee.deployment.EnvironmentType;
+import org.apache.geronimo.j2ee.application.ApplicationType;
+import org.apache.geronimo.j2ee.connector.ConnectorType;
+import org.apache.geronimo.j2ee.web.WebAppType;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IModule;
-import org.openejb.xml.ns.openejb_jar_2.OpenejbJarType;
+import org.apache.geronimo.j2ee.openejb_jar.OpenejbJarType;
 
 /**
  * @version $Rev: 471551 $ $Date: 2006-11-05 17:47:11 -0500 (Sun, 05 Nov 2006) $

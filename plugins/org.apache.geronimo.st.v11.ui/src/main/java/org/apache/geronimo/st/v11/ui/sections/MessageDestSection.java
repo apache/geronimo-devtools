@@ -23,7 +23,7 @@ import javax.xml.bind.JAXBElement;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v11.ui.wizards.MessageDestWizard;
-import org.apache.geronimo.xml.ns.naming_1.MessageDestinationType;
+import org.apache.geronimo.j2ee.naming.MessageDestinationType;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;

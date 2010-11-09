@@ -24,7 +24,7 @@ import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v11.ui.Activator;
 import org.apache.geronimo.st.v11.ui.wizards.EjbRefWizard;
-import org.apache.geronimo.xml.ns.naming_1.EjbRefType;
+import org.apache.geronimo.j2ee.naming.EjbRefType;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.wizard.Wizard;

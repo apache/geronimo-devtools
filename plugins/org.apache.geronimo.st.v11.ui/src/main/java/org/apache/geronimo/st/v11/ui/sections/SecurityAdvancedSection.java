@@ -26,10 +26,10 @@
 //import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 //import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
 //import org.apache.geronimo.st.v11.ui.wizards.SecurityRunAsSubjectWizard;
-//import org.apache.geronimo.xml.ns.deployment_1.PatternType;
-//import org.apache.geronimo.xml.ns.security_1.RoleMappingsType;
-//import org.apache.geronimo.xml.ns.security_1.RoleType;
-//import org.apache.geronimo.xml.ns.security_1.SecurityType;
+//import org.apache.geronimo.j2ee.deployment.PatternType;
+//import org.apache.geronimo.j2ee.security.RoleMappingsType;
+//import org.apache.geronimo.j2ee.security.RoleType;
+//import org.apache.geronimo.j2ee.security.SecurityType;
 //import org.eclipse.jface.dialogs.Dialog;
 //import org.eclipse.jface.viewers.IBaseLabelProvider;
 //import org.eclipse.jface.viewers.IContentProvider;

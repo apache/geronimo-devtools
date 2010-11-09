@@ -20,6 +20,7 @@
 <!-- $Rev: 589873 $ $Date: 2007-10-29 17:48:35 -0400 (Mon, 29 Oct 2007) $ -->
 
 <plugin>
+   <extension-point id="geronimoinfo" name="Geronimo Server Info" schema="schema/geronimoinfo.exsd"/>
 
 
     <!-- 
@@ -61,7 +62,7 @@
             stopTimeout="30000"
             startBeforePublish="true"
             runtimeTypeId="org.apache.geronimo.runtime.21"
-            launchConfigId="org.apache.geronimo.st.core.launchConfigurationType"
+            launchConfigId="org.apache.geronimo.st.v21.core.launchConfigurationType"
             behaviourClass="org.apache.geronimo.st.v21.core.GeronimoServerBehaviour"
             hasConfiguration="false"
             launchModes="run,debug,profile">
@@ -93,7 +94,7 @@
         <project-facet-version facet="org.apache.geronimo.facet" version="1.2">
             <action type="install" id="geronimo.plan.install.v21">
                 <delegate class="org.apache.geronimo.st.v21.core.operations.GeronimoV21FacetInstallDelegate"/>
-                <config-factory class="org.apache.geronimo.st.v21.core.DeploymentPlanInstallConfig$Factory"/>
+                <config-factory class="org.apache.geronimo.st.core.DeploymentPlanInstallConfig$Factory"/>
             </action>
             <constraint>
                 <or>
@@ -137,5 +138,85 @@
             <facet id="org.apache.geronimo.facet" version="1.2"/>
         </default-facets>
     </extension>
+    
+    
+    <extension point="org.apache.geronimo.st.core.JAXBUtilsProvider"> 
+       <provider class="org.apache.geronimo.st.v21.core.jaxb.JAXB21Utils" version="2.0,2.1,2.2"/>
+    </extension>
+    
+   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+        <launchConfigurationType
+            id="org.apache.geronimo.st.v21.core.launchConfigurationType"
+            name="%geronimoLaunchConfigurationType"
+            delegate="org.apache.geronimo.st.v21.core.GeronimoLaunchConfigurationDelegate"
+            modes="run, debug, profile"
+            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+            sourcePathComputerId="org.apache.geronimo.st.core.sourcePathComputer"/>
+    </extension>
+    
+    <!-- 
+     |                                                                                           
+     | This extension point provides a way for a server to support the "Run on Server" scenario. 
+     | The id specifies a unique identifier for this extension point, and the class specifies the 
+     | fully qualified name of the Java class that extends LaunchableAdapterDelegate. 
+     |                                                                                           
+     --> 
+    <extension point="org.eclipse.wst.server.core.launchableAdapters">
+        <launchableAdapter
+            class="org.apache.geronimo.st.v21.core.GeronimoLaunchableAdapterDelegate"
+            id="org.eclipse.jst.server.geronimo.v11.web"/>
+    </extension>
+    
+    <extension id="GeronimoOpExtensions" name="GeronimoOpExtensions" point="org.eclipse.wst.common.frameworks.OperationExtension">
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentImportOperation"
+            postOperationClass="org.apache.geronimo.st.v21.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EJBComponentImportOperation"
+            postOperationClass="org.apache.geronimo.st.v21.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.archive.operations.EARComponentImportOperation"
+            postOperationClass="org.apache.geronimo.st.v21.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentImportOperation"
+            postOperationClass="org.apache.geronimo.st.v21.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+    </extension>
+    <extension
+          point="org.apache.geronimo.st.v21.core.geronimoinfo">
+       <provider
+             class="org.apache.geronimo.st.v21.core.GeronimoV21ServerInfo"
+             versions="2.1">
+       </provider>
+    </extension>
+
+
+    <extension
+       point="org.eclipse.hyades.trace.ui.launchConfigMechanismAssociator">
+       <association            
+           launchConfigID = "org.apache.geronimo.st.v21.core.launchConfigurationType">
+   
+           <mechanism mechanismID = "org.eclipse.tptp.trace.ui.jvmpiMechanism"> 
+               <configuration
+                   launchDelegate = "org.eclipse.tptp.trace.ui.internal.launcher.deleg.application.PIAttachLauncherDelegate"
+                   configurationId = "org.eclipse.tptp.trace.ui.jvmpiConfiguration"
+                   associatedAgent = "org.eclipse.tptp.trace.ui.jvmpiAgent"        
+                   filter = "org.eclipse.tptp.platform.profile.server.core.internal.PICollectorFiltration">                
+               </configuration>            
+           </mechanism>        
+           
+           <mechanism mechanismID = "org.eclipse.tptp.trace.jvmti.jvmtiMechanism"> 
+               <configuration
+                   launchDelegate = "org.eclipse.tptp.platform.jvmti.client.internal.launcher.TIAttachLauncherDelegate"
+                   configurationId = "org.eclipse.tptp.trace.jvmti.tiConfiguration"
+                   associatedAgent = "org.eclipse.tptp.platform.jvmti.TIAgent"
+                   filter = "org.eclipse.tptp.platform.profile.server.core.internal.TICollectorFiltration">                            
+               </configuration>            
+           </mechanism>    
+       </association>
+   </extension>
 
 </plugin>

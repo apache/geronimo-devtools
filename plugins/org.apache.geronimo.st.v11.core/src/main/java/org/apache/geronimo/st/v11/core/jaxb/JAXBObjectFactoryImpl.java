@@ -16,43 +16,43 @@
  */
 package org.apache.geronimo.st.v11.core.jaxb;
 
-import org.apache.geronimo.xml.ns.deployment.javabean_1.PropertyType;
-import org.apache.geronimo.xml.ns.deployment_1.ArtifactType;
-import org.apache.geronimo.xml.ns.deployment_1.AttributeType;
-import org.apache.geronimo.xml.ns.deployment_1.ClassFilterType;
-import org.apache.geronimo.xml.ns.deployment_1.DependenciesType;
-import org.apache.geronimo.xml.ns.deployment_1.DependencyType;
-import org.apache.geronimo.xml.ns.deployment_1.EnvironmentType;
-import org.apache.geronimo.xml.ns.deployment_1.GbeanType;
-import org.apache.geronimo.xml.ns.deployment_1.ReferenceType;
-import org.apache.geronimo.xml.ns.j2ee.application_1.ExtModuleType;
-import org.apache.geronimo.xml.ns.j2ee.application_1.ModuleType;
-import org.apache.geronimo.xml.ns.j2ee.application_1.PathType;
-import org.apache.geronimo.xml.ns.j2ee.connector_1.AdminobjectInstanceType;
-import org.apache.geronimo.xml.ns.j2ee.connector_1.AdminobjectType;
-import org.apache.geronimo.xml.ns.j2ee.connector_1.ConfigPropertySettingType;
-import org.apache.geronimo.xml.ns.naming_1.EjbLocalRefType;
-import org.apache.geronimo.xml.ns.naming_1.EjbRefType;
-import org.apache.geronimo.xml.ns.naming_1.GbeanRefType;
-import org.apache.geronimo.xml.ns.naming_1.MessageDestinationType;
-import org.apache.geronimo.xml.ns.naming_1.PatternType;
-import org.apache.geronimo.xml.ns.naming_1.PortCompletionType;
-import org.apache.geronimo.xml.ns.naming_1.PortType;
-import org.apache.geronimo.xml.ns.naming_1.ResourceEnvRefType;
-import org.apache.geronimo.xml.ns.naming_1.ResourceRefType;
-import org.apache.geronimo.xml.ns.naming_1.ServiceCompletionType;
-import org.apache.geronimo.xml.ns.naming_1.ServiceRefType;
-import org.apache.geronimo.xml.ns.security_1.DescriptionType;
-import org.apache.geronimo.xml.ns.security_1.DistinguishedNameType;
-import org.apache.geronimo.xml.ns.security_1.LoginDomainPrincipalType;
-import org.apache.geronimo.xml.ns.security_1.PrincipalType;
-import org.apache.geronimo.xml.ns.security_1.RealmPrincipalType;
-import org.apache.geronimo.xml.ns.security_1.RoleMappingsType;
-import org.apache.geronimo.xml.ns.security_1.RoleType;
-import org.apache.geronimo.xml.ns.security_1.SecurityType;
-import org.openejb.xml.ns.openejb_jar_2.EjbRelationType;
-import org.openejb.xml.ns.openejb_jar_2.EjbRelationshipRoleType;
-import org.openejb.xml.ns.openejb_jar_2.RelationshipsType;
+import org.apache.geronimo.j2ee.deployment.javabean.PropertyType;
+import org.apache.geronimo.j2ee.deployment.ArtifactType;
+import org.apache.geronimo.j2ee.deployment.AttributeType;
+import org.apache.geronimo.j2ee.deployment.ClassFilterType;
+import org.apache.geronimo.j2ee.deployment.DependenciesType;
+import org.apache.geronimo.j2ee.deployment.DependencyType;
+import org.apache.geronimo.j2ee.deployment.EnvironmentType;
+import org.apache.geronimo.j2ee.deployment.GbeanType;
+import org.apache.geronimo.j2ee.deployment.ReferenceType;
+import org.apache.geronimo.j2ee.application.ExtModuleType;
+import org.apache.geronimo.j2ee.application.ModuleType;
+import org.apache.geronimo.j2ee.application.PathType;
+import org.apache.geronimo.j2ee.connector.AdminobjectInstanceType;
+import org.apache.geronimo.j2ee.connector.AdminobjectType;
+import org.apache.geronimo.j2ee.connector.ConfigPropertySettingType;
+import org.apache.geronimo.j2ee.naming.EjbLocalRefType;
+import org.apache.geronimo.j2ee.naming.EjbRefType;
+import org.apache.geronimo.j2ee.naming.GbeanRefType;
+import org.apache.geronimo.j2ee.naming.MessageDestinationType;
+import org.apache.geronimo.j2ee.naming.PatternType;
+import org.apache.geronimo.j2ee.naming.PortCompletionType;
+import org.apache.geronimo.j2ee.naming.PortType;
+import org.apache.geronimo.j2ee.naming.ResourceEnvRefType;
+import org.apache.geronimo.j2ee.naming.ResourceRefType;
+import org.apache.geronimo.j2ee.naming.ServiceCompletionType;
+import org.apache.geronimo.j2ee.naming.ServiceRefType;
+import org.apache.geronimo.j2ee.security.DescriptionType;
+import org.apache.geronimo.j2ee.security.DistinguishedNameType;
+import org.apache.geronimo.j2ee.security.LoginDomainPrincipalType;
+import org.apache.geronimo.j2ee.security.PrincipalType;
+import org.apache.geronimo.j2ee.security.RealmPrincipalType;
+import org.apache.geronimo.j2ee.security.RoleMappingsType;
+import org.apache.geronimo.j2ee.security.RoleType;
+import org.apache.geronimo.j2ee.security.SecurityType;
+import org.apache.geronimo.j2ee.openejb_jar.EjbRelationType;
+import org.apache.geronimo.j2ee.openejb_jar.EjbRelationshipRoleType;
+import org.apache.geronimo.j2ee.openejb_jar.RelationshipsType;
 
 
 /**
@@ -72,89 +72,89 @@ public class JAXBObjectFactoryImpl implements org.apache.geronimo.st.core.jaxb.J
     
     public Object create(Class type) {
         if ( type.equals( ResourceRefType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.naming_1.ObjectFactory()).createResourceRefType();
+            return (new org.apache.geronimo.j2ee.naming.ObjectFactory()).createResourceRefType();
         } else if ( type.equals( ResourceEnvRefType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.naming_1.ObjectFactory()).createResourceEnvRefType();
+            return (new org.apache.geronimo.j2ee.naming.ObjectFactory()).createResourceEnvRefType();
         } else if ( type.equals( EjbRefType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.naming_1.ObjectFactory()).createEjbRefType();
+            return (new org.apache.geronimo.j2ee.naming.ObjectFactory()).createEjbRefType();
         } else if ( type.equals( GbeanRefType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.naming_1.ObjectFactory()).createGbeanRefType();
+            return (new org.apache.geronimo.j2ee.naming.ObjectFactory()).createGbeanRefType();
         } else if ( type.equals( MessageDestinationType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.naming_1.ObjectFactory()).createMessageDestinationType();
+            return (new org.apache.geronimo.j2ee.naming.ObjectFactory()).createMessageDestinationType();
         } else if ( type.equals( PatternType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.naming_1.ObjectFactory()).createPatternType();
+            return (new org.apache.geronimo.j2ee.naming.ObjectFactory()).createPatternType();
         } else if ( type.equals( PortType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.naming_1.ObjectFactory()).createPortType();
+            return (new org.apache.geronimo.j2ee.naming.ObjectFactory()).createPortType();
         } else if ( type.equals( PortCompletionType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.naming_1.ObjectFactory()).createPortCompletionType();
+            return (new org.apache.geronimo.j2ee.naming.ObjectFactory()).createPortCompletionType();
         } else if ( type.equals( PropertyType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.deployment.javabean_1.ObjectFactory()).createPropertyType();
+            return (new org.apache.geronimo.j2ee.deployment.javabean.ObjectFactory()).createPropertyType();
         } else if ( type.equals( ServiceCompletionType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.naming_1.ObjectFactory()).createServiceCompletionType();
+            return (new org.apache.geronimo.j2ee.naming.ObjectFactory()).createServiceCompletionType();
         } else if ( type.equals( ServiceRefType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.naming_1.ObjectFactory()).createServiceRefType();
+            return (new org.apache.geronimo.j2ee.naming.ObjectFactory()).createServiceRefType();
         } else if ( type.equals( EjbLocalRefType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.naming_1.ObjectFactory()).createEjbLocalRefType();
+            return (new org.apache.geronimo.j2ee.naming.ObjectFactory()).createEjbLocalRefType();
         } else if ( type.equals( SecurityType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.security_1.ObjectFactory()).createSecurityType();
+            return (new org.apache.geronimo.j2ee.security.ObjectFactory()).createSecurityType();
         } else if ( type.equals( RoleMappingsType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.security_1.ObjectFactory()).createRoleMappingsType();
+            return (new org.apache.geronimo.j2ee.security.ObjectFactory()).createRoleMappingsType();
         } else if ( type.equals( DescriptionType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.security_1.ObjectFactory()).createDescriptionType();
+            return (new org.apache.geronimo.j2ee.security.ObjectFactory()).createDescriptionType();
         } else if ( type.equals( RoleType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.security_1.ObjectFactory()).createRoleType();
+            return (new org.apache.geronimo.j2ee.security.ObjectFactory()).createRoleType();
         } else if ( type.equals( DistinguishedNameType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.security_1.ObjectFactory()).createDistinguishedNameType();
+            return (new org.apache.geronimo.j2ee.security.ObjectFactory()).createDistinguishedNameType();
         } else if ( type.equals( PrincipalType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.security_1.ObjectFactory()).createPrincipalType();
+            return (new org.apache.geronimo.j2ee.security.ObjectFactory()).createPrincipalType();
         } else if ( type.equals( LoginDomainPrincipalType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.security_1.ObjectFactory()).createLoginDomainPrincipalType();
+            return (new org.apache.geronimo.j2ee.security.ObjectFactory()).createLoginDomainPrincipalType();
         } else if ( type.equals( RealmPrincipalType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.security_1.ObjectFactory()).createRealmPrincipalType();
+            return (new org.apache.geronimo.j2ee.security.ObjectFactory()).createRealmPrincipalType();
         } else if ( type.equals( GbeanType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory()).createGbeanType();
+            return (new org.apache.geronimo.j2ee.deployment.ObjectFactory()).createGbeanType();
         } else if ( type.equals( ArtifactType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory()).createArtifactType();
+            return (new org.apache.geronimo.j2ee.deployment.ObjectFactory()).createArtifactType();
         } else if ( type.equals( ClassFilterType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory()).createClassFilterType();
+            return (new org.apache.geronimo.j2ee.deployment.ObjectFactory()).createClassFilterType();
         } else if ( type.equals( DependenciesType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory()).createDependenciesType();
+            return (new org.apache.geronimo.j2ee.deployment.ObjectFactory()).createDependenciesType();
         } else if ( type.equals( DependencyType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory()).createDependencyType();
+            return (new org.apache.geronimo.j2ee.deployment.ObjectFactory()).createDependencyType();
         } else if ( type.equals( EnvironmentType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory()).createEnvironmentType();
-        } else if ( type.equals( org.apache.geronimo.xml.ns.deployment_1.PatternType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory()).createPatternType();
+            return (new org.apache.geronimo.j2ee.deployment.ObjectFactory()).createEnvironmentType();
+        } else if ( type.equals( org.apache.geronimo.j2ee.deployment.PatternType.class ) ) {
+            return (new org.apache.geronimo.j2ee.deployment.ObjectFactory()).createPatternType();
         } else if ( type.equals( AttributeType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory()).createAttributeType();
+            return (new org.apache.geronimo.j2ee.deployment.ObjectFactory()).createAttributeType();
         } else if ( type.equals( ReferenceType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.deployment_1.ObjectFactory()).createReferenceType();
+            return (new org.apache.geronimo.j2ee.deployment.ObjectFactory()).createReferenceType();
         } else if ( type.equals( ExtModuleType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.j2ee.application_1.ObjectFactory()).createExtModuleType();
+            return (new org.apache.geronimo.j2ee.application.ObjectFactory()).createExtModuleType();
         } else if ( type.equals( ModuleType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.j2ee.application_1.ObjectFactory()).createModuleType();
+            return (new org.apache.geronimo.j2ee.application.ObjectFactory()).createModuleType();
         } else if ( type.equals( PathType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.j2ee.application_1.ObjectFactory()).createPathType();
+            return (new org.apache.geronimo.j2ee.application.ObjectFactory()).createPathType();
         } else if ( type.equals( EjbRelationType.class ) ) {
-            return (new org.openejb.xml.ns.openejb_jar_2.ObjectFactory()).createEjbRelationType();
+            return (new org.apache.geronimo.j2ee.openejb_jar.ObjectFactory()).createEjbRelationType();
         } else if ( type.equals( EjbRelationshipRoleType.class ) ) {
-            return (new org.openejb.xml.ns.openejb_jar_2.ObjectFactory()).createEjbRelationshipRoleType();
+            return (new org.apache.geronimo.j2ee.openejb_jar.ObjectFactory()).createEjbRelationshipRoleType();
         } else if ( type.equals( EjbRelationshipRoleType.RelationshipRoleSource.class ) ) {
-            return (new org.openejb.xml.ns.openejb_jar_2.ObjectFactory()).createEjbRelationshipRoleTypeRelationshipRoleSource();
+            return (new org.apache.geronimo.j2ee.openejb_jar.ObjectFactory()).createEjbRelationshipRoleTypeRelationshipRoleSource();
         } else if ( type.equals( EjbRelationshipRoleType.CmrField.class ) ) {
-            return (new org.openejb.xml.ns.openejb_jar_2.ObjectFactory()).createEjbRelationshipRoleTypeCmrField();
+            return (new org.apache.geronimo.j2ee.openejb_jar.ObjectFactory()).createEjbRelationshipRoleTypeCmrField();
         } else if ( type.equals( EjbRelationshipRoleType.RoleMapping.CmrFieldMapping.class ) ) {
-            return (new org.openejb.xml.ns.openejb_jar_2.ObjectFactory()).createEjbRelationshipRoleTypeRoleMappingCmrFieldMapping();
+            return (new org.apache.geronimo.j2ee.openejb_jar.ObjectFactory()).createEjbRelationshipRoleTypeRoleMappingCmrFieldMapping();
         } else if ( type.equals( EjbRelationshipRoleType.RoleMapping.class ) ) {
-            return (new org.openejb.xml.ns.openejb_jar_2.ObjectFactory()).createEjbRelationshipRoleTypeRoleMapping();
+            return (new org.apache.geronimo.j2ee.openejb_jar.ObjectFactory()).createEjbRelationshipRoleTypeRoleMapping();
         } else if ( type.equals( RelationshipsType.class ) ) {
-            return (new org.openejb.xml.ns.openejb_jar_2.ObjectFactory()).createRelationshipsType();
+            return (new org.apache.geronimo.j2ee.openejb_jar.ObjectFactory()).createRelationshipsType();
         } else if ( type.equals( AdminobjectType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.j2ee.connector_1.ObjectFactory()).createAdminobjectType();
+            return (new org.apache.geronimo.j2ee.connector.ObjectFactory()).createAdminobjectType();
         } else if ( type.equals( AdminobjectInstanceType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.j2ee.connector_1.ObjectFactory()).createAdminobjectInstanceType();
+            return (new org.apache.geronimo.j2ee.connector.ObjectFactory()).createAdminobjectInstanceType();
         } else if ( type.equals( ConfigPropertySettingType.class ) ) {
-            return (new org.apache.geronimo.xml.ns.j2ee.connector_1.ObjectFactory()).createConfigPropertySettingType();
+            return (new org.apache.geronimo.j2ee.connector.ObjectFactory()).createConfigPropertySettingType();
         }
         
         return null;

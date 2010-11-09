@@ -23,11 +23,11 @@ import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
-import org.apache.geronimo.st.v21.core.jaxb.JAXBModelUtils;
+import org.apache.geronimo.st.v11.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v11.ui.Activator;
 import org.apache.geronimo.st.v11.ui.wizards.GBeanRefWizard;
-import org.apache.geronimo.xml.ns.deployment_1.PatternType;
-import org.apache.geronimo.xml.ns.naming_1.GbeanRefType;
+import org.apache.geronimo.j2ee.deployment.PatternType;
+import org.apache.geronimo.j2ee.naming.GbeanRefType;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.wizard.Wizard;

@@ -16,8 +16,8 @@
  */
 package org.apache.geronimo.st.v21.ui.wizards;
 
+import org.apache.geronimo.st.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.ui.CommonMessages;
-import org.apache.geronimo.st.v21.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.v21.ui.internal.Trace;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -87,6 +87,7 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
 
 		artifactText = new Text(composite, SWT.BORDER);
 		artifactText.setLayoutData(createGridData());
+		
 		
 		Label versionLabel = new Label(composite, SWT.NONE);
 		versionLabel.setText(CommonMessages.version);

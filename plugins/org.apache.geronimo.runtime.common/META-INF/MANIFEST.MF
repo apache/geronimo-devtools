@@ -2,15 +2,16 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo Common Runtime Plug-in
 Bundle-SymbolicName: org.apache.geronimo.runtime.common;singleton:=true
-Bundle-Version: 2.2.0
+Bundle-Version: 2.2.1
 Bundle-ClassPath: 
- lib/geronimo-j2ee-deployment_1.1_spec-1.0.jar,
+ lib/geronimo-jaxb_2.1_spec-1.0.jar,
  lib/commons-logging-1.0.4.jar,
  lib/cglib-nodep-2.1_3.jar,
- lib/jaxb-api-2.0.jar,
- lib/jaxb-impl-2.0.5.jar,
+ lib/geronimo-jaxb_2.1_spec-1.0.jar,
+ lib/jaxb-impl-2.1.12.jar,
  lib/geronimo-stax-api_1.0_spec-1.0.1.jar,
- lib/geronimo-activation_1.1_spec-1.0.2.jar
+ lib/geronimo-activation_1.1_spec-1.0.2.jar,
+ lib/geronimo-javaee-deployment_1.1MR3_spec-1.0.jar
 Export-Package: 
  com.sun.istack,
  com.sun.xml.bind,
@@ -48,14 +49,62 @@ Export-Package:
  javax.enterprise.deploy.spi.factories,
  javax.enterprise.deploy.spi.status,
  javax.xml.bind,
- javax.xml.bind.annotation,
- javax.xml.bind.annotation.adapters,
- javax.xml.bind.attachment,
- javax.xml.bind.helpers,
- javax.xml.bind.util,
- javax.xml.stream,
- javax.xml.stream.events,
- javax.xml.stream.util,
+ javax.xml.bind.annotation;
+  x-friends:="org.apache.geronimo.st.v20.core,
+   org.apache.geronimo.st.v20.ui,
+   org.apache.geronimo.st.v21.core,
+   org.apache.geronimo.st.v21.ui,
+   org.apache.geronimo.st.v22.core,
+   org.apache.geronimo.st.v22.ui",
+ javax.xml.bind.annotation.adapters;
+  x-friends:="org.apache.geronimo.st.v20.core,
+   org.apache.geronimo.st.v20.ui,
+   org.apache.geronimo.st.v21.core,
+   org.apache.geronimo.st.v21.ui,
+   org.apache.geronimo.st.v22.core,
+   org.apache.geronimo.st.v22.ui",
+ javax.xml.bind.attachment;
+  x-friends:="org.apache.geronimo.st.v20.core,
+   org.apache.geronimo.st.v20.ui,
+   org.apache.geronimo.st.v21.core,
+   org.apache.geronimo.st.v21.ui,
+   org.apache.geronimo.st.v22.core,
+   org.apache.geronimo.st.v22.ui",
+ javax.xml.bind.helpers;
+  x-friends:="org.apache.geronimo.st.v20.core,
+   org.apache.geronimo.st.v20.ui,
+   org.apache.geronimo.st.v21.core,
+   org.apache.geronimo.st.v21.ui,
+   org.apache.geronimo.st.v22.core,
+   org.apache.geronimo.st.v22.ui",
+ javax.xml.bind.util;
+  x-friends:="org.apache.geronimo.st.v20.core,
+   org.apache.geronimo.st.v20.ui,
+   org.apache.geronimo.st.v21.core,
+   org.apache.geronimo.st.v21.ui,
+   org.apache.geronimo.st.v22.core,
+   org.apache.geronimo.st.v22.ui",
+ javax.xml.stream;
+  x-friends:="org.apache.geronimo.st.v20.core,
+   org.apache.geronimo.st.v20.ui,
+   org.apache.geronimo.st.v21.core,
+   org.apache.geronimo.st.v21.ui,
+   org.apache.geronimo.st.v22.core,
+   org.apache.geronimo.st.v22.ui",
+ javax.xml.stream.events;
+  x-friends:="org.apache.geronimo.st.v20.core,
+   org.apache.geronimo.st.v20.ui,
+   org.apache.geronimo.st.v21.core,
+   org.apache.geronimo.st.v21.ui,
+   org.apache.geronimo.st.v22.core,
+   org.apache.geronimo.st.v22.ui",
+ javax.xml.stream.util;
+  x-friends:="org.apache.geronimo.st.v20.core,
+   org.apache.geronimo.st.v20.ui,
+   org.apache.geronimo.st.v21.core,
+   org.apache.geronimo.st.v21.ui,
+   org.apache.geronimo.st.v22.core,
+   org.apache.geronimo.st.v22.ui",
  net.sf.cglib.asm,
  net.sf.cglib.asm.attrs,
  net.sf.cglib.beans,

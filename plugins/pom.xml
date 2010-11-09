@@ -25,7 +25,7 @@
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
-        <version>2.2.0</version>
+        <version>2.2.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <build>
@@ -144,12 +144,12 @@
         <module>org.apache.geronimo.st.ui</module>
         <module>org.apache.geronimo.st.v11.schemas</module>
         <module>org.apache.geronimo.st.schemas</module>
-				<module>org.apache.geronimo.st.v11.ui</module>       
+	<module>org.apache.geronimo.st.v11.ui</module>       
         <module>org.apache.geronimo.st.v20.ui</module>
         <module>org.apache.geronimo.st.v21.ui</module>
         <module>org.apache.geronimo.st.v22.ui</module>
         <module>org.apache.geronimo.runtime.common</module>
-				<module>org.apache.geronimo.runtime.v11</module>
+	<module>org.apache.geronimo.runtime.v11</module>
         <module>org.apache.geronimo.runtime.v20</module>
         <module>org.apache.geronimo.runtime.v21</module>
         <module>org.apache.geronimo.runtime.v22</module>

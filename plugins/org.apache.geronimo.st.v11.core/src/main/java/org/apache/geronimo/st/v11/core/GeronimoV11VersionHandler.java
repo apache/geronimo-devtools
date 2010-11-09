@@ -19,8 +19,8 @@ package org.apache.geronimo.st.v11.core;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
 import org.apache.geronimo.deployment.plugin.TargetModuleIDImpl;
-import org.apache.geronimo.st.core.IGeronimoVersionHandler;
-import org.apache.geronimo.st.v21.core.GeronimoV21Utils;
+import org.apache.geronimo.st.v11.core.IGeronimoVersionHandler;
+import org.apache.geronimo.st.v11.core.GeronimoV11Utils;
 import org.eclipse.wst.server.core.IModule;
 
 /**

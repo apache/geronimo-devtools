@@ -54,14 +54,19 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  */
 public class SecurityRoleMappingSection extends AbstractTreeSection {
 
+    private String runtimeVersionNumber;
+    
     public SecurityRoleMappingSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style) {
         super(plan, parent, toolkit, style);
         createClient();
     }
 
     public SecurityRoleMappingSection(JAXBElement plan, AbstractDeploymentDescriptor descriptor, Composite parent,
-            FormToolkit toolkit, int style) {
+            FormToolkit toolkit, int style,String runtimeVersion) {
         super(plan, descriptor, parent, toolkit, style);
+        
+        runtimeVersionNumber = runtimeVersion;
+        
         createClient();
     }
 
@@ -290,5 +295,9 @@ public class SecurityRoleMappingSection extends AbstractTreeSection {
                         "icons/full/obj16/security_role.gif").createImage();
             }
         };
+    }
+    
+    public String getRuntimeVersion(){
+        return runtimeVersionNumber;
     }
 }

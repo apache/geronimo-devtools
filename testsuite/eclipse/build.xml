@@ -29,11 +29,11 @@
 <project name="TestsuiteArtifacts">
 
     <target name="init">
-        <property name="galileo_url"            value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/galileo/SR1/"/>
-        <property name="galileo_jee_win32"      value="eclipse-jee-galileo-SR1-win32.zip"/>
-        <property name="galileo_jee_linux"      value="eclipse-jee-galileo-SR1-linux-gtk.tar"/>
-        <property name="galileo_jee_linux-x86_64" value="eclipse-jee-galileo-SR1-linux-gtk-x86_64.tar"/>
-        <property name="galileo_jee_macos"      value="eclipse-jee-galileo-SR1-macosx-carbon.tar"/>
+        <property name="galileo_url"            value="http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/galileo/SR2/"/>
+        <property name="galileo_jee_win32"      value="eclipse-jee-galileo-SR2-win32.zip"/>
+        <property name="galileo_jee_linux"      value="eclipse-jee-galileo-SR2-linux-gtk.tar"/>
+        <property name="galileo_jee_linux-x86_64" value="eclipse-jee-galileo-SR2-linux-gtk-x86_64.tar"/>
+        <property name="galileo_jee_macos"      value="eclipse-jee-galileo-SR2-macosx-carbon.tar"/>
         <property name="galileo_jee_linux_gz"   value="${galileo_jee_linux}.gz"/>
         <property name="galileo_jee_linux-x86_64_gz" value="${galileo_jee_linux-x86_64}.gz"/>
         <property name="galileo_jee_macos_gz"   value="${galileo_jee_macos}.gz"/>

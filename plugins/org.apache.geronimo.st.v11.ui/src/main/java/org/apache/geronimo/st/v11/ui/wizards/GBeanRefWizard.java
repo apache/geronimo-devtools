@@ -24,10 +24,10 @@ import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTreeWizard;
 import org.apache.geronimo.st.v11.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v11.core.jaxb.JAXBObjectFactoryImpl;
-import org.apache.geronimo.xml.ns.j2ee.web_1.WebAppType;
-import org.apache.geronimo.xml.ns.naming_1.ObjectFactory;
-import org.apache.geronimo.xml.ns.naming_1.PatternType;
-import org.apache.geronimo.xml.ns.naming_1.GbeanRefType;
+import org.apache.geronimo.j2ee.web.WebAppType;
+import org.apache.geronimo.j2ee.naming.ObjectFactory;
+import org.apache.geronimo.j2ee.naming.PatternType;
+import org.apache.geronimo.j2ee.naming.GbeanRefType;
 
 /**
  * @version $Rev$ $Date$
@@ -94,7 +94,7 @@ public class GBeanRefWizard extends AbstractTreeWizard {
                     element.select(GBEAN_TYPE);
                 }
                 else if (PatternType.class.isInstance(eObject)) {
-                    textList.get(0).setText(((org.apache.geronimo.xml.ns.naming_1.PatternType)eObject).getName());
+                    textList.get(0).setText(((org.apache.geronimo.j2ee.naming.PatternType)eObject).getName());
                     textList.get(1).setText(((PatternType)eObject).getGroupId());
                     textList.get(2).setText(((PatternType)eObject).getArtifactId());
                     textList.get(3).setText(((PatternType)eObject).getVersion());

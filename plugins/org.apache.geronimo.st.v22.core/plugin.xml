@@ -39,12 +39,12 @@
         <serverType id="org.apache.geronimo.server.22"
             name="%serverTypeName" description="%serverTypeDescription"
             runtime="true"
-            class="org.apache.geronimo.st.v21.core.GeronimoServer"
+            class="org.apache.geronimo.st.v22.core.GeronimoServer"
             initialState="stopped" supportsRemoteHosts="true"
             startTimeout="240000" stopTimeout="30000" startBeforePublish="true"
             runtimeTypeId="org.apache.geronimo.runtime.22"
-            launchConfigId="org.apache.geronimo.st.core.launchConfigurationType"
-            behaviourClass="org.apache.geronimo.st.v21.core.GeronimoServerBehaviour"
+            launchConfigId="org.apache.geronimo.st.v21.core.launchConfigurationType"
+            behaviourClass="org.apache.geronimo.st.v22.core.GeronimoServerBehaviour"
             hasConfiguration="false" launchModes="run,debug,profile">
         </serverType>
     </extension>
@@ -67,7 +67,7 @@
         <project-facet-version facet="org.apache.geronimo.facet" version="1.2">
             <action type="install" id="geronimo.plan.install.v22">
                 <delegate class="org.apache.geronimo.st.v21.core.operations.GeronimoV21FacetInstallDelegate"/>
-                <config-factory class="org.apache.geronimo.st.v21.core.DeploymentPlanInstallConfig$Factory"/>
+                <config-factory class="org.apache.geronimo.st.core.DeploymentPlanInstallConfig$Factory"/>
             </action>
             <constraint>
                 <or>
@@ -111,5 +111,38 @@
             <facet id="org.apache.geronimo.facet" version="1.2"/>
         </default-facets>
     </extension>
+  
+   <extension
+          point="org.apache.geronimo.st.v21.core.geronimoinfo">
+       <provider
+             class="org.apache.geronimo.st.v22.core.GeronimoV22ServerInfo"
+             versions="2.2">
+       </provider>
+    </extension>
+    
+     <extension
+       point="org.eclipse.hyades.trace.ui.launchConfigMechanismAssociator">
+       <association            
+           launchConfigID = "org.apache.geronimo.st.v22.core.launchConfigurationType">
+   
+           <mechanism mechanismID = "org.eclipse.tptp.trace.ui.jvmpiMechanism"> 
+               <configuration
+                   launchDelegate = "org.eclipse.tptp.trace.ui.internal.launcher.deleg.application.PIAttachLauncherDelegate"
+                   configurationId = "org.eclipse.tptp.trace.ui.jvmpiConfiguration"
+                   associatedAgent = "org.eclipse.tptp.trace.ui.jvmpiAgent"        
+                   filter = "org.eclipse.tptp.platform.profile.server.core.internal.PICollectorFiltration">                
+               </configuration>            
+           </mechanism>        
+           
+           <mechanism mechanismID = "org.eclipse.tptp.trace.jvmti.jvmtiMechanism"> 
+               <configuration
+                   launchDelegate = "org.eclipse.tptp.platform.jvmti.client.internal.launcher.TIAttachLauncherDelegate"
+                   configurationId = "org.eclipse.tptp.trace.jvmti.tiConfiguration"
+                   associatedAgent = "org.eclipse.tptp.platform.jvmti.TIAgent"
+                   filter = "org.eclipse.tptp.platform.profile.server.core.internal.TICollectorFiltration">                            
+               </configuration>            
+           </mechanism>    
+       </association>
+   </extension>
   
 </plugin>

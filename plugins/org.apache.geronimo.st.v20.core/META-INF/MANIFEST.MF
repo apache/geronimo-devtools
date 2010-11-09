@@ -2,12 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.apache.geronimo.st.v20.core;singleton:=true
-Bundle-Version: 2.2.0
+Bundle-Version: 2.2.1
 Bundle-Activator: org.apache.geronimo.st.v21.core.Activator
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.runtime.v20,
- org.apache.geronimo.st.v21.core,
+ org.apache.geronimo.st.v21.core;visibility:=reexport,
  org.apache.geronimo.st.core,
  org.apache.geronimo.jee.v21.jaxbmodel,
  org.eclipse.core.runtime,

@@ -18,9 +18,6 @@ package org.apache.geronimo.st.core;
 
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.IServerLifecycleListener;
-import org.eclipse.wst.server.core.ServerCore;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -50,62 +47,11 @@ public class Activator extends Plugin {
      */
     public void start(BundleContext context) throws Exception {
         super.start(context);
-        ServerCore.addServerLifecycleListener(new IServerLifecycleListener() {
-            public void serverAdded(IServer server) {
-                triggerStartUpdateServerTask(server);
-            }
-
-            public void serverChanged(IServer server) {
-
-            }
-
-            public void serverRemoved(IServer server) {
-            }
-        });
-        IServer[] servers = ServerCore.getServers();
-        for(int i = 0; i < servers.length; i++) {
-            triggerStartUpdateServerTask(servers[i]);
-        }
+        
     }
 
 
-    /** 
-     * <b>triggerStartUpdateServerTask</b> is invoked from:
-     * <ul> 
-     * <li>The WTP ResourceManager after a new server has been defined (via the WTP NewServerWizard)
-     * <li>When a server lifecycle listener has been added (see above)
-     * </ul>
-     * 
-     * @param server 
-     */
-    private void triggerStartUpdateServerTask(IServer server) {
-        GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) server.getAdapter(GeronimoServerBehaviourDelegate.class);
-        if (delegate == null) {
-            delegate = (GeronimoServerBehaviourDelegate) server.loadAdapter(GeronimoServerBehaviourDelegate.class, null);
-        }
-        if (delegate != null) {
-            delegate.startUpdateServerStateTask();
-        }
-    }
-
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-     */
-    public void stop(BundleContext context) throws Exception {
-        IServer[] servers = ServerCore.getServers();
-        for(int i = 0; i < servers.length; i++) {
-            GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) servers[i].getAdapter(GeronimoServerBehaviourDelegate.class);
-            if(delegate != null) {
-                delegate.stopUpdateServerStateTask();
-            }
-        }
-        ModuleArtifactMapper.getInstance().save();
-        super.stop(context);
-        plugin = null;
-    }
+   
 
     /**
      * Returns the shared instance

@@ -20,10 +20,10 @@ import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.sections.AbstractSectionPart;
-import org.apache.geronimo.xml.ns.j2ee.web_1.WebAppType;
-import org.apache.geronimo.xml.ns.naming_1.GbeanLocatorType;
-import org.apache.geronimo.xml.ns.naming_1.ObjectFactory;
-import org.apache.geronimo.xml.ns.naming_1.PatternType;
+import org.apache.geronimo.j2ee.web.WebAppType;
+import org.apache.geronimo.j2ee.naming.GbeanLocatorType;
+import org.apache.geronimo.j2ee.naming.ObjectFactory;
+import org.apache.geronimo.j2ee.naming.PatternType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
