@@ -46,7 +46,7 @@ that each argument has to be on seperate lines:
 Geronimo Eclipse Plugin Version ${pom.version} Enhancements
 --------------------------------------------------
 
-1. Support Geronimo Server 2.1.6
+1. Support Geronimo Server 2.1.7
 
 2. Support Eclipse Helios
 
@@ -54,16 +54,14 @@ Geronimo Eclipse Plugin Version ${pom.version} Enhancements
 Installation Instructions
 -------------------------
 
-See http://cwiki.apache.org/GMOxDOC21/how-to-install-geronimo-eclipse-plugin-v214.html
+See https://cwiki.apache.org/GMOxDOC21/quick-start-fast-and-easy-development.html#Quickstart-fastandeasydevelopment-InstallingGeronimoEclipsePlugin
 
 Bug Fixes and New Features
 --------------------------
 
-GERONIMODEVTOOLS-646	Upgrade to eclipse Helios
-GERONIMODEVTOOLS-648	Source release assembly contains temporary files generated in build process
-GERONIMODEVTOOLS-655	Update version number to 2.1.6 for 21 branch
-GERONIMODEVTOOLS-654	The error log view will always show when publishing projects.
-
+GERONIMODEVTOOLS-608 Publish with GEP takes minutes, while deploy takes seconds
+GERONIMODEVTOOLS-663 Remove duplicated License and Notice files in each jar when we issue "mvn release:prepare"
+GERONIMODEVTOOLS-678 Can not install GEP in RAD SE v8.0
 
 
 Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
