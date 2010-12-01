@@ -401,7 +401,7 @@
 								<executions>
 										<execution>						
 												<configuration>							
-														<attached>false</attached>>
+														<attached>false</attached>
 												</configuration>
 										</execution>
 								</executions>
