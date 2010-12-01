@@ -54,14 +54,17 @@ Geronimo Eclipse Plugin Version ${pom.version} Enhancements
 Installation Instructions
 -------------------------
 
-See https://cwiki.apache.org/GMOxDOC21/quick-start-fast-and-easy-development.html#Quickstart-fastandeasydevelopment-InstallingGeronimoEclipsePlugin
+See https://cwiki.apache.org/GMOxDOC21/how-to-install-geronimo-eclipse-plugin-v217.html
 
 Bug Fixes and New Features
 --------------------------
-
-GERONIMODEVTOOLS-608 Publish with GEP takes minutes, while deploy takes seconds
 GERONIMODEVTOOLS-663 Remove duplicated License and Notice files in each jar when we issue "mvn release:prepare"
+GERONIMODEVTOOLS-680 Synchronize GEP dependency per Server dependency list
 GERONIMODEVTOOLS-678 Can not install GEP in RAD SE v8.0
+GERONIMODEVTOOLS-676 update version number of dependency and moduels to make 2.1 branch build successfully
+GERONIMODEVTOOLS-608 reduce time-consuming in DependencyHelper with cache. Thanks Boes and Chris for the patch
+GERONIMODEVTOOLS-673 Don't download TPTP runtime.
+GERONIMODEVTOOLS-600 2.1 branch can build with 64-bit JDK now
 
 
 Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
