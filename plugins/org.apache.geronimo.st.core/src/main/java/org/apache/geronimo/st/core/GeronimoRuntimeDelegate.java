@@ -238,7 +238,7 @@ abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements
         }
 
         if (systemjarURL != null) {
-        	JarFileClassLoader loader = new JarFileClassLoader(null,new URL[]{systemjarURL},this.getClass().getClassLoader());
+        	JarFileClassLoader loader = new JarFileClassLoader(null,new URL[]{systemjarURL},ClassLoader.getSystemClassLoader());
 			try {
 				Class clazz = loader.loadClass("org.apache.geronimo.system.serverinfo.ServerConstants");
 				Method method = clazz.getMethod("getVersion", new Class[] {});
