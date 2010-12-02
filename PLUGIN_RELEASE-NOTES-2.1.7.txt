@@ -65,6 +65,8 @@ GERONIMODEVTOOLS-676 update version number of dependency and moduels to make 2.1
 GERONIMODEVTOOLS-608 reduce time-consuming in DependencyHelper with cache. Thanks Boes and Chris for the patch
 GERONIMODEVTOOLS-673 Don't download TPTP runtime.
 GERONIMODEVTOOLS-600 2.1 branch can build with 64-bit JDK now
+GERONIMODEVTOOLS-683 GEP can not detect the Geronimo server version correctly 
+GERONIMODEVTOOLS-679 TestSuite not working on branch 2.1.7
 
 
 Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
