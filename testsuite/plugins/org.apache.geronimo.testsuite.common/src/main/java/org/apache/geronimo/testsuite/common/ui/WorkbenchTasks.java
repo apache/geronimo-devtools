@@ -40,7 +40,7 @@ public class WorkbenchTasks {
     	Shell perspectiveShell = aHelper.clickMenuItem (workbenchShell,
               new String[] {"&Window", "&Open Perspective", "&Other..." },
               "Open Perspective");
-        aHelper.clickItem (perspectiveShell, "Java EE (default)");
+        aHelper.clickItem (perspectiveShell, "Java EE");
         aHelper.clickButton (perspectiveShell, IDialogConstants.OK_LABEL);        
     }
 }

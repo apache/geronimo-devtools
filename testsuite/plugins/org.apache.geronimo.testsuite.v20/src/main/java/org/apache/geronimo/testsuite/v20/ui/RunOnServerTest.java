@@ -19,8 +19,6 @@ package org.apache.geronimo.testsuite.v20.ui;
 
 import java.io.FileInputStream;
 
-import org.apache.geronimo.testsuite.common.AssertUtil;
-import org.apache.geronimo.testsuite.common.selenium.EclipseSelenium;
 import org.apache.geronimo.testsuite.common.ui.AbbotHelper;
 import org.apache.geronimo.testsuite.common.ui.Constants;
 import org.apache.geronimo.testsuite.common.ui.ProjectTasks;
@@ -60,7 +58,6 @@ public class RunOnServerTest extends WorkbenchTestCase {
 
     public void testRunOnServer() {
         createServer();
-        startServer();
         createProject();
         copyCodeToProject();
         deployProject();
@@ -76,19 +73,6 @@ public class RunOnServerTest extends WorkbenchTestCase {
             ServerTasks serverTasks = new ServerTasks(workbenchShell, abbotHelper, Constants.SERVER_V20 );
             serverTasks.createServer();
             serverTasks.startServer();
-            success = true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        assertTrue( success );
-    }
-
-
-    private void startServer() {
-        success = false;
-        try {
-            ServerTasks serverTasks = new ServerTasks(workbenchShell, abbotHelper, Constants.SERVER_V20 );
             success = true;
         }
         catch (Exception e) {
@@ -124,7 +108,7 @@ public class RunOnServerTest extends WorkbenchTestCase {
         try {
             IWorkspaceRoot aWSRoot = ResourcesPlugin.getWorkspace().getRoot();
             IProject aProject = aWSRoot.getProject ("DynamicWebProject");
-            String fileDir = aWSRoot.getLocation().toOSString() + "/src/main/resources/run-on-server";
+            String fileDir = aWSRoot.getLocation().toOSString() + "/src/main/resources/run-on-server";// when run in eclipse, you should change 
             IFile aFile = aProject.getFile("WebContent/index.jsp");
             aFile.create(new FileInputStream (fileDir + "/index.jsp"), true, null);
             abbotHelper.waitTime( 1500 );

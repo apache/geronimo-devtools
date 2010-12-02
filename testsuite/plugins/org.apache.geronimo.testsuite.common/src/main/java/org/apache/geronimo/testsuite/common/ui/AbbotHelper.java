@@ -17,8 +17,10 @@
 
 package org.apache.geronimo.testsuite.common.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.geronimo.testsuite.common.MultiWidgetFinderImpl;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Item;
@@ -57,9 +59,11 @@ import abbot.swt.utilities.ExtendedComparator;
 public class AbbotHelper {
     Shell workbenchShell;
     WidgetFinder finder;
+    MultiWidgetFinderImpl mulFinder;
 
     public AbbotHelper (Shell aShell) {
         finder = WidgetFinderImpl.getDefault();
+        mulFinder = MultiWidgetFinderImpl.getDefault();
         workbenchShell = aShell;
     }
     
@@ -184,7 +188,31 @@ public class AbbotHelper {
     //helper method when there are multiple text boxes
     public void setTextFieldForMulti (Shell aShell, String oldText, String newText) throws MultipleFoundException, NotFoundException {
         Text text = (Text) finder.find (aShell, new TextMultipleMatcher(oldText, Text.class, true));
+        
         if (oldText.length() > 0)
+        {
+            TextTester.getTextTester().actionSelect (text, 0, oldText.length());
+            TextTester.getTextTester().actionKeyString (newText);
+        } else {
+            TextTester.getTextTester().actionKeyString (text, newText);  
+        }
+        waitTime( 1500 );
+    }
+    
+    // helper method to get MultiTextFields
+    public List<Text> getMultiTextFiled(Shell aShell, String text) throws MultipleFoundException, NotFoundException {
+    	List<Text> retList = new ArrayList<Text>();
+    	
+    	List<Widget> founds = this.mulFinder.findMulti(aShell, new TextMultipleMatcher(text, Text.class, true));
+    	for(int i=0; i<founds.size(); ++i) {
+    		retList.add((Text)founds.get(i));
+    	}
+    	return retList;
+    }
+    
+    // helper method to update TextField
+    public void updateTextField(Text text, String oldText, String newText) {
+    	if (oldText.length() > 0)
         {
             TextTester.getTextTester().actionSelect (text, 0, oldText.length());
             TextTester.getTextTester().actionKeyString (newText);
@@ -238,7 +266,8 @@ public class AbbotHelper {
 
         while (statusGood == false && countdown > 0) {
             TreeItem item = (TreeItem) finder.find (aShell, new WidgetTextMatcher (itemText, TreeItem.class));
-            if (desiredState.equals (TreeItemTester.getTreeItemTester().getText (item, 1)))
+            String serverStatus = TreeItemTester.getTreeItemTester().getText (item, 0);
+            if (serverStatus.contains(desiredState))
                 statusGood = true;
             
             countdown--;

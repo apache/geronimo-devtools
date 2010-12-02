@@ -19,8 +19,6 @@ package org.apache.geronimo.testsuite.v20.ui;
 
 import java.io.FileInputStream;
 
-import org.apache.geronimo.testsuite.common.AssertUtil;
-import org.apache.geronimo.testsuite.common.selenium.EclipseSelenium;
 import org.apache.geronimo.testsuite.common.ui.AbbotHelper;
 import org.apache.geronimo.testsuite.common.ui.Constants;
 import org.apache.geronimo.testsuite.common.ui.ProjectTasks;
@@ -34,12 +32,15 @@ import org.eclipse.swt.widgets.Shell;
 
 import abbot.swt.eclipse.junit.extensions.WorkbenchTestCase;
 import abbot.swt.eclipse.utils.WorkbenchUtilities;
+import abbot.swt.finder.generic.MultipleFoundException;
+import abbot.swt.finder.generic.NotFoundException;
 
 /*
  * @version $Rev$ $Date$
  */
 public class SharedLibPojoTest extends WorkbenchTestCase {
 
+	ServerTasks serverTasks;
     Shell aShell;
     AbbotHelper aHelper;
     boolean success = false;
@@ -56,23 +57,38 @@ public class SharedLibPojoTest extends WorkbenchTestCase {
 
     public void testSharedLib()
     {
+    	createServer();
         createPojoProject();
         copyCodeToPojoProject();
         createHelloWorldProject();
         copyCodeToHelloWorldProject();
         modifyHelloWorldBuildPath();
-        deployHelloWorldProject();
+        startServer();
         addSharedLibSupport();
         displayApplication();    
     }
+    public void createServer() {
+    	aShell = WorkbenchUtilities.getWorkbenchWindow().getShell();
+    	aHelper = new AbbotHelper (aShell);
 
+        serverTasks = new ServerTasks(aShell, aHelper, Constants.SERVER_V20 );
+        try {
+			serverTasks.createServer();
+		} catch (MultipleFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
     public void createPojoProject()
     {
         try {
-            aShell = WorkbenchUtilities.getWorkbenchWindow().getShell();
-            aHelper = new AbbotHelper(aShell);
-            ServerTasks serverTasks = new ServerTasks(aShell, aHelper, Constants.SERVER_V20 );
-            serverTasks.createServer();
+//            aShell = WorkbenchUtilities.getWorkbenchWindow().getShell();
+//            aHelper = new AbbotHelper(aShell);
+//            ServerTasks serverTasks = new ServerTasks(aShell, aHelper, Constants.SERVER_V21 );
+//            serverTasks.createServer();
             aHelper.clickMenuItem (aShell,new String[] {"&Window", "&Close Perspective"});
             Shell perspectiveShell = aHelper.clickMenuItem (aShell,
                                                             new String[] {"&Window", "&Open Perspective", "&Other..."},
@@ -128,7 +144,7 @@ public class SharedLibPojoTest extends WorkbenchTestCase {
             Shell perspectiveShell = aHelper.clickMenuItem (aShell,
                                                             new String[] {"&Window", "&Open Perspective", "&Other..."},
                                                             "Open Perspective");
-            aHelper.clickItem (perspectiveShell, "Java EE (default)");
+            aHelper.clickItem (perspectiveShell, "Java EE");
             aHelper.clickButton (perspectiveShell, IDialogConstants.OK_LABEL);  
             Shell wizardShell = aHelper.clickMenuItem (aShell,
                                                        new String[] {"&File", "&New\tAlt+Shift+N", "&Other..."},
@@ -139,6 +155,9 @@ public class SharedLibPojoTest extends WorkbenchTestCase {
             aHelper.setTextField(wizardShell,"", "HelloWorld");
             aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
             aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+            aHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+            aHelper.setTextField(wizardShell, "", "helloworld");
+            aHelper.setTextField(wizardShell, "car", "war");
             aHelper.clickButton(wizardShell, "Add a runtime dependency to Geronimo's shared library");
             aHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);
             aHelper.waitForDialogDisposal(wizardShell);
@@ -191,25 +210,16 @@ public class SharedLibPojoTest extends WorkbenchTestCase {
             aHelper.clickButton(aShell, "Enable in-place shared library support.");
             aHelper.clickMenuItem(aShell,new String[]{"&File","&Save"});
             aHelper.clickMenuItem(aShell, new String[]{"&File","C&lose All"});
-            serverTasks.startServer();
         }
         catch (Exception e) {
             e.printStackTrace();        
         }
     }
 
-    public void deployHelloWorldProject()
+    public void startServer()
     {
         try {
-            aHelper.clickMenuItem (aShell,
-                                   new String[] {"&Window", "&Close Perspective"});
-            Shell perspectiveShell = aHelper.clickMenuItem (aShell,
-                                                            new String[] {"&Window", "&Open Perspective", "&Other..."},
-                                                            "Open Perspective");
-            aHelper.clickItem (perspectiveShell, "Java EE (default)");
-            aHelper.clickButton (perspectiveShell, IDialogConstants.OK_LABEL);  
-            ServerTasks serverTasks = new ServerTasks(aShell, aHelper, Constants.SERVER_V20 );
-            serverTasks.publishAllProjects();   
+            serverTasks.startServer();// start server first!
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -218,21 +228,20 @@ public class SharedLibPojoTest extends WorkbenchTestCase {
 
     public void displayApplication()
     {
+        success = false;
         try {
-            EclipseSelenium selenium = new EclipseSelenium();
-            selenium.start();
-            selenium.open("http://localhost:8080/HelloWorld/index.jsp");
-            selenium.waitForPageToLoad("60000");
-            AssertUtil.assertTrue(selenium.getHtmlSource().indexOf( "Hello World!!" ) > 0);
-            AssertUtil.assertTrue(selenium.getHtmlSource().indexOf( "100 USD = 3938.81 INR" ) > 0);
-            aHelper.waitTime(1500);
-            selenium.stop();
-            success=true;
+            Shell deployShell = aHelper.rightClickItem(aShell, "HelloWorld",
+                                                           new String [] {"&Run As", "&1 Run on Server\tAlt+Shift+X, R"}, 
+                                                           "Run On Server");
+            aHelper.clickButton (deployShell, IDialogConstants.FINISH_LABEL);
+            aHelper.waitTime( 10000 );
+            aHelper.clickCombo( aShell, "http://localhost:8080/HelloWorld/");
+            success = true;
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        assertTrue(success);
+        assertTrue( success );
     }
 
     public void deleteProjects()
@@ -254,7 +263,7 @@ public class SharedLibPojoTest extends WorkbenchTestCase {
     public void deleteServer()
     {
         try {
-            ServerTasks serverTasks = new ServerTasks(aShell, aHelper, Constants.SERVER_V20 );
+            serverTasks = new ServerTasks(aShell, aHelper, Constants.SERVER_V20 );
             // stop the server 
             serverTasks.stopServer();
             // remove the server 

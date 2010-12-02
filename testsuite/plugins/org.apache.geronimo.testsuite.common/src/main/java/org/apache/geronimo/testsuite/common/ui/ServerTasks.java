@@ -64,16 +64,16 @@ public class ServerTasks {
     }
 
     public void editServer()throws MultipleFoundException, NotFoundException { 
-        String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
+        String serverDisplay = "/" + Constants.getConstant(serverVersion, Constants.SERVERDISPLAY) + ".*/";
         aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&Window", "Show &View", "Servers"});
+                new String[] {"&Window", "Show View", "Servers"});
          aHelper.doubleClickItem(workbenchShell, serverDisplay);
     }
 
     public void startServer () throws MultipleFoundException, NotFoundException {
-        String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
+        String serverDisplay = "/" + Constants.getConstant(serverVersion, Constants.SERVERDISPLAY) + ".*/";
         aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&Window", "Show &View", "Servers"});
+                new String[] {"&Window", "Show View", "Servers"});
         
         aHelper.rightClickItem (workbenchShell, serverDisplay,
                 new String[] {"&Start"});
@@ -83,9 +83,9 @@ public class ServerTasks {
     }
     
     public void stopServer () throws MultipleFoundException, NotFoundException {
-        String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
+    	String serverDisplay = "/" + Constants.getConstant(serverVersion, Constants.SERVERDISPLAY) + ".*/";
         aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&Window", "Show &View", "Servers"});
+                new String[] {"&Window", "Show View", "Servers"});
 
         aHelper.rightClickItem (workbenchShell, serverDisplay,
                 new String[] {"S&top"});
@@ -111,12 +111,12 @@ public class ServerTasks {
     }
 
     public void publishAllProjects () throws MultipleFoundException, NotFoundException {
-        String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
+        String serverDisplay = "/" + Constants.getConstant(serverVersion, Constants.SERVERDISPLAY) + ".*/";
         
         aHelper.clickMenuItem (workbenchShell,
-                new String[] {"&Window", "Show &View", "Servers"});
+                new String[] {"&Window", "Show View", "Servers"});
         Shell deployShell = aHelper.rightClickItem (workbenchShell, serverDisplay,
-                 new String[] {"Add and Remove &Projects..."}, "Add and Remove Projects");
+                 new String[] {"&Add and Remove..."}, "Add and Remove...");
         aHelper.clickButton (deployShell, "Add A&ll >>");
         
         aHelper.clickButton (deployShell, IDialogConstants.FINISH_LABEL);

@@ -19,8 +19,6 @@ package org.apache.geronimo.testsuite.v21.ui;
 
 import java.io.FileInputStream;
 
-import org.apache.geronimo.testsuite.common.AssertUtil;
-import org.apache.geronimo.testsuite.common.selenium.EclipseSelenium;
 import org.apache.geronimo.testsuite.common.ui.AbbotHelper;
 import org.apache.geronimo.testsuite.common.ui.Constants;
 import org.apache.geronimo.testsuite.common.ui.ProjectTasks;
@@ -60,7 +58,6 @@ public class RunOnServerTest extends WorkbenchTestCase {
 
     public void testRunOnServer() {
         createServer();
-        startServer();
         createProject();
         copyCodeToProject();
         deployProject();
@@ -83,20 +80,6 @@ public class RunOnServerTest extends WorkbenchTestCase {
         }
         assertTrue( success );
     }
-
-
-    private void startServer() {
-        success = false;
-        try {
-            ServerTasks serverTasks = new ServerTasks(workbenchShell, abbotHelper, Constants.SERVER_V21 );
-            success = true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        assertTrue( success );
-    }
-
 
     private void createProject() {
         success = false;
