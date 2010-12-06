@@ -110,6 +110,14 @@
             <arg value="-Darch=x86"/>
         </java>
     </target>
+    
+    <target name="skip" description="Skip the build.xml">
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Skip testsuite\launcher\build.xml                                             </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+    </target>
 
 </project>
 

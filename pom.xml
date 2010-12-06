@@ -574,6 +574,17 @@
                 <module>testsuite</module>
             </modules>
         </profile>
+        
+        <profile>
+            <id>allsubproject</id>
+            <modules>
+                <module>eclipse</module>
+                <module>plugins</module>
+                <module>features</module>
+                <module>assembly</module>
+                <module>testsuite</module>
+            </modules>
+        </profile>
 
      <!-- this profile is copied from genesis-default-flava and genesis 2.0  -->
          <profile>

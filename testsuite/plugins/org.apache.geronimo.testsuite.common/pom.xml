@@ -66,47 +66,6 @@
                 <artifactId>maven-dependency-plugin</artifactId>
             </plugin>
 
-            <!--
-             |
-             | Unzip the resulting plugin jar into the launcher eclipse directory for later usage
-             |
-             -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>unzip-common</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <tasks>
-                                <unzip src="${settings.localRepository}/org/openqa/selenium/client-drivers/selenium-java-client-driver/1.0-beta-1/selenium-java-client-driver-1.0-beta-1.jar"
-                                      dest="${project.build.directory}/classes"/>
-                                <unzip src="${settings.localRepository}/org/openqa/selenium/server/selenium-server/1.0-beta-1/selenium-server-1.0-beta-1-standalone.jar"
-                                      dest="${project.build.directory}/classes"/>
-                            </tasks>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>unzip-selenium</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <tasks>
-                                <mkdir dir="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.common-2.1.7"/>
-                                <unzip src="${project.build.directory}/org.apache.geronimo.testsuite.common-2.1.7.jar"
-                                      dest="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.common-2.1.7"/>
-                            </tasks>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
             <!-- Exclude tutorial java files -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -192,4 +151,59 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+    		<profile>
+    				<id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>				        
+				        <plugins>
+				            <!--
+				             |
+				             | Unzip the resulting plugin jar into the launcher eclipse directory for later usage
+				             |
+				             -->
+				            <plugin>
+				                <groupId>org.apache.maven.plugins</groupId>
+				                <artifactId>maven-antrun-plugin</artifactId>
+				                <executions>
+				                    <execution>
+				                        <id>unzip-common</id>
+				                        <phase>generate-resources</phase>
+				                        <goals>
+				                            <goal>run</goal>
+				                        </goals>
+				                        <configuration>
+				                            <tasks>
+				                                <unzip src="${settings.localRepository}/org/openqa/selenium/client-drivers/selenium-java-client-driver/1.0-beta-1/selenium-java-client-driver-1.0-beta-1.jar"
+				                                      dest="${project.build.directory}/classes"/>
+				                                <unzip src="${settings.localRepository}/org/openqa/selenium/server/selenium-server/1.0-beta-1/selenium-server-1.0-beta-1-standalone.jar"
+				                                      dest="${project.build.directory}/classes"/>
+				                            </tasks>
+				                        </configuration>
+				                    </execution>
+				                    <execution>
+				                        <id>unzip-selenium</id>
+				                        <phase>package</phase>
+				                        <goals>
+				                            <goal>run</goal>
+				                        </goals>
+				                        <configuration>
+				                            <tasks>
+				                                <mkdir dir="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.common-2.1.7"/>
+				                                <unzip src="${project.build.directory}/org.apache.geronimo.testsuite.common-2.1.7.jar"
+				                                      dest="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.common-2.1.7"/>
+				                            </tasks>
+				                        </configuration>
+				                    </execution>
+				                </executions>
+				            </plugin>	
+				        </plugins>
+				    </build>
+    		</profile>
+    		<profile>
+    				<id>allsubproject</id>    				
+    		</profile>
+    </profiles>
 </project>

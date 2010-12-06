@@ -34,57 +34,70 @@
         <version>2.1.7</version>
     </parent>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>create-geronimo-server</id>
-                        <phase>validate</phase>
-                        <configuration>
-                            <tasks>
-                                <!--
-                                 |
-                                 | Unzip and rename the testsuite Geronimo server v2.1.6
-                                 |
-                                 -->
-                                <property name="geronimo_install1"       value="${basedir}/../launcher/"/>
-                                <property name="geronimo_assembly1"      value="org/apache/geronimo/assemblies"/>
-                                <property name="geronimo_name1"          value="geronimo-tomcat6-javaee5"/>
-                                <property name="geronimoVersion_1"       value="2.1.7"/>
-                                <mkdir dir="${geronimo_install1}"/>
-                                <unzip src="${settings.localRepository}/${geronimo_assembly1}/${geronimo_name1}/${geronimoVersion_1}/${geronimo_name1}-${geronimoVersion_1}-bin.zip"
-                                      dest="${geronimo_install1}"/>
-                                <move todir="${geronimo_install1}server_v2.1">
-                                    <fileset dir="${geronimo_install1}/${geronimo_name1}-${geronimoVersion_1}"/>
-                                </move>
-                                 
-                                <!--
-                                 |
-                                 | Unzip and rename the testsuite Geronimo server v2.0.2
-                                 |
-                                 -->
-                                <property name="geronimo_install2"       value="${basedir}/../launcher/"/>
-                                <property name="geronimo_assembly2"      value="org/apache/geronimo/assemblies"/>
-                                <property name="geronimo_name2"          value="geronimo-tomcat6-jee5"/>
-                                <property name="geronimoVersion_2"       value="2.0.2"/>
-                                <mkdir dir="${geronimo_install2}"/>
-                                <unzip src="${settings.localRepository}/${geronimo_assembly2}/${geronimo_name2}/${geronimoVersion_2}/${geronimo_name2}-${geronimoVersion_2}-bin.zip"
-                                      dest="${geronimo_install2}"/>
-                                <move todir="${geronimo_install2}server_v2.0">
-                                    <fileset dir="${geronimo_install2}/${geronimo_name2}-${geronimoVersion_2}"/>
-                                </move>
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+		<profiles>
+				<profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+				        <plugins>
+				            <plugin>
+				                <groupId>org.apache.maven.plugins</groupId>
+				                <artifactId>maven-antrun-plugin</artifactId>
+				                <executions>
+				                    <execution>
+				                        <id>create-geronimo-server</id>
+				                        <phase>validate</phase>
+				                        <configuration>
+				                            <tasks>
+				                                <!--
+				                                 |
+				                                 | Unzip and rename the testsuite Geronimo server v2.1.6
+				                                 |
+				                                 -->
+				                                <property name="geronimo_install1"       value="${basedir}/../launcher/"/>
+				                                <property name="geronimo_assembly1"      value="org/apache/geronimo/assemblies"/>
+				                                <property name="geronimo_name1"          value="geronimo-tomcat6-javaee5"/>
+				                                <property name="geronimoVersion_1"       value="2.1.7"/>
+				                                <mkdir dir="${geronimo_install1}"/>
+				                                <unzip src="${settings.localRepository}/${geronimo_assembly1}/${geronimo_name1}/${geronimoVersion_1}/${geronimo_name1}-${geronimoVersion_1}-bin.zip"
+				                                      dest="${geronimo_install1}"/>
+				                                <move todir="${geronimo_install1}server_v2.1">
+				                                    <fileset dir="${geronimo_install1}/${geronimo_name1}-${geronimoVersion_1}"/>
+				                                </move>
+				                                 
+				                                <!--
+				                                 |
+				                                 | Unzip and rename the testsuite Geronimo server v2.0.2
+				                                 |
+				                                 -->
+				                                <property name="geronimo_install2"       value="${basedir}/../launcher/"/>
+				                                <property name="geronimo_assembly2"      value="org/apache/geronimo/assemblies"/>
+				                                <property name="geronimo_name2"          value="geronimo-tomcat6-jee5"/>
+				                                <property name="geronimoVersion_2"       value="2.0.2"/>
+				                                <mkdir dir="${geronimo_install2}"/>
+				                                <unzip src="${settings.localRepository}/${geronimo_assembly2}/${geronimo_name2}/${geronimoVersion_2}/${geronimo_name2}-${geronimoVersion_2}-bin.zip"
+				                                      dest="${geronimo_install2}"/>
+				                                <move todir="${geronimo_install2}server_v2.0">
+				                                    <fileset dir="${geronimo_install2}/${geronimo_name2}-${geronimoVersion_2}"/>
+				                                </move>
+				                            </tasks>
+				                        </configuration>
+				                        <goals>
+				                            <goal>run</goal>
+				                        </goals>
+				                    </execution>
+				                </executions>
+				            </plugin>
+				        </plugins>
+				    </build>
+        </profile>        
+        <profile>
+        		<id>allsubproject</id>
+        </profile>
+    </profiles>
+    
+    
                                                 
 </project>
