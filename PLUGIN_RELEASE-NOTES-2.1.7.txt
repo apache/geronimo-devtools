@@ -67,6 +67,7 @@ GERONIMODEVTOOLS-673 Don't download TPTP runtime.
 GERONIMODEVTOOLS-600 2.1 branch can build with 64-bit JDK now
 GERONIMODEVTOOLS-683 GEP can not detect the Geronimo server version correctly 
 GERONIMODEVTOOLS-679 TestSuite not working on branch 2.1.7
+GERONIMODEVTOOLS-686 Create a new profile to skip the test suite executions when releasing GEP
 
 
 Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
