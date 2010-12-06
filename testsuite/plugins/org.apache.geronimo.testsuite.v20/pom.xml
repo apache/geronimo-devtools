@@ -18,7 +18,7 @@
 
 <!-- @version $Rev: 678021 $ $Date: 2008-07-18 13:18:23 -0700 (Fri, 18 Jul 2008) $ -->
 
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -166,9 +166,8 @@
 				                        </goals>
 				                        <configuration>
 				                            <tasks>
-				                                <mkdir dir="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.v20-2.1.7"/>
-				                                <unzip src="${project.build.directory}/org.apache.geronimo.testsuite.v20-2.1.7.jar"
-				                                      dest="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.v20-2.1.7"/>
+				                                <mkdir dir="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.v20-2.1.7" />
+				                                <unzip src="${project.build.directory}/org.apache.geronimo.testsuite.v20-2.1.7.jar" dest="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.v20-2.1.7" />
 				                            </tasks>
 				                        </configuration>
 				                    </execution>

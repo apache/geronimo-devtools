@@ -23,7 +23,7 @@
     <artifactId>geronimo-eclipse-plugin</artifactId>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin</name>
-    <version>2.1.7-SNAPSHOT</version>
+    <version>2.1.7</version>
 
     <parent>
         <groupId>org.apache</groupId>
@@ -65,9 +65,9 @@
     </mailingLists>
                         
     <scm>
-        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/branches/2.1</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/branches/2.1</developerConnection>
-        <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/branches/2.1</url>
+        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/tags/geronimo-eclipse-plugin-2.1.7</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/tags/geronimo-eclipse-plugin-2.1.7</developerConnection>
+        <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/tags/geronimo-eclipse-plugin-2.1.7</url>
     </scm>
                         
     <organization>
