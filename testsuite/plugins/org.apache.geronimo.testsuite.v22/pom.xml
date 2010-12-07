@@ -25,7 +25,7 @@
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>org.apache.geronimo.testsuite.v22</artifactId>
     <packaging>jar</packaging>
-    <version>2.2.0</version>
+    <version>2.2.1</version>
     <name>${artifactId}</name>
 
     <parent>
@@ -82,9 +82,9 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <mkdir dir="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.v22-2.2.0"/>
-                                <unzip src="${project.build.directory}/org.apache.geronimo.testsuite.v22-2.2.0.jar"
-                                      dest="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.v22-2.2.0"/>
+                                <mkdir dir="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.v22-2.2.1"/>
+                                <unzip src="${project.build.directory}/org.apache.geronimo.testsuite.v22-2.2.1.jar"
+                                      dest="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.v22-2.2.1"/>
                             </tasks>
                         </configuration>
                     </execution>

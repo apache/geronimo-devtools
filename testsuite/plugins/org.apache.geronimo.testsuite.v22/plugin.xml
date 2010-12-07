@@ -23,7 +23,7 @@
     id="org.apache.geronimo.testsuite.v22" 
     name="Geronimo v22 Server Tools Testsuite Plug-in" 
     provider-name="Apache.org" 
-    version="2.2.0" 
+    version="2.2.1" 
     class="org.apache.geronimo.testsuite.v22.Activator">
 
     <requires>

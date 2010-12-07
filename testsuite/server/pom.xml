@@ -47,13 +47,13 @@
                             <tasks>
                                 <!--
                                  |
-                                 | Unzip and rename the testsuite Geronimo server v2.2.0
+                                 | Unzip and rename the testsuite Geronimo server v2.2.1
                                  |
                                  -->
                                 <property name="geronimo_install1"       value="${basedir}/../launcher/"/>
                                 <property name="geronimo_assembly1"      value="org/apache/geronimo/assemblies"/>
                                 <property name="geronimo_name1"          value="geronimo-tomcat6-javaee5"/>
-                                <property name="geronimoVersion_1"       value="2.2-SNAPSHOT"/>
+                                <property name="geronimoVersion_1"       value="2.2.1"/>
                                 <mkdir dir="${geronimo_install1}"/>
                                 <unzip src="${settings.localRepository}/${geronimo_assembly1}/${geronimo_name1}/${geronimoVersion_1}/${geronimo_name1}-${geronimoVersion_1}-bin.zip"
                                       dest="${geronimo_install1}"/>
@@ -63,13 +63,13 @@
                                  
                                 <!--
                                  |
-                                 | Unzip and rename the testsuite Geronimo server v2.1.4
+                                 | Unzip and rename the testsuite Geronimo server v2.1.7
                                  |
                                  -->
                                 <property name="geronimo_install2"       value="${basedir}/../launcher/"/>
                                 <property name="geronimo_assembly2"      value="org/apache/geronimo/assemblies"/>
                                 <property name="geronimo_name2"          value="geronimo-tomcat6-javaee5"/>
-                                <property name="geronimoVersion_2"       value="2.1.4"/>
+                                <property name="geronimoVersion_2"       value="2.1.7"/>
                                 <mkdir dir="${geronimo_install2}"/>
                                 <unzip src="${settings.localRepository}/${geronimo_assembly2}/${geronimo_name2}/${geronimoVersion_2}/${geronimo_name2}-${geronimoVersion_2}-bin.zip"
                                       dest="${geronimo_install2}"/>
