@@ -18,7 +18,7 @@ Bundle-ClassPath: lib/openejb-builder-2.1.1.jar,
  lib/geronimo-deploy-jsr88-1.1.1.jar,
  lib/geronimo-connector-builder-1.1.1.jar,
  lib/geronimo-common-1.1.1.jar,
- lib/geronimo-j2ee-deployment_1.1_spec-1.0.jar
+ lib/geronimo-javaee-deployment_1.1MR3_spec-1.0.jar
 Export-Package: javax.enterprise.deploy.shared,
  javax.enterprise.deploy.spi,
  javax.enterprise.deploy.spi.exceptions,

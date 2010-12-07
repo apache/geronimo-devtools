@@ -397,7 +397,7 @@
         </dependency>
        <dependency>
                 <groupId>org.apache.geronimo.specs</groupId>
-                <artifactId>geronimo-j2ee-deployment_1.1_spec</artifactId>
+                <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
                 <version>1.0</version>
         </dependency>
     </dependencies>
