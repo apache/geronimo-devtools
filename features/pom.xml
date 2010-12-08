@@ -28,6 +28,21 @@
         <version>2.2.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+    
+    <build>
+         <pluginManagement>
+            <plugins>
+               <!-- skip deploy child artifacts in release process-->
+               <plugin>
+                   <artifactId>maven-deploy-plugin</artifactId>             
+                   <configuration>
+                     <skip>true</skip>
+                  </configuration>
+               </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    
     <modules>
         <module>org.apache.geronimo.v22.feature</module>
     </modules>
