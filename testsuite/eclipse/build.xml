@@ -321,5 +321,13 @@
                dest="${test_eclipse}eclipse/features/org.apache.geronimo.v22.feature_${gep_version}"
                overwrite="true"/>
     </target>
+    
+    <target name="skip" description="Skip the build.xml">                                             
+        <echo>#################################################################################</echo>
+        <echo>##                                                                               </echo>
+        <echo>## Skip testsuite\eclipse\build.xml                                              </echo>
+        <echo>##                                                                               </echo>
+        <echo>#################################################################################</echo>
+    </target>
 
 </project>

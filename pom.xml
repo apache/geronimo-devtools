@@ -552,7 +552,18 @@
                 <module>testsuite</module>
             </modules>
         </profile>
-
+        
+        <profile>                         
+            <id>allsubproject</id>        
+            <modules>                     
+                <module>eclipse</module>
+                <module>plugins</module>
+                <module>features</module>
+                <module>assembly</module>
+                <module>testsuite</module>
+            </modules>                    
+        </profile>
+        		        
             <profile>
                       <id>apache-release</id>
                       <build>
