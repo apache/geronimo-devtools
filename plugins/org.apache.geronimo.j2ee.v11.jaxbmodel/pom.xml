@@ -115,6 +115,14 @@
                     <include>NOTICE.txt</include>
                 </includes>
             </resource>
+            <resource>
+                <targetPath>META-INF</targetPath>
+                <directory>target/maven-shared-archive-resources/META-INF/</directory>
+                <excludes>
+                    <exclude>LICENSE</exclude>
+                    <exclude>NOTICE</exclude>
+                </excludes>
+            </resource>
         </resources>
         <plugins>
             <!--

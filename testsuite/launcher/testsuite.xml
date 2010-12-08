@@ -65,9 +65,11 @@
     </target>
 
     <target name="all">
+    <!--
         <antcall target="testsuite.v22" />
         <antcall target="testsuite.v21" />
         <antcall target="testsuite.v20" />
+     -->
     </target>
 
 </project>
