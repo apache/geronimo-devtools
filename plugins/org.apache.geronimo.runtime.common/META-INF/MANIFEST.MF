@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo Common Runtime Plug-in
 Bundle-SymbolicName: org.apache.geronimo.runtime.common;singleton:=true
-Bundle-Version: 2.1.7
+Bundle-Version: 2.1.8
 Bundle-ClassPath: 
  lib/geronimo-javaee-deployment_1.1MR3_spec-1.0.jar,
  lib/commons-logging-1.0.4.jar,

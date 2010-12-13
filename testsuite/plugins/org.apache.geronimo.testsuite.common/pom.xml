@@ -189,8 +189,8 @@
 				                        </goals>
 				                        <configuration>
 				                            <tasks>
-				                                <mkdir dir="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.common-2.1.7" />
-				                                <unzip src="${project.build.directory}/org.apache.geronimo.testsuite.common-2.1.7.jar" dest="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.common-2.1.7" />
+				                                <mkdir dir="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.common-2.1.8" />
+				                                <unzip src="${project.build.directory}/org.apache.geronimo.testsuite.common-2.1.8.jar" dest="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.common-2.1.8" />
 				                            </tasks>
 				                        </configuration>
 				                    </execution>

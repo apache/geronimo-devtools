@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo v21 Server Tools Testsuite Plug-in
 Bundle-SymbolicName: org.apache.geronimo.testsuite.v21;singleton:=true
-Bundle-Version: 2.1.7
+Bundle-Version: 2.1.8
 Bundle-Activator: org.apache.geronimo.testsuite.v21.Activator
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin

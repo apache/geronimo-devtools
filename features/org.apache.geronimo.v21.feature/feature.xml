@@ -20,7 +20,7 @@
 <feature
       id="org.apache.geronimo.v21.feature"
       label="Geronimo v2.1 Server Adapter"
-      version="2.1.7"
+      version="2.1.8"
       provider-name="%providerName"
       plugin="org.apache.geronimo.st.v21.core"
       image="bigG.gif">
@@ -55,75 +55,75 @@
          id="org.apache.geronimo.st.core"
          download-size="132"
          install-size="132"
-         version="2.1.7"
+         version="2.1.8"
          unpack="false"/>
 
    <plugin
          id="org.apache.geronimo.st.ui"
          download-size="164"
          install-size="164"
-         version="2.1.7"
+         version="2.1.8"
          unpack="false"/>
 
    <plugin
          id="org.apache.geronimo.st.schemas"
          download-size="72"
          install-size="72"
-         version="2.1.7"
+         version="2.1.8"
          unpack="false"/>
 
    <plugin
          id="org.apache.geronimo.runtime.common"
          download-size="1160"
          install-size="1160"
-         version="2.1.7"/>
+         version="2.1.8"/>
         
     <plugin
          id="org.apache.geronimo.st.v21.core"
          download-size="48"
          install-size="48"
-         version="2.1.7"
+         version="2.1.8"
          unpack="false"/>
     
     <plugin
          id="org.apache.geronimo.st.v21.ui"
          download-size="164"
          install-size="164"
-         version="2.1.7"
+         version="2.1.8"
          unpack="false"/>
 
     <plugin
          id="org.apache.geronimo.runtime.v21"
          download-size="1252"
          install-size="1252"
-         version="2.1.7"/>
+         version="2.1.8"/>
 
     <plugin
          id="org.apache.geronimo.jee.v21.jaxbmodel"
          download-size="140"
          install-size="140"
-         version="2.1.7"
+         version="2.1.8"
          unpack="false"/>
          
     <plugin
          id="org.apache.geronimo.st.v20.core"
          download-size="20"
          install-size="20"
-         version="2.1.7"
+         version="2.1.8"
          unpack="false"/>
          
     <plugin
          id="org.apache.geronimo.st.v20.ui"
          download-size="16"
          install-size="16"
-         version="2.1.7"
+         version="2.1.8"
          unpack="false"/>
          
     <plugin
          id="org.apache.geronimo.runtime.v20"
          download-size="1052"
          install-size="1052"
-         version="2.1.7"/>
+         version="2.1.8"/>
     
     
 </feature>

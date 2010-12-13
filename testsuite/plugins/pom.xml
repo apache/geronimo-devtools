@@ -30,8 +30,8 @@
         
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
-        <artifactId>geronimo-eclipse-plugin</artifactId>
-        <version>2.1.8-SNAPSHOT</version>
+        <artifactId>testsuite</artifactId>
+        <version>2.1.8</version>
     </parent>
         
     <build>

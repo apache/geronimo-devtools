@@ -84,7 +84,7 @@
                         
     <properties>
         <eclipseInstall>${settings.localRepository}/eclipse</eclipseInstall>
-        <org.apache.geronimo.v21.feature_version>2.1.7</org.apache.geronimo.v21.feature_version>
+        <org.apache.geronimo.v21.feature_version>2.1.8</org.apache.geronimo.v21.feature_version>
         <keystoreAlias>devtools</keystoreAlias> 
         <keystoreFile>keystore</keystoreFile> 
         <keystoreDname>CN=http://geronimo.apache.org,OU=Geronimo,O=Apache,L=Geronimo,S=Apache,C=US</keystoreDname> 
