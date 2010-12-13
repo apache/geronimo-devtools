@@ -39,7 +39,7 @@
     </description>
 
     <properties>
-        <geronimoVersion_1>2.1.7</geronimoVersion_1>
+        <geronimoVersion_1>2.1.8-SNAPSHOT</geronimoVersion_1>
         <geronimoVersion_2>2.0.2</geronimoVersion_2>
     </properties>
 
