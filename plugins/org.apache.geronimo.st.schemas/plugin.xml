@@ -107,6 +107,10 @@
                name="http://openejb.apache.org/xml/ns/pkgen-2.1"
                uri="v22/pkgen-2.1.xsd">
          </uri>
+         <uri
+         	name="http://geronimo.apache.org/xml/ns/geronimo-jaspi"
+         	uri="v22/geronimo-jaspi.xsd">
+         </uri>
          </catalogContribution>
    </extension>
 

@@ -105,6 +105,13 @@
          unpack="false"/>
          
     <plugin
+         id="org.apache.geronimo.jee.v22.jaxbmodel"
+         download-size="30"
+         install-size="30"
+         version="2.2.1"
+         unpack="false"/>         
+         
+    <plugin
          id="org.apache.geronimo.st.v22.core"
          download-size="20"
          install-size="20"

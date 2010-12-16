@@ -70,6 +70,12 @@
             <artifactId>org.apache.geronimo.jee.v21.jaxbmodel</artifactId>
             <version>${version}</version>
         </dependency>
+        
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.jee.v22.jaxbmodel</artifactId>
+            <version>${version}</version>
+        </dependency>
            
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
