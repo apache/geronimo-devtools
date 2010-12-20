@@ -438,8 +438,10 @@ public class DependencyHelper {
             }
         }
 
-        //put module's environment into the cache for next retrieve
-        environmentCache.put(module, environment);
+		// put module's environment into the cache for next retrieve
+		if (environment != null) {
+			environmentCache.put(module, environment);
+		}
         
         Trace.tracePoint("Exit ", "DependencyHelper.getEnvironment", environment);
         return environment;
