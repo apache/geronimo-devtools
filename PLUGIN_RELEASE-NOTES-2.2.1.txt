@@ -14,7 +14,7 @@ System Requirements
 -------------------
 1. Java J2SE 1.5.0 or greater, and a platform that supports it
 
-2. Eclipse IDE for Java EE Developers (Ganymede or Helios), which is platform-specific
+2. Eclipse IDE for Java EE Developers (Galileo or Helios), which is platform-specific
 
    -- Get Eclipse from http://www.eclipse.org/downloads/
 
@@ -47,7 +47,9 @@ Geronimo Eclipse Plugin Version ${pom.version} Enhancements
 --------------------------------------------------
 1. Support Geronimo Server 2.2.1
 
-2. Support Eclipse Helios
+2. Support Geronimo Server 2.1.7
+
+3. Support Eclipse Helios
 
 
 
@@ -59,7 +61,24 @@ See http://cwiki.apache.org/GMOxDOC22/installing-geronimo-eclipse-plugin.html
 
 Bug Fixed and New Features
 --------------------------
-
+GERONIMODEVTOOLS-283 improve implementation to avoid possible failure with JDK6
+GERONIMODEVTOOLS-600 221 now branch can build with 64-bit jdk
+GERONIMODEVTOOLS-604 update eclipse to 3.5.2
+GERONIMODEVTOOLS-607 correct jstl lib path for v2.2 adapter
+GERONIMODEVTOOLS-608 reduce time-consuming in DependencyHelper with cache
+GERONIMODEVTOOLS-641 add configuration for maven release plugin in 2.2 branch
+GERONIMODEVTOOLS-644 Refactor code for Geronimo 2.2.x branch
+GERONIMODEVTOOLS-646 Upgrade to eclipse Helios for branches 2.2
+GERONIMODEVTOOLS-648 Source release assembly contains temporary files generated in build process
+GERONIMODEVTOOLS-661 Create JAXB model for geronimo-jaspi.xsd
+GERONIMODEVTOOLS-660 Add new schema geronimo-jaspi.xsd into GEP
+GERONIMODEVTOOLS-673 Don't download TPTP runtime
+GERONIMODEVTOOLS-678 Can not install GEP in RAD SE v8.0
+GERONIMODEVTOOLS-681 GEP branch 22 build failure because of missing tptp packages 
+GERONIMODEVTOOLS-682 Upgrade Geronimo server support to 2.1.7 in GEP branch 22
+GERONIMODEVTOOLS-685 Can not build GEP2.2.1 testsuit successfully
+GERONIMODEVTOOLS-689 NullPointerException when publishing with Geronimo Eclipse Plugin
+GERONIMODEVTOOLS-690 NullpointerException occurs if one adds a "Utility Project" to the EAR
 
 Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
 
