@@ -146,7 +146,7 @@ public class SharedLibPojoTest extends AbstractTestCase {
             Shell perspectiveShell = abbotHelper.clickMenuItem (workbenchShell,
                                                             new String[] {"&Window", "&Open Perspective", "&Other..."},
                                                             "Open Perspective");
-            abbotHelper.clickItem (perspectiveShell, "Java EE (default)");
+            abbotHelper.clickItem (perspectiveShell, "Java EE");
             abbotHelper.clickButton (perspectiveShell, IDialogConstants.OK_LABEL);  
             Shell wizardShell = abbotHelper.clickMenuItem (workbenchShell,
                                                        new String[] {"&File", "&New\tAlt+Shift+N", "&Other..."},
@@ -157,6 +157,9 @@ public class SharedLibPojoTest extends AbstractTestCase {
             abbotHelper.setTextField(wizardShell,"", "HelloWorld");
             abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
             abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+            abbotHelper.clickButton (wizardShell, IDialogConstants.NEXT_LABEL);
+            abbotHelper.setTextField(wizardShell, "", "helloworld");
+            abbotHelper.setTextField(wizardShell, "car", "war");
             abbotHelper.clickButton(wizardShell, "Add a runtime dependency to Geronimo's shared library");
             abbotHelper.clickButton (wizardShell, IDialogConstants.FINISH_LABEL);
             abbotHelper.waitForDialogDisposal(wizardShell);
@@ -237,23 +240,19 @@ public class SharedLibPojoTest extends AbstractTestCase {
     }
 
     public boolean displayApplication() {
-        boolean success = true;
+    	
+        boolean success = false;
         try {
-            EclipseSelenium selenium = new EclipseSelenium();
-            selenium.start();
-            selenium.open ("http://localhost:8080/HelloWorld/index.jsp");
-            selenium.waitForPageToLoad ("60000");
-            success = (selenium.getHtmlSource().indexOf ("Hello World!!") > 0);
-            if (success == true) {
-                success = (selenium.getHtmlSource().indexOf ("100 USD = 3938.81 INR") > 0);
-            }
-            abbotHelper.waitTime (AbbotHelper.WAIT_STANDARD);
-            selenium.stop();
+            Shell deployShell = abbotHelper.rightClickItem(workbenchShell, "HelloWorld",
+                                                           new String [] {"&Run As", "&1 Run on Server\tAlt+Shift+X, R"}, 
+                                                           "Run On Server");
+            abbotHelper.clickButton (deployShell, IDialogConstants.FINISH_LABEL);
+            abbotHelper.waitTime( 10000 );
+            success = true;
+        } catch (Exception e) {
+        	e.printStackTrace();
         }
-        catch (Exception e) {
-            e.printStackTrace();
-            success = false;
-        }
+        
         return success;
     }
 }

@@ -17,7 +17,6 @@
 
 package org.apache.geronimo.testsuite.v20.ui;
 
-import org.apache.geronimo.testsuite.common.selenium.EclipseSelenium;
 import org.apache.geronimo.testsuite.common.ui.AbbotHelper;
 import org.apache.geronimo.testsuite.common.ui.Constants;
 import org.apache.geronimo.testsuite.common.ui.ServerTasks;
@@ -65,20 +64,20 @@ public class NewServerTest extends WorkbenchTestCase {
 
             serverTasks.startServer();
             
-            EclipseSelenium selenium = new EclipseSelenium();
-            selenium.start();
-            
-            selenium.open( "http://localhost:8080/console/" );
-            selenium.waitForPageToLoad( "2000" );
-            selenium.type("j_username", "system");
-            selenium.type("j_password", "manager");
-            selenium.click("submit");
+//            EclipseSelenium selenium = new EclipseSelenium();
+//            selenium.start();
+//            
+//            selenium.open( "http://localhost:8080/console/" );
+//            selenium.waitForPageToLoad( "2000" );
+//            selenium.type("j_username", "system");
+//            selenium.type("j_password", "manager");
+//            selenium.click("submit");
             
             serverTasks.stopServer();
 
             // remove the server 
             serverTasks.removeServer();
-            selenium.stop();
+//            selenium.stop();
 
             success = true;
         }

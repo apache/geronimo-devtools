@@ -54,10 +54,12 @@
     	<testCase class="org.apache.geronimo.testsuite.v22.ui.RunOnServerTest">
     	</testCase>
     </extension>
+    <!--
     <extension point="org.apache.geronimo.testsuite.v22.testCases">
     	<testCase class="org.apache.geronimo.testsuite.v22.ui.Tutorial5MinuteTest">
     	</testCase>
     </extension>
+    -->
     <extension point="org.apache.geronimo.testsuite.v22.testCases">
     	<testCase class="org.apache.geronimo.testsuite.v22.ui.SharedLibPojoTest">
     	</testCase>

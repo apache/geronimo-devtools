@@ -172,6 +172,26 @@
                     <groupId>juddi</groupId>
                     <artifactId>juddi</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.apache.axis2</groupId>
+                    <artifactId>axis2-jaxws</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.axis2</groupId>
+                    <artifactId>axis2-kernel</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.axis2</groupId>
+                    <artifactId>axis2-metadata</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.axis2</groupId>
+                    <artifactId>axis2-saaj</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>jasper-el</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 

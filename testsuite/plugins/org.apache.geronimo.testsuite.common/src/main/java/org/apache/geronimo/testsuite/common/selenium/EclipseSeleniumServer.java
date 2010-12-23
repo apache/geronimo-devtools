@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Shell;
 import org.openqa.selenium.server.SeleniumServer;
 import org.openqa.selenium.server.browserlaunchers.BrowserLauncherFactory;
+import org.openqa.selenium.server.browserlaunchers.MockBrowserLauncher;
 
 /**
  * EclipseSeleniumServer
@@ -63,17 +64,10 @@ public class EclipseSeleniumServer implements ISafeRunnable{
     }
 
     public void run() throws Exception {
-        try {
-            BrowserLauncherFactory.addBrowserLauncher("EclipseBrowser", EclipseBrowserLauncher.class);
-            SeleniumServer.setDebugMode (true);
-            server = new SeleniumServer();
-            server.start();
-        } catch (Throwable th) {
-            th.printStackTrace();
-            Exception e = new Exception("unable to start Selenium server");
-            e.initCause(th);
-            throw (e);
-        }
+		BrowserLauncherFactory.addBrowserLauncher("MockBrowser", MockBrowserLauncher.class);
+		SeleniumServer.setDebugMode( true );
+		server = new SeleniumServer();
+		server.start();
     }
 
 }

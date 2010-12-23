@@ -69,9 +69,9 @@ public class ServerTasks {
     public boolean showServerOverview() {
         boolean success = true;
         try {
-            String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
+        	String serverDisplay = "/" + Constants.getConstant(serverVersion, Constants.SERVERDISPLAY) + ".*/";
             abbotHelper.clickMenuItem (workbenchShell,
-                    new String[] {"&Window", "Show &View", "Servers"});
+                    new String[] {"&Window", "Show View", "Servers"});
             abbotHelper.doubleClickItem(workbenchShell, serverDisplay);
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,9 +87,9 @@ public class ServerTasks {
     public boolean startServer (boolean restart) {
         boolean success = true;
         try {
-            String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
+        	String serverDisplay = "/" + Constants.getConstant(serverVersion, Constants.SERVERDISPLAY) + ".*/";
             abbotHelper.clickMenuItem (workbenchShell,
-                    new String[] {"&Window", "Show &View", "Servers"});
+                    new String[] {"&Window", "Show View", "Servers"});
 
             if (restart == true) {
                 abbotHelper.rightClickItem (workbenchShell, serverDisplay,
@@ -102,19 +102,6 @@ public class ServerTasks {
 
             abbotHelper.waitTime (AbbotHelper.WAIT_STANDARD);
 
-            // if starting the server for the first time, do a quick sanity check
-            if (restart == false) {
-                EclipseSelenium selenium = new EclipseSelenium();
-                selenium.start();
-
-                selenium.open ("http://localhost:8080/console/");
-                selenium.waitForPageToLoad ("2000");
-                selenium.type ("j_username", "system");
-                selenium.type ("j_password", "manager");
-                selenium.click ("submit");
-
-                selenium.stop();
-            }
         } catch (Exception e) {
             e.printStackTrace();
             success = false;
@@ -125,9 +112,9 @@ public class ServerTasks {
     public boolean stopServer () {
         boolean success = true;
         try {
-            String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
+        	String serverDisplay = "/" + Constants.getConstant(serverVersion, Constants.SERVERDISPLAY) + ".*/";
             abbotHelper.clickMenuItem (workbenchShell,
-                    new String[] {"&Window", "Show &View", "Servers"});
+                    new String[] {"&Window", "Show View", "Servers"});
 
             abbotHelper.rightClickItem (workbenchShell, serverDisplay,
                     new String[] {"S&top"});
@@ -167,12 +154,12 @@ public class ServerTasks {
     public boolean publishAllProjects () {
         boolean success = true;
         try {
-            String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
+        	String serverDisplay = "/" + Constants.getConstant(serverVersion, Constants.SERVERDISPLAY) + ".*/";
 
             abbotHelper.clickMenuItem (workbenchShell,
-                    new String[] {"&Window", "Show &View", "Servers"});
+                    new String[] {"&Window", "Show View", "Servers"});
             Shell deployShell = abbotHelper.rightClickItem (workbenchShell, serverDisplay,
-                    new String[] {"Add and Remove &Projects..."}, "Add and Remove Projects");
+                    new String[] {"&Add and Remove..."}, "Add and Remove...");
             abbotHelper.clickButton (deployShell, "Add A&ll >>");
 
             abbotHelper.clickButton (deployShell, IDialogConstants.FINISH_LABEL);
@@ -187,12 +174,12 @@ public class ServerTasks {
     public boolean removeAllProjects () {
         boolean success = true;
         try {
-            String serverDisplay = Constants.getConstant(serverVersion, Constants.SERVERDISPLAY);
+        	String serverDisplay = "/" + Constants.getConstant(serverVersion, Constants.SERVERDISPLAY) + ".*/";
 
             abbotHelper.clickMenuItem (workbenchShell,
-                    new String[] {"&Window", "Show &View", "Servers"});
+                    new String[] {"&Window", "Show View", "Servers"});
             Shell deployShell = abbotHelper.rightClickItem (workbenchShell, serverDisplay,
-                    new String[] {"Add and Remove &Projects..."}, "Add and Remove Projects");
+                    new String[] {"&Add and Remove..."}, "Add and Remove...");
             abbotHelper.clickButton (deployShell, "<< Re&move All");
 
             abbotHelper.clickButton (deployShell, IDialogConstants.FINISH_LABEL);

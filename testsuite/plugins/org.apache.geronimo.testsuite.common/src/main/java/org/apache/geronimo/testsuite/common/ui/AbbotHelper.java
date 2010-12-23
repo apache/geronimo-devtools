@@ -241,7 +241,8 @@ public class AbbotHelper {
 
         while (statusGood == false && countdown > 0) {
             TreeItem item = (TreeItem) finder.find (aShell, new WidgetTextMatcher (itemText, TreeItem.class));
-            if (desiredState.equals (TreeItemTester.getTreeItemTester().getText (item, 1)))
+            String serverStatus = TreeItemTester.getTreeItemTester().getText (item, 0);
+            if (serverStatus.contains(desiredState))
                 statusGood = true;
             
             countdown--;

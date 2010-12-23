@@ -84,7 +84,21 @@
             <property name="classname"
                       value="org.apache.geronimo.testsuite.v21.ui.EclipseUITest"/>
         </ant>
-        
+
+        <!-- 
+         #########################################################################
+         ##                                                                     ##
+         ## Define new server testcase                                          ##
+         ##                                                                     ##
+         #########################################################################
+         -->
+        <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+            <property name="data-dir" value="${jdt-folder}"/>
+            <property name="plugin-name" value="${plugin-name}"/>
+            <property name="classname"
+                      value="org.apache.geronimo.testsuite.v21.ui.NewServerTest"/>
+        </ant>    
+
         
         <!--
          #########################################################################
@@ -99,7 +113,7 @@
             <property name="classname"
                       value="org.apache.geronimo.testsuite.v21.ui.RunOnServerTest"/>
         </ant>
-
+        
 
         <!--
          #########################################################################                                                                     ##
@@ -114,22 +128,7 @@
             <property name="classname"
              value="org.apache.geronimo.testsuite.v21.ui.SharedLibPojoTest"/>
         </ant>
-    
-    
-        <!-- 
-         #########################################################################
-         ##                                                                     ##
-         ## Define new server testcase                                          ##
-         ##                                                                     ##
-         #########################################################################
-         -->
-        <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
-            <property name="data-dir" value="${jdt-folder}"/>
-            <property name="plugin-name" value="${plugin-name}"/>
-            <property name="classname"
-                      value="org.apache.geronimo.testsuite.v21.ui.NewServerTest"/>
-        </ant>
-
+        
 
         <!-- 
          #########################################################################
@@ -138,14 +137,14 @@
          ##                                                                     ##
          #########################################################################
          -->
+        <!--       
         <ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
             <property name="data-dir" value="${jdt-folder}"/>
             <property name="plugin-name" value="${plugin-name}"/>
             <property name="classname"
                       value="org.apache.geronimo.testsuite.v21.ui.Tutorial5MinuteTest"/>
         </ant>
-
-
+        -->        
     </target>
 
     <!-- This target holds code to cleanup the testing environment after -->

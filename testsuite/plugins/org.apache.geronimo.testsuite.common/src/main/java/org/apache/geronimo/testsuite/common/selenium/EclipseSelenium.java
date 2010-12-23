@@ -17,11 +17,8 @@
 
 package org.apache.geronimo.testsuite.common.selenium;
 
-import org.apache.geronimo.testsuite.common.ui.AbbotHelper;
-import org.eclipse.swt.widgets.Shell;
 
 import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
 
 /**
  * EclipseSelenium
@@ -32,7 +29,7 @@ public class EclipseSelenium extends DefaultSelenium {
 
     private static String serverHost = "localhost";
     private static int serverPort = 4444;
-    private static String browserStartCommand = "*EclipseBrowser";
+    private static String browserStartCommand = "*firefox";
     private static String browserURL = "http://localhost:4444";
     
     public EclipseSelenium() {

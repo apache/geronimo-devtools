@@ -58,7 +58,6 @@ public class RunOnServerTest extends WorkbenchTestCase {
 
     public void testRunOnServer() {
         createServer();
-        startServer();
         createProject();
         copyCodeToProject();
         deployProject();
@@ -73,19 +72,6 @@ public class RunOnServerTest extends WorkbenchTestCase {
             workbenchTasks.showJEEPerspective();
             ServerTasks serverTasks = new ServerTasks(workbenchShell, abbotHelper, Constants.SERVER_V20 );
             serverTasks.createServer();
-            success = true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        assertTrue( success );
-    }
-
-
-    private void startServer() {
-        success = false;
-        try {
-            ServerTasks serverTasks = new ServerTasks(workbenchShell, abbotHelper, Constants.SERVER_V20 );
             serverTasks.startServer();
             success = true;
         }
@@ -94,7 +80,6 @@ public class RunOnServerTest extends WorkbenchTestCase {
         }
         assertTrue( success );
     }
-
 
     private void createProject() {
         success = false;
