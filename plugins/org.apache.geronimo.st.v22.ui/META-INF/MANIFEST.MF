@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo Server Tools V22 UI Plug-in
 Bundle-SymbolicName: org.apache.geronimo.st.v22.ui;singleton:=true
 Bundle-Version: 2.2.1
+Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.runtime.common,
  org.apache.geronimo.runtime.v22,
  org.apache.geronimo.st.v22.core,
