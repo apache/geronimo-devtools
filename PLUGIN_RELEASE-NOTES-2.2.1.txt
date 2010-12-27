@@ -79,6 +79,7 @@ GERONIMODEVTOOLS-682 Upgrade Geronimo server support to 2.1.7 in GEP branch 22
 GERONIMODEVTOOLS-685 Can not build GEP2.2.1 testsuit successfully
 GERONIMODEVTOOLS-689 NullPointerException when publishing with Geronimo Eclipse Plugin
 GERONIMODEVTOOLS-690 NullpointerException occurs if one adds a "Utility Project" to the EAR
+GERONIMODEVTOOLS-691 GEP ui shows "%serverEditorPluginPage" instead of "Plugin"
 
 Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
 
