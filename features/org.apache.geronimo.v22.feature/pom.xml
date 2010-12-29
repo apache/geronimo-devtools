@@ -15,11 +15,11 @@
   ~ limitations under the License.
   -->
 <!-- $Rev: 697984 $ $Date: 2008-09-22 16:56:40 -0400 (Mon, 22 Sep 2008) $ -->
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.apache.geronimo.v22.feature</artifactId>
     <packaging>jar</packaging>
-    <version>${org.apache.geronimo.v22.feature_version}</version>
+    <version>2.2.1</version>
     <name>${artifactId}</name>
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
