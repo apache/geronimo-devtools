@@ -16,17 +16,17 @@
   ~ limitations under the License.
   -->
 <!-- $Rev$ $Date$ -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project>
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>assembly</artifactId>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin :: Assembly</name>
-    <version>2.2.2</version>
+    <version>${org.apache.geronimo.v22.feature_version}</version>
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
-        <version>2.2.2-SNAPSHOT</version>
+        <version>2.2.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <build>

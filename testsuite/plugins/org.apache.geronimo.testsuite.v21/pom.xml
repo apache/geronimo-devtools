@@ -18,20 +18,20 @@
 
 <!-- @version $Rev$ $Date$ -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project>
 
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>org.apache.geronimo.testsuite.v21</artifactId>
     <packaging>jar</packaging>
-    <version>2.2.2</version>
+    <version>2.2.1</version>
     <name>${artifactId}</name>
 
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>testsuite-plugins</artifactId>
-        <version>2.2.2</version>
+        <version>2.2.1</version>
     </parent>
 
     <build>
@@ -166,8 +166,9 @@
                                 </goals>
                                 <configuration>
                                     <tasks>
-                                        <mkdir dir="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.v21-2.2.1" />
-                                        <unzip src="${project.build.directory}/org.apache.geronimo.testsuite.v21-2.2.1.jar" dest="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.v21-2.2.1" />
+                                        <mkdir dir="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.v21-2.2.1"/>
+                                        <unzip src="${project.build.directory}/org.apache.geronimo.testsuite.v21-2.2.1.jar"
+                                              dest="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.v21-2.2.1"/>
                                     </tasks>
                                 </configuration>
                             </execution>
