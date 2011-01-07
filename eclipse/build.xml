@@ -36,7 +36,7 @@
         <property name="helios_jee_win64"               value="eclipse-jee-helios-win32_64.zip"/>
         <property name="helios_jee_linux"               value="eclipse-jee-helios-linux-gtk.tar"/>
         <property name="helios_jee_linux-x86_64"        value="eclipse-jee-helios-linux-gtk-x86_64.tar"/>
-        <property name="helios_jee_macos"               value="eclipse-jee-helios-macosx-carbon.tar"/>
+        <property name="helios_jee_macos"               value="eclipse-jee-helios-macosx-cocoa.tar"/>
         <property name="helios_jee_linux_gz"            value="${helios_jee_linux}.gz"/>
         <property name="helios_jee_linux-x86_64_gz"     value="${helios_jee_linux-x86_64}.gz"/>
         <property name="helios_jee_macos_gz"            value="${helios_jee_macos}.gz"/>

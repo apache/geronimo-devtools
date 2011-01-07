@@ -82,6 +82,8 @@ GERONIMODEVTOOLS-688 Synchronize GEP dependency per Server dependency list
 GERONIMODEVTOOLS-689 NullPointerException when publishing with Geronimo Eclipse Plugin
 GERONIMODEVTOOLS-690 NullpointerException occurs if one adds a "Utility Project" to the EAR
 GERONIMODEVTOOLS-691 GEP ui shows "%serverEditorPluginPage" instead of "Plugin"
+GERONIMODEVTOOLS-692 Can not build GEP on Mac
+
 
 Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
 
