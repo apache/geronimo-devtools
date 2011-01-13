@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo V22 JAXB Models
 Bundle-SymbolicName: org.apache.geronimo.jee.v22.jaxbmodel;singleton:=true
-Bundle-Version: 2.2.1
+Bundle-Version: 2.2.2
 Bundle-ClassPath: .
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin

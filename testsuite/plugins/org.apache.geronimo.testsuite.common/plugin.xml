@@ -23,7 +23,7 @@
     id="org.apache.geronimo.testsuite.common" 
     name="Geronimo v21 Server Tools Testsuite Plug-in" 
     provider-name="Apache.org" 
-    version="2.2.1">
+    version="2.2.2">
 
     <requires>
         <import plugin="abbot.swt"/>
