@@ -134,8 +134,8 @@
                                 </artifactItem>
                                 <artifactItem>
                                    <groupId>org.apache.geronimo.specs</groupId>
-				   				   <artifactId>geronimo-jaxb_2.2_spec</artifactId>
-				   				   <version>1.0</version>
+				   <artifactId>geronimo-jaxb_2.2_spec</artifactId>
+				   <version>1.0.1</version>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.bundles</groupId>

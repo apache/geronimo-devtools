@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.apache.geronimo.runtime.common;singleton:=true
 Bundle-Version: 3.0.0
 Bundle-ClassPath: lib/geronimo-activation_1.1_spec-1.1.jar,
  lib/geronimo-stax-api_1.2_spec-1.0.jar,
- lib/geronimo-jaxb_2.2_spec-1.0.jar,
+ lib/geronimo-jaxb_2.2_spec-1.0.1.jar,
  lib/jaxb-impl-2.2_1.jar,
  lib/commons-logging-1.1.1.jar,
  lib/cglib-nodep-2.1_3.jar,
