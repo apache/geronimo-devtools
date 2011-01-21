@@ -23,8 +23,8 @@ import org.apache.geronimo.jee.applicationclient.ApplicationClient;
 import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.jee.connector.Resourceadapter;
 import org.apache.geronimo.jee.deployment.Artifact;
-import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.jee.deployment.Dependencies;
+import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.web.WebApp;
@@ -45,6 +45,9 @@ import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.server.core.IModule;
+import org.eclipse.wst.server.core.ServerUtil;
+import org.eclipse.wst.server.core.model.IURLProvider;
 
 
 /**
@@ -153,9 +156,11 @@ public class DeploymentPlanCreationOperation extends
         org.apache.geronimo.jee.web.ObjectFactory webFactory = new org.apache.geronimo.jee.web.ObjectFactory();
         WebApp web = webFactory.createWebApp();
 
-        web.setContextRoot("/" + getProject().getName());
+        IVirtualComponent c = ComponentCore.createComponent(getProject());
+        String contextRoot = (String) c.getMetaProperties().get("context-root");
+        web.setContextRoot("/" + contextRoot);
         web.setEnvironment(getConfigEnvironment());
-
+        
         JAXBElement jaxbElement = webFactory.createWebApp(web);
         JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
 
