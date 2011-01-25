@@ -264,6 +264,7 @@
      ##                                                                                                               ##
      ###################################################################################################################
      -->
+     <!--
     <extension point="org.eclipse.ui.editors">
         <editor class="org.apache.geronimo.st.v30.ui.editors.BlueprintFormEditor"
             default="true" 
@@ -273,6 +274,7 @@
             name="%BlueprintEditorName">
         </editor>
     </extension>
+    -->
 
 
     
