@@ -57,6 +57,13 @@
                 </includes>
             </resource>
             <resource>
+                <targetPath>targets/</targetPath>
+                <directory>targets/</directory>
+                <includes>
+                    <include>*.target</include>
+                </includes>
+            </resource>            
+            <resource>
                 <targetPath>icons/</targetPath>
                 <directory>icons/</directory>
                 <includes>

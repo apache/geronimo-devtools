@@ -17,6 +17,11 @@
 package org.apache.geronimo.st.v30.ui.internal;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -26,10 +31,19 @@ import java.util.regex.Pattern;
 
 import org.apache.geronimo.st.v30.core.GeronimoRuntimeDelegate;
 import org.apache.geronimo.st.v30.ui.Activator;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.variables.IStringVariableManager;
+import org.eclipse.core.variables.IValueVariable;
+import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMInstall2;
 import org.eclipse.jdt.launching.IVMInstallType;
@@ -71,6 +85,7 @@ import org.eclipse.wst.server.core.model.RuntimeDelegate;
 import org.eclipse.wst.server.ui.internal.SWTUtil;
 import org.eclipse.wst.server.ui.wizard.IWizardHandle;
 import org.eclipse.wst.server.ui.wizard.WizardFragment;
+import org.osgi.framework.Bundle;
 
 /**
  * @version $Rev$ $Date$
@@ -79,6 +94,24 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 
     // serverName-N.N or serverName-N.N.N
     public static final Pattern SERVER_NAME_VERSION_PATTERN = Pattern.compile("(.*-)((\\d+\\.\\d+)(\\.(\\d+))?)");
+    
+    private static final String GERONIMO_SERVER_LOCATION_VARIABLE_NAME = "geronimo30_server_location";
+    
+    private static final String  LOCAL_TARGET_DIRECTORY = ".metadata/.plugins/org.eclipse.pde.core/.local_targets/";
+    
+    private static final String TARGET_FILE_EXTENSION = ".target";
+    
+    private static final String TARGET_TEMPLATE_FILE = "targets/Geronimo30.target";
+    
+    private static final String TARGET_FILE_LOCATIONS_PLACEHOLDER = "@locations_placeholder@";
+    
+    private static final String[] bundleDirectories = { "repository/org/apache/geronimo/specs",
+        "repository/org/apache/geronimo/javamail/geronimo-javamail_1.4_mail",
+        "repository/org/apache/geronimo/bundles/jaxb-impl", "repository/org/apache/geronimo/bundles/jstl",
+        "repository/org/apache/myfaces/core/myfaces-bundle",
+        "repository/org/apache/geronimo/framework/geronimo-jdbc" };
+    
+    private static final String LOCATION_LINE_TEMPLATE = "<location path=\"${geronimo30_server_location}GERONIMO_BUNDLE_FOLDER_NAME\" type=\"Directory\"/>";
 
     private GeronimoRuntimeDelegate geronimoRuntime;
 
@@ -384,6 +417,104 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
         validate();
     }
 
+
+    public void performFinish(IProgressMonitor monitor) throws CoreException {
+
+        IStringVariableManager varManager = VariablesPlugin.getDefault().getStringVariableManager();
+
+        // whether the target platform is already created
+        if (null == varManager.getValueVariable(GERONIMO_SERVER_LOCATION_VARIABLE_NAME)) {
+            
+            // add string substitution variable named ${geronimo_30_server_location} 
+            String geronimoServerLocation = getRuntimeDelegate().getRuntime().getLocation().toString();
+            if (geronimoServerLocation.endsWith("/")) {
+                geronimoServerLocation = geronimoServerLocation.substring(0, geronimoServerLocation.length()-1);
+            }
+            IValueVariable v = varManager.newValueVariable(GERONIMO_SERVER_LOCATION_VARIABLE_NAME,
+                    "The server location of Geronimo v3.0", false, geronimoServerLocation);
+            varManager.addVariables(new IValueVariable[] { v });
+            
+            // copy the target file for target platform into workspace
+            IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+            IPath rootLocation = root.getLocation();
+            String timestamp = Long.toString(System.currentTimeMillis());           
+            String append = LOCAL_TARGET_DIRECTORY + timestamp + TARGET_FILE_EXTENSION;
+            IPath destination = rootLocation.append(append);
+            
+            Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
+            URL template = bundle.getEntry(TARGET_TEMPLATE_FILE);
+            
+            copyFile(template, destination, getLocationEntryLists(geronimoServerLocation));
+        }
+    }
+    
+    protected void copyFile(URL source, IPath dest, String replacement) throws CoreException {
+        Reader reader = null;
+        Writer writer = null;
+        
+        try {
+            try {
+                reader = new InputStreamReader(source.openStream());
+                
+                StringBuilder builder = new StringBuilder();
+                char [] buf = new char [2048];
+                int count = 0;
+                
+                while ( (count = reader.read(buf)) >= 0) {
+                    builder.append(buf, 0, count);
+                }
+                
+                String template = builder.toString();
+                String text = template.replace(TARGET_FILE_LOCATIONS_PLACEHOLDER, replacement);
+                
+                dest.toFile().getParentFile().mkdirs();
+                writer = new FileWriter(dest.toFile());
+                
+                writer.write(text);
+                
+            } finally {
+                if (reader != null) {
+                    reader.close();
+                }
+                if (writer != null) {
+                    writer.close();
+                }
+            }
+        } catch (IOException ex) {
+            throw new CoreException(new Status(IStatus.WARNING, Activator.PLUGIN_ID, "Copy target file failed.", ex));
+        }
+    }
+    
+    
+    protected static String getLocationEntryLists(String serverLocation) {
+
+        StringBuffer buf = new StringBuffer(1024);
+        buf.append(System.getProperty("line.separator"));
+        for (String bundleDir : bundleDirectories) {
+            File directory = new File(serverLocation, bundleDir);
+            listFile(directory, buf, serverLocation);
+        }
+        return buf.toString();
+    }
+
+    private static void listFile(File file, StringBuffer buf, String serverLocation) {
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File subfile : files) {
+                listFile(subfile, buf, serverLocation);
+            }
+        } else {
+            String filename = file.getAbsolutePath();
+            if (filename.endsWith(".jar")) {
+                String parentPath = file.getParent();
+                String bundleFolder = parentPath.substring(serverLocation.length());
+                buf.append(LOCATION_LINE_TEMPLATE.replaceAll("GERONIMO_BUNDLE_FOLDER_NAME",
+                        Matcher.quoteReplacement(bundleFolder)));
+                buf.append(System.getProperty("line.separator"));
+            }
+        }
+    }
+    
     private GeronimoRuntimeDelegate getRuntimeDelegate() {
         IRuntimeWorkingCopy wc = (IRuntimeWorkingCopy) getTaskModel().getObject(TaskModel.TASK_RUNTIME);
         if (wc == null)

@@ -7,7 +7,7 @@ Bundle-Activator: org.apache.geronimo.st.v30.ui.Activator
 Bundle-Localization: plugin
 Require-Bundle: 
  org.apache.geronimo.runtime.v30,
- org.apache.geronimo.st.v30.jaxbmodel, 
+ org.apache.geronimo.st.v30.jaxbmodel,
  org.apache.geronimo.st.v30.core,
  org.apache.geronimo.st.ui,
  org.eclipse.core.filebuffers,
@@ -33,6 +33,7 @@ Require-Bundle:
  org.eclipse.wst.server.core,
  org.eclipse.wst.server.ui,
  org.eclipse.wst.sse.ui,
- org.eclipse.wst.xml.ui
+ org.eclipse.wst.xml.ui,
+ org.eclipse.core.variables
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Apache Software Foundation
