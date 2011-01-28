@@ -109,7 +109,8 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
         "repository/org/apache/geronimo/javamail/geronimo-javamail_1.4_mail",
         "repository/org/apache/geronimo/bundles/jaxb-impl", "repository/org/apache/geronimo/bundles/jstl",
         "repository/org/apache/myfaces/core/myfaces-bundle",
-        "repository/org/apache/geronimo/framework/geronimo-jdbc" };
+        "repository/org/apache/geronimo/framework/geronimo-jdbc",
+        "repository/org/osgi"};
     
     private static final String LOCATION_LINE_TEMPLATE = "<location path=\"${geronimo30_server_location}GERONIMO_BUNDLE_FOLDER_NAME\" type=\"Directory\"/>";
 
