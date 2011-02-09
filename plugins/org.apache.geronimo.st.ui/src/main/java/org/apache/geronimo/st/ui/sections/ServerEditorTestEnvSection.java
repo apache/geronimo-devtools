@@ -19,7 +19,6 @@ package org.apache.geronimo.st.ui.sections;
 import java.util.List;
 
 import org.apache.geronimo.st.core.ClasspathContainersHelper;
-import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.ui.commands.SetClasspathContainersCommand;
 import org.apache.geronimo.st.ui.commands.SetInPlaceSharedLibCommand;
 import org.apache.geronimo.st.ui.commands.SetNotRedeployJSPFilesCommand;

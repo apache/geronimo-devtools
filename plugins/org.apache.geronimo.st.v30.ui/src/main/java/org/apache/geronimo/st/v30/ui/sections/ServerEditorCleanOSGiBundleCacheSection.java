@@ -14,17 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.st.ui.sections;
+package org.apache.geronimo.st.v30.ui.sections;
 
-import org.apache.geronimo.st.ui.commands.SetPublishTimeoutCommand;
-import org.apache.geronimo.st.ui.internal.Messages;
+import org.apache.geronimo.st.v30.core.GeronimoServerDelegate;
+import org.apache.geronimo.st.v30.ui.commands.SetCleanOSGiBundleCacheCommand;
+import org.apache.geronimo.st.v30.ui.internal.Messages;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
@@ -32,11 +33,11 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  * @version $Rev$ $Date$
  */
-public class ServerEditorPublishAdvancedSection extends AbstractServerEditorSection {
+public class ServerEditorCleanOSGiBundleCacheSection extends AbstractServerEditorSection {
 
-    protected Spinner publishTimeout;
+    Button cleanOGSiBundelCache;
 
-    public ServerEditorPublishAdvancedSection() {
+    public ServerEditorCleanOSGiBundleCacheSection() {
         super();
     }
 
@@ -45,18 +46,18 @@ public class ServerEditorPublishAdvancedSection extends AbstractServerEditorSect
 
         FormToolkit toolkit = getFormToolkit(parent.getDisplay());
 
-        Section section = toolkit.createSection(parent,
-                ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
-                        | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
-                        | ExpandableComposite.FOCUS_TITLE);
+        Section section = toolkit.createSection(parent, ExpandableComposite.TWISTIE
+                | ExpandableComposite.EXPANDED
+                | ExpandableComposite.TITLE_BAR
+                | Section.DESCRIPTION | ExpandableComposite.FOCUS_TITLE);
 
-        section.setText(Messages.editorSectionPublishAdvancedTitle);
-        section.setDescription(Messages.editorSectionPublishAdvancedDescription);
+        section.setText(Messages.editorSectionCleanOSGiBundleCacheTitle);
+        section.setDescription(Messages.editorSectionCleanOSGiBundleCacheDescription);
         section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
         Composite composite = toolkit.createComposite(section);
         GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
+        layout.numColumns = 1;
         layout.marginHeight = 5;
         layout.marginWidth = 10;
         layout.verticalSpacing = 5;
@@ -65,26 +66,23 @@ public class ServerEditorPublishAdvancedSection extends AbstractServerEditorSect
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         section.setClient(composite);
 
-        // ------- Label and text field for the http port -------
-        createLabel(composite, Messages.publishingTimeout, toolkit);
+        cleanOGSiBundelCache = toolkit.createButton(composite, Messages.cleanOSGiBundleCache, SWT.CHECK);
 
-        publishTimeout = new Spinner(composite, SWT.BORDER);
-        publishTimeout.setMinimum(0);
-        publishTimeout.setIncrement(5);
-        publishTimeout.setMaximum(900000);
-        publishTimeout.setSelection(getPublishTimeout());
+        String currentValue = ((GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class))
+                .getCleanOSGiBundleCache();
+        cleanOGSiBundelCache.setSelection(GeronimoServerDelegate.CLEAN_OSGI_BUNDLE_CACHE.equals(currentValue));
 
-        publishTimeout.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent e) {
-                execute(new SetPublishTimeoutCommand(server, publishTimeout.getSelection()));
+        cleanOGSiBundelCache.addSelectionListener(new SelectionListener() {
+
+            public void widgetSelected(SelectionEvent e) {
+                String value = cleanOGSiBundelCache.getSelection() ? GeronimoServerDelegate.CLEAN_OSGI_BUNDLE_CACHE
+                        : "";
+                execute(new SetCleanOSGiBundleCacheCommand(server, value));
             }
-        });
-    }
 
-    private int getPublishTimeout() {
-        if (gs != null) {
-            return (int)gs.getPublishTimeout();
-        }
-        return 0;
+            public void widgetDefaultSelected(SelectionEvent e) {
+            }
+
+        });
     }
 }

@@ -17,7 +17,6 @@
 package org.apache.geronimo.st.v30.ui.internal;
 
 import org.apache.geronimo.st.v30.ui.Activator;
-import org.eclipse.core.runtime.IStatus;
 
 /**
  * Helper class to route trace output.

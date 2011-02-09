@@ -20,8 +20,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
@@ -68,6 +70,8 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 
     public static final String PROPERTY_HTTP_PORT = "WebConnector";
 
+    public static final String PROPERTY_CLEAN_OSGI_BUNDLE_CACHE = "cleanOSGiBundleCache";
+
     public static final String PROPERTY_LOG_LEVEL = "logLevel";
     
     public static final String PROPERTY_VM_ARGS = "VMArgs";
@@ -93,6 +97,8 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     public static final String CONSOLE_INFO = "--long";
 
     public static final String CONSOLE_DEBUG = "-vv";
+    
+    public static final String CLEAN_OSGI_BUNDLE_CACHE = "--clean";
 
     public abstract String getContextRoot(IModule module) throws Exception ;
 
@@ -298,6 +304,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         setHTTPPort("8080");
         setRMINamingPort("1099");
         setConsoleLogLevel(CONSOLE_INFO);
+        setCleanOSGiBundleCache("");
         setPingDelay(new Integer(10000));
         setMaxPings(new Integer(40));
         setPingInterval(new Integer(5000));
@@ -363,6 +370,39 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     }
     
     
+    public String getCleanOSGiBundleCache() {
+        return getInstanceProperty(PROPERTY_CLEAN_OSGI_BUNDLE_CACHE);
+    }
+
+    public void setCleanOSGiBundleCache(String value) {
+        setInstanceProperty(PROPERTY_CLEAN_OSGI_BUNDLE_CACHE, value);
+    }
+
+    public Set<String> getProgramArgs() {
+        Set<String> parms = new HashSet<String>(2);
+        parms.add(getConsoleLogLevel());
+        String clean = getCleanOSGiBundleCache();
+        if (clean.length() > 0) {
+            parms.add(clean);
+        }
+        return parms;
+    }
+
+    public Set<String> getProgramArgsNotSet() {
+        Set<String> notParms = new HashSet<String>(2);
+        String logLevel = getConsoleLogLevel();
+        if (logLevel.equals(CONSOLE_INFO)) {
+            notParms.add(CONSOLE_DEBUG);
+        } else {
+            notParms.add(CONSOLE_INFO);
+        }
+        String clean = getCleanOSGiBundleCache();
+        if (clean.equals("")) {
+            notParms.add(CLEAN_OSGI_BUNDLE_CACHE);
+        }
+        return notParms;
+    }
+
     // 
     // PROPERTY_VM_ARGS
     // 

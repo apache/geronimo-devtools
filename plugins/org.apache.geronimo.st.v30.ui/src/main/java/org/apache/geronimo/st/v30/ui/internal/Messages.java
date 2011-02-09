@@ -42,6 +42,10 @@ public class Messages extends NLS {
     public static String editorSectionVMArgsDescription;
     public static String editorSectionStartupTitle;
     public static String editorSectionStartupDescription;
+    
+    public static String editorSectionCleanOSGiBundleCacheTitle;
+    public static String editorSectionCleanOSGiBundleCacheDescription;
+    public static String cleanOSGiBundleCache;
 
     public static String editorSectionTestEnvTitle;
     public static String editorSectionTestEnvDescription;
