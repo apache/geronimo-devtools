@@ -160,10 +160,15 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      * @return
      */
     private String getServerProgramArgs(String existingProgArgs, GeronimoServerDelegate serverDelegate) {
-        List<String> parms = new ArrayList<String>(Arrays.asList(existingProgArgs.split("\\s+")));
         Set<String> parmsSet = serverDelegate.getProgramArgs();
         Set<String> parmsNotSet = serverDelegate.getProgramArgsNotSet();
         Set<String> parmsSeen = new HashSet<String>(parmsSet.size());
+        List<String> parms;
+        if (existingProgArgs == null) {
+            parms = new ArrayList<String>(parmsSet.size());
+        } else {
+            parms = new ArrayList<String>(Arrays.asList(existingProgArgs.split("\\s+")));
+        }
         // remove notSet and duplicate set paramaters from the list
         for(ListIterator<String> iterator = parms.listIterator(); iterator.hasNext();) {
             String parm = iterator.next();
