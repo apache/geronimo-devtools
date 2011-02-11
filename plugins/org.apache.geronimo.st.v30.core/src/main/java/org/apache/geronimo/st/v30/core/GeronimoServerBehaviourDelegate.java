@@ -290,6 +290,12 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             List list = getOrderedModules(this.getServer(),modules, deltaKind);
             modules = (List) list.get(0);
             deltaKind = (List) list.get(1);
+            // trace output
+            for (int i = 0; i < modules.size(); i++) {
+                IModule[] module = (IModule[]) modules.get(i);
+                Trace.trace(Trace.INFO, i + " " + Arrays.asList(module).toString() + " "
+                        + deltaKindToString(((Integer) deltaKind.get(i)).intValue()));
+            }
         }
 
         IStatus status = Status.OK_STATUS;
@@ -319,6 +325,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             for (int i = 0; i < size; i++) {
                 IModule[] module = (IModule[]) modules.get(i);
                 int moduleDeltaKind = ((Integer)deltaKind.get(i)).intValue();
+                Trace.trace(Trace.INFO, "look to publish " + Arrays.asList(module).toString() + " " + deltaKindToString(moduleDeltaKind));
                 //has the root of this module been published already?
                 if(!rootModulesPublished.contains(module[0])) {
                     status = publishModule(kind, module, moduleDeltaKind, ProgressUtil.getSubMonitorFor(monitor, 3000));
