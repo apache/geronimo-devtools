@@ -45,14 +45,14 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.model.ServerBehaviourDelegate;
 
 /**
- * <b>DependencyHelper</b> is a helper class with various methods to aid in the discovery of
- * inter-dependencies between modules being deployed from the GEP to the Geronimo server. It
- * performs the following capabilities:
+ * <b>DependencyHelper</b> is a helper class with various methods to aid in the discovery of inter-dependencies between
+ * modules being deployed from the GEP to the Geronimo server. It performs the following capabilities:
  * <ol>
- *      <li>Discovery of dependencies between modules<p>
- *      <li>Provides the proper publishing ordering of the modules based on the discovered
- *          dependencies<p>
- *      <li><b>TODO:</b> Query the server searching for missing dependencies
+ * <li>Discovery of dependencies between modules
+ * <p>
+ * <li>Provides the proper publishing ordering of the modules based on the discovered dependencies
+ * <p>
+ * <li><b>TODO:</b> Query the server searching for missing dependencies
  * </ol>
  * 
  * @version $Rev$ $Date$
@@ -64,27 +64,28 @@ public class DependencyHelper {
     private List inputModules = new ArrayList();
     private List inputDeltaKind = new ArrayList();
     private List reorderedModules = new ArrayList();
-    private List reorderedKinds  = new ArrayList();
+    private List reorderedKinds = new ArrayList();
     private List<JAXBElement> inputJAXBElements = new ArrayList();
     private List<JAXBElement> reorderedJAXBElements = new ArrayList();
-    
-    //provide a cache
-    private ConcurrentHashMap<IModule, Environment> environmentCache = new ConcurrentHashMap<IModule, Environment>();
 
+    // provide a cache
+    private ConcurrentHashMap<IModule, Environment> environmentCache = new ConcurrentHashMap<IModule, Environment>();
 
     /**
      * Reorder the publish order of the modules based on any discovered dependencies
      * 
-     * @param modules   Modules to be published to the Geronimo server
-     * @param deltaKind Publish kind constant for each module
+     * @param modules
+     *            Modules to be published to the Geronimo server
+     * @param deltaKind
+     *            Publish kind constant for each module
      * 
      * @return List of reordered modules and deltaKind (or input if no change)
      */
-    public List reorderModules(IServer server, List modules, List deltaKind ) {
+    public List reorderModules(IServer server, List modules, List deltaKind) {
         Trace.tracePoint("Entry", "DependencyHelper.reorderModules", modules, deltaKind);
-        
-        //provide a cache
-        ConcurrentHashMap<String,Boolean> verifiedModules = new ConcurrentHashMap<String,Boolean>();
+
+        // provide a cache
+        ConcurrentHashMap<String, Boolean> verifiedModules = new ConcurrentHashMap<String, Boolean>();
 
         if (modules.size() == 0) {
             List reorderedLists = new ArrayList(2);
@@ -97,58 +98,54 @@ public class DependencyHelper {
         inputModules = modules;
         inputDeltaKind = deltaKind;
 
-        // 
+        //
         // Iterate through all the modules and register the dependencies
-        // 
-        for (int ii=0; ii<modules.size(); ii++) {
+        //
+        for (int ii = 0; ii < modules.size(); ii++) {
             IModule[] module = (IModule[]) modules.get(ii);
-            int moduleDeltaKind = ((Integer)deltaKind.get(ii)).intValue();
+            int moduleDeltaKind = ((Integer) deltaKind.get(ii)).intValue();
             if (moduleDeltaKind != ServerBehaviourDelegate.REMOVED) {
-                //GERONIMODEVTOOLS-361
-                for (IModule singleModule:module){
+                // GERONIMODEVTOOLS-361
+                for (IModule singleModule : module) {
                     Environment environment = getEnvironment(singleModule);
                     if (environment != null) {
                         Artifact child = environment.getModuleId();
                         Dependencies dependencies = environment.getDependencies();
                         if (dependencies != null) {
                             List<Dependency> depList = dependencies.getDependency();
-                            for ( Dependency dep : depList) {
+                            for (Dependency dep : depList) {
                                 Artifact parent = deploymentFactory.createArtifact();
-                                parent.setGroupId( dep.getGroupId() );
-                                parent.setArtifactId( dep.getArtifactId() );
-                                parent.setVersion( dep.getVersion() );
-                                parent.setType( dep.getType() );
-                                
+                                parent.setGroupId(dep.getGroupId());
+                                parent.setArtifactId(dep.getArtifactId());
+                                parent.setVersion(dep.getVersion());
+                                parent.setType(dep.getType());
+
                                 StringBuilder configId = new StringBuilder();
-                                if (dep.getGroupId()!=null)
+                                if (dep.getGroupId() != null)
                                     configId.append(dep.getGroupId());
                                 configId.append("/");
-                                if (dep.getArtifactId()!=null)
+                                if (dep.getArtifactId() != null)
                                     configId.append(dep.getArtifactId());
                                 configId.append("/");
-                                if (dep.getVersion()!=null)
+                                if (dep.getVersion() != null)
                                     configId.append(dep.getVersion());
                                 configId.append("/");
-                                if (dep.getType()!=null)
+                                if (dep.getType() != null)
                                     configId.append(dep.getType());
-                                
-                                //get install flag from the cache
-								Boolean isInstalledModule = verifiedModules
-										.get(configId.toString());
-								if (isInstalledModule == null) {
-									// not in the cache, invoke
-									// isInstalledModule() method
-									isInstalledModule = DeploymentUtils
-											.isInstalledModule(server,
-													configId.toString());
-									// put install flag into the cache for next
-									// retrieve
-									verifiedModules.put(configId.toString(),
-											isInstalledModule);
-								}
 
-								if (!isInstalledModule)
-                                    dm.addDependency( child, parent );
+                                // get install flag from the cache
+                                Boolean isInstalledModule = verifiedModules.get(configId.toString());
+                                if (isInstalledModule == null) {
+                                    // not in the cache, invoke
+                                    // isInstalledModule() method
+                                    isInstalledModule = DeploymentUtils.isInstalledModule(server, configId.toString());
+                                    // put install flag into the cache for next
+                                    // retrieve
+                                    verifiedModules.put(configId.toString(), isInstalledModule);
+                                }
+
+                                if (!isInstalledModule)
+                                    dm.addDependency(child, parent);
                             }
                         }
                     }
@@ -156,20 +153,19 @@ public class DependencyHelper {
             }
         }
 
-        // 
+        //
         // Iterate through all the modules again and reorder as necessary
-        // 
-        for (int ii=0; ii<modules.size(); ii++) {
+        //
+        for (int ii = 0; ii < modules.size(); ii++) {
             IModule[] module = (IModule[]) modules.get(ii);
-            int moduleDeltaKind = ((Integer)deltaKind.get(ii)).intValue();
-            if (module!=null && !reorderedModules.contains(module)) {
-                // Not already moved 
+            int moduleDeltaKind = ((Integer) deltaKind.get(ii)).intValue();
+            if (module != null && !reorderedModules.contains(module)) {
+                // Not already moved
                 if (moduleDeltaKind == ServerBehaviourDelegate.REMOVED) {
-                    // Move module if going to be removed 
+                    // Move module if going to be removed
                     reorderedModules.add(module);
                     reorderedKinds.add(moduleDeltaKind);
-                }
-                else {
+                } else {
                     Environment environment = getEnvironment(module[0]);
                     if (environment != null) {
                         Artifact artifact = environment.getModuleId();
@@ -179,33 +175,30 @@ public class DependencyHelper {
                                 reorderedModules.add(module);
                                 reorderedKinds.add(moduleDeltaKind);
                             }
-                        }
-                        else if (dm.getParents(artifact).contains(artifact) ||  
-                                 dm.getChildren(artifact).contains(artifact)) {
+                        } else if (dm.getParents(artifact).contains(artifact)
+                                || dm.getChildren(artifact).contains(artifact)) {
                             // Move if a tight circular dependency (nothing can be done)
                             if (!reorderedModules.contains(module)) {
                                 reorderedModules.add(module);
                                 reorderedKinds.add(moduleDeltaKind);
                             }
-                        }
-                        else if (dm.getParents(artifact).size() == 0) {
+                        } else if (dm.getParents(artifact).size() == 0) {
                             // Move if no parents (nothing to do)
                             if (!reorderedModules.contains(module)) {
                                 reorderedModules.add(module);
                                 reorderedKinds.add(moduleDeltaKind);
                             }
-                        }
-                        else if (dm.getParents(artifact).size() > 0) {
+                        } else if (dm.getParents(artifact).size() > 0) {
                             // Move parents first
                             processParents(dm.getParents(artifact), artifact);
-                            // Move self 
+                            // Move self
                             if (!reorderedModules.contains(module)) {
                                 reorderedModules.add(module);
                                 reorderedKinds.add(moduleDeltaKind);
                             }
                         }
-                    }else {
-                        //no environment defined, do just as no parents
+                    } else {
+                        // no environment defined, do just as no parents
                         if (!reorderedModules.contains(module)) {
                             reorderedModules.add(module);
                             reorderedKinds.add(moduleDeltaKind);
@@ -215,15 +208,15 @@ public class DependencyHelper {
             }
         }
 
-        // 
-        // Ensure return lists are exactly the same size as the input lists 
-        // 
+        //
+        // Ensure return lists are exactly the same size as the input lists
+        //
         assert reorderedModules.size() == modules.size();
         assert reorderedKinds.size() == deltaKind.size();
 
-        // 
+        //
         // Return List of lists
-        // 
+        //
         List reorderedLists = new ArrayList(2);
         reorderedLists.add(reorderedModules);
         reorderedLists.add(reorderedKinds);
@@ -232,7 +225,6 @@ public class DependencyHelper {
         return reorderedLists;
     }
 
-
     /**
      * Reorder the list of JAXBElements based on any discovered dependencies
      * 
@@ -240,7 +232,7 @@ public class DependencyHelper {
      * 
      * @return List of JAXBElements (or input if no change)
      */
-    public List<JAXBElement> reorderJAXBElements( List<JAXBElement> jaxbElements ) {
+    public List<JAXBElement> reorderJAXBElements(List<JAXBElement> jaxbElements) {
         Trace.tracePoint("Entry", "DependencyHelper.reorderModules", jaxbElements);
 
         if (jaxbElements.size() == 0) {
@@ -250,9 +242,9 @@ public class DependencyHelper {
 
         inputJAXBElements = jaxbElements;
 
-        // 
+        //
         // Iterate through all the JAXBElements and register the dependencies
-        // 
+        //
         for (JAXBElement jaxbElement : jaxbElements) {
             Environment environment = getEnvironment(jaxbElement);
             if (environment != null) {
@@ -262,13 +254,13 @@ public class DependencyHelper {
                     if (dependencies != null) {
                         List<Dependency> depList = dependencies.getDependency();
                         if (depList != null) {
-                            for ( Dependency dep : depList) {
+                            for (Dependency dep : depList) {
                                 Artifact parent = deploymentFactory.createArtifact();
-                                parent.setGroupId( dep.getGroupId() );
-                                parent.setArtifactId( dep.getArtifactId() );
-                                parent.setVersion( dep.getVersion() );
-                                parent.setType( dep.getType() );
-                                dm.addDependency( child, parent );
+                                parent.setGroupId(dep.getGroupId());
+                                parent.setArtifactId(dep.getArtifactId());
+                                parent.setVersion(dep.getVersion());
+                                parent.setType(dep.getType());
+                                dm.addDependency(child, parent);
                             }
                         }
                     }
@@ -276,9 +268,9 @@ public class DependencyHelper {
             }
         }
 
-        // 
+        //
         // Iterate through all the JAXBElements again and reorder as necessary
-        // 
+        //
         for (JAXBElement jaxbElement : jaxbElements) {
             if (!reorderedJAXBElements.contains(jaxbElement)) {
                 // Not already moved
@@ -290,24 +282,21 @@ public class DependencyHelper {
                         if (!reorderedJAXBElements.contains(jaxbElement)) {
                             reorderedJAXBElements.add(jaxbElement);
                         }
-                    }
-                    else if (dm.getParents(artifact).contains(artifact) ||  
-                             dm.getChildren(artifact).contains(artifact)) {
+                    } else if (dm.getParents(artifact).contains(artifact)
+                            || dm.getChildren(artifact).contains(artifact)) {
                         // Move if a tight circular dependency (nothing can be done)
                         if (!reorderedJAXBElements.contains(jaxbElement)) {
                             reorderedJAXBElements.add(jaxbElement);
                         }
-                    }
-                    else if (dm.getParents(artifact).size() == 0) {
+                    } else if (dm.getParents(artifact).size() == 0) {
                         // Move if no parents (nothing to do)
                         if (!reorderedJAXBElements.contains(jaxbElement)) {
                             reorderedJAXBElements.add(jaxbElement);
                         }
-                    }
-                    else if (dm.getParents(artifact).size() > 0) {
+                    } else if (dm.getParents(artifact).size() > 0) {
                         // Move parents first
                         processJaxbParents(dm.getParents(artifact), artifact);
-                        // Move self 
+                        // Move self
                         if (!reorderedJAXBElements.contains(jaxbElement)) {
                             reorderedJAXBElements.add(jaxbElement);
                         }
@@ -316,18 +305,17 @@ public class DependencyHelper {
             }
         }
 
-        // 
-        // Ensure return list is exactly the same size as the input list 
-        // 
+        //
+        // Ensure return list is exactly the same size as the input list
+        //
         assert reorderedJAXBElements.size() == jaxbElements.size();
 
-        // 
+        //
         // Return List of JAXBElements
-        // 
+        //
         Trace.tracePoint("Exit ", "DependencyHelper.reorderModules", reorderedJAXBElements);
         return reorderedJAXBElements;
     }
-
 
     /**
      *
@@ -336,7 +324,6 @@ public class DependencyHelper {
         dm.close();
     }
 
-
     /*--------------------------------------------------------------------------------------------*\
     |                                                                                              |
     |  Private method(s)                                                                           | 
@@ -344,39 +331,38 @@ public class DependencyHelper {
     \*--------------------------------------------------------------------------------------------*/
 
     /**
-     * Process the parents for a given artifact. The terminatingArtifact parameter will be used as
-     * the terminating condition to ensure there will not be an infinite loop (i.e., if
-     * terminatingArtifact is encountered again there is a circular dependency).
+     * Process the parents for a given artifact. The terminatingArtifact parameter will be used as the terminating
+     * condition to ensure there will not be an infinite loop (i.e., if terminatingArtifact is encountered again there
+     * is a circular dependency).
      * 
      * @param parents
      * @param terminatingArtifact
      */
     private void processParents(Set parents, Artifact terminatingArtifact) {
-        Trace.tracePoint("Enter", "DependencyHelper.processParents", parents, terminatingArtifact );
+        Trace.tracePoint("Enter", "DependencyHelper.processParents", parents, terminatingArtifact);
 
         if (parents == null) {
             Trace.tracePoint("Exit ", "DependencyHelper.processParents", null);
             return;
         }
         for (Iterator ii = parents.iterator(); ii.hasNext();) {
-            Artifact artifact = (Artifact)ii.next();
-            if (dm.getParents(artifact).size() > 0 && !artifact.equals(terminatingArtifact) &&
-                !dm.getParents(artifact).contains(artifact) && !dm.getChildren(artifact).contains(artifact)) {
+            Artifact artifact = (Artifact) ii.next();
+            if (dm.getParents(artifact).size() > 0 && !artifact.equals(terminatingArtifact)
+                    && !dm.getParents(artifact).contains(artifact) && !dm.getChildren(artifact).contains(artifact)) {
                 // Keep processing parents (as long as no circular dependencies)
                 processParents(dm.getParents(artifact), terminatingArtifact);
-                // Move self 
+                // Move self
                 IModule[] module = getModule(artifact);
                 int moduleDeltaKind = getDeltaKind(artifact);
-                if (module!=null && !reorderedModules.contains(module)) {
+                if (module != null && !reorderedModules.contains(module)) {
                     reorderedModules.add(module);
                     reorderedKinds.add(moduleDeltaKind);
                 }
-            }
-            else {
+            } else {
                 // Move parent
                 IModule[] module = getModule(artifact);
                 int moduleDeltaKind = getDeltaKind(artifact);
-                if (module!=null && !reorderedModules.contains(module)) {
+                if (module != null && !reorderedModules.contains(module)) {
                     reorderedModules.add(module);
                     reorderedKinds.add(moduleDeltaKind);
                 }
@@ -386,20 +372,20 @@ public class DependencyHelper {
         Trace.tracePoint("Exit ", "DependencyHelper.processParents");
     }
 
-
     /**
      * Returns the Environment for the given IModule
      * 
-     * @param module IModule to be published
+     * @param module
+     *            IModule to be published
      * 
      * @return Environment
      */
     private Environment getEnvironment(IModule module) {
         Trace.tracePoint("Enter", "DependencyHelper.getEnvironment", module);
-        
+
         // if module's environment is in the cache, get it from the cache
-        if(environmentCache.containsKey(module)) {
-             return environmentCache.get(module);
+        if (environmentCache.containsKey(module)) {
+            return environmentCache.get(module);
         }
 
         Environment environment = null;
@@ -409,28 +395,25 @@ public class DependencyHelper {
                 if (plan != null)
                     environment = plan.getEnvironment();
             }
-        }
-        else if (GeronimoUtils.isEjbJarModule(module)) {
+        } else if (GeronimoUtils.isEjbJarModule(module)) {
             if (getOpenEjbDeploymentPlan(module) != null) {
                 OpenejbJar plan = getOpenEjbDeploymentPlan(module).getValue();
                 if (plan != null)
                     environment = plan.getEnvironment();
             }
-        }
-        else if (GeronimoUtils.isEarModule(module)) {
+        } else if (GeronimoUtils.isEarModule(module)) {
             if (getApplicationDeploymentPlan(module) != null) {
                 Application plan = getApplicationDeploymentPlan(module).getValue();
                 if (plan != null)
                     environment = plan.getEnvironment();
             }
-        }
-        else if (GeronimoUtils.isRARModule(module)) {
+        } else if (GeronimoUtils.isRARModule(module)) {
             if (getConnectorDeploymentPlan(module) != null) {
                 Connector plan = getConnectorDeploymentPlan(module).getValue();
                 if (plan != null)
                     environment = plan.getEnvironment();
             }
-        }else if (GeronimoUtils.isAppClientModule(module)) {
+        } else if (GeronimoUtils.isAppClientModule(module)) {
             if (getAppClientDeploymentPlan(module) != null) {
                 ApplicationClient plan = getAppClientDeploymentPlan(module).getValue();
                 if (plan != null)
@@ -438,15 +421,14 @@ public class DependencyHelper {
             }
         }
 
-        //put module's environment into the cache for next retrieve
+        // put module's environment into the cache for next retrieve
         if (environment != null) {
             environmentCache.put(module, environment);
-        } 
-        
+        }
+
         Trace.tracePoint("Exit ", "DependencyHelper.getEnvironment", environment);
         return environment;
     }
-
 
     /**
      * Return the IModule[] for a given artifact
@@ -458,9 +440,9 @@ public class DependencyHelper {
     private IModule[] getModule(Artifact artifact) {
         Trace.tracePoint("Enter", "DependencyHelper.getModule", artifact);
 
-        for (int ii=0; ii<inputModules.size(); ii++) {
+        for (int ii = 0; ii < inputModules.size(); ii++) {
             IModule[] module = (IModule[]) inputModules.get(ii);
-            int moduleDeltaKind = ((Integer)inputDeltaKind.get(ii)).intValue();
+            int moduleDeltaKind = ((Integer) inputDeltaKind.get(ii)).intValue();
             Environment environment = getEnvironment(module[0]);
             if (environment != null) {
                 Artifact moduleArtifact = environment.getModuleId();
@@ -475,7 +457,6 @@ public class DependencyHelper {
         return null;
     }
 
-
     /**
      * Return the deltaKind array index for a given artifact
      * 
@@ -486,9 +467,9 @@ public class DependencyHelper {
     private int getDeltaKind(Artifact artifact) {
         Trace.tracePoint("Enter", "DependencyHelper.getDeltaKind", artifact);
 
-        for (int ii=0; ii<inputModules.size(); ii++) {
+        for (int ii = 0; ii < inputModules.size(); ii++) {
             IModule[] module = (IModule[]) inputModules.get(ii);
-            int moduleDeltaKind = ((Integer)inputDeltaKind.get(ii)).intValue();
+            int moduleDeltaKind = ((Integer) inputDeltaKind.get(ii)).intValue();
             Environment environment = getEnvironment(module[0]);
             if (environment != null) {
                 Artifact moduleArtifact = environment.getModuleId();
@@ -502,11 +483,11 @@ public class DependencyHelper {
         return 0;
     }
 
-
     /**
      * Returns the WebApp for the given IModule
      * 
-     * @param module IModule to be published
+     * @param module
+     *            IModule to be published
      * 
      * @return WebApp
      */
@@ -517,23 +498,24 @@ public class DependencyHelper {
         IFile file = GeronimoUtils.getWebDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.WEB_PLAN_NAME) && file.exists()) {
             try {
-                Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan", JAXBUtils.unmarshalFilterDeploymentPlan(file));
-                 return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+                Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan",
+                        JAXBUtils.unmarshalFilterDeploymentPlan(file));
+                return JAXBUtils.unmarshalFilterDeploymentPlan(file);
             } catch (Exception e) {
-                //ignore it, just indicate error by returning null
+                // ignore it, just indicate error by returning null
             }
-           
+
         }
 
         Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan", null);
         return null;
     }
 
-
     /**
      * Returns the OpenEjbJar for the given IModule
      * 
-     * @param module IModule to be published
+     * @param module
+     *            IModule to be published
      * 
      * @return OpenEjbJar
      */
@@ -544,14 +526,15 @@ public class DependencyHelper {
         IFile file = GeronimoUtils.getOpenEjbDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.OPENEJB_PLAN_NAME) && file.exists()) {
             try {
-                Trace.tracePoint("Exit ", "DependencyHelper.getOpenEjbDeploymentPlan", JAXBUtils.unmarshalFilterDeploymentPlan(file));
+                Trace.tracePoint("Exit ", "DependencyHelper.getOpenEjbDeploymentPlan",
+                        JAXBUtils.unmarshalFilterDeploymentPlan(file));
             } catch (Exception e) {
-                //ignore it, just indicate error by returning null
+                // ignore it, just indicate error by returning null
             }
             try {
                 return JAXBUtils.unmarshalFilterDeploymentPlan(file);
             } catch (Exception e) {
-                //ignore it, just indicate error by returning null
+                // ignore it, just indicate error by returning null
             }
         }
 
@@ -562,7 +545,8 @@ public class DependencyHelper {
     /**
      * Returns the ApplicationClient for the given IModule
      * 
-     * @param module IModule to be published
+     * @param module
+     *            IModule to be published
      * 
      * @return ApplicationClient
      */
@@ -573,22 +557,24 @@ public class DependencyHelper {
         IFile file = GeronimoUtils.getApplicationClientDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.APP_CLIENT_PLAN_NAME) && file.exists()) {
             try {
-                Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan", JAXBUtils.unmarshalFilterDeploymentPlan(file));
-                 return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+                Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan",
+                        JAXBUtils.unmarshalFilterDeploymentPlan(file));
+                return JAXBUtils.unmarshalFilterDeploymentPlan(file);
             } catch (Exception e) {
-                //ignore it, just indicate error by returning null
+                // ignore it, just indicate error by returning null
             }
-           
+
         }
 
         Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan", null);
         return null;
     }
-    
+
     /**
      * Returns the Application for the given IModule
      * 
-     * @param module IModule to be published
+     * @param module
+     *            IModule to be published
      * 
      * @return Application
      */
@@ -599,23 +585,24 @@ public class DependencyHelper {
         IFile file = GeronimoUtils.getApplicationDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.APP_PLAN_NAME) && file.exists()) {
             try {
-                Trace.tracePoint("Exit ", "DependencyHelper.getApplicationDeploymentPlan", JAXBUtils.unmarshalFilterDeploymentPlan(file));
-                  return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+                Trace.tracePoint("Exit ", "DependencyHelper.getApplicationDeploymentPlan",
+                        JAXBUtils.unmarshalFilterDeploymentPlan(file));
+                return JAXBUtils.unmarshalFilterDeploymentPlan(file);
             } catch (Exception e) {
-                //ignore it, just indicate error by returning null
+                // ignore it, just indicate error by returning null
             }
-          
+
         }
 
         Trace.tracePoint("Exit ", "DependencyHelper.getApplicationDeploymentPlan", null);
         return null;
     }
 
-
     /**
      * Returns the Connector for the given IModule
      * 
-     * @param module IModule to be published
+     * @param module
+     *            IModule to be published
      * 
      * @return Application
      */
@@ -626,49 +613,48 @@ public class DependencyHelper {
         IFile file = GeronimoUtils.getConnectorDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.CONNECTOR_PLAN_NAME) && file.exists()) {
             try {
-                Trace.tracePoint("Exit ", "DependencyHelper.getConnectorDeploymentPlan", JAXBUtils.unmarshalFilterDeploymentPlan(file));
-                 return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+                Trace.tracePoint("Exit ", "DependencyHelper.getConnectorDeploymentPlan",
+                        JAXBUtils.unmarshalFilterDeploymentPlan(file));
+                return JAXBUtils.unmarshalFilterDeploymentPlan(file);
             } catch (Exception e) {
-                //ignore it, just indicate error by returning null
+                // ignore it, just indicate error by returning null
             }
-           
+
         }
 
         Trace.tracePoint("Exit ", "DependencyHelper.getConnectorDeploymentPlan", null);
         return null;
     }
 
-
     /**
-     * Process the parents for a given artifact. The terminatingArtifact parameter will be used as
-     * the terminating condition to ensure there will not be an infinite loop (i.e., if
-     * terminatingArtifact is encountered again there is a circular dependency).
+     * Process the parents for a given artifact. The terminatingArtifact parameter will be used as the terminating
+     * condition to ensure there will not be an infinite loop (i.e., if terminatingArtifact is encountered again there
+     * is a circular dependency).
      * 
      * @param parents
      * @param terminatingArtifact
      */
     private void processJaxbParents(Set parents, Artifact terminatingArtifact) {
-        Trace.tracePoint("Enter", "DependencyHelper.processJaxbParents", parents, terminatingArtifact );
+        Trace.tracePoint("Enter", "DependencyHelper.processJaxbParents", parents, terminatingArtifact);
 
         if (parents == null) {
             Trace.tracePoint("Exit ", "DependencyHelper.processJaxbParents", null);
             return;
         }
         for (Iterator ii = parents.iterator(); ii.hasNext();) {
-            Artifact artifact = (Artifact)ii.next();
-            if (dm.getParents(artifact).size() > 0 && !artifact.equals(terminatingArtifact) &&
-                !dm.getParents(artifact).contains(artifact) && !dm.getChildren(artifact).contains(artifact)) {
+            Artifact artifact = (Artifact) ii.next();
+            if (dm.getParents(artifact).size() > 0 && !artifact.equals(terminatingArtifact)
+                    && !dm.getParents(artifact).contains(artifact) && !dm.getChildren(artifact).contains(artifact)) {
                 // Keep processing parents (as long as no circular dependencies)
                 processJaxbParents(dm.getParents(artifact), terminatingArtifact);
-                // Move self 
+                // Move self
                 JAXBElement jaxbElement = getJaxbElement(artifact);
                 if (jaxbElement != null) {
                     if (!reorderedJAXBElements.contains(jaxbElement)) {
                         reorderedJAXBElements.add(jaxbElement);
                     }
                 }
-            }
-            else {
+            } else {
                 // Move parent
                 JAXBElement jaxbElement = getJaxbElement(artifact);
                 if (jaxbElement != null) {
@@ -682,11 +668,11 @@ public class DependencyHelper {
         Trace.tracePoint("Exit ", "DependencyHelper.processJaxbParents");
     }
 
-
     /**
      * Returns the Environment for the given JAXBElement plan
      * 
-     * @param jaxbElement JAXBElement plan
+     * @param jaxbElement
+     *            JAXBElement plan
      * 
      * @return Environment
      */
@@ -697,23 +683,19 @@ public class DependencyHelper {
         Object plan = jaxbElement.getValue();
         if (plan != null) {
             if (WebApp.class.isInstance(plan)) {
-                environment = ((WebApp)plan).getEnvironment();
-            }
-            else if (OpenejbJar.class.isInstance(plan)) {
-                environment = ((OpenejbJar)plan).getEnvironment();
-            }
-            else if (Application.class.isInstance(plan)) {
-                environment = ((Application)plan).getEnvironment();
-            }
-            else if (Connector.class.isInstance(plan)) {
-                environment = ((Connector)plan).getEnvironment();
+                environment = ((WebApp) plan).getEnvironment();
+            } else if (OpenejbJar.class.isInstance(plan)) {
+                environment = ((OpenejbJar) plan).getEnvironment();
+            } else if (Application.class.isInstance(plan)) {
+                environment = ((Application) plan).getEnvironment();
+            } else if (Connector.class.isInstance(plan)) {
+                environment = ((Connector) plan).getEnvironment();
             }
         }
 
         Trace.tracePoint("Exit ", "DependencyHelper.getEnvironment", environment);
         return environment;
     }
-
 
     /**
      * Return the JAXBElement for a given artifact
