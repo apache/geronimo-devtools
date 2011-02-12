@@ -146,11 +146,14 @@ public class GeronimoServerRuntimeTargetHandler extends RuntimeClasspathProvider
                  IPath jstlSpec     = runtime.getLocation().append("repository/org/apache/geronimo/bundles/jstl");
                  IPath myfacesSpec  = runtime.getLocation().append("repository/org/apache/myfaces/core/myfaces-bundle/");
                  IPath jdbcSpec     = runtime.getLocation().append("repository/org/apache/geronimo/framework/geronimo-jdbc/");
+                 IPath osgiSpecs    = runtime.getLocation().append("repository/org/osgi/");
+                
                  addLibraryEntries(list, javaMailSpec.toFile(), true);               
                  addLibraryEntries(list, jabxImplSpec.toFile(), true);
                  addLibraryEntries(list, jstlSpec.toFile(),     true);
                  addLibraryEntries(list, myfacesSpec.toFile(),  true);
                  addLibraryEntries(list, jdbcSpec.toFile(),     true);
+                 addLibraryEntries(list, osgiSpecs.toFile(),    true);
             }
         }
 
