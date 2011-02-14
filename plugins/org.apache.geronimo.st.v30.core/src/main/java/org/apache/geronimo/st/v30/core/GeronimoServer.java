@@ -103,9 +103,9 @@ public class GeronimoServer extends GeronimoServerDelegate {
 
         //-javaagent:"GERONIMO_BASE/bin/jpa.jar"
         String javaagent = "";
-        File jpaJar = new File(runtimeLocation + "/bin/jpa.jar");
-        if (jpaJar.exists()) {
-            javaagent = "-javaagent:\"" + runtimeLocation + "/bin/jpa.jar\"";
+        File agentJar = new File(runtimeLocation + "/lib/agent/transformer.jar");
+        if (agentJar.exists()) {
+            javaagent = "-javaagent:\"" + agentJar.getAbsolutePath() + "\"";
         }
 
         //-Djava.ext.dirs="GERONIMO_BASE/lib/ext;JRE_HOME/lib/ext"
