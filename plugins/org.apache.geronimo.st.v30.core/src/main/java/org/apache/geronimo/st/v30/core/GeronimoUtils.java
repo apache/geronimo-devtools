@@ -16,6 +16,10 @@
  */
 package org.apache.geronimo.st.v30.core;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.jar.Manifest;
+
 import javax.enterprise.deploy.shared.ModuleType;
 import javax.xml.bind.JAXBElement;
 
@@ -87,7 +91,7 @@ public class GeronimoUtils {
     }
     
     public static boolean isBundleModule(IModule module) {
-        return OsgiConstants.COMPOSITE_BUNDLE.equals(module.getModuleType().getId());
+        return OsgiConstants.BUNDLE.equals(module.getModuleType().getId());
     }
     
     public static ModuleType getJSR88ModuleType(IModule module) {
@@ -231,18 +235,49 @@ public class GeronimoUtils {
         return ComponentCore.createComponent(module.getProject());
     }
 
-    public static String getContextRoot(IModule module) throws Exception{
-        String contextRoot = null;
-
-        J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) module.loadAdapter(J2EEFlexProjDeployable.class, null);
-        contextRoot = ((IWebModule) j2eeModule).getContextRoot();
-
-        if (contextRoot == null)
+    public static Manifest getBundleManifest(IModule module) {
+        IVirtualComponent component = getVirtualComponent(module);
+        IPath manifestPath = component.getRootFolder().getUnderlyingFolder().getProjectRelativePath().append("META-INF").append("MANIFEST.MF");
+        IFile manifestFile = component.getProject().getFile(manifestPath);
+        Manifest manifest = null;
+        InputStream in = null;
+        try {
+            in = manifestFile.getContents();
+            manifest = new Manifest(in);
+        } catch (Exception e) {
+            Trace.trace(Trace.SEVERE, "Could load manifest file", e);
+        } finally {
+            if (in != null) {
+                try { in.close(); } catch (Exception ee) {}
+            }
+        }
+        return manifest;
+    }
+    
+    public static String getContextRoot(IModule module, boolean standalone) {
+        String contextRoot = null; 
+        if (standalone) {
+            try {
+                JAXBElement<WebApp> plan = getWebDeploymentPlan(module);
+                if (plan != null) {
+                    contextRoot = plan.getValue().getContextRoot();
+                }
+            } catch (Exception e) {
+                Trace.trace(Trace.SEVERE, "Could load geronimo-web.xml", e);
+            }
+        } else {
+            // TODO: this does not seem to pick up changes if application.xml is updated with a new context-root
+            J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) module.loadAdapter(J2EEFlexProjDeployable.class, null);
+            contextRoot = ((IWebModule) j2eeModule).getContextRoot();
+        }
+        
+        if (contextRoot == null) {
             contextRoot = getId(module);
-
+        }
+        
         return contextRoot;
     }
-
+    
     public static String getId(IModule module) {
         // use the module ID
         String moduleId = module.getId();

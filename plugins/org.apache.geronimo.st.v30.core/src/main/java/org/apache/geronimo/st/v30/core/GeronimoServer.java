@@ -58,13 +58,6 @@ public class GeronimoServer extends GeronimoServerDelegate {
         deploymentFactory = new DeploymentFactoryImpl();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.geronimo.st.v30.core.GenericGeronimoServer#getContextRoot(org.eclipse.wst.server.core.IModule)
-     */
-    public String getContextRoot(IModule module) throws Exception {
-        return GeronimoUtils.getContextRoot(module);
-    }
-
     /*
      * (non-Javadoc)
      *

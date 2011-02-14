@@ -28,6 +28,7 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
+import org.apache.geronimo.st.v30.core.GeronimoUtils;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
@@ -99,9 +100,6 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     public static final String CONSOLE_DEBUG = "-vv";
     
     public static final String CLEAN_OSGI_BUNDLE_CACHE = "--clean";
-
-    public abstract String getContextRoot(IModule module) throws Exception ;
-
 
     /**
      * Determines whether the specified module modifications can be made to the server at this time
@@ -261,35 +259,59 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     public URL getModuleRootURL(IModule module) {
         Trace.tracePoint("Entry", "GeronimoServerDelegate.getModuleRootURL", module);
 
-        try {
-            if (module == null
-                    || module.loadAdapter(IWebModule.class, null) == null)
-                return null;
-
-            String host = getServer().getHost();
-            String url = "http://" + host;
-            int port = 0;
-
-            port = Integer.parseInt(getHTTPPort());
-            port = ServerMonitorManager.getInstance().getMonitoredPort(getServer(), port, "web");
-            if (port != 80)
-                url += ":" + port;
-
-            String moduleId = getContextRoot(module);
-            if (!moduleId.startsWith("/"))
-                url += "/";
-            url += moduleId;
-
-            if (!url.endsWith("/"))
-                url += "/";
-
-            Trace.tracePoint("Exit ", "GeronimoServerDelegate.getModuleRootURL", new URL(url));
-            return new URL(url);
-        } catch (Exception e) {
-            Trace.trace(Trace.SEVERE, "Could not get root URL", e);
-            return null;
+        if (module == null) {
+            return null;        
         }
+        
+        String contextRoot = null;
+        
+        if (GeronimoUtils.isBundleModule(module)) {
+            // bundle - might be WAB
+            Manifest manifest = GeronimoUtils.getBundleManifest(module);
+            if (manifest != null) {
+                contextRoot = manifest.getMainAttributes().getValue("Web-ContextPath");
+            }
+        } else if (module.loadAdapter(IWebModule.class, null) != null) {
+            // regular WAR file
+            List<IModule> parents = getApplicationModules(module);
+            if (parents.isEmpty()) {
+                // standalone module - get context-root from geronimo-web.xml
+                contextRoot = GeronimoUtils.getContextRoot(module, true);
+            } else if (parents.size() == 1) {
+                // one parent - get context-root from EAR descriptor
+                contextRoot = GeronimoUtils.getContextRoot(module, false);
+            }
+        }
+        
+        if (contextRoot != null) {
+            try {
+                String host = getServer().getHost();
+                String url = "http://" + host;
+                int port = Integer.parseInt(getHTTPPort());
+                port = ServerMonitorManager.getInstance().getMonitoredPort(getServer(), port, "web");
+                if (port != 80) {
+                    url += ":" + port;
+                }
 
+                String moduleId = contextRoot;
+                if (!moduleId.startsWith("/")) {
+                    url += "/";
+                }
+                url += moduleId;
+
+                if (!url.endsWith("/")) {
+                    url += "/";
+                }
+
+                Trace.tracePoint("Exit ", "GeronimoServerDelegate.getModuleRootURL", new URL(url));
+                return new URL(url);
+            } catch (Exception e) {
+                Trace.trace(Trace.SEVERE, "Could not get root URL", e);
+                return null;
+            }
+        }
+        
+        return null;        
     }
 
 
