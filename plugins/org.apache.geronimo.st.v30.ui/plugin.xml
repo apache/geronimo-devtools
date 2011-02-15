@@ -150,7 +150,15 @@
     </extension>
     
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
-        <section id="org.apache.server.geronimo.loglevel" order="20"
+        <section id="org.apache.server.geronimo.karafShell" order="21"
+            insertionId="org.eclipse.wst.server.editor.overview.right"
+            typeIds="org.apache.geronimo.server.30"
+            class="org.apache.geronimo.st.v30.ui.sections.ServerEditorKarafShellSection">
+        </section>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.loglevel" order="22"
             insertionId="org.eclipse.wst.server.editor.overview.right"
             typeIds="org.apache.geronimo.server.30"
             class="org.apache.geronimo.st.v30.ui.sections.ServerEditorLogLevelSection">

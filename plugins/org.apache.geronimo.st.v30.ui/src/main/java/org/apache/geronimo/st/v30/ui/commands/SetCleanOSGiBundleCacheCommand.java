@@ -25,15 +25,15 @@ import org.eclipse.wst.server.core.IServerWorkingCopy;
  */
 public class SetCleanOSGiBundleCacheCommand extends ServerCommand {
 
-    String value;
+    boolean value;
 
-    String oldValue;
+    boolean oldValue;
 
     /**
      * @param server
      * @param name
      */
-    public SetCleanOSGiBundleCacheCommand(IServerWorkingCopy server, String value) {
+    public SetCleanOSGiBundleCacheCommand(IServerWorkingCopy server, boolean value) {
         super(server, "SetCleanOSGiBundleCacheCommand");
         this.value = value;
     }
@@ -45,7 +45,7 @@ public class SetCleanOSGiBundleCacheCommand extends ServerCommand {
      */
     public void execute() {
         GeronimoServerDelegate gs = getGeronimoServer();
-        oldValue = gs.getCleanOSGiBundleCache();
+        oldValue = gs.isCleanOSGiBundleCache();
         gs.setCleanOSGiBundleCache(value);
     }
 

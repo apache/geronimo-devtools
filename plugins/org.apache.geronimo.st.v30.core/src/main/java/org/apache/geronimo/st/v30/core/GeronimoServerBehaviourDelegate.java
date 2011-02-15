@@ -125,9 +125,11 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         GeronimoRuntimeDelegate runtime = getRuntimeDelegate();
 
         IVMInstall vmInstall = runtime.getVMInstall();
-        if (vmInstall != null)
-            wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, JavaRuntime.newJREContainerPath(vmInstall).toPortableString());
-
+        if (vmInstall != null) {
+            wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH,
+                    JavaRuntime.newJREContainerPath(vmInstall).toPortableString());
+        }
+        
         String existingProgArgs = null;
         wc.setAttribute(ERROR_SETUP_LAUNCH_CONFIGURATION, (String)null);
         
@@ -143,60 +145,21 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             // exactly what we want the GEP user to see.
             wc.setAttribute(ERROR_SETUP_LAUNCH_CONFIGURATION, e.getMessage());
         }
-        String serverProgramArgs = getServerProgramArgs(existingProgArgs, getServerDelegate());
+        GeronimoServerDelegate gsd = getServerDelegate();
+        String programArgs = gsd.getProgramArgs();
+        Trace.tracePoint("GeronimoServerBehaviourDelegate.v30", "setupLaunchConfiguration serverProgramArgs", programArgs);
+        wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArgs);
+        
+        /*
+        programArgs = getServerProgramArgs(existingProgArgs, getServerDelegate());
         Trace.tracePoint("GeronimoServerBehaviourDelegate.v30", "setupLaunchConfiguration serverProgramArgs",
-                serverProgramArgs);
-        wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, serverProgramArgs);
+                programArgs);
+        wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArgs);
+        */
 
-        String vmArgs = getServerDelegate().getVMArgs();
+        String vmArgs = gsd.getVMArgs();
         Trace.tracePoint("GeronimoServerBehaviourDelegate.v30", "setupLaunchConfiguration serverVMArgs", vmArgs);
         wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, vmArgs);
-    }
-
-    /**
-     * remove args no longer specified, add newly specified args, and only specify them once.
-     * @param existingProgArgs
-     * @param serverDelegate
-     * @return
-     */
-    private String getServerProgramArgs(String existingProgArgs, GeronimoServerDelegate serverDelegate) {
-        Set<String> parmsSet = serverDelegate.getProgramArgs();
-        Set<String> parmsNotSet = serverDelegate.getProgramArgsNotSet();
-        Set<String> parmsSeen = new HashSet<String>(parmsSet.size());
-        List<String> parms;
-        if (existingProgArgs == null) {
-            parms = new ArrayList<String>(parmsSet.size());
-        } else {
-            parms = new ArrayList<String>(Arrays.asList(existingProgArgs.split("\\s+")));
-        }
-        // remove notSet and duplicate set paramaters from the list
-        for(ListIterator<String> iterator = parms.listIterator(); iterator.hasNext();) {
-            String parm = iterator.next();
-            if (parmsNotSet.contains(parm) || parmsSeen.contains(parm)) {
-                iterator.remove();
-                continue;
-            }
-            if (parmsSet.contains(parm)) {
-                parmsSet.remove(parm);
-                parmsSeen.add(parm);
-            }
-        }
-        StringBuffer sb = new StringBuffer();
-        // add new parms to front
-        for (String parm : parmsSet) {
-            if (sb.length() > 0) {
-                sb.append(" ");
-            }
-            sb.append(parm);
-        }
-        // valid existing parms
-        for (String parm : parms) {
-            if (sb.length() > 0) {
-                sb.append(" ");
-            }
-            sb.append(parm);
-        }
-        return sb.toString();
     }
 
 

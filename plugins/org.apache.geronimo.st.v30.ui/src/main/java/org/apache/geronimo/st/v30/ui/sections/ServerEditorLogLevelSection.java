@@ -71,12 +71,12 @@ public class ServerEditorLogLevelSection extends AbstractServerEditorSection {
         info = toolkit.createButton(composite, Messages.info, SWT.RADIO);
         debug = toolkit.createButton(composite, Messages.debug, SWT.RADIO);
         
-        String currentValue = ((GeronimoServerDelegate)server.getAdapter(GeronimoServerDelegate.class)).getConsoleLogLevel();
-        if(GeronimoServerDelegate.CONSOLE_DEBUG.equals(currentValue)) {
-            debug.setSelection(true);
-        } else {
-            info.setSelection(true);
-        }
+        String currentValue = ((GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class))
+                .getConsoleLogLevel();
+
+        debug.setSelection(GeronimoServerDelegate.CONSOLE_DEBUG.equals(currentValue));
+
+        info.setSelection(GeronimoServerDelegate.CONSOLE_INFO.equals(currentValue));
 
         info.addSelectionListener(new SelectionListener() {
 

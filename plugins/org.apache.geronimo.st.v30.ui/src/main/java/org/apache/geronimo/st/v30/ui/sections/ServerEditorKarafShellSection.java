@@ -17,7 +17,7 @@
 package org.apache.geronimo.st.v30.ui.sections;
 
 import org.apache.geronimo.st.v30.core.GeronimoServerDelegate;
-import org.apache.geronimo.st.v30.ui.commands.SetCleanOSGiBundleCacheCommand;
+import org.apache.geronimo.st.v30.ui.commands.SetKarafShellCommand;
 import org.apache.geronimo.st.v30.ui.internal.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -33,11 +33,11 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  * @version $Rev$ $Date$
  */
-public class ServerEditorCleanOSGiBundleCacheSection extends AbstractServerEditorSection {
+public class ServerEditorKarafShellSection extends AbstractServerEditorSection {
 
-    Button cleanOGSiBundelCache;
+    Button enable;
 
-    public ServerEditorCleanOSGiBundleCacheSection() {
+    public ServerEditorKarafShellSection() {
         super();
     }
 
@@ -51,8 +51,8 @@ public class ServerEditorCleanOSGiBundleCacheSection extends AbstractServerEdito
                 | ExpandableComposite.TITLE_BAR
                 | Section.DESCRIPTION | ExpandableComposite.FOCUS_TITLE);
 
-        section.setText(Messages.editorSectionCleanOSGiBundleCacheTitle);
-        section.setDescription(Messages.editorSectionCleanOSGiBundleCacheDescription);
+        section.setText(Messages.editorSectionKarafShellTitle);
+        section.setDescription(Messages.editorSectionKarafShellDescription);
         section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
         Composite composite = toolkit.createComposite(section);
@@ -66,17 +66,17 @@ public class ServerEditorCleanOSGiBundleCacheSection extends AbstractServerEdito
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         section.setClient(composite);
 
-        cleanOGSiBundelCache = toolkit.createButton(composite, Messages.cleanOSGiBundleCache, SWT.CHECK);
+        enable = toolkit.createButton(composite, Messages.enableKarafShell, SWT.CHECK);
 
         GeronimoServerDelegate gsd = (GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class);
         
-        boolean cleanCache = gsd.isCleanOSGiBundleCache();
-        cleanOGSiBundelCache.setSelection(cleanCache);
+        boolean karafShell = gsd.isKarafShell();
+        enable.setSelection(karafShell);
 
-        cleanOGSiBundelCache.addSelectionListener(new SelectionListener() {
+        enable.addSelectionListener(new SelectionListener() {
 
             public void widgetSelected(SelectionEvent e) {
-                execute(new SetCleanOSGiBundleCacheCommand(server, cleanOGSiBundelCache.getSelection()));
+                execute(new SetKarafShellCommand(server, enable.getSelection()));
             }
 
             public void widgetDefaultSelected(SelectionEvent e) {

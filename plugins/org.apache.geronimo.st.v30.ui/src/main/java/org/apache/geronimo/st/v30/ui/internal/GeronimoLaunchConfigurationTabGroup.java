@@ -69,9 +69,16 @@ public class GeronimoLaunchConfigurationTabGroup extends AbstractLaunchConfigura
              
              IServer server = ServerUtil.getServer(configuration);
              GeronimoServerDelegate sd = (GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class);
-             String oldValue = sd.getVMArgs();
-             String newValue = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, oldValue);
+             
+             String oldValue = sd.getProgramArgs();
+             String newValue = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, oldValue);
+             sd.setProgramArgs(newValue);
+             //sd.updatePropertiesFromProgramArgs(newValue);
+             
+             oldValue = sd.getVMArgs();
+             newValue = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, oldValue);
              sd.setVMArgs(newValue);     
+             //sd.updatePropertiesFromVMArgs(newValue);
                        
          } catch (CoreException e) {
         	  MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());

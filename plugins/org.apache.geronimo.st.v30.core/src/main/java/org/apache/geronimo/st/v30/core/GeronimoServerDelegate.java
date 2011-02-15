@@ -19,16 +19,19 @@ package org.apache.geronimo.st.v30.core;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.apache.geronimo.st.v30.core.GeronimoUtils;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
@@ -75,6 +78,10 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 
     public static final String PROPERTY_LOG_LEVEL = "logLevel";
     
+    public static final String PROPERTY_KARAF_SHELL = "karafShell";
+    
+    public static final String PROPERTY_PROGRAM_ARGS = "ProgramArgs";
+    
     public static final String PROPERTY_VM_ARGS = "VMArgs";
     
     public static final String PROPERTY_PING_DELAY = "pingDelay";
@@ -100,6 +107,15 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     public static final String CONSOLE_DEBUG = "-vv";
     
     public static final String CLEAN_OSGI_BUNDLE_CACHE = "--clean";
+    
+    public static final String DISABLE_KARAF_SHELL = "-Dkaraf.startLocalConsole=false";
+    
+    public static final String ENABLE_KARAF_SHELL = "-Dkaraf.startLocalConsole=true";
+    
+    // required to avoid error start, and work nicely on windows, when Karaf shell is enabled.
+    public static final String JLINE_UNSUPPORTED_TERMINAL = "-Djline.terminal=jline.UnsupportedTerminal";
+
+    private boolean suspendArgUpdates;
 
     /**
      * Determines whether the specified module modifications can be made to the server at this time
@@ -321,12 +337,15 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
      * @see org.eclipse.wst.server.core.model.ServerDelegate#setDefaults(org.eclipse.core.runtime.IProgressMonitor)
      */
     public void setDefaults(IProgressMonitor monitor) {
+        Trace.tracePoint("Entry", "GeronimoServerDelegate.setDefaults", monitor);
+        suspendArgUpdates();
         setAdminID("system");
         setAdminPassword("manager");
         setHTTPPort("8080");
         setRMINamingPort("1099");
         setConsoleLogLevel(CONSOLE_INFO);
-        setCleanOSGiBundleCache("");
+        setCleanOSGiBundleCache(false);
+        setKarafShell(false);
         setPingDelay(new Integer(10000));
         setMaxPings(new Integer(40));
         setPingInterval(new Integer(5000));
@@ -334,8 +353,18 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         setInPlaceSharedLib(false);
         setRunFromWorkspace(false);
         setSelectClasspathContainers(false);
+        resumeArgUpdates();
+        Trace.tracePoint("Exit", "GeronimoServerDelegate.setDefaults", monitor);
     }
 
+    
+
+    @Override
+    public void saveConfiguration(IProgressMonitor monitor) throws CoreException {
+        Trace.tracePoint("Enter", "GeronimoServerDelegate.saveConfiguration", monitor);
+        super.saveConfiguration(monitor);
+        Trace.tracePoint("Leave", "GeronimoServerDelegate.saveConfiguration", monitor);
+    }
 
     // 
     // PROPERTY_ADMIN_ID 
@@ -389,23 +418,260 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     }
     public void setConsoleLogLevel(String value) {
         setInstanceProperty(PROPERTY_LOG_LEVEL, value);
+        updateProgramArgsFromProperties();
+    }
+    
+
+    //
+    // CLEAR_OSGI_BUNDLE_CACHE
+    //
+    public boolean isCleanOSGiBundleCache() {
+        String enable = getInstanceProperty(PROPERTY_CLEAN_OSGI_BUNDLE_CACHE);
+        return Boolean.valueOf(enable);
+    }
+
+    public void setCleanOSGiBundleCache(boolean value) {
+        setInstanceProperty(PROPERTY_CLEAN_OSGI_BUNDLE_CACHE, Boolean.toString(value));
+        updateProgramArgsFromProperties();
     }
     
     
-    public String getCleanOSGiBundleCache() {
-        return getInstanceProperty(PROPERTY_CLEAN_OSGI_BUNDLE_CACHE);
+    /**
+     * remove args no longer specified, add newly specified args, and only specify them once.
+     */
+    private void updateProgramArgsFromProperties() {
+        if (isSuspendArgUpdates()) {
+            return;
+        }
+        Set<String> parmsSet = getProgramArgsSet();
+        Set<String> parmsNotSet = getProgramArgsNotSet();
+        String existingProgArgs = getProgramArgs();
+        
+        String programArgs = updateProgramArgsFromProperties(existingProgArgs, parmsSet, parmsNotSet);
+        
+        Trace.tracePoint("Exit", "GeronimoServerDelegate.updateProgramArgsFromProperties", programArgs); 
+
+        setProgramArgs(programArgs);
+    }
+    
+    
+    /**
+     * remove args no longer specified, add newly specified args, and only specify them once.
+     */
+    private void updateVMArgsFromProperties() {
+        if (isSuspendArgUpdates()) {
+            return;
+        }
+        Set<String> parmsSet = getVMArgsSet();
+        Set<String> parmsNotSet = getVMArgsNotSet();
+        String existingVMArgs = getVMArgs();
+        
+        String vmArgs = updateVMArgsFromProperties(existingVMArgs, parmsSet, parmsNotSet);
+        
+        Trace.tracePoint("Exit", "GeronimoServerDelegate.updateVMArgsFromProperties", vmArgs); 
+
+        setVMArgs(vmArgs);
     }
 
-    public void setCleanOSGiBundleCache(String value) {
-        setInstanceProperty(PROPERTY_CLEAN_OSGI_BUNDLE_CACHE, value);
+    private String updateProgramArgsFromProperties(String existingProgramArgs, Set<String> parmsSet, Set<String> parmsNotSet) {
+        Set<String> parmsSeen = new HashSet<String>(parmsSet.size());
+        List<String> parms;
+        if (existingProgramArgs == null) {
+            parms = new ArrayList<String>(parmsSet.size());
+        } else {
+            parms = new ArrayList<String>(Arrays.asList(existingProgramArgs.split("\\s+")));
+        }
+        // remove notSet and duplicate set parameters from the list
+        for (ListIterator<String> iterator = parms.listIterator(); iterator.hasNext();) {
+            String parm = iterator.next();
+            if (parmsNotSet.contains(parm) || parmsSeen.contains(parm)) {
+                iterator.remove();
+                continue;
+            }
+            if (parmsSet.contains(parm)) {
+                parmsSet.remove(parm);
+                parmsSeen.add(parm);
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        // add new parms to front
+        for (String parm : parmsSet) {
+            addParm(sb, parm);
+        }
+        // valid existing parms
+        for (String parm : parms) {
+            addParm(sb, parm);
+        }
+        return sb.toString();
     }
 
-    public Set<String> getProgramArgs() {
+    public void updatePropertiesFromProgramArgs(String existingProgramArgs) {
+        boolean cleanOSGiCache = false;
+        boolean infoConsole = false;
+        boolean debugConsole = false;
+        List<String> parms;
+        if (existingProgramArgs == null) {
+            parms = new ArrayList<String>(0);
+        } else {
+            parms = new ArrayList<String>(Arrays.asList(existingProgramArgs.split("\\s+")));
+        }
+        for (String parm : parms) {
+            if (parm.equals(CLEAN_OSGI_BUNDLE_CACHE)) {
+                cleanOSGiCache = true;
+            }
+            if (parm.equals(CONSOLE_DEBUG)) {
+                debugConsole = true;
+            }
+            if (parm.equals(CONSOLE_INFO)) {
+                infoConsole = true;
+            }
+        }
+        suspendArgUpdates();
+        setCleanOSGiBundleCache(cleanOSGiCache);
+        if (debugConsole) {
+            setConsoleLogLevel(CONSOLE_DEBUG);
+        } else {
+            if (infoConsole) {
+                setConsoleLogLevel(CONSOLE_INFO);
+            } else {
+                setConsoleLogLevel("");
+            }
+        }
+        resumeArgUpdates();
+    }
+
+    private void suspendArgUpdates() {
+        suspendArgUpdates = true;
+    }
+    
+    private void resumeArgUpdates() {
+        suspendArgUpdates = false;
+    }
+    
+    private boolean isSuspendArgUpdates() {
+        return suspendArgUpdates;
+    }
+
+    /**
+     * A parameter. can include spaces inside single or double quotes.
+     */
+    static final Pattern PARAMETER_PATTERN = Pattern.compile("(?:\"[^\"]*\"|'[^']*'|\\S)+");
+
+    private String updateVMArgsFromProperties(String existingVMArgs, Set<String> parmsSet, Set<String> parmsNotSet) {
+        Set<String> parmsSeen = new HashSet<String>(parmsSet.size());
+        List<String> parms = new ArrayList<String>(parmsSet.size());
+        int lastSystemPropertyFoundIndex = -1;
+        if (existingVMArgs == null) {
+            // TODO could be a problem
+        } else {
+            // deal with quoted parms that may contain spaces
+            // the regex for a parameter is: (?:"[^"]*"|'[^']*'|\S)+
+            // TODO what if there is an unmatched quote??
+            Matcher matcher = PARAMETER_PATTERN.matcher(existingVMArgs);
+            while (matcher.find()) {
+                String parm = matcher.group();
+                if (parmsNotSet.contains(parm) || parmsSeen.contains(parm)) {
+                    // ignore this parm
+                    continue;
+                }
+                parms.add(parm);
+                if (parm.startsWith("-D")) {
+                    lastSystemPropertyFoundIndex = parms.size();
+                }
+                if (parmsSet.contains(parm)) {
+                    parmsSet.remove(parm);
+                    parmsSeen.add(parm);
+                }
+            }
+        }
+        if (lastSystemPropertyFoundIndex < 0) {
+            lastSystemPropertyFoundIndex = parms.size();
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < parms.size(); i++) {
+            addParm(sb, parms.get(i));
+            if (i > lastSystemPropertyFoundIndex) {
+                // add new parms here after last -D parm
+                for (String parm : parmsSet) {
+                    addParm(sb, parm);
+                }
+                lastSystemPropertyFoundIndex = -1;
+            }
+        }
+        if (lastSystemPropertyFoundIndex >= 0) {
+            // add new parms to end
+            for (String parm : parmsSet) {
+                addParm(sb, parm);
+            }
+        }
+        return sb.toString();
+    }
+    
+    public void updatePropertiesFromVMArgs(String existingVMArgs) {
+        boolean karafShell = false;
+        if (existingVMArgs == null) {
+            // TODO could be a problem
+        } else {
+            // deal with quoted parms that may contain spaces
+            // the regex for a parameter is: (?:\S|"[^"]*"|'[^']*')+
+            // TODO what if there is an umatched quote??
+            Matcher matcher = PARAMETER_PATTERN.matcher(existingVMArgs);
+            while (matcher.find()) {
+                String parm = matcher.group();
+                if (parm.equals(ENABLE_KARAF_SHELL)) {
+                    karafShell = true;
+                }
+            }
+        }
+        suspendArgUpdates();
+        setKarafShell(karafShell);
+        resumeArgUpdates();
+    }
+
+    private void addParm(StringBuilder sb, String parm) {
+        if (sb.length() > 0) {
+            sb.append(" ");
+        }
+        sb.append(parm);
+    }
+
+    public String getCleanOSGiBundleCacheArgs() {
+        return isCleanOSGiBundleCache() ? CLEAN_OSGI_BUNDLE_CACHE : "";
+    }
+
+    
+    
+    // 
+    // PROPERTY_KARAF_SHELL
+    // 
+    public boolean isKarafShell() {
+        return getAttribute(PROPERTY_KARAF_SHELL, false);
+    }
+    public void setKarafShell(boolean enable) {
+        setAttribute(PROPERTY_KARAF_SHELL, enable);
+        updateVMArgsFromProperties();
+    }
+    
+    public List<String> getKarafShellArgs(boolean enable) {
+        if (enable)
+            return Arrays.asList(ENABLE_KARAF_SHELL, JLINE_UNSUPPORTED_TERMINAL);
+        else
+            return Arrays.asList(DISABLE_KARAF_SHELL);
+    }
+
+    public String getKarafShellArgs() {
+        StringBuilder sb = new StringBuilder();
+        for (String parm : getKarafShellArgs(isKarafShell())) {
+            addParm(sb, parm);
+        }
+        return sb.toString();
+    }
+
+    public Set<String> getProgramArgsSet() {
         Set<String> parms = new HashSet<String>(2);
         parms.add(getConsoleLogLevel());
-        String clean = getCleanOSGiBundleCache();
-        if (clean.length() > 0) {
-            parms.add(clean);
+        if (isCleanOSGiBundleCache()) {
+            parms.add(CLEAN_OSGI_BUNDLE_CACHE);
         }
         return parms;
     }
@@ -418,8 +684,8 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         } else {
             notParms.add(CONSOLE_INFO);
         }
-        String clean = getCleanOSGiBundleCache();
-        if (clean.equals("")) {
+        if (isCleanOSGiBundleCache()) {
+        } else {
             notParms.add(CLEAN_OSGI_BUNDLE_CACHE);
         }
         return notParms;
@@ -432,7 +698,39 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         return getInstanceProperty(PROPERTY_VM_ARGS);
     }
     public void setVMArgs(String value) {
+        Trace.tracePoint("Entry", "GeronimoServerDelegate.getVMArgs", value);
         setInstanceProperty(PROPERTY_VM_ARGS, value);
+    }
+
+    public Set<String> getVMArgsSet() {
+        boolean karafShell = isKarafShell();
+        List<String> parmStrings = getKarafShellArgs(karafShell);
+        Set<String> parms = new HashSet<String>(parmStrings.size());
+        for (String parm : parmStrings) {
+            parms.add(parm);
+        }
+        return parms;
+    }
+
+    public Set<String> getVMArgsNotSet() {
+        boolean karafShell = isKarafShell();
+        List<String> parmStrings = getKarafShellArgs(!karafShell);
+        Set<String> notParms = new HashSet<String>(parmStrings.size());
+        for (String parm : parmStrings) {
+            notParms.add(parm);
+        }
+        return notParms;
+    }
+
+    // 
+    // PROPERTY_PROGRAM_ARGS
+    // 
+    public String getProgramArgs() {
+        return getInstanceProperty(PROPERTY_PROGRAM_ARGS);
+    }
+    public void setProgramArgs(String value) {
+        Trace.tracePoint("Entry", "GeronimoServerDelegate.getProgramArgs", value);
+        setInstanceProperty(PROPERTY_PROGRAM_ARGS, value);
     }
     
 
@@ -558,7 +856,15 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     public void setInstanceProperty(String name, String value) {
         Map map = getServerInstanceProperties();
         map.put(name, value);
-        setServerInstanceProperties(map);
+        try {
+            setServerInstanceProperties(map);
+        } catch (Exception e) {
+            // TODO WTF? Need to figure out why this fails...  seems to fail before setDefaults is called.
+            Trace.trace(Trace.INFO, "GeronimoServerDelegate.setInstanceProperty(name = " + name + ", value = " + value
+                    + " )", e);
+            int a = 1;
+            a++;
+        }
     }
 
     public Map getServerInstanceProperties() {

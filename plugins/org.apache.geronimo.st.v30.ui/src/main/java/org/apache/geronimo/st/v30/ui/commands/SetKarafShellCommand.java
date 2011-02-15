@@ -17,38 +17,45 @@
 package org.apache.geronimo.st.v30.ui.commands;
 
 import org.apache.geronimo.st.v30.core.GeronimoServerDelegate;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 
 /**
  * @version $Rev$ $Date$
  */
-public class SetVMArgsCommand extends ServerCommand {
-    
-    protected String args;
+public class SetKarafShellCommand extends ServerCommand {
 
-    protected String oldArgs;
-    
-    GeronimoServerDelegate gs;
+    boolean value;
 
-    public SetVMArgsCommand(IServerWorkingCopy server, String args) {
-        super(server, args);
-        this.args = args;
+    boolean oldValue;
+
+    /**
+     * @param server
+     * @param name
+     */
+    public SetKarafShellCommand(IServerWorkingCopy server, boolean value) {
+        super(server, "SetKarafShellCommand");
+        this.value = value;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.st.v30.ui.commands.ServerCommand#execute()
+     */
     public void execute() {
-        gs = (GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class);
-        if (gs == null) {
-            gs = (GeronimoServerDelegate) server.loadAdapter(GeronimoServerDelegate.class, new NullProgressMonitor());
-        }
-        oldArgs = gs.getVMArgs();
-        gs.setVMArgs(args);
+        GeronimoServerDelegate gs = (GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class);
+        oldValue = gs.isKarafShell();
+        gs.setKarafShell(value);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.geronimo.st.v30.ui.commands.ServerCommand#undo()
+     */
     public void undo() {
-        if (gs != null) {
-            gs.setVMArgs(oldArgs);
-        }
+        GeronimoServerDelegate gs = (GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class);
+        gs.setKarafShell(oldValue);
     }
 
 }
