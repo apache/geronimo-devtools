@@ -155,9 +155,9 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
     public boolean isFullyStarted() {
         if (isKernelAlive()) {
             AbstractNameQuery query = new AbstractNameQuery(PersistentConfigurationList.class.getName());
-            Set configLists = kernel.listGBeans(query);
+            Set<AbstractName> configLists = kernel.listGBeans(query);
             if (!configLists.isEmpty()) {
-                AbstractName on = (AbstractName) configLists.toArray()[0];
+                AbstractName on = configLists.toArray(new AbstractName[configLists.size()])[0];
                 try {
                     Boolean b = (Boolean) kernel.getAttribute(on, "kernelFullyStarted");
                     return b.booleanValue();
@@ -226,8 +226,7 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
     }
 
     @Override
-    protected List getOrderedModules(IServer server, List modules,
-            List deltaKind) {
+    protected List getOrderedModules(IServer server, List modules, List deltaKind) {
          DependencyHelper dh = new DependencyHelper();
          List list = dh.reorderModules(this.getServer(),modules, deltaKind);
          return list;

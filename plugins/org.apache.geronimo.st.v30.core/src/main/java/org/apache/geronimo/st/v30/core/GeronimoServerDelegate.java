@@ -302,23 +302,24 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         if (contextRoot != null) {
             try {
                 String host = getServer().getHost();
-                String url = "http://" + host;
+                StringBuilder urlSB = new StringBuilder("http://");
+                urlSB.append(host);
                 int port = Integer.parseInt(getHTTPPort());
                 port = ServerMonitorManager.getInstance().getMonitoredPort(getServer(), port, "web");
                 if (port != 80) {
-                    url += ":" + port;
+                    urlSB.append(":").append(port);
                 }
 
                 String moduleId = contextRoot;
                 if (!moduleId.startsWith("/")) {
-                    url += "/";
+                    urlSB.append("/");
                 }
-                url += moduleId;
+                urlSB.append(moduleId);
 
-                if (!url.endsWith("/")) {
-                    url += "/";
+                if (!moduleId.endsWith("/")) {
+                    urlSB.append("/");
                 }
-
+                String url = urlSB.toString();
                 Trace.tracePoint("Exit ", "GeronimoServerDelegate.getModuleRootURL", new URL(url));
                 return new URL(url);
             } catch (Exception e) {
@@ -361,9 +362,18 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 
     @Override
     public void saveConfiguration(IProgressMonitor monitor) throws CoreException {
-        Trace.tracePoint("Enter", "GeronimoServerDelegate.saveConfiguration", monitor);
+        Trace.tracePoint("Enter", "GeronimoServerDelegate.v30.saveConfiguration", monitor);
         super.saveConfiguration(monitor);
-        Trace.tracePoint("Leave", "GeronimoServerDelegate.saveConfiguration", monitor);
+        Trace.tracePoint("Leave", "GeronimoServerDelegate.v30.saveConfiguration", monitor);
+    }
+    
+    
+
+    @Override
+    public void configurationChanged() {
+        Trace.tracePoint("Enter", "GeronimoServerDelegate.v30.configurationChanged");
+        super.configurationChanged();
+        Trace.tracePoint("Leave", "GeronimoServerDelegate.v30.configurationChanged");
     }
 
     // 
@@ -703,23 +713,11 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     }
 
     public Set<String> getVMArgsSet() {
-        boolean karafShell = isKarafShell();
-        List<String> parmStrings = getKarafShellArgs(karafShell);
-        Set<String> parms = new HashSet<String>(parmStrings.size());
-        for (String parm : parmStrings) {
-            parms.add(parm);
-        }
-        return parms;
+        return new HashSet<String>(getKarafShellArgs(isKarafShell()));
     }
 
     public Set<String> getVMArgsNotSet() {
-        boolean karafShell = isKarafShell();
-        List<String> parmStrings = getKarafShellArgs(!karafShell);
-        Set<String> notParms = new HashSet<String>(parmStrings.size());
-        for (String parm : parmStrings) {
-            notParms.add(parm);
-        }
-        return notParms;
+        return new HashSet<String>(getKarafShellArgs(!isKarafShell()));
     }
 
     // 
@@ -884,22 +882,21 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
      * @return 
      */
     private IModule[] doGetParentModules(IModule module) {
-        Trace.tracePoint("Entry", "GeronimoServerDelegate.doGetParentModules", module);
+        Trace.tracePoint("Entry", "GeronimoServerDelegate.v30.doGetParentModules", module);
 
         ArrayList<IModule> parents = new ArrayList<IModule>();
         parents.addAll(getApplicationModules(module));
 
         // also check to see if the module is a utility module for a stand-alone
         // web module
-        IModule[] wars = J2EEUtil.getWebModules(module, null);
-        for (int i = 0; i < wars.length; i++) {
-            if (getApplicationModules(wars[i]).isEmpty()) {
-                parents.add(wars[i]);
+        for (IModule war : J2EEUtil.getWebModules(module, null)) {
+            if (getApplicationModules(war).isEmpty()) {
+                parents.add(war);
             }
         }
-
-        Trace.tracePoint("Exit ", "GeronimoServerDelegate.doGetParentModules", (IModule[]) parents.toArray(new IModule[parents.size()]));
-        return (IModule[]) parents.toArray(new IModule[parents.size()]);
+        IModule[] modules = (IModule[]) parents.toArray(new IModule[parents.size()]);
+        Trace.tracePoint("Exit ", "GeronimoServerDelegate.v30.doGetParentModules", modules);
+        return modules;
     }
 
 

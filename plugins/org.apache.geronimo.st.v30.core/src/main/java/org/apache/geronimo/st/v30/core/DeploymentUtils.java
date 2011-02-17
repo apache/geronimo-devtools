@@ -49,11 +49,11 @@ import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.model.IModuleResource;
-import org.eclipse.wst.server.core.util.ProjectModule;
-import org.eclipse.wst.server.core.model.IModuleResourceDelta;
 import org.eclipse.wst.server.core.model.IModuleFile;
 import org.eclipse.wst.server.core.model.IModuleFolder;
+import org.eclipse.wst.server.core.model.IModuleResource;
+import org.eclipse.wst.server.core.model.IModuleResourceDelta;
+import org.eclipse.wst.server.core.util.ProjectModule;
 
 /**
  * @version $Rev$ $Date$
@@ -221,7 +221,7 @@ public class DeploymentUtils {
             }
         }
 
-        Trace.tracePoint("Exit ", "DeploymentUtils.getExportDataModel", null);
+        Trace.tracePoint("Exit ", "DeploymentUtils.getExportDataModel", (Object) null);
         return null;
     }
     
@@ -302,7 +302,7 @@ public class DeploymentUtils {
             }
         }
         
-        Trace.tracePoint("Exit ", "DeploymentUtils.getLastKnownConfigurationId", null);
+        Trace.tracePoint("Exit ", "DeploymentUtils.getLastKnownConfigurationId", (Object) null);
         return null;
     }
     
@@ -311,7 +311,7 @@ public class DeploymentUtils {
         Trace.tracePoint("Entry", "DeploymentUtils.getAffectedJSPFiles", delta);
 
         if (delta == null) {
-            Trace.tracePoint("Exit ", "DeploymentUtils.getAffectedJSPFiles", null);
+            Trace.tracePoint("Exit ", "DeploymentUtils.getAffectedJSPFiles", (Object) null);
             return null;
         }
 
@@ -324,7 +324,7 @@ public class DeploymentUtils {
                 fileList.add(delta);
             }
             else {
-                Trace.tracePoint("Exit ", "DeploymentUtils.getAffectedJSPFiles", null);
+                Trace.tracePoint("Exit ", "DeploymentUtils.getAffectedJSPFiles", (Object) null);
                 return null;   //not only jsp changed
             }
         }
@@ -334,7 +334,7 @@ public class DeploymentUtils {
                 List<IModuleResourceDelta> deltaChildren = getAffectedJSPFiles(childDelta);
                 if (deltaChildren != null) fileList.addAll(deltaChildren);
                 else {
-                    Trace.tracePoint("Exit ", "DeploymentUtils.getAffectedJSPFiles", null);
+                    Trace.tracePoint("Exit ", "DeploymentUtils.getAffectedJSPFiles", (Object) null);
                     return null;
                 }
             }
@@ -379,7 +379,7 @@ public class DeploymentUtils {
         
         TargetModuleID[] ids = dm.getAvailableModules(null, dm.getTargets());
         if(ids == null) {
-            Trace.tracePoint("Exit ", "DeploymentUtils.isInstalledModule", null);
+            Trace.tracePoint("Exit ", "DeploymentUtils.isInstalledModule", (Object) null);
             return null;
         }
         if (ids != null) {
@@ -392,7 +392,7 @@ public class DeploymentUtils {
             }
         }
         
-        Trace.tracePoint("Exit ", "DeploymentUtils.isInstalledModule", null);
+        Trace.tracePoint("Exit ", "DeploymentUtils.isInstalledModule", (Object) null);
         return null;
     }
 }

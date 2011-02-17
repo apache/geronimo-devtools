@@ -28,12 +28,9 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.Timer;
 
 import javax.enterprise.deploy.spi.Target;
@@ -263,7 +260,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
         IStatus status = Status.OK_STATUS;
         if (modules != null && modules.size() > 0 && getGeronimoServer().isInPlaceSharedLib()) {
-            List rootModules = new ArrayList<IModule>();
+            List<IModule> rootModules = new ArrayList<IModule>();
             for(int i = 0; i < modules.size(); i++) {
                 IModule[] module = (IModule[]) modules.get(i);
                 if(!rootModules.contains(module[0])) {
@@ -284,7 +281,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             if (monitor.isCanceled())
                 return;
             
-            List rootModulesPublished = new ArrayList<IModule>();
+            List<IModule> rootModulesPublished = new ArrayList<IModule>();
             for (int i = 0; i < size; i++) {
                 IModule[] module = (IModule[]) modules.get(i);
                 int moduleDeltaKind = ((Integer)deltaKind.get(i)).intValue();
@@ -587,78 +584,64 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
         List<IModuleResourceDelta> jspFiles = new ArrayList<IModuleResourceDelta>();
         for (IModuleResourceDelta delta : deltaArray) {
-            List<IModuleResourceDelta> partJspFiles= DeploymentUtils
-                    .getAffectedJSPFiles(delta);
-            //if not only Jsp files found, need to redeploy the module, so return false;
-            if (partJspFiles == null) return false;
-            else jspFiles.addAll(partJspFiles);
+            List<IModuleResourceDelta> partJspFiles = DeploymentUtils.getAffectedJSPFiles(delta);
+            // if not only Jsp files found, need to redeploy the module, so return false;
+            if (partJspFiles == null)
+                return false;
+            else
+                jspFiles.addAll(partJspFiles);
         }
-            for (IModuleResourceDelta deltaModule : jspFiles) {
-                IModuleFile moduleFile = (IModuleFile) deltaModule
-                        .getModuleResource();
+        for (IModuleResourceDelta deltaModule : jspFiles) {
+            IModuleFile moduleFile = (IModuleFile) deltaModule.getModuleResource();
 
                 String target;
-                String relativePath = moduleFile.getModuleRelativePath()
-                        .toOSString();
-                if (relativePath != null && relativePath.length() != 0) {
-                    target = moduleTargetPath.concat(ch).concat(relativePath)
-                            .concat(ch).concat(moduleFile.getName());
-                } else
-                    target = moduleTargetPath.concat(ch).concat(
-                            moduleFile.getName());
+            String relativePath = moduleFile.getModuleRelativePath().toOSString();
+            if (relativePath != null && relativePath.length() != 0) {
+                target = moduleTargetPath.concat(ch).concat(relativePath).concat(ch).concat(moduleFile.getName());
+            } else
+                target = moduleTargetPath.concat(ch).concat(moduleFile.getName());
 
-                File file = new File(target);
-                switch (deltaModule.getKind()) {
-                case IModuleResourceDelta.REMOVED:
-                    if (file.exists())
-                        file.delete();
-                    break;
-                case IModuleResourceDelta.ADDED:
-                case IModuleResourceDelta.CHANGED:
-                    if (!file.exists())
-                        try {
-                            file.createNewFile();
-                        } catch (IOException e) {
-                            Trace.trace(Trace.SEVERE, "can't create file "
-                                    + file, e);
-                            throw new CoreException(new Status(IStatus.ERROR,
-                                    Activator.PLUGIN_ID, "can't create file "
-                                            + file, e));
-                        }
-
-                    String rootFolder = GeronimoUtils.getVirtualComponent(
-                            module).getRootFolder().getProjectRelativePath()
-                            .toOSString();
-                    String sourceFile = module.getProject().getFile(
-                            rootFolder + ch
-                                    + moduleFile.getModuleRelativePath() + ch
-                                    + moduleFile.getName()).getLocation()
-                            .toString();
+            File file = new File(target);
+            switch (deltaModule.getKind()) {
+            case IModuleResourceDelta.REMOVED:
+                if (file.exists())
+                    file.delete();
+                break;
+            case IModuleResourceDelta.ADDED:
+            case IModuleResourceDelta.CHANGED:
+                if (!file.exists())
                     try {
-
-                        FileInputStream in = new FileInputStream(sourceFile);
-                        FileOutputStream out = new FileOutputStream(file);
-                        FileChannel inChannel = in.getChannel();
-                        FileChannel outChannel = out.getChannel();
-                        MappedByteBuffer mappedBuffer = inChannel.map(
-                                FileChannel.MapMode.READ_ONLY, 0, inChannel
-                                        .size());
-                        outChannel.write(mappedBuffer);
-
-                        inChannel.close();
-                        outChannel.close();
-                    } catch (FileNotFoundException e) {
-                        Trace.trace(Trace.SEVERE, "can't find file "
-                                + sourceFile, e);
-                        throw new CoreException(new Status(IStatus.ERROR,
-                                Activator.PLUGIN_ID, "can't find file "
-                                        + sourceFile, e));
+                        file.createNewFile();
                     } catch (IOException e) {
-                        Trace.trace(Trace.SEVERE, "can't copy file "
-                                + sourceFile, e);
-                        throw new CoreException(new Status(IStatus.ERROR,
-                                Activator.PLUGIN_ID, "can't copy file "
-                                        + sourceFile, e));
+                        Trace.trace(Trace.SEVERE, "can't create file " + file, e);
+                        throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "can't create file "
+                                + file, e));
+                    }
+
+                String rootFolder = GeronimoUtils.getVirtualComponent(module).getRootFolder().getProjectRelativePath()
+                        .toOSString();
+                String sourceFile = module.getProject()
+                        .getFile(rootFolder + ch + moduleFile.getModuleRelativePath() + ch + moduleFile.getName())
+                        .getLocation().toString();
+                try {
+
+                    FileInputStream in = new FileInputStream(sourceFile);
+                    FileOutputStream out = new FileOutputStream(file);
+                    FileChannel inChannel = in.getChannel();
+                    FileChannel outChannel = out.getChannel();
+                    MappedByteBuffer mappedBuffer = inChannel.map(FileChannel.MapMode.READ_ONLY, 0, inChannel.size());
+                    outChannel.write(mappedBuffer);
+
+                    inChannel.close();
+                    outChannel.close();
+                } catch (FileNotFoundException e) {
+                    Trace.trace(Trace.SEVERE, "can't find file " + sourceFile, e);
+                    throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "can't find file "
+                            + sourceFile, e));
+                } catch (IOException e) {
+                    Trace.trace(Trace.SEVERE, "can't copy file " + sourceFile, e);
+                    throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "can't copy file "
+                            + sourceFile, e));
                     }
                     break;
                 }
@@ -836,11 +819,11 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false);
     }
 
-    private List convertCPEntryToMemento(List cpEntryList) {
+    private List<String> convertCPEntryToMemento(List<IRuntimeClasspathEntry> cpEntryList) {
         List<String> list = new ArrayList<String>(cpEntryList.size());
-        Iterator iterator = cpEntryList.iterator();
+        Iterator<IRuntimeClasspathEntry> iterator = cpEntryList.iterator();
         while (iterator.hasNext()) {
-            IRuntimeClasspathEntry entry = (IRuntimeClasspathEntry) iterator.next();
+            IRuntimeClasspathEntry entry = iterator.next();
             try {
                 list.add(entry.getMemento());
             } catch (CoreException e) {
@@ -945,7 +928,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     }
 
     public MBeanServerConnection getServerConnection() throws Exception {
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<String, Object>();
         String user = getGeronimoServer().getAdminID();
         String password = getGeronimoServer().getAdminPassword();
         String port = getGeronimoServer().getRMINamingPort();
