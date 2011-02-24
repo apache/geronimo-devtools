@@ -53,6 +53,11 @@ import org.eclipse.jface.preference.IPreferenceNode;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.window.Window;
+import org.eclipse.pde.internal.core.PDECore;
+import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
+import org.eclipse.pde.internal.core.target.provisional.ITargetHandle;
+import org.eclipse.pde.internal.core.target.provisional.ITargetPlatformService;
+import org.eclipse.pde.internal.core.target.provisional.LoadTargetDefinitionJob;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.ModifyEvent;
@@ -446,6 +451,29 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
             URL template = bundle.getEntry(TARGET_TEMPLATE_FILE);
             
             copyFile(template, destination, getLocationEntryLists(geronimoServerLocation));
+        }
+        
+        ITargetPlatformService service = (ITargetPlatformService)PDECore.getDefault().acquireService(
+                ITargetPlatformService.class.getName());
+        ITargetHandle activeTargetHandle = service.getWorkspaceTargetHandle();
+        ITargetHandle[] targetHandles = service.getTargets(null);
+        ITargetHandle geronimoTargetHandle = null;
+        for (ITargetHandle cur : targetHandles) {
+            if (cur.getTargetDefinition().getName().equals("Apache Geronimo 3.0")) {
+                geronimoTargetHandle = cur;
+            }
+        }
+        if (geronimoTargetHandle != null) {
+            boolean resetFlag = false;
+            if (activeTargetHandle == null ) {
+                resetFlag = true;
+            } else if (!activeTargetHandle.equals(geronimoTargetHandle)) {
+                resetFlag = true;
+            }                
+            if (resetFlag) {
+                ITargetDefinition geronimoTarget = geronimoTargetHandle.getTargetDefinition();
+                LoadTargetDefinitionJob.load(geronimoTarget);
+            }            
         }
     }
     
