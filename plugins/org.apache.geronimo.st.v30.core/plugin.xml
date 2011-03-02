@@ -429,8 +429,7 @@
      ##                                                                                                               ##
      ###################################################################################################################
      -->
-     <extension-point id="JAXBUtilsProvider" name="Geronimo JAXB Utils" schema="schema/JAXBUtilsProvider.exsd"/>
-     <extension point="org.apache.geronimo.st.v30.core.JAXBUtilsProvider">
+     <extension point="org.apache.geronimo.jaxbmodel.common.JAXBUtilsProvider">
          <provider class="org.apache.geronimo.st.v30.core.jaxb.JAXBUtilsProvider" version="3.0"/>
      </extension>
 

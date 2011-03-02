@@ -185,11 +185,10 @@ public abstract class AbstractGeronimoJAXBBasedEditor extends FormEditor {
             IFileEditorInput fei = (IFileEditorInput) input;
             try {
                 rootJAXBElement = loadFile(fei.getFile());
-            } catch (Exception e1) {
-                // throw new PartInitException("Error in loading deployment plan");
+            } catch (Exception e) {
                 // if catching an exception , it will try to correct the plan 
                 // or open the plan with default editor
-                e1.printStackTrace();
+                Trace.trace(Trace.WARNING, "Error loading deployment plan", e);
             }
             
             boolean fix = false;
@@ -198,22 +197,29 @@ public abstract class AbstractGeronimoJAXBBasedEditor extends FormEditor {
             }
             
             if(fix) {
+                boolean converted = false;
+                
                 IProject project = fei.getFile().getProject();
                 IDataModel model = DataModelFactory.createDataModel(new ImportDeploymentPlanDataModelProvider());
                 model.setProperty(IFacetDataModelProperties.FACET_PROJECT_NAME, project.getName());
                 try {
                     IFacetedProject facetedProject = ProjectFacetsManager.create(project);
                     model.setProperty(IFacetProjectCreationDataModelProperties.FACET_RUNTIME, facetedProject.getPrimaryRuntime());
-                    IDataModelOperation op = new ImportDeploymentPlanOperation(model);
+                    IDataModelOperation op = new ImportDeploymentPlanOperation(model, fei.getFile());
                     op.execute(new NullProgressMonitor(), null);
+                    converted = true;
                 } catch (Exception e) {
-                   throw new PartInitException(e.getMessage());
+                    // conversion failed somehow
+                    Trace.trace(Trace.WARNING, "Error converting deployment plan", e);
                 }
                 
-                try {
-                    rootJAXBElement = loadFile(fei.getFile());
-                } catch (Exception e) {
-                    throw new PartInitException(e.getMessage());
+                if (converted) {
+                    try {
+                        rootJAXBElement = loadFile(fei.getFile());
+                    } catch (Exception e) {
+                        // still can't load it
+                        Trace.trace(Trace.WARNING, "Error loading converted deployment plan", e);
+                    }
                 }
                 
                 if (rootJAXBElement == null) {    

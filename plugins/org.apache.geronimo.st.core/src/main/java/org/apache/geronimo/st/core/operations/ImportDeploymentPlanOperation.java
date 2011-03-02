@@ -36,11 +36,14 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  */
 public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponentOperation {
 
+    private final IFile plan;
+    
     /**
      * 
      */
     public ImportDeploymentPlanOperation() {
         super();
+        this.plan = null;
         Trace.tracePoint("Constructor", "ImportDeploymentPlanOperation");
     }
 
@@ -49,7 +52,17 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
      */
     public ImportDeploymentPlanOperation(IDataModel model) {
         super(model);
+        this.plan = null;
         Trace.tracePoint("Constructor", "ImportDeploymentPlanOperation", model);
+    }
+    
+    /**
+     * @param model
+     */
+    public ImportDeploymentPlanOperation(IDataModel model, IFile plan) {
+        super(model);
+        this.plan = plan;
+        Trace.tracePoint("Constructor", "ImportDeploymentPlanOperation", model, plan);
     }
 
     /*
@@ -71,28 +84,28 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
 
         try {
             if (type.equals(IModuleConstants.JST_WEB_MODULE)) {
-                planFile = GeronimoUtils.getWebDeploymentPlanFile(comp);
+                planFile = (plan == null) ? GeronimoUtils.getWebDeploymentPlanFile(comp) : plan;
                 ConversionHelper.convertGeronimoWebFile(planFile);    
             }
             else if (type.equals(IModuleConstants.JST_EJB_MODULE)) {
-                planFile = GeronimoUtils.getOpenEjbDeploymentPlanFile(comp);
+                planFile = (plan == null) ? GeronimoUtils.getOpenEjbDeploymentPlanFile(comp) : plan;
                 ConversionHelper.convertOpenEjbJarFile(planFile);
             }
             else if (type.equals(IModuleConstants.JST_EAR_MODULE)) {
-                planFile = GeronimoUtils.getApplicationDeploymentPlanFile(comp);
+                planFile = (plan == null) ? GeronimoUtils.getApplicationDeploymentPlanFile(comp) : plan;
                 ConversionHelper.convertGeronimoApplicationFile(planFile);
             }
             else if (type.equals(IModuleConstants.JST_CONNECTOR_MODULE)) {
-                planFile = GeronimoUtils.getConnectorDeploymentPlanFile(comp);
+                planFile = (plan == null) ? GeronimoUtils.getConnectorDeploymentPlanFile(comp) : plan;
                 ConversionHelper.convertGeronimoRaFile(planFile);
             }
             else if (type.equals(IModuleConstants.JST_APPCLIENT_MODULE)) {
-                planFile = GeronimoUtils.getApplicationClientDeploymentPlanFile(comp);
+                planFile = (plan == null) ? GeronimoUtils.getApplicationClientDeploymentPlanFile(comp) : plan;
                 ConversionHelper.convertGeronimoApplicationClientFile(planFile);
             }
         }
         catch (Exception e) {
-            throw new ExecutionException("ImportDeploymentPlanOperation.execute(): Error converting plan: " + planFile.getFullPath() );
+            throw new ExecutionException("ImportDeploymentPlanOperation.execute(): Error converting plan: " + planFile.getFullPath(), e);
         }
 
         Trace.tracePoint("Exit ", "ImportDeploymentPlanOperation.execute", Status.OK_STATUS);

@@ -18,147 +18,49 @@ package org.apache.geronimo.st.v30.core.jaxb;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 
-import org.apache.geronimo.st.v30.core.Activator;
-import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.jst.server.core.FacetUtil;
-import org.eclipse.wst.common.project.facet.core.IFacetedProject;
-import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
-import org.eclipse.wst.server.core.IRuntime;
 
 /**
  * @version $Rev$ $Date$
  */
 public class JAXBUtils {
 
-    private static Map<String,IJAXBUtilsProvider> providers = new HashMap<String,IJAXBUtilsProvider>();
-    
-    static {
-        loadExtensionPoints();
+    public static List<JAXBContext> getJAXBContext() {
+        return org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils.getJAXBContext();
     }
-    
-    private static synchronized void loadExtensionPoints() {
-        Trace.tracePoint("ENTRY", "JAXBUtils.loadExtensionPoints");
-
-        IExtensionRegistry registry = Platform.getExtensionRegistry();
-        IConfigurationElement[] cf = registry.getConfigurationElementsFor(Activator.PLUGIN_ID, "JAXBUtilsProvider");
-        for (int i = 0; i < cf.length; i++) {
-            IConfigurationElement element = cf[i];
-            if ("provider".equals(element.getName())) {
-                try {
-                    IJAXBUtilsProvider provider = (IJAXBUtilsProvider) element.createExecutableExtension("class");
-                    String versions = element.getAttribute("version");
-                    String[] versionArray = versions.split(",");
-                    for (int j=0;j<versionArray.length;j++) {
-                        providers.put(versionArray[j], provider);
-                    }
-                } catch (CoreException e) {
-                    Trace.tracePoint("CoreException", "JAXBUtils.loadExtensionPoints");
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        Trace.tracePoint("EXIT", "JAXBUtils.loadExtensionPoints");
-    }
-    
-    public static List<JAXBContext> getJAXBContext(){
-        List<JAXBContext> contextList = new ArrayList<JAXBContext>();
-        
-        Collection<IJAXBUtilsProvider> jaxbutils =  providers.values();
-        Iterator<IJAXBUtilsProvider> iterator = jaxbutils.iterator();
-        while (iterator.hasNext()){
-            IJAXBUtilsProvider provider = iterator.next();
-            contextList.add(provider.getJAXBContext());
-        }
-        return contextList;
-    }
-    
-    private static IJAXBUtilsProvider getProvider(IFile plan) {
-        Trace.tracePoint("ENTRY", "JAXBUtils.getProvider");
-
-        IJAXBUtilsProvider provider = null;
-        if (plan != null) {
-                IProject project = plan.getProject();
-                try {
-                    IFacetedProject fp = ProjectFacetsManager.create(project);
-                    if (fp == null) return null;
-                    IRuntime runtime = FacetUtil.getRuntime(fp.getPrimaryRuntime());
-                    if (runtime == null) return null;
-                    String version = runtime.getRuntimeType().getVersion();
-                    provider = (IJAXBUtilsProvider) providers.get(version);
-                } catch (CoreException e) {
-                    Trace.tracePoint("CoreException", "JAXBUtils.getProvider");
-                    e.printStackTrace();
-                } catch (IllegalArgumentException ie) {
-                    Trace.tracePoint("IllegalArgumentException", "JAXBUtils.getProvider");
-                    throw new IllegalArgumentException("The project [" + project.getName() + "] does not have a Targeted Runtime specified.");
-                }
-        }
-        
-        Trace.tracePoint("EXIT", "JAXBUtils.getProvider", provider);
-        return provider;
-    }
-
+       
     public static void marshalDeploymentPlan(JAXBElement jaxbElement, IFile file) throws Exception {
-            IJAXBUtilsProvider provider = getProvider(file);
-            provider.marshalDeploymentPlan(jaxbElement, file);
+        org.apache.geronimo.jaxbmodel.common.operations.IJAXBUtilsProvider provider = org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils.getProvider(file);
+        provider.marshalDeploymentPlan(jaxbElement, file);
     }
 
     public static JAXBElement unmarshalFilterDeploymentPlan(IFile file) throws Exception {
-        IJAXBUtilsProvider provider = getProvider(file);
+        org.apache.geronimo.jaxbmodel.common.operations.IJAXBUtilsProvider provider = org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils.getProvider(file);
         return provider.unmarshalFilterDeploymentPlan(file);
     }
 
     public static void marshalPlugin(JAXBElement jaxbElement, OutputStream outputStream) throws Exception {
         //for 3.0 jaxb provider,invoke it directly
-       providers.get("3.0").marshalPlugin(jaxbElement, outputStream);
+        IJAXBUtilsProvider provider = (IJAXBUtilsProvider) org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils.getProvider("3.0");
+        provider.marshalPlugin(jaxbElement, outputStream);
     }
 
     public static JAXBElement unmarshalPlugin(InputStream inputStream) {
         //for 3.0 jaxb provider,invoke it directly
-    	return providers.get("3.0").unmarshalPlugin(inputStream);
+        IJAXBUtilsProvider provider = (IJAXBUtilsProvider) org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils.getProvider("3.0");
+    	return provider.unmarshalPlugin(inputStream);
     }
 
     public static Object getValue( Object element, String name ) throws Exception {
-        try {
-            if (String.class.isInstance(element))
-                return (String)element;
-            Method method = element.getClass().getMethod( "get" + name, null);
-            return method.invoke(element, null);
-        } catch ( Exception e ) {
-            throw e;
-        }
+        return org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils.getValue(element, name);
     }
     
     public static void setValue( Object element, String name, Object value ) throws Exception {
-        try {
-            Method[] methods = element.getClass().getMethods();
-            for ( Method method: methods) {
-                if ( method.getName().equals( "set" + name ) ) {
-                    method.invoke( element, value );
-                    return;
-                }
-            }
-        } catch (Exception e) {
-            throw e;
-        }
-        System.out.println( "============== No such method set" + name + " in class " + element.getClass().getName() );
+        org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils.setValue(element, name, value);
     }
 }

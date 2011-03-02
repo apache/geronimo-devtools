@@ -16,8 +16,6 @@
  */
 package org.apache.geronimo.jaxbmodel.common.operations;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -78,7 +76,7 @@ public class JAXBUtils {
         Trace.tracePoint("EXIT", "JAXBUtils.loadExtensionPoints");
 	}
     
-    public static List<JAXBContext> getJAXBContext(){
+    public static List<JAXBContext> getJAXBContext() {
     	List<JAXBContext> contextList = new ArrayList<JAXBContext>();
     	
     	Collection<IJAXBUtilsProvider> jaxbutils =  providers.values();
@@ -90,12 +88,12 @@ public class JAXBUtils {
     	return contextList;
     }
     
-    private static IJAXBUtilsProvider getProvider(IFile plan) {
+    public static IJAXBUtilsProvider getProvider(IFile plan) {
         Trace.tracePoint("ENTRY", "JAXBUtils.getProvider");
 
         IJAXBUtilsProvider provider = null;
         if (plan != null) {
-				IProject project = plan.getProject();
+				IProject project = plan.getProject();				
 				try {
 					IFacetedProject fp = ProjectFacetsManager.create(project);
 					if (fp == null) return null;
@@ -116,13 +114,17 @@ public class JAXBUtils {
 		return provider;
 	}
 
+    public static IJAXBUtilsProvider getProvider(String version) {
+        return providers.get(version);
+    }
+    
     public static void marshalDeploymentPlan(JAXBElement jaxbElement, IFile file) throws Exception {
-        	IJAXBUtilsProvider provider = getProvider(file);
-        	provider.marshalDeploymentPlan(jaxbElement, file);
+        IJAXBUtilsProvider provider = getProvider(file);
+        provider.marshalDeploymentPlan(jaxbElement, file);
     }
 
     public static JAXBElement unmarshalFilterDeploymentPlan(IFile file) throws Exception {
-    	IJAXBUtilsProvider provider = getProvider(file);
+        IJAXBUtilsProvider provider = getProvider(file);
     	return provider.unmarshalFilterDeploymentPlan(file);
     }
 
