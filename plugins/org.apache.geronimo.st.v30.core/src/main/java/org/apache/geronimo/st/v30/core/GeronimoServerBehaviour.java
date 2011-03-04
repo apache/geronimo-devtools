@@ -157,7 +157,7 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
             AbstractNameQuery query = new AbstractNameQuery(PersistentConfigurationList.class.getName());
             Set<AbstractName> configLists = kernel.listGBeans(query);
             if (!configLists.isEmpty()) {
-                AbstractName on = configLists.toArray(new AbstractName[configLists.size()])[0];
+                AbstractName on = (AbstractName) configLists.toArray()[0];
                 try {
                     Boolean b = (Boolean) kernel.getAttribute(on, "kernelFullyStarted");
                     return b.booleanValue();
