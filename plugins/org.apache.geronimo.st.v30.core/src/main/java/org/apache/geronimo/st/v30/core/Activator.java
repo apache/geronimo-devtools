@@ -20,7 +20,9 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerLifecycleListener;
+import org.eclipse.wst.server.core.IServerListener;
 import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.server.core.ServerEvent;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -53,6 +55,7 @@ public class Activator extends Plugin {
         ServerCore.addServerLifecycleListener(new IServerLifecycleListener() {
             public void serverAdded(IServer server) {
                 triggerStartUpdateServerTask(server);
+                triggerSynchronizeProjectOnServerTask(server);
             }
 
             public void serverChanged(IServer server) {
@@ -65,9 +68,48 @@ public class Activator extends Plugin {
         IServer[] servers = ServerCore.getServers();
         for(int i = 0; i < servers.length; i++) {
             triggerStartUpdateServerTask(servers[i]);
+            triggerSynchronizeProjectOnServerTask(servers[i]);
         }
     }
 
+    /**
+     * 
+     * @param server
+     */
+    protected void triggerSynchronizeProjectOnServerTask(IServer server) {
+      
+        IServerListener listener = new IServerListener() {
+            public void serverChanged(ServerEvent event) {
+                int eventKind = event.getKind();
+                if ((eventKind & ServerEvent.STATE_CHANGE) != 0) {
+                    int state = event.getServer().getServerState();
+                    if (state == IServer.STATE_STARTED) {
+                        GeronimoServerBehaviourDelegate delegate = getGeronimoServerBehaviourDelegate(event.getServer());
+                        if (delegate != null) {
+                            delegate.startSynchronizeProjectOnServerTask();
+                        }                        
+                    } else if (state == IServer.STATE_STOPPED) {
+                        GeronimoServerBehaviourDelegate delegate = getGeronimoServerBehaviourDelegate(event.getServer());
+                        if (delegate != null) {
+                            delegate.stopSynchronizeProjectOnServerTask();
+                        }                        
+                    }
+                }
+            }
+        }; 
+        
+        server.addServerListener(listener);
+    }
+    
+    final protected GeronimoServerBehaviourDelegate getGeronimoServerBehaviourDelegate (IServer server) {
+        
+        GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) server.getAdapter(GeronimoServerBehaviourDelegate.class);
+        if (delegate == null) {
+            delegate = (GeronimoServerBehaviourDelegate) server.loadAdapter(GeronimoServerBehaviourDelegate.class, null);
+        }
+        return delegate;
+    }
+    
     /** 
      * <b>triggerStartUpdateServerTask</b> is invoked from:
      * <ul> 

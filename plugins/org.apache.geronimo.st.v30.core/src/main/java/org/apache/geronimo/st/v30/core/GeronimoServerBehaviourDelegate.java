@@ -40,6 +40,7 @@ import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
+import org.apache.geronimo.st.v30.core.UpdateServerStateTask;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCmdStatus;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.v30.core.commands.IDeploymentCommand;
@@ -94,7 +95,9 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
     protected IProgressMonitor _monitor;
 
-    protected Timer timer = null;
+    protected Timer stateTimer = null;
+    
+    protected Timer synchronizerTimer = null;
 
     protected PingThread pingThread;
 
@@ -394,6 +397,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      */
     public void dispose() {
         stopUpdateServerStateTask();
+        stopSynchronizeProjectOnServerTask();
     }
 
     public abstract String getRuntimeClass();
@@ -494,13 +498,29 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.doAdded", module.getName(), configId);
         
         configId = getLastKnowConfigurationId(module, configId);
+        
+        IStatus status;
+        TargetModuleID[] ids;
+        
         if (configId == null) {
-            IStatus status = distribute(module);
-            if (!status.isOK()) {
-                doFail(status, Messages.DISTRIBUTE_FAIL);
-            }
+            HashMap artifactsMap = ModuleArtifactMapper.getInstance().getServerArtifactsMap(getServer());
+            if (artifactsMap != null) {
+                synchronized (artifactsMap) {
+                    status = distribute(module);
+                    if (!status.isOK()) {
+                        doFail(status, Messages.DISTRIBUTE_FAIL);
+                    }
 
-            TargetModuleID[] ids = updateServerModuleConfigIDMap(module, status);
+                    ids = updateServerModuleConfigIDMap(module, status);
+                } 
+            } else {             
+                status = distribute(module);
+                if (!status.isOK()) {
+                    doFail(status, Messages.DISTRIBUTE_FAIL);
+                }
+
+                ids = updateServerModuleConfigIDMap(module, status);
+            }
 
             status = start(ids);
             if (!status.isOK()) {
@@ -515,7 +535,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.doAdded");
     }
-
     /**
      * @param module
      * @param configId the forced configId to process this method, passed in when invoked from doAdded()
@@ -665,14 +684,25 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     protected void doRemoved(IModule module) throws Exception {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.doRemoved", module.getName());
 
+        HashMap artifactsMap = ModuleArtifactMapper.getInstance().getServerArtifactsMap(getServer());
+        if (artifactsMap != null) {
+            synchronized (artifactsMap) {
+                _doRemove(module);
+            }    
+        } else {
+            _doRemove(module);
+        }
+
+        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.doRemoved");
+    }
+    
+    private void _doRemove(IModule module) throws Exception {
         IStatus status = unDeploy(module);
         if (!status.isOK()) {
             doFail(status, Messages.UNDEPLOY_FAIL);
         }
-        
-        ModuleArtifactMapper.getInstance().removeEntry(getServer(), module.getProject());
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.doRemoved");
+        ModuleArtifactMapper.getInstance().removeEntry(getServer(), module.getProject());
     }
     
     protected void doNoChange(IModule module) throws Exception {
@@ -887,19 +917,41 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     public void startUpdateServerStateTask() {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.startUpdateServerStateTask", getServer().getName());
 
-        timer = new Timer(true);
-        timer.schedule(new UpdateServerStateTask(this, getServer()), TIMER_TASK_DELAY * 1000, TIMER_TASK_INTERVAL * 1000);
+        stateTimer = new Timer(true);
+        stateTimer.schedule(new UpdateServerStateTask(this, getServer()), TIMER_TASK_DELAY * 1000, TIMER_TASK_INTERVAL * 1000);
 
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.startUpdateServerStateTask");
+    }
+    
+    public void startSynchronizeProjectOnServerTask() {
+        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.startSynchronizeProjectOnServerTask", getServer().getName());
+
+        if (synchronizerTimer != null) {
+            synchronizerTimer.cancel();
+        }
+        
+        synchronizerTimer = new Timer(true);
+        synchronizerTimer.schedule(new SynchronizeProjectOnServerTask(this, getServer()), TIMER_TASK_DELAY * 1000, TIMER_TASK_INTERVAL * 1000);
+        
+        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.startSynchronizeProjectOnServerTask");
     }
 
     public void stopUpdateServerStateTask() {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stopUpdateServerStateTask");
 
-        if (timer != null)
-            timer.cancel();
+        if (stateTimer != null)
+            stateTimer.cancel();
 
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.stopUpdateServerStateTask");
+    }
+    
+    public void stopSynchronizeProjectOnServerTask() {
+        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stopSynchronizeProjectOnServerTask");
+        
+        if (synchronizerTimer != null)
+            synchronizerTimer.cancel(); 
+
+        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.stopSynchronizeProjectOnServerTask");
     }
 
     protected IPath getModulePath(IModule[] module, URL baseURL) {

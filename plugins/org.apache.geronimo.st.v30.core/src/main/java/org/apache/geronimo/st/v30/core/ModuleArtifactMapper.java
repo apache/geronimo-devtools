@@ -58,7 +58,7 @@ public class ModuleArtifactMapper {
         return instance;
     }
 
-    public void addEntry(IServer server, IProject project, String configId) {
+    synchronized public void addEntry(IServer server, IProject project, String configId) {
 
         if (!SocketUtil.isLocalhost(server.getHost()))
             return;
@@ -73,7 +73,7 @@ public class ModuleArtifactMapper {
         artifactEntries.put(project.getName(), configId);
     }
 
-    public void removeEntry(IServer server, IProject project) {
+    synchronized public void removeEntry(IServer server, IProject project) {
 
         if (!SocketUtil.isLocalhost(server.getHost()))
             return;
@@ -85,7 +85,7 @@ public class ModuleArtifactMapper {
         }
     }
 
-    public String resolve(IServer server, IModule module) {
+    synchronized public String resolve(IServer server, IModule module) {
         Map artifactEntries = (Map) serverEntries.get(server.getRuntime().getLocation().toFile());
         if (artifactEntries != null && module != null && module.getProject() != null) {
             return (String) artifactEntries.get(module.getProject().getName());
@@ -93,7 +93,7 @@ public class ModuleArtifactMapper {
         return null;
     }
 
-    public void save() {
+    synchronized public void save() {
         ObjectOutput output = null;
         try {
             IPath dest = Activator.getDefault().getStateLocation().append(FILE_NAME);
@@ -114,7 +114,7 @@ public class ModuleArtifactMapper {
         }
     }
 
-    private void load() {
+    synchronized private void load() {
         ObjectInput input = null;
         try {
             IPath dest = Activator.getDefault().getStateLocation().append(FILE_NAME);
@@ -212,5 +212,20 @@ public class ModuleArtifactMapper {
             }
             return xmlString;
         }
+    }
+    
+    synchronized public HashMap getServerArtifactsMap(IServer server) {
+        if (!SocketUtil.isLocalhost(server.getHost())) {
+            return null;
+        }            
+        
+        File runtimeLoc = server.getRuntime().getLocation().toFile();  
+        HashMap artifactEntries = (HashMap) serverEntries.get(runtimeLoc);
+        if (artifactEntries == null) {
+            artifactEntries = new HashMap();
+            serverEntries.put(runtimeLoc, artifactEntries);
+        }
+        
+        return artifactEntries;        
     }
 }
