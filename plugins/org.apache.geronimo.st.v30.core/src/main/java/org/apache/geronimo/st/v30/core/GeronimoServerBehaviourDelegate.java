@@ -525,6 +525,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             status = start(ids);
             if (!status.isOK()) {
                 doFail(status, Messages.START_FAIL);
+            } else {
+                setModuleState(new IModule [] { module }, IServer.STATE_STARTED);
             }
         } else {
             //either (1) a configuration with the same module id exists already on the server
@@ -754,7 +756,11 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     protected IStatus start(IModule module) throws Exception {
         TargetModuleID id = DeploymentUtils.getTargetModuleID(getServer(), module);
         IDeploymentCommand cmd = DeploymentCommandFactory.createStartCommand(new TargetModuleID[] { id }, module, getServer());
-        return cmd.execute(_monitor);
+        IStatus status = cmd.execute(_monitor);
+        if (status.isOK()) {
+            setModuleState(new IModule [] { module }, IServer.STATE_STARTED);
+        }
+        return status;
     }
     
     protected IStatus start(TargetModuleID[] ids) throws Exception {
@@ -764,7 +770,11 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
     protected IStatus stop(IModule module) throws Exception {
         IDeploymentCommand cmd = DeploymentCommandFactory.createStopCommand(module, getServer());
-        return cmd.execute(_monitor);
+        IStatus status = cmd.execute(_monitor);
+        if (status.isOK()) {
+            setModuleState(new IModule [] { module }, IServer.STATE_STOPPED);
+        }
+        return status;
     }
 
     protected IStatus unDeploy(IModule module) throws Exception {
@@ -1047,5 +1057,52 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         }
         return Status.OK_STATUS;
     }
+        
+    @Override
+    public void startModule(IModule[] module, IProgressMonitor monitor) {
+        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.startModule", Arrays.asList(module));
+        try {
+            start(module[0]);
+        } catch (Exception e) {
+            Trace.trace(Trace.SEVERE, "Error starting module " + module[0].getName(), e);
+            throw new RuntimeException("Error starting module " + module[0].getName(), e);
+        }
+        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.startModule");
+    }
     
+    @Override
+    public void stopModule(IModule[] module, IProgressMonitor monitor) {
+        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stopModule", Arrays.asList(module));
+        try {
+            stop(module[0]);
+        } catch (Exception e) {
+            Trace.trace(Trace.SEVERE, "Error stopping module " + module[0].getName(), e);
+            throw new RuntimeException("Error stopping module " + module[0].getName(), e);
+        }
+        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.stopModule");
+    }
+    
+    @Override
+    public void restartModule(IModule[] module, IProgressMonitor monitor) {
+        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.restartModule", Arrays.asList(module));
+        try {
+            stop(module[0]);
+            start(module[0]);            
+        } catch (Exception e) {
+            Trace.trace(Trace.SEVERE, "Error restarting module " + module[0].getName(), e);
+            throw new RuntimeException("Error restarting module " + module[0].getName(), e);
+        }
+        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.restartModule");
+    }
+    
+    @Override
+    public boolean canControlModule(IModule[] module) {
+        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.canControlModule", Arrays.asList(module));
+        // Enable start/stop for top-level modules only 
+        if (module.length == 1) {
+            return true;
+        } else {
+            return false;
+        }
+     }
 }
