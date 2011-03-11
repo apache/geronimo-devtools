@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -109,6 +110,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
     abstract protected ClassLoader getContextClassLoader();
 
+    private PublishStateListener publishStateListener;
 
     /*
      * (non-Javadoc)
@@ -242,7 +244,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#publishModules(int, java.util.List, java.util.List, org.eclipse.core.runtime.MultiStatus, org.eclipse.core.runtime.IProgressMonitor)
      */
     protected void publishModules(int kind, List modules, List deltaKind, MultiStatus multi, IProgressMonitor monitor) {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.publishModules", deltaKindToString(kind), Arrays.asList(modules).toString(), Arrays.asList(deltaKind).toString(), multi, monitor);
+        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.publishModules", publishKindToString(kind), Arrays.asList(modules), Arrays.asList(deltaKind), multi, monitor);
 
         // 
         // WTP publishes modules in reverse alphabetical order which does not account for possible 
@@ -273,6 +275,24 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             IModule[] toProcess = (IModule[])rootModules.toArray(new IModule[rootModules.size()]);
             status = updateSharedLib(toProcess, ProgressUtil.getSubMonitorFor(monitor, 1000));
         }
+        
+        /* 
+         * Build a map of root modules that need to be published. This is to ensure that
+         * we avoid redeploys and it guarantees that publishModule() is called once per
+         * deployed application. 
+         */
+        Map<IModule, ModuleList> publishMap = new LinkedHashMap<IModule, ModuleList>();
+        for (int i = 0; i < modules.size(); i++) {
+            IModule[] module = (IModule[]) modules.get(i);
+            Integer moduleDeltaKind = (Integer) deltaKind.get(i);
+            ModuleList list = publishMap.get(module[0]);
+            if (list == null) {
+                list = new ModuleList(module[0]);
+                publishMap.put(module[0], list);
+            }
+            list.addModule(module, moduleDeltaKind.intValue());
+        }
+        
         if(status.isOK()) {
             if (modules == null)
                 return;
@@ -284,6 +304,16 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             if (monitor.isCanceled())
                 return;
             
+            for (ModuleList moduleList : publishMap.values()) {
+                status = publishModule(kind, moduleList.getRootModule(), moduleList.getDelta(), ProgressUtil.getSubMonitorFor(monitor, 3000));
+                if (status != null && !status.isOK()) {
+                    multi.add(status);
+                }
+                for (IModule[] module : moduleList.getModules()) {
+                    setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
+                }
+            }
+            /*
             List<IModule> rootModulesPublished = new ArrayList<IModule>();
             for (int i = 0; i < size; i++) {
                 IModule[] module = (IModule[]) modules.get(i);
@@ -303,11 +333,45 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                     Trace.trace(Trace.INFO, "root module for " + Arrays.asList(module).toString() + " already published.  Skipping.");
                 }   
             }
+            */
         } else {
             multi.add(status);
         }
 
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.publishModules");
+    }
+    
+    private static class ModuleList {
+        private final IModule rootModule;
+        private final List<IModule[]> modules;
+        private int delta = NO_CHANGE;
+        
+        public ModuleList(IModule rootModule) {
+            this.rootModule = rootModule;
+            this.modules = new ArrayList<IModule[]>();
+        }
+        
+        public IModule[] getRootModule() {
+            return new IModule[] { rootModule };
+        }
+        
+        public void addModule(IModule[] module, int moduleDelta) {
+            if (module.length > 1) {
+                modules.add(module);
+            }
+            if (delta == NO_CHANGE) {
+                delta = moduleDelta;
+            }
+        }
+        
+        public List<IModule[]> getModules() {
+            return modules;
+        }
+        
+        public int getDelta() {
+            return delta;
+        }
+
     }
 
     /*
@@ -324,12 +388,10 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      *      org.eclipse.core.runtime.IProgressMonitor)
      */
     public void publishModule(int kind, int deltaKind, IModule[] module, IProgressMonitor monitor) throws CoreException {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.publishModule", deltaKindToString(kind), deltaKindToString(deltaKind), Arrays.asList(module).toString(), monitor);
+        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.publishModule", publishKindToString(kind), deltaKindToString(deltaKind), Arrays.asList(module), monitor);
 
         _monitor = monitor;
-
-        setModuleStatus(module, null);
-        setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
+                
         try {
             //NO_CHANGE need if app is associated but not started and no delta
             if (deltaKind == NO_CHANGE && module.length == 1) {
@@ -338,19 +400,22 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             else if (deltaKind == CHANGED || deltaKind == ADDED || deltaKind == REMOVED) {
                 invokeCommand(deltaKind, module[0]);
             }
-        }
+            setModuleStatus(module, null);
+            setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
+        } 
         catch (CoreException e) {
             //
-            // Set the module publish state to UNKNOWN so that WTP will display "Republish" instead
+            // Set the parent module publish state to UNKNOWN so that WTP will display "Republish" instead
             // "Synchronized" for the server state, and set the module status to an error message 
             // for the GEP end-user to see. 
-            //
+            //            
             setModuleStatus(module, new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error publishing module to server"));
             setModulePublishState(module, IServer.PUBLISH_STATE_UNKNOWN);
+            setModuleState(module, IServer.STATE_UNKNOWN);
             throw e;
         }
-
-    //  Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.publishModule");
+        
+        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.publishModule");
     }
 
     /*
@@ -364,11 +429,18 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         IModule[] modules = this.getServer().getModules();
         boolean allpublished = true;
         for (int i = 0; i < modules.length; i++) {
-            if (this.getServer().getModulePublishState(new IModule[] { modules[i] }) != IServer.PUBLISH_STATE_NONE)
+            int state = getServer().getModulePublishState(new IModule[] { modules[i] });
+            if (state != IServer.PUBLISH_STATE_NONE) {
                 allpublished = false;
+                break;
+            }
         }
-        if (allpublished)
+        if (allpublished) {           
             setServerPublishState(IServer.PUBLISH_STATE_NONE);
+        } else {
+            setServerPublishState(IServer.PUBLISH_STATE_UNKNOWN);
+            setServerStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error publishing one or more modules to server"));
+        }
 
         GeronimoConnectionFactory.getInstance().destroy(getServer());
 
@@ -384,12 +456,48 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      * @param monitor a progress monitor, or <code>null</code> if progress reporting and cancellation 
      * are not desired
      */
+    @Override
     protected void initialize(IProgressMonitor monitor) {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.initialize", monitor);
+               
+        publishStateListener = new PublishStateListener();
+        getServer().addServerListener(publishStateListener, ServerEvent.MODULE_CHANGE | ServerEvent.PUBLISH_STATE_CHANGE);
+        
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.initialize");
     }
 
+    /*
+     * GERONIMODEVTOOLS-715: Update parent module publish state to "publish" if a child 
+     * publish state was changed to "publish". This is because GEP right now is redeploying the
+     * entire application instead of the individual bundle/module that has changed. Once that is
+     * supported this listener can be removed. 
+     */
+    private class PublishStateListener implements IServerListener {
+        public void serverChanged(ServerEvent event) {
+            if (event.getPublishState() == IServer.PUBLISH_STATE_INCREMENTAL ||
+                event.getPublishState() == IServer.PUBLISH_STATE_FULL) {  
+                // reset server status in case it was set
+                setServerStatus(null);
+                
+                IModule[] modules = event.getModule();
+                if (modules.length > 1) {
+                    int publishState = (getServer().getServerState() == IServer.STATE_STARTED) ? IServer.PUBLISH_STATE_NONE : IServer.PUBLISH_STATE_UNKNOWN;
+                    // reset child module publish state
+                    setModulePublishState(event.getModule(), publishState);
 
+                    IModule[] newModules = new IModule[modules.length - 1];                    
+                    System.arraycopy(modules, 0, newModules, 0, newModules.length);
+                    
+                    // update parent module publish state to "publish"
+                    setModulePublishState(newModules, event.getPublishState());
+                    // reset parent module status message
+                    setModuleStatus(newModules, null);
+                }
+            }
+            
+        }
+    }
+    
     /*
      * (non-Javadoc)
      * 
@@ -398,6 +506,9 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     public void dispose() {
         stopUpdateServerStateTask();
         stopSynchronizeProjectOnServerTask();
+        if (publishStateListener != null) {
+            getServer().removeServerListener(publishStateListener);
+        }
     }
 
     public abstract String getRuntimeClass();
@@ -965,7 +1076,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     }
 
     protected IPath getModulePath(IModule[] module, URL baseURL) {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.getModulePath", Arrays.asList(module).toString(), baseURL);
+        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.getModulePath", Arrays.asList(module), baseURL);
 
         IPath modulePath = new Path(baseURL.getFile());
 
@@ -1037,6 +1148,20 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             return "CHANGED";
         case REMOVED:
             return "REMOVED";
+        }
+        return Integer.toString(kind);
+    }
+    
+    public static String publishKindToString(int kind) {
+        switch(kind) {
+        case IServer.PUBLISH_AUTO:
+            return "Auto";
+        case IServer.PUBLISH_CLEAN:
+            return "Clean";
+        case IServer.PUBLISH_FULL:
+            return "Full";
+        case IServer.PUBLISH_INCREMENTAL:
+            return "Incremental";
         }
         return Integer.toString(kind);
     }
