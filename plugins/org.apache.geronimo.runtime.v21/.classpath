@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-common-2.1.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-crypto-2.1.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-deploy-config-2.1.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-deploy-jsr88-2.1.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-deployment-2.1.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-j2ee-schema-2.1.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-kernel-2.1.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-plugin-2.1.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-system-2.1.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-common-2.1.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-crypto-2.1.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-deploy-config-2.1.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-deploy-jsr88-2.1.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-deployment-2.1.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-j2ee-schema-2.1.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-kernel-2.1.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-plugin-2.1.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-system-2.1.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/plexus-archiver-1.0-alpha-12.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.5.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-simple-1.5.5.jar"/>
