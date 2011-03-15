@@ -16,6 +16,8 @@
  */
 package org.apache.geronimo.st.v30.core.commands;
 
+import java.io.File;
+
 import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
@@ -24,6 +26,7 @@ import org.apache.geronimo.st.v30.core.DeploymentUtils;
 import org.apache.geronimo.st.v30.core.GeronimoUtils;
 import org.apache.geronimo.st.v30.core.IGeronimoServer;
 import org.apache.geronimo.st.v30.core.ModuleArtifactMapper;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -66,7 +69,12 @@ class RedeployCommand extends DeployCommand {
             throw new CoreException(new Status(IStatus.ERROR,Activator.PLUGIN_ID,"Module config Id not found for redeployment"));
         }
         
-        return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().redeploy(ids, getTargetFile(), GeronimoUtils.getDeploymentPlanFile(getModule()).getLocation().toFile()));
+        IFile dp = GeronimoUtils.getDeploymentPlanFile(getModule());
+        File deploymentPlanFile = null;
+        if (dp != null) {
+            deploymentPlanFile = dp.getLocation().toFile();
+        }
+        return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().redeploy(ids, getTargetFile(), deploymentPlanFile));
     }
 
     /*
