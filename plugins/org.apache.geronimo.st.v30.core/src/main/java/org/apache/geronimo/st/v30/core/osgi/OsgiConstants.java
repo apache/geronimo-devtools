@@ -29,4 +29,7 @@ public final class OsgiConstants {
     public final static String COMPOSITE_BUNDLE = "osgi.comp"; 
     public final static String COMPOSITE_BUNDLE_EXTENSION = ".cba";  
     public final static String COMPOSITE_BUNDLE_DATAMODEL_PROVIDER_ID = "osgi.composite.datamodelprovider";
+    
+    public final static String ARTIFACT_GROUP = "application";    
+    public final static String ARTIFACT_TYPE = "eba";
 }

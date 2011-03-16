@@ -63,15 +63,8 @@ public class GeronimoUtils {
 
     public static final String CONNECTOR_PLAN_NAME = "geronimo-ra.xml";
     
-    public static final String SERVICE_PLAN_NAME = "geronimo-service.xml";
-    
-    public static final String ARIES_APPLICATION_MODULE = "osgi.app";
-    
-    public static final String ARIES_BUNDLE_MODULE = "osgi.bundle";
-    
-    public static final String ARIES_ARTIFACT_GROUP = "application";
-    
-    public static final String ARIES_ARTIFACT_TYPE = "eba";
+    public static final String SERVICE_PLAN_NAME = "geronimo-service.xml"; 
+
 
     public static boolean isWebModule(IModule module) {
         return IModuleConstants.JST_WEB_MODULE.equals(module.getModuleType().getId());
@@ -201,7 +194,7 @@ public class GeronimoUtils {
         
         if (AriesHelper.isAriesInstalled()) {
             try {
-                if (isAriesOSGiApplicationModule(module)) {
+                if (isEBAModule(module)) {
                     Class ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
                     Method method = ariesUtilsClass.getMethod("getApplicationManifest", IProject.class);
                     Object object = method.invoke(null, module.getProject());
@@ -216,7 +209,7 @@ public class GeronimoUtils {
                     String newVersionStr = getVersion(version);                    
                     
                     if (artifactID != null && version != null) {
-                        return getQualifiedConfigID(ARIES_ARTIFACT_GROUP, artifactID, newVersionStr, ARIES_ARTIFACT_TYPE);
+                        return getQualifiedConfigID(OsgiConstants.ARTIFACT_GROUP, artifactID, newVersionStr, OsgiConstants.ARTIFACT_TYPE);
                     }                 
                 }
             } catch (Exception e) {
@@ -235,14 +228,6 @@ public class GeronimoUtils {
             str += "-" + version.getQualifier().trim();
         }
         return str;
-    }
-    
-    public static boolean isAriesOSGiApplicationModule(IModule module) {
-        return ARIES_APPLICATION_MODULE.equals(module.getModuleType().getId());
-    }
-    
-    public static boolean isAiresOSGiBundleModule(IModule module) {
-        return ARIES_BUNDLE_MODULE.equals(module.getModuleType().getId());
     }
 
     public static String getQualifiedConfigID(String groupId, String artifactId, String version, String type) {
