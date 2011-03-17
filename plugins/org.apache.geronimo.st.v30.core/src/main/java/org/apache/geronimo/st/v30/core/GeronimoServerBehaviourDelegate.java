@@ -94,8 +94,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     
     public static final int TIMER_TASK_DELAY = 20;
 
-    protected IProgressMonitor _monitor;
-
     protected Timer stateTimer = null;
     
     protected Timer synchronizerTimer = null;
@@ -390,15 +388,13 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     public void publishModule(int kind, int deltaKind, IModule[] module, IProgressMonitor monitor) throws CoreException {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.publishModule", publishKindToString(kind), deltaKindToString(deltaKind), Arrays.asList(module), monitor);
 
-        _monitor = monitor;
-                
         try {
             //NO_CHANGE need if app is associated but not started and no delta
             if (deltaKind == NO_CHANGE && module.length == 1) {
-                invokeCommand(deltaKind, module[0]);
+                invokeCommand(deltaKind, module[0], monitor);
             }
             else if (deltaKind == CHANGED || deltaKind == ADDED || deltaKind == REMOVED) {
-                invokeCommand(deltaKind, module[0]);
+                invokeCommand(deltaKind, module[0], monitor);
             }
             setModuleStatus(module, null);
             setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
@@ -437,6 +433,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         }
         if (allpublished) {           
             setServerPublishState(IServer.PUBLISH_STATE_NONE);
+            setServerStatus(null);
         } else {
             setServerPublishState(IServer.PUBLISH_STATE_UNKNOWN);
             setServerStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error publishing one or more modules to server"));
@@ -561,7 +558,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         setServerState(IServer.STATE_STOPPED);
     }
 
-    protected void invokeCommand(int deltaKind, IModule module) throws CoreException {
+    protected void invokeCommand(int deltaKind, IModule module, IProgressMonitor monitor) throws CoreException {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.invokeCommand", deltaKindToString(deltaKind), module.getName());
         
         ClassLoader old = Thread.currentThread().getContextClassLoader();
@@ -571,19 +568,19 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                 Thread.currentThread().setContextClassLoader(cl);
             switch (deltaKind) {
             case ADDED: {
-                doAdded(module, null);
+                doAdded(module, null, monitor);
                 break;
             }
             case CHANGED: {
-                doChanged(module, null);
+                doChanged(module, null, monitor);
                 break;
             }
             case REMOVED: {
-                doRemoved(module);
+                doRemoved(module, monitor);
                 break;
             }
             case NO_CHANGE: {
-                doNoChange(module);
+                doNoChange(module, monitor);
                 break;
             }
             default:
@@ -605,7 +602,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      * @param configId the forced configId to process this method, passed in when this method is invoked from doChanged()
      * @throws Exception
      */
-    protected void doAdded(IModule module, String configId) throws Exception {
+    protected void doAdded(IModule module, String configId, IProgressMonitor monitor) throws Exception {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.doAdded", module.getName(), configId);
         
         configId = getLastKnowConfigurationId(module, configId);
@@ -617,7 +614,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             HashMap artifactsMap = ModuleArtifactMapper.getInstance().getServerArtifactsMap(getServer());
             if (artifactsMap != null) {
                 synchronized (artifactsMap) {
-                    status = distribute(module);
+                    status = distribute(module, monitor);
                     if (!status.isOK()) {
                         doFail(status, Messages.DISTRIBUTE_FAIL);
                     }
@@ -625,7 +622,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                     ids = updateServerModuleConfigIDMap(module, status);
                 } 
             } else {             
-                status = distribute(module);
+                status = distribute(module, monitor);
                 if (!status.isOK()) {
                     doFail(status, Messages.DISTRIBUTE_FAIL);
                 }
@@ -633,7 +630,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                 ids = updateServerModuleConfigIDMap(module, status);
             }
 
-            status = start(ids);
+            status = start(ids, monitor);
             if (!status.isOK()) {
                 doFail(status, Messages.START_FAIL);
             } else {
@@ -643,7 +640,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             //either (1) a configuration with the same module id exists already on the server
             //or (2) the module now has a different configId and the configuration on the server using
             //the old id as specified in the project-configId map should be uninstalled.
-            doChanged(module, configId);
+            doChanged(module, configId, monitor);
         }
 
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.doAdded");
@@ -653,7 +650,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      * @param configId the forced configId to process this method, passed in when invoked from doAdded()
      * @throws Exception
      */
-    protected void doChanged(IModule module, String configId) throws Exception {
+    protected void doChanged(IModule module, String configId, IProgressMonitor monitor) throws Exception {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.doChanged", module.getName(), configId);
         
         configId = getLastKnowConfigurationId(module, configId);
@@ -668,18 +665,18 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                         return;
                 }
                 
-                IStatus status = reDeploy(module);
+                IStatus status = reDeploy(module, monitor);
                 if (!status.isOK()) {
                     doFail(status, Messages.REDEPLOY_FAIL);
                 }
             } else {
                 //different configIds from what needs to be undeployed to what will be deployed
-                doRemoved(module);
-                doAdded(module, null);
+                doRemoved(module, monitor);
+                doAdded(module, null, monitor);
             }
         } else {
             //The checked configuration no longer exists on the server
-            doAdded(module, configId);
+            doAdded(module, configId, monitor);
         }
 
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.doChanged");
@@ -794,23 +791,23 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         return configId;
     }
 
-    protected void doRemoved(IModule module) throws Exception {
+    protected void doRemoved(IModule module, IProgressMonitor monitor) throws Exception {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.doRemoved", module.getName());
 
         HashMap artifactsMap = ModuleArtifactMapper.getInstance().getServerArtifactsMap(getServer());
         if (artifactsMap != null) {
             synchronized (artifactsMap) {
-                _doRemove(module);
+                _doRemove(module, monitor);
             }    
         } else {
-            _doRemove(module);
+            _doRemove(module, monitor);
         }
 
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.doRemoved");
     }
     
-    private void _doRemove(IModule module) throws Exception {
-        IStatus status = unDeploy(module);
+    private void _doRemove(IModule module, IProgressMonitor monitor) throws Exception {
+        IStatus status = unDeploy(module, monitor);
         if (!status.isOK()) {
             doFail(status, Messages.UNDEPLOY_FAIL);
         }
@@ -818,27 +815,27 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         ModuleArtifactMapper.getInstance().removeEntry(getServer(), module.getProject());
     }
     
-    protected void doNoChange(IModule module) throws Exception {
+    protected void doNoChange(IModule module, IProgressMonitor monitor) throws Exception {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.doNoChange", module.getName());
         
         if(DeploymentUtils.getLastKnownConfigurationId(module, getServer()) != null) {
-            start(module);
+            start(module, monitor);
         } else {
-            doAdded(module, null);
+            doAdded(module, null, monitor);
         }
         
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.doNoChange");
     }
 
-    protected void doRestart(IModule module) throws Exception {
+    protected void doRestart(IModule module, IProgressMonitor monitor) throws Exception {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.doRestart", module.getName());
         
-        IStatus status = stop(module);
+        IStatus status = stop(module, monitor);
         if (!status.isOK()) {
             doFail(status, Messages.STOP_FAIL);
         }
 
-        status = start(module);
+        status = start(module, monitor);
         if (!status.isOK()) {
             doFail(status, Messages.START_FAIL);
         }
@@ -859,43 +856,43 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         throw new CoreException(ms);
     }
 
-    protected IStatus distribute(IModule module) throws Exception {
+    protected IStatus distribute(IModule module, IProgressMonitor monitor) throws Exception {
         IDeploymentCommand cmd = DeploymentCommandFactory.createDistributeCommand(module, getServer());
-        return cmd.execute(_monitor);
+        return cmd.execute(monitor);
     }
 
-    protected IStatus start(IModule module) throws Exception {
+    protected IStatus start(IModule module, IProgressMonitor monitor) throws Exception {
         TargetModuleID id = DeploymentUtils.getTargetModuleID(getServer(), module);
         IDeploymentCommand cmd = DeploymentCommandFactory.createStartCommand(new TargetModuleID[] { id }, module, getServer());
-        IStatus status = cmd.execute(_monitor);
+        IStatus status = cmd.execute(monitor);
         if (status.isOK()) {
             setModuleState(new IModule [] { module }, IServer.STATE_STARTED);
         }
         return status;
     }
     
-    protected IStatus start(TargetModuleID[] ids) throws Exception {
+    protected IStatus start(TargetModuleID[] ids, IProgressMonitor monitor) throws Exception {
         IDeploymentCommand cmd = DeploymentCommandFactory.createStartCommand(ids, null, getServer());
-        return cmd.execute(_monitor);
+        return cmd.execute(monitor);
     }
 
-    protected IStatus stop(IModule module) throws Exception {
+    protected IStatus stop(IModule module, IProgressMonitor monitor) throws Exception {
         IDeploymentCommand cmd = DeploymentCommandFactory.createStopCommand(module, getServer());
-        IStatus status = cmd.execute(_monitor);
+        IStatus status = cmd.execute(monitor);
         if (status.isOK()) {
             setModuleState(new IModule [] { module }, IServer.STATE_STOPPED);
         }
         return status;
     }
 
-    protected IStatus unDeploy(IModule module) throws Exception {
+    protected IStatus unDeploy(IModule module, IProgressMonitor monitor) throws Exception {
         IDeploymentCommand cmd = DeploymentCommandFactory.createUndeployCommand(module, getServer());
-        return cmd.execute(_monitor);
+        return cmd.execute(monitor);
     }
 
-    protected IStatus reDeploy(IModule module) throws Exception {
+    protected IStatus reDeploy(IModule module, IProgressMonitor monitor) throws Exception {
         IDeploymentCommand cmd = DeploymentCommandFactory.createRedeployCommand(module, getServer());
-        return cmd.execute(_monitor);
+        return cmd.execute(monitor);
     }
 
     public Map getServerInstanceProperties() {
@@ -1187,7 +1184,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     public void startModule(IModule[] module, IProgressMonitor monitor) {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.startModule", Arrays.asList(module));
         try {
-            start(module[0]);
+            start(module[0], monitor);
         } catch (Exception e) {
             Trace.trace(Trace.SEVERE, "Error starting module " + module[0].getName(), e);
             throw new RuntimeException("Error starting module " + module[0].getName(), e);
@@ -1199,7 +1196,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     public void stopModule(IModule[] module, IProgressMonitor monitor) {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stopModule", Arrays.asList(module));
         try {
-            stop(module[0]);
+            stop(module[0], monitor);
         } catch (Exception e) {
             Trace.trace(Trace.SEVERE, "Error stopping module " + module[0].getName(), e);
             throw new RuntimeException("Error stopping module " + module[0].getName(), e);
@@ -1211,8 +1208,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     public void restartModule(IModule[] module, IProgressMonitor monitor) {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.restartModule", Arrays.asList(module));
         try {
-            stop(module[0]);
-            start(module[0]);            
+            stop(module[0], monitor);
+            start(module[0], monitor);            
         } catch (Exception e) {
             Trace.trace(Trace.SEVERE, "Error restarting module " + module[0].getName(), e);
             throw new RuntimeException("Error restarting module " + module[0].getName(), e);
