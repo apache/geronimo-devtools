@@ -67,4 +67,7 @@ public class Messages extends NLS {
     public static String installed;
     public static String configSizeMismatch;
     public static String noDefaultServer;
+    
+    public static String moduleModified;
+    
 }

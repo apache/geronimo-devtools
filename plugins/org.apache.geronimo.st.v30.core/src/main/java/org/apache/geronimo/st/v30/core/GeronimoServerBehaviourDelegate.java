@@ -482,7 +482,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                 if (modules.length > 1) {
                     if (getServer().getServerState() == IServer.STATE_STARTED) {
                         setModulePublishState(event.getModule(), IServer.PUBLISH_STATE_NONE);
-                        setModuleStatus(event.getModule(), new Status(IStatus.OK, Activator.PLUGIN_ID, "Modified"));
+                        setModuleStatus(event.getModule(), new Status(IStatus.OK, Activator.PLUGIN_ID, Messages.moduleModified));
                     } else {
                         setModulePublishState(event.getModule(), IServer.PUBLISH_STATE_UNKNOWN);
                         setModuleStatus(event.getModule(), null);
