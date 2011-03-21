@@ -306,9 +306,11 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                 status = publishModule(kind, moduleList.getRootModule(), moduleList.getDelta(), ProgressUtil.getSubMonitorFor(monitor, 3000));
                 if (status != null && !status.isOK()) {
                     multi.add(status);
-                }
-                for (IModule[] module : moduleList.getModules()) {
-                    setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
+                } else {
+                    for (IModule[] module : moduleList.getModules()) {
+                        setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
+                        setModuleStatus(module, null);
+                    }
                 }
             }
             /*
@@ -478,9 +480,13 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                 
                 IModule[] modules = event.getModule();
                 if (modules.length > 1) {
-                    int publishState = (getServer().getServerState() == IServer.STATE_STARTED) ? IServer.PUBLISH_STATE_NONE : IServer.PUBLISH_STATE_UNKNOWN;
-                    // reset child module publish state
-                    setModulePublishState(event.getModule(), publishState);
+                    if (getServer().getServerState() == IServer.STATE_STARTED) {
+                        setModulePublishState(event.getModule(), IServer.PUBLISH_STATE_NONE);
+                        setModuleStatus(event.getModule(), new Status(IStatus.OK, Activator.PLUGIN_ID, "Modified"));
+                    } else {
+                        setModulePublishState(event.getModule(), IServer.PUBLISH_STATE_UNKNOWN);
+                        setModuleStatus(event.getModule(), null);
+                    }
 
                     IModule[] newModules = new IModule[modules.length - 1];                    
                     System.arraycopy(modules, 0, newModules, 0, newModules.length);
