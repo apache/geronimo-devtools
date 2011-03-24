@@ -229,7 +229,7 @@ public class DeploymentUtils {
     public static TargetModuleID getTargetModuleID(IServer server, IModule module) throws TargetModuleIdNotFoundException {
         Trace.tracePoint("Entry", "DeploymentUtils.getTargetModuleID", module);
     
-        String configId = ModuleArtifactMapper.getInstance().resolve(server, module);
+        String configId = ModuleArtifactMapper.getInstance().resolveArtifact(server, module);
         if(configId == null) {
             throw new TargetModuleIdNotFoundException("Could not do a local TargetModuleID lookup for module " + module.getName());
         }
@@ -277,7 +277,7 @@ public class DeploymentUtils {
         
         IGeronimoServer gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
         String currentId = gs.getVersionHandler().getConfigID(module);
-        String publishedId = ModuleArtifactMapper.getInstance().resolve(server, module);
+        String publishedId = ModuleArtifactMapper.getInstance().resolveArtifact(server, module);
         String query = publishedId != null ? publishedId : currentId;
         
         Trace.trace(Trace.INFO, "currentConfigId = " + currentId + " previousConfigId = " + publishedId);

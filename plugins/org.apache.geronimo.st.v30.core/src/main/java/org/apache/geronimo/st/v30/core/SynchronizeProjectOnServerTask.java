@@ -71,7 +71,6 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
                     synchronized (projectsOnServer) {                        
                         Iterator projectsIterator = projectsOnServer.keySet().iterator();
                         TreeSet<String> removedConfigIds = new TreeSet<String>();
-                        List<IProject> removedProjects = new ArrayList<IProject>();
                         List<IModule> removedModules = new ArrayList<IModule>();
                         
                         DeploymentManager dm = DeploymentCommandFactory.getDeploymentManager(server);
@@ -83,8 +82,7 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
                             if (!isInstalledModule(ids, configID)) {
                                 removedConfigIds.add(configID);
                                 IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-                                removedProjects.add(project);
-                                IModule[] modules = getModules(project);
+                                IModule[] modules = GeronimoUtils.getModules(project);
                                 for (IModule module : modules) {
                                     removedModules.add(module);
                                 }
@@ -94,7 +92,7 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
                         if (removedConfigIds.size() != 0 && removedModules.size() != 0) {
                             IModule[] removedModules2 = new IModule[removedModules.size()];
                             removedModules.toArray(removedModules2);
-                            removeModules(removedModules2, removedProjects);
+                            removeModules(removedModules2);
                         } else {
                             Trace.trace(Trace.INFO, "SynchronizeProjectOnServerTask: no configuration is removed outside eclipse on server: " + this.server.getId());
                         }
@@ -130,9 +128,9 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
         return false;
     }
       
-    private void removeModules(IModule[] remove, List<IProject> projects) {
+    private void removeModules(IModule[] remove) {
         
-        Trace.tracePoint("Entry ", "SynchronizeProjectOnServerTask.removeModules", remove, projects);
+        Trace.tracePoint("Entry ", "SynchronizeProjectOnServerTask.removeModules", remove);
         
         IServerWorkingCopy wc = server.createWorkingCopy();
         IProgressMonitor monitor = new NullProgressMonitor(); 
@@ -141,9 +139,9 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
             wc.modifyModules(null, remove, monitor);
             server = wc.save(true, monitor); 
 
-            if (projects != null) {
-                for (IProject project : projects) {
-                    ModuleArtifactMapper.getInstance().removeEntry(this.server, project);
+            if (remove != null) {
+                for (IModule module : remove) {
+                    ModuleArtifactMapper.getInstance().removeArtifactBundleEntry(this.server, module);
                 }
             }           
         } catch (CoreException e) {
@@ -151,19 +149,6 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
         }
         
         Trace.tracePoint("Exist ", "SynchronizeProjectOnServerTask.removeModules");
-    }
-
-    private IModule[] getModules(IProject project) {
-        ModuleFactory[] factories = ServerPlugin.getModuleFactories();
-        if (factories != null) {
-            for (ModuleFactory factory : factories) {
-                IModule[] modules = factory.getModules(project, new NullProgressMonitor());
-                if (modules != null && modules.length != 0) {
-                    return modules;
-                }
-            }
-        }
-        return new IModule [0];
     }
     
     private boolean canUpdateState() {

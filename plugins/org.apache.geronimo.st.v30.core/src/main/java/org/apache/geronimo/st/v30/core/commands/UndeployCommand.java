@@ -45,7 +45,7 @@ class UndeployCommand extends AbstractDeploymentCommand {
      * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
      */
     public IStatus execute(IProgressMonitor monitor) throws TargetModuleIdNotFoundException, CoreException {
-        String configId = ModuleArtifactMapper.getInstance().resolve(getServer(), getModule());
+        String configId = ModuleArtifactMapper.getInstance().resolveArtifact(getServer(), getModule());
 
         if(configId == null) {
             IGeronimoServer gs = (IGeronimoServer) getServer().getAdapter(IGeronimoServer.class);

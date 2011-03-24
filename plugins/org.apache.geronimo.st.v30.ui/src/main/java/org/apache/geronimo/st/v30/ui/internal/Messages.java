@@ -47,6 +47,11 @@ public class Messages extends NLS {
     public static String editorSectionCleanOSGiBundleCacheDescription;
     public static String cleanOSGiBundleCache;
     
+    public static String editorSectionRefreshOSGiBundleTitle;
+    public static String editorSectionRefreshOSGiBundleDescription;
+    public static String refreshOSGiBundle;
+    public static String refreshOSGiBundleNotes;
+    
     public static String editorSectionKarafShellTitle;
     public static String editorSectionKarafShellDescription;
     public static String enableKarafShell;

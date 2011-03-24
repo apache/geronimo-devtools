@@ -34,6 +34,9 @@ public class Messages extends NLS {
     public static String STOP_FAIL;
     public static String UNDEPLOY_FAIL;
     public static String REDEPLOY_FAIL;
+    public static String REFRESH_FAIL;
+    public static String REFRESH_NO_CONFIGURATION_FAIL;
+    public static String REFRESH_NO_BUNDLE_FAIL;
     public static String DM_CONNECTION_FAIL;
 
     public static String errorJRE;

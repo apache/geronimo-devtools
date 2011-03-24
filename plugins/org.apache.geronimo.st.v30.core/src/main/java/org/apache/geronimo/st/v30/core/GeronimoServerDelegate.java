@@ -75,6 +75,8 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     public static final String PROPERTY_HTTP_PORT = "WebConnector";
 
     public static final String PROPERTY_CLEAN_OSGI_BUNDLE_CACHE = "cleanOSGiBundleCache";
+    
+    public static final String PROPERTY_REFRESH_OSGI_BUNDLE = "refreshOSGiBundle";
 
     public static final String PROPERTY_LOG_LEVEL = "logLevel";
     
@@ -346,6 +348,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         setRMINamingPort("1099");
         setConsoleLogLevel(CONSOLE_INFO);
         setCleanOSGiBundleCache(false);
+        setRefreshOSGiBundle(false);
         setKarafShell(false);
         setPingDelay(new Integer(10000));
         setMaxPings(new Integer(40));
@@ -443,6 +446,18 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     public void setCleanOSGiBundleCache(boolean value) {
         setInstanceProperty(PROPERTY_CLEAN_OSGI_BUNDLE_CACHE, Boolean.toString(value));
         updateProgramArgsFromProperties();
+    }
+    
+    //
+    // REFRESH_OSGI_BUNDLE
+    //
+    public boolean isRefreshOSGiBundle() {
+        String enable = getInstanceProperty(PROPERTY_REFRESH_OSGI_BUNDLE);
+        return Boolean.valueOf(enable);
+    }
+    
+    public void setRefreshOSGiBundle(boolean value) {
+        setInstanceProperty(PROPERTY_REFRESH_OSGI_BUNDLE, Boolean.toString(value));
     }
     
     

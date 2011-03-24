@@ -37,6 +37,7 @@ import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jst.j2ee.internal.deployables.J2EEFlexProjDeployable;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
@@ -46,6 +47,8 @@ import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IModule;
+import org.eclipse.wst.server.core.internal.ModuleFactory;
+import org.eclipse.wst.server.core.internal.ServerPlugin;
 import org.osgi.framework.Version;
 
 /**
@@ -436,5 +439,18 @@ public class GeronimoUtils {
 
         Trace.tracePoint("EXIT", "GeronimoUtils.getConnectorDeploymentPlan", null);
         return null;
+    }
+    
+    public static IModule[] getModules(IProject project) {
+        ModuleFactory[] factories = ServerPlugin.getModuleFactories();
+        if (factories != null) {
+            for (ModuleFactory factory : factories) {
+                IModule[] modules = factory.getModules(project, new NullProgressMonitor());
+                if (modules != null && modules.length != 0) {
+                    return modules;
+                }
+            }
+        }
+        return new IModule [0];
     }
 }
