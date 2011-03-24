@@ -5,17 +5,17 @@ Bundle-SymbolicName: org.apache.geronimo.runtime.v30;singleton:=true
 Bundle-Version: 3.0.0
 Require-Bundle: org.apache.geronimo.runtime.common;visibility:=reexport,
  org.eclipse.osgi
-Bundle-ClassPath: lib/geronimo-common-3.0-M2-SNAPSHOT.jar,
- lib/geronimo-deploy-jsr88-3.0-M2-SNAPSHOT.jar,
- lib/geronimo-deployment-3.0-M2-SNAPSHOT.jar,
- lib/geronimo-j2ee-schema-3.0-M2-SNAPSHOT.jar,
- lib/geronimo-kernel-3.0-M2-SNAPSHOT.jar,
- lib/geronimo-plugin-3.0-M2-SNAPSHOT.jar,
- lib/geronimo-system-3.0-M2-SNAPSHOT.jar,
- lib/geronimo-util-3.0-M2-SNAPSHOT.jar,
- lib/geronimo-deploy-config-3.0-M2-SNAPSHOT.jar,
+Bundle-ClassPath: lib/geronimo-common-3.0-SNAPSHOT.jar,
+ lib/geronimo-deploy-jsr88-3.0-SNAPSHOT.jar,
+ lib/geronimo-deployment-3.0-SNAPSHOT.jar,
+ lib/geronimo-j2ee-schema-3.0-SNAPSHOT.jar,
+ lib/geronimo-kernel-3.0-SNAPSHOT.jar,
+ lib/geronimo-plugin-3.0-SNAPSHOT.jar,
+ lib/geronimo-system-3.0-SNAPSHOT.jar,
+ lib/geronimo-util-3.0-SNAPSHOT.jar,
+ lib/geronimo-deploy-config-3.0-SNAPSHOT.jar,
  lib/plexus-archiver-1.0-alpha-12.jar,
- lib/geronimo-crypto-3.0-M2-SNAPSHOT.jar,
+ lib/geronimo-crypto-3.0-SNAPSHOT.jar,
  lib/slf4j-api-1.5.5.jar,
  lib/slf4j-simple-1.5.5.jar
 Export-Package: 
