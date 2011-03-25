@@ -790,6 +790,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                 if (!status.isOK()) {
                     doFail(status, Messages.REDEPLOY_FAIL);
                 } else {
+                    setModuleState(new IModule [] { module }, IServer.STATE_STARTED);
                     // record the bundle project and bundle ID map to ModuleArtifactMapper since 
                     // starting EBA module leads to the included OSGi bundle project being re-installed 
                     // into geronimo server cache folder
