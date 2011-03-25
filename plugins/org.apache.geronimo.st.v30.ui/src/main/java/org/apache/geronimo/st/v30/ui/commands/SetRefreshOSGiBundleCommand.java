@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 
 /**
- * @version $$Rev$$ $$Date$$
+ * @version $Rev$ $Date$
  */
 public class SetRefreshOSGiBundleCommand extends ServerCommand {
     
