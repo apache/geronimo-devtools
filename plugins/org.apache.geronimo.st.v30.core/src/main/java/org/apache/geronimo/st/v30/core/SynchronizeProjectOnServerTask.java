@@ -28,8 +28,10 @@ import java.util.TimerTask;
 import java.util.TreeSet;
 
 import javax.enterprise.deploy.spi.DeploymentManager;
+import javax.enterprise.deploy.spi.Target;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
+import org.apache.geronimo.st.v30.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.eclipse.core.resources.IProject;
@@ -41,8 +43,6 @@ import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
-import org.eclipse.wst.server.core.internal.ModuleFactory;
-import org.eclipse.wst.server.core.internal.ServerPlugin;
 
 public class SynchronizeProjectOnServerTask extends TimerTask {
 
@@ -74,17 +74,36 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
                         List<IModule> removedModules = new ArrayList<IModule>();
                         
                         DeploymentManager dm = DeploymentCommandFactory.getDeploymentManager(server);
-                        TargetModuleID[] ids = dm.getAvailableModules(null, dm.getTargets());
+                        Target[] targets = dm.getTargets();
+                        TargetModuleID[] ids = dm.getAvailableModules(null, targets);
+                        
+                        TargetModuleID[] runningIds = dm.getRunningModules(null, targets);
+                        TargetModuleID[] nonRunningIds = dm.getNonRunningModules(null, targets);
+                        TreeSet<String> runningConfigIds = new TreeSet<String>();
+                        TreeSet<String> nonRunningConfigIds = new TreeSet<String>();                        
+                        for (TargetModuleID running : runningIds) {
+                            runningConfigIds.add(running.getModuleID());
+                        }
+                        for (TargetModuleID nonRunning : nonRunningIds) {
+                            nonRunningConfigIds.add(nonRunning.getModuleID());
+                        }
                         
                         for ( ; projectsIterator.hasNext(); ) {
                             String projectName = (String) projectsIterator.next();
                             String configID = (String) projectsOnServer.get(projectName);
+                            IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+                            IModule[] modules = GeronimoUtils.getModules(project);
+
                             if (!isInstalledModule(ids, configID)) {
                                 removedConfigIds.add(configID);
-                                IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-                                IModule[] modules = GeronimoUtils.getModules(project);
                                 for (IModule module : modules) {
                                     removedModules.add(module);
+                                }
+                            } else { 
+                                if (runningConfigIds.contains(configID)) {
+                                    setModuleState(modules, IServer.STATE_STARTED);
+                                } else if (nonRunningConfigIds.contains(configID)){
+                                    setModuleState(modules, IServer.STATE_STOPPED);
                                 }
                             }
                         }
@@ -109,6 +128,11 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
         }
         
         Trace.tracePoint("Exist ", "SynchronizeProjectOnServerTask.run");
+    }
+
+    private void setModuleState(IModule[] modules, int state) {
+        GeronimoServerBehaviourDelegate d = (GeronimoServerBehaviourDelegate) this.delegate;
+        d.setModulesState(modules, state);        
     }
 
     private boolean isInstalledModule(TargetModuleID[] ids, String configId) {

@@ -1408,4 +1408,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             return false;
         }
      }
+    
+    public void setModulesState(IModule[] module, int state) {
+        setModuleState(module, state);
+    }
 }
