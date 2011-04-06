@@ -248,7 +248,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	}
 
 	public String getAdminPassword() {
-		return getInstanceProperty(PROPERTY_ADMIN_PW);
+		return decrypt(getInstanceProperty(PROPERTY_ADMIN_PW));
 	}
 
 	public String getRMINamingPort() {
@@ -272,7 +272,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	}
 
 	public void setAdminPassword(String value) {
-		setInstanceProperty(PROPERTY_ADMIN_PW, value);
+		setInstanceProperty(PROPERTY_ADMIN_PW, encrypt(value));
 	}
 
 	public void setRMINamingPort(String value) {
@@ -423,6 +423,9 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	public void setServerInstanceProperties(Map map) {
 		setAttribute(GeronimoRuntimeDelegate.SERVER_INSTANCE_PROPERTIES, map);
 	}
-
+	
+	public abstract String encrypt(String value);
+	
+	public abstract String decrypt(String value);
 	
 }

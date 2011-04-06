@@ -20,6 +20,7 @@ Bundle-ClassPath: lib/geronimo-common-2.2.1.jar,
 Export-Package: 
  org.apache.geronimo.common,
  org.apache.geronimo.common.propertyeditor,
+ org.apache.geronimo.crypto,
  org.apache.geronimo.deployment,
  org.apache.geronimo.deployment.plugin,
  org.apache.geronimo.deployment.plugin.factories,

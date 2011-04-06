@@ -7,6 +7,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-j2ee-schema-2.0.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-kernel-2.0.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-system-2.0.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/geronimo-util-2.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-util-2.0.2.jar"/>	
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-crypto-2.2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

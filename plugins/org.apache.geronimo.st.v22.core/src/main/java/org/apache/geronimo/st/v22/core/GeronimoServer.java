@@ -20,6 +20,7 @@ import java.io.File;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 
+import org.apache.geronimo.crypto.*;
 import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
 import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
 import org.apache.geronimo.st.core.GeronimoRuntimeDelegate;
@@ -210,6 +211,14 @@ public class GeronimoServer extends GeronimoServerDelegate {
     @Override
     public IGeronimoServerPluginManager getServerPluginManager() {
         return new GeronimoServerV22PluginManager(this.getServer());
+    }
+    
+    public String encrypt(String value) {
+        return value == null ? null : EncryptionManager.encrypt(value);
+    }
+    
+    public String decrypt(String value) {
+        return value == null ? null : (String) EncryptionManager.decrypt(value);
     }
 
 }

@@ -19,6 +19,7 @@ package org.apache.geronimo.st.v11.core;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 
+import org.apache.geronimo.crypto.EncryptionManager;
 import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
 import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
 import org.apache.geronimo.st.core.GeronimoServerDelegate;
@@ -119,6 +120,14 @@ public class GeronimoServer extends GeronimoServerDelegate {
     public IGeronimoServerPluginManager getServerPluginManager() {
         //Currently not support server plugin for 1.1 adapter
         return null;
+    }
+    
+    public String encrypt(String value) {
+        return value == null ? null : EncryptionManager.encrypt(value);
+    }
+    
+    public String decrypt(String value) {
+        return value == null ? null : (String) EncryptionManager.decrypt(value);
     }
 
 }

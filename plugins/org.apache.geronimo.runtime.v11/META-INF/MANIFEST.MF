@@ -17,13 +17,15 @@ Bundle-ClassPath: lib/openejb-builder-2.1.1.jar,
  lib/geronimo-deployment-1.1.1.jar,
  lib/geronimo-deploy-jsr88-1.1.1.jar,
  lib/geronimo-connector-builder-1.1.1.jar,
- lib/geronimo-common-1.1.1.jar
+ lib/geronimo-common-1.1.1.jar,
+ lib/geronimo-crypto-2.2.1.jar
 Export-Package: 
  org.apache.geronimo.common,
  org.apache.geronimo.common.propertyeditor,
  org.apache.geronimo.connector.deployment,
  org.apache.geronimo.connector.deployment.dconfigbean,
  org.apache.geronimo.connector.deployment.jsr88,
+ org.apache.geronimo.crypto,
  org.apache.geronimo.deployment,
  org.apache.geronimo.deployment.javabean.xbeans,
  org.apache.geronimo.deployment.javabean.xbeans.impl,

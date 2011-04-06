@@ -11,10 +11,12 @@ Bundle-ClassPath: lib/geronimo-common-2.0.2.jar,
  lib/geronimo-kernel-2.0.2.jar,
  lib/geronimo-system-2.0.2.jar,
  lib/geronimo-util-2.0.2.jar,
- lib/geronimo-deploy-config-2.0.2.jar
+ lib/geronimo-deploy-config-2.0.2.jar,
+ lib/geronimo-crypto-2.2.1.jar
 Export-Package: 
  org.apache.geronimo.common,
  org.apache.geronimo.common.propertyeditor,
+ org.apache.geronimo.crypto,
  org.apache.geronimo.deployment,
  org.apache.geronimo.deployment.plugin,
  org.apache.geronimo.deployment.plugin.factories,

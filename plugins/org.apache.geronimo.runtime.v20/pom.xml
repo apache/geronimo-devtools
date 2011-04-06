@@ -152,6 +152,11 @@
                                     <artifactId>geronimo-deploy-config</artifactId>
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.geronimo.framework</groupId>
+                                    <artifactId>geronimo-crypto</artifactId>
+                                    <version>2.2.1</version>
+                                </artifactItem>
                             </artifactItems>
                             <outputDirectory>lib</outputDirectory>
                         </configuration>

@@ -181,6 +181,11 @@
                                     <artifactId>geronimo-deployment</artifactId>
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.geronimo.framework</groupId>
+                                    <artifactId>geronimo-crypto</artifactId>
+                                    <version>2.2.1</version>
+                                </artifactItem>
                             </artifactItems>
                             <outputDirectory>lib</outputDirectory>
                         </configuration>
@@ -387,5 +392,10 @@
             <artifactId>org.apache.geronimo.runtime.common</artifactId>
             <version>${version}</version>
         </dependency>
+		<dependency>
+			<groupId>org.apache.geronimo.framework</groupId>
+			<artifactId>geronimo-crypto</artifactId>
+			<version>2.2.1</version>
+		</dependency>
     </dependencies>
 </project>

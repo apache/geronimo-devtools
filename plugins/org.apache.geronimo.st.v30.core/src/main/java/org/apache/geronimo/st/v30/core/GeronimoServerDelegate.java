@@ -32,6 +32,7 @@ import java.util.jar.Manifest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.geronimo.crypto.EncryptionManager;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
@@ -394,12 +395,14 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     // PROPERTY_ADMIN_PW 
     // 
     public String getAdminPassword() {
-        return getInstanceProperty(PROPERTY_ADMIN_PW);
+        String password = getInstanceProperty(PROPERTY_ADMIN_PW);
+        return password == null ? null : (String) EncryptionManager.decrypt(password);
     }
+    
     public void setAdminPassword(String value) {
-        setInstanceProperty(PROPERTY_ADMIN_PW, value);
+        String password = value == null ? null : EncryptionManager.encrypt(value);
+        setInstanceProperty(PROPERTY_ADMIN_PW, password);
     }
-
 
     // 
     // PROPERTY_RMI_PORT 
