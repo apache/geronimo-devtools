@@ -418,7 +418,10 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                         Messages.REFRESH_NO_CONFIGURATION_FAIL, ebaModule.getProject().getName()));
             }
             AbstractName abstractName = dm.getApplicationGBeanName(Artifact.create(configId));
-            File file = getTargetFile(bundleModule);
+            File file = DeploymentUtils.getTargetFile(getServer(), bundleModule);
+            if (file == null) {
+                return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.bind(Messages.moduleExportError, bundleModule.getProject().getName()));
+            }
             String bundleId = ModuleArtifactMapper.getInstance().resolveBundle(getServer(), ebaModule, bundleModule);
             if (bundleId != null) {
                 dm.updateEBAContent(abstractName, Long.parseLong(bundleId), file);
@@ -431,25 +434,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         }
 
         return Status.OK_STATUS;
-    }
-    
-     
-    // copied from org.apache.geronimo.st.v30.core.commands.DeployCommand.java
-    private File getTargetFile(IModule module) {
-        
-        File file = null;
-        IGeronimoServer gs = getGeronimoServer();
-        if (gs.isRunFromWorkspace()) {
-            //TODO Re-enable after DeployableModule supported in G
-            //file = generateRunFromWorkspaceConfig(getModule());
-        }
-        else {
-            IPath outputDir = DeploymentUtils.STATE_LOC.append("server_" + getServer().getId());
-            outputDir.toFile().mkdirs();
-            file = DeploymentUtils.createJarFile(module, outputDir);
-        }
-        
-        return file;
     }
 
     private static class ModuleList {
@@ -1403,7 +1387,12 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.canControlModule", Arrays.asList(module));
         // Enable start/stop for top-level modules only 
         if (module.length == 1) {
-            return true;
+            if (GeronimoUtils.isFragmentBundleModule(module[0])) {
+                // fragment bundles cannot be started/stopped
+                return false;
+            } else {
+                return true;
+            }
         } else {
             return false;
         }

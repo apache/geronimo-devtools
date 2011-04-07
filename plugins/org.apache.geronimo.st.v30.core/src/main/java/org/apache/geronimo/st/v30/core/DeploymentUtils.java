@@ -118,41 +118,55 @@ public class DeploymentUtils {
         return null;
     }
     
+    public static File getTargetFile(IServer server, IModule module) {        
+        File file = null;
+        IGeronimoServer gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
+        if (gs.isRunFromWorkspace()) {
+            //TODO Re-enable after DeployableModule supported in G
+            //file = generateRunFromWorkspaceConfig(getModule());
+        } else {
+            IPath outputDir = DeploymentUtils.STATE_LOC.append("server_" + server.getId());
+            outputDir.toFile().mkdirs();
+            file = DeploymentUtils.createJarFile(module, outputDir);
+        }
+        return file;
+    }
     
     private static String getModuleExtension(IModule module) {
         Trace.tracePoint("Entry", "DeploymentUtils.getModuleExtension", module);
     
+        String extension = null;
+        
         if (GeronimoUtils.isEarModule(module)) {
-            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".ear");
-            return ".ear";
+            extension = ".ear";
         }
         else if (GeronimoUtils.isWebModule(module)) {
-            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".war");
-            return ".war";
+            extension = ".war";
         }
         else if (GeronimoUtils.isRARModule(module)) {
-            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".rar");
-            return ".rar";
+            extension = ".rar";
         }
         else if (GeronimoUtils.isAppClientModule(module)) {
-            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".car");
-            return ".car";
+            extension = ".car";
         }
         else if (GeronimoUtils.isEBAModule(module)) {
-            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", OsgiConstants.APPLICATION_EXTENSION);
-            return OsgiConstants.APPLICATION_EXTENSION;
+            extension = OsgiConstants.APPLICATION_EXTENSION;
         }
         else if (GeronimoUtils.isCBAModule(module)) {
-            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", OsgiConstants.COMPOSITE_BUNDLE_EXTENSION);
-            return OsgiConstants.COMPOSITE_BUNDLE_EXTENSION;
+            extension = OsgiConstants.COMPOSITE_BUNDLE_EXTENSION;
         }
         else if (GeronimoUtils.isBundleModule(module)) {
-            Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", OsgiConstants.BUNDLE_EXTENSION);
-            return OsgiConstants.BUNDLE_EXTENSION;
+            extension = OsgiConstants.BUNDLE_EXTENSION;
+        }
+        else if (GeronimoUtils.isFragmentBundleModule(module)) {
+            extension = OsgiConstants.FRAGMENT_BUNDLE_EXTENSION;
+        }
+        else {
+            extension = ".jar";
         }
 
-        Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", ".jar");
-        return ".jar";
+        Trace.tracePoint("Exit ", "DeploymentUtils.getModuleExtension", extension);
+        return extension;
     }
 
 
@@ -160,7 +174,8 @@ public class DeploymentUtils {
         Trace.tracePoint("Entry", "DeploymentUtils.createJarFile", module, outputPath);
 
         IDataModel model = getExportDataModel(module);
-
+        File exportedFile = null;
+        
         if (model != null) {
 
             IVirtualComponent comp = ComponentCore.createComponent(module.getProject());
@@ -177,19 +192,16 @@ public class DeploymentUtils {
             model.setBooleanProperty(J2EEComponentExportDataModelProvider.OVERWRITE_EXISTING, true);
             model.setBooleanProperty(J2EEComponentExportDataModelProvider.RUN_BUILD, false);
 
-            if (model != null) {
-                try {
-                    model.getDefaultOperation().execute(null, null);
-                    Trace.tracePoint("Exit ", "DeploymentUtils.createJarFile",new File(model.getStringProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION)));
-                    return new File(model.getStringProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION));
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-            }
+            try {
+                model.getDefaultOperation().execute(null, null);
+                exportedFile = new File(model.getStringProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION));
+            } catch (ExecutionException e) {
+                Trace.trace(Trace.SEVERE, "Error exporting module", e);
+            }            
         }
 
-        Trace.tracePoint("Exit ", "DeploymentUtils.createJarFile", null);
-        return null;
+        Trace.tracePoint("Exit ", "DeploymentUtils.createJarFile", exportedFile);
+        return exportedFile;
     }
 
 
@@ -218,6 +230,9 @@ public class DeploymentUtils {
             }
             else if (OsgiConstants.BUNDLE.equals(type)) {
                 return DataModelFactory.createDataModel(OsgiConstants.BUNDLE_DATAMODEL_PROVIDER_ID);
+            }
+            else if (OsgiConstants.FRAGMENT_BUNDLE.equals(type)) {
+                return DataModelFactory.createDataModel(OsgiConstants.FRAGMENT_BUNDLE_DATAMODEL_PROVIDER_ID);
             }
         }
 
@@ -291,7 +306,7 @@ public class DeploymentUtils {
         } catch (TargetModuleIdNotFoundException e) {
             Trace.trace(Trace.INFO, e.getMessage());
         }
-        
+                
         if(query != currentId) {
             try {
                 getTargetModuleID(dm, currentId);

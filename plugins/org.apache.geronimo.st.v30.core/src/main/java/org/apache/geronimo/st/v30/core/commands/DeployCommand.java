@@ -18,10 +18,13 @@ package org.apache.geronimo.st.v30.core.commands;
 
 import java.io.File;
 
+import org.apache.geronimo.st.v30.core.Activator;
 import org.apache.geronimo.st.v30.core.DeploymentUtils;
-import org.apache.geronimo.st.v30.core.IGeronimoServer;
+import org.apache.geronimo.st.v30.core.internal.Messages;
 import org.apache.geronimo.st.v30.core.internal.Trace;
-import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 
@@ -48,19 +51,15 @@ abstract public class DeployCommand extends AbstractDeploymentCommand {
      * 
      * @return A File representation of the zipped/jar file 
      */
-    public File getTargetFile() {
+    public File getTargetFile() throws CoreException {
         Trace.tracePoint("Entry", "DeployCommand.getTargetFile");
 
-        File file = null;
-        IGeronimoServer gs = getGeronimoServer();
-        if (gs.isRunFromWorkspace()) {
-            //TODO Re-enable after DeployableModule supported in G
-            //file = generateRunFromWorkspaceConfig(getModule());
-        }
-        else {
-            IPath outputDir = DeploymentUtils.STATE_LOC.append("server_" + getServer().getId());
-            outputDir.toFile().mkdirs();
-            file = DeploymentUtils.createJarFile(getModule(), outputDir);
+        IModule module = getModule();
+        File file = DeploymentUtils.getTargetFile(getServer(), module);
+        
+        if (file == null) {
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 
+                    Messages.bind(Messages.moduleExportError, module.getProject().getName())));     
         }
 
         Trace.tracePoint("Exit ", "DeployCommand.getTargetFile", file);

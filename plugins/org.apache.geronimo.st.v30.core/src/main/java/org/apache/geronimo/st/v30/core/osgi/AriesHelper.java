@@ -17,9 +17,7 @@
 package org.apache.geronimo.st.v30.core.osgi;
 
 import org.apache.geronimo.st.v30.core.internal.Trace;
-import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.wst.server.core.IModule;
 import org.osgi.framework.Bundle;
 
 /**

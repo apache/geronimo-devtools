@@ -16,7 +16,6 @@
  */
 package org.apache.geronimo.st.v30.core;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.jar.Manifest;
@@ -99,6 +98,10 @@ public class GeronimoUtils {
     
     public static boolean isBundleModule(IModule module) {
         return OsgiConstants.BUNDLE.equals(module.getModuleType().getId());
+    }
+    
+    public static boolean isFragmentBundleModule(IModule module) {
+        return OsgiConstants.FRAGMENT_BUNDLE.equals(module.getModuleType().getId());
     }
     
     public static ModuleType getJSR88ModuleType(IModule module) {

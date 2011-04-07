@@ -25,6 +25,10 @@ public final class OsgiConstants {
     public final static String BUNDLE = "osgi.bundle"; 
     public final static String BUNDLE_EXTENSION = ".jar"; 
     public final static String BUNDLE_DATAMODEL_PROVIDER_ID = "osgi.bundle.datamodelprovider";
+    
+    public final static String FRAGMENT_BUNDLE = "osgi.fragment"; 
+    public final static String FRAGMENT_BUNDLE_EXTENSION = ".jar"; 
+    public final static String FRAGMENT_BUNDLE_DATAMODEL_PROVIDER_ID = "osgi.fragment.datamodelprovider";
 
     public final static String COMPOSITE_BUNDLE = "osgi.comp"; 
     public final static String COMPOSITE_BUNDLE_EXTENSION = ".cba";  
