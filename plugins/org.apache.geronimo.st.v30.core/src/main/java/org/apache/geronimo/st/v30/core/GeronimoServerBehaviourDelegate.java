@@ -455,7 +455,14 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                 modules.add(module);
             }
             if (delta == NO_CHANGE) {
-                delta = moduleDelta;
+                // If one of the module in EBA module has its symbolic name updated, but the MENIFEST.MF doesn't get updated
+                // accordingly, we will get the DeltaList as NO_CHANGE for EBA module, and REMOVED for the updated module. In 
+                // this situation, we should has the whole EBA redeployed instead of removed
+                if (GeronimoUtils.isEBAModule(rootModule) && moduleDelta == REMOVED) {
+                    delta = CHANGED;
+                } else {
+                    delta = moduleDelta;
+                }                
             }
         }
         
