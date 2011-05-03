@@ -119,12 +119,12 @@ public class SecurityRealmWizard extends AbstractTableWizard {
 
     @Override
     protected String getAddWizardWindowTitle() {
-    return "New Security Realm";// TODO put into message
+    	return CommonMessages.wizardSecurityRealmNew;
     }
 
     @Override
     protected String getEditWizardWindowTitle() {
-    return "Edit Security Realm";// TODO put into message
+	    return CommonMessages.wizardSecurityRealmEdit;
     }
 
     public boolean performFinish() {

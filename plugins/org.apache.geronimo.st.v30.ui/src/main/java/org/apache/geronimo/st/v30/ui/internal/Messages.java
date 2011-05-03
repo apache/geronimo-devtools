@@ -435,6 +435,15 @@ public class Messages extends NLS {
     public static String wizardConnectionPageTitle__DBPool;
     public static String wizardConnectionPageDescription__DBPool;
     //
+    
+    public static String WizardSecurityRealmTitle;
+    public static String WizardSecurityRealmDescription;
+    public static String wizardSecurityRealmName;
+    public static String wizardLoginModuleClass;  
+    public static String wizardSecurityRealmNew;
+    public static String wizardSecurityRealmEdit;
+    
+    
     public static String doasCurrentCaller;
     public static String useContextHandler;
     public static String defaultRole;
@@ -510,6 +519,13 @@ public class Messages extends NLS {
     public static String driverGroup;
     public static String basicGroup;
     public static String advancedGroup;
+    
+    public static String wizardDatabasePoolConnector;
+    public static String wizardDatabasePoolExternalPath;
+    public static String wizardDatabasePoolTitle;
+    public static String wizardDatabasePoolDescription;
+    public static String wizardDatabasePoolNew;
+    public static String wizardDatabasePoolEdit;
 
 
     public static String licenseAgreement;

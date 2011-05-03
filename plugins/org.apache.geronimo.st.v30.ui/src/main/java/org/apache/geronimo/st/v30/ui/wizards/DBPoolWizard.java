@@ -94,12 +94,12 @@ public class DBPoolWizard extends AbstractTableWizard {
 
     @Override
     protected String getAddWizardWindowTitle() {
-    return "New Database Pool";// TODO put into message
+    return CommonMessages.wizardDatabasePoolNew;
     }
 
     @Override
     protected String getEditWizardWindowTitle() {
-    return "Edit Database Pool";// TODO put into message
+    return CommonMessages.wizardDatabasePoolEdit;
     }
 
     public void addPages() {

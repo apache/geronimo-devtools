@@ -18,6 +18,7 @@ package org.apache.geronimo.st.v30.ui.pages;
 
 import org.apache.geronimo.jee.application.Application;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoJAXBBasedEditor;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.apache.geronimo.st.v30.ui.sections.DBPoolSection;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.ui.forms.IManagedForm;
@@ -49,7 +50,7 @@ public class ConnectorPage extends AbstractDeploymentPlanFormPage {
     }
 
     public String getFormTitle() {
-        return "Connector";//TODO
+        return CommonMessages.editorTabConnector;
     }
 
 

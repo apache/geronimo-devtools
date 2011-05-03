@@ -28,6 +28,7 @@ import org.apache.geronimo.jee.deployment.Gbean;
 import org.apache.geronimo.jee.deployment.XmlAttributeType;
 import org.apache.geronimo.jee.loginconfig.LoginConfig;
 import org.apache.geronimo.jee.loginconfig.LoginModule;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.apache.geronimo.st.v30.ui.pages.SecurityPage;
 import org.apache.geronimo.st.v30.ui.wizards.SecurityRealmWizard;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -43,14 +44,14 @@ public class SecurityRealmSection extends AbstractTableSection {
         Composite parent, FormToolkit toolkit, int style) {
     super(plan, parent, toolkit, style);
     this.objectContainer = gbeans;
-    COLUMN_NAMES = new String[] { "Security Realm Name",
-        "Login Module Class" };// TODO put into message
+    COLUMN_NAMES = new String[] {
+    		CommonMessages.wizardSecurityRealmName, CommonMessages.wizardLoginModuleClass};
     createClient();
     }
 
     @Override
     public String getDescription() {
-    return "The following security realms are defined:";// TODO put into
+    return CommonMessages.WizardSecurityRealmDescription;
     // message
     }
 
@@ -61,7 +62,7 @@ public class SecurityRealmSection extends AbstractTableSection {
 
     @Override
     public String getTitle() {
-    return "Security Realm";// TODO put into message
+    return CommonMessages.WizardSecurityRealmTitle;
     }
 
     @Override
