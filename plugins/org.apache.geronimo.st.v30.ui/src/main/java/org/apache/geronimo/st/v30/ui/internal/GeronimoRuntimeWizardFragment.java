@@ -426,20 +426,32 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
 
     public void performFinish(IProgressMonitor monitor) throws CoreException {
 
-        IStringVariableManager varManager = VariablesPlugin.getDefault().getStringVariableManager();
-
-        // whether the target platform is already created
-        if (null == varManager.getValueVariable(GERONIMO_SERVER_LOCATION_VARIABLE_NAME)) {
+        ITargetPlatformService service = 
+            (ITargetPlatformService) PDECore.getDefault().acquireService(ITargetPlatformService.class.getName());
+        
+        ITargetHandle geronimoTargetHandle = findGeronimoTargetDefinition(service);
+        
+        if (geronimoTargetHandle == null) {
+            // target definition not found - generate one 
             
-            // add string substitution variable named ${geronimo_30_server_location} 
             String geronimoServerLocation = getRuntimeDelegate().getRuntime().getLocation().toString();
             if (geronimoServerLocation.endsWith("/")) {
                 geronimoServerLocation = geronimoServerLocation.substring(0, geronimoServerLocation.length()-1);
             }
-            IValueVariable v = varManager.newValueVariable(GERONIMO_SERVER_LOCATION_VARIABLE_NAME,
-                    "The server location of Geronimo v3.0", false, geronimoServerLocation);
-            varManager.addVariables(new IValueVariable[] { v });
             
+            // add or update string substitution variable named ${geronimo_30_server_location} 
+            IStringVariableManager varManager = VariablesPlugin.getDefault().getStringVariableManager();
+            IValueVariable v = varManager.getValueVariable(GERONIMO_SERVER_LOCATION_VARIABLE_NAME);
+            if (v == null) {
+                v = varManager.newValueVariable(GERONIMO_SERVER_LOCATION_VARIABLE_NAME,
+                                                "The server location of Geronimo v3.0", 
+                                                false, 
+                                                geronimoServerLocation);
+                varManager.addVariables(new IValueVariable[] { v });
+            } else {
+                v.setValue(geronimoServerLocation);
+            }
+                        
             // copy the target file for target platform into workspace
             IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
             IPath rootLocation = root.getLocation();
@@ -451,30 +463,28 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
             URL template = bundle.getEntry(TARGET_TEMPLATE_FILE);
             
             copyFile(template, destination, getLocationEntryLists(geronimoServerLocation));
+                        
+            geronimoTargetHandle = findGeronimoTargetDefinition(service);                    
         }
         
-        ITargetPlatformService service = (ITargetPlatformService)PDECore.getDefault().acquireService(
-                ITargetPlatformService.class.getName());
         ITargetHandle activeTargetHandle = service.getWorkspaceTargetHandle();
-        ITargetHandle[] targetHandles = service.getTargets(null);
-        ITargetHandle geronimoTargetHandle = null;
-        for (ITargetHandle cur : targetHandles) {
-            if (cur.getTargetDefinition().getName().equals("Apache Geronimo 3.0")) {
-                geronimoTargetHandle = cur;
-            }
-        }
+        
         if (geronimoTargetHandle != null) {
-            boolean resetFlag = false;
-            if (activeTargetHandle == null ) {
-                resetFlag = true;
-            } else if (!activeTargetHandle.equals(geronimoTargetHandle)) {
-                resetFlag = true;
-            }                
-            if (resetFlag) {
+            if (activeTargetHandle == null || !activeTargetHandle.equals(geronimoTargetHandle)) {
                 ITargetDefinition geronimoTarget = geronimoTargetHandle.getTargetDefinition();
                 LoadTargetDefinitionJob.load(geronimoTarget);
             }            
         }
+    }
+    
+    private ITargetHandle findGeronimoTargetDefinition(ITargetPlatformService service) throws CoreException {
+        ITargetHandle[] targetHandles = service.getTargets(null);
+        for (ITargetHandle cur : targetHandles) {
+            if (cur.getTargetDefinition().getName().equals("Apache Geronimo 3.0")) {
+                return cur;
+            }
+        }
+        return null;
     }
     
     protected void copyFile(URL source, IPath dest, String replacement) throws CoreException {
