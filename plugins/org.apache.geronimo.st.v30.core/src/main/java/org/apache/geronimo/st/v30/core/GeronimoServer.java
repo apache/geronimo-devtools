@@ -16,9 +16,6 @@
  */
 package org.apache.geronimo.st.v30.core;
 
-import java.io.File;
-import java.text.MessageFormat;
-
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 
@@ -27,10 +24,6 @@ import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jdt.launching.IVMInstall;
-import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
 /**
@@ -70,58 +63,34 @@ public class GeronimoServer extends GeronimoServerDelegate {
         if (superVMArgs != null && superVMArgs.trim().length() > 0) {
             return superVMArgs;
         }
-
-        String runtimeLocation = getServer().getRuntime().getLocation().toString();
-        GeronimoRuntimeDelegate geronimoRuntimeDelegate = (GeronimoRuntimeDelegate) getServer().getRuntime().getAdapter(GeronimoRuntimeDelegate.class);
-        if (geronimoRuntimeDelegate == null) {
-            geronimoRuntimeDelegate = (GeronimoRuntimeDelegate) getServer().getRuntime().loadAdapter(GeronimoRuntimeDelegate.class,new NullProgressMonitor());
-        }
-        IVMInstall vmInstall = geronimoRuntimeDelegate.getVMInstall();
-
-        LibraryLocation[] libLocations = JavaRuntime.getLibraryLocations(vmInstall);
-        IPath vmLibDir = null;
-        for(int i = 0; i < libLocations.length; i++) {
-            LibraryLocation loc = libLocations[i];
-            IPath libDir = loc.getSystemLibraryPath().removeLastSegments(2);
-            if(libDir.toOSString().endsWith("lib")) {
-                vmLibDir = libDir;
-                break;
-            }
-        }
-
+  
         StringBuilder args = new StringBuilder();
 
-        // -javaagent:"GERONIMO_BASE/bin/jpa.jar"
-        File agentJar = new File(runtimeLocation + "/lib/agent/transformer.jar");
-        if (agentJar.exists()) {
-            addParm(args, "-javaagent:\"", agentJar.getAbsolutePath(), "\"");
-        }
+        addParm(args, "-javaagent:\"$(GERONIMO_HOME)/lib/agent/transformer.jar\"");
 
         String pS = System.getProperty("path.separator");
         
         //-Djava.ext.dirs="GERONIMO_BASE/lib/ext;JRE_HOME/lib/ext"
-        addParm(args, "-Djava.ext.dirs=\"", runtimeLocation, "/lib/ext", pS, vmLibDir.append("ext").toOSString(), "\"");
+        addParm(args, "-Djava.ext.dirs=\"$(GERONIMO_HOME)/lib/ext", pS, "$(JRE_HOME)/lib/ext\"");
 
         //-Djava.endorsed.dirs="GERONIMO_BASE/lib/endorsed;JRE_HOME/lib/endorsed"
-        addParm(args, "-Djava.endorsed.dirs=\"", runtimeLocation, "/lib/endorsed", pS, vmLibDir.append("endorsed").toOSString(), "\"");
+        addParm(args, "-Djava.endorsed.dirs=\"$(GERONIMO_HOME)/lib/endorsed", pS, "$(JRE_HOME)/lib/endorsed\"");
 
         // Specify the minimum memory options for the Geronimo server
         addParm(args, "-Xms256m -Xmx512m -XX:MaxPermSize=128m");
 
         // Specify GERONIMO_BASE
-        addParm(args, "-Dorg.apache.geronimo.home.dir=\"", runtimeLocation, "\"");
-        
+        addParm(args, "-Dorg.apache.geronimo.home.dir=\"$(GERONIMO_HOME)\"");
+                
+        addParm(args, "-Dkaraf.home=\"$(GERONIMO_HOME)\"");
+        addParm(args, "-Dkaraf.base=\"$(GERONIMO_HOME)\"");
+        addParm(args, "-Djava.util.logging.config.file=\"$(GERONIMO_HOME)/etc/java.util.logging.properties\"");
+               
         // Karaf arguments
         addParm(args, getKarafShellArgs());
         addParm(args, "-Dkaraf.startRemoteShell=true");
-        String serverLocation = getServer().getRuntime().getLocation().toOSString();
-        addParm(args,
-                MessageFormat
-                        .format("-Dorg.apache.geronimo.home.dir=\"{0}\" -Dkaraf.home=\"{0}\" -Dkaraf.base=\"{0}\" -Djava.util.logging.config.file={0}/etc/java.util.logging.properties",
-                                serverLocation));
-
-        String vmArgs = args.toString();
         
+        String vmArgs = args.toString();
         Trace.tracePoint("Exit", "GeronimoServer.getVMArgs", vmArgs);
         
         return vmArgs;

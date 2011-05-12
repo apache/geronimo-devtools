@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.Map;
 
 import org.apache.geronimo.st.v30.core.internal.Messages;
+import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -85,11 +86,22 @@ public class GeronimoLaunchConfigurationDelegate extends AbstractJavaLaunchConfi
         String pgmArgs = getProgramArguments(configuration);
         String vmArgs = getVMArguments(configuration);
         String[] envp = getEnvironment(configuration);
-
+        
+        File jreHome = new File(vm.getInstallLocation(), "jre");
+        if (!jreHome.exists()) {
+            jreHome = vm.getInstallLocation();
+        }        
+        
+        vmArgs = vmArgs.replace("$(JRE_HOME)", jreHome.getAbsolutePath());
+        vmArgs = vmArgs.replace("$(GERONIMO_HOME)", server.getRuntime().getLocation().toOSString());
+        
+        Trace.trace(Trace.INFO, "vmArgs=" + vmArgs);
+        Trace.trace(Trace.INFO, "pgmArgs=" + pgmArgs);
+        
         ExecutionArguments execArgs = new ExecutionArguments(vmArgs, pgmArgs);
         Map vmAttributesMap = getVMSpecificAttributesMap(configuration);
         String[] classpath = getClasspath(configuration);
-
+        
         // Create VM config
         VMRunnerConfiguration runConfig = new VMRunnerConfiguration(mainTypeName, classpath);
         runConfig.setProgramArguments(execArgs.getProgramArgumentsArray());
@@ -97,7 +109,7 @@ public class GeronimoLaunchConfigurationDelegate extends AbstractJavaLaunchConfi
         runConfig.setWorkingDirectory(workingDirName);
         runConfig.setEnvironment(envp);
         runConfig.setVMSpecificAttributesMap(vmAttributesMap);
-
+        
         // Bootpath
         String[] bootpath = getBootpath(configuration);
         if (bootpath != null && bootpath.length > 0)
