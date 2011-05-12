@@ -624,6 +624,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
     public void setServerStopped() {
         setServerState(IServer.STATE_STOPPED);
+        resetModuleState();
     }
 
     public IGeronimoServer getGeronimoServer() {
@@ -656,7 +657,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.terminate");
     }
 
-
     protected void stopImpl() {
         if (process != null) {
             process = null;
@@ -664,8 +664,21 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             processListener = null;
         }
         setServerState(IServer.STATE_STOPPED);
+        resetModuleState();
     }
 
+    private void resetModuleState() {
+        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.resetModuleState");
+
+        IModule[] modules = getServer().getModules();
+        for (int i = 0; i < modules.length; i++) {
+            IModule[] module = new IModule[] { modules[i] };
+            setModuleState(module, IServer.STATE_STOPPED);
+        }        
+
+        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.resetModuleState");
+    }
+    
     protected void invokeCommand(int deltaKind, IModule module, IProgressMonitor monitor) throws CoreException {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.invokeCommand", deltaKindToString(deltaKind), module.getName());
         
@@ -1175,7 +1188,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.startUpdateServerStateTask", getServer().getName());
 
         stateTimer = new Timer(true);
-        stateTimer.schedule(new UpdateServerStateTask(this, getServer()), TIMER_TASK_DELAY * 1000, TIMER_TASK_INTERVAL * 1000);
+        stateTimer.schedule(new UpdateServerStateTask(this, getServer()), 0, TIMER_TASK_INTERVAL * 1000);
 
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.startUpdateServerStateTask");
     }
@@ -1188,7 +1201,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         }
         
         synchronizerTimer = new Timer(true);
-        synchronizerTimer.schedule(new SynchronizeProjectOnServerTask(this, getServer()), TIMER_TASK_DELAY * 1000, TIMER_TASK_INTERVAL * 1000);
+        synchronizerTimer.schedule(new SynchronizeProjectOnServerTask(this, getServer()), 0, TIMER_TASK_INTERVAL * 1000);
         
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.startSynchronizeProjectOnServerTask");
     }

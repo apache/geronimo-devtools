@@ -127,7 +127,7 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
             }
         }
         
-        Trace.tracePoint("Exist ", "SynchronizeProjectOnServerTask.run");
+        Trace.tracePoint("Exit ", "SynchronizeProjectOnServerTask.run");
     }
 
     private void setModuleState(IModule[] modules, int state) {
@@ -172,17 +172,12 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
             Trace.trace(Trace.WARNING, "Could not remove module in SynchronizeProjectOnServerTask", e);
         }
         
-        Trace.tracePoint("Exist ", "SynchronizeProjectOnServerTask.removeModules");
+        Trace.tracePoint("Exit ", "SynchronizeProjectOnServerTask.removeModules");
     }
     
     private boolean canUpdateState() {
-        
-        Trace.tracePoint("Entry ", "SynchronizeProjectOnServerTask.canUpdateState");
-        
-        boolean flag = true;
-        
-        if (server.getServerState()!=IServer.STATE_STARTED) {
-            flag = false;            
+        if (server.getServerState() != IServer.STATE_STARTED) {
+            return false;
         }
 
         IGeronimoServer thisServer = (IGeronimoServer) this.server.loadAdapter(IGeronimoServer.class, null);
@@ -195,14 +190,13 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
                     if (!isSameRuntimeLocation(server) && server.getServerState() != IServer.STATE_STOPPED) {
                         Trace.trace(Trace.WARNING, server.getId()
                                 + " Cannot update server state.  URL conflict between multiple servers.");
-                        flag = false;
+                        return false;
                     }
                 }
             }
         }
         
-        Trace.tracePoint("Exist ", "SynchronizeProjectOnServerTask.canUpdateState", flag);      
-        return flag;
+        return true;
     }
 
     private boolean isSameRuntimeLocation(IServer server) {
