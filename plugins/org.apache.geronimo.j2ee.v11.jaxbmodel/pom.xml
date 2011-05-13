@@ -92,6 +92,14 @@
                 </includes>
             </resource>
             <resource>
+                <directory>.</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>plugin.xml</include>
+                    <include>.options</include>
+                </includes>
+            </resource>            
+            <resource>
                 <targetPath>about_files</targetPath>
                 <directory>.</directory>
                 <includes>

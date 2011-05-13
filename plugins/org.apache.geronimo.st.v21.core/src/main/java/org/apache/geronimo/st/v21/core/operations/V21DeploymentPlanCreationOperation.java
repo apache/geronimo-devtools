@@ -30,6 +30,7 @@ import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.core.operations.DeploymentPlanCreationOperation;
+import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.v21.core.internal.Trace;
 import org.eclipse.core.resources.IFile;
@@ -96,7 +97,6 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	public JAXBElement createGeronimoWebDeploymentPlan(IFile dpFile) throws Exception {
   		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan",
 				dpFile, dpFile.getFullPath());
-
 		org.apache.geronimo.jee.web.ObjectFactory webFactory = new org.apache.geronimo.jee.web.ObjectFactory();
 		WebApp web = webFactory.createWebApp();
 
@@ -104,7 +104,11 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		web.setEnvironment(getConfigEnvironment());
 
 		JAXBElement jaxbElement = webFactory.createWebApp(web);
-		JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
+		try {
+			JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
+		} catch(Exception e) {
+			Activator.log(0, "marshalDeploymentPlan exception", e);
+		}
 
 		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", jaxbElement);
 		return jaxbElement;
