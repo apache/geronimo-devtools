@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
 
 import org.apache.geronimo.st.v30.core.GeronimoRuntimeDelegate;
 import org.apache.geronimo.st.v30.ui.Activator;
+import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -198,8 +199,8 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
                     int style = IWorkbenchBrowserSupport.AS_EXTERNAL
                             | IWorkbenchBrowserSupport.STATUS;
                     IWebBrowser browser = WorkbenchBrowserSupport.getInstance()
-                            .createBrowser(style, "download server",
-                                    "get server", "tool tip");
+                            .createBrowser(style, Messages.downloadServer,
+                                    Messages.getServer, Messages.tooltip);
                     browser.openURL(new URL(url));
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
@@ -480,7 +481,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
     private ITargetHandle findGeronimoTargetDefinition(ITargetPlatformService service) throws CoreException {
         ITargetHandle[] targetHandles = service.getTargets(null);
         for (ITargetHandle cur : targetHandles) {
-            if (cur.getTargetDefinition().getName().equals("Apache Geronimo 3.0")) {
+            if (cur.getTargetDefinition().getName().equals(Messages.serverVersion)) {
                 return cur;
             }
         }
@@ -520,7 +521,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
                 }
             }
         } catch (IOException ex) {
-            throw new CoreException(new Status(IStatus.WARNING, Activator.PLUGIN_ID, "Copy target file failed.", ex));
+            throw new CoreException(new Status(IStatus.WARNING, Activator.PLUGIN_ID, Messages.copyTargetFileFailed, ex));
         }
     }
     
