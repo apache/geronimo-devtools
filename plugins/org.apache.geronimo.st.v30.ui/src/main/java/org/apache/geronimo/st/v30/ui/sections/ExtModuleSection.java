@@ -22,6 +22,7 @@ import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.application.ExtModule;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.internal.Messages;
 import org.apache.geronimo.st.v30.ui.pages.DeploymentPage;
 import org.apache.geronimo.st.v30.ui.wizards.ExtModuleWizard;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -102,13 +103,13 @@ public class ExtModuleSection extends AbstractTableSection {
                     switch (columnIndex) {
                     case 0:
                         if (extModule.getConnector() != null) {
-                            return "connector";
+                            return Messages.connector;
                         } else if (extModule.getEjb() != null) {
-                            return "ejb";
+                            return Messages.ejb;
                         } else if (extModule.getJava() != null) {
-                            return "java";
+                            return Messages.java;
                         } else if (extModule.getWeb() != null) {
-                            return "web";
+                            return Messages.web;
                         }
                         return "";
                     case 1:

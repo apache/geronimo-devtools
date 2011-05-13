@@ -23,6 +23,7 @@ import javax.xml.bind.JAXBElement;
 import org.apache.geronimo.jee.naming.Port;
 import org.apache.geronimo.jee.naming.PortCompletion;
 import org.apache.geronimo.jee.naming.ServiceRef;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.v30.ui.Activator;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.apache.geronimo.st.v30.ui.wizards.ServiceRefWizard;
@@ -139,30 +140,31 @@ public class ServiceRefSection extends AbstractTreeSection {
             public String getText(Object element) {
                 if (ServiceRef.class.isInstance(element)) {
                     ServiceRef serviceRef = (ServiceRef)element;
-                        String retString = "Service Ref: name = \"" + serviceRef.getServiceRefName() + "\"";
+                    	String retString = Messages.serviceReference + ": " + Messages.name + " = \"" + serviceRef.getServiceRefName() + "\"";
                         if (serviceRef.getServiceCompletion() != null) {
-                            retString += ", service completion name = \"" + serviceRef.getServiceCompletion().getServiceName() + "\"";
+                        	retString += ", " + Messages.serviceCompletionName + " = \"" + serviceRef.getServiceCompletion().getServiceName() + "\"";
                         }
                         return retString;
                 }
                 else if (Port.class.isInstance(element)) {
                     Port port = (Port)element;
-                    return "Port: name = \"" + port.getPortName() + 
-                            "\", protocol = \"" + port.getProtocol() + 
-                            "\", host = \"" + port.getHost() + 
-                            "\", port = \"" + port.getPort() + 
-                            "\", uri = \"" + port.getUri() + 
-                            "\", credential = \"" + port.getCredentialsName() + "\"";
+                    return Messages.portName + " = \"" + port.getPortName() + 
+                    "\", " + Messages.protocol + " = \"" + port.getProtocol() + 
+                    "\", " + Messages.host + " = \"" + port.getHost() + 
+                    "\", " + Messages.port + " = \"" + port.getPort() + 
+                    "\", " + Messages.uri + " = \"" + port.getUri() + 
+                    "\", " + Messages.credential + " = \"" + port.getCredentialsName() + "\"";
+
                 }
                 else if (PortCompletion.class.isInstance(element)) {
                     PortCompletion portComp = (PortCompletion)element;
-                    return "Port Completion: name = \"" + portComp.getPort().getPortName() + 
-                            "\", protocol = \"" + portComp.getPort().getProtocol() + 
-                            "\", host = \"" + portComp.getPort().getHost() + 
-                            "\", port = \"" + portComp.getPort().getPort() + 
-                            "\", uri = \"" + portComp.getPort().getUri() + 
-                            "\", credential = \"" + portComp.getPort().getCredentialsName() +
-                            "\", binding name = \"" + portComp.getBindingName() + "\"";
+                    return Messages.portCompletionName + " = \"" + portComp.getPort().getPortName() + 
+                            "\", " + Messages.protocol + " = \"" + portComp.getPort().getProtocol() + 
+                            "\", " + Messages.host + " = \"" + portComp.getPort().getHost() + 
+                            "\", " + Messages.port + " = \"" + portComp.getPort().getPort() + 
+                            "\", " + Messages.uri + " = \"" + portComp.getPort().getUri() + 
+                            "\", " + Messages.credential + " = \"" + portComp.getPort().getCredentialsName() +
+                            "\", " + Messages.bindingName + "  = \"" + portComp.getBindingName() + "\"";
                 }
 
                 return null;

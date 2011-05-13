@@ -25,6 +25,7 @@ import org.apache.geronimo.j2ee.naming.PatternType;
 import org.apache.geronimo.jaxbmodel.common.operations.JAXBObjectFactory;
 import org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
 import org.apache.geronimo.j2ee.jaxbmodel.operations.JAXBModelUtils;
@@ -105,7 +106,7 @@ public class MessageDestWizard extends AbstractTableWizard {
 						try {
 							value = (String) JAXBUtils.getValue(pattern,getTableColumnEAttributes()[i]);
 						} catch (Exception e) {
-							MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+                            MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.error, e.getMessage());
 						}
                         if (value != null) {
                             text.setText(value);
@@ -117,7 +118,7 @@ public class MessageDestWizard extends AbstractTableWizard {
 						try {
 							value = (String) JAXBUtils.getValue(eObject,getTableColumnEAttributes()[i]);
 						} catch (Exception e) {
-							MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+                            MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.error, e.getMessage());
 						}
                         if (value != null) {
                             text.setText(value);
@@ -171,13 +172,13 @@ public class MessageDestWizard extends AbstractTableWizard {
 				try {
 					JAXBUtils.setValue(eObject, attribute, value);
 				} catch (Exception e) {
-					MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+                    MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.error, e.getMessage());
 				}
 			else
 				try {
 					JAXBUtils.setValue(msgPattern, attribute, value);
 				} catch (Exception e) {
-					MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+                    MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.error, e.getMessage());
 				}
         }
         

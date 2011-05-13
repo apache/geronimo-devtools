@@ -307,15 +307,13 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
     protected void validate() {
 
         IRuntime runtime = getRuntimeDelegate().getRuntime();
-
-        String runtimeName = runtime.getRuntimeType().getName();
-
         IWizardHandle wizard = getWizard();
-
         if (runtime == null) {
             wizard.setMessage("", IMessageProvider.ERROR);
             return;
         }
+        String runtimeName = runtime.getRuntimeType().getName();
+
 
         IRuntimeWorkingCopy runtimeWC = getRuntimeDelegate().getRuntimeWorkingCopy();
         getRuntimeDelegate().setInstanceProperty("serverRootDirectory", installDir.getText());

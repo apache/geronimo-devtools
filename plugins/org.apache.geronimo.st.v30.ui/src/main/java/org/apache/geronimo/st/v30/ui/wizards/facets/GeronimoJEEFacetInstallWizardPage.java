@@ -16,6 +16,7 @@
  */
 package org.apache.geronimo.st.v30.ui.wizards.facets;
 
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.v30.core.facets.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.apache.geronimo.st.v30.ui.internal.Trace;
@@ -48,8 +49,8 @@ public class GeronimoJEEFacetInstallWizardPage extends AbstractFacetWizardPage {
         super("geronimo.plan.install");
         Trace.tracePoint("Constructor Entry", "GeroniomoJEEFacetInstallWizardPage");
         
-        setTitle("Geronimo Deployment Plan");
-        setDescription("Configure the geronimo deployment plan.");
+        setTitle(Messages.geronimoDeploymentPlan);
+        setDescription(Messages.configGeronimoDeploymentPlan);
         
         Trace.tracePoint("Constructor Exit", "GeronimoJEEFacetInstallWizardPage");
     }

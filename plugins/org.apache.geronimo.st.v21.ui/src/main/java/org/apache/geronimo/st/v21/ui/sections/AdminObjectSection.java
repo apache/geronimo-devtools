@@ -24,6 +24,7 @@ import org.apache.geronimo.jee.connector.Adminobject;
 import org.apache.geronimo.jee.connector.AdminobjectInstance;
 import org.apache.geronimo.jee.connector.ConfigPropertySetting;
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.wizards.AdminObjectWizard;
@@ -137,17 +138,17 @@ public class AdminObjectSection extends AbstractTreeSection {
             public String getText(Object element) {
                 if (Adminobject.class.isInstance(element)) {
                     Adminobject admin = (Adminobject)element;
-                    return "Admin Object: interface = \"" + admin.getAdminobjectInterface() +
-                            "\", class = \"" + admin.getAdminobjectClass() + "\"";
+                    return Messages.editorSectionAdminObjectTitle + ": " + Messages.interfaceName + " = \"" + admin.getAdminobjectInterface() +
+                    "\", " + Messages.clazz + " = \"" + admin.getAdminobjectClass() + "\"";
                 }
                 if (AdminobjectInstance.class.isInstance(element)) {
                     AdminobjectInstance aoInstance = (AdminobjectInstance)element;
-                    return "Admin Object Instance: message destination name = \"" + aoInstance.getMessageDestinationName() + "\"";
+                    return Messages.editorSectionAdminObjectInstance + ": " +  Messages.messageDestinationName + " = \"" + aoInstance.getMessageDestinationName() + "\"";
                 }
                 if (ConfigPropertySetting.class.isInstance(element)) {
                     ConfigPropertySetting property = (ConfigPropertySetting)element;
-                    return "Config Property Setting: name = \"" + property.getName() +
-                            "\", value = \"" + property.getValue() + "\"";
+                    return Messages.configPropertySetting + ": " + Messages.name + " = \"" + property.getName() +
+                    "\", " + Messages.value + " = \"" + property.getValue() + "\"";
                 }
 
                 return null;

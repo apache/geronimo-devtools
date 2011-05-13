@@ -35,6 +35,7 @@ import org.apache.geronimo.st.core.descriptor.ApplicationDeploymentDescriptor;
 import org.apache.geronimo.st.core.descriptor.EjbDeploymentDescriptor;
 import org.apache.geronimo.st.core.descriptor.WebDeploymentDescriptor;
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.v11.ui.Activator;
 import org.apache.geronimo.st.v11.ui.wizards.SecurityRoleMappingWizard;
@@ -117,7 +118,7 @@ public class SecurityRoleMappingSection extends AbstractTreeSection {
         try {
 			((ArrayList) JAXBUtils.getValue(role, selectedObject.getClass().getSimpleName())).remove(selectedObject);
 		} catch (Exception e) {
-			MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+            MessageDialog.openError(Display.getCurrent().getActiveShell(),Messages.error, e.getMessage());
 		}
     }
 
@@ -256,29 +257,30 @@ public class SecurityRoleMappingSection extends AbstractTreeSection {
             public String getText(Object element) {
                 if (RoleType.class.isInstance(element)) {
                 	RoleType role = (RoleType) element;
-                    return "Role: role-name = \"" + role.getRoleName() + "\"";
+                    return Messages.roleName + ": \"" + role.getRoleName() + "\"";
                 }
                 else if (element instanceof DistinguishedNameType) {
                 	DistinguishedNameType object = (DistinguishedNameType) element;
-                    return "DistinguishedName: name = \"" + object.getName() + "\"";
+                    return Messages.distinguishedName + ": \"" + object.getName() + "\"";
                 }
                 else if (element instanceof RealmPrincipalType) {
                 	RealmPrincipalType object = (RealmPrincipalType) element;
-                    return "RealmPrincipal: name = \"" + object.getName() +
-                            "\", class = \"" + object.getClazz() +
-                            "\", domain-name = \"" + object.getDomainName() +
-                            "\", realm-name = \"" + object.getRealmName() +"\"";
+                    return Messages.realmPrincipal + ": \"" + object.getName() +
+                    "\", " + Messages.clazz + " = \"" + object.getClazz() +
+                    "\", " + Messages.domainName + " = \"" + object.getDomainName() +
+                    "\", " + Messages.realmName + " = \"" + object.getRealmName() +"\"";
+                    
                 }
                 else if (element instanceof LoginDomainPrincipalType) {
                 	LoginDomainPrincipalType object = (LoginDomainPrincipalType) element;
-                    return "LoginDomainPrincipal: name = \"" + object.getName() +
-                            "\", class = \"" + object.getClazz() +
-                            "\", domain-name = \"" + object.getDomainName() +"\"";
+                    return Messages.loginDomainPrincipal + ": = \"" + object.getName() +
+                    "\", " + Messages.clazz + " = \"" + object.getClazz() +
+                    "\", " + Messages.domainName + " = \"" + object.getDomainName() +"\"";
                 }
                 else if (element instanceof PrincipalType) {
                 	PrincipalType object = (PrincipalType) element;
-                    return "Principal: name = \"" + object.getName() +
-                            "\", class = \"" + object.getClazz() + "\"";
+                    return Messages.principal + " = \"" + object.getName() +
+                    "\", " + Messages.clazz + " = \"" + object.getClazz() + "\"";
                 }
 
                 return null;

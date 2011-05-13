@@ -27,6 +27,7 @@ import org.apache.geronimo.jee.connector.Connector;
 import org.apache.geronimo.jee.deployment.Gbean;
 import org.apache.geronimo.jee.deployment.Pattern;
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.sections.AbstractListSection.ContentProvider;
 import org.apache.geronimo.st.ui.sections.AbstractListSection.LabelProvider;
@@ -51,7 +52,7 @@ public class DBPoolSection extends AbstractTableSection {
         FormToolkit toolkit, int style, List extModules) {
     super(plan, parent, toolkit, style);
     this.objectContainer = extModules;
-    COLUMN_NAMES = new String[] { "Connector", "External Path", };// TODO
+    COLUMN_NAMES = new String[] { Messages.wizardDatabasePoolConnector, Messages.wizardDatabasePoolExternalPath };// TODO
                                       // put
                                       // into
                                       // message
@@ -60,7 +61,7 @@ public class DBPoolSection extends AbstractTableSection {
 
     @Override
     public String getDescription() {
-    return "The following database pools are defined:";// TODO put into
+    return Messages.wizardDatabasePoolDescription;// TODO put into
                                // message
     }
 
@@ -71,7 +72,7 @@ public class DBPoolSection extends AbstractTableSection {
 
     @Override
     public String getTitle() {
-    return "Database Pools";// TODO put into message
+    return Messages.wizardDatabasePoolTitle;// TODO put into message
     }
 
     @Override

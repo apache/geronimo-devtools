@@ -80,7 +80,7 @@ public class LaunchGeronimoConsoleAction implements IActionDelegate {
         try {
             int style = IWorkbenchBrowserSupport.AS_EDITOR
                     | IWorkbenchBrowserSupport.STATUS;
-            IWebBrowser browser = WorkbenchBrowserSupport.getInstance().createBrowser(style, "console", 
+            IWebBrowser browser = WorkbenchBrowserSupport.getInstance().createBrowser(style, Messages.console0, 
                                 Messages.bind(Messages.console, server.getName()),
                                 Messages.bind(Messages.consoleTooltip, server
                                                 .getName()));

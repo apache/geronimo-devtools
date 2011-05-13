@@ -25,6 +25,7 @@ import org.apache.geronimo.j2ee.deployment.GbeanType;
 import org.apache.geronimo.j2ee.deployment.PatternType;
 import org.apache.geronimo.j2ee.deployment.ReferenceType;
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.v11.ui.Activator;
 import org.apache.geronimo.st.v11.ui.wizards.GBeanWizard;
@@ -137,35 +138,35 @@ public class GBeanSection extends AbstractTreeSection {
                     Object object = ((JAXBElement)element).getValue();
                     if (GbeanType.class.isInstance(object)) {
                     	GbeanType gbean = (GbeanType)object;
-                        return "GBean: name = \"" + gbean.getName() +
-                                "\", class = \"" + gbean.getClazz() + "\"";
+            return Messages.gbean + ": " + Messages.name + " =\"" + gbean.getName() +
+            	"\", " + Messages.clazz + "\"" + gbean.getClazz() + "\"";
                     }
                     else if (AttributeType.class.isInstance(object)) {
                     	AttributeType attribute = (AttributeType)object;
-                        return "Attribute: name = \"" + attribute.getName() + 
-                                "\", type = \"" + attribute.getType() + 
-                                "\", value = \"" + attribute.getValue() + "\"";
+            return Messages.attribute + Messages.name + " = \"" + attribute.getName() + 
+            	"\", " + Messages.type + " = \"" + attribute.getType() + 
+            	"\", " + Messages.value + " = \"" + attribute.getValue() + "\"";
                     }
                     else if (PatternType.class.isInstance(object)) {
                     	PatternType dependency = (PatternType)object;
-                        return "Dependency: group = \"" + dependency.getGroupId() +
-                                "\", artifact = \"" + dependency.getArtifactId() +
-                                "\", version = \"" + dependency.getVersion() +
-                                "\", module = \"" + dependency.getModule() +
-                                "\", type = \"" + dependency.getType() +
-                                "\", custom name = \"" + dependency.getCustomFoo() + "\"";
+            return Messages.dependency + ": " + Messages.group + " = \"" + dependency.getGroupId() + 
+            	"\", " + Messages.artifact + " = \"" + dependency.getArtifactId() + 
+            	"\", " + Messages.version +  "= \"" + dependency.getVersion()+ 
+            	"\", " + Messages.module +  " = \"" + dependency.getModule()+ 
+            	"\", " + Messages.type + " = \"" + dependency.getType()+ 
+            	"\", " + Messages.customName + " = \"" + dependency.getCustomFoo() + "\"";
                     }
                     else if (ReferenceType.class.isInstance(object)) {
                     	ReferenceType reference = (ReferenceType)object;
-                        return "Reference: name = \"" + reference.getName() +
-                                "\", group = \"" + reference.getGroupId() +
-                                "\", artifact = \"" + reference.getArtifactId() +
-                                "\", version = \"" + reference.getVersion() +
-                                "\", module = \"" + reference.getModule() +
-                                "\", type = \"" + reference.getType() +
-                                "\", custom name = \"" + reference.getCustomFoo() + "\"";
-                    }
-                }
+            return Messages.reference + ":" + Messages.name + " = \"" + reference.getName()
+                + "\", " + Messages.group + " = \"" + reference.getGroupId()
+                + "\", " + Messages.artifact + " = \"" + reference.getArtifactId()
+                + "\", " + Messages.version + " = \"" + reference.getVersion()
+                + "\", " + Messages.module + " = \"" + reference.getModule()
+                + "\", " + Messages.type + " = \"" + reference.getType()
+                + "\", " + Messages.customName + " = \"" + reference.getCustomFoo() + "\"";
+            }
+        }
 
                 return null;
             }

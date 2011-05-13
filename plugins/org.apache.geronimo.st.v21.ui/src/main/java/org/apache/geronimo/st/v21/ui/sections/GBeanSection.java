@@ -25,6 +25,7 @@ import org.apache.geronimo.jee.deployment.Gbean;
 import org.apache.geronimo.jee.deployment.Pattern;
 import org.apache.geronimo.jee.deployment.Reference;
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.pages.DeploymentPage;
@@ -166,44 +167,40 @@ public class GBeanSection extends AbstractTreeSection {
 
     @Override
     public ILabelProvider getLabelProvider() {
-	return new LabelProvider() {
-	    @Override
-	    public String getText(Object element) {
-		if (JAXBElement.class.isInstance(element)) {
-		    Object object = ((JAXBElement) element).getValue();
-		    if (Gbean.class.isInstance(object)) {
-			Gbean gbean = (Gbean) object;
-			return "GBean: name = \"" + gbean.getName()
-				+ "\", class = \"" + gbean.getClazz() + "\"";
-		    } else if (Attribute.class.isInstance(object)) {
-			Attribute attribute = (Attribute) object;
-			return "Attribute: name = \"" + attribute.getName()
-				+ "\", type = \"" + attribute.getType()
-				+ "\", value = \"" + attribute.getValue()
-				+ "\"";
-		    } else if (Pattern.class.isInstance(object)) {
-			Pattern dependency = (Pattern) object;
-			return "Dependency: group = \""
-				+ dependency.getGroupId() + "\", artifact = \""
-				+ dependency.getArtifactId()
-				+ "\", version = \"" + dependency.getVersion()
-				+ "\", module = \"" + dependency.getModule()
-				+ "\", type = \"" + dependency.getType()
-				+ "\", custom name = \""
-				+ dependency.getCustomFoo() + "\"";
-		    } else if (Reference.class.isInstance(object)) {
-			Reference reference = (Reference) object;
-			return "Reference: name = \"" + reference.getName()
-				+ "\", group = \"" + reference.getGroupId()
-				+ "\", artifact = \""
-				+ reference.getArtifactId()
-				+ "\", version = \"" + reference.getVersion()
-				+ "\", module = \"" + reference.getModule()
-				+ "\", type = \"" + reference.getType()
-				+ "\", custom name = \""
-				+ reference.getCustomFoo() + "\"";
-		    }
-		}
+    return new LabelProvider() {
+        @Override
+        public String getText(Object element) {
+        if (JAXBElement.class.isInstance(element)) {
+            Object object = ((JAXBElement) element).getValue();
+            if (Gbean.class.isInstance(object)) {
+            Gbean gbean = (Gbean) object;
+            return Messages.gbean + ": " + Messages.name + " =\"" + gbean.getName() +
+            	"\", " + Messages.clazz + "\"" + gbean.getClazz() + "\"";
+
+            } else if (Attribute.class.isInstance(object)) {
+            Attribute attribute = (Attribute) object;
+            return Messages.attribute + Messages.name + " = \"" + attribute.getName() + 
+            	"\", " + Messages.type + " = \"" + attribute.getType() + 
+            	"\", " + Messages.value + " = \"" + attribute.getValue() + "\"";
+            } else if (Pattern.class.isInstance(object)) {
+            Pattern dependency = (Pattern) object;
+            return Messages.dependency + ": " + Messages.group + " = \"" + dependency.getGroupId() + 
+            	"\", " + Messages.artifact + " = \"" + dependency.getArtifactId() + 
+            	"\", " + Messages.version +  "= \"" + dependency.getVersion()+ 
+            	"\", " + Messages.module +  " = \"" + dependency.getModule()+ 
+            	"\", " + Messages.type + " = \"" + dependency.getType()+ 
+            	"\", " + Messages.customName + " = \"" + dependency.getCustomFoo() + "\"";
+            } else if (Reference.class.isInstance(object)) {
+            Reference reference = (Reference) object;
+            return Messages.reference + ":" + Messages.name + " = \"" + reference.getName()
+                + "\", " + Messages.group + " = \"" + reference.getGroupId()
+                + "\", " + Messages.artifact + " = \"" + reference.getArtifactId()
+                + "\", " + Messages.version + " = \"" + reference.getVersion()
+                + "\", " + Messages.module + " = \"" + reference.getModule()
+                + "\", " + Messages.type + " = \"" + reference.getType()
+                + "\", " + Messages.customName + " = \"" + reference.getCustomFoo() + "\"";
+            }
+        }
 
 		return null;
 	    }

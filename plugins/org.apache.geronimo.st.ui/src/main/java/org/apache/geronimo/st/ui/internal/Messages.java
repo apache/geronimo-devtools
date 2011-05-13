@@ -16,6 +16,7 @@
  */
 package org.apache.geronimo.st.ui.internal;
 
+
 import org.apache.geronimo.st.ui.Activator;
 import org.eclipse.osgi.util.NLS;
 
@@ -25,11 +26,15 @@ import org.eclipse.osgi.util.NLS;
  * @version $Rev$ $Date$
  */
 public class Messages extends NLS {
-
-    static {
+   
+	static {
         NLS.initializeMessages(Activator.PLUGIN_ID + ".internal.Messages", Messages.class);
     }
-
+	
+	public static String dbAddNewDriver;
+    public static String formServerInfo;
+    public static String formHelp;
+    
     public static String editorTabSource;
 
     public static String editorSectionSecurityTitle;
@@ -539,4 +544,111 @@ public class Messages extends NLS {
     public static String installable;
     public static String event;
     public static String prerequisites;
+	public static String newSecurityRealm;
+	public static String editSecurityRealm;
+	public static String triggerUpdateServerInfo;
+	public static String syncDeployDescAndDeplPlan;
+	public static String poolNameInvalidTitle;
+	public static String poolNameInvalidDesc;
+	public static String poolTypeInvalidTitle;
+	public static String poolTypeInvalidDesc;
+	public static String dbNameInvalidTitle;
+	public static String dbNameInvalidDesc;
+	public static String dbDriverInvalidTitle;
+	public static String dbDriverInvalidDesc;
+	public static String dbLoginError0;
+	public static String dbLoginError1;
+	public static String dbWizardPwd;
+	public static String dbWizardLoginTimeout;
+	public static String dbWizardDbName;
+	public static String dbWizardCreateDb;
+	public static String dbWizardUserName;
+	public static String dbWizardConnector;
+	public static String dbWizardExternalPath;
+	public static String dbWizardGroupId;
+	public static String dbWizardArtifactId;
+	public static String dbWizardArtifactVersion;
+	public static String dbWizardArtifactType;
+	public static String dbWizardSpecifyConnectInRepository;
+	public static String ejbRelalitionName;
+	public static String ejbMTMTableName;
+	public static String ejbRelalitionRoleName;
+	public static String ejbCmrFiledMapping;
+	public static String gbean;
+	public static String clazz;
+	public static String attribute;
+	public static String dependency;
+	public static String artifact;
+	public static String group;
+	public static String module;
+	public static String reference;
+	public static String geronimoDeploymentPlan;
+	public static String configGeronimoDeploymentPlan;
+	public static String error;
+	public static String waring;
+	public static String pattern;
+	public static String unit;
+	public static String property;
+	public static String key;
+	public static String userBase;
+	public static String userSearchMachting;
+	public static String userSearchSubtree;
+	public static String roleSearchConfig;
+	public static String roleBase;
+	public static String roleName;
+	public static String roleUserSearchStr;
+	public static String userRoleSearchStr;
+	public static String roleSearchSubtree;
+	public static String propertiesFileRealm;
+	public static String sqlRealm;
+	public static String ldapRealm;
+	public static String propertiesFileRealmDesc;
+	public static String fileUri;
+	public static String userFileUri;
+	public static String groupFileUri;
+	public static String digestConfig;
+	public static String sqlRealmDesc;
+	public static String ldapRealmDesc;
+	public static String ldapServerConnection;
+	public static String initContextFactory;
+	public static String connectionUrl;
+	public static String connectUsername;
+	public static String conncetPwd;
+	public static String connectProtocol;
+	public static String authentication;
+	public static String ldapRealmSearchConfig;
+	public static String editLdapRealmSearch;
+	public static String userSearchConfig;
+	public static String none;
+	public static String simple;
+	public static String strong;
+	public static String distinguishedName;
+	public static String realmPrincipal;
+	public static String domainName;
+	public static String loginDomainPrincipal;
+	public static String principal;
+	public static String serviceReference;
+	public static String host;
+	public static String port;
+	public static String portCompletionName;
+	public static String editorSectionAdminObjectInstance;
+	public static String configPropertySetting;
+	public static String wizardDatabasePoolDescription;
+	public static String wizardDatabasePoolTitle;
+	public static String wizardDatabasePoolConnector;
+	public static String wizardDatabasePoolExternalPath;
+	public static String wizardDatabasePoolNew;
+	public static String wizardDatabasePoolEdit;
+	public static String gbeanType;
+	
+	public static String wizardSecurityRealmTitle;
+	public static String wizardSecurityRealmDescription;
+	public static String wizardSecurityRealmName;
+	public static String wizardLoginModuleClass;
+	public static String wizardSecurityRealmNew;
+	public static String wizardSecurityRealmEdit;
 }
+
+
+
+

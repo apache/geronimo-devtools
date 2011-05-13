@@ -37,6 +37,7 @@ import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.jee.deployment.Pattern;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.web.WebApp;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v30.ui.Activator;
@@ -133,25 +134,25 @@ public class DBPoolWizard extends AbstractTableWizard {
     if (page1.getPoolName() == null
         || page1.getPoolName().trim().length() == 0
         || page1.getPoolName().contains(" ")) {
-        MessageDialog.openWarning(this.getShell(), "Pool Name Invalid",
-            "Pool name specified is invalid");
+        MessageDialog.openWarning(this.getShell(), Messages.poolNameInvalidTitle,
+        		Messages.poolNameInvalidDesc);
         return false;
     }
     if (page1.getDBPooolType() == null
         || page1.getDBPooolType().trim().length() == 0) {
-        MessageDialog.openWarning(this.getShell(), "Pool type invalid",
-            "Pool type specified is invalid");
+        MessageDialog.openWarning(this.getShell(), Messages.poolTypeInvalidTitle,
+        		Messages.poolTypeInvalidDesc);
         return false;
     }
     if (page1.getDBName() == null || page1.getDBName().trim().length() == 0
         || page1.getDBName().contains(" ")) {
-        MessageDialog.openWarning(this.getShell(), "Database name invalid",
-            "Database name specified is invalid");
+        MessageDialog.openWarning(this.getShell(), Messages.dbNameInvalidTitle,
+        		Messages.dbNameInvalidDesc);
         return false;
     }
     if (page1.getDrivers() == null || page1.getDrivers().length == 0) {
-        MessageDialog.openWarning(this.getShell(), "Driver invalid",
-            "You havent selected a driver");
+        MessageDialog.openWarning(this.getShell(), Messages.dbDriverInvalidTitle,
+        		Messages.dbDriverInvalidDesc);
         return false;
     }
 
@@ -219,30 +220,31 @@ public class DBPoolWizard extends AbstractTableWizard {
 
         String[] loginData = page2.getLoginData();
         if (!loginData[1].equals(loginData[2])) {
+
         Status status = new Status(IStatus.WARNING, "Login Error", 0,
-            "Password provided in both fiels do not match", null);
+                Messages.dbLoginError0, null);
         ErrorDialog.openError(this.getShell(), "Login Error",
-            "Invalid Login Details", status);
+            Messages.dbLoginError1, status);
         return false;
         }
         ConfigPropertySetting setting1 = new ConfigPropertySetting();
-        setting1.setName("Password");
+        setting1.setName(Messages.dbWizardPwd);
         setting1.setValue(loginData[1]);
         instance.getConfigPropertySetting().add(setting1);
         ConfigPropertySetting setting2 = new ConfigPropertySetting();
-        setting2.setName("LoginTimeout");
+        setting2.setName(Messages.dbWizardLoginTimeout);
         setting2.setValue(page2.getLoginTimeout());
         instance.getConfigPropertySetting().add(setting2);
         ConfigPropertySetting setting3 = new ConfigPropertySetting();
-        setting3.setName("DatabaseName");
+        setting3.setName(Messages.dbWizardDbName);
         setting3.setValue(page1.getDBName());
         instance.getConfigPropertySetting().add(setting3);
         ConfigPropertySetting setting4 = new ConfigPropertySetting();
-        setting4.setName("CreateDatabase");
+        setting4.setName(Messages.dbWizardCreateDb);
         setting4.setValue(page2.getCreateDatabase());
         instance.getConfigPropertySetting().add(setting4);
         ConfigPropertySetting setting5 = new ConfigPropertySetting();
-        setting5.setName("UserName");
+        setting5.setName(Messages.dbWizardUserName);
         setting5.setValue(loginData[0]);
         instance.getConfigPropertySetting().add(setting5);
 
@@ -289,7 +291,7 @@ public class DBPoolWizard extends AbstractTableWizard {
         group.setLayoutData(groupGridData1);
 
         label = new Label(group, SWT.LEFT);
-        label.setText("Connector:");
+        label.setText(Messages.dbWizardConnector);
 
         text[0] = new Text(group, SWT.SINGLE | SWT.BORDER);
         textGridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL
@@ -308,25 +310,25 @@ public class DBPoolWizard extends AbstractTableWizard {
         groupGridData2.horizontalSpan = 2;
         groupGridData2.verticalAlignment = GridData.FILL;
         group2.setLayoutData(groupGridData2);
-        group2.setText("External Path");
+        group2.setText(Messages.dbWizardExternalPath);
 
         label = new Label(group2, SWT.LEFT);
-        label.setText("Group Id:");
+        label.setText(Messages.dbWizardGroupId);
         text[1] = new Text(group2, SWT.SINGLE | SWT.BORDER);
         text[1].setLayoutData(textGridData);
 
         label = new Label(group2, SWT.LEFT);
-        label.setText("Artifact Id:");
+        label.setText(Messages.dbWizardArtifactId);
         text[2] = new Text(group2, SWT.SINGLE | SWT.BORDER);
         text[2].setLayoutData(textGridData);
 
         label = new Label(group2, SWT.LEFT);
-        label.setText("Version:");
+        label.setText(Messages.dbWizardArtifactVersion);
         text[3] = new Text(group2, SWT.SINGLE | SWT.BORDER);
         text[3].setLayoutData(textGridData);
 
         label = new Label(group2, SWT.LEFT);
-        label.setText("Type:");
+        label.setText(Messages.dbWizardArtifactType);
         text[4] = new Text(group2, SWT.SINGLE | SWT.BORDER);
         text[4].setLayoutData(textGridData);
 
@@ -358,12 +360,12 @@ public class DBPoolWizard extends AbstractTableWizard {
 
     @Override
     protected String getWizardPageDescription() {
-        return "Specify the connector rar in the repository";
+    	return Messages.dbWizardSpecifyConnectInRepository;
     }
 
     @Override
     protected String getWizardPageTitle() {
-        return "External Path";
+    	return Messages.dbWizardExternalPath;
     }
 
     }
@@ -472,7 +474,7 @@ public class DBPoolWizard extends AbstractTableWizard {
         });
         listViewer.setInput(getInput());
         MenuManager popupMenu = new MenuManager();
-        Action helpAction = new Action("Add New Driver") { //$NON-NLS-1$
+        Action helpAction = new Action(Messages.dbAddNewDriver) {
         public void run() {
             DriverDialog dialog = new DriverDialog(Display.getCurrent()
                 .getActiveShell());
@@ -615,16 +617,16 @@ public class DBPoolWizard extends AbstractTableWizard {
             java.util.List<ConfigPropertySetting> configPropertySettingList = conndefInstance
                 .getConfigPropertySetting();
             for (ConfigPropertySetting cps : configPropertySettingList) {
-            if (cps.getName().equals("CreateDatabase")) {
+            if (cps.getName().equals(Messages.dbWizardCreateDb)) {
                 if (cps.getValue().equals("true"))
                 createDatabase.setSelection(true);
                 else
                 createDatabase.setSelection(false);
-            } else if (cps.getName().equals("LoginTimeout")) {
+            } else if (cps.getName().equals(Messages.dbWizardLoginTimeout)) {
                 text[0].setText(cps.getValue());
-            } else if (cps.getName().equals("UserName")) {
+            } else if (cps.getName().equals(Messages.dbWizardUserName)) {
                 text[1].setText(cps.getValue());
-            } else if (cps.getName().equals("Password")) {
+            } else if (cps.getName().equals(Messages.dbWizardPwd)) {
                 text[2].setEchoChar('*');
                 text[2].setText(cps.getValue());
                 text[3].setEchoChar('*');

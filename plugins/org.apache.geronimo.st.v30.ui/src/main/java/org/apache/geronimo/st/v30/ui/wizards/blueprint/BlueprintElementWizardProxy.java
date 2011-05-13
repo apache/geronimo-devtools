@@ -11,6 +11,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.geronimo.st.v30.ui.internal.Messages;
 import org.apache.geronimo.st.ui.internal.Trace;
 import org.apache.geronimo.st.v30.core.jaxb.BlueprintJAXBHelper;
 import org.apache.geronimo.st.v30.core.jaxb.BlueprintJAXBHelper.SubClazzWrapper;
@@ -137,12 +138,12 @@ public class BlueprintElementWizardProxy{
 
             @Override
             protected String getWizardPageTitle() {
-                return "Blueprint Configuration";
+            	return Messages.blueprintConfiguration;
             }
 
             @Override
             protected String getWizardPageDescription() {
-                return "Add or Edit elements in blueprint schema";
+            	return Messages.blueprintAddOrEditElementInSchema;
             }
             
             public HashMap<Field,String> getResult(){
@@ -182,12 +183,12 @@ public class BlueprintElementWizardProxy{
 
         @Override
         protected String getAddWizardWindowTitle() {
-            return "Blueprint Editor - Adding";
+        	return Messages.blueprintEditorAdding;
         }
 
         @Override
         protected String getEditWizardWindowTitle() {
-            return "Blueprint Editor - Editing";
+        	return Messages.blueprintEditorEditing;
         }
 
         @Override

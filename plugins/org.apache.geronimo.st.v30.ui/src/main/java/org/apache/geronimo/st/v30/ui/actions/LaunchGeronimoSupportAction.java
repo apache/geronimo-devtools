@@ -89,8 +89,8 @@ public class LaunchGeronimoSupportAction implements IActionDelegate {
             IWebBrowser browser = WorkbenchBrowserSupport.getInstance()
                     .createBrowser(
                             style,
-                            "supportWebPage",
-                            supportURL,
+                            Messages.supportWebPage0,
+                            Messages.supportURL,
                             Messages.bind(Messages.supportWebPageTooltip, server
                                     .getName()));
             URL url = getConsoleUrl();

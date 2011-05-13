@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBObjectFactory;
@@ -105,7 +106,7 @@ public class MessageDestWizard extends AbstractTableWizard {
                         try {
                             value = (String) JAXBUtils.getValue(pattern,getTableColumnEAttributes()[i]);
                         } catch (Exception e) {
-                            MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+                            MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.error, e.getMessage());
                         }
                         if (value != null) {
                             text.setText(value);
@@ -117,7 +118,7 @@ public class MessageDestWizard extends AbstractTableWizard {
                         try {
                             value = (String) JAXBUtils.getValue(eObject,getTableColumnEAttributes()[i]);
                         } catch (Exception e) {
-                            MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+                            MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.error, e.getMessage());
                         }
                         if (value != null) {
                             text.setText(value);
@@ -171,13 +172,13 @@ public class MessageDestWizard extends AbstractTableWizard {
                 try {
                     JAXBUtils.setValue(eObject, attribute, value);
                 } catch (Exception e) {
-                    MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+                    MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.error, e.getMessage());
                 }
             else
                 try {
                     JAXBUtils.setValue(msgPattern, attribute, value);
                 } catch (Exception e) {
-                    MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
+                    MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.error, e.getMessage());
                 }
         }
         

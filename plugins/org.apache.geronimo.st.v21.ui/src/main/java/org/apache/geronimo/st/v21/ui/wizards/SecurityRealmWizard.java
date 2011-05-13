@@ -40,6 +40,7 @@ import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.jaxbmodel.common.operations.JAXBObjectFactory;
 import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
 import org.apache.geronimo.st.v21.core.GeronimoV21ServerInfo;
@@ -116,12 +117,12 @@ public class SecurityRealmWizard extends AbstractTableWizard {
 
     @Override
     protected String getAddWizardWindowTitle() {
-	return "New Security Realm";// TODO put into message
+    	return CommonMessages.wizardSecurityRealmNew;
     }
 
     @Override
     protected String getEditWizardWindowTitle() {
-	return "Edit Security Realm";// TODO put into message
+	    return CommonMessages.wizardSecurityRealmEdit;
     }
 
     public boolean performFinish() {
@@ -140,15 +141,15 @@ public class SecurityRealmWizard extends AbstractTableWizard {
 		.getPage("LDAPConnectionPage");
 	LDAPSearchPage page5 = (LDAPSearchPage) this.getPage("LDAPSearchPage");
 
-	// password not match , popup a dialog
-	if (!page3.textEntries[3].getText().equals(
-		page3.textEntries[4].getText())) {
-	    Status status = new Status(IStatus.WARNING, "Login Error", 0,
-		    "Password provided in both fields do not match", null);
-	    ErrorDialog.openError(this.getShell(), "Login Error",
-		    "Invalid Login Details", status);
-	    return false;
-	}
+    // password not match , popup a dialog
+    if (!page3.textEntries[3].getText().equals(
+        page3.textEntries[4].getText())) {
+        Status status = new Status(IStatus.WARNING, Messages.error, 0,
+            Messages.dbLoginError0, null);
+        ErrorDialog.openError(this.getShell(), Messages.error,
+        		Messages.dbLoginError1, status);
+        return false;
+    }
 
 	// set a gbean according to the input from wizard
 	Gbean gbean = null;
@@ -211,10 +212,10 @@ public class SecurityRealmWizard extends AbstractTableWizard {
 	loginModule.setWrapPrincipals(false);
 	loginModule.setLoginDomainName(realmName);
 
-	String realmType = page0.combo.getText().trim();
-	if (realmType.equals("Properties File Realm")) {
-	    loginModule
-		    .setLoginModuleClass("org.apache.geronimo.security.realm.providers.PropertiesFileLoginModule");
+    String realmType = page0.combo.getText().trim();
+    if (realmType.equals(Messages.propertiesFileRealm)) {
+        loginModule
+            .setLoginModuleClass("org.apache.geronimo.security.realm.providers.PropertiesFileLoginModule");
 
 	    String usersfile = page1.textEntries[0].getText().trim();
 	    Option usersfileopt = createOption("usersURI", usersfile);
@@ -235,9 +236,9 @@ public class SecurityRealmWizard extends AbstractTableWizard {
 	    if (encoding != null)
 		loginModule.getOption().add(encodingopt);
 
-	} else if (realmType.equals("SQL Realm")) {
-	    loginModule
-		    .setLoginModuleClass("org.apache.geronimo.security.realm.providers.SQLLoginModule");
+    } else if (realmType.equals(Messages.sqlRealm)) {
+        loginModule
+            .setLoginModuleClass("org.apache.geronimo.security.realm.providers.SQLLoginModule");
 
 	    String selectUsers = page2.textEntries[0].getText().trim();
 	    Option selectUsersopt = createOption("userSelect", selectUsers);
@@ -282,29 +283,29 @@ public class SecurityRealmWizard extends AbstractTableWizard {
 	    loginModule.getOption().add(algorithmopt);
 	    loginModule.getOption().add(encodingopt);
 
-	} else if (realmType.equals("LDAP Realm")) {
-	    loginModule
-		    .setLoginModuleClass("org.apache.geronimo.security.realm.providers.LDAPLoginModule");
-	    String initialContextFactory = page4.combo[0].getText().trim();
-	    loginModule.getOption()
-		    .add(
-			    createOption("initialContextFactory",
-				    initialContextFactory));
-	    String connectionURL = page4.combo[1].getText();
-	    loginModule.getOption().add(
-		    createOption("connectionURL", connectionURL));
-	    String connectionUsername = page4.text[0].getText();
-	    loginModule.getOption().add(
-		    createOption("connectionUsername", connectionUsername));
-	    String connectionPassword = page4.text[1].getText();
-	    loginModule.getOption().add(
-		    createOption("connectionPassword", connectionPassword));
-	    String connectionProtocol = page4.text[3].getText();
-	    loginModule.getOption().add(
-		    createOption("connectionProtocol", connectionProtocol));
-	    String authentication = page4.combo[2].getText();
-	    loginModule.getOption().add(
-		    createOption("authentication", authentication));
+    } else if (realmType.equals(Messages.ldapRealm)) {
+        loginModule
+            .setLoginModuleClass("org.apache.geronimo.security.realm.providers.LDAPLoginModule");
+        String initialContextFactory = page4.combo[0].getText().trim();
+        loginModule.getOption()
+            .add(
+                createOption("initialContextFactory",
+                    initialContextFactory));
+        String connectionURL = page4.combo[1].getText();
+        loginModule.getOption().add(
+            createOption("connectionURL", connectionURL));
+        String connectionUsername = page4.text[0].getText();
+        loginModule.getOption().add(
+            createOption("connectionUsername", connectionUsername));
+        String connectionPassword = page4.text[1].getText();
+        loginModule.getOption().add(
+            createOption("connectionPassword", connectionPassword));
+        String connectionProtocol = page4.text[3].getText();
+        loginModule.getOption().add(
+            createOption("connectionProtocol", connectionProtocol));
+        String authentication = page4.combo[2].getText();
+        loginModule.getOption().add(
+            createOption("authentication", authentication));
 
 	    String userBase = page5.text[0].getText();
 	    loginModule.getOption().add(createOption("userBase", userBase));
@@ -462,28 +463,28 @@ public class SecurityRealmWizard extends AbstractTableWizard {
 	    data.widthHint = 300;
 	    composite.setLayoutData(data);
 
-	    Group basicGroup = new Group(composite, SWT.NONE);
-	    basicGroup.setText("Basic Settings");
-	    GridLayout gridLayout = new GridLayout();
-	    gridLayout.numColumns = 4;
-	    GridData data1 = new GridData();
-	    data1.horizontalAlignment = GridData.FILL;
-	    data1.grabExcessHorizontalSpace = true;
-	    data1.grabExcessVerticalSpace = true;
-	    data1.horizontalSpan = 2;
-	    basicGroup.setLayout(gridLayout);
-	    data1.grabExcessHorizontalSpace = true;
-	    basicGroup.setLayoutData(data1);
-	    createLabel(basicGroup, CommonMessages.realmName, 1);
-	    textEntries[0] = createText(basicGroup, 3);
-	    createLabel(basicGroup, CommonMessages.realmType, 1);
-	    combo = new Combo(basicGroup, SWT.NONE | SWT.READ_ONLY);
-	    combo.setLayoutData(new GridData(GridData.FILL, GridData.FILL,
-		    true, false, 3, 1));
-	    combo.add("Properties File Realm");
-	    combo.add("SQL Realm");
-	    combo.add("LDAP Realm");
-	    combo.select(0);
+        Group basicGroup = new Group(composite, SWT.NONE);
+        basicGroup.setText(Messages.basicGroup);
+        GridLayout gridLayout = new GridLayout();
+        gridLayout.numColumns = 4;
+        GridData data1 = new GridData();
+        data1.horizontalAlignment = GridData.FILL;
+        data1.grabExcessHorizontalSpace = true;
+        data1.grabExcessVerticalSpace = true;
+        data1.horizontalSpan = 2;
+        basicGroup.setLayout(gridLayout);
+        data1.grabExcessHorizontalSpace = true;
+        basicGroup.setLayoutData(data1);
+        createLabel(basicGroup, CommonMessages.realmName, 1);
+        textEntries[0] = createText(basicGroup, 3);
+        createLabel(basicGroup, CommonMessages.realmType, 1);
+        combo = new Combo(basicGroup, SWT.NONE | SWT.READ_ONLY);
+        combo.setLayoutData(new GridData(GridData.FILL, GridData.FILL,
+            true, false, 3, 1));
+        combo.add(Messages.propertiesFileRealm);
+        combo.add(Messages.sqlRealm);
+        combo.add(Messages.ldapRealm);
+        combo.select(0);
 
 	    if (eObject != null) {
 		Gbean gbean = (Gbean) ((JAXBElement) eObject).getValue();
@@ -520,33 +521,33 @@ public class SecurityRealmWizard extends AbstractTableWizard {
 	    }
 	}
 
-	@Override
-	public IWizardPage getNextPage() {
-	    if (combo.getText().trim().equals("Properties File Realm")) {// properties
-		// file
-		// type
-		return this.getWizard().getPage("PropertiesFileRealmPage");
-	    } else if (combo.getText().trim().equals("SQL Realm")) {// sql realm
-		// type
-		return this.getWizard().getPage("SelectSQLPage");
-	    } else if (combo.getText().trim().equals("LDAP Realm")) {// ldap
-		// realm
-		// type
-		return this.getWizard().getPage("LDAPConnectionPage");
-	    }
-	    return null;
-	}
+    @Override
+    public IWizardPage getNextPage() {
+        if (combo.getText().trim().equals(Messages.propertiesFileRealm)) {// properties
+        // file
+        // type
+        return this.getWizard().getPage("PropertiesFileRealmPage");
+        } else if (combo.getText().trim().equals(Messages.sqlRealm)) {// sql realm
+        // type
+        return this.getWizard().getPage("SelectSQLPage");
+        } else if (combo.getText().trim().equals(Messages.ldapRealm)) {// ldap
+        // realm
+        // type
+        return this.getWizard().getPage("LDAPConnectionPage");
+        }
+        return null;
+    }
     }
 
     public class PropertiesFileRealmPage extends WizardPage {
 
 	Text textEntries[] = new Text[4];
 
-	public PropertiesFileRealmPage(String pageName) {
-	    super(pageName);
-	    setTitle("Properties File Realm");
-	    setDescription("Edit settings for users file and groups file's pathes");
-	}
+    public PropertiesFileRealmPage(String pageName) {
+        super(pageName);
+        setTitle(Messages.propertiesFileRealm);
+        setDescription(Messages.propertiesFileRealmDesc);
+    }
 
 	public void createControl(Composite parent) {
 	    Composite composite = new Composite(parent, SWT.NULL);
@@ -559,39 +560,40 @@ public class SecurityRealmWizard extends AbstractTableWizard {
 	    data.widthHint = 300;
 	    composite.setLayoutData(data);
 
-	    Group uriGroup = new Group(composite, SWT.NONE);
-	    uriGroup.setText("Files's URI");
-	    GridLayout gridLayout = new GridLayout();
-	    gridLayout.numColumns = 4;
-	    uriGroup.setLayout(gridLayout);
-	    GridData data1 = new GridData();
-	    data1.horizontalAlignment = GridData.FILL;
-	    data1.grabExcessHorizontalSpace = true;
-	    data1.grabExcessVerticalSpace = true;
-	    data1.horizontalSpan = 2;
-	    data1.grabExcessHorizontalSpace = true;
-	    uriGroup.setLayoutData(data1);
-	    createLabel(uriGroup, "Users File URI:", 1);
-	    textEntries[0] = createText(uriGroup, 3);
-	    createLabel(uriGroup, "Groups File URI:", 1);
-	    textEntries[1] = createText(uriGroup, 3);
+        Group uriGroup = new Group(composite, SWT.NONE);
+        uriGroup.setText(Messages.fileUri);
+        GridLayout gridLayout = new GridLayout();
+        gridLayout.numColumns = 4;
+        uriGroup.setLayout(gridLayout);
+        GridData data1 = new GridData();
+        data1.horizontalAlignment = GridData.FILL;
+        data1.grabExcessHorizontalSpace = true;
+        data1.grabExcessVerticalSpace = true;
+        data1.horizontalSpan = 2;
+        data1.grabExcessHorizontalSpace = true;
+        uriGroup.setLayoutData(data1);
+        createLabel(uriGroup, Messages.userFileUri, 1);
+        textEntries[0] = createText(uriGroup, 3);
+        createLabel(uriGroup, Messages.groupFileUri, 1);
+        textEntries[1] = createText(uriGroup, 3);
 
-	    Group digestGroup = new Group(composite, SWT.NONE);
-	    digestGroup.setText("Digest Configuration");
-	    gridLayout = new GridLayout();
-	    gridLayout.numColumns = 4;
-	    digestGroup.setLayout(gridLayout);
-	    data1 = new GridData();
-	    data1.horizontalAlignment = GridData.FILL;
-	    data1.grabExcessHorizontalSpace = true;
-	    data1.grabExcessVerticalSpace = true;
-	    data1.horizontalSpan = 2;
-	    data1.grabExcessHorizontalSpace = true;
-	    digestGroup.setLayoutData(data1);
-	    createLabel(digestGroup, "Digest Algorithm:", 1);
-	    textEntries[2] = createText(digestGroup, 3);
-	    createLabel(digestGroup, "Digest Encoding:", 1);
-	    textEntries[3] = createText(digestGroup, 3);
+        Group digestGroup = new Group(composite, SWT.NONE);
+        digestGroup.setText(Messages.digestConfig);
+        digestGroup.setText("Digest Configuration");
+        gridLayout = new GridLayout();
+        gridLayout.numColumns = 4;
+        digestGroup.setLayout(gridLayout);
+        data1 = new GridData();
+        data1.horizontalAlignment = GridData.FILL;
+        data1.grabExcessHorizontalSpace = true;
+        data1.grabExcessVerticalSpace = true;
+        data1.horizontalSpan = 2;
+        data1.grabExcessHorizontalSpace = true;
+        digestGroup.setLayoutData(data1);
+        createLabel(digestGroup, Messages.digestAlgorithm, 1);
+        textEntries[2] = createText(digestGroup, 3);
+        createLabel(digestGroup, Messages.digestEncoding, 1);
+        textEntries[3] = createText(digestGroup, 3);
 
 	    if (eObject != null) {
 		Gbean gbean = (Gbean) ((JAXBElement) eObject).getValue();
@@ -626,11 +628,11 @@ public class SecurityRealmWizard extends AbstractTableWizard {
 
 	Text textEntries[] = new Text[4];
 
-	public SelectSQLPage(String pageName) {
-	    super(pageName);
-	    setTitle("SQL Realm");
-	    setDescription("Edit settings for user and group select sql");
-	}
+    public SelectSQLPage(String pageName) {
+        super(pageName);
+        setTitle(Messages.sqlRealm);
+        setDescription(Messages.sqlRealmDesc);
+    }
 
 	public void createControl(Composite parent) {
 	    Composite composite = new Composite(parent, SWT.NULL);
@@ -643,39 +645,39 @@ public class SecurityRealmWizard extends AbstractTableWizard {
 	    data.widthHint = 300;
 	    composite.setLayoutData(data);
 
-	    Group uriGroup = new Group(composite, SWT.NONE);
-	    uriGroup.setText("Select SQL");
-	    GridLayout gridLayout = new GridLayout();
-	    gridLayout.numColumns = 4;
-	    uriGroup.setLayout(gridLayout);
-	    GridData data1 = new GridData();
-	    data1.horizontalAlignment = GridData.FILL;
-	    data1.grabExcessHorizontalSpace = true;
-	    data1.grabExcessVerticalSpace = true;
-	    data1.horizontalSpan = 2;
-	    data1.grabExcessHorizontalSpace = true;
-	    uriGroup.setLayoutData(data1);
-	    createLabel(uriGroup, "Users Select SQL:", 1);
-	    textEntries[0] = createText(uriGroup, 3);
-	    createLabel(uriGroup, "Groups Select SQL:", 1);
-	    textEntries[1] = createText(uriGroup, 3);
+        Group uriGroup = new Group(composite, SWT.NONE);
+        uriGroup.setText(Messages.sqlQueries);
+        GridLayout gridLayout = new GridLayout();
+        gridLayout.numColumns = 4;
+        uriGroup.setLayout(gridLayout);
+        GridData data1 = new GridData();
+        data1.horizontalAlignment = GridData.FILL;
+        data1.grabExcessHorizontalSpace = true;
+        data1.grabExcessVerticalSpace = true;
+        data1.horizontalSpan = 2;
+        data1.grabExcessHorizontalSpace = true;
+        uriGroup.setLayoutData(data1);
+        createLabel(uriGroup, Messages.userSelectSQL, 1);
+        textEntries[0] = createText(uriGroup, 3);
+        createLabel(uriGroup, Messages.groupSelectSQL, 1);
+        textEntries[1] = createText(uriGroup, 3);
 
-	    Group digestGroup = new Group(composite, SWT.NONE);
-	    digestGroup.setText("Digest Configuration");
-	    gridLayout = new GridLayout();
-	    gridLayout.numColumns = 4;
-	    digestGroup.setLayout(gridLayout);
-	    data1 = new GridData();
-	    data1.horizontalAlignment = GridData.FILL;
-	    data1.grabExcessHorizontalSpace = true;
-	    data1.grabExcessVerticalSpace = true;
-	    data1.horizontalSpan = 2;
-	    data1.grabExcessHorizontalSpace = true;
-	    digestGroup.setLayoutData(data1);
-	    createLabel(digestGroup, "Digest Algorithm:", 1);
-	    textEntries[2] = createText(digestGroup, 3);
-	    createLabel(digestGroup, "Digest Encoding:", 1);
-	    textEntries[3] = createText(digestGroup, 3);
+        Group digestGroup = new Group(composite, SWT.NONE);
+        digestGroup.setText(Messages.digestConfig);
+        gridLayout = new GridLayout();
+        gridLayout.numColumns = 4;
+        digestGroup.setLayout(gridLayout);
+        data1 = new GridData();
+        data1.horizontalAlignment = GridData.FILL;
+        data1.grabExcessHorizontalSpace = true;
+        data1.grabExcessVerticalSpace = true;
+        data1.horizontalSpan = 2;
+        data1.grabExcessHorizontalSpace = true;
+        digestGroup.setLayoutData(data1);
+        createLabel(digestGroup, Messages.digestAlgorithm, 1);
+        textEntries[2] = createText(digestGroup, 3);
+        createLabel(digestGroup, Messages.digestEncoding, 1);
+        textEntries[3] = createText(digestGroup, 3);
 
 	    if (eObject != null) {
 		Gbean gbean = (Gbean) ((JAXBElement) eObject).getValue();
@@ -867,11 +869,11 @@ public class SecurityRealmWizard extends AbstractTableWizard {
 	Text[] text = new Text[4];
 	Combo[] combo = new Combo[3];
 
-	protected LDAPConnectionPage(String pageName) {
-	    super(pageName);
-	    setTitle("LDAP Realm Connection");
-	    setDescription("Edit settings for LDAP server connection");
-	}
+    protected LDAPConnectionPage(String pageName) {
+        super(pageName);
+        setTitle(Messages.ldapRealm);
+        setDescription(Messages.ldapRealmDesc);
+    }
 
 	public void createControl(Composite parent) {
 	    Composite composite = new Composite(parent, SWT.NULL);
@@ -884,49 +886,50 @@ public class SecurityRealmWizard extends AbstractTableWizard {
 	    data.widthHint = 300;
 	    composite.setLayoutData(data);
 
-	    Group connectionGroup = new Group(composite, SWT.NULL);
-	    connectionGroup.setText("LDAP server connection");
-	    GridLayout gridLayout = new GridLayout();
-	    gridLayout.numColumns = 4;
-	    GridData data1 = new GridData();
-	    data1.horizontalAlignment = GridData.FILL;
-	    data1.grabExcessHorizontalSpace = true;
-	    data1.horizontalSpan = 2;
-	    connectionGroup.setLayout(gridLayout);
-	    connectionGroup.setLayoutData(data1);
+        Group connectionGroup = new Group(composite, SWT.NULL);
+        connectionGroup.setText(Messages.ldapServerConnection);
+        GridLayout gridLayout = new GridLayout();
+        gridLayout.numColumns = 4;
+        GridData data1 = new GridData();
+        data1.horizontalAlignment = GridData.FILL;
+        data1.grabExcessHorizontalSpace = true;
+        data1.horizontalSpan = 2;
+        connectionGroup.setLayout(gridLayout);
+        connectionGroup.setLayoutData(data1);
 
-	    createLabel(connectionGroup, "Initial Context Factory:", 1);
-	    combo[0] = new Combo(connectionGroup, SWT.NONE);
-	    combo[0].setLayoutData(new GridData(GridData.FILL, GridData.FILL,
-		    true, false, 3, 1));
-	    combo[0].add("com.sun.jndi.ldap.LdapCtxFactory");
-	    createLabel(connectionGroup, "Connection URL:", 1);
-	    combo[1] = new Combo(connectionGroup, SWT.NONE);
-	    combo[1].setLayoutData(new GridData(GridData.FILL, GridData.FILL,
-		    true, false, 3, 1));
-	    combo[1].add("ldap://localhost:1389");
-	    combo[1].add("ldap://localhost:389");
-	    createLabel(connectionGroup, "Connect Username:", 1);
-	    text[0] = createText(connectionGroup, 3);
-	    text[0].setText("system");
-	    createLabel(connectionGroup, "Connect Password:", 1);
-	    text[1] = createText(connectionGroup, 3);
-	    text[1].setEchoChar('*');
-	    text[1].setText("manager");
-	    createLabel(connectionGroup, "Confirm Password:", 1);
-	    text[2] = createText(connectionGroup, 3);
-	    text[2].setEchoChar('*');
-	    text[2].setText("manager");
-	    createLabel(connectionGroup, "Connect Protocol:", 1);
-	    text[3] = createText(connectionGroup, 1);
-	    createLabel(connectionGroup, "Authentication:", 1);
-	    combo[2] = new Combo(connectionGroup, SWT.NONE);
-	    combo[2].setLayoutData(new GridData(GridData.FILL, GridData.FILL,
-		    true, false, 1, 1));
-	    combo[2].add("none");
-	    combo[2].add("simple");
-	    combo[2].add("strong");
-	    combo[2].select(1);
+        createLabel(connectionGroup, Messages.initContextFactory, 1);
+        combo[0] = new Combo(connectionGroup, SWT.NONE);
+        combo[0].setLayoutData(new GridData(GridData.FILL, GridData.FILL,
+            true, false, 3, 1));
+        combo[0].add("com.sun.jndi.ldap.LdapCtxFactory");
+        
+        createLabel(connectionGroup, Messages.connectionUrl, 1);
+        combo[1] = new Combo(connectionGroup, SWT.NONE);
+        combo[1].setLayoutData(new GridData(GridData.FILL, GridData.FILL,
+            true, false, 3, 1));
+        combo[1].add("ldap://localhost:1389");
+        combo[1].add("ldap://localhost:389");
+        createLabel(connectionGroup, Messages.connectUsername, 1);
+        text[0] = createText(connectionGroup, 3);
+        text[0].setText("system");
+        createLabel(connectionGroup, Messages.conncetPwd, 1);
+        text[1] = createText(connectionGroup, 3);
+        text[1].setEchoChar('*');
+        text[1].setText("manager");
+        createLabel(connectionGroup, Messages.confirmPassword, 1);
+        text[2] = createText(connectionGroup, 3);
+        text[2].setEchoChar('*');
+        text[2].setText("manager");
+        createLabel(connectionGroup, Messages.connectProtocol, 1);
+        text[3] = createText(connectionGroup, 1);
+        createLabel(connectionGroup, Messages.authentication, 1);
+        combo[2] = new Combo(connectionGroup, SWT.NONE);
+        combo[2].setLayoutData(new GridData(GridData.FILL, GridData.FILL,
+            true, false, 1, 1));
+        combo[2].add(Messages.none);
+        combo[2].add(Messages.simple);
+        combo[2].add(Messages.strong);
+        combo[2].select(1);
 
 	    if (eObject != null) {
 		Gbean gbean = (Gbean) ((JAXBElement) eObject).getValue();
@@ -972,11 +975,11 @@ public class SecurityRealmWizard extends AbstractTableWizard {
 	Text[] text = new Text[6];
 	Button userSearchSubtree, roleSearchSubtree;
 
-	protected LDAPSearchPage(String pageName) {
-	    super(pageName);
-	    setTitle("LDAP Realm Search Configuration");
-	    setDescription("Edit settings for LDAP realm search");
-	}
+    protected LDAPSearchPage(String pageName) {
+        super(pageName);
+        setTitle(Messages.ldapRealmSearchConfig);
+        setDescription(Messages.editLdapRealmSearch);
+    }
 
 	public void createControl(Composite parent) {
 	    Composite composite = new Composite(parent, SWT.NULL);
@@ -989,50 +992,50 @@ public class SecurityRealmWizard extends AbstractTableWizard {
 	    data.widthHint = 300;
 	    composite.setLayoutData(data);
 
-	    Group userGroup = new Group(composite, SWT.NULL);
-	    userGroup.setText("User Search Configuration");
-	    GridLayout gridLayout = new GridLayout();
-	    gridLayout.numColumns = 4;
-	    GridData data1 = new GridData();
-	    data1.horizontalAlignment = GridData.FILL;
-	    data1.grabExcessHorizontalSpace = true;
-	    data1.horizontalSpan = 2;
-	    userGroup.setLayout(gridLayout);
-	    userGroup.setLayoutData(data1);
+        Group userGroup = new Group(composite, SWT.NULL);
+        userGroup.setText(Messages.userSearchConfig);
+        GridLayout gridLayout = new GridLayout();
+        gridLayout.numColumns = 4;
+        GridData data1 = new GridData();
+        data1.horizontalAlignment = GridData.FILL;
+        data1.grabExcessHorizontalSpace = true;
+        data1.horizontalSpan = 2;
+        userGroup.setLayout(gridLayout);
+        userGroup.setLayoutData(data1);
 
-	    createLabel(userGroup, "User Base:", 1);
-	    text[0] = createText(userGroup, 3);
-	    createLabel(userGroup, "User Search Matching:", 1);
-	    text[1] = createText(userGroup, 3);
-	    userSearchSubtree = new Button(userGroup, SWT.CHECK);
-	    userSearchSubtree.setText("User Search Subtree");
-	    userSearchSubtree.setLayoutData(new GridData(GridData.FILL,
-		    GridData.FILL, true, false, 4, 1));
-	    userSearchSubtree.setSelection(true);
+        createLabel(userGroup, Messages.userBase, 1);
+        text[0] = createText(userGroup, 3);
+        createLabel(userGroup, Messages.userSearchMachting, 1);
+        text[1] = createText(userGroup, 3);
+        userSearchSubtree = new Button(userGroup, SWT.CHECK);
+        userSearchSubtree.setText(Messages.userSearchSubtree);
+        userSearchSubtree.setLayoutData(new GridData(GridData.FILL,
+            GridData.FILL, true, false, 4, 1));
+        userSearchSubtree.setSelection(true);
 
-	    Group roleGroup = new Group(composite, SWT.NULL);
-	    roleGroup.setText("Role Search Configuration");
-	    gridLayout = new GridLayout();
-	    gridLayout.numColumns = 4;
-	    data1 = new GridData();
-	    data1.horizontalAlignment = GridData.FILL;
-	    data1.grabExcessHorizontalSpace = true;
-	    data1.horizontalSpan = 2;
-	    roleGroup.setLayout(gridLayout);
-	    roleGroup.setLayoutData(data1);
-	    createLabel(roleGroup, "Role Base:", 1);
-	    text[2] = createText(roleGroup, 3);
-	    createLabel(roleGroup, "Role Name:", 1);
-	    text[3] = createText(roleGroup, 3);
-	    createLabel(roleGroup, "Role User Search String:", 1);
-	    text[4] = createText(roleGroup, 3);
-	    createLabel(roleGroup, "User Role Search String:", 1);
-	    text[5] = createText(roleGroup, 3);
-	    roleSearchSubtree = new Button(roleGroup, SWT.CHECK);
-	    roleSearchSubtree.setText("Role Search Subtree");
-	    roleSearchSubtree.setLayoutData(new GridData(GridData.FILL,
-		    GridData.FILL, true, false, 4, 1));
-	    roleSearchSubtree.setSelection(true);
+        Group roleGroup = new Group(composite, SWT.NULL);
+        roleGroup.setText(Messages.roleSearchConfig);
+        gridLayout = new GridLayout();
+        gridLayout.numColumns = 4;
+        data1 = new GridData();
+        data1.horizontalAlignment = GridData.FILL;
+        data1.grabExcessHorizontalSpace = true;
+        data1.horizontalSpan = 2;
+        roleGroup.setLayout(gridLayout);
+        roleGroup.setLayoutData(data1);
+        createLabel(roleGroup, Messages.roleBase, 1);
+        text[2] = createText(roleGroup, 3);
+        createLabel(roleGroup, Messages.roleName, 1);
+        text[3] = createText(roleGroup, 3);
+        createLabel(roleGroup, Messages.roleUserSearchStr, 1);
+        text[4] = createText(roleGroup, 3);
+        createLabel(roleGroup, Messages.userRoleSearchStr, 1);
+        text[5] = createText(roleGroup, 3);
+        roleSearchSubtree = new Button(roleGroup, SWT.CHECK);
+        roleSearchSubtree.setText(Messages.roleSearchSubtree);
+        roleSearchSubtree.setLayoutData(new GridData(GridData.FILL,
+            GridData.FILL, true, false, 4, 1));
+        roleSearchSubtree.setSelection(true);
 
 	    if (eObject != null) {
 		Gbean gbean = (Gbean) ((JAXBElement<?>) eObject).getValue();

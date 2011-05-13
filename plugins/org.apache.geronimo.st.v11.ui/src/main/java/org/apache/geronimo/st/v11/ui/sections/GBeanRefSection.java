@@ -25,6 +25,7 @@ import org.apache.geronimo.j2ee.deployment.PatternType;
 import org.apache.geronimo.j2ee.jaxbmodel.operations.JAXBModelUtils;
 import org.apache.geronimo.j2ee.naming.GbeanRefType;
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.v11.ui.Activator;
 import org.apache.geronimo.st.v11.ui.wizards.GBeanRefWizard;
@@ -177,18 +178,18 @@ public class GBeanRefSection extends AbstractTreeSection {
                 }
                 if (GbeanRefType.class.isInstance(element)) {
                 	GbeanRefType gbeanRef = (GbeanRefType)element;
-                    return "Gbean Ref: name = \"" + gbeanRef.getRefName() + "\"";
+                    return Messages.editorGBeanRefTitle + ": " + Messages.name + " = \"" + gbeanRef.getRefName() + "\"";
                 }
                 else if (String.class.isInstance(element)) {
-                    return "Gbean type: name = \"" + (String)element + "\"";
+                    return Messages.gbeanType + ": " + Messages.name + " = \"" + (String)element + "\"";
                 }
                 else if (PatternType.class.isInstance(element)) {
                 	PatternType pattern = (PatternType)element;
-                    return "Pattern: name = \"" + pattern.getCustomFoo() + 
-                            "\", group = \"" + pattern.getGroupId() + 
-                            "\", artifact = \"" + pattern.getArtifactId() + 
-                            "\", version = \"" + pattern.getVersion() + 
-                            "\", module = \"" + pattern.getModule() + "\"";
+                    return Messages.pattern + ": " + Messages.name + " = \"" + pattern.getCustomFoo() + 
+                            "\", " + Messages.group + "  = \"" + pattern.getGroupId() + 
+                            "\", " + Messages.artifactId + "  = \"" + pattern.getArtifactId() + 
+                            "\", " + Messages.version + "  = \"" + pattern.getVersion() + 
+                            "\", " + Messages.module + "  = \"" + pattern.getModule() + "\"";
                 }
 
                 return null;

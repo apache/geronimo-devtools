@@ -22,6 +22,7 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.naming.PersistenceUnitRef;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBModelUtils;
 import org.apache.geronimo.st.v30.ui.Activator;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
@@ -126,19 +127,20 @@ public class PersUnitRefSection extends AbstractTreeSection {
             public String getText(Object element) {
                 if (JAXBElement.class.isInstance(element)) {
                     PersistenceUnitRef unitRef = (PersistenceUnitRef)((JAXBElement)element).getValue();
-                    String temp = "Persistence Unit Ref: name = \"" + unitRef.getPersistenceUnitRefName();
+                    String temp = Messages.editorPersUnitRefTitle + ":" + Messages.name + " = \"" + unitRef.getPersistenceUnitRefName();
+                    
                     if (unitRef.getPersistenceUnitName() != null)
-                        temp += "\", unit name = \"" + unitRef.getPersistenceUnitName();
+                        temp += "\", " + Messages.unit + " " + Messages.name + " = \"" + unitRef.getPersistenceUnitName();
                     if (unitRef.getPattern() != null && unitRef.getPattern().getName() != null)
-                        temp += "\", pattern name = \"" + unitRef.getPattern().getName();
+                        temp += "\", " + Messages.pattern + " " + Messages.name + " = \"" + unitRef.getPattern().getName();
                     if (unitRef.getPattern() != null && unitRef.getPattern().getGroupId() != null)
-                        temp += "\", pattern group = \"" + unitRef.getPattern().getGroupId();
+                        temp += "\", " + Messages.pattern + " " + Messages.group + " = \"" + unitRef.getPattern().getGroupId();
                     if (unitRef.getPattern() != null && unitRef.getPattern().getArtifactId() != null)
-                        temp += "\", pattern artifact = \"" + unitRef.getPattern().getArtifactId();
+                        temp += "\", " + Messages.pattern + " " + Messages.artifact + " = \"" + unitRef.getPattern().getArtifactId();
                     if (unitRef.getPattern() != null && unitRef.getPattern().getVersion() != null)
-                        temp += "\", pattern version = \"" + unitRef.getPattern().getVersion();
+                        temp += "\", " + Messages.pattern + " " + Messages.version + " = \"" + unitRef.getPattern().getVersion();
                     if (unitRef.getPattern() != null && unitRef.getPattern().getModule() != null)
-                        temp += "\", pattern module = \"" + unitRef.getPattern().getModule();
+                        temp += "\", " + Messages.pattern + " " + Messages.module + " = \"" + unitRef.getPattern().getModule();
                     temp += "\"";
                     return temp;
                 }

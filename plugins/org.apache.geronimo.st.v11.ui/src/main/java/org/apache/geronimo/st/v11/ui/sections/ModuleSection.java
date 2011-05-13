@@ -22,6 +22,7 @@ import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.j2ee.application.ModuleType;
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v11.ui.wizards.ModuleWizard;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -68,13 +69,13 @@ public class ModuleSection extends AbstractTableSection {
                     switch (columnIndex) {
                     case 0:
                         if (module.getConnector() != null) {
-                            return "connector";
+                            return Messages.connector;
                         } else if (module.getEjb() != null) {
-                            return "ejb";
+                            return Messages.ejb;
                         } else if (module.getJava() != null) {
-                            return "java";
+                            return Messages.java;
                         } else if (module.getWeb() != null) {
-                            return "web";
+                            return Messages.web;
                         }
                         return "";
                     case 1:

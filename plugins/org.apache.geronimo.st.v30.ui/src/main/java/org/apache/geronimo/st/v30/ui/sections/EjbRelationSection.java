@@ -23,6 +23,7 @@ import javax.xml.bind.JAXBElement;
 import org.apache.geronimo.jee.openejb.EjbRelation;
 import org.apache.geronimo.jee.openejb.EjbRelationshipRole;
 import org.apache.geronimo.jee.openejb.Relationships;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.v30.ui.Activator;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.apache.geronimo.st.v30.ui.wizards.EjbRelationWizard;
@@ -143,20 +144,21 @@ public class EjbRelationSection extends AbstractTreeSection {
             public String getText(Object element) {
                 if (EjbRelation.class.isInstance(element)) {
                     EjbRelation relation = (EjbRelation)element;
-                    return "EJB Relation: name = \"" + relation.getEjbRelationName() +
-                            "\", MTM table name = \"" + relation.getManyToManyTableName() + "\"";
+                    return Messages.ejbRelalitionName + " \"" + relation.getEjbRelationName() +
+                    "\", " + Messages.ejbMTMTableName +  " \"" + relation.getManyToManyTableName() + "\"";
                 }
                 if (EjbRelationshipRole.class.isInstance(element)) {
                     EjbRelationshipRole role = (EjbRelationshipRole)element;
-                    return "EJB Relationship Role: name = \"" + role.getEjbRelationshipRoleName() +
-                            "\", source = \"" + role.getRelationshipRoleSource().getEjbName() +
-                            "\", CMR field name = \"" + role.getCmrField().getCmrFieldName() + "\"";
+                    return Messages.ejbRelalitionRoleName + " \"" + role.getEjbRelationshipRoleName() +
+                    "\", " + Messages.ejbSourceName +  " = \"" + role.getRelationshipRoleSource().getEjbName() + 
+                    "\", " + Messages.cmrFieldName + " = \"" + role.getCmrField().getCmrFieldName() + "\"";
+
                 }
                 if (EjbRelationshipRole.RoleMapping.CmrFieldMapping.class.isInstance(element)) {
                     EjbRelationshipRole.RoleMapping.CmrFieldMapping fieldMapping =
                             (EjbRelationshipRole.RoleMapping.CmrFieldMapping)element;
-                    return "CMR Field Mapping: key column = \"" + fieldMapping.getKeyColumn() +
-                            "\", foreign key column = \"" + fieldMapping.getForeignKeyColumn() + "\"";
+                    return Messages.ejbCmrFiledMapping + ": " +  Messages.keyColumn + " = \"" + fieldMapping.getKeyColumn() +
+                    "\", " + Messages.foreignKeyColumn + " = \"" + fieldMapping.getForeignKeyColumn() + "\"";
                 }
 
                 return null;

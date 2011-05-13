@@ -24,6 +24,7 @@ import javax.xml.bind.JAXBElement;
 import org.apache.geronimo.st.core.descriptor.AbstractDeploymentDescriptor;
 import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.wizards.AbstractWizard;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -150,7 +151,7 @@ public abstract class AbstractListSection extends AbstractSectionPart {
     }
 
     protected IAction getSyncAction() {
-        return new SyncAction("Sync Deployment Descriptor and Deployemnt Plan");
+    	return new SyncAction(Messages.syncDeployDescAndDeplPlan);
     }
 
     protected Composite createComposite(Composite parent, int numColumns) {

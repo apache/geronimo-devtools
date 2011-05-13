@@ -24,6 +24,7 @@ import org.apache.geronimo.j2ee.connector.AdminobjectInstanceType;
 import org.apache.geronimo.j2ee.connector.AdminobjectType;
 import org.apache.geronimo.j2ee.connector.ConfigPropertySettingType;
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.v11.ui.Activator;
 import org.apache.geronimo.st.v11.ui.wizards.AdminObjectWizard;
@@ -137,17 +138,17 @@ public class AdminObjectSection extends AbstractTreeSection {
             public String getText(Object element) {
                 if (AdminobjectType.class.isInstance(element)) {
                 	AdminobjectType admin = (AdminobjectType)element;
-                    return "Admin Object: interface = \"" + admin.getAdminobjectInterface() +
-                            "\", class = \"" + admin.getAdminobjectClass() + "\"";
+                    return Messages.editorSectionAdminObjectTitle + ": " + Messages.interfaceName + " = \"" + admin.getAdminobjectInterface() +
+                    "\", " + Messages.clazz + " = \"" + admin.getAdminobjectClass() + "\"";
                 }
                 if (AdminobjectInstanceType.class.isInstance(element)) {
                 	AdminobjectInstanceType aoInstance = (AdminobjectInstanceType)element;
-                    return "Admin Object Instance: message destination name = \"" + aoInstance.getMessageDestinationName() + "\"";
+                    return Messages.editorSectionAdminObjectInstance + ": " +  Messages.messageDestinationName + " = \"" + aoInstance.getMessageDestinationName() + "\"";
                 }
                 if (ConfigPropertySettingType.class.isInstance(element)) {
                 	ConfigPropertySettingType property = (ConfigPropertySettingType)element;
-                    return "Config Property Setting: name = \"" + property.getName() +
-                            "\", value = \"" + property.getValue() + "\"";
+                    return Messages.configPropertySetting + ": " + Messages.name + " = \"" + property.getName() +
+                    "\", " + Messages.value + " = \"" + property.getValue() + "\"";
                 }
 
                 return null;

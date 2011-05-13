@@ -23,6 +23,7 @@ import javax.xml.bind.JAXBElement;
 import org.apache.geronimo.jaxbmodel.common.operations.JAXBObjectFactory;
 import org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils;
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.ui.wizards.AbstractTableWizard;
 import org.apache.geronimo.jee.jaxbmodel.operations.JAXBModelUtils;
@@ -102,11 +103,11 @@ public class MessageDestWizard extends AbstractTableWizard {
                         // get the pattern value
                         Pattern pattern = ((MessageDestination) eObject).getPattern();
                         String value = null;
-						try {
-							value = (String) JAXBUtils.getValue(pattern,getTableColumnEAttributes()[i]);
-						} catch (Exception e) {
-							MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
-						}
+                        try {
+                            value = (String) JAXBUtils.getValue(pattern,getTableColumnEAttributes()[i]);
+                        } catch (Exception e) {
+                            MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.error, e.getMessage());
+                        }
                         if (value != null) {
                             text.setText(value);
                         }                        
@@ -114,11 +115,11 @@ public class MessageDestWizard extends AbstractTableWizard {
                     else
                     {
                         String value = null;
-						try {
-							value = (String) JAXBUtils.getValue(eObject,getTableColumnEAttributes()[i]);
-						} catch (Exception e) {
-							MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
-						}
+                        try {
+                            value = (String) JAXBUtils.getValue(eObject,getTableColumnEAttributes()[i]);
+                        } catch (Exception e) {
+                            MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.error, e.getMessage());
+                        }
                         if (value != null) {
                             text.setText(value);
                         }
@@ -168,17 +169,17 @@ public class MessageDestWizard extends AbstractTableWizard {
             String value = page.getTextEntry(i).getText();
             String attribute = getTableColumnEAttributes()[i];
             if (i < 3)
-				try {
-					JAXBUtils.setValue(eObject, attribute, value);
-				} catch (Exception e) {
-					MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
-				}
-			else
-				try {
-					JAXBUtils.setValue(msgPattern, attribute, value);
-				} catch (Exception e) {
-					MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
-				}
+                try {
+                    JAXBUtils.setValue(eObject, attribute, value);
+                } catch (Exception e) {
+                    MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.error, e.getMessage());
+                }
+            else
+                try {
+                    JAXBUtils.setValue(msgPattern, attribute, value);
+                } catch (Exception e) {
+                    MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.error, e.getMessage());
+                }
         }
         
         if (section.getViewer().getInput() == section.getPlan()) {

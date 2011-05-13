@@ -23,6 +23,7 @@ import org.apache.geronimo.st.core.descriptor.AbstractDeploymentDescriptor;
 import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoJAXBBasedEditor;
 import org.apache.geronimo.st.ui.editors.SharedDeploymentPlanEditor;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
@@ -99,7 +100,7 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
         toolkit.decorateFormHeading(form.getForm());
         IToolBarManager manager = form.getToolBarManager();
 
-        Action serverInfoRefresh = new Action("serverInfo") { //$NON-NLS-1$
+        Action serverInfoRefresh = new Action(Messages.formServerInfo) {
             public void run() {
                 BusyIndicator.showWhile(form.getDisplay(), new Runnable() {
                     public void run() {
@@ -108,12 +109,12 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
                 });
             }
         };
-        serverInfoRefresh.setToolTipText("Trigger update of GeronimoServerInfo");
+        serverInfoRefresh.setToolTipText(Messages.triggerUpdateServerInfo);
         serverInfoRefresh.setImageDescriptor(Activator.imageDescriptorFromPlugin("org.apache.geronimo.st.ui",
                 "icons/obj16/update.gif"));
         manager.add(serverInfoRefresh);
 
-        Action helpAction = new Action("help") { //$NON-NLS-1$
+        Action helpAction = new Action(Messages.formHelp) {
             public void run() {
                 BusyIndicator.showWhile(form.getDisplay(), new Runnable() {
                     public void run() {
@@ -122,7 +123,7 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
                 });
             }
         };
-        helpAction.setToolTipText("help");
+        helpAction.setToolTipText(Messages.formHelp);
         helpAction.setImageDescriptor(Activator.imageDescriptorFromPlugin("org.apache.geronimo.st.ui",
                 "icons/obj16/help.gif"));
         manager.add(helpAction);

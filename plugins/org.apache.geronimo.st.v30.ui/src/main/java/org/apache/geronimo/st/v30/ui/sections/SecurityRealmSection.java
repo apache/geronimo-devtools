@@ -51,7 +51,7 @@ public class SecurityRealmSection extends AbstractTableSection {
 
     @Override
     public String getDescription() {
-    return CommonMessages.WizardSecurityRealmDescription;
+    return CommonMessages.wizardSecurityRealmDescription;
     // message
     }
 
@@ -62,7 +62,7 @@ public class SecurityRealmSection extends AbstractTableSection {
 
     @Override
     public String getTitle() {
-    return CommonMessages.WizardSecurityRealmTitle;
+    return CommonMessages.wizardSecurityRealmTitle;
     }
 
     @Override

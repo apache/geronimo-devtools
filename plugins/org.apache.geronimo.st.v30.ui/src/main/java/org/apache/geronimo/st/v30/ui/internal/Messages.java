@@ -16,6 +16,7 @@
  */
 package org.apache.geronimo.st.v30.ui.internal;
 
+
 import org.apache.geronimo.st.v30.ui.Activator;
 import org.eclipse.osgi.util.NLS;
 
@@ -31,7 +32,6 @@ public class Messages extends NLS {
     }
 
     public static String editorTabSource;
-
     public static String editorSectionSecurityTitle;
     public static String editorSectionSecurityDescription;
     public static String editorSectionPortsTitle;
@@ -436,8 +436,8 @@ public class Messages extends NLS {
     public static String wizardConnectionPageDescription__DBPool;
     //
     
-    public static String WizardSecurityRealmTitle;
-    public static String WizardSecurityRealmDescription;
+    public static String wizardSecurityRealmTitle;
+    public static String wizardSecurityRealmDescription;
     public static String wizardSecurityRealmName;
     public static String wizardLoginModuleClass;  
     public static String wizardSecurityRealmNew;
@@ -591,5 +591,18 @@ public class Messages extends NLS {
     
     public static String blueprintTypeConverterSectionTitle;
     public static String blueprintTypeConverterSectionDescription;
+	public static String blueprintConfiguration;
+	public static String blueprintAddOrEditElementInSchema;
+	public static String blueprintEditorAdding;
+	public static String blueprintEditorEditing;
+	public static String downloadServer;
+	public static String getServer;
+	public static String tooltip;
+	
+	public static String serverVersion;
+	public static String copyTargetFileFailed;
+	public static String supportWebPage0;
+	public static String supportURL;
+	public static String console0;
  
 }

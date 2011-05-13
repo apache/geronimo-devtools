@@ -22,6 +22,7 @@ import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.jee.application.ExtModule;
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.sections.AbstractTableSection;
 import org.apache.geronimo.st.v21.ui.pages.ConnectorPage;
 import org.apache.geronimo.st.v21.ui.pages.DeploymentPage;
@@ -95,65 +96,65 @@ public class ExtModuleSection extends AbstractTableSection {
 		}
 	}
 
-	@Override
-	public ITableLabelProvider getLabelProvider() {
-		return new LabelProvider() {
-			@Override
-			public String getColumnText(Object element, int columnIndex) {
-				if (ExtModule.class.isInstance(element)) {
-					ExtModule extModule = (ExtModule) element;
-					switch (columnIndex) {
-					case 0:
-						if (extModule.getConnector() != null) {
-							return "connector";
-						} else if (extModule.getEjb() != null) {
-							return "ejb";
-						} else if (extModule.getJava() != null) {
-							return "java";
-						} else if (extModule.getWeb() != null) {
-							return "web";
-						}
-						return "";
-					case 1:
-						if (extModule.getConnector() != null) {
-							return extModule.getConnector().getValue();
-						} else if (extModule.getEjb() != null) {
-							return extModule.getEjb().getValue();
-						} else if (extModule.getJava() != null) {
-							return extModule.getJava().getValue();
-						} else if (extModule.getWeb() != null) {
-							return extModule.getWeb().getValue();
-						}
-						return "";
-					case 2:
-						if (extModule.getInternalPath() != null) {
-							return extModule.getInternalPath();
-						}
-						return "";
-					case 3:
-						if (extModule.getExternalPath() != null) {
-							return extModule.getExternalPath().getGroupId();
-						}
-						return "";
-					case 4:
-						if (extModule.getExternalPath() != null) {
-							return extModule.getExternalPath().getArtifactId();
-						}
-						return "";
-					case 5:
-						if (extModule.getExternalPath() != null) {
-							return extModule.getExternalPath().getVersion();
-						}
-						return "";
-					case 6:
-						if (extModule.getExternalPath() != null) {
-							return extModule.getExternalPath().getType();
-						}
-						return "";
-					}
-				}
-				return null;
-			}
-		};
-	}
+    @Override
+    public ITableLabelProvider getLabelProvider() {
+        return new LabelProvider() {
+            @Override
+            public String getColumnText(Object element, int columnIndex) {
+                if (ExtModule.class.isInstance(element)) {
+                    ExtModule extModule = (ExtModule) element;
+                    switch (columnIndex) {
+                    case 0:
+                        if (extModule.getConnector() != null) {
+                            return Messages.connector;
+                        } else if (extModule.getEjb() != null) {
+                            return Messages.ejb;
+                        } else if (extModule.getJava() != null) {
+                            return Messages.java;
+                        } else if (extModule.getWeb() != null) {
+                            return Messages.web;
+                        }
+                        return "";
+                    case 1:
+                        if (extModule.getConnector() != null) {
+                            return extModule.getConnector().getValue();
+                        } else if (extModule.getEjb() != null) {
+                            return extModule.getEjb().getValue();
+                        } else if (extModule.getJava() != null) {
+                            return extModule.getJava().getValue();
+                        } else if (extModule.getWeb() != null) {
+                            return extModule.getWeb().getValue();
+                        }
+                        return "";
+                    case 2:
+                        if (extModule.getInternalPath() != null) {
+                            return extModule.getInternalPath();
+                        }
+                        return "";
+                    case 3:
+                        if (extModule.getExternalPath() != null) {
+                            return extModule.getExternalPath().getGroupId();
+                        }
+                        return "";
+                    case 4:
+                        if (extModule.getExternalPath() != null) {
+                            return extModule.getExternalPath().getArtifactId();
+                        }
+                        return "";
+                    case 5:
+                        if (extModule.getExternalPath() != null) {
+                            return extModule.getExternalPath().getVersion();
+                        }
+                        return "";
+                    case 6:
+                        if (extModule.getExternalPath() != null) {
+                            return extModule.getExternalPath().getType();
+                        }
+                        return "";
+                    }
+                }
+                return null;
+            }
+        };
+    }
 }

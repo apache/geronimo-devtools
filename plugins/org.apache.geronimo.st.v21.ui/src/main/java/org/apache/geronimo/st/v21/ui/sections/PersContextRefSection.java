@@ -25,6 +25,7 @@ import org.apache.geronimo.jee.jaxbmodel.operations.JAXBModelUtils;
 import org.apache.geronimo.jee.naming.PersistenceContextRef;
 import org.apache.geronimo.jee.naming.Property;
 import org.apache.geronimo.st.ui.CommonMessages;
+import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.sections.AbstractTreeSection;
 import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.wizards.PersContextRefWizard;
@@ -142,27 +143,28 @@ public class PersContextRefSection extends AbstractTreeSection {
             public String getText(Object element) {
                 if (JAXBElement.class.isInstance(element)) {
                     PersistenceContextRef contextRef = (PersistenceContextRef)((JAXBElement)element).getValue();
-                    String temp = "Persistence Context Ref: name = \"" + contextRef.getPersistenceContextRefName() +
-                                  "\", type = \"" + contextRef.getPersistenceContextType().value();
+                    String temp = Messages.editorPersContextRefTitle + ":" + Messages.name + " = \"" + contextRef.getPersistenceContextRefName() +
+                    "\", " + Messages.type + " = \"" + contextRef.getPersistenceContextType().value();
+                    
                     if (contextRef.getPersistenceUnitName() != null)
-                        temp += "\", unit name = \"" + contextRef.getPersistenceUnitName();
+                        temp += "\", " + Messages.pattern + " " + Messages.unit + " = \"" + contextRef.getPersistenceUnitName();
                     if (contextRef.getPattern() != null && contextRef.getPattern().getName() != null)
-                        temp += "\", pattern name = \"" + contextRef.getPattern().getName();
+                        temp += "\", " + Messages.pattern + " " + Messages.name + " = \"" + contextRef.getPattern().getName();
                     if (contextRef.getPattern() != null && contextRef.getPattern().getGroupId() != null)
-                        temp += "\", pattern group = \"" + contextRef.getPattern().getGroupId();
+                        temp += "\",  " + Messages.pattern + " " + Messages.group + " = \"" + contextRef.getPattern().getGroupId();
                     if (contextRef.getPattern() != null && contextRef.getPattern().getArtifactId() != null)
-                        temp += "\", pattern artifact = \"" + contextRef.getPattern().getArtifactId();
+                        temp += "\",  " + Messages.artifact + " " + Messages.unit + " = \"" + contextRef.getPattern().getArtifactId();
                     if (contextRef.getPattern() != null && contextRef.getPattern().getVersion() != null)
-                        temp += "\", pattern version = \"" + contextRef.getPattern().getVersion();
+                        temp += "\",  " + Messages.pattern + " " + Messages.version + " = \"" + contextRef.getPattern().getVersion();
                     if (contextRef.getPattern() != null && contextRef.getPattern().getModule() != null)
-                        temp += "\", pattern module = \"" + contextRef.getPattern().getModule();
+                        temp += "\",  " + Messages.pattern + " " + Messages.module + " = \"" + contextRef.getPattern().getModule();
                     temp += "\"";
                     return temp;
                 }
                 else if (Property.class.isInstance(element)) {
                     Property property = (Property)element;
-                    return "Property: key = \"" + property.getKey() + 
-                            "\", value = \"" + property.getValue() + "\"";
+                    return Messages.property + ": " + Messages.key + " = \"" + property.getKey() + 
+                    "\", " + Messages.value + " = \"" + property.getValue() + "\"";
                 }
 
                 return null;
