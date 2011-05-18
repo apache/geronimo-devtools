@@ -43,6 +43,7 @@
                     <descriptors>
                         <descriptor>src/main/assembly/deployable.xml</descriptor>
                         <descriptor>src/main/assembly/updatesite.xml</descriptor>
+                        <descriptor>src/main/assembly/p2repo.xml</descriptor>
                     </descriptors>
                 </configuration>
                 <executions>
@@ -50,6 +51,42 @@
                         <phase>package</phase>
                         <goals>
                             <goal>attached</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-p2-metadata</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+                                <property name="assembly.dir" value="${basedir}/target/p2-tmp"/>
+                                <property name="input.zip" value="${basedir}/target/geronimo-eclipse-plugin-${project.parent.version}-p2repo.zip"/>
+                                <property name="output.zip" value="${input.zip}"/>
+                                <mkdir dir="${assembly.dir}"/>
+                                <makeurl property="assembly.dir.url" file="${assembly.dir}"/>
+                                <unzip src="${input.zip}" dest="${assembly.dir}" />
+                                <copy file="${basedir}/src/main/assembly/site.xml" todir="${assembly.dir}"/>
+                                <java fork="true" classname="org.eclipse.equinox.launcher.Main" 
+                                      classpath="${eclipseInstall}/eclipse/plugins/org.eclipse.equinox.launcher_*.jar">
+                                    <classpath>
+                                        <fileset file="${eclipseInstall}/eclipse/plugins/org.eclipse.equinox.launcher_*.jar"/>
+                                    </classpath>
+                                    <arg line="-application org.eclipse.equinox.p2.publisher.UpdateSitePublisher"/>
+                                    <arg line="-metadataRepository ${assembly.dir.url}"/>  
+                                    <arg line="-artifactRepository ${assembly.dir.url}"/>
+                                    <arg line="-source ${assembly.dir}"/>
+                                </java>
+                                <zip destfile="${output.zip}" update="true" 
+                                     includes="artifacts.xml content.xml" basedir="${assembly.dir}"/>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
                         </goals>
                     </execution>
                 </executions>
