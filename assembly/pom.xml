@@ -71,8 +71,7 @@
                                 <makeurl property="assembly.dir.url" file="${assembly.dir}"/>
                                 <unzip src="${input.zip}" dest="${assembly.dir}" />
                                 <copy file="${basedir}/src/main/assembly/site.xml" todir="${assembly.dir}"/>
-                                <java fork="true" classname="org.eclipse.equinox.launcher.Main" 
-                                      classpath="${eclipseInstall}/eclipse/plugins/org.eclipse.equinox.launcher_*.jar">
+                                <java fork="true" classname="org.eclipse.equinox.launcher.Main">
                                     <classpath>
                                         <fileset file="${eclipseInstall}/eclipse/plugins/org.eclipse.equinox.launcher_*.jar"/>
                                     </classpath>
