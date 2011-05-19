@@ -71,7 +71,7 @@ public class SecurityAdvancedSection extends AbstractTableSection {
 
     protected Button useContextHandler;
     
-    protected String runtimeVersionNumber;
+    protected static String runtimeVersionNumber;
     
     private HashMap<Pattern,HashMap<String,ArrayList<String>>> credentialStoreAttributes;
 
@@ -526,4 +526,13 @@ public class SecurityAdvancedSection extends AbstractTableSection {
             getSecurity().setUseContextHandler(useContextHandler.getSelection());
         }
     }
+
+	public static String getRuntimeVersionNumber() {
+		return runtimeVersionNumber;
+	}
+
+	public static void setRuntimeVersionNumber(String runtimeVersionNumber) {
+		SecurityAdvancedSection.runtimeVersionNumber = runtimeVersionNumber;
+	}
+    
 }

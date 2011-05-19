@@ -124,4 +124,11 @@ public class GeronimoFormContentLoader extends AbstractGeronimoFormContentLoader
     public void triggerGeronimoServerInfoUpdate() {
         GeronimoServerInfo.getInstance().updateInfo();
     }
+
+	@Override
+	public void triggerGeronimoServerInfoUpdate(String version)
+			throws PartInitException {
+		
+	}
+    
 }

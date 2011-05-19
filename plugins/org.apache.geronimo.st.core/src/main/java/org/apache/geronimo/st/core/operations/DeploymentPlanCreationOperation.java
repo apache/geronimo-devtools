@@ -65,7 +65,7 @@ public abstract class DeploymentPlanCreationOperation extends
 
 	public void execute() throws Exception {
 		IVirtualComponent comp = ComponentCore.createComponent(getProject());
-
+		@SuppressWarnings({ "restriction", "deprecation" })
 		String type = J2EEProjectUtilities.getJ2EEProjectType(getProject());
 
 		if (IModuleConstants.JST_WEB_MODULE.equals(type)) {

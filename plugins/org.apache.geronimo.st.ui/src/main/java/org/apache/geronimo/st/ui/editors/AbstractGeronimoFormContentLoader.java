@@ -23,11 +23,18 @@ import javax.xml.bind.JAXBException;
 
 import org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils;
 import org.apache.geronimo.st.core.GeronimoUtils;
+import org.apache.geronimo.st.ui.internal.Trace;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jst.server.core.FacetUtil;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.FormEditor;
+import org.eclipse.wst.common.project.facet.core.IFacetedProject;
+import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
+import org.eclipse.wst.server.core.IRuntime;
 
 /**
  * @version $Rev$ $Date$
@@ -38,7 +45,8 @@ public abstract class AbstractGeronimoFormContentLoader implements IGeronimoForm
 	 * @see org.apache.geronimo.st.ui.editors.IGeronimoFormContentLoader#doAddPages(org.eclipse.ui.forms.editor.FormEditor)
 	 */
 	public void doAddPages(FormEditor editor) throws PartInitException{
-        triggerGeronimoServerInfoUpdate();
+		String version = getVersion(editor);
+        triggerGeronimoServerInfoUpdate(version);
 		IEditorInput input = editor.getEditorInput();
 		if(input instanceof IFileEditorInput) {
 			String planFileName = ((IFileEditorInput) input).getFile().getName();
@@ -58,6 +66,8 @@ public abstract class AbstractGeronimoFormContentLoader implements IGeronimoForm
 	
 	abstract public void triggerGeronimoServerInfoUpdate() throws PartInitException;
 	
+	abstract public void triggerGeronimoServerInfoUpdate(String version) throws PartInitException;
+	
 	abstract public void addWebPlanPages(FormEditor editor) throws PartInitException;
 	
 	abstract public void addOpenEjbPlanPages(FormEditor editor) throws PartInitException;
@@ -71,5 +81,26 @@ public abstract class AbstractGeronimoFormContentLoader implements IGeronimoForm
 	public void saveDeploymentPlan(JAXBElement deploymentPlan, IFile file) throws Exception {
 		JAXBUtils.marshalDeploymentPlan(deploymentPlan, file);
 	}
-
+	
+	private String getVersion(FormEditor editor) {
+		String version = null;
+		IEditorInput input = editor.getEditorInput();
+		if (input instanceof IFileEditorInput) {
+			IProject project = ((IFileEditorInput) input).getFile().getProject();
+			try {
+				IFacetedProject fp = ProjectFacetsManager.create(project);
+				if (fp == null) return null;
+				IRuntime runtime = FacetUtil.getRuntime(fp.getPrimaryRuntime());
+				if (runtime == null) return null;
+				version = runtime.getRuntimeType().getVersion();
+			} catch (CoreException e) {
+                Trace.tracePoint("CoreException", this.getClass().getSimpleName() + ".getVersion");
+				e.printStackTrace();
+			} catch (IllegalArgumentException ie) {
+                Trace.tracePoint("IllegalArgumentException", this.getClass().getSimpleName() + ".getVersion");
+			    throw new IllegalArgumentException("The project [" + project.getName() + "] does not have a Targeted Runtime specified.");
+            }
+		}
+		return version;
+	}
 }
