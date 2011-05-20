@@ -78,9 +78,6 @@ public class ServerEditorRefreshOSGiBundleSection extends AbstractServerEditorSe
         refreshOSGiBundle.addSelectionListener( new SelectionListener(){
             public void widgetSelected(SelectionEvent e) {
                 execute(new SetRefreshOSGiBundleCommand(server, refreshOSGiBundle.getSelection()));
-                if (refreshOSGiBundle.getSelection()) {
-                    MessageDialog.openInformation(Display.getCurrent().getActiveShell(), Messages.editorSectionRefreshOSGiBundleTitle, Messages.refreshOSGiBundleNotes);
-                }
             }
 
             public void widgetDefaultSelected(SelectionEvent e) {
