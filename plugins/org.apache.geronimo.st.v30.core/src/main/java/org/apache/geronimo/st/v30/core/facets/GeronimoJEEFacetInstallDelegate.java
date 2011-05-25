@@ -16,6 +16,7 @@
  */
 package org.apache.geronimo.st.v30.core.facets;
 
+import org.apache.geronimo.st.v30.core.Activator;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
@@ -56,7 +57,7 @@ public class GeronimoJEEFacetInstallDelegate implements IDelegate {
      * @throws CoreException if the delegate fails for any reason
      */
     public void execute(IProject project, IProjectFacetVersion fv, Object config, IProgressMonitor monitor) throws CoreException {
-        Trace.tracePoint("Entry", "GeronimoJEEFacetInstallDelegate.execute", project, fv, config, monitor);
+        Trace.tracePoint("Entry", Activator.traceFacets, "GeronimoJEEFacetInstallDelegate.execute", project, fv, config, monitor);
 
         try {
             createDeploymentPlanCreationOp(project, config).execute(monitor, null);
@@ -77,16 +78,16 @@ public class GeronimoJEEFacetInstallDelegate implements IDelegate {
             }
         }
 
-        Trace.tracePoint("Exit ", "GeronimoJEEFacetInstallDelegate.execute");
+        Trace.tracePoint("Exit ", Activator.traceFacets, "GeronimoJEEFacetInstallDelegate.execute");
     }
 
     public IDataModelOperation createDeploymentPlanCreationOp(IProject project, Object config) {
-        Trace.tracePoint("Entry", "GeronimoJEEFacetInstallDelegate.createDeploymentPlanCreationOp", project, config);
+        Trace.tracePoint("Entry", Activator.traceFacets, "GeronimoJEEFacetInstallDelegate.createDeploymentPlanCreationOp", project, config);
         
         IDataModel model = DataModelFactory.createDataModel(new JavaProjectFacetCreationDataModelProvider());
         model.setStringProperty(IFacetDataModelProperties.FACET_PROJECT_NAME, project.getName());
         
-        Trace.tracePoint("Exit ", "GeronimoJEEFacetInstallDelegate.createDeploymentPlanCreationOp");
+        Trace.tracePoint("Exit ", Activator.traceFacets, "GeronimoJEEFacetInstallDelegate.createDeploymentPlanCreationOp");
         return new DeploymentPlanCreationOperation(model, config);       
     }
 }

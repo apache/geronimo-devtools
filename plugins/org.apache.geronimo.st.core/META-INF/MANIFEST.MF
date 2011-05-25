@@ -37,4 +37,5 @@ Export-Package:
  org.apache.geronimo.st.core.descriptor,
  org.apache.geronimo.st.core.internal,
  org.apache.geronimo.st.core.operations
-Import-Package: junit.framework;version="3.8.2"
+Import-Package: junit.framework;version="3.8.2",
+ org.apache.geronimo.runtime.common.log

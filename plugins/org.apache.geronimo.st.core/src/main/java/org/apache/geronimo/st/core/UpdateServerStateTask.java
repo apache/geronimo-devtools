@@ -66,7 +66,8 @@ public class UpdateServerStateTask extends TimerTask {
 			if (gs != null && !this.server.getId().equals(server.getId())) {
 				if (isSameConnectionURL(gs, thisServer)) {
 					if (!isSameRuntimeLocation(server) && server.getServerState() != IServer.STATE_STOPPED) {
-						Trace.trace(Trace.WARNING, server.getId() + " Cannot update server state.  URL conflict between multiple servers.");
+						Trace.trace(Trace.WARNING, server.getId() + " Cannot update server state. " +
+								" URL conflict between multiple servers.", Activator.logCore);
 						return false;
 					}
 				}
@@ -85,7 +86,7 @@ public class UpdateServerStateTask extends TimerTask {
 	}
 
 	private void updateServerState() {
-		Trace.trace(Trace.INFO, ">> " + server.getId() + " Updating Server State.");
+		Trace.trace(Trace.INFO, ">> " + server.getId() + " Updating Server State.", Activator.traceCore);
 		try {
 			switch (server.getServerState()) {
 			case IServer.STATE_STOPPED:
@@ -105,7 +106,7 @@ public class UpdateServerStateTask extends TimerTask {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Trace.trace(Trace.INFO, "<< " + server.getId() + " Updating Server State.");
+		Trace.trace(Trace.INFO, "<< " + server.getId() + " Updating Server State.", Activator.traceCore);
 	}
 
 	private void updateFromStopped() throws CoreException {

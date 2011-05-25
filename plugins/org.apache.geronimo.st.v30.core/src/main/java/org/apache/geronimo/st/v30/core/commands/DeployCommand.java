@@ -52,7 +52,7 @@ abstract public class DeployCommand extends AbstractDeploymentCommand {
      * @return A File representation of the zipped/jar file 
      */
     public File getTargetFile() throws CoreException {
-        Trace.tracePoint("Entry", "DeployCommand.getTargetFile");
+        Trace.tracePoint("Entry", Activator.traceCommands, "DeployCommand.getTargetFile");
 
         IModule module = getModule();
         File file = DeploymentUtils.getTargetFile(getServer(), module);
@@ -62,7 +62,7 @@ abstract public class DeployCommand extends AbstractDeploymentCommand {
                     Messages.bind(Messages.moduleExportError, module.getProject().getName())));     
         }
 
-        Trace.tracePoint("Exit ", "DeployCommand.getTargetFile", file);
+        Trace.tracePoint("Exit ", Activator.traceCommands, "DeployCommand.getTargetFile", file);
         return file;
     }
 

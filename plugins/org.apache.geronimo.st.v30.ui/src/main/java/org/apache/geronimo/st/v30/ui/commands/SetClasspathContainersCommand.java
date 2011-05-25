@@ -18,6 +18,8 @@ package org.apache.geronimo.st.v30.ui.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.v30.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.v30.ui.internal.Trace;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
@@ -40,8 +42,8 @@ public class SetClasspathContainersCommand extends ServerCommand {
         super(server, "SetClasspathContainersCommand");
         this.newList = createList( checkList );
 
-        Trace.tracePoint("ENTRY", "SetClasspathContainersCommand", checkList, checkList.length );
-        Trace.tracePoint("EXIT", "SetClasspathContainersCommand");
+        Trace.tracePoint("ENTRY", Activator.traceCommands, "SetClasspathContainersCommand", checkList, checkList.length );
+        Trace.tracePoint("EXIT", Activator.traceCommands, "SetClasspathContainersCommand");
     }
 
 
@@ -51,13 +53,13 @@ public class SetClasspathContainersCommand extends ServerCommand {
      * @see org.apache.geronimo.st.v30.ui.commands.ServerCommand#execute()
      */
     public void execute() {
-        Trace.tracePoint("ENTRY", "SetClasspathContainersCommand.execute");
+        Trace.tracePoint("ENTRY", Activator.traceCommands, "SetClasspathContainersCommand.execute");
 
         GeronimoServerDelegate gs = (GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class);
         oldList = gs.getClasspathContainers();
         gs.setClasspathContainers(newList);
 
-        Trace.tracePoint("EXIT", "SetClasspathContainersCommand.execute");
+        Trace.tracePoint("EXIT", Activator.traceCommands, "SetClasspathContainersCommand.execute");
     }
 
 
@@ -67,12 +69,12 @@ public class SetClasspathContainersCommand extends ServerCommand {
      * @see org.apache.geronimo.st.v30.ui.commands.ServerCommand#undo()
      */
     public void undo() {
-        Trace.tracePoint("ENTRY", "SetClasspathContainersCommand.undo");
+        Trace.tracePoint("ENTRY", Activator.traceCommands, "SetClasspathContainersCommand.undo");
 
         GeronimoServerDelegate gs = (GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class);
         gs.setClasspathContainers(oldList);
 
-        Trace.tracePoint("EXIT", "SetClasspathContainersCommand.undo");
+        Trace.tracePoint("EXIT", Activator.traceCommands, "SetClasspathContainersCommand.undo");
     }
 
 
@@ -80,14 +82,14 @@ public class SetClasspathContainersCommand extends ServerCommand {
     // Convert object array to List<String>
     //
     public List<String> createList( Object[] checkList ) {
-        Trace.tracePoint("ENTRY", "SetClasspathContainersCommand.createList");
+        Trace.tracePoint("ENTRY", Activator.traceCommands, "SetClasspathContainersCommand.createList");
     
         List<String> containers = new ArrayList<String>();
         for (Object container : checkList) {
             containers.add( (String)container );
         }
 
-        Trace.tracePoint("EXIT", "SetClasspathContainersCommand.createList", containers );
+        Trace.tracePoint("EXIT", Activator.traceCommands, "SetClasspathContainersCommand.createList", containers );
         return containers;
    }
 

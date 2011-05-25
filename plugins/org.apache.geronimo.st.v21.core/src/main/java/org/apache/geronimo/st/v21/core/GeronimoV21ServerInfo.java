@@ -150,7 +150,7 @@ public class GeronimoV21ServerInfo implements IGeronimoServerInfo{
                 } catch (SecurityException e) {
                 } catch (Exception e) {
                     Trace.trace(Trace.WARNING, "Kernel connection failed. "
-                            + e.getMessage());
+                            + e.getMessage(), Activator.logCore);
                 }
             }
         }
@@ -285,15 +285,15 @@ public class GeronimoV21ServerInfo implements IGeronimoServerInfo{
                     }
                 } catch (GBeanNotFoundException e) {
                     Trace.trace(Trace.WARNING, "GBean Not Found. "
-                            + e.getMessage());
+                            + e.getMessage(), Activator.logCore);
                 } catch (NoSuchOperationException e) {
                     Trace.trace(Trace.WARNING, "The operation cant invoked. "
-                            + e.getMessage());
+                            + e.getMessage(), Activator.logCore);
                 } catch (InternalKernelException e) {
                     throw e;
                 } catch (Exception e) {
                     Trace.trace(Trace.WARNING, "Kernel connection failed.  "
-                            + e.getMessage());
+                            + e.getMessage(), Activator.logCore);
                 }
 
             }
@@ -377,7 +377,7 @@ public class GeronimoV21ServerInfo implements IGeronimoServerInfo{
                 } catch (NoSuchAttributeException e) {
                 } catch (Exception e) {
                     Trace.trace(Trace.WARNING, "Kernel connection failed. "
-                            + e.getMessage());
+                            + e.getMessage(), Activator.logCore);
                 }
             }
         }

@@ -17,6 +17,7 @@
 package org.apache.geronimo.st.core.operations;
 
 import org.apache.geronimo.jaxbmodel.common.operations.ConversionHelper;
+import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.GeronimoUtils;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.commands.ExecutionException;
@@ -44,7 +45,7 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
     public ImportDeploymentPlanOperation() {
         super();
         this.plan = null;
-        Trace.tracePoint("Constructor", "ImportDeploymentPlanOperation");
+        Trace.tracePoint("Constructor", "ImportDeploymentPlanOperation", Activator.traceOperations);
     }
 
     /**
@@ -53,7 +54,7 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
     public ImportDeploymentPlanOperation(IDataModel model) {
         super(model);
         this.plan = null;
-        Trace.tracePoint("Constructor", "ImportDeploymentPlanOperation", model);
+        Trace.tracePoint("Constructor", Activator.traceOperations, "ImportDeploymentPlanOperation", model);
     }
     
     /**
@@ -62,7 +63,7 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
     public ImportDeploymentPlanOperation(IDataModel model, IFile plan) {
         super(model);
         this.plan = plan;
-        Trace.tracePoint("Constructor", "ImportDeploymentPlanOperation", model, plan);
+        Trace.tracePoint("Constructor", Activator.traceOperations, "ImportDeploymentPlanOperation", model, plan);
     }
 
     /*
@@ -72,7 +73,7 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
      *      org.eclipse.core.runtime.IAdaptable)
      */
     public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-        Trace.tracePoint("Entry", "ImportDeploymentPlanOperation.execute", monitor, info);
+        Trace.tracePoint("Entry", Activator.traceOperations, "ImportDeploymentPlanOperation.execute", monitor, info);
 
         if (!isGeronimoRuntimeTarget())
             return Status.OK_STATUS;
@@ -108,7 +109,7 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
             throw new ExecutionException("ImportDeploymentPlanOperation.execute(): Error converting plan: " + planFile.getFullPath(), e);
         }
 
-        Trace.tracePoint("Exit ", "ImportDeploymentPlanOperation.execute", Status.OK_STATUS);
+        Trace.tracePoint("Exit ", Activator.traceOperations, "ImportDeploymentPlanOperation.execute", Status.OK_STATUS);
         return Status.OK_STATUS;
     }
 }

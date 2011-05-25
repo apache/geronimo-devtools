@@ -17,6 +17,7 @@
 package org.apache.geronimo.st.v30.ui.sections;
 
 import org.apache.geronimo.st.v30.core.operations.GeronimoAccountManager;
+import org.apache.geronimo.st.v30.ui.Activator;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.apache.geronimo.st.v30.ui.commands.SetPasswordCommand;
 import org.apache.geronimo.st.v30.ui.commands.SetUsernameCommand;
@@ -103,7 +104,7 @@ public class ServerEditorSecuritySection extends AbstractServerEditorSection {
                         manager.init();
                     } catch (Exception e1) {
                         MessageDialog.openError(Display.getCurrent().getActiveShell(), CommonMessages.errorOpenWizard, CommonMessages.cannotRead);
-                        Trace.trace(Trace.SEVERE, "Properties file containing user information can't be read!", e1);
+                        Trace.trace(Trace.ERROR, "Properties file containing user information can't be read!", e1, Activator.logSections);
                         return;
                     }
                     ManageAccountWizard wizard = new ManageAccountWizard(manager);

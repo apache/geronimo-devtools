@@ -194,7 +194,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
             @Override
             public void linkActivated(HyperlinkEvent hyperlinkEvent) {
                 String url = hyperlinkEvent.getHref().toString();
-                Trace.trace(Trace.INFO, "Hyperlink " + url + ".");
+                Trace.trace(Trace.INFO, "Hyperlink " + url + ".", Activator.traceInternal);
                 try {
                     int style = IWorkbenchBrowserSupport.AS_EXTERNAL
                             | IWorkbenchBrowserSupport.STATUS;

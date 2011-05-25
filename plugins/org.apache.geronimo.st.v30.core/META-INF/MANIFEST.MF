@@ -6,10 +6,11 @@ Bundle-Version: 3.0.0
 Bundle-Activator: org.apache.geronimo.st.v30.core.Activator
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
+Import-Package: org.apache.geronimo.runtime.common.log
 Require-Bundle: 
- org.apache.geronimo.runtime.common,
  org.apache.geronimo.runtime.v30,
  org.apache.geronimo.jaxbmodel.common,
+ org.apache.geronimo.runtime.common,
  org.apache.geronimo.st.v30.jaxbmodel,
  org.apache.geronimo.st.core,
  org.eclipse.core.commands,

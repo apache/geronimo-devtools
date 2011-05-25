@@ -98,7 +98,7 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
      *      org.eclipse.core.runtime.IAdaptable)
      */
     public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-        Trace.trace(Trace.INFO, ">> SharedLibEntryCreationOperation.execute()");
+        Trace.trace(Trace.INFO, ">> SharedLibEntryCreationOperation.execute()", Activator.traceOperations);
         
         this.monitor = ProgressUtil.getMonitorFor(monitor);
         this.monitor.beginTask("Processing in-place shared libraries.", 100);
@@ -140,7 +140,7 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
                     if (regenerate(dummyJarFile, entries)) {
                         TEMP_LOCATION.toFile().mkdirs();
                         File temp = TEMP_LOCATION.append(project.getName() + ".eclipse.jar").toFile();
-                        Trace.trace(Trace.INFO, "Updating external sharedlib entries for " + module.getName());
+                        Trace.trace(Trace.INFO, "Updating external sharedlib entries for " + module.getName(), Activator.traceOperations);
                         if(temp.exists())
                             delete(temp);
                         Manifest manifest = new Manifest();
@@ -159,16 +159,16 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
             
         }catch (CoreException e){
             IStatus status = e.getStatus();
-            Trace.trace(Trace.SEVERE, status.getMessage(), e);
+            Trace.trace(Trace.ERROR, status.getMessage(), e, Activator.logOperations);
             throw new ExecutionException(status.getMessage(), e);
         }catch (Exception e) {
-            Trace.trace(Trace.SEVERE, "Failure in updating shared library.", e);
+            Trace.trace(Trace.ERROR, "Failure in updating shared library.", e, Activator.logOperations);
             throw new ExecutionException("Failure in updating shared library", e);
         } finally {
             monitor.done();
         }
         
-        Trace.trace(Trace.INFO, "<< SharedLibEntryCreationOperation.execute()");
+        Trace.trace(Trace.INFO, "<< SharedLibEntryCreationOperation.execute()", Activator.traceOperations);
         return Status.OK_STATUS;
     }
     
@@ -206,7 +206,7 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
         } catch (Exception e) {
             throw e;
         }
-        Trace.trace(Trace.INFO, "Created " + dest.getAbsolutePath());
+        Trace.trace(Trace.INFO, "Created " + dest.getAbsolutePath(), Activator.traceOperations);
     }
 
     private String getSharedLibPath() throws Exception {
@@ -225,7 +225,7 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
     }
     
     private HashSet processModule(IModule module) throws Exception {
-        Trace.trace(Trace.INFO, "SharedLibEntryCreationOperation.process() " + module.getName());
+        Trace.trace(Trace.INFO, "SharedLibEntryCreationOperation.process() " + module.getName(), Activator.traceOperations);
 
         IProject project = module.getProject();
         // filter the cp entries needed to be added to the dummy shared lib
@@ -257,9 +257,9 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
 
     private void delete(File dummyJarFile) throws CoreException {
         if(dummyJarFile.delete()) {
-            Trace.trace(Trace.INFO, dummyJarFile.getAbsolutePath() + " deleted sucessfully.");
+            Trace.trace(Trace.INFO, dummyJarFile.getAbsolutePath() + " deleted sucessfully.", Activator.traceOperations);
         } else {
-            Trace.trace(Trace.SEVERE, "Failed to delete " + dummyJarFile.getAbsolutePath(), null);
+            Trace.trace(Trace.ERROR, "Failed to delete " + dummyJarFile.getAbsolutePath(), null, Activator.logOperations);
             throw new CoreException(new Status(IStatus.ERROR,Activator.PLUGIN_ID,"Failed to delete " + dummyJarFile.getAbsolutePath(),null));
         }
     }
@@ -321,12 +321,12 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
             try {
                 String url = f.toURL().toExternalForm();
                 if (!entries.contains(url)) {
-                    Trace.trace(Trace.INFO, "Adding " + url);
+                    Trace.trace(Trace.INFO, "Adding " + url, Activator.traceOperations);
                     monitor.subTask("Linking " + url + " to shared lib.");
                     entries.add(url);
                 }
             } catch (MalformedURLException e1) {
-                Trace.trace(Trace.INFO, "Failed to add " + path);
+                Trace.trace(Trace.INFO, "Failed to add " + path, Activator.traceOperations);
                 e1.printStackTrace();
             }
         }
@@ -434,6 +434,6 @@ public class SharedLibEntryCreationOperation extends AbstractDataModelOperation 
         DeploymentStatus status = po.getDeploymentStatus();
         String command = status.getCommand().toString();
         String state = status.getState().toString();
-        Trace.trace(Trace.INFO, "SharedLib " + " " + command + " " + state);
+        Trace.trace(Trace.INFO, "SharedLib " + " " + command + " " + state, Activator.traceOperations);
     }
 }

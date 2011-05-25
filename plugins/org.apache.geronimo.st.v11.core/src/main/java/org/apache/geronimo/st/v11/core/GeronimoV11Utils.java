@@ -30,14 +30,14 @@ import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IModule;
-
+import org.apache.geronimo.st.core.Activator;
 /**
  * @version $Rev: 471551 $ $Date: 2006-11-05 17:47:11 -0500 (Sun, 05 Nov 2006) $
  */
 public class GeronimoV11Utils extends GeronimoUtils {
 
 	public static JAXBElement getDeploymentPlan(IFile file) throws Exception {
-		Trace.tracePoint("ENTRY", "GeronimoV11Utils.getDeploymentPlan", file);
+		Trace.tracePoint("ENTRY", Activator.traceCore, "GeronimoV11Utils.getDeploymentPlan", file);
 
 		if (!file.exists()) {
 			return null;
@@ -54,7 +54,7 @@ public class GeronimoV11Utils extends GeronimoUtils {
 		else if (file.getName().equals(GeronimoUtils.APP_CLIENT_PLAN_NAME))
 			return getApplicationClientDeploymentPlan(file);
 
-		Trace.tracePoint("EXIT", "GeronimoV11Utils.getDeploymentPlan", null);
+		Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoV11Utils.getDeploymentPlan", null);
 		return null;
 	}
 
@@ -123,7 +123,7 @@ public class GeronimoV11Utils extends GeronimoUtils {
 		}
 		if (environment != null
 	            && environment.getModuleId() != null) {
-	            Trace.tracePoint("EXIT", "GeronimoV11Utils.getConfigId", getQualifiedConfigID(environment.getModuleId()));
+	            Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoV11Utils.getConfigId", getQualifiedConfigID(environment.getModuleId()));
 	            return getQualifiedConfigID(environment.getModuleId());
 	        }
 
@@ -186,14 +186,14 @@ public class GeronimoV11Utils extends GeronimoUtils {
 
 	public static JAXBElement getApplicationClientDeploymentPlan(IFile file)
 			throws Exception {
-		Trace.tracePoint("ENTRY",
+		Trace.tracePoint("ENTRY", Activator.traceCore,
 				"GeronimoV11Utils.getApplicationClientDeploymentPlan", file);
 
 		if (file.getName().equals(APP_CLIENT_PLAN_NAME) && file.exists()) {
 			return JAXBUtils.unmarshalFilterDeploymentPlan(file);
 		}
 
-		Trace.tracePoint("EXIT",
+		Trace.tracePoint("EXIT", Activator.traceCore,
 				"GeronimoV11Utils.getApplicationClientDeploymentPlan", null);
 		return null;
 	}
@@ -214,55 +214,55 @@ public class GeronimoV11Utils extends GeronimoUtils {
 	}
 
 	public static JAXBElement getApplicationDeploymentPlan(IFile file) throws Exception {
-		Trace.tracePoint("ENTRY",
+		Trace.tracePoint("ENTRY", Activator.traceCore,
 				"GeronimoV11Utils.getApplicationClientDeploymentPlan", file);
 
 		if (file.getName().equals(APP_PLAN_NAME) && file.exists()) {
 			return JAXBUtils.unmarshalFilterDeploymentPlan(file);
 		}
 
-		Trace.tracePoint("EXIT",
+		Trace.tracePoint("EXIT", Activator.traceCore,
 				"GeronimoV11Utils.getApplicationClientDeploymentPlan", null);
 		return null;
 	}
 
 	public static JAXBElement getWebDeploymentPlan(IFile file) throws Exception {
 		Trace
-				.tracePoint("ENTRY", "GeronimoV11Utils.getWebDeploymentPlan",
+				.tracePoint("ENTRY", Activator.traceCore, "GeronimoV11Utils.getWebDeploymentPlan",
 						file);
 
 		if (file.getName().equals(WEB_PLAN_NAME) && file.exists()) {
 			return JAXBUtils.unmarshalFilterDeploymentPlan(file);
 		}
 
-		Trace.tracePoint("EXIT", "GeronimoV11Utils.getWebDeploymentPlan", null);
+		Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoV11Utils.getWebDeploymentPlan", null);
 		return null;
 	}
 
 	public static JAXBElement getOpenEjbDeploymentPlan(IFile file)
 			throws Exception {
-		Trace.tracePoint("ENTRY", "GeronimoV11Utils.getOpenEjbDeploymentPlan",
+		Trace.tracePoint("ENTRY", Activator.traceCore, "GeronimoV11Utils.getOpenEjbDeploymentPlan",
 				file);
 
 		if (file.getName().equals(OPENEJB_PLAN_NAME) && file.exists()) {
 			return JAXBUtils.unmarshalFilterDeploymentPlan(file);
 		}
 
-		Trace.tracePoint("EXIT", "GeronimoV11Utils.getOpenEjbDeploymentPlan",
+		Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoV11Utils.getOpenEjbDeploymentPlan",
 				null);
 		return null;
 	}
 
 	public static JAXBElement getConnectorDeploymentPlan(IFile file)
 			throws Exception {
-		Trace.tracePoint("ENTRY",
+		Trace.tracePoint("ENTRY", Activator.traceCore,
 				"GeronimoV11Utils.getConnectorDeploymentPlan", file);
 
 		if (file.getName().equals(CONNECTOR_PLAN_NAME) && file.exists()) {
 			return JAXBUtils.unmarshalFilterDeploymentPlan(file);
 		}
 
-		Trace.tracePoint("EXIT", "GeronimoV11Utils.getConnectorDeploymentPlan",
+		Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoV11Utils.getConnectorDeploymentPlan",
 				null);
 		return null;
 	}

@@ -17,6 +17,8 @@
 
 package org.apache.geronimo.jee.jaxbmodel;
 
+import org.apache.geronimo.jee.jaxbmodel.internal.Trace;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
@@ -25,7 +27,21 @@ public class Activator extends Plugin {
 
     // The plug-in ID
     public static final String PLUGIN_ID = "org.apache.geronimo.jee.v21.jaxbmodel";
-
+    public static boolean console;
+    public static boolean logOperations;
+    public static boolean traceOperations;
+    
+    static {
+    	try {
+    		console = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.j2ee.v11.jaxbmodel/console"));
+    		logOperations = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.j2ee.v11.jaxbmodel/log/operations"));
+    		traceOperations = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.j2ee.v11.jaxbmodel/trace/operations"));
+    	} catch(NumberFormatException e) {
+    		Trace.trace(Trace.ERROR, e.getMessage(), true);
+    	} catch(NullPointerException e) {
+    		Trace.trace(Trace.ERROR, e.getMessage(), true);
+    	}
+    }
     // The shared instance
     private static Activator plugin;
 

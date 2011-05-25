@@ -93,19 +93,19 @@ public class JAXB21PluginUtils {
             ByteArrayInputStream inBuffer = new ByteArrayInputStream(outBuffer.toByteArray());
             outputStream.write(outBuffer.toByteArray());
         } catch (JAXBException jaxbException) {
-            Trace.tracePoint("JAXBException", "JAXBUtils.marshalDeploymentPlan()");
+            Trace.tracePoint("JAXBException", Activator.logPlugin, "JAXBUtils.marshalDeploymentPlan()");
             throw jaxbException;
         } catch (IOException coreException) {
-            Trace.tracePoint("IOException", "JAXBUtils.marshalDeploymentPlan()");
+            Trace.tracePoint("IOException", Activator.logPlugin, "JAXBUtils.marshalDeploymentPlan()");
             throw coreException;
         } catch (ParserConfigurationException e) {
-            Trace.tracePoint("ParserConfigurationException", "JAXBUtils.marshalDeploymentPlan()");
+            Trace.tracePoint("ParserConfigurationException", Activator.logPlugin, "JAXBUtils.marshalDeploymentPlan()");
             throw e;
         } catch (TransformerConfigurationException e) {
-            Trace.tracePoint("TransformerConfigurationException", "JAXBUtils.marshalDeploymentPlan()");
+            Trace.tracePoint("TransformerConfigurationException", Activator.logPlugin, "JAXBUtils.marshalDeploymentPlan()");
             throw e;
         } catch (TransformerException e) {
-            Trace.tracePoint("TransformerException", "JAXBUtils.marshalDeploymentPlan()");
+            Trace.tracePoint("TransformerException", Activator.logPlugin, "JAXBUtils.marshalDeploymentPlan()");
             throw e;
         }
     }
@@ -122,13 +122,13 @@ public class JAXB21PluginUtils {
             JAXBElement plan = (JAXBElement) unmarshaller.unmarshal(source);
             return plan;
         } catch (JAXBException e) {
-            Trace.tracePoint("JAXBException", "JAXBUtils.unmarshalFilterDeploymentPlan()");
+            Trace.tracePoint("JAXBException", Activator.logPlugin, "JAXBUtils.unmarshalFilterDeploymentPlan()");
             e.printStackTrace();
         } catch (ParserConfigurationException e) {
-            Trace.tracePoint("ParserConfigurationException", "JAXBUtils.unmarshalFilterDeploymentPlan()");
+            Trace.tracePoint("ParserConfigurationException", Activator.logPlugin, "JAXBUtils.unmarshalFilterDeploymentPlan()");
             e.printStackTrace();
         } catch (SAXException e) {
-            Trace.tracePoint("SAXException", "JAXBUtils.unmarshalFilterDeploymentPlan()");
+            Trace.tracePoint("SAXException", Activator.logPlugin, "JAXBUtils.unmarshalFilterDeploymentPlan()");
             e.printStackTrace();
         }
         return null;
@@ -139,7 +139,7 @@ public class JAXB21PluginUtils {
             return JAXBContext.newInstance( 
                     "org.apache.geronimo.system.plugin.model", Activator.class.getClassLoader() );
         } catch (JAXBException e) {
-            Trace.tracePoint("JAXBException", "JAXBContext.newInstance");
+            Trace.tracePoint("JAXBException", Activator.logPlugin, "JAXBContext.newInstance");
             e.printStackTrace();
         }
         return null;

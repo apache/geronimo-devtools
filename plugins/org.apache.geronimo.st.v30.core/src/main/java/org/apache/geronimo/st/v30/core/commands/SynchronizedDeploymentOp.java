@@ -79,7 +79,7 @@ public class SynchronizedDeploymentOp implements ProgressListener,
     }
 
     private synchronized ProgressObject run() throws Exception {
-        Trace.trace(Trace.INFO, "--> run()");
+        Trace.trace(Trace.INFO, "--> run()", Activator.traceCommands);
         
         IStatus ds = command.execute(_monitor);
 
@@ -96,19 +96,19 @@ public class SynchronizedDeploymentOp implements ProgressListener,
 
             po.removeProgressListener(this);
             if (timedOut) {
-                Trace.trace(Trace.SEVERE, "Command Timed Out!");
+                Trace.trace(Trace.ERROR, "Command Timed Out!", Activator.logCommands);
                 status = new MultiStatus(Activator.PLUGIN_ID, 0, "", null);
                 status.add(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, command.getCommandType() + " timed out.", null));
             }
         }
 
-        Trace.trace(Trace.INFO, "<-- run()");
+        Trace.trace(Trace.INFO, "<-- run()", Activator.traceCommands);
         return po;
     }
 
     private synchronized void sendNotification() {
         timedOut = false;
-        Trace.trace(Trace.INFO, "notifyAll()");
+        Trace.trace(Trace.INFO, "notifyAll()", Activator.traceCommands);
         notifyAll();
     }
 
@@ -121,7 +121,7 @@ public class SynchronizedDeploymentOp implements ProgressListener,
         DeploymentStatus deploymentStatus = event.getDeploymentStatus();
         if (deploymentStatus != null) {
             DeploymentStatusMessage dsm = new DeploymentStatusMessage(deploymentStatus);
-            Trace.trace(Trace.INFO, dsm.toString());
+            Trace.trace(Trace.INFO, dsm.toString(), Activator.traceCommands);
             _monitor.subTask(dsm.toString());
             if (command.getCommandType() == deploymentStatus.getCommand()) {
                 if (deploymentStatus.isCompleted()) {

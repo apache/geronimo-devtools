@@ -6,6 +6,7 @@ Bundle-Version: 3.0.0
 Bundle-Activator: org.apache.geronimo.st.v11.core.Activator
 Bundle-Vendor: Apache.org
 Bundle-Localization: plugin
+Import-Package: org.apache.geronimo.runtime.common.log
 Require-Bundle: org.apache.geronimo.runtime.v11,
  org.apache.geronimo.st.core,
  org.apache.geronimo.jaxbmodel.common,

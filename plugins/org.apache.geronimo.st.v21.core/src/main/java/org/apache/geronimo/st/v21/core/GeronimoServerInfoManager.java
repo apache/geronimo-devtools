@@ -37,7 +37,7 @@ public class GeronimoServerInfoManager {
 	}
 
 	private static synchronized void loadExtensionPoints() {
-		Trace.tracePoint("ENTRY", "GeronimoServerInfo.loadExtensionPoints");
+		Trace.tracePoint("ENTRY", Activator.traceCore, "GeronimoServerInfo.loadExtensionPoints");
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IConfigurationElement[] cf = registry.getConfigurationElementsFor(
@@ -55,13 +55,13 @@ public class GeronimoServerInfoManager {
 					}
 				} catch (CoreException e) {
 					Trace.tracePoint("CoreException",
-							"GeronimoServerInfo.loadExtensionPoints");
+							"GeronimoServerInfo.loadExtensionPoints", Activator.logCore);
 					e.printStackTrace();
 				}
 			}
 		}
 
-		Trace.tracePoint("EXIT", "GeronimoServerInfo.loadExtensionPoints");
+		Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoServerInfo.loadExtensionPoints");
 	}
 	 
 

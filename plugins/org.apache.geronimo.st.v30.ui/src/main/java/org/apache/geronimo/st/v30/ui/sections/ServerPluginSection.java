@@ -17,6 +17,7 @@
 package org.apache.geronimo.st.v30.ui.sections;
 
 import org.apache.geronimo.st.v30.core.operations.GeronimoServerPluginManager;
+import org.apache.geronimo.st.v30.ui.Activator;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.apache.geronimo.st.v30.ui.internal.Trace;
 import org.apache.geronimo.st.v30.ui.wizards.ServerCustomAssemblyWizard;
@@ -56,7 +57,7 @@ public class ServerPluginSection extends AbstractServerEditorSection {
     public void createSection(Composite parent) {
         super.createSection(parent);
     
-        Trace.tracePoint("Entry", "ServerPluginSection.createSection", parent);
+        Trace.tracePoint("Entry", Activator.traceSections, "ServerPluginSection.createSection", parent);
     
         FormToolkit toolkit = getFormToolkit(parent.getDisplay());
         
@@ -121,7 +122,7 @@ public class ServerPluginSection extends AbstractServerEditorSection {
             }
         });
     
-        Trace.tracePoint("Exit", "ServerPluginSection.createSection");
+        Trace.tracePoint("Exit", Activator.traceSections, "ServerPluginSection.createSection");
     }
 
     private boolean isServerRunning () {

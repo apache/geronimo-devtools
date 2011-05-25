@@ -23,6 +23,7 @@ import javax.xml.bind.JAXBException;
 
 import org.apache.geronimo.jaxbmodel.common.operations.JAXBUtils;
 import org.apache.geronimo.st.core.GeronimoUtils;
+import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.ui.internal.Trace;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -94,10 +95,10 @@ public abstract class AbstractGeronimoFormContentLoader implements IGeronimoForm
 				if (runtime == null) return null;
 				version = runtime.getRuntimeType().getVersion();
 			} catch (CoreException e) {
-                Trace.tracePoint("CoreException", this.getClass().getSimpleName() + ".getVersion");
+                Trace.tracePoint("CoreException", Activator.logEditors, this.getClass().getSimpleName() + ".getVersion");
 				e.printStackTrace();
 			} catch (IllegalArgumentException ie) {
-                Trace.tracePoint("IllegalArgumentException", this.getClass().getSimpleName() + ".getVersion");
+                Trace.tracePoint("IllegalArgumentException", Activator.logEditors, this.getClass().getSimpleName() + ".getVersion");
 			    throw new IllegalArgumentException("The project [" + project.getName() + "] does not have a Targeted Runtime specified.");
             }
 		}

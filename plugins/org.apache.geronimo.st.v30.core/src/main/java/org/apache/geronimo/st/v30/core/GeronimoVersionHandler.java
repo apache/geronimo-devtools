@@ -34,9 +34,9 @@ public class GeronimoVersionHandler implements IGeronimoVersionHandler {
      * @see org.apache.geronimo.st.core.IGeronimoVersionHandler#getConfigID(org.eclipse.wst.server.core.IModule)
      */
     public String getConfigID(IModule module) throws Exception {
-        Trace.tracePoint("Entry", "GeronimoVersionHandler.getConfigID", module);
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoVersionHandler.getConfigID", module);
 
-        Trace.tracePoint("Exit ", "GeronimoVersionHandler.getConfigID", GeronimoUtils.getConfigId(module));
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoVersionHandler.getConfigID", GeronimoUtils.getConfigId(module));
         return GeronimoUtils.getConfigId(module);
     }
     
@@ -44,9 +44,9 @@ public class GeronimoVersionHandler implements IGeronimoVersionHandler {
      * @see org.apache.geronimo.st.core.IGeronimoVersionHandler#createTargetModuleId(java.lang.String)
      */
     public TargetModuleID createTargetModuleId(String configId) {
-        Trace.tracePoint("Entry", "GeronimoVersionHandler.createTargetModuleId", configId);
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoVersionHandler.createTargetModuleId", configId);
     
-        Trace.tracePoint("Exit ", "GeronimoVersionHandler.createTargetModuleId", new TargetModuleIDImpl(null, configId));
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoVersionHandler.createTargetModuleId", new TargetModuleIDImpl(null, configId));
         return new TargetModuleIDImpl(null, configId);
     }
 }

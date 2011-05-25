@@ -27,6 +27,7 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 import org.apache.geronimo.st.core.internal.Trace;
+import org.apache.geronimo.st.core.Activator;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -237,7 +238,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 
 			return new URL(url);
 		} catch (Exception e) {
-			Trace.trace(Trace.SEVERE, "Could not get root URL", e);
+			Trace.trace(Trace.ERROR, "Could not get root URL", e, Activator.logCore);
 			return null;
 		}
 
@@ -392,6 +393,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 	 * @see org.eclipse.wst.server.core.model.ServerDelegate#setDefaults(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public void setDefaults(IProgressMonitor monitor) {
+		Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.setDefaults", monitor);
 		setAdminID("system");
 		setAdminPassword("manager");
 		setHTTPPort("8080");
@@ -404,6 +406,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 		setInPlaceSharedLib(false);
 		setRunFromWorkspace(false);
 		setSelectClasspathContainers(false);
+		Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerDelegate.setDefaults", monitor);
 	}
 
 	public String getInstanceProperty(String name) {

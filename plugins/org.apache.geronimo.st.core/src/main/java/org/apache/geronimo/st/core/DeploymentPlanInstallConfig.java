@@ -41,7 +41,7 @@ public class DeploymentPlanInstallConfig {
     {
         public Object create()
         {
-        	Trace.tracePoint("Entry/Exit", "DeploymentPlanInstallConfig.create");
+        	Trace.tracePoint("Entry/Exit", Activator.traceCore, "DeploymentPlanInstallConfig.create");
         	
         	enableGenerationDDByDefault();
         	

@@ -16,6 +16,8 @@
  */
 package org.apache.geronimo.st.v21.ui;
 
+import org.apache.geronimo.st.v21.ui.internal.Trace;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -29,10 +31,38 @@ public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.apache.geronimo.st.v21.ui";
-
+	public static boolean console;
+	public static boolean logWizards;
+	public static boolean logEditors;
+	public static boolean logPages;
+	public static boolean logSections;
+	
+	public static boolean traceWizards;
+	public static boolean traceEditors;
+	public static boolean tracePages;
+	public static boolean traceSections;
+	
+	static {
+		try {
+			console = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/console"));
+			
+			logWizards = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/log/wizards"));
+			logEditors = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/log/editors"));
+			logPages = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/log/pages"));
+			logSections = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/log/sections"));
+			
+			traceWizards = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/trace/wizards"));
+			traceEditors = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/trace/editors"));
+			tracePages = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/trace/pages"));
+			traceSections = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/trace/sections"));
+		} catch(NumberFormatException e) {
+    		Trace.trace(Trace.ERROR, e.getMessage(), true);
+    	} catch(NullPointerException e) {
+    		Trace.trace(Trace.ERROR, e.getMessage(), true);
+    	}
+	}
 	// The shared instance
 	private static Activator plugin;
-
 	/**
 	 * The constructor
 	 */

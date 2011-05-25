@@ -210,7 +210,7 @@ public class DeploymentUtils {
 		String publishedId = ModuleArtifactMapper.getInstance().resolve(server, module);
 		String query = publishedId != null ? publishedId : currentId;
 		
-		Trace.trace(Trace.INFO, "currentConfigId = " + currentId + " previousConfigId = " + publishedId);
+		Trace.trace(Trace.INFO, "currentConfigId = " + currentId + " previousConfigId = " + publishedId, Activator.traceCore);
 		
 		DeploymentManager dm = DeploymentCommandFactory.getDeploymentManager(server);
 		
@@ -218,7 +218,7 @@ public class DeploymentUtils {
 			getTargetModuleID(dm, query);
 			return query;
 		} catch (TargetModuleIdNotFoundException e) {
-			Trace.trace(Trace.INFO, e.getMessage());
+			Trace.trace(Trace.INFO, e.getMessage(), Activator.traceCore);
 		}
 		
 		if(query != currentId) {
@@ -226,7 +226,7 @@ public class DeploymentUtils {
 				getTargetModuleID(dm, currentId);
 				return currentId;
 			} catch (TargetModuleIdNotFoundException e) {
-				Trace.trace(Trace.INFO, e.getMessage());
+				Trace.trace(Trace.INFO, e.getMessage(), Activator.traceCore);
 			}
 		}
 		
@@ -286,7 +286,7 @@ public class DeploymentUtils {
 		if (ids != null) {
 			for (int i = 0; i < ids.length; i++) {
 				if (ids[i].getModuleID().equals(configId)) {
-					Trace.trace(Trace.INFO, "Found configuration " + configId +  " on server.");
+					Trace.trace(Trace.INFO, "Found configuration " + configId +  " on server.", Activator.traceCore);
 					return ids[i];
 				}
 			}

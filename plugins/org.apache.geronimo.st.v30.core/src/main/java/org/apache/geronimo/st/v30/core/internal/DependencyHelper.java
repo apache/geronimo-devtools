@@ -35,6 +35,7 @@ import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.jee.deployment.ObjectFactory;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.web.WebApp;
+import org.apache.geronimo.st.v30.core.Activator;
 import org.apache.geronimo.st.v30.core.DeploymentUtils;
 import org.apache.geronimo.st.v30.core.GeronimoUtils;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBUtils;
@@ -82,7 +83,7 @@ public class DependencyHelper {
      * @return List of reordered modules and deltaKind (or input if no change)
      */
     public List reorderModules(IServer server, List modules, List deltaKind) {
-        Trace.tracePoint("Entry", "DependencyHelper.reorderModules", modules, deltaKind);
+        Trace.tracePoint("Entry", Activator.traceInternal, "DependencyHelper.reorderModules", modules, deltaKind);
 
         // provide a cache
         ConcurrentHashMap<String, Boolean> verifiedModules = new ConcurrentHashMap<String, Boolean>();
@@ -91,7 +92,7 @@ public class DependencyHelper {
             List reorderedLists = new ArrayList(2);
             reorderedLists.add(modules);
             reorderedLists.add(deltaKind);
-            Trace.tracePoint("Exit ", "DependencyHelper.reorderModules", reorderedLists);
+            Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.reorderModules", reorderedLists);
             return reorderedLists;
         }
 
@@ -221,7 +222,7 @@ public class DependencyHelper {
         reorderedLists.add(reorderedModules);
         reorderedLists.add(reorderedKinds);
 
-        Trace.tracePoint("Exit ", "DependencyHelper.reorderModules", reorderedLists);
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.reorderModules", reorderedLists);
         return reorderedLists;
     }
 
@@ -233,10 +234,10 @@ public class DependencyHelper {
      * @return List of JAXBElements (or input if no change)
      */
     public List<JAXBElement> reorderJAXBElements(List<JAXBElement> jaxbElements) {
-        Trace.tracePoint("Entry", "DependencyHelper.reorderModules", jaxbElements);
+        Trace.tracePoint("Entry", Activator.traceInternal, "DependencyHelper.reorderModules", jaxbElements);
 
         if (jaxbElements.size() == 0) {
-            Trace.tracePoint("Exit ", "DependencyHelper.reorderModules", jaxbElements);
+            Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.reorderModules", jaxbElements);
             return jaxbElements;
         }
 
@@ -313,7 +314,7 @@ public class DependencyHelper {
         //
         // Return List of JAXBElements
         //
-        Trace.tracePoint("Exit ", "DependencyHelper.reorderModules", reorderedJAXBElements);
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.reorderModules", reorderedJAXBElements);
         return reorderedJAXBElements;
     }
 
@@ -339,10 +340,10 @@ public class DependencyHelper {
      * @param terminatingArtifact
      */
     private void processParents(Set parents, Artifact terminatingArtifact) {
-        Trace.tracePoint("Enter", "DependencyHelper.processParents", parents, terminatingArtifact);
+        Trace.tracePoint("Enter", Activator.traceInternal, "DependencyHelper.processParents", parents, terminatingArtifact);
 
         if (parents == null) {
-            Trace.tracePoint("Exit ", "DependencyHelper.processParents", null);
+            Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.processParents", null);
             return;
         }
         for (Iterator ii = parents.iterator(); ii.hasNext();) {
@@ -369,7 +370,7 @@ public class DependencyHelper {
             }
         }
 
-        Trace.tracePoint("Exit ", "DependencyHelper.processParents");
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.processParents");
     }
 
     /**
@@ -381,7 +382,7 @@ public class DependencyHelper {
      * @return Environment
      */
     private Environment getEnvironment(IModule module) {
-        Trace.tracePoint("Enter", "DependencyHelper.getEnvironment", module);
+        Trace.tracePoint("Enter", Activator.traceInternal, "DependencyHelper.getEnvironment", module);
 
         // if module's environment is in the cache, get it from the cache
         if (environmentCache.containsKey(module)) {
@@ -426,7 +427,7 @@ public class DependencyHelper {
             environmentCache.put(module, environment);
         }
 
-        Trace.tracePoint("Exit ", "DependencyHelper.getEnvironment", environment);
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getEnvironment", environment);
         return environment;
     }
 
@@ -438,7 +439,7 @@ public class DependencyHelper {
      * @return IModule[]
      */
     private IModule[] getModule(Artifact artifact) {
-        Trace.tracePoint("Enter", "DependencyHelper.getModule", artifact);
+        Trace.tracePoint("Enter", Activator.traceInternal, "DependencyHelper.getModule", artifact);
 
         for (int ii = 0; ii < inputModules.size(); ii++) {
             IModule[] module = (IModule[]) inputModules.get(ii);
@@ -447,13 +448,13 @@ public class DependencyHelper {
             if (environment != null) {
                 Artifact moduleArtifact = environment.getModuleId();
                 if (artifact.equals(moduleArtifact)) {
-                    Trace.tracePoint("Exit ", "DependencyHelper.getModule", module);
+                    Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getModule", module);
                     return module;
                 }
             }
         }
 
-        Trace.tracePoint("Exit ", "DependencyHelper.getModule", null);
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getModule", null);
         return null;
     }
 
@@ -465,7 +466,7 @@ public class DependencyHelper {
      * @return int
      */
     private int getDeltaKind(Artifact artifact) {
-        Trace.tracePoint("Enter", "DependencyHelper.getDeltaKind", artifact);
+        Trace.tracePoint("Enter", Activator.traceInternal, "DependencyHelper.getDeltaKind", artifact);
 
         for (int ii = 0; ii < inputModules.size(); ii++) {
             IModule[] module = (IModule[]) inputModules.get(ii);
@@ -474,12 +475,12 @@ public class DependencyHelper {
             if (environment != null) {
                 Artifact moduleArtifact = environment.getModuleId();
                 if (artifact.equals(moduleArtifact)) {
-                    Trace.tracePoint("Exit ", "DependencyHelper.getDeltaKind", moduleDeltaKind);
+                    Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getDeltaKind", moduleDeltaKind);
                     return moduleDeltaKind;
                 }
             }
         }
-        Trace.tracePoint("Exit ", "DependencyHelper.getDeltaKind", 0);
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getDeltaKind", 0);
         return 0;
     }
 
@@ -492,13 +493,13 @@ public class DependencyHelper {
      * @return WebApp
      */
     private JAXBElement<WebApp> getWebDeploymentPlan(IModule module) {
-        Trace.tracePoint("Enter", "DependencyHelper.getWebDeploymentPlan", module);
+        Trace.tracePoint("Enter", Activator.traceInternal, "DependencyHelper.getWebDeploymentPlan", module);
 
         IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
         IFile file = GeronimoUtils.getWebDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.WEB_PLAN_NAME) && file.exists()) {
             try {
-                Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan",
+                Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getWebDeploymentPlan",
                         JAXBUtils.unmarshalFilterDeploymentPlan(file));
                 return JAXBUtils.unmarshalFilterDeploymentPlan(file);
             } catch (Exception e) {
@@ -507,7 +508,7 @@ public class DependencyHelper {
 
         }
 
-        Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan", null);
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getWebDeploymentPlan", null);
         return null;
     }
 
@@ -520,13 +521,13 @@ public class DependencyHelper {
      * @return OpenEjbJar
      */
     private JAXBElement<OpenejbJar> getOpenEjbDeploymentPlan(IModule module) {
-        Trace.tracePoint("Enter", "DependencyHelper.getOpenEjbDeploymentPlan", module);
+        Trace.tracePoint("Enter", Activator.traceInternal, "DependencyHelper.getOpenEjbDeploymentPlan", module);
 
         IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
         IFile file = GeronimoUtils.getOpenEjbDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.OPENEJB_PLAN_NAME) && file.exists()) {
             try {
-                Trace.tracePoint("Exit ", "DependencyHelper.getOpenEjbDeploymentPlan",
+                Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getOpenEjbDeploymentPlan",
                         JAXBUtils.unmarshalFilterDeploymentPlan(file));
             } catch (Exception e) {
                 // ignore it, just indicate error by returning null
@@ -538,7 +539,7 @@ public class DependencyHelper {
             }
         }
 
-        Trace.tracePoint("Exit ", "DependencyHelper.getOpenEjbDeploymentPlan", null);
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getOpenEjbDeploymentPlan", null);
         return null;
     }
 
@@ -551,13 +552,13 @@ public class DependencyHelper {
      * @return ApplicationClient
      */
     private JAXBElement<ApplicationClient> getAppClientDeploymentPlan(IModule module) {
-        Trace.tracePoint("Enter", "DependencyHelper.getWebDeploymentPlan", module);
+        Trace.tracePoint("Enter", Activator.traceInternal, "DependencyHelper.getWebDeploymentPlan", module);
 
         IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
         IFile file = GeronimoUtils.getApplicationClientDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.APP_CLIENT_PLAN_NAME) && file.exists()) {
             try {
-                Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan",
+                Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getWebDeploymentPlan",
                         JAXBUtils.unmarshalFilterDeploymentPlan(file));
                 return JAXBUtils.unmarshalFilterDeploymentPlan(file);
             } catch (Exception e) {
@@ -566,7 +567,7 @@ public class DependencyHelper {
 
         }
 
-        Trace.tracePoint("Exit ", "DependencyHelper.getWebDeploymentPlan", null);
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getWebDeploymentPlan", null);
         return null;
     }
 
@@ -579,13 +580,13 @@ public class DependencyHelper {
      * @return Application
      */
     private JAXBElement<Application> getApplicationDeploymentPlan(IModule module) {
-        Trace.tracePoint("Enter", "DependencyHelper.getApplicationDeploymentPlan", module);
+        Trace.tracePoint("Enter", Activator.traceInternal, "DependencyHelper.getApplicationDeploymentPlan", module);
 
         IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
         IFile file = GeronimoUtils.getApplicationDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.APP_PLAN_NAME) && file.exists()) {
             try {
-                Trace.tracePoint("Exit ", "DependencyHelper.getApplicationDeploymentPlan",
+                Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getApplicationDeploymentPlan",
                         JAXBUtils.unmarshalFilterDeploymentPlan(file));
                 return JAXBUtils.unmarshalFilterDeploymentPlan(file);
             } catch (Exception e) {
@@ -594,7 +595,7 @@ public class DependencyHelper {
 
         }
 
-        Trace.tracePoint("Exit ", "DependencyHelper.getApplicationDeploymentPlan", null);
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getApplicationDeploymentPlan", null);
         return null;
     }
 
@@ -607,13 +608,13 @@ public class DependencyHelper {
      * @return Application
      */
     private JAXBElement<Connector> getConnectorDeploymentPlan(IModule module) {
-        Trace.tracePoint("Enter", "DependencyHelper.getConnectorDeploymentPlan", module);
+        Trace.tracePoint("Enter", Activator.traceInternal, "DependencyHelper.getConnectorDeploymentPlan", module);
 
         IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
         IFile file = GeronimoUtils.getConnectorDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.CONNECTOR_PLAN_NAME) && file.exists()) {
             try {
-                Trace.tracePoint("Exit ", "DependencyHelper.getConnectorDeploymentPlan",
+                Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getConnectorDeploymentPlan",
                         JAXBUtils.unmarshalFilterDeploymentPlan(file));
                 return JAXBUtils.unmarshalFilterDeploymentPlan(file);
             } catch (Exception e) {
@@ -622,7 +623,7 @@ public class DependencyHelper {
 
         }
 
-        Trace.tracePoint("Exit ", "DependencyHelper.getConnectorDeploymentPlan", null);
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getConnectorDeploymentPlan", null);
         return null;
     }
 
@@ -635,10 +636,10 @@ public class DependencyHelper {
      * @param terminatingArtifact
      */
     private void processJaxbParents(Set parents, Artifact terminatingArtifact) {
-        Trace.tracePoint("Enter", "DependencyHelper.processJaxbParents", parents, terminatingArtifact);
+        Trace.tracePoint("Enter", Activator.traceInternal, "DependencyHelper.processJaxbParents", parents, terminatingArtifact);
 
         if (parents == null) {
-            Trace.tracePoint("Exit ", "DependencyHelper.processJaxbParents", null);
+            Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.processJaxbParents", null);
             return;
         }
         for (Iterator ii = parents.iterator(); ii.hasNext();) {
@@ -665,7 +666,7 @@ public class DependencyHelper {
             }
         }
 
-        Trace.tracePoint("Exit ", "DependencyHelper.processJaxbParents");
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.processJaxbParents");
     }
 
     /**
@@ -677,7 +678,7 @@ public class DependencyHelper {
      * @return Environment
      */
     private Environment getEnvironment(JAXBElement jaxbElement) {
-        Trace.tracePoint("Enter", "DependencyHelper.getEnvironment", jaxbElement);
+        Trace.tracePoint("Enter", Activator.traceInternal, "DependencyHelper.getEnvironment", jaxbElement);
 
         Environment environment = null;
         Object plan = jaxbElement.getValue();
@@ -693,7 +694,7 @@ public class DependencyHelper {
             }
         }
 
-        Trace.tracePoint("Exit ", "DependencyHelper.getEnvironment", environment);
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getEnvironment", environment);
         return environment;
     }
 
@@ -705,21 +706,21 @@ public class DependencyHelper {
      * @return JAXBElement
      */
     private JAXBElement getJaxbElement(Artifact artifact) {
-        Trace.tracePoint("Enter", "DependencyHelper.getJaxbElement", artifact);
+        Trace.tracePoint("Enter", Activator.traceInternal, "DependencyHelper.getJaxbElement", artifact);
 
         for (JAXBElement jaxbElement : inputJAXBElements) {
             Environment environment = getEnvironment(jaxbElement);
             if (environment != null) {
                 Artifact jaxbArtifact = environment.getModuleId();
                 if (artifact.equals(jaxbArtifact)) {
-                    Trace.tracePoint("Exit ", "DependencyHelper.getJaxbElement", jaxbElement);
+                    Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getJaxbElement", jaxbElement);
                     return jaxbElement;
                 }
             }
         }
 
         // TODO: Query the server searching for missing dependencies
-        Trace.tracePoint("Exit ", "DependencyHelper.getJaxbElement", null);
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getJaxbElement", null);
         return null;
     }
 }

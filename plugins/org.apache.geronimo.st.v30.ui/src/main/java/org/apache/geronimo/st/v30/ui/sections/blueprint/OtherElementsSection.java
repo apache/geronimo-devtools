@@ -15,6 +15,7 @@ import org.apache.geronimo.osgi.blueprint.TreferenceList;
 import org.apache.geronimo.osgi.blueprint.Tservice;
 import org.apache.geronimo.st.ui.internal.Trace;
 import org.apache.geronimo.st.v30.core.jaxb.BlueprintJAXBHelper;
+import org.apache.geronimo.st.v30.ui.Activator;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.apache.geronimo.st.v30.ui.wizards.blueprint.BlueprintElementWizardProxy;
 import org.eclipse.jface.wizard.Wizard;
@@ -117,11 +118,11 @@ public class OtherElementsSection extends AbstractBlueprintTreeSectionPart {
             try {
                 BlueprintJAXBHelper.detachFromParent(object, anItem, field);
             } catch (IllegalArgumentException e) {
-                Trace.trace(Trace.SEVERE, "can't remove object "+ anItem, e);
+                Trace.trace(Trace.ERROR, "can't remove object "+ anItem, e, Activator.logBlueprint);
             } catch (IllegalAccessException e) {
-                Trace.trace(Trace.SEVERE, "can't remove object "+ anItem, e);
+                Trace.trace(Trace.ERROR, "can't remove object "+ anItem, e, Activator.logBlueprint);
             } catch (InvocationTargetException e) {
-                Trace.trace(Trace.SEVERE, "can't remove object "+ anItem, e);
+                Trace.trace(Trace.ERROR, "can't remove object "+ anItem, e, Activator.logBlueprint);
             }
         } 
     }
@@ -149,9 +150,9 @@ public class OtherElementsSection extends AbstractBlueprintTreeSectionPart {
                 excludedList.add(getBlueprint().getClass().getDeclaredField("description"));
                 excludedList.add(getBlueprint().getClass().getDeclaredField("typeConverters"));
             } catch (SecurityException e) {
-                Trace.trace(Trace.SEVERE, "Can't find field! ", e);
+                Trace.trace(Trace.ERROR, "Can't find field! ", e, Activator.logBlueprint);
             } catch (NoSuchFieldException e) {
-                Trace.trace(Trace.SEVERE, "Can't find field! ", e);
+                Trace.trace(Trace.ERROR, "Can't find field! ", e, Activator.logBlueprint);
             }
             return excludedList;
         }

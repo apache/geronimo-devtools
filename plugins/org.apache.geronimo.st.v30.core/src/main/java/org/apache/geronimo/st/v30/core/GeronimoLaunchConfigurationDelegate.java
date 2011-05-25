@@ -95,8 +95,8 @@ public class GeronimoLaunchConfigurationDelegate extends AbstractJavaLaunchConfi
         vmArgs = vmArgs.replace("$(JRE_HOME)", jreHome.getAbsolutePath());
         vmArgs = vmArgs.replace("$(GERONIMO_HOME)", server.getRuntime().getLocation().toOSString());
         
-        Trace.trace(Trace.INFO, "vmArgs=" + vmArgs);
-        Trace.trace(Trace.INFO, "pgmArgs=" + pgmArgs);
+        Trace.trace(Trace.INFO, "vmArgs=" + vmArgs, Activator.traceCore);
+        Trace.trace(Trace.INFO, "pgmArgs=" + pgmArgs, Activator.traceCore);
         
         ExecutionArguments execArgs = new ExecutionArguments(vmArgs, pgmArgs);
         Map vmAttributesMap = getVMSpecificAttributesMap(configuration);

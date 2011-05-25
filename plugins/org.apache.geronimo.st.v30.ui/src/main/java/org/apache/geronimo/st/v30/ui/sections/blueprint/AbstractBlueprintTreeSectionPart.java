@@ -62,15 +62,15 @@ public abstract class AbstractBlueprintTreeSectionPart extends AbstractTreeSecti
         try {
             BlueprintJAXBHelper.setAttributeValue(selectedObject,attrMap);
         } catch (SecurityException e) {
-            Trace.trace(Trace.SEVERE, "can't set attribute value for object "+selectedObject, e);
+            Trace.trace(Trace.ERROR, "can't set attribute value for object "+selectedObject, e, Activator.logBlueprint);
         } catch (IllegalArgumentException e) {
-            Trace.trace(Trace.SEVERE, "can't set attribute value for object "+selectedObject, e);
+            Trace.trace(Trace.ERROR, "can't set attribute value for object "+selectedObject, e, Activator.logBlueprint);
         } catch (NoSuchMethodException e) {
-            Trace.trace(Trace.SEVERE, "can't set attribute value for object "+selectedObject, e);
+            Trace.trace(Trace.ERROR, "can't set attribute value for object "+selectedObject, e, Activator.logBlueprint);
         } catch (IllegalAccessException e) {
-            Trace.trace(Trace.SEVERE, "can't set attribute value for object "+selectedObject, e);
+            Trace.trace(Trace.ERROR, "can't set attribute value for object "+selectedObject, e, Activator.logBlueprint);
         } catch (InvocationTargetException e) {
-            Trace.trace(Trace.SEVERE, "can't set attribute value for object "+selectedObject, e);
+            Trace.trace(Trace.ERROR, "can't set attribute value for object "+selectedObject, e, Activator.logBlueprint);
         }
         
     }
@@ -81,30 +81,30 @@ public abstract class AbstractBlueprintTreeSectionPart extends AbstractTreeSecti
          try {
             BlueprintJAXBHelper.setAttributeValue(newObject,attrMap);
         } catch (SecurityException e) {
-            Trace.trace(Trace.SEVERE, "can't set attribute value for object "+newObject, e);
+            Trace.trace(Trace.ERROR, "can't set attribute value for object "+newObject, e, Activator.logBlueprint);
         } catch (IllegalArgumentException e) {
-            Trace.trace(Trace.SEVERE, "can't set attribute value for object "+newObject, e);
+            Trace.trace(Trace.ERROR, "can't set attribute value for object "+newObject, e, Activator.logBlueprint);
         } catch (NoSuchMethodException e) {
-            Trace.trace(Trace.SEVERE, "can't set attribute value for object "+newObject, e);
+            Trace.trace(Trace.ERROR, "can't set attribute value for object "+newObject, e, Activator.logBlueprint);
         } catch (IllegalAccessException e) {
-            Trace.trace(Trace.SEVERE, "can't set attribute value for object "+newObject, e);
+            Trace.trace(Trace.ERROR, "can't set attribute value for object "+newObject, e, Activator.logBlueprint);
         } catch (InvocationTargetException e) {
-            Trace.trace(Trace.SEVERE, "can't set attribute value for object "+newObject, e);
+            Trace.trace(Trace.ERROR, "can't set attribute value for object "+newObject, e, Activator.logBlueprint);
         }
          try {
             BlueprintJAXBHelper.attachToParent(parentObject,newObject,clazzWrapper.getField());
         } catch (SecurityException e) {
-            Trace.trace(Trace.SEVERE, "can't add new object "+newObject, e);
+            Trace.trace(Trace.ERROR, "can't add new object "+newObject, e, Activator.logBlueprint);
         } catch (IllegalArgumentException e) {
-            Trace.trace(Trace.SEVERE, "can't add new object "+newObject, e);
+            Trace.trace(Trace.ERROR, "can't add new object "+newObject, e, Activator.logBlueprint);
         } catch (NoSuchFieldException e) {
-            Trace.trace(Trace.SEVERE, "can't add new object "+newObject, e);
+            Trace.trace(Trace.ERROR, "can't add new object "+newObject, e, Activator.logBlueprint);
         } catch (NoSuchMethodException e) {
-            Trace.trace(Trace.SEVERE, "can't add new object "+newObject, e);
+            Trace.trace(Trace.ERROR, "can't add new object "+newObject, e, Activator.logBlueprint);
         } catch (IllegalAccessException e) {
-            Trace.trace(Trace.SEVERE, "can't add new object "+newObject, e);
+            Trace.trace(Trace.ERROR, "can't add new object "+newObject, e, Activator.logBlueprint);
         } catch (InvocationTargetException e) {
-            Trace.trace(Trace.SEVERE, "can't add new object "+newObject, e);
+            Trace.trace(Trace.ERROR, "can't add new object "+newObject, e, Activator.logBlueprint);
         }
         
         treeFieldMap.put(newObject, clazzWrapper.getField());
@@ -140,15 +140,15 @@ public abstract class AbstractBlueprintTreeSectionPart extends AbstractTreeSecti
                         List allSubElements = BlueprintJAXBHelper.getAllSubElements(parentElement);
                         return allSubElements.toArray(new Object[0]);
                     } catch (SecurityException e) {
-                        Trace.trace(Trace.SEVERE, "get child elements error! ", e);
+                        Trace.trace(Trace.ERROR, "get child elements error! ", e, Activator.logBlueprint);
                     } catch (IllegalArgumentException e) {
-                        Trace.trace(Trace.SEVERE, "get child elements error! ", e);
+                        Trace.trace(Trace.ERROR, "get child elements error! ", e, Activator.logBlueprint);
                     } catch (NoSuchMethodException e) {
-                        Trace.trace(Trace.SEVERE, "get child elements error! ", e);
+                        Trace.trace(Trace.ERROR, "get child elements error! ", e, Activator.logBlueprint);
                     } catch (IllegalAccessException e) {
-                        Trace.trace(Trace.SEVERE, "get child elements error! ", e);
+                        Trace.trace(Trace.ERROR, "get child elements error! ", e, Activator.logBlueprint);
                     } catch (InvocationTargetException e) {
-                        Trace.trace(Trace.SEVERE, "get child elements error! ", e);
+                        Trace.trace(Trace.ERROR, "get child elements error! ", e, Activator.logBlueprint);
                     }
                     
                 }
@@ -190,15 +190,15 @@ public abstract class AbstractBlueprintTreeSectionPart extends AbstractTreeSecti
                         }
                         
                     } catch (SecurityException e) {
-                        Trace.trace(Trace.SEVERE, "get child elements error! ", e);
+                        Trace.trace(Trace.ERROR, "get child elements error! ", e, Activator.logBlueprint);
                     } catch (IllegalArgumentException e) {
-                        Trace.trace(Trace.SEVERE, "get child elements error! ", e);
+                        Trace.trace(Trace.ERROR, "get child elements error! ", e, Activator.logBlueprint);
                     } catch (NoSuchMethodException e) {
-                        Trace.trace(Trace.SEVERE, "get child elements error! ", e);
+                        Trace.trace(Trace.ERROR, "get child elements error! ", e, Activator.logBlueprint);
                     } catch (IllegalAccessException e) {
-                        Trace.trace(Trace.SEVERE, "get child elements error! ", e);
+                        Trace.trace(Trace.ERROR, "get child elements error! ", e, Activator.logBlueprint);
                     } catch (InvocationTargetException e) {
-                        Trace.trace(Trace.SEVERE, "get child elements error! ", e);
+                        Trace.trace(Trace.ERROR, "get child elements error! ", e, Activator.logBlueprint);
                     }
                     
 

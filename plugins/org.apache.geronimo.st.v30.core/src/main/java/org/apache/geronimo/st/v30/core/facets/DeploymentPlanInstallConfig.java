@@ -16,6 +16,7 @@
  */
 package org.apache.geronimo.st.v30.core.facets;
 
+import org.apache.geronimo.st.v30.core.Activator;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEPlugin;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEPreferences;
@@ -44,7 +45,7 @@ public class DeploymentPlanInstallConfig {
     public static final class Factory implements IActionConfigFactory {
     
         public Object create() {
-            Trace.tracePoint("Entry/Exit", "DeploymentPlanInstallConfig.create");
+            Trace.tracePoint("Entry/Exit", Activator.traceFacets, "DeploymentPlanInstallConfig.create");
             
             enableGenerationDDByDefault();
             

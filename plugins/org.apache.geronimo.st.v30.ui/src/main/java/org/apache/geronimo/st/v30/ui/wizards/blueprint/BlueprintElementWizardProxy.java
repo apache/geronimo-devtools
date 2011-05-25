@@ -11,6 +11,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.geronimo.st.v30.ui.Activator;
 import org.apache.geronimo.st.v30.ui.internal.Messages;
 import org.apache.geronimo.st.ui.internal.Trace;
 import org.apache.geronimo.st.v30.core.jaxb.BlueprintJAXBHelper;
@@ -82,15 +83,15 @@ public class BlueprintElementWizardProxy{
                             count++;
                         }
                     } catch (SecurityException e) {
-                        Trace.trace(Trace.SEVERE, "get child elements error! ", e);
+                        Trace.trace(Trace.ERROR, "get child elements error! ", e, Activator.logWizards);
                     } catch (IllegalArgumentException e) {
-                        Trace.trace(Trace.SEVERE, "get child elements error! ", e);
+                        Trace.trace(Trace.ERROR, "get child elements error! ", e, Activator.logWizards);
                     } catch (NoSuchMethodException e) {
-                        Trace.trace(Trace.SEVERE, "get child elements error! ", e);
+                        Trace.trace(Trace.ERROR, "get child elements error! ", e, Activator.logWizards);
                     } catch (IllegalAccessException e) {
-                        Trace.trace(Trace.SEVERE, "get child elements error! ", e);
+                        Trace.trace(Trace.ERROR, "get child elements error! ", e, Activator.logWizards);
                     } catch (InvocationTargetException e) {
-                        Trace.trace(Trace.SEVERE, "get child elements error! ", e);
+                        Trace.trace(Trace.ERROR, "get child elements error! ", e, Activator.logWizards);
                     }
                     
                 }else{

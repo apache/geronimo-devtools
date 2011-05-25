@@ -42,7 +42,7 @@ public class ClasspathContainersHelper {
     // instance properties in servers.xml
     // 
     public static List<String> queryWorkspace() {
-        Trace.tracePoint("ENTRY", "ClasspathContainersHelper.queryWorkspace");
+        Trace.tracePoint("ENTRY", "ClasspathContainersHelper.queryWorkspace", Activator.traceCore);
 
         ArrayList<String> containers = new ArrayList<String>();
 
@@ -71,7 +71,7 @@ public class ClasspathContainersHelper {
         }
 
         Collections.sort( containers );
-        Trace.tracePoint("EXIT", "ClasspathContainersHelper.queryWorkspace", containers);
+        Trace.tracePoint("EXIT", Activator.traceCore, "ClasspathContainersHelper.queryWorkspace", containers);
         return containers;
     }
 
@@ -80,7 +80,7 @@ public class ClasspathContainersHelper {
     // Query the workspace to find the classapth entries for a specific classpath container,
     // 
     public static List<IClasspathEntry> queryWorkspace( String containerPath ) {
-        Trace.tracePoint("ENTRY", "ClasspathContainersHelper.queryWorkspace", containerPath );
+        Trace.tracePoint("ENTRY", Activator.traceCore, "ClasspathContainersHelper.queryWorkspace", containerPath );
 
         List<IClasspathEntry> classpathEntries = new ArrayList<IClasspathEntry>();
 
@@ -117,7 +117,7 @@ public class ClasspathContainersHelper {
             }
         }
 
-        Trace.tracePoint("EXIT", "ClasspathContainersHelper.queryWorkspace", classpathEntries);
+        Trace.tracePoint("EXIT", Activator.traceCore, "ClasspathContainersHelper.queryWorkspace", classpathEntries);
         return classpathEntries;
     }
 

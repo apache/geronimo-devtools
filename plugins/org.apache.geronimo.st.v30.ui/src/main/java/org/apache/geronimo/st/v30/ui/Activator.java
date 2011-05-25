@@ -23,6 +23,7 @@ import java.util.HashMap;
 
 import org.apache.geronimo.st.v30.ui.internal.Trace;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
@@ -38,7 +39,60 @@ public class Activator extends AbstractUIPlugin {
 
     // The plug-in ID
     public static final String PLUGIN_ID = "org.apache.geronimo.st.v30.ui";
-
+	public static boolean console;
+	public static boolean logUi;
+	public static boolean logActions;
+	public static boolean logCommands;
+	public static boolean logInternal;
+	public static boolean logWizards;
+	public static boolean logEditors;
+	public static boolean logPages;
+	public static boolean logSections;
+	public static boolean logBlueprint;
+	public static boolean logHandlers;
+	
+	public static boolean traceUi;
+	public static boolean traceActions;
+	public static boolean traceCommands;
+	public static boolean traceInternal;
+	public static boolean traceWizards;
+	public static boolean traceEditors;
+	public static boolean tracePages;
+	public static boolean traceSections;
+	public static boolean traceBlueprint;
+	public static boolean traceHandlers;
+	
+	static {
+		try {
+			console = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/console"));
+			
+			logUi = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/log/ui"));
+			logActions = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/log/actions"));
+			logCommands = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/log/commands"));
+			logInternal = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/log/internal"));
+			logWizards = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/log/wizards"));
+			logEditors = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/log/editors"));
+			logPages = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/log/pages"));
+			logSections = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/log/sections"));
+			logBlueprint = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/log/blueprint"));
+			logHandlers = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/log/handlers"));
+			
+			traceUi = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/trace/ui"));
+			traceActions = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/trace/actions"));
+			traceCommands = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/trace/commands"));
+			traceInternal = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/trace/internal"));
+			traceWizards = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/trace/wizards"));
+			traceEditors = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/trace/editors"));
+			tracePages = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/trace/pages"));
+			traceSections = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/trace/sections"));
+			traceBlueprint = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/trace/blueprint"));
+			traceHandlers = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v11.ui/trace/handlers"));
+		} catch(NumberFormatException e) {
+    		Trace.trace(Trace.ERROR, e.getMessage(), true);
+    	} catch(NullPointerException e) {
+    		Trace.trace(Trace.ERROR, e.getMessage(), true);
+    	}
+	}
     // The shared instance
     private static Activator plugin;
 
@@ -140,7 +194,7 @@ public class Activator extends AbstractUIPlugin {
             registry.put(key, id);
             imageDescriptors.put(key, id);
         } catch (Exception e) {
-            Trace.trace(Trace.WARNING, "Error registering image", e);
+            Trace.trace(Trace.WARNING, "Error registering image", e, Activator.logUi);
         }
     }
 

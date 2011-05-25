@@ -184,7 +184,7 @@ public class BlueprintJAXBHelper {
 
                     typeList.add(wrapper);
                 } catch (ClassNotFoundException e) {
-                    Trace.trace(Trace.SEVERE, "can't find type " + typeName + " in blueprint classes", e);
+                    Trace.trace(Trace.ERROR, "can't find type " + typeName + " in blueprint classes", e, Activator.logJaxb );
                 }
 
             }
@@ -496,9 +496,9 @@ public class BlueprintJAXBHelper {
             if (isSetter) return clazz.getMethod(sb.toString(),field.getType());
             else return clazz.getMethod(sb.toString());
         } catch (SecurityException e) {
-           Trace.trace(Trace.SEVERE, "can't get method by field", e);
+           Trace.trace(Trace.ERROR, "can't get method by field", e, Activator.logJaxb);
         } catch (NoSuchMethodException e) {
-           Trace.trace(Trace.SEVERE, "can't get method by field", e);
+           Trace.trace(Trace.ERROR, "can't get method by field", e, Activator.logJaxb);
         }
         
         return null;

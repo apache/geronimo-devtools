@@ -58,7 +58,7 @@ public class GeronimoConnectionFactory {
         if (dm == null) {
             DeploymentFactory factory = getGeronimoServer(server).getDeploymentFactory();
             String deployerURL = getGeronimoServer(server).getDeployerURL();
-            Trace.trace(Trace.INFO, "DeployerURL: " + deployerURL);
+            Trace.trace(Trace.INFO, "DeployerURL: " + deployerURL, Activator.traceCore);
             String user = getGeronimoServer(server).getAdminID();
             String pw = getGeronimoServer(server).getAdminPassword();
             dm = factory.getDeploymentManager(deployerURL, user, pw);
@@ -95,7 +95,7 @@ public class GeronimoConnectionFactory {
     }
 
     public void destroy(IServer server) {
-        Trace.trace(Trace.INFO, "deploymentManager destroy");
+        Trace.trace(Trace.INFO, "deploymentManager destroy", Activator.traceCore);
         connections.remove(server.getId());
     }
 }

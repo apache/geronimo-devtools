@@ -61,7 +61,7 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
 	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public ISourceContainer[] computeSourceContainers(ILaunchConfiguration configuration, IProgressMonitor monitor) throws CoreException {
-		Trace.trace(Trace.INFO, ">> GeronimoSourcePathComputerDelegate.computeSourceContainers()");
+		Trace.trace(Trace.INFO, ">> GeronimoSourcePathComputerDelegate.computeSourceContainers()", Activator.traceCore);
 		
 		IServer server = ServerUtil.getServer(configuration);
 		IModule[] modules = server.getModules();
@@ -88,20 +88,20 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
 		HashSet allContainers = new HashSet(Arrays.asList(defaultContainers));
 		Iterator i = getAdditionalSrcPathComputers().iterator();
 		ILaunchManager mgr = DebugPlugin.getDefault().getLaunchManager();
-		Trace.trace(Trace.INFO, "Total # of unique source containers: " + allContainers.size());
+		Trace.trace(Trace.INFO, "Total # of unique source containers: " + allContainers.size(), Activator.traceCore);
 		while(i.hasNext()) {
 			ISourcePathComputer computer = mgr.getSourcePathComputer((String) i.next());
-			Trace.trace(Trace.INFO, "Invoking Source Path Computer " +  computer.getId());
+			Trace.trace(Trace.INFO, "Invoking Source Path Computer " +  computer.getId(), Activator.traceCore);
 			ISourceContainer[] jsc = computer.computeSourceContainers(configuration, monitor);
 			if(jsc != null) {
-				Trace.trace(Trace.INFO, "Additional Source Containers returned ...");
+				Trace.trace(Trace.INFO, "Additional Source Containers returned ...", Activator.traceCore);
 				for(int j = 0; j < jsc.length; j++) {
 					String name = jsc[j].getName();
-					Trace.trace(Trace.INFO, "name = " + name);
+					Trace.trace(Trace.INFO, "name = " + name, Activator.traceCore);
 				}
 			}
 			allContainers.addAll(Arrays.asList(jsc));
-			Trace.trace(Trace.INFO, "Number # of unique source containers: " + allContainers.size());
+			Trace.trace(Trace.INFO, "Number # of unique source containers: " + allContainers.size(), Activator.traceCore);
 		}
 		
 		//add source container for Geroniom Runtime
@@ -174,7 +174,7 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
 			IConfigurationElement[] extensions = extensionPoint.getConfigurationElements();
 			for (int i = 0; i < extensions.length; i++) {
 				String id = extensions[i].getAttribute("id");
-				Trace.trace(Trace.INFO, "Found extension point " +  id);
+				Trace.trace(Trace.INFO, "Found extension point " +  id, Activator.traceCore);
 				additionalSrcPathComputerIds.add(id);
 			}
 		}

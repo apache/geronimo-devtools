@@ -23,6 +23,7 @@ import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.core.operations.ImportDeploymentPlanDataModelProvider;
 import org.apache.geronimo.st.core.operations.ImportDeploymentPlanOperation;
+import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.ui.internal.Trace;
 import org.apache.geronimo.st.ui.pages.AbstractGeronimoFormPage;
@@ -91,14 +92,14 @@ public abstract class AbstractGeronimoJAXBBasedEditor extends FormEditor {
                 }
             }
         } catch (Exception e) {
-            Trace.trace(Trace.SEVERE, "Error saving", e);
+            Trace.trace(Trace.ERROR, "Error saving", e, Activator.logEditors);
             MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error saving", e.getMessage());
         } finally {
             try {
                 if (is != null)
                     is.close();
             } catch (Exception e) {
-                Trace.trace(Trace.SEVERE, "Error saving", e);
+                Trace.trace(Trace.ERROR, "Error saving", e, Activator.logEditors);
                 MessageDialog.openError(Display.getCurrent().getActiveShell(), "Error saving", e.getMessage());
             }
         }
@@ -188,7 +189,7 @@ public abstract class AbstractGeronimoJAXBBasedEditor extends FormEditor {
             } catch (Exception e) {
                 // if catching an exception , it will try to correct the plan 
                 // or open the plan with default editor
-                Trace.trace(Trace.WARNING, "Error loading deployment plan", e);
+                Trace.trace(Trace.WARNING, "Error loading deployment plan", e, Activator.logEditors);
             }
             
             boolean fix = false;
@@ -210,7 +211,7 @@ public abstract class AbstractGeronimoJAXBBasedEditor extends FormEditor {
                     converted = true;
                 } catch (Exception e) {
                     // conversion failed somehow
-                    Trace.trace(Trace.WARNING, "Error converting deployment plan", e);
+                    Trace.trace(Trace.WARNING, "Error converting deployment plan", e, Activator.logEditors);
                 }
                 
                 if (converted) {
@@ -218,7 +219,7 @@ public abstract class AbstractGeronimoJAXBBasedEditor extends FormEditor {
                         rootJAXBElement = loadFile(fei.getFile());
                     } catch (Exception e) {
                         // still can't load it
-                        Trace.trace(Trace.WARNING, "Error loading converted deployment plan", e);
+                        Trace.trace(Trace.WARNING, "Error loading converted deployment plan", e, Activator.logEditors);
                     }
                 }
                 

@@ -20,6 +20,7 @@ package org.apache.geronimo.st.v30.core.jaxb;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.geronimo.st.v30.core.Activator;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -134,17 +135,17 @@ public class NamespaceFilter extends XMLFilterImpl {
 
     public NamespaceFilter(XMLReader xmlReader) {
         super(xmlReader);
-        Trace.tracePoint("Constructor", "NamespaceFilter", xmlReader);
+        Trace.tracePoint("Constructor", Activator.traceJaxb, "NamespaceFilter", xmlReader);
     }
 
     public void startElement(String uri, String localName, String qname, Attributes atts) throws SAXException {
-        Trace.tracePoint("Entry", "NamespaceFilter.startElement", uri, localName, qname, atts);
+        Trace.tracePoint("Entry", Activator.traceJaxb, "NamespaceFilter.startElement", uri, localName, qname, atts);
 
         if (namespace.containsKey( uri )) {
             uri = namespace.get( uri );
         }
 
-        Trace.tracePoint("Exit ", "NamespaceFilter.startElement", uri, localName, qname, atts);
+        Trace.tracePoint("Exit ", Activator.traceJaxb, "NamespaceFilter.startElement", uri, localName, qname, atts);
         super.startElement(uri, localName, qname, atts);
     }
 }

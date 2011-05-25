@@ -80,7 +80,7 @@ public class JAXB21Utils implements IJAXBUtilsProvider{
                     "org.apache.geronimo.jee.naming:" +
                     "org.apache.geronimo.jee.security:", Activator.class.getClassLoader() );
         } catch (JAXBException e) {
-            Trace.tracePoint("JAXBException", "JAXBContext.newInstance");
+            Trace.tracePoint("JAXBException", Activator.logOperations, "JAXBContext.newInstance");
             e.printStackTrace();
         }
         return null;
@@ -136,22 +136,22 @@ public class JAXB21Utils implements IJAXBUtilsProvider{
                 file.create(inBuffer, true, null);
             }
         } catch (JAXBException jaxbException) {
-            Trace.tracePoint("JAXBException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
+            Trace.tracePoint("JAXBException", Activator.logOperations, "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
             throw jaxbException;
         } catch (CoreException coreException) {
-            Trace.tracePoint("CoreException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
+            Trace.tracePoint("CoreException", Activator.logOperations, "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
             throw coreException;
         } catch (ParserConfigurationException e) {
-        	Trace.tracePoint("ParserConfigurationException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
+        	Trace.tracePoint("ParserConfigurationException", Activator.logOperations, "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
         	throw e;
 		} catch (TransformerConfigurationException e) {
-			Trace.tracePoint("TransformerConfigurationException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
+			Trace.tracePoint("TransformerConfigurationException", Activator.logOperations, "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
 			throw e;
 		} catch (UnsupportedEncodingException e) {
-			Trace.tracePoint("UnsupportedEncodingException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
+			Trace.tracePoint("UnsupportedEncodingException", Activator.logOperations, "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
 			throw e;
 		} catch (TransformerException e) {
-			Trace.tracePoint("TransformerException", "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
+			Trace.tracePoint("TransformerException", Activator.logOperations, "JAXBUtils.marshalDeploymentPlan()", file.getFullPath());
 			throw e;
 		}
     }
@@ -168,16 +168,16 @@ public class JAXB21Utils implements IJAXBUtilsProvider{
             JAXBElement plan = (JAXBElement) unmarshaller.unmarshal(source);
             return plan;
         } catch (JAXBException e) {
-            Trace.tracePoint("JAXBException", "JAXBUtils.unmarshalFilterDeploymentPlan()", file.getFullPath());
+            Trace.tracePoint("JAXBException", Activator.logOperations, "JAXBUtils.unmarshalFilterDeploymentPlan()", file.getFullPath());
             throw e;
         } catch (CoreException e) {
-            Trace.tracePoint("CoreException", "JAXBUtils.unmarshalFilterDeploymentPlan()", file.getFullPath());
+            Trace.tracePoint("CoreException", Activator.logOperations, "JAXBUtils.unmarshalFilterDeploymentPlan()", file.getFullPath());
             throw e;
         } catch (ParserConfigurationException e) {
-            Trace.tracePoint("ParserConfigurationException", "JAXBUtils.unmarshalFilterDeploymentPlan()", file.getFullPath());
+            Trace.tracePoint("ParserConfigurationException", Activator.logOperations, "JAXBUtils.unmarshalFilterDeploymentPlan()", file.getFullPath());
             throw e;
         } catch (SAXException e) {
-            Trace.tracePoint("SAXException", "JAXBUtils.unmarshalFilterDeploymentPlan()", file.getFullPath());
+            Trace.tracePoint("SAXException", Activator.logOperations, "JAXBUtils.unmarshalFilterDeploymentPlan()", file.getFullPath());
             throw e;
         }
     }

@@ -16,6 +16,8 @@
  */
 package org.apache.geronimo.st.v21.core;
 
+import org.apache.geronimo.st.v21.core.internal.Trace;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -31,7 +33,37 @@ public class Activator extends Plugin {
 
 	// The shared instance
 	private static Activator plugin;
+    /* trace and log switchers */
+    public static boolean console;
+    public static boolean logCore;
+    public static boolean logInternal;
+    public static boolean logOperations;
+    public static boolean logPlugin;
+    
+    public static boolean traceCore;
+    public static boolean traceInternal;
+    public static boolean traceOperations;
+    public static boolean tracePlugin;
+    /* end here */
+    static {
+    	try {
+    		console = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v21.core/console"));
+    		logCore = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v21.core/log/core"));
+    		logInternal = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v21.core/log/internal"));
+    		logOperations = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v21.core/log/operations"));
+    		logPlugin = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v21.core/log/plugin"));
+    		
+    		traceCore = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v21.core/trace/core"));
+    		traceInternal = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v21.core/trace/internal"));
+    		traceOperations = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v21.core/trace/operations"));
+    		tracePlugin = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v21.core/trace/plugin"));
+    	} catch(NumberFormatException e) {
+    		Trace.trace(Trace.ERROR, e.getMessage(), true);
+    	} catch(NullPointerException e) {
+    		Trace.trace(Trace.ERROR, e.getMessage(), true);
+    	}
 
+    }
 	/**
 	 * The constructor
 	 */

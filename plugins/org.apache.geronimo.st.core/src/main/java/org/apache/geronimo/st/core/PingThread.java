@@ -73,7 +73,7 @@ public class PingThread extends Thread {
 				ClassLoader cl = ((GeronimoServerBehaviourDelegate) geronimoServer).getContextClassLoader();
 				Thread.currentThread().setContextClassLoader(cl);
 				if (geronimoServer.isFullyStarted()) {
-					Trace.trace(Trace.INFO, "Ping: success");
+					Trace.trace(Trace.INFO, "Ping: success", Activator.traceCore);
 					geronimoServer.setServerStarted();
 					return;
 				}
@@ -81,7 +81,7 @@ public class PingThread extends Thread {
 				Thread.currentThread().setContextClassLoader(old);
 			}
 
-			Trace.trace(Trace.INFO, "Ping: fail");
+			Trace.trace(Trace.INFO, "Ping: fail", Activator.traceCore);
 
 			try {
 				sleep(pingInterval);
@@ -91,7 +91,7 @@ public class PingThread extends Thread {
 		}
 
 		//don't need to show this message to user, since wst Server will show the timeout message to user
-		Trace.trace(Trace.SEVERE, "Ping: Can't ping for server startup.");
+		Trace.trace(Trace.ERROR, "Ping: Can't ping for server startup.", Activator.traceCore);
 		server.stop(false);
 	}
 	

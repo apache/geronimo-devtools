@@ -52,7 +52,7 @@ public class JAXBUtils {
 	}
 	
 	private static synchronized void loadExtensionPoints() {
-        Trace.tracePoint("ENTRY", "JAXBUtils.loadExtensionPoints");
+        Trace.tracePoint("ENTRY", Activator.traceOperations, "JAXBUtils.loadExtensionPoints");
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IConfigurationElement[] cf = registry.getConfigurationElementsFor(Activator.PLUGIN_ID, "JAXBUtilsProvider");
@@ -67,13 +67,13 @@ public class JAXBUtils {
 						providers.put(versionArray[j], provider);
 					}
 				} catch (CoreException e) {
-                    Trace.tracePoint("CoreException", "JAXBUtils.loadExtensionPoints");
+                    Trace.tracePoint("CoreException", Activator.traceOperations, "JAXBUtils.loadExtensionPoints");
 					e.printStackTrace();
 				}
 			}
 		}
 
-        Trace.tracePoint("EXIT", "JAXBUtils.loadExtensionPoints");
+        Trace.tracePoint("EXIT", Activator.traceOperations, "JAXBUtils.loadExtensionPoints");
 	}
     
     public static List<JAXBContext> getJAXBContext() {
@@ -89,7 +89,7 @@ public class JAXBUtils {
     }
     
     public static IJAXBUtilsProvider getProvider(IFile plan) {
-        Trace.tracePoint("ENTRY", "JAXBUtils.getProvider");
+        Trace.tracePoint("ENTRY", Activator.traceOperations, "JAXBUtils.getProvider");
 
         IJAXBUtilsProvider provider = null;
         if (plan != null) {
@@ -102,15 +102,15 @@ public class JAXBUtils {
 					String version = runtime.getRuntimeType().getVersion();
 					provider = (IJAXBUtilsProvider) providers.get(version);
 				} catch (CoreException e) {
-                    Trace.tracePoint("CoreException", "JAXBUtils.getProvider");
+                    Trace.tracePoint("CoreException", Activator.logOperations, "JAXBUtils.getProvider");
 					e.printStackTrace();
 				} catch (IllegalArgumentException ie) {
-                    Trace.tracePoint("IllegalArgumentException", "JAXBUtils.getProvider");
+                    Trace.tracePoint("IllegalArgumentException", Activator.logOperations, "JAXBUtils.getProvider");
 				    throw new IllegalArgumentException("The project [" + project.getName() + "] does not have a Targeted Runtime specified.");
                 }
         }
         
-        Trace.tracePoint("EXIT", "JAXBUtils.getProvider", provider);
+        Trace.tracePoint("EXIT", Activator.traceOperations, "JAXBUtils.getProvider", provider);
 		return provider;
 	}
 

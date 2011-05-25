@@ -18,6 +18,7 @@ package org.apache.geronimo.st.core.commands;
 
 import java.io.File;
 
+import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.DeploymentUtils;
 import org.apache.geronimo.st.core.IGeronimoServer;
 import org.apache.geronimo.st.core.internal.Trace;
@@ -49,7 +50,7 @@ abstract public class DeployCommand extends AbstractDeploymentCommand {
 			outputDir.toFile().mkdirs();
 			file = DeploymentUtils.createJarFile(getModule(), outputDir);
 		}
-		Trace.trace(Trace.INFO, "File: " + file.getAbsolutePath());
+		Trace.trace(Trace.INFO, "File: " + file.getAbsolutePath(), Activator.traceCommands);
 		return file;
 	}
 

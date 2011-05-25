@@ -91,7 +91,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
         addParm(args, "-Dkaraf.startRemoteShell=true");
         
         String vmArgs = args.toString();
-        Trace.tracePoint("Exit", "GeronimoServer.getVMArgs", vmArgs);
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServer.getVMArgs", vmArgs);
         
         return vmArgs;
     }
@@ -122,7 +122,7 @@ public class GeronimoServer extends GeronimoServerDelegate {
 
         String programArgs = args.toString();
         
-        Trace.tracePoint("Exit", "GeronimoServer.getProgramArgs", programArgs);
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServer.getProgramArgs", programArgs);
         
         return programArgs;
     }

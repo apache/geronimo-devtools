@@ -16,8 +16,8 @@
  */
 package org.apache.geronimo.st.v21.ui.internal;
 
+import org.apache.geronimo.runtime.common.log.Logger;
 import org.apache.geronimo.st.v21.ui.Activator;
-import org.eclipse.core.runtime.IStatus;
 
 /**
  * Helper class to route trace output.
@@ -29,18 +29,26 @@ public class Trace {
     /**
      * Finest trace event.
      */
-    public static byte INFO = 0;
+    public static int INFO = 1;
 
     /**
      * Warning trace event.
      */
-    public static byte WARNING = 1;
+    public static int WARNING = 2;
 
     /**
-     * Severe trace event.
+     * error trace event.
      */
-    public static byte SEVERE = 2;
-
+    public static int ERROR = 4;
+    /**
+     * cancel trace event.
+     */
+    public static int CANCEL = 8;
+    
+    private static Logger log;
+    static {
+    	log = Logger.getInstance();
+    }
     /**
      * Trace constructor comment.
      */
@@ -56,8 +64,8 @@ public class Trace {
      * @param s
      *            a message
      */
-    public static void trace(byte level, String s) {
-        trace(level, s, null);
+    public static void trace(int level, String s, boolean opt) {
+        trace(level, s, null, opt);
     }
 
     /**
@@ -70,13 +78,17 @@ public class Trace {
      * @param t
      *            a throwable
      */
-    public static void trace(byte level, String s, Throwable t) {
+    public static void trace(int level, String s, Throwable t, boolean opt) {
         if (Activator.getDefault() == null || !Activator.getDefault().isDebugging())
             return;
-
-        System.out.println(Activator.PLUGIN_ID + ":  " + s);
-        if (t != null)
-            t.printStackTrace();
+        if(opt) {
+        	log.trace(level, Activator.PLUGIN_ID, s, t);
+        }
+        if(Activator.console) {
+            System.out.println(Activator.PLUGIN_ID + ":  " + s);
+            if (t != null)
+                t.printStackTrace();
+        }
     }
 
     /**
@@ -93,33 +105,33 @@ public class Trace {
      *            or
      *            Return value if the trace point is an "Exit"
      */
-    public static void trace(String tracePoint, String classDotMethod) {
-        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "()" );
+    public static void trace(String tracePoint, String classDotMethod, boolean opt) {
+        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "()", opt);
     }   
-    public static void trace(String tracePoint, String classDotMethod, Object parm1) {
-        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "] )" );
+    public static void trace(String tracePoint, boolean opt, String classDotMethod, Object parm1) {
+        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "] )" , opt);
     }
 
-    public static void trace(String tracePoint, String classDotMethod, Object parm1, Object parm2) {
+    public static void trace(String tracePoint, boolean opt, String classDotMethod, Object parm1, Object parm2) {
         trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "], " +
-                                                                 "parm2=[" + (parm2 == null ? null : parm2.toString()) + "] )" );
+                                                                 "parm2=[" + (parm2 == null ? null : parm2.toString()) + "] )" , opt );
     }
-    public static void trace(String tracePoint, String classDotMethod, Object parm1, Object parm2, Object parm3) {
+    public static void trace(String tracePoint, boolean opt, String classDotMethod, Object parm1, Object parm2, Object parm3) {
         trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "], " +
                                                                  "parm2=[" + (parm2 == null ? null : parm2.toString()) + "], " +
-                                                                 "parm3=[" + (parm3 == null ? null : parm3.toString()) + "] )" );
+                                                                 "parm3=[" + (parm3 == null ? null : parm3.toString()) + "] )" , opt );
     }
-    public static void trace(String tracePoint, String classDotMethod, Object parm1, Object parm2, Object parm3, Object parm4) {
+    public static void trace(String tracePoint, boolean opt, String classDotMethod, Object parm1, Object parm2, Object parm3, Object parm4) {
         trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "], " +
                                                                  "parm2=[" + (parm2 == null ? null : parm2.toString()) + "], " +
                                                                  "parm3=[" + (parm3 == null ? null : parm3.toString()) + "], " +
-                                                                 "parm4=[" + (parm4 == null ? null : parm4.toString()) + "] )" );
+                                                                 "parm4=[" + (parm4 == null ? null : parm4.toString()) + "] )" , opt );
     }
-    public static void trace(String tracePoint, String classDotMethod, Object parm1, Object parm2, Object parm3, Object parm4, Object parm5) {
+    public static void trace(String tracePoint, boolean opt, String classDotMethod, Object parm1, Object parm2, Object parm3, Object parm4, Object parm5) {
         trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "], " +
                                                                  "parm2=[" + (parm2 == null ? null : parm2.toString()) + "], " +
                                                                  "parm3=[" + (parm3 == null ? null : parm3.toString()) + "], " +
                                                                  "parm4=[" + (parm4 == null ? null : parm4.toString()) + "], " +
-                                                                 "parm5=[" + (parm5 == null ? null : parm5.toString()) + "] )" );
+                                                                 "parm5=[" + (parm5 == null ? null : parm5.toString()) + "] )" , opt );
     }
 }

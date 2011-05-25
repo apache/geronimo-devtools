@@ -16,6 +16,8 @@
  */
 package org.apache.geronimo.st.core;
 
+import org.apache.geronimo.st.core.internal.Trace;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IServer;
@@ -32,7 +34,41 @@ public class Activator extends Plugin {
 
     // The plug-in ID
     public static final String PLUGIN_ID = "org.apache.geronimo.st.core";
+    /* trace and log switchers */
+    public static boolean console;
+    public static boolean logCore;
+    public static boolean logCommands;
+    public static boolean logDesc;
+    public static boolean logInternal;
+    public static boolean logOperations;
+    
+    public static boolean traceCore;
+    public static boolean traceCommands;
+    public static boolean traceDesc;
+    public static boolean traceInternal;
+    public static boolean traceOperations;
+    /* end here */
+    static {
+    	try {
+    		console = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/console"));
+    		logCore = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/log/core"));
+    		logCommands = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/log/commands"));
+    		logDesc = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/log/descriptor"));
+    		logInternal = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/log/internal"));
+    		logOperations = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/log/operations"));
+    		
+    		traceCore = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/trace/core"));
+    		traceCommands = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/trace/commands"));
+    		traceDesc = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/trace/descriptor"));
+    		traceInternal = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/trace/internal"));
+    		traceOperations = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/trace/operations"));
+    	} catch(NumberFormatException e) {
+    		Trace.trace(Trace.ERROR, e.getMessage(), true);
+    	} catch(NullPointerException e) {
+    		Trace.trace(Trace.ERROR, e.getMessage(), true);
+    	}
 
+    }
     // The shared instance
     private static Activator plugin;
 

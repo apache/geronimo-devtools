@@ -81,7 +81,7 @@ public class GeronimoLaunchableAdapterDelegate extends LaunchableAdapterDelegate
             }
             return new HttpLaunchable(url);
         } catch (Exception e) {
-            Trace.trace(Trace.SEVERE, "Error getting URL for " + moduleObject, e);
+            Trace.trace(Trace.ERROR, "Error getting URL for " + moduleObject, e, Activator.logCore);
             throw new CoreException (new Status(IStatus.ERROR,Activator.PLUGIN_ID,"Error getting URL for " + moduleObject,e));
         }
     }

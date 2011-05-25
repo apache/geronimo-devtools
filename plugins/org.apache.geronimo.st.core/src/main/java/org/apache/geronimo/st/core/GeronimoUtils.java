@@ -79,7 +79,7 @@ public class GeronimoUtils {
 		} else if (isRARModule(module)) {
 			return ModuleType.RAR;
 		} else {
-			Trace.trace(Trace.SEVERE, "getJSR88ModuleType = null");
+			Trace.trace(Trace.ERROR, "getJSR88ModuleType = null", Activator.logCore);
 			return null;
 		}
 	}

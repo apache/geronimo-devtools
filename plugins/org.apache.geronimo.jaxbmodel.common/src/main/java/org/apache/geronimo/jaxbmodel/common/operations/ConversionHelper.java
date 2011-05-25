@@ -20,6 +20,7 @@ package org.apache.geronimo.jaxbmodel.common.operations;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
+import org.apache.geronimo.jaxbmodel.common.Activator;
 import org.apache.geronimo.jaxbmodel.common.internal.Trace;
 import org.eclipse.core.resources.IFile;
 
@@ -40,11 +41,11 @@ public class ConversionHelper {
      * @throws Exception 
      */
     public static void convertGeronimoWebFile( IFile plan ) throws Exception {
-        Trace.tracePoint("Entry", "ConversionHelper.convertGeronimoWebFile", plan);
+        Trace.tracePoint("Entry", Activator.traceOperations, "ConversionHelper.convertGeronimoWebFile", plan);
 
         convertNamespace( plan );
 
-        Trace.tracePoint("Exit ", "ConversionHelper.convertGeronimoWebFile");
+        Trace.tracePoint("Exit ", Activator.traceOperations, "ConversionHelper.convertGeronimoWebFile");
     }
 
 
@@ -56,11 +57,11 @@ public class ConversionHelper {
      * @throws Exception 
      */
     public static void convertOpenEjbJarFile( IFile plan ) throws Exception {
-        Trace.tracePoint("Entry", "ConversionHelper.convertGeronimoOpenEjbFile", plan);
+        Trace.tracePoint("Entry", Activator.traceOperations, "ConversionHelper.convertGeronimoOpenEjbFile", plan);
 
         convertNamespace( plan );
 
-        Trace.tracePoint("Exit ", "ConversionHelper.convertGeronimoOpenEjbFile");
+        Trace.tracePoint("Exit ", Activator.traceOperations, "ConversionHelper.convertGeronimoOpenEjbFile");
     }
 
 
@@ -73,11 +74,11 @@ public class ConversionHelper {
      * @exception JAXBException if JAXB error
      */
     public static void convertGeronimoApplicationFile( IFile plan ) throws Exception {
-        Trace.tracePoint("Entry", "ConversionHelper.convertGeronimoApplicationFile", plan);
+        Trace.tracePoint("Entry", Activator.traceOperations, "ConversionHelper.convertGeronimoApplicationFile", plan);
 
         convertNamespace( plan );
 
-        Trace.tracePoint("Exit ", "ConversionHelper.convertGeronimoApplicationFile");
+        Trace.tracePoint("Exit ", Activator.traceOperations, "ConversionHelper.convertGeronimoApplicationFile");
     }
 
 
@@ -90,11 +91,11 @@ public class ConversionHelper {
      * @exception JAXBException if JAXB error
      */
     public static void convertGeronimoRaFile( IFile plan ) throws Exception {
-        Trace.tracePoint("Entry", "ConversionHelper.convertGeronimoRaFile", plan);
+        Trace.tracePoint("Entry", Activator.traceOperations, "ConversionHelper.convertGeronimoRaFile", plan);
 
         convertNamespace( plan );
 
-        Trace.tracePoint("Exit ", "ConversionHelper.convertGeronimoRaFile");
+        Trace.tracePoint("Exit ", Activator.traceOperations, "ConversionHelper.convertGeronimoRaFile");
     }
 
 
@@ -107,11 +108,11 @@ public class ConversionHelper {
      * @exception JAXBException if JAXB error
      */
     public static void convertGeronimoApplicationClientFile( IFile plan ) throws Exception {
-        Trace.tracePoint("Entry", "ConversionHelper.convertGeronimoApplicationClientFile", plan);
+        Trace.tracePoint("Entry", Activator.traceOperations, "ConversionHelper.convertGeronimoApplicationClientFile", plan);
 
         convertNamespace( plan );
 
-        Trace.tracePoint("Exit ", "ConversionHelper.convertGeronimoApplicationClientFile");
+        Trace.tracePoint("Exit ", Activator.traceOperations, "ConversionHelper.convertGeronimoApplicationClientFile");
     }
 
 

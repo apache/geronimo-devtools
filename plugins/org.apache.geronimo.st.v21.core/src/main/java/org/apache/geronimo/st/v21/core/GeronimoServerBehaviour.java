@@ -33,7 +33,6 @@ import org.apache.geronimo.kernel.config.Configuration;
 import org.apache.geronimo.kernel.config.InvalidConfigException;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
-import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.v21.core.internal.DependencyHelper;
 import org.apache.geronimo.st.v21.core.internal.Trace;
@@ -84,7 +83,7 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 				throw e;
 			} catch (Exception e) {
 				Trace.trace(Trace.WARNING, "Kernel connection failed. "
-						+ e.getMessage());
+						+ e.getMessage(), Activator.logCore);
 			}
 		}
 		return kernel;
@@ -99,7 +98,7 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 		try {
 			return getKernel() != null && kernel.isRunning();
 		} catch (SecurityException e) {
-			Trace.trace(Trace.SEVERE, "Invalid username and/or password.", e);
+			Trace.trace(Trace.ERROR, "Invalid username and/or password.", e, Activator.logCore);
 
 			pingThread.interrupt();
 			if (getServer().getServerState() != IServer.STATE_STOPPED) {
@@ -107,7 +106,7 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 
 			}
 		} catch (Exception e) {
-			Activator.log(Status.WARNING, "Geronimo Server may have been terminated manually outside of workspace.", e);
+			Trace.trace(Trace.WARNING, "Geronimo Server may have been terminated manually outside of workspace.", e, Activator.logCore);
 			kernel = null;
 		}
 		return false;
@@ -169,7 +168,7 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 					e.printStackTrace();
 				}
 			} else {
-				Trace.trace(Trace.INFO, "configLists is empty");
+				Trace.trace(Trace.INFO, "configLists is empty", Activator.traceCore);
 			}
 		}
 		return false;

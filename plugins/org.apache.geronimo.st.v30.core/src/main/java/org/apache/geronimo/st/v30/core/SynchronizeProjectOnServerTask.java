@@ -59,7 +59,7 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
     @Override
     public void run() {
 
-        Trace.tracePoint("Entry ", "SynchronizeProjectOnServerTask.run");
+        Trace.tracePoint("Entry ", Activator.traceCore, "SynchronizeProjectOnServerTask.run");
         
         if (canUpdateState()) {            
            
@@ -113,13 +113,13 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
                             removedModules.toArray(removedModules2);
                             removeModules(removedModules2);
                         } else {
-                            Trace.trace(Trace.INFO, "SynchronizeProjectOnServerTask: no configuration is removed outside eclipse on server: " + this.server.getId());
+                            Trace.trace(Trace.INFO, "SynchronizeProjectOnServerTask: no configuration is removed outside eclipse on server: " + this.server.getId(), Activator.traceCore);
                         }
                         
                     }                    
                     
                 } else {
-                    Trace.trace(Trace.INFO, "SynchronizeProjectOnServerTask: no project has been deployed on server: " + this.server.getId());
+                    Trace.trace(Trace.INFO, "SynchronizeProjectOnServerTask: no project has been deployed on server: " + this.server.getId(), Activator.traceCore);
                 }                
                 
             } catch (Exception e) {
@@ -127,7 +127,7 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
             }
         }
         
-        Trace.tracePoint("Exit ", "SynchronizeProjectOnServerTask.run");
+        Trace.tracePoint("Exit ", Activator.traceCore, "SynchronizeProjectOnServerTask.run");
     }
 
     private void setModuleState(IModule[] modules, int state) {
@@ -154,7 +154,7 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
       
     private void removeModules(IModule[] remove) {
         
-        Trace.tracePoint("Entry ", "SynchronizeProjectOnServerTask.removeModules", remove);
+        Trace.tracePoint("Entry ", Activator.traceCore, "SynchronizeProjectOnServerTask.removeModules", remove);
         
         IServerWorkingCopy wc = server.createWorkingCopy();
         IProgressMonitor monitor = new NullProgressMonitor(); 
@@ -169,10 +169,10 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
                 }
             }           
         } catch (CoreException e) {
-            Trace.trace(Trace.WARNING, "Could not remove module in SynchronizeProjectOnServerTask", e);
+            Trace.trace(Trace.WARNING, "Could not remove module in SynchronizeProjectOnServerTask", e, Activator.logCore);
         }
         
-        Trace.tracePoint("Exit ", "SynchronizeProjectOnServerTask.removeModules");
+        Trace.tracePoint("Exit ", Activator.traceCore, "SynchronizeProjectOnServerTask.removeModules");
     }
     
     private boolean canUpdateState() {
@@ -189,7 +189,7 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
                 if (isSameConnectionURL(gs, thisServer)) {
                     if (!isSameRuntimeLocation(server) && server.getServerState() != IServer.STATE_STOPPED) {
                         Trace.trace(Trace.WARNING, server.getId()
-                                + " Cannot update server state.  URL conflict between multiple servers.");
+                                + " Cannot update server state.  URL conflict between multiple servers.", Activator.logCore);
                         return false;
                     }
                 }

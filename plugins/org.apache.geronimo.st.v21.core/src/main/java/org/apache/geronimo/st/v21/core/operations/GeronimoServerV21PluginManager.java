@@ -56,6 +56,7 @@ import org.apache.geronimo.st.core.CommonMessages;
 import org.apache.geronimo.st.core.GeronimoConnectionFactory;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.core.operations.IGeronimoServerPluginManager;
+import org.apache.geronimo.st.v21.core.Activator;
 import org.apache.geronimo.st.v21.core.internal.Trace;
 import org.apache.geronimo.st.v21.core.plugin.JAXB21PluginUtils;
 import org.apache.geronimo.system.jmx.KernelDelegate;
@@ -100,9 +101,9 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
         } catch (Exception e) {
             e.printStackTrace();
             Trace.trace(Trace.WARNING, "Kernel connection failed. "
-                + e.getMessage());
+                + e.getMessage(), Activator.logOperations);
         }
-        Trace.tracePoint("Constructor", "GeronimoServerPluginManager");
+        Trace.tracePoint("Constructor", Activator.traceOperations, "GeronimoServerPluginManager");
     }
     
     private PluginInstaller getPluginInstaller() {
@@ -114,7 +115,7 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
     }
     
     public List<String> getPluginList () {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.getPluginList");
+        Trace.tracePoint("Entry", Activator.traceOperations, "GeronimoServerPluginManager.getPluginList");
 
         String name;
         boolean added;
@@ -142,14 +143,14 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
             }
         }
 
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.getPluginList", pluginList);
+        Trace.tracePoint("Exit", Activator.traceOperations, "GeronimoServerPluginManager.getPluginList", pluginList);
         return pluginList;
     }
 
     // mimics org.apache.geronimo.console.car.AssemblyViewHandler.actionAfterView
     public void assembleServer (String group, String artifact, String version,
                         String format, String relativeServerPath, int[] selected) {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.assembleServer",
+        Trace.tracePoint("Entry", Activator.traceOperations, "GeronimoServerPluginManager.assembleServer",
                 group, artifact, version, format);
 
         PluginListType selectedPlugins = new PluginListType();
@@ -176,12 +177,12 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
         catch (Exception e) {
             e.printStackTrace();
         }
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.assembleServer");
+        Trace.tracePoint("Exit", Activator.traceOperations, "GeronimoServerPluginManager.assembleServer");
     }
 
     // mimics org.apache.geronimo.console.util.KernelManagementHelper.getConfigurations()
     public List<String> getConfigurationList () {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.getConfigurationList");
+        Trace.tracePoint("Entry", Activator.traceOperations, "GeronimoServerPluginManager.getConfigurationList");
 
         ConfigurationManager mgr = getConfigurationManager();
         List<AbstractName> stores = mgr.listStores();
@@ -201,7 +202,7 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
         }
         Collections.sort(results);
 
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.getConfigurationList", results);
+        Trace.tracePoint("Entry", Activator.traceOperations, "GeronimoServerPluginManager.getConfigurationList", results);
         return results;
     }
 
@@ -216,7 +217,7 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
     // mimics org.apache.geronimo.system.plugin.PluginInstallerGBean.updatePluginMetadata
     // but puts the metadata in our local directory
     public void savePluginXML (String configId, Object pluginMetaData) {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.savePluginXML", configId, pluginMetaData);
+        Trace.tracePoint("Entry", Activator.traceOperations, "GeronimoServerPluginManager.savePluginXML", configId, pluginMetaData);
 
         PluginType metadata = (PluginType) pluginMetaData;
         
@@ -257,12 +258,12 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
                 input.close();
                 if (!dir.delete()) {
                     String message = CommonMessages.bind(CommonMessages.errorDeletePlugin, dir.getAbsolutePath());
-                    Trace.tracePoint("Throw", "GeronimoServerPluginManager.savePluginXML", message);
+                    Trace.tracePoint("Throw", Activator.traceOperations, "GeronimoServerPluginManager.savePluginXML", message);
                     throw new Exception(message);
                 }
                 if (!temp.renameTo(dir)) {
                     String message = CommonMessages.bind(CommonMessages.errorMovePlugin, temp.getAbsolutePath(), dir.getAbsolutePath());
-                    Trace.tracePoint("Throw", "GeronimoServerPluginManager.savePluginXML", message);
+                    Trace.tracePoint("Throw", Activator.traceOperations, "GeronimoServerPluginManager.savePluginXML", message);
                     throw new Exception(message);
                 }
             } catch (Exception e) {
@@ -272,7 +273,7 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
             File meta = new File(addFilename(dir.getAbsolutePath(), artifact), "META-INF");
             if (!meta.isDirectory() || !meta.canRead()) {
                 String message = CommonMessages.bind(CommonMessages.badPlugin, artifact);
-                Trace.tracePoint("Throw", "GeronimoServerPluginManager.savePluginXML", message);
+                Trace.tracePoint("Throw", Activator.traceOperations, "GeronimoServerPluginManager.savePluginXML", message);
                 throw new IllegalArgumentException(message);
             }
             File xml = new File(meta, "geronimo-plugin.xml");
@@ -281,7 +282,7 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
                 if (!xml.isFile()) {
                     if (!xml.createNewFile()) {
                         String message = CommonMessages.bind(CommonMessages.errorCreateMetadata, artifact);
-                        Trace.tracePoint("Throw", "GeronimoServerPluginManager.savePluginXML", message);
+                        Trace.tracePoint("Throw", Activator.traceOperations, "GeronimoServerPluginManager.savePluginXML", message);
                         throw new RuntimeException(message);
                     }
                 }
@@ -300,12 +301,12 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
             }
         }
 
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.savePluginXML");
+        Trace.tracePoint("Exit", Activator.traceOperations, "GeronimoServerPluginManager.savePluginXML");
     }
 
     // mimics org.apache.geronimo.system.configuration.RepositoryConfigurationStore.exportConfiguration
     public void exportCAR (String localRepoDir, String configId) throws Exception {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.exportCAR", localRepoDir, configId);
+        Trace.tracePoint("Entry", Activator.traceOperations, "GeronimoServerPluginManager.exportCAR", localRepoDir, configId);
 
         Artifact artifact = Artifact.create(configId);
         String filename = createDirectoryStructure (localRepoDir, artifact);
@@ -314,11 +315,11 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
         File serverArtifact = new File(getArtifactLocation (artifact));
         writeToDirectory(serverArtifact, outputDir);
 
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.exportCAR");
+        Trace.tracePoint("Exit", Activator.traceOperations, "GeronimoServerPluginManager.exportCAR");
     }
 
     private void writeToDirectory(File inputDir, File outputDir) throws Exception {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.writeToZip", inputDir);
+        Trace.tracePoint("Entry", Activator.traceOperations, "GeronimoServerPluginManager.writeToZip", inputDir);
 
         outputDir.mkdirs();
         File[] all = inputDir.listFiles();
@@ -344,11 +345,11 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
                 }
             }
         }
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.writeToZip");
+        Trace.tracePoint("Exit", Activator.traceOperations, "GeronimoServerPluginManager.writeToZip");
     }
 
     public void updatePluginList (String localRepoDir, Object data) throws Exception {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.updatePluginList", localRepoDir, data);
+        Trace.tracePoint("Entry", Activator.traceOperations, "GeronimoServerPluginManager.updatePluginList", localRepoDir, data);
 
         PluginType metadata = (PluginType) data;
         
@@ -385,11 +386,11 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
                 }
             }
         }
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.updatePluginList");
+        Trace.tracePoint("Exit", Activator.traceOperations, "GeronimoServerPluginManager.updatePluginList");
     }
 
     public PluginListType readPluginList (String localRepoDir) {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.readPluginList", localRepoDir);
+        Trace.tracePoint("Entry", Activator.traceOperations, "GeronimoServerPluginManager.readPluginList", localRepoDir);
 
         PluginListType pluginList = null;
         File listFile = new File (localRepoDir, "geronimo-plugins.xml");
@@ -413,7 +414,7 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
             pluginList = factory.createPluginListType();
         }
 
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.readPluginList", pluginList);
+        Trace.tracePoint("Exit", Activator.traceOperations, "GeronimoServerPluginManager.readPluginList", pluginList);
         return pluginList;
     }
 
@@ -492,14 +493,14 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
     }
 
     private ConfigurationManager getConfigurationManager () {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.getConfigurationManager");
+        Trace.tracePoint("Entry", Activator.traceOperations, "GeronimoServerPluginManager.getConfigurationManager");
 
         if (kernel != null) {
-            Trace.tracePoint("Exit", "GeronimoServerPluginManager.getConfigurationManager");
+            Trace.tracePoint("Exit", Activator.traceOperations, "GeronimoServerPluginManager.getConfigurationManager");
             return ConfigurationUtil.getEditableConfigurationManager(kernel);
         }
 
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.getConfigurationManager returns null");
+        Trace.tracePoint("Exit", Activator.traceOperations, "GeronimoServerPluginManager.getConfigurationManager returns null");
         return null;
     }
 
@@ -559,7 +560,7 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
     }
 
     public boolean validatePlugin (Object pluginObject) {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.validatePlugin", pluginObject);
+        Trace.tracePoint("Entry", Activator.traceOperations, "GeronimoServerPluginManager.validatePlugin", pluginObject);
         
         PluginType plugin = (PluginType) pluginObject;
         
@@ -577,7 +578,7 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
     // mimics org.apache.geronimo.system.plugin.PluginInstallerGbean.install
     // but uses our local directory to get the plugins
     public ArrayList<String> installPlugins (String localRepoDir, List plugins) {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.installPlugins", localRepoDir, pluginList);
+        Trace.tracePoint("Entry", Activator.traceOperations, "GeronimoServerPluginManager.installPlugins", localRepoDir, pluginList);
         ArrayList<String> eventLog = new ArrayList<String>();
         List<PluginType> pluginList = (List<PluginType>)plugins;
 
@@ -650,13 +651,13 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
             e.printStackTrace();
         }
 
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.installPlugins", eventLog.toString());
+        Trace.tracePoint("Exit", Activator.traceOperations, "GeronimoServerPluginManager.installPlugins", eventLog.toString());
         return eventLog;
     }
 
     // mimics org.apache.geronimo.system.plugin.PluginInstallerGbean.verifyPrerequisistes
     private void verifyPrerequisites(PluginType plugin) throws Exception {
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.verifyPrerequisites", plugin);
+        Trace.tracePoint("Exit", Activator.traceOperations, "GeronimoServerPluginManager.verifyPrerequisites", plugin);
         List<Dependency> missingPrereqs = getMissingPrerequisites(plugin);
         if (!missingPrereqs.isEmpty()) {
             PluginArtifactType metadata = plugin.getPluginArtifact().get(0);
@@ -671,20 +672,20 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
                 }
             }
             buf.append(CommonMessages.installed);
-            Trace.tracePoint("Throw", "GeronimoServerPluginManager.verifyPrerequisites", buf.toString());
+            Trace.tracePoint("Throw", Activator.traceOperations, "GeronimoServerPluginManager.verifyPrerequisites", buf.toString());
             throw new Exception(buf.toString());
         }
 
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.verifyPrerequisites");
+        Trace.tracePoint("Exit", Activator.traceOperations, "GeronimoServerPluginManager.verifyPrerequisites");
     }
 
     // mimics org.apache.geronimo.system.plugin.PluginInstallerGbean.getMissingPrerequisistes
     private List<Dependency> getMissingPrerequisites(PluginType plugin) {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.getMissingPrerequisites", plugin);
+        Trace.tracePoint("Entry", Activator.traceOperations, "GeronimoServerPluginManager.getMissingPrerequisites", plugin);
 
         if (plugin.getPluginArtifact().size() != 1) {
             String message = CommonMessages.bind(CommonMessages.configSizeMismatch, plugin.getPluginArtifact().size());
-            Trace.tracePoint("Throw", "GeronimoServerPluginManager.getMissingPrerequisites", message);
+            Trace.tracePoint("Throw", Activator.traceOperations, "GeronimoServerPluginManager.getMissingPrerequisites", message);
             throw new IllegalArgumentException(message);
         }
 
@@ -699,18 +700,18 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
                     missingPrereqs.add(new Dependency(artifact, ImportType.ALL));
                 }
             } catch (Exception e) {
-                Trace.tracePoint("Throw", "GeronimoServerPluginManager.getMissingPrerequisites", CommonMessages.noDefaultServer);
+                Trace.tracePoint("Throw", Activator.traceOperations, "GeronimoServerPluginManager.getMissingPrerequisites", CommonMessages.noDefaultServer);
                 throw new RuntimeException(CommonMessages.noDefaultServer);
             }
         }
 
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.getMissingPrerequisites", missingPrereqs);
+        Trace.tracePoint("Exit", Activator.traceOperations, "GeronimoServerPluginManager.getMissingPrerequisites", missingPrereqs);
         return missingPrereqs;
     }
     
     //Extract the car file
     private void writeToRepository(File inputDir, File outputDir) throws Exception {
-        Trace.tracePoint("Entry", "GeronimoServerPluginManager.writeToRepository", inputDir,outputDir);
+        Trace.tracePoint("Entry", Activator.traceOperations, "GeronimoServerPluginManager.writeToRepository", inputDir,outputDir);
 
         outputDir.mkdirs();
         File[] all = inputDir.listFiles();
@@ -770,7 +771,7 @@ public class GeronimoServerV21PluginManager implements IGeronimoServerPluginMana
                 }
             }
         }
-        Trace.tracePoint("Exit", "GeronimoServerPluginManager.writeToRepository");
+        Trace.tracePoint("Exit", Activator.traceOperations, "GeronimoServerPluginManager.writeToRepository");
     }
 
 }

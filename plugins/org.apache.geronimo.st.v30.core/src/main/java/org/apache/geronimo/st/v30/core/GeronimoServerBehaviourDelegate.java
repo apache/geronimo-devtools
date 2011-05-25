@@ -150,7 +150,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         }
         GeronimoServerDelegate gsd = getServerDelegate();
         String programArgs = gsd.getProgramArgs();
-        Trace.tracePoint("GeronimoServerBehaviourDelegate.v30", "setupLaunchConfiguration serverProgramArgs", programArgs);
+        Trace.tracePoint("GeronimoServerBehaviourDelegate.v30", Activator.traceCore, "setupLaunchConfiguration serverProgramArgs", programArgs);
         wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArgs);
         
         /*
@@ -161,7 +161,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         */
 
         String vmArgs = gsd.getVMArgs();
-        Trace.tracePoint("GeronimoServerBehaviourDelegate.v30", "setupLaunchConfiguration serverVMArgs", vmArgs);
+        Trace.tracePoint("GeronimoServerBehaviourDelegate.v30", Activator.traceCore, "setupLaunchConfiguration serverVMArgs", vmArgs);
         wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, vmArgs);
     }
 
@@ -173,7 +173,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      * @throws CoreException
      */
     synchronized protected void setupLaunch(ILaunch launch, String launchMode, IProgressMonitor monitor) throws CoreException {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.setupLaunch", launch, launchMode, monitor); 
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.setupLaunch", launch, launchMode, monitor); 
 
         if (!SocketUtil.isLocalhost(getServer().getHost()))
             return;
@@ -205,7 +205,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
         getServer().addServerListener(listener);
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.setupLaunch");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.setupLaunch");
     }
 
     /*
@@ -214,7 +214,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#stop(boolean)
      */
     synchronized public void stop(final boolean force) {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stop", force);
+        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stop", Activator.traceCore);
 
         stopPingThread();
         if (getServer().getServerState() != IServer.STATE_STOPPED) {
@@ -232,7 +232,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         if (state == IServer.STATE_STARTING || state == IServer.STATE_STOPPING)
             terminate();
                                                    
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.stop");
+        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.stop", Activator.traceCore);
     }
 
     /* 
@@ -245,7 +245,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#publishModules(int, java.util.List, java.util.List, org.eclipse.core.runtime.MultiStatus, org.eclipse.core.runtime.IProgressMonitor)
      */
     protected void publishModules(int kind, List modules, List deltaKind, MultiStatus multi, IProgressMonitor monitor) {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.publishModules", publishKindToString(kind), Arrays.asList(modules), Arrays.asList(deltaKind), multi, monitor);
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishModules", publishKindToString(kind), Arrays.asList(modules), Arrays.asList(deltaKind), multi, monitor);
 
         // 
         // WTP publishes modules in reverse alphabetical order which does not account for possible 
@@ -260,7 +260,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             for (int i = 0; i < modules.size(); i++) {
                 IModule[] module = (IModule[]) modules.get(i);
                 Trace.trace(Trace.INFO, i + " " + Arrays.asList(module).toString() + " "
-                        + deltaKindToString(((Integer) deltaKind.get(i)).intValue()));
+                        + deltaKindToString(((Integer) deltaKind.get(i)).intValue()), Activator.traceCore);
             }
         }
 
@@ -405,7 +405,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             multi.add(status);
         }
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.publishModules");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishModules");
     }
     
     protected IStatus refreshBundle(IModule ebaModule, IModule bundleModule, IProgressMonitor subMonitorFor) {
@@ -490,7 +490,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      *      org.eclipse.core.runtime.IProgressMonitor)
      */
     public void publishModule(int kind, int deltaKind, IModule[] module, IProgressMonitor monitor) throws CoreException {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.publishModule", publishKindToString(kind), deltaKindToString(deltaKind), Arrays.asList(module), monitor);
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishModule", publishKindToString(kind), deltaKindToString(deltaKind), Arrays.asList(module), monitor);
 
         try {
             //NO_CHANGE need if app is associated but not started and no delta
@@ -515,7 +515,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             throw e;
         }
         
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.publishModule");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishModule");
     }
 
     /*
@@ -524,7 +524,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#publishFinish(org.eclipse.core.runtime.IProgressMonitor)
      */
     public void publishFinish(IProgressMonitor monitor) throws CoreException {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.publishFinish", monitor);
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishFinish", monitor);
 
         IModule[] modules = this.getServer().getModules();
         boolean allpublished = true;
@@ -545,7 +545,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
         GeronimoConnectionFactory.getInstance().destroy(getServer());
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.publishFinish");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishFinish");
     }
 
 
@@ -559,12 +559,12 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      */
     @Override
     protected void initialize(IProgressMonitor monitor) {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.initialize", monitor);
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.initialize", monitor);
                
         publishStateListener = new PublishStateListener();
         getServer().addServerListener(publishStateListener, ServerEvent.MODULE_CHANGE | ServerEvent.PUBLISH_STATE_CHANGE);
         
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.initialize");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.initialize");
     }
 
     /*
@@ -633,28 +633,28 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
 
     protected void terminate() {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.terminate");
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.terminate");
 
         if (getServer().getServerState() == IServer.STATE_STOPPED)
             return;
 
         try {
             setServerState(IServer.STATE_STOPPING);
-            Trace.trace(Trace.INFO, "Killing the geronimo server process"); //$NON-NLS-1$
+            Trace.trace(Trace.INFO, "Killing the geronimo server process", Activator.traceCore); //$NON-NLS-1$
             if (process != null && !process.isTerminated()) {
                 process.terminate();
 
             }
             stopImpl();
         } catch (Exception e) {
-            Trace.trace(Trace.SEVERE, "Error killing the geronimo server process", e); //$NON-NLS-1$
+            Trace.trace(Trace.ERROR, "Error killing the geronimo server process", e, Activator.logCore); //$NON-NLS-1$
             // 
             // WTP does not allow a CoreException to be thrown in this case 
             // 
             throw new RuntimeException(Messages.STOP_FAIL);
         }
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.terminate");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.terminate");
     }
 
     protected void stopImpl() {
@@ -668,7 +668,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     }
 
     private void resetModuleState() {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.resetModuleState");
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.resetModuleState");
 
         IModule[] modules = getServer().getModules();
         for (int i = 0; i < modules.length; i++) {
@@ -676,11 +676,11 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             setModuleState(module, IServer.STATE_STOPPED);
         }        
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.resetModuleState");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.resetModuleState");
     }
     
     protected void invokeCommand(int deltaKind, IModule module, IProgressMonitor monitor) throws CoreException {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.invokeCommand", deltaKindToString(deltaKind), module.getName());
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.invokeCommand", deltaKindToString(deltaKind), module.getName());
         
         ClassLoader old = Thread.currentThread().getContextClassLoader();
         try {
@@ -715,7 +715,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             Thread.currentThread().setContextClassLoader(old);
         }
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.invokeCommand");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.invokeCommand");
     }   
 
     /**
@@ -724,7 +724,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      * @throws Exception
      */
     protected void doAdded(IModule module, String configId, IProgressMonitor monitor) throws Exception {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.doAdded", module.getName(), configId);
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.doAdded", module.getName(), configId);
         
         configId = getLastKnowConfigurationId(module, configId);
         
@@ -768,7 +768,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             doChanged(module, configId, monitor);
         }
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.doAdded");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.doAdded");
     }
     /**
      * @param module
@@ -776,7 +776,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      * @throws Exception
      */
     protected void doChanged(IModule module, String configId, IProgressMonitor monitor) throws Exception {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.doChanged", module.getName(), configId);
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.doChanged", module.getName(), configId);
         
         configId = getLastKnowConfigurationId(module, configId);
         if(configId != null) {
@@ -810,7 +810,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             doAdded(module, configId, monitor);
         }
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.doChanged");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.doChanged");
     }
 
     
@@ -873,7 +873,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                     try {
                         file.createNewFile();
                     } catch (IOException e) {
-                        Trace.trace(Trace.SEVERE, "can't create file " + file, e);
+                        Trace.trace(Trace.ERROR, "can't create file " + file, e, Activator.logCore);
                         throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "can't create file "
                                 + file, e));
                     }
@@ -895,11 +895,11 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                     inChannel.close();
                     outChannel.close();
                 } catch (FileNotFoundException e) {
-                    Trace.trace(Trace.SEVERE, "can't find file " + sourceFile, e);
+                    Trace.trace(Trace.ERROR, "can't find file " + sourceFile, e, Activator.logCore);
                     throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "can't find file "
                             + sourceFile, e));
                 } catch (IOException e) {
-                    Trace.trace(Trace.SEVERE, "can't copy file " + sourceFile, e);
+                    Trace.trace(Trace.ERROR, "can't copy file " + sourceFile, e, Activator.logCore);
                     throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "can't copy file "
                             + sourceFile, e));
                     }
@@ -913,17 +913,17 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
 
     private String getLastKnowConfigurationId(IModule module, String configId) throws Exception {
-        Trace.tracePoint("Entry ", "GeronimoServerBehaviourDelegate.getLastKnowConfigurationId", module.getName(), configId);
+        Trace.tracePoint("Entry ", Activator.traceCore, "GeronimoServerBehaviourDelegate.getLastKnowConfigurationId", module.getName(), configId);
 
         //use the correct configId, second from the .metadata, then from the plan
         configId = configId != null ? configId : DeploymentUtils.getLastKnownConfigurationId(module, getServer());
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.getLastKnowConfigurationId", configId);
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.getLastKnowConfigurationId", configId);
         return configId;
     }
 
     protected void doRemoved(IModule module, IProgressMonitor monitor) throws Exception {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.doRemoved", module.getName());
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.doRemoved", module.getName());
 
         HashMap artifactsMap = ModuleArtifactMapper.getInstance().getServerArtifactsMap(getServer());
         if (artifactsMap != null) {
@@ -934,7 +934,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             _doRemove(module, monitor);
         }
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.doRemoved");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.doRemoved");
     }
     
     private void _doRemove(IModule module, IProgressMonitor monitor) throws Exception {
@@ -947,7 +947,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     }
     
     protected void doNoChange(IModule module, IProgressMonitor monitor) throws Exception {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.doNoChange", module.getName());
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.doNoChange", module.getName());
         
         if(DeploymentUtils.getLastKnownConfigurationId(module, getServer()) != null) {
             IStatus status = start(module, monitor);
@@ -961,11 +961,11 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             doAdded(module, null, monitor);
         }
         
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.doNoChange");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.doNoChange");
     }
 
     protected void doRestart(IModule module, IProgressMonitor monitor) throws Exception {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.doRestart", module.getName());
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.doRestart", module.getName());
         
         IStatus status = stop(module, monitor);
         if (!status.isOK()) {
@@ -982,7 +982,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             addServerModuleBundleIDMap(module);
         }
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.doRestart");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.doRestart");
     }
     
     private TargetModuleID[] updateServerModuleConfigIDMap(IModule module, IStatus status) {
@@ -1092,7 +1092,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         IRuntimeClasspathEntry[] existingCps = JavaRuntime.computeUnresolvedRuntimeClasspath(wc);
 
         for (int i = 0; i < existingCps.length; i++) {
-            Trace.trace(Trace.INFO, "cpentry: " + cp );
+            Trace.trace(Trace.INFO, "cpentry: " + cp , Activator.traceCore);
             if (cp.contains(existingCps[i]) == false) {
                 cp.add(existingCps[i]);
             }
@@ -1107,7 +1107,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                 List<IClasspathEntry> cpes = ClasspathContainersHelper.queryWorkspace( containerPath );
                 for ( IClasspathEntry cpe : cpes ) {
                     RuntimeClasspathEntry rcpe = new RuntimeClasspathEntry( cpe );
-                    Trace.trace(Trace.INFO, "Classpath Container Entry: " + rcpe );
+                    Trace.trace(Trace.INFO, "Classpath Container Entry: " + rcpe , Activator.traceCore);
                     if (cp.contains(rcpe) == false) {
                         cp.add( rcpe );
                     }
@@ -1127,8 +1127,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             try {
                 list.add(entry.getMemento());
             } catch (CoreException e) {
-                Trace.trace(Trace.SEVERE, "Could not resolve classpath entry: "
-                        + entry, e);
+                Trace.trace(Trace.ERROR, "Could not resolve classpath entry: "
+                        + entry, e, Activator.logCore);
             }
         }
         return list;
@@ -1163,38 +1163,38 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     }
 
     protected void startPingThread() {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.startPingThread");
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.startPingThread");
 
         pingThread = new PingThread(this, getServer());
         pingThread.start();
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.startPingThread");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.startPingThread");
     }
     
     protected void stopPingThread() {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stopPingThread");
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.stopPingThread");
 
         if (pingThread != null) {
             pingThread.interrupt();
             pingThread = null;
         }
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.stopPingThread");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.stopPingThread");
     }
     
     protected abstract void stopKernel();
 
     public void startUpdateServerStateTask() {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.startUpdateServerStateTask", getServer().getName());
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.startUpdateServerStateTask", getServer().getName());
 
         stateTimer = new Timer(true);
         stateTimer.schedule(new UpdateServerStateTask(this, getServer()), 0, TIMER_TASK_INTERVAL * 1000);
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.startUpdateServerStateTask");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.startUpdateServerStateTask");
     }
     
     public void startSynchronizeProjectOnServerTask() {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.startSynchronizeProjectOnServerTask", getServer().getName());
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.startSynchronizeProjectOnServerTask", getServer().getName());
 
         if (synchronizerTimer != null) {
             synchronizerTimer.cancel();
@@ -1203,29 +1203,29 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         synchronizerTimer = new Timer(true);
         synchronizerTimer.schedule(new SynchronizeProjectOnServerTask(this, getServer()), 0, TIMER_TASK_INTERVAL * 1000);
         
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.startSynchronizeProjectOnServerTask");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.startSynchronizeProjectOnServerTask");
     }
 
     public void stopUpdateServerStateTask() {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stopUpdateServerStateTask");
+        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stopUpdateServerStateTask", Activator.traceCore);
 
         if (stateTimer != null)
             stateTimer.cancel();
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.stopUpdateServerStateTask");
+        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.stopUpdateServerStateTask", Activator.traceCore);
     }
     
     public void stopSynchronizeProjectOnServerTask() {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stopSynchronizeProjectOnServerTask");
+        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stopSynchronizeProjectOnServerTask", Activator.traceCore);
         
         if (synchronizerTimer != null)
             synchronizerTimer.cancel(); 
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.stopSynchronizeProjectOnServerTask");
+        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.stopSynchronizeProjectOnServerTask", Activator.traceCore);
     }
 
     protected IPath getModulePath(IModule[] module, URL baseURL) {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.getModulePath", Arrays.asList(module), baseURL);
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.getModulePath", Arrays.asList(module), baseURL);
 
         IPath modulePath = new Path(baseURL.getFile());
 
@@ -1245,7 +1245,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             }
         }
 
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.getModulePath", modulePath);
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.getModulePath", modulePath);
         return modulePath;
     }
 
@@ -1273,7 +1273,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                     jmxConnector = JMXConnectorFactory.connect(address, map);
                 }
                 MBeanServerConnection connection = jmxConnector.getMBeanServerConnection();
-                Trace.trace(Trace.INFO, "Connected to kernel. " + url);
+                Trace.trace(Trace.INFO, "Connected to kernel. " + url, Activator.traceCore);
                 return connection;
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -1334,7 +1334,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         
     @Override
     public void startModule(IModule[] module, IProgressMonitor monitor) {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.startModule", Arrays.asList(module));
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.startModule", Arrays.asList(module));
         try {
             IStatus status = start(module[0], monitor);
             if (status!=null && status.isOK()) {
@@ -1346,15 +1346,15 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                 }                
             }
         } catch (Exception e) {
-            Trace.trace(Trace.SEVERE, "Error starting module " + module[0].getName(), e);
+            Trace.trace(Trace.ERROR, "Error starting module " + module[0].getName(), e, Activator.logCore);
             throw new RuntimeException("Error starting module " + module[0].getName(), e);
         }
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.startModule");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.startModule");
     }
     
     @Override
     public void stopModule(IModule[] module, IProgressMonitor monitor) {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stopModule", Arrays.asList(module));
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.stopModule", Arrays.asList(module));
         try {
             IStatus status = stop(module[0], monitor);
             // remove bundle project and bundle ID map from ModuleArtifactMapper if it is EBA module, 
@@ -1366,15 +1366,15 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                 }                
             }
         } catch (Exception e) {
-            Trace.trace(Trace.SEVERE, "Error stopping module " + module[0].getName(), e);
+            Trace.trace(Trace.ERROR, "Error stopping module " + module[0].getName(), e, Activator.logCore);
             throw new RuntimeException("Error stopping module " + module[0].getName(), e);
         }
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.stopModule");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.stopModule");
     }
     
     @Override
     public void restartModule(IModule[] module, IProgressMonitor monitor) {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.restartModule", Arrays.asList(module));
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.restartModule", Arrays.asList(module));
         try {
             IStatus status = stop(module[0], monitor);            
             // remove bundle project and bundle ID map from ModuleArtifactMapper if it is EBA module, 
@@ -1396,15 +1396,15 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                 }                
             }
         } catch (Exception e) {
-            Trace.trace(Trace.SEVERE, "Error restarting module " + module[0].getName(), e);
+            Trace.trace(Trace.ERROR, "Error restarting module " + module[0].getName(), e, Activator.logCore);
             throw new RuntimeException("Error restarting module " + module[0].getName(), e);
         }
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.restartModule");
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.restartModule");
     }
     
     @Override
     public boolean canControlModule(IModule[] module) {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.canControlModule", Arrays.asList(module));
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.canControlModule", Arrays.asList(module));
         // Enable start/stop for top-level modules only 
         if (module.length == 1) {
             if (GeronimoUtils.isFragmentBundleModule(module[0])) {

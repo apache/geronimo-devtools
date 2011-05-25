@@ -19,6 +19,7 @@ package org.apache.geronimo.st.v30.ui.actions;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.v30.ui.internal.Messages;
 import org.apache.geronimo.st.v30.ui.internal.Trace;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -52,19 +53,19 @@ public class LaunchGeronimoSupportAction implements IActionDelegate {
                 .getConfigurationElementsFor("org.apache.geronimo.st.v30.ui.actionURLs");
         for (IConfigurationElement element : extensions) {
             Trace.trace(Trace.INFO, element.getName() + " = "
-                    + element.getValue() + ".");
+                    + element.getValue() + ".", Activator.traceActions);
             if (element.getName().equals("server_prefix")) {
                 serverPrefix = element.getValue();
                 Trace
                         .trace(Trace.INFO, "server_prefix = " + serverPrefix
-                                + ".");
+                                + ".", Activator.traceActions);
             } else if (element.getName().equals("action_URL")
                     && element
                             .getAttribute("class")
                             .equals(
                                     "org.apache.geronimo.st.v30.ui.actions.LaunchGeronimoSupportAction")) {
                 supportURL = element.getAttribute("URL");
-                Trace.trace(Trace.INFO, "support URL = " + supportURL + ".");
+                Trace.trace(Trace.INFO, "support URL = " + supportURL + ".", Activator.traceActions);
             }
         }
     }

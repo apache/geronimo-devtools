@@ -22,6 +22,7 @@ import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.Target;
 
+import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -54,9 +55,9 @@ class DistributeCommand extends DeployCommand {
 		if (targets == null)
 			targets = dm.getTargets();
 
-        Trace.trace(Trace.INFO, "Available targets: ");
+        Trace.trace(Trace.INFO, "Available targets: ", Activator.traceCommands);
         for ( int ii=0; ii<targets.length; ii++ ) {
-            Trace.trace(Trace.INFO, "--> Target[" + ii + "]: " + targets[ii]);
+            Trace.trace(Trace.INFO, "--> Target[" + ii + "]: " + targets[ii], Activator.traceCommands);
         }
 
         //
@@ -68,8 +69,8 @@ class DistributeCommand extends DeployCommand {
         Target[] defaultTarget = new Target[1];
         defaultTarget[0] = targets[0];
 
-        Trace.trace(Trace.INFO, "Using default target:");
-        Trace.trace(Trace.INFO, "--> " + defaultTarget[0]);
+        Trace.trace(Trace.INFO, "Using default target:", Activator.traceCommands);
+        Trace.trace(Trace.INFO, "--> " + defaultTarget[0], Activator.traceCommands);
 
 		File file = getTargetFile();
 		return new DeploymentCmdStatus(Status.OK_STATUS, dm.distribute( defaultTarget, file, null));

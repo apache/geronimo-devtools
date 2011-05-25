@@ -17,6 +17,8 @@
 
 package org.apache.geronimo.jaxbmodel.common;
 
+import org.apache.geronimo.jaxbmodel.common.internal.Trace;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -27,7 +29,21 @@ public class Activator extends Plugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.apache.geronimo.jaxbmodel.common"; //$NON-NLS-1$
-
+	public static boolean console;
+    public static boolean logOperations;
+    public static boolean traceOperations;
+    
+    static {
+    	try {
+    		console = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.jaxbmodel.common/console"));
+    		logOperations = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.jaxbmodel.common/log/operations"));
+    		traceOperations = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.jaxbmodel.common/trace/operations"));
+    	} catch(NumberFormatException e) {
+    		Trace.trace(Trace.ERROR, e.getMessage(), true);
+    	} catch(NullPointerException e) {
+    		Trace.trace(Trace.ERROR, e.getMessage(), true);
+    	}
+    }
 	// The shared instance
 	private static Activator plugin;
 	

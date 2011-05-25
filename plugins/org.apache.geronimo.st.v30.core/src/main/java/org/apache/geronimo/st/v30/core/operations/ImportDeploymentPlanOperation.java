@@ -16,6 +16,7 @@
  */
 package org.apache.geronimo.st.v30.core.operations;
 
+import org.apache.geronimo.st.v30.core.Activator;
 import org.apache.geronimo.st.v30.core.GeronimoUtils;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.jaxb.ConversionHelper;
@@ -41,7 +42,7 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
      */
     public ImportDeploymentPlanOperation() {
         super();
-        Trace.tracePoint("Constructor", "ImportDeploymentPlanOperation");
+        Trace.tracePoint("Constructor", Activator.traceOperations, "ImportDeploymentPlanOperation");
     }
 
     /**
@@ -49,7 +50,7 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
      */
     public ImportDeploymentPlanOperation(IDataModel model) {
         super(model);
-        Trace.tracePoint("Constructor", "ImportDeploymentPlanOperation", model);
+        Trace.tracePoint("Constructor", Activator.traceOperations, "ImportDeploymentPlanOperation", model);
     }
 
     /*
@@ -59,7 +60,7 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
      *      org.eclipse.core.runtime.IAdaptable)
      */
     public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-        Trace.tracePoint("Entry", "ImportDeploymentPlanOperation.execute", monitor, info);
+        Trace.tracePoint("Entry", Activator.traceOperations, "ImportDeploymentPlanOperation.execute", monitor, info);
 
         if (!isGeronimoRuntimeTarget())
             return Status.OK_STATUS;
@@ -95,7 +96,7 @@ public class ImportDeploymentPlanOperation extends AbstractGeronimoJ2EEComponent
             throw new ExecutionException("ImportDeploymentPlanOperation.execute(): Error converting plan: " + planFile.getFullPath() );
         }
 
-        Trace.tracePoint("Exit ", "ImportDeploymentPlanOperation.execute", Status.OK_STATUS);
+        Trace.tracePoint("Exit ", Activator.traceOperations, "ImportDeploymentPlanOperation.execute", Status.OK_STATUS);
         return Status.OK_STATUS;
     }
 }

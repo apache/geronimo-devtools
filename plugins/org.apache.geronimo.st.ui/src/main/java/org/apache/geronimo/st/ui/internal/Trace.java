@@ -16,8 +16,8 @@
  */
 package org.apache.geronimo.st.ui.internal;
 
+import org.apache.geronimo.runtime.common.log.Logger;
 import org.apache.geronimo.st.ui.Activator;
-import org.eclipse.core.runtime.IStatus;
 
 
 /**
@@ -30,21 +30,29 @@ public class Trace {
     /**
      * Finest trace event.
      */
-    public static byte INFO = 0;
+    public static int INFO = 1;
 
     /**
      * Warning trace event.
      */
-    public static byte WARNING = 1;
+    public static int WARNING = 2;
 
     /**
-     * Severe trace event.
+     * error trace event.
      */
-    public static byte SEVERE = 2;
+    public static int ERROR = 4;
+    /**
+     * cancel trace event.
+     */
+    public static int CANCEL = 8;
 
     /**
      * Trace constructor comment.
      */
+    private static Logger log;
+    static {
+    	log = Logger.getInstance();
+    }
     private Trace() {
         super();
     }
@@ -57,8 +65,8 @@ public class Trace {
      * @param s
      *            a message
      */
-    public static void trace(byte level, String s) {
-        trace(level, s, null);
+    public static void trace(int level, String s, boolean opt) {
+        trace(level, s, null, opt);
     }
 
     /**
@@ -71,14 +79,17 @@ public class Trace {
      * @param t
      *            a throwable
      */
-    public static void trace(byte level, String s, Throwable t) {
+    public static void trace(int level, String s, Throwable t, boolean opt) {
         if (Activator.getDefault() == null || !Activator.getDefault().isDebugging())
             return;
-
-        System.out.println(Activator.PLUGIN_ID + ":  " + s);
-        if (t != null)
-            t.printStackTrace();
-        
+        if(opt) {
+        	log.trace(level, Activator.PLUGIN_ID, s, t);
+        }
+        if(Activator.console) {
+            System.out.println(Activator.PLUGIN_ID + ":  " + s);
+            if (t != null)
+                t.printStackTrace();
+        }
     }
 
     /**
@@ -95,20 +106,20 @@ public class Trace {
      *            or
      *            Return value if the trace point is an "Exit"
      */
-    public static void tracePoint(String tracePoint, String classDotMethod) {
-        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "()" );
+    public static void tracePoint(String tracePoint, String classDotMethod, boolean opt) {
+        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "()", opt);
     }   
-    public static void tracePoint(String tracePoint, String classDotMethod, Object... parms) {
+    public static void tracePoint(String tracePoint, boolean opt, String classDotMethod, Object... parms) {
         if ( parms == null ) {
-            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( null )" );
+            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( null )" , opt);
         }
         else {
-            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "(" );
+            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "(" , opt);
             for ( int ii=0; ii<parms.length; ii++) {
                 Object parm = parms[ii];
-                trace(Trace.INFO, "    parm" + (ii+1) + "=[" + (parm == null ? null : parm.toString()) + "]" );
+                trace(Trace.INFO, "    parm" + (ii+1) + "=[" + (parm == null ? null : parm.toString()) + "]" , opt);
             }
-            trace(Trace.INFO, ")" );
+            trace(Trace.INFO, ")" ,opt);
         }
     }   
 }

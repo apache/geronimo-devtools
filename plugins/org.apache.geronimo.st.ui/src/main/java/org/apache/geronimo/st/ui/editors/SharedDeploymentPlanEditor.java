@@ -60,18 +60,18 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoJAXBBasedEditor 
 	 * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor#doAddPages()
 	 */
 	public void doAddPages() throws PartInitException {
-        Trace.tracePoint("ENTRY", "SharedDeploymentPlanEditor.doAddPages");
+        Trace.tracePoint("ENTRY", Activator.traceEditors, "SharedDeploymentPlanEditor.doAddPages");
 
 		if (getRootElement() != null && getLoader() != null) {
 			currentLoader.doAddPages(this);
 		}
 		addSourcePage();
 
-        Trace.tracePoint("EXIT", "SharedDeploymentPlanEditor.doAddPages");
+        Trace.tracePoint("EXIT", Activator.traceEditors, "SharedDeploymentPlanEditor.doAddPages");
 	}
 
 	private static synchronized void loadExtensionPoints() {
-        Trace.tracePoint("ENTRY", "SharedDeploymentPlanEditor.loadExtensionPoints");
+        Trace.tracePoint("ENTRY", Activator.traceEditors, "SharedDeploymentPlanEditor.loadExtensionPoints");
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IConfigurationElement[] cf = registry.getConfigurationElementsFor(Activator.PLUGIN_ID, "loader");
@@ -83,13 +83,13 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoJAXBBasedEditor 
 					String version = element.getAttribute("version");
 					loaders.put(version, loader);
 				} catch (CoreException e) {
-                    Trace.tracePoint("CoreException", "SharedDeploymentPlanEditor.loadExtensionPoints");
+                    Trace.tracePoint("CoreException", Activator.logEditors, "SharedDeploymentPlanEditor.loadExtensionPoints");
 					e.printStackTrace();
 				}
 			}
 		}
 
-        Trace.tracePoint("EXIT", "SharedDeploymentPlanEditor.loadExtensionPoints");
+        Trace.tracePoint("EXIT", Activator.traceEditors, "SharedDeploymentPlanEditor.loadExtensionPoints");
 	}
 
 	/*
@@ -98,9 +98,9 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoJAXBBasedEditor 
 	 * @see org.apache.geronimo.st.ui.editors.AbstractGeronimoDeploymentPlanEditor#loadDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public JAXBElement loadFile(IFile file) throws Exception {
-        Trace.tracePoint("ENTRY", "SharedDeploymentPlanEditor.loadDeploymentPlan", file);
+        Trace.tracePoint("ENTRY", Activator.traceEditors, "SharedDeploymentPlanEditor.loadDeploymentPlan", file);
         JAXBElement jaxbElement = getLoader() != null ? currentLoader.loadDeploymentPlan(file) : null;
-        Trace.tracePoint("EXIT", "SharedDeploymentPlanEditor.loadDeploymentPlan", jaxbElement);
+        Trace.tracePoint("EXIT", Activator.traceEditors, "SharedDeploymentPlanEditor.loadDeploymentPlan", jaxbElement);
 		return jaxbElement;
 	}
 	
@@ -111,7 +111,7 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoJAXBBasedEditor 
 	}
 
 	private IGeronimoFormContentLoader getLoader() {
-        Trace.tracePoint("ENTRY", "SharedDeploymentPlanEditor.getLoader");
+        Trace.tracePoint("ENTRY", Activator.traceEditors, "SharedDeploymentPlanEditor.getLoader");
 
 		if (currentLoader == null) {
 			IEditorInput input = getEditorInput();
@@ -126,16 +126,16 @@ public class SharedDeploymentPlanEditor extends AbstractGeronimoJAXBBasedEditor 
 					currentLoader = (IGeronimoFormContentLoader) loaders.get(version);
 					runtimeVersion = version;
 				} catch (CoreException e) {
-                    Trace.tracePoint("CoreException", "SharedDeploymentPlanEditor.getLoader");
+                    Trace.tracePoint("CoreException", Activator.logEditors, "SharedDeploymentPlanEditor.getLoader");
 					e.printStackTrace();
 				} catch (IllegalArgumentException ie) {
-                    Trace.tracePoint("IllegalArgumentException", "SharedDeploymentPlanEditor.getLoader");
+                    Trace.tracePoint("IllegalArgumentException", Activator.logEditors, "SharedDeploymentPlanEditor.getLoader");
 				    throw new IllegalArgumentException("The project [" + project.getName() + "] does not have a Targeted Runtime specified.");
                 }
 			}
 		}
 
-        Trace.tracePoint("EXIT", "SharedDeploymentPlanEditor.getLoader", currentLoader);
+        Trace.tracePoint("EXIT", Activator.traceEditors, "SharedDeploymentPlanEditor.getLoader", currentLoader);
 		return currentLoader;
 	}
 

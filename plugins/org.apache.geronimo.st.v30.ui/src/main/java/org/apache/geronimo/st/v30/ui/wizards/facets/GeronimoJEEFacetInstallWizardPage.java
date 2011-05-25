@@ -18,6 +18,7 @@ package org.apache.geronimo.st.v30.ui.wizards.facets;
 
 import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.v30.core.facets.DeploymentPlanInstallConfig;
+import org.apache.geronimo.st.v30.ui.Activator;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
 import org.apache.geronimo.st.v30.ui.internal.Trace;
 import org.eclipse.swt.SWT;
@@ -47,12 +48,12 @@ public class GeronimoJEEFacetInstallWizardPage extends AbstractFacetWizardPage {
 
     public GeronimoJEEFacetInstallWizardPage() {
         super("geronimo.plan.install");
-        Trace.tracePoint("Constructor Entry", "GeroniomoJEEFacetInstallWizardPage");
+        Trace.tracePoint("Constructor Entry", Activator.logWizards, "GeroniomoJEEFacetInstallWizardPage");
         
         setTitle(Messages.geronimoDeploymentPlan);
         setDescription(Messages.configGeronimoDeploymentPlan);
         
-        Trace.tracePoint("Constructor Exit", "GeronimoJEEFacetInstallWizardPage");
+        Trace.tracePoint("Constructor Exit", Activator.logWizards, "GeronimoJEEFacetInstallWizardPage");
     }
 
     /*
@@ -61,11 +62,11 @@ public class GeronimoJEEFacetInstallWizardPage extends AbstractFacetWizardPage {
      * @see org.eclipse.wst.common.project.facet.ui.IFacetWizardPage#setConfig(java.lang.Object)
      */
     public void setConfig(Object config) {
-        Trace.tracePoint("Entry", "GeronimoJEEFacetInstallWizardPage.setConfig", config);
+        Trace.tracePoint("Entry", Activator.logWizards, "GeronimoJEEFacetInstallWizardPage.setConfig", config);
 
         this.config = (DeploymentPlanInstallConfig) config;
         
-        Trace.tracePoint("Exit", "GeronimoJEEFacetInstallWizardPage.setConfig");
+        Trace.tracePoint("Exit", Activator.logWizards, "GeronimoJEEFacetInstallWizardPage.setConfig");
     }
 
     /*
@@ -74,7 +75,7 @@ public class GeronimoJEEFacetInstallWizardPage extends AbstractFacetWizardPage {
      * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
      */
     public void createControl(Composite parent) {
-        Trace.tracePoint("Entry", "GeronimoJEEFacetInstallWizardPage.createControl", parent);
+        Trace.tracePoint("Entry", Activator.logWizards, "GeronimoJEEFacetInstallWizardPage.createControl", parent);
         
         Composite composite = new Composite(parent, SWT.NONE);
         composite.setLayout(new GridLayout(2, false));
@@ -115,7 +116,7 @@ public class GeronimoJEEFacetInstallWizardPage extends AbstractFacetWizardPage {
         
         setControl(composite);
         
-        Trace.tracePoint("Exit", "GeronimoJEEFacetInstallWizardPage.createControl");      
+        Trace.tracePoint("Exit", Activator.logWizards, "GeronimoJEEFacetInstallWizardPage.createControl");      
     }
 
     /*
@@ -124,7 +125,7 @@ public class GeronimoJEEFacetInstallWizardPage extends AbstractFacetWizardPage {
      * @see org.eclipse.wst.common.project.facet.ui.AbstractFacetWizardPage#transferStateToConfig()
      */
     public void transferStateToConfig() {
-        Trace.tracePoint("Entry", "GeronimoJEEFacetInstallWizardPage.transferStateToConfig");     
+        Trace.tracePoint("Entry", Activator.logWizards, "GeronimoJEEFacetInstallWizardPage.transferStateToConfig");     
     
         config.setGroupId(groupText.getText());
         config.setArtifactId(artifactText.getText());
@@ -132,7 +133,7 @@ public class GeronimoJEEFacetInstallWizardPage extends AbstractFacetWizardPage {
         config.setType(typeText.getText());
         config.setSharedLib(sharedLib.getSelection());
         
-        Trace.tracePoint("Exit", "GeronimoJEEFacetInstallWizardPage.transferStateToConfig");      
+        Trace.tracePoint("Exit", Activator.logWizards, "GeronimoJEEFacetInstallWizardPage.transferStateToConfig");      
     }
 
     private static GridData createGridData() {

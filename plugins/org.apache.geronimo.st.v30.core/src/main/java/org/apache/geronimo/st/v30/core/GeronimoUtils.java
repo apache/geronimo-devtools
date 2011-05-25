@@ -114,13 +114,13 @@ public class GeronimoUtils {
         } else if (isRARModule(module)) {
             return ModuleType.RAR;
         } else {
-            Trace.trace(Trace.SEVERE, "getJSR88ModuleType = null");
+            Trace.trace(Trace.ERROR, "getJSR88ModuleType = null", Activator.logCore);
             return null;
         }
     }
     
     public static JAXBElement getDeploymentPlan(IFile file) throws Exception {
-        Trace.tracePoint("ENTRY", "GeronimoUtils.getDeploymentPlan", file);
+        Trace.tracePoint("ENTRY", Activator.traceCore, "GeronimoUtils.getDeploymentPlan", file);
 
         if (!file.exists()) {
             return null;
@@ -137,7 +137,7 @@ public class GeronimoUtils {
         else if (file.getName().equals(GeronimoUtils.APP_CLIENT_PLAN_NAME))
             return getApplicationClientDeploymentPlan(file);
 
-        Trace.tracePoint("EXIT", "GeronimoUtils.getDeploymentPlan", null);
+        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getDeploymentPlan", null);
         return null;
     }
     
@@ -160,7 +160,7 @@ public class GeronimoUtils {
     }
     
     public static String getConfigId(IModule module) throws Exception {
-        Trace.tracePoint("ENTRY", "GeronimoUtils.getConfigId", module);
+        Trace.tracePoint("ENTRY", Activator.traceCore, "GeronimoUtils.getConfigId", module);
 
         Environment environment = null;
         if (isWebModule(module)) {
@@ -194,7 +194,7 @@ public class GeronimoUtils {
 
         if (environment != null
             && environment.getModuleId() != null) {
-            Trace.tracePoint("EXIT", "GeronimoUtils.getConfigId", getQualifiedConfigID(environment.getModuleId()));
+            Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getConfigId", getQualifiedConfigID(environment.getModuleId()));
             return getQualifiedConfigID(environment.getModuleId());
         }
         
@@ -222,7 +222,7 @@ public class GeronimoUtils {
             } 
         }
 
-        Trace.tracePoint("EXIT", "GeronimoUtils.getConfigId", getId(module));
+        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getConfigId", getId(module));
         return getId(module);
     }
     
@@ -261,13 +261,13 @@ public class GeronimoUtils {
     }
 
     public static JAXBElement getApplicationClientDeploymentPlan(IFile file) throws Exception {
-        Trace.tracePoint("ENTRY", "GeronimoUtils.getApplicationClientDeploymentPlan", file);
+        Trace.tracePoint("ENTRY", Activator.traceCore, "GeronimoUtils.getApplicationClientDeploymentPlan", file);
 
         if (file.getName().equals(APP_CLIENT_PLAN_NAME) && file.exists()) {
             return JAXBUtils.unmarshalFilterDeploymentPlan(file);
         }
 
-        Trace.tracePoint("EXIT", "GeronimoUtils.getApplicationClientDeploymentPlan", null);
+        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getApplicationClientDeploymentPlan", null);
         return null;
     }
     public static IFile getConnectorDeploymentPlanFile(IVirtualComponent comp) {
@@ -289,7 +289,7 @@ public class GeronimoUtils {
             in = manifestFile.getContents();
             manifest = new Manifest(in);
         } catch (Exception e) {
-            Trace.trace(Trace.SEVERE, "Could load manifest file", e);
+            Trace.trace(Trace.ERROR, "Could load manifest file", e, Activator.logCore);
         } finally {
             if (in != null) {
                 try { in.close(); } catch (Exception ee) {}
@@ -307,7 +307,7 @@ public class GeronimoUtils {
                     contextRoot = plan.getValue().getContextRoot();
                 }
             } catch (Exception e) {
-                Trace.trace(Trace.SEVERE, "Could load geronimo-web.xml", e);
+                Trace.trace(Trace.ERROR, "Could load geronimo-web.xml", e, Activator.logCore);
             }
         } else {
             // TODO: this does not seem to pick up changes if application.xml is updated with a new context-root
@@ -375,13 +375,13 @@ public class GeronimoUtils {
         return getWebDeploymentPlan(getWebDeploymentPlanFile(comp));
     }
     public static JAXBElement getWebDeploymentPlan(IFile file) throws Exception {
-        Trace.tracePoint("ENTRY", "GeronimoUtils.getWebDeploymentPlan", file);
+        Trace.tracePoint("ENTRY", Activator.traceCore, "GeronimoUtils.getWebDeploymentPlan", file);
 
         if (file.getName().equals(WEB_PLAN_NAME) && file.exists()) {
             return JAXBUtils.unmarshalFilterDeploymentPlan(file);
         }
 
-        Trace.tracePoint("EXIT", "GeronimoUtils.getWebDeploymentPlan", null);
+        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getWebDeploymentPlan", null);
         return null;
     }
 
@@ -393,13 +393,13 @@ public class GeronimoUtils {
         return getOpenEjbDeploymentPlan(getOpenEjbDeploymentPlanFile(comp));
     }
     public static JAXBElement getOpenEjbDeploymentPlan(IFile file) throws Exception {
-        Trace.tracePoint("ENTRY", "GeronimoUtils.getOpenEjbDeploymentPlan", file);
+        Trace.tracePoint("ENTRY", Activator.traceCore, "GeronimoUtils.getOpenEjbDeploymentPlan", file);
 
         if (file.getName().equals(OPENEJB_PLAN_NAME) && file.exists()) {
             return JAXBUtils.unmarshalFilterDeploymentPlan(file);
         }
 
-        Trace.tracePoint("EXIT", "GeronimoUtils.getOpenEjbDeploymentPlan", null);
+        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getOpenEjbDeploymentPlan", null);
         return null;
     }
 
@@ -412,13 +412,13 @@ public class GeronimoUtils {
         return getApplicationDeploymentPlan(getApplicationDeploymentPlanFile(comp));
     }
     public static JAXBElement getApplicationDeploymentPlan(IFile file) throws Exception {
-        Trace.tracePoint("ENTRY", "GeronimoUtils.getApplicationDeploymentPlan", file);
+        Trace.tracePoint("ENTRY", Activator.traceCore, "GeronimoUtils.getApplicationDeploymentPlan", file);
 
         if (file.getName().equals(APP_PLAN_NAME) && file.exists()) {
             return JAXBUtils.unmarshalFilterDeploymentPlan(file);
         }
 
-        Trace.tracePoint("EXIT", "GeronimoUtils.getApplicationDeploymentPlan", null);
+        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getApplicationDeploymentPlan", null);
         return null;
     }
 
@@ -434,13 +434,13 @@ public class GeronimoUtils {
         return getConnectorDeploymentPlan(getConnectorDeploymentPlanFile(comp));
     }
     public static JAXBElement getConnectorDeploymentPlan(IFile file) throws Exception {
-        Trace.tracePoint("ENTRY", "GeronimoUtils.getConnectorDeploymentPlan", file);
+        Trace.tracePoint("ENTRY", Activator.traceCore, "GeronimoUtils.getConnectorDeploymentPlan", file);
 
         if (file.getName().equals(CONNECTOR_PLAN_NAME) && file.exists()) {
             return JAXBUtils.unmarshalFilterDeploymentPlan(file);
         }
 
-        Trace.tracePoint("EXIT", "GeronimoUtils.getConnectorDeploymentPlan", null);
+        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getConnectorDeploymentPlan", null);
         return null;
     }
     

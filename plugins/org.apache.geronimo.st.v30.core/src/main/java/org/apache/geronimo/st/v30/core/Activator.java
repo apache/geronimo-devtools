@@ -16,6 +16,8 @@
  */
 package org.apache.geronimo.st.v30.core;
 
+import org.apache.geronimo.st.v30.core.internal.Trace;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IServer;
@@ -31,10 +33,55 @@ import org.osgi.framework.BundleContext;
  * @version $Rev$ $Date$
  */
 public class Activator extends Plugin {
-
     // The plug-in ID
     public static final String PLUGIN_ID = "org.apache.geronimo.st.v30.core";
+    /* trace and log switchers */
+    public static boolean console;
+    public static boolean logCore;
+    public static boolean logCommands;
+    public static boolean logDesc;
+    public static boolean logFacets;
+    public static boolean logInternal;
+    public static boolean logJaxb;
+    public static boolean logOperations;
+    public static boolean logOsgi;
+    
+    public static boolean traceCore;
+    public static boolean traceCommands;
+    public static boolean traceDesc;
+    public static boolean traceFacets;
+    public static boolean traceInternal;
+    public static boolean traceJaxb;
+    public static boolean traceOperations;
+    public static boolean traceOsgi;
+    /* end here */
+    static {
+    	try {
+    		console = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/console"));
+    		logCore = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/log/core"));
+    		logCommands = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/log/commands"));
+    		logDesc = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/log/descriptor"));
+    		logFacets = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/log/factes"));
+    		logInternal = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/log/internal"));
+    		logJaxb = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/log/jaxb"));
+    		logOperations = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/log/operations"));
+    		logOsgi = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/log/osgi"));
+    		
+    		traceCore = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/trace/core"));
+    		traceCommands = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/trace/commands"));
+    		traceDesc = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/trace/descriptor"));
+    		traceFacets = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/trace/factes"));
+    		traceInternal = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/trace/internal"));
+    		traceJaxb = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/trace/jaxb"));
+    		traceOperations = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/trace/operations"));
+    		traceOsgi = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/trace/osgi"));
+    	} catch(NumberFormatException e) {
+    		Trace.trace(Trace.ERROR, e.getMessage(), true);
+    	} catch(NullPointerException e) {
+    		Trace.trace(Trace.ERROR, e.getMessage(), true);
+    	}
 
+    }
     // The shared instance
     private static Activator plugin;
 

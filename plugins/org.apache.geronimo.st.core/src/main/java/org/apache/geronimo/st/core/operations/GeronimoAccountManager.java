@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.internal.Trace;
 import org.eclipse.wst.server.core.IRuntime;
 
@@ -55,10 +56,10 @@ public class GeronimoAccountManager {
           groupProperties.load(fis);
           fis.close();
       } catch (FileNotFoundException e) {
-          Trace.trace(Trace.SEVERE, e.getMessage());
+          Trace.trace(Trace.ERROR, e.getMessage(), Activator.logOperations);
           throw e;
       } catch (IOException e) {
-          Trace.trace(Trace.SEVERE, e.getMessage());
+          Trace.trace(Trace.ERROR, e.getMessage(), Activator.logOperations);
           throw e;
       }
     }
@@ -142,10 +143,10 @@ public class GeronimoAccountManager {
             userProperties.store(fos, "");
             fos.close();
         } catch (FileNotFoundException e) {
-            Trace.trace(Trace.SEVERE, e.getMessage());
+            Trace.trace(Trace.ERROR, e.getMessage(), Activator.logOperations);
             throw e;
         } catch (IOException e) {
-            Trace.trace(Trace.SEVERE, e.getMessage());
+            Trace.trace(Trace.ERROR, e.getMessage(), Activator.logOperations);
             throw e;
         }
     }

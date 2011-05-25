@@ -150,7 +150,7 @@ public class GeronimoServerInfo {
                 } catch (SecurityException e) {
                 } catch (Exception e) {
                     Trace.trace(Trace.WARNING, "Kernel connection failed. "
-                            + e.getMessage());
+                            + e.getMessage(), Activator.logCore);
                 }
             }
         }
@@ -285,15 +285,15 @@ public class GeronimoServerInfo {
                     }
                 } catch (GBeanNotFoundException e) {
                     Trace.trace(Trace.WARNING, "GBean Not Found. "
-                            + e.getMessage());
+                            + e.getMessage(), Activator.logCore);
                 } catch (NoSuchOperationException e) {
                     Trace.trace(Trace.WARNING, "The operation cant invoked. "
-                            + e.getMessage());
+                            + e.getMessage(), Activator.logCore);
                 } catch (InternalKernelException e) {
                     throw e;
                 } catch (Exception e) {
                     Trace.trace(Trace.WARNING, "Kernel connection failed.  "
-                            + e.getMessage());
+                            + e.getMessage(), Activator.logCore);
                 }
 
             }
@@ -377,7 +377,7 @@ public class GeronimoServerInfo {
                 } catch (NoSuchAttributeException e) {
                 } catch (Exception e) {
                     Trace.trace(Trace.WARNING, "Kernel connection failed. "
-                            + e.getMessage());
+                            + e.getMessage(), Activator.logCore);
                 }
             }
         }
@@ -392,7 +392,8 @@ public class GeronimoServerInfo {
         for (int i = 0; i < kernels.size(); i++) {
             Set beans = kernels.get(i).listGBeans(query);
             for (Iterator it = beans.iterator(); it.hasNext();) {
-                AbstractName abstractName = (AbstractName) it.next();
+            	Object aName = it.next();
+                AbstractName abstractName = (AbstractName) aName;
                 Pattern pattern = new Pattern();
                 Artifact artifact = abstractName.getArtifact();
                 pattern.setArtifactId(artifact.getArtifactId());

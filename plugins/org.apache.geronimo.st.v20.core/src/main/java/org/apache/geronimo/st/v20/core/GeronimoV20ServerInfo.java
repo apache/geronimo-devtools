@@ -40,6 +40,7 @@ import org.apache.geronimo.kernel.Kernel;
 import org.apache.geronimo.kernel.NoSuchAttributeException;
 import org.apache.geronimo.kernel.NoSuchOperationException;
 import org.apache.geronimo.kernel.repository.Artifact;
+import org.apache.geronimo.st.core.Activator;
 import org.apache.geronimo.st.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.v21.core.IGeronimoServerInfo;
 import org.apache.geronimo.st.v21.core.internal.Trace;
@@ -149,7 +150,7 @@ public class GeronimoV20ServerInfo implements IGeronimoServerInfo{
                 } catch (SecurityException e) {
                 } catch (Exception e) {
                     Trace.trace(Trace.WARNING, "Kernel connection failed. "
-                            + e.getMessage());
+                            + e.getMessage(), Activator.logCore);
                 }
             }
         }
@@ -284,15 +285,15 @@ public class GeronimoV20ServerInfo implements IGeronimoServerInfo{
                     }
                 } catch (GBeanNotFoundException e) {
                     Trace.trace(Trace.WARNING, "GBean Not Found. "
-                            + e.getMessage());
+                            + e.getMessage(), Activator.logCore);
                 } catch (NoSuchOperationException e) {
                     Trace.trace(Trace.WARNING, "The operation cant invoked. "
-                            + e.getMessage());
+                            + e.getMessage(), Activator.logCore);
                 } catch (InternalKernelException e) {
                     throw e;
                 } catch (Exception e) {
                     Trace.trace(Trace.WARNING, "Kernel connection failed.  "
-                            + e.getMessage());
+                            + e.getMessage(), Activator.logCore);
                 }
 
             }
@@ -376,7 +377,7 @@ public class GeronimoV20ServerInfo implements IGeronimoServerInfo{
                 } catch (NoSuchAttributeException e) {
                 } catch (Exception e) {
                     Trace.trace(Trace.WARNING, "Kernel connection failed. "
-                            + e.getMessage());
+                            + e.getMessage(), Activator.logCore);
                 }
             }
         }

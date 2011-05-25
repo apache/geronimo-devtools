@@ -19,6 +19,7 @@ package org.apache.geronimo.st.v21.ui.wizards;
 import org.apache.geronimo.st.ui.CommonMessages;
 import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.core.DeploymentPlanInstallConfig;
+import org.apache.geronimo.st.v21.ui.Activator;
 import org.apache.geronimo.st.v21.ui.internal.Trace;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -44,12 +45,12 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
 
     public FacetInstallPage() {
         super("geronimo.plan.install");
-        Trace.trace("Constructor Entry", "FacetInstallPage");
+        Trace.trace("Constructor Entry", "FacetInstallPage", Activator.traceWizards);
         
         setTitle(Messages.geronimoDeploymentPlan);
         setDescription(Messages.configGeronimoDeploymentPlan);
         
-        Trace.trace("Constructor Exit", "FacetInstallPage");
+        Trace.trace("Constructor Exit", "FacetInstallPage", Activator.traceWizards);
     }
 
     /*
@@ -58,11 +59,11 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
      * @see org.eclipse.wst.common.project.facet.ui.IFacetWizardPage#setConfig(java.lang.Object)
      */
     public void setConfig(Object config) {
-        Trace.trace("Entry", "FacetInstallPage.setConfig", config);
+        Trace.trace("Entry", Activator.traceWizards, "FacetInstallPage.setConfig", config);
 
         this.config = (DeploymentPlanInstallConfig) config;
         
-        Trace.trace("Exit", "FacetInstallPage.setConfig");
+        Trace.trace("Exit", "FacetInstallPage.setConfig", Activator.traceWizards);
     }
 
     /*
@@ -71,7 +72,7 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
      * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
      */
     public void createControl(Composite parent) {
-        Trace.trace("Entry", "FacetInstallPage.createControl", parent);
+        Trace.trace("Entry", Activator.traceWizards, "FacetInstallPage.createControl", parent);
         
         Composite composite = new Composite(parent, SWT.NONE);
         composite.setLayout(new GridLayout(2, false));
@@ -112,7 +113,7 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
         
         setControl(composite);
         
-        Trace.trace("Exit", "FacetInstallPage.createControl");      
+        Trace.trace("Exit", "FacetInstallPage.createControl", Activator.traceWizards);      
     }
 
     /*
@@ -121,15 +122,15 @@ public class FacetInstallPage extends AbstractFacetWizardPage {
      * @see org.eclipse.wst.common.project.facet.ui.AbstractFacetWizardPage#transferStateToConfig()
      */
     public void transferStateToConfig() {
-        Trace.trace("Entry", "FacetInstallPage.transferStateToConfig");     
-    
+        Trace.trace("Entry", "FacetInstallPage.transferStateToConfig", Activator.traceWizards);
+        
         config.setGroupId(groupText.getText());
         config.setArtifactId(artifactText.getText());
         config.setVersion(versionText.getText());
         config.setType(typeText.getText());
         config.setSharedLib(sharedLib.getSelection());
         
-        Trace.trace("Exit", "FacetInstallPage.transferStateToConfig");      
+        Trace.trace("Exit", "FacetInstallPage.transferStateToConfig", Activator.traceWizards);      
     }
 
     private static GridData createGridData() {

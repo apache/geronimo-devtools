@@ -19,6 +19,7 @@ package org.apache.geronimo.st.v30.ui.handlers;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.geronimo.st.v30.ui.Activator;
 import org.apache.geronimo.st.v30.ui.internal.Messages;
 import org.apache.geronimo.st.v30.ui.internal.Trace;
 import org.eclipse.core.commands.AbstractHandler;
@@ -41,7 +42,7 @@ import org.eclipse.ui.internal.browser.WorkbenchBrowserSupport;
 public class DownloadGeronimo extends AbstractHandler {
 
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        Trace.tracePoint("Entry", "DownloadGeronimo.execute", event);
+        Trace.tracePoint("Entry", Activator.traceHandlers, "DownloadGeronimo.execute", event);
 
         String url = Messages.DownloadServerURL;
 
@@ -57,7 +58,7 @@ public class DownloadGeronimo extends AbstractHandler {
             e.printStackTrace();
         }
 
-        Trace.tracePoint("Exit", "DownloadGeronimo.execute");
+        Trace.tracePoint("Exit", Activator.traceHandlers, "DownloadGeronimo.execute");
         return null;
     }
 }

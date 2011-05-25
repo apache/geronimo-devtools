@@ -30,7 +30,7 @@ import org.apache.geronimo.jee.deployment.Environment;
 import org.apache.geronimo.jee.openejb.OpenejbJar;
 import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.core.operations.DeploymentPlanCreationOperation;
-import org.apache.geronimo.st.core.Activator;
+import org.apache.geronimo.st.v21.core.Activator;
 import org.apache.geronimo.st.core.DeploymentPlanInstallConfig;
 import org.apache.geronimo.st.v21.core.internal.Trace;
 import org.eclipse.core.resources.IFile;
@@ -61,7 +61,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 
 	public V21DeploymentPlanCreationOperation(IDataModel model, Object config) {
 		super(model, config);
-  		Trace.tracePoint("Constructor", "V21DeploymentPlanCreationOperation", model, config);
+  		Trace.tracePoint("Constructor", Activator.traceOperations, "V21DeploymentPlanCreationOperation", model, config);
 	}
 	
 	
@@ -71,7 +71,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createGeronimoApplicationDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public JAXBElement createGeronimoApplicationDeploymentPlan(IFile dpFile) throws Exception {
-		Trace.tracePoint("Entry",
+		Trace.tracePoint("Entry", Activator.traceOperations,
 				"V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan", dpFile);
 
 		org.apache.geronimo.jee.application.ObjectFactory applicationFactory = new org.apache.geronimo.jee.application.ObjectFactory();
@@ -83,7 +83,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		JAXBElement jaxbElement = applicationFactory.createApplication(application);
 		JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
 
-		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan",
+		Trace.tracePoint("Exit ", Activator.traceOperations, "V21DeploymentPlanCreationOperation.createGeronimoApplicationDeploymentPlan",
 				applicationFactory.createApplication(application));
 		return applicationFactory.createApplication(application);
 	}
@@ -95,7 +95,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createGeronimoWebDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public JAXBElement createGeronimoWebDeploymentPlan(IFile dpFile) throws Exception {
-  		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan",
+  		Trace.tracePoint("Entry", Activator.traceOperations, "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan",
 				dpFile, dpFile.getFullPath());
 		org.apache.geronimo.jee.web.ObjectFactory webFactory = new org.apache.geronimo.jee.web.ObjectFactory();
 		WebApp web = webFactory.createWebApp();
@@ -107,10 +107,10 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		try {
 			JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
 		} catch(Exception e) {
-			Activator.log(0, "marshalDeploymentPlan exception", e);
+			Trace.trace(Trace.ERROR, "marshalDeploymentPlan exception", e, Activator.logOperations);
 		}
 
-		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", jaxbElement);
+		Trace.tracePoint("Exit ", Activator.traceOperations, "V21DeploymentPlanCreationOperation.createGeronimoWebDeploymentPlan", jaxbElement);
 		return jaxbElement;
 	}
 
@@ -121,7 +121,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createOpenEjbDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public JAXBElement createOpenEjbDeploymentPlan(IFile dpFile) throws Exception {
-  		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile);
+  		Trace.tracePoint("Entry", Activator.traceOperations, "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", dpFile);
 
 		org.apache.geronimo.jee.openejb.ObjectFactory ejbFactory = new org.apache.geronimo.jee.openejb.ObjectFactory();
 		OpenejbJar ejbJar = ejbFactory.createOpenejbJar();
@@ -131,7 +131,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		JAXBElement jaxbElement = ejbFactory.createOpenejbJar(ejbJar);
 		JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
 
-		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", jaxbElement);
+		Trace.tracePoint("Exit ", Activator.traceOperations, "V21DeploymentPlanCreationOperation.createOpenEjbDeploymentPlan", jaxbElement);
 		return jaxbElement;
 	}
 
@@ -142,7 +142,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createConnectorDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public JAXBElement createConnectorDeploymentPlan(IFile dpFile) throws Exception {
-  		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", dpFile);
+  		Trace.tracePoint("Entry", Activator.traceOperations, "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", dpFile);
 
 		org.apache.geronimo.jee.connector.ObjectFactory connectorFactory = new org.apache.geronimo.jee.connector.ObjectFactory();
 		Connector connector = connectorFactory.createConnector();
@@ -154,7 +154,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		JAXBElement jaxbElement = connectorFactory.createConnector(connector);
 		JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
 
-		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", jaxbElement);
+		Trace.tracePoint("Exit ", Activator.traceOperations, "V21DeploymentPlanCreationOperation.createConnectorDeploymentPlan", jaxbElement);
 		return jaxbElement;
 	}
 
@@ -165,7 +165,7 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 	 * @see org.apache.geronimo.st.core.operations.IDeploymentPlanCreationOp#createGeronimoApplicationDeploymentPlan(org.eclipse.core.resources.IFile)
 	 */
 	public JAXBElement createGeronimoApplicationClientDeploymentPlan(IFile dpFile) throws Exception {
-		Trace.tracePoint("Entry","V21DeploymentPlanCreationOperation.createGeronimoApplicationClientDeploymentPlan", dpFile);
+		Trace.tracePoint("Entry", Activator.traceOperations,"V21DeploymentPlanCreationOperation.createGeronimoApplicationClientDeploymentPlan", dpFile);
 
 		org.apache.geronimo.jee.applicationclient.ObjectFactory applicationClientFactory = new org.apache.geronimo.jee.applicationclient.ObjectFactory();
 		ApplicationClient applicationClient = applicationClientFactory.createApplicationClient();
@@ -176,13 +176,13 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 		JAXBElement jaxbElement = applicationClientFactory.createApplicationClient(applicationClient);
 		JAXBUtils.marshalDeploymentPlan(jaxbElement, dpFile);
 
-		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createGeronimoApplicationClientDeploymentPlan", applicationClientFactory.createApplicationClient(applicationClient));
+		Trace.tracePoint("Exit ", Activator.traceOperations, "V21DeploymentPlanCreationOperation.createGeronimoApplicationClientDeploymentPlan", applicationClientFactory.createApplicationClient(applicationClient));
 		return applicationClientFactory.createApplicationClient(applicationClient);
 	}
 
 	
 	public Environment getConfigEnvironment() {
-        Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.getConfigEnvironment");
+        Trace.tracePoint("Entry", Activator.traceOperations, "V21DeploymentPlanCreationOperation.getConfigEnvironment");
 		
 		if (config != null && config instanceof DeploymentPlanInstallConfig) {
 			cfg = (DeploymentPlanInstallConfig) config;
@@ -210,13 +210,13 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 			env.setDependencies(dt);
 		}
 
-   	    Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.getConfigEnvironment", env);
+   	    Trace.tracePoint("Exit ", Activator.traceOperations, "V21DeploymentPlanCreationOperation.getConfigEnvironment", env);
 		return env;
 	}
 
 	
 	public static Artifact createArtifact(String groupId, String artifactId, String version, String type) {
-  		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.createArtifact", groupId, artifactId, version, type);
+  		Trace.tracePoint("Entry", Activator.traceOperations, "V21DeploymentPlanCreationOperation.createArtifact", groupId, artifactId, version, type);
 
 		org.apache.geronimo.jee.deployment.ObjectFactory serviceFactory = new org.apache.geronimo.jee.deployment.ObjectFactory();
 		Artifact artifact = serviceFactory.createArtifact();
@@ -229,13 +229,13 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 			artifact.setVersion(version);
 		artifact.setType(type);
 		
-  		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createArtifact", artifact);
+  		Trace.tracePoint("Exit ", Activator.traceOperations, "V21DeploymentPlanCreationOperation.createArtifact", artifact);
 		return artifact;
 	}
 
 	
 	public static Dependency createDependency(String groupId, String artifactId, String version, String type) {
-  		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.createDependency", groupId, artifactId, version, type);
+  		Trace.tracePoint("Entry", Activator.traceOperations, "V21DeploymentPlanCreationOperation.createDependency", groupId, artifactId, version, type);
 
 		org.apache.geronimo.jee.deployment.ObjectFactory serviceFactory = new org.apache.geronimo.jee.deployment.ObjectFactory();
 		Dependency dependency = serviceFactory.createDependency();
@@ -247,14 +247,14 @@ public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOp
 			dependency.setVersion(version);
 		dependency.setType(type);
 		
-        Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.createDependency", dependency);
+        Trace.tracePoint("Exit ", Activator.traceOperations, "V21DeploymentPlanCreationOperation.createDependency", dependency);
 		return dependency;
 	}
 
 	
 	private static boolean hasValue(String attribute) {
-  		Trace.tracePoint("Entry", "V21DeploymentPlanCreationOperation.hasValue", attribute);
-  		Trace.tracePoint("Exit ", "V21DeploymentPlanCreationOperation.hasValue", (attribute != null && attribute.trim().length() != 0) );
+  		Trace.tracePoint("Entry", Activator.traceOperations, "V21DeploymentPlanCreationOperation.hasValue", attribute);
+  		Trace.tracePoint("Exit ", Activator.traceOperations, "V21DeploymentPlanCreationOperation.hasValue", (attribute != null && attribute.trim().length() != 0) );
 		
 		return attribute != null && attribute.trim().length() != 0;
 	}

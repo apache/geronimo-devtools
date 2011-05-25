@@ -16,6 +16,7 @@
  */
 package org.apache.geronimo.st.v30.core.osgi;
 
+import org.apache.geronimo.st.v30.core.Activator;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
@@ -38,7 +39,7 @@ public final class AriesHelper {
      * @return true or false
      */
     public static boolean isAriesInstalled() {
-        Trace.tracePoint("Entry", "AriesHelper.isAriesInstalled");
+        Trace.tracePoint("Entry", Activator.traceOsgi, "AriesHelper.isAriesInstalled");
 
         Bundle ariesCore = Platform.getBundle("com.ibm.etools.aries.core");
         Bundle ariesUI   = Platform.getBundle("com.ibm.etools.aries.ui");

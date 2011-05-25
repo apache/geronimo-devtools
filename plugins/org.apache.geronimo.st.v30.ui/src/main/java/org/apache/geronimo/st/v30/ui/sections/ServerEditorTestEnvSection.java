@@ -19,6 +19,7 @@ package org.apache.geronimo.st.v30.ui.sections;
 import java.util.List;
 
 import org.apache.geronimo.st.v30.core.ClasspathContainersHelper;
+import org.apache.geronimo.st.v30.ui.Activator;
 import org.apache.geronimo.st.v30.ui.commands.SetClasspathContainersCommand;
 import org.apache.geronimo.st.v30.ui.commands.SetInPlaceSharedLibCommand;
 import org.apache.geronimo.st.v30.ui.commands.SetNotRedeployJSPFilesCommand;
@@ -72,7 +73,7 @@ public class ServerEditorTestEnvSection extends AbstractServerEditorSection {
     public void createSection(Composite parent) {
         super.createSection(parent);
 
-        Trace.tracePoint("ENTRY", "ServerEditorTestEnvSection.createSection", parent);
+        Trace.tracePoint("ENTRY", Activator.traceSections, "ServerEditorTestEnvSection.createSection", parent);
 
         toolkit = getFormToolkit(parent.getDisplay());
 
@@ -213,14 +214,14 @@ public class ServerEditorTestEnvSection extends AbstractServerEditorSection {
             checkbox.getTable().setEnabled( false );
         }
 
-        Trace.tracePoint("EXIT", "ServerEditorTestEnvSection.createSection");
+        Trace.tracePoint("EXIT", Activator.traceSections, "ServerEditorTestEnvSection.createSection");
     }
 
     //
     // CheckboxTableViewer: checkbox
     //
     public void createCheckbox() {
-        Trace.tracePoint("ENTRY", "ServerEditorTestEnvSection.createCheckbox");
+        Trace.tracePoint("ENTRY", Activator.traceSections, "ServerEditorTestEnvSection.createCheckbox");
     
         if ( checkbox == null ) {
                     
@@ -245,6 +246,6 @@ public class ServerEditorTestEnvSection extends AbstractServerEditorSection {
             });
         }
 
-        Trace.tracePoint("EXIT", "ServerEditorTestEnvSection.createCheckbox");
+        Trace.tracePoint("EXIT", Activator.traceSections, "ServerEditorTestEnvSection.createCheckbox");
     }
 }
