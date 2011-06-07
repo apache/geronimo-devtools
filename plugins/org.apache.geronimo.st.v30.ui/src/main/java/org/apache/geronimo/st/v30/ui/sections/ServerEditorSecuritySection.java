@@ -70,26 +70,48 @@ public class ServerEditorSecuritySection extends AbstractServerEditorSection {
 
         FormToolkit toolkit = getFormToolkit(parent.getDisplay());
 
-        Section section = toolkit.createSection(parent,
-                ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
-                        | ExpandableComposite.TITLE_BAR 
-                        | ExpandableComposite.FOCUS_TITLE);
+        Section section = toolkit.createSection(parent, ExpandableComposite.TWISTIE
+                | ExpandableComposite.EXPANDED
+                | ExpandableComposite.TITLE_BAR
+                | Section.DESCRIPTION | ExpandableComposite.FOCUS_TITLE);
 
         section.setText(Messages.editorSectionSecurityTitle);
-    //  section.setDescription(Messages.editorSectionSecurityDescription);
+        section.setDescription(Messages.editorSectionSecurityDescription);
         section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
-
-        Composite textComposite = toolkit.createComposite(section);
-        GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 2;
-        textComposite.setLayout(gridLayout);
-        textComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        section.setDescriptionControl(textComposite);
-        //text
-        Label label = toolkit.createLabel(textComposite, Messages.editorSectionSecurityDescription);
         
-        // Button for managing account
-        Button manageAccountButton = toolkit.createButton(textComposite, CommonMessages.manageAccount, SWT.PUSH);
+        Composite composite = toolkit.createComposite(section);
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 2;
+        layout.marginHeight = 5;
+        layout.marginWidth = 10;
+        layout.verticalSpacing = 5;
+        layout.horizontalSpacing = 15;
+        composite.setLayout(layout);
+        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        section.setClient(composite);
+        
+        // ------- Label and text field for the username -------
+        createLabel(composite, Messages.username, toolkit);
+        username = toolkit.createText(composite, getUserName(), SWT.BORDER);
+        username.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        username.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                execute(new SetUsernameCommand(server, username.getText()));
+            }
+        });
+
+        // ------- Label and text field for the password -------
+        createLabel(composite, Messages.password, toolkit);
+
+        password = toolkit.createText(composite, getPassword(), SWT.BORDER | SWT.PASSWORD);
+        password.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        password.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+                execute(new SetPasswordCommand(server, password.getText()));
+            }
+        });
+        // ----- Button manage account -----
+        Button manageAccountButton = toolkit.createButton(composite, CommonMessages.manageAccount, SWT.PUSH);
         GridData buttonData = new GridData(SWT.LEFT, SWT.CENTER, false, false);
         manageAccountButton.setLayoutData(buttonData);
         manageAccountButton.addSelectionListener(new SelectionAdapter() {
@@ -115,38 +137,6 @@ public class ServerEditorSecuritySection extends AbstractServerEditorSection {
                 } 
             }
 
-        });
-        
-        Composite composite = toolkit.createComposite(section);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        layout.marginHeight = 5;
-        layout.marginWidth = 10;
-        layout.verticalSpacing = 5;
-        layout.horizontalSpacing = 15;
-        composite.setLayout(layout);
-        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        section.setClient(composite);
-
-        // ------- Label and text field for the username -------
-        createLabel(composite, Messages.username, toolkit);
-        username = toolkit.createText(composite, getUserName(), SWT.BORDER);
-        username.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        username.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent e) {
-                execute(new SetUsernameCommand(server, username.getText()));
-            }
-        });
-
-        // ------- Label and text field for the password -------
-        createLabel(composite, Messages.password, toolkit);
-
-        password = toolkit.createText(composite, getPassword(), SWT.BORDER | SWT.PASSWORD);
-        password.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
-        password.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent e) {
-                execute(new SetPasswordCommand(server, password.getText()));
-            }
         });
     }
 

@@ -30,6 +30,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -120,33 +121,36 @@ public class GeronimoServerWizardFragment extends WizardFragment {
             }
         });
 
-        label = new Label(parent, SWT.NONE);
-        label.setText(Messages.specifyPorts);
-        GridData data = createTextGridData();
-        data.verticalIndent = 15;
-        data.horizontalSpan = 2;
-        label.setLayoutData(data);
+		Group portsGroup = new Group(parent, SWT.SHADOW_IN);
+		portsGroup.setText(Messages.specifyPorts);
+		
+		portsGroup.setLayout(new GridLayout(2, true));
+		GridData gd = new GridData();
+		gd.verticalIndent = 15;
+		gd.horizontalAlignment = GridData.FILL;
+		gd.horizontalSpan = 2;
+		portsGroup.setLayoutData(gd);
+		// ports
+		ports = new Table(portsGroup, SWT.V_SCROLL | SWT.H_SCROLL
+				| SWT.FULL_SELECTION);
+		ports.setHeaderVisible(true);
+		ports.setLinesVisible(false);
 
-        // ports
-        ports = new Table(parent, SWT.V_SCROLL | SWT.H_SCROLL
-                | SWT.FULL_SELECTION);
-        ports.setHeaderVisible(true);
-        ports.setLinesVisible(false);
+		TableColumn col = new TableColumn(ports, SWT.NONE);
+		col.setText(Messages.portName);
+		col.setResizable(false);
+		ColumnWeightData colData = new ColumnWeightData(15, 100, false);
+		TableLayout tableLayout = new TableLayout();
+		tableLayout.addColumnData(colData);
 
-        TableColumn col = new TableColumn(ports, SWT.NONE);
-        col.setText(Messages.portName);
-        col.setResizable(false);
-        ColumnWeightData colData = new ColumnWeightData(15, 150, false);
-        TableLayout tableLayout = new TableLayout();
-        tableLayout.addColumnData(colData);
+		col = new TableColumn(ports, SWT.NONE);
+		col.setText(Messages.portValue);
+		col.setResizable(false);
+		colData = new ColumnWeightData(8, 100, false);
+		tableLayout.addColumnData(colData);
 
-        col = new TableColumn(ports, SWT.NONE);
-        col.setText(Messages.portValue);
-        col.setResizable(false);
-        colData = new ColumnWeightData(8, 80, false);
-        tableLayout.addColumnData(colData);
 
-        data = new GridData(GridData.FILL_HORIZONTAL
+        GridData data = new GridData(GridData.FILL_HORIZONTAL
                 | GridData.VERTICAL_ALIGN_FILL);
         data.horizontalSpan = 2;
         data.heightHint = 100;

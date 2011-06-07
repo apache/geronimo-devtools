@@ -83,10 +83,12 @@ public abstract class AbstractTableSection extends AbstractListSection {
         table.setLayout(tableLayout);
 
         sortListener = new SortListener(table, COLUMN_NAMES);
-        for (int i = 0; i < getTableColumnNames().length; i++) {
+        String[] columnNames = getTableColumnNames();
+        for (int i = 0; i < columnNames.length; i++) {
             tableLayout.addColumnData(new ColumnWeightData(35));
             TableColumn tableColumn = new TableColumn(table, SWT.NONE);
-            tableColumn.setText(getTableColumnNames()[i]);
+            tableColumn.setText(columnNames[i]);
+            tableColumn.setToolTipText(columnNames[i]);
             tableColumn.addListener(SWT.Selection, sortListener);
         }
 

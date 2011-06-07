@@ -75,50 +75,12 @@ public class ServerEditorSecuritySection extends AbstractServerEditorSection {
 		Section section = toolkit.createSection(parent,
 				ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
 						| ExpandableComposite.TITLE_BAR 
-						| ExpandableComposite.FOCUS_TITLE);
+						| Section.DESCRIPTION | ExpandableComposite.FOCUS_TITLE);
 
 		section.setText(Messages.editorSectionSecurityTitle);
-	//	section.setDescription(Messages.editorSectionSecurityDescription);
+		section.setDescription(Messages.editorSectionSecurityDescription);
 		section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
-
-		Composite textComposite = toolkit.createComposite(section);
-        GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 2;
-        textComposite.setLayout(gridLayout);
-        textComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        section.setDescriptionControl(textComposite);
-        //text
-        Label label = toolkit.createLabel(textComposite, Messages.editorSectionSecurityDescription);
         
-		// Button for managing account
-        Button manageAccountButton = toolkit.createButton(textComposite, CommonMessages.manageAccount, SWT.PUSH);
-        GridData buttonData = new GridData(SWT.LEFT, SWT.CENTER, false, false);
-        manageAccountButton.setLayoutData(buttonData);
-        manageAccountButton.addSelectionListener(new SelectionAdapter() {
-            public void widgetSelected(SelectionEvent e) {
-                // if the server is started and local host, then we can bring up the dialog
-                if (!isLocalHost())
-                    MessageDialog.openError(Display.getCurrent().getActiveShell(), CommonMessages.errorOpenWizard, CommonMessages.isNotLocalHost);
-                else 
-                {
-                    GeronimoAccountManager manager = new GeronimoAccountManager(server.getRuntime());
-                    try {
-                        manager.init();
-                    } catch (Exception e1) {
-                        MessageDialog.openError(Display.getCurrent().getActiveShell(), CommonMessages.errorOpenWizard, CommonMessages.cannotRead);
-                        Trace.trace(Trace.ERROR, "Properties file containing user information can't be read!", e1, Activator.logSections);
-                        return;
-                    }
-                    ManageAccountWizard wizard = new ManageAccountWizard(manager);
-                    WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
-                    dialog.open();
-                    if (dialog.getReturnCode() == Dialog.OK) {
-                    }
-                } 
-            }
-
-        });
-		
 		Composite composite = toolkit.createComposite(section);
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
@@ -150,6 +112,35 @@ public class ServerEditorSecuritySection extends AbstractServerEditorSection {
 				execute(new SetPasswordCommand(server, password.getText()));
 			}
 		});
+		
+		// Button for managing account
+        Button manageAccountButton = toolkit.createButton(composite, CommonMessages.manageAccount, SWT.PUSH);
+        GridData buttonData = new GridData(SWT.LEFT, SWT.CENTER, false, false);
+        manageAccountButton.setLayoutData(buttonData);
+        manageAccountButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                // if the server is started and local host, then we can bring up the dialog
+                if (!isLocalHost())
+                    MessageDialog.openError(Display.getCurrent().getActiveShell(), CommonMessages.errorOpenWizard, CommonMessages.isNotLocalHost);
+                else 
+                {
+                    GeronimoAccountManager manager = new GeronimoAccountManager(server.getRuntime());
+                    try {
+                        manager.init();
+                    } catch (Exception e1) {
+                        MessageDialog.openError(Display.getCurrent().getActiveShell(), CommonMessages.errorOpenWizard, CommonMessages.cannotRead);
+                        Trace.trace(Trace.ERROR, "Properties file containing user information can't be read!", e1, Activator.logSections);
+                        return;
+                    }
+                    ManageAccountWizard wizard = new ManageAccountWizard(manager);
+                    WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
+                    dialog.open();
+                    if (dialog.getReturnCode() == Dialog.OK) {
+                    }
+                } 
+            }
+
+        });
 	}
 
 	private String getUserName() {
