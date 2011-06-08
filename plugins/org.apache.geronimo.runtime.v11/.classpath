@@ -15,5 +15,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-web-builder-1.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/openejb-builder-2.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-crypto-2.2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.5.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/slf4j-simple-1.5.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
