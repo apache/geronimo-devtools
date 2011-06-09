@@ -79,6 +79,9 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
 
                         TargetModuleID[] nonRunningIds = dm.getNonRunningModules(null, targets);
                         Set<String> nonRunningConfigIds = createSet(nonRunningIds);
+                        
+                        TargetModuleID[] availableIds = dm.getAvailableModules(null, targets);
+                        Set<String> availableConfigIds = createSet(availableIds);
 
                         for (Map.Entry<String, String> entry : projectsOnServer.entrySet()) {
                             String projectName = entry.getKey();
@@ -91,8 +94,8 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
                                 delegate.setModulesState(modules, IServer.STATE_STARTED);
                             } else if (nonRunningConfigIds.contains(configID)) {
                                 delegate.setModulesState(modules, IServer.STATE_STOPPED);
-                            } else {
-                                // assume it's not installed
+                            } else if (!availableConfigIds.contains(configID)) {
+                                // it's not running, stopped or available - so remove it
                                 for (IModule module : modules) {
                                     removedModules.add(module);
                                 }
