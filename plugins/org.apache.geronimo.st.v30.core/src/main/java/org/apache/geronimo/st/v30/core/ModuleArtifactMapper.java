@@ -28,8 +28,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -106,7 +104,7 @@ public class ModuleArtifactMapper {
         
         try {
             String configId = this.resolveArtifact(server, eba);
-            IModule[] bundleModules = getChildModules(eba);            
+            IModule[] bundleModules = AriesHelper.getChildModules(eba);            
             ExtendedDeploymentManager dm = (ExtendedDeploymentManager) DeploymentCommandFactory.getDeploymentManager(server);
             AbstractName abstractName = dm.getApplicationGBeanName(Artifact.create(configId));
             long[] bundleIds = dm.getEBAContentBundleIds(abstractName);
@@ -115,7 +113,7 @@ public class ModuleArtifactMapper {
                 String symbolicName = dm.getEBAContentBundleSymbolicName(abstractName, bundleId);
                 if (symbolicName != null) {
                     for (IModule bundleModule : bundleModules) {
-                        if (symbolicName.equals(getSymbolicName(bundleModule))) {
+                        if (symbolicName.equals(AriesHelper.getSymbolicName(bundleModule))) {
                             EBABundle ebaBundle = new EBABundle(eba, bundleModule);
                             bundleEntries.put(ebaBundle, Long.toString(bundleId));
                             break;
@@ -161,35 +159,6 @@ public class ModuleArtifactMapper {
         }
     }
     
-    private IModule[] getChildModules(IModule ebaModule){
-        if (AriesHelper.isAriesInstalled()) {
-            try {
-                Class class1 = Class.forName("com.ibm.etools.aries.internal.core.modules.AriesModuleDelegate");
-                Method method = class1.getMethod("getChildModules");
-                Constructor constructor = class1.getConstructor(IProject.class);
-                Object object = constructor.newInstance(ebaModule.getProject());
-                return (IModule[]) method.invoke(object);                
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }        
-        return new IModule[0];
-    }
-    
-    private String getSymbolicName(IModule module) {
-        if (AriesHelper.isAriesInstalled()) {
-            try {
-                Class class1 = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
-                Method method = class1.getMethod("getBundleSymbolicName", IProject.class);
-                return (String) method.invoke(null, module.getProject());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-    
-
     synchronized public void removeArtifactBundleEntry(IServer server, IModule module) {
 
         if (!SocketUtil.isLocalhost(server.getHost()))

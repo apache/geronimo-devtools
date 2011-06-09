@@ -56,6 +56,7 @@ import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.operations.ISharedLibEntryCreationDataModelProperties;
 import org.apache.geronimo.st.v30.core.operations.SharedLibEntryCreationOperation;
 import org.apache.geronimo.st.v30.core.operations.SharedLibEntryDataModelProvider;
+import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -282,65 +283,28 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             status = updateSharedLib(toProcess, ProgressUtil.getSubMonitorFor(monitor, 1000));
         }
 
-        
-        ArrayList<IModule> noChangedEBAs = new ArrayList<IModule>();        
-        // noChangeEBAModules is used to record the no changed EBA modules, which also need to reset 
-        // the publish state otherwise leads to error message in server state  
-        ArrayList<IModule[]> noChangeEBAModules = new ArrayList<IModule[]>();        
-        ArrayList<IModule[]> updatedBundleWithinEBAList = new ArrayList<IModule[]>();
-        
-        if (getServerDelegate().isRefreshOSGiBundle()) {
-            for (int i = 0; i < modules.size(); i++) {
-                IModule[] module = (IModule[]) modules.get(i);
-                IModule rootModule = module[0];
-                Integer moduleDeltaKind = (Integer) deltaKind.get(i);
-                if (GeronimoUtils.isEBAModule(rootModule) && module.length == 1
-                        && moduleDeltaKind.intValue() == NO_CHANGE) {
-                    noChangedEBAs.add(rootModule);
-                }
-            }
-        }
-
-        
         /* 
          * Build a map of root modules that need to be published. This is to ensure that
          * we avoid redeploys and it guarantees that publishModule() is called once per
          * deployed application. 
          */
-        Map<IModule, ModuleList> publishMap = new LinkedHashMap<IModule, ModuleList>();
+        Map<IModule, ModuleDeltaList> publishMap = new LinkedHashMap<IModule, ModuleDeltaList>();
         for (int i = 0; i < modules.size(); i++) {
             IModule[] module = (IModule[]) modules.get(i);
             Integer moduleDeltaKind = (Integer) deltaKind.get(i);
             IModule rootModule = module[0];
             
-            if (getServerDelegate().isRefreshOSGiBundle()) {
-                /*
-                 * Build a map of bundles that need to be published individually without to 
-                 * publish the whole EBA they belong to  
-                 */
-                if (noChangedEBAs.contains(rootModule)) {
-                    if (module.length == 1) {
-                        noChangeEBAModules.add(module);
-                        continue;
-                    } else {
-                        if (moduleDeltaKind.intValue() == CHANGED) {
-                            updatedBundleWithinEBAList.add(module); 
-                            continue;
-                        } else if (moduleDeltaKind.intValue() == NO_CHANGE) {
-                            noChangeEBAModules.add(module);
-                            continue;
-                        }
-                    }
-                }
-            }
-            
-            
-            ModuleList list = publishMap.get(module[0]);
+            ModuleDeltaList list = publishMap.get(rootModule);
             if (list == null) {
-                list = new ModuleList(module[0]);
-                publishMap.put(module[0], list);
+                list = new ModuleDeltaList(rootModule);
+                publishMap.put(rootModule, list);
             }
-            list.addModule(module, moduleDeltaKind.intValue());
+            
+            if (module.length == 1) {
+                list.setRootModuleDelta(moduleDeltaKind.intValue());
+            } else {
+                list.addChildModule(module, moduleDeltaKind.intValue());
+            }
         }
         
         if(status.isOK()) {
@@ -354,58 +318,41 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             if (monitor.isCanceled())
                 return;
             
-            for (ModuleList moduleList : publishMap.values()) {
-                status = publishModule(kind, moduleList.getRootModule(), moduleList.getDelta(), ProgressUtil.getSubMonitorFor(monitor, 3000));
-                if (status != null && !status.isOK()) {
-                    multi.add(status);
-                } else {
-                    for (IModule[] module : moduleList.getModules()) {
+            boolean refreshOSGiBundle = getServerDelegate().isRefreshOSGiBundle();
+            for (ModuleDeltaList moduleList : publishMap.values()) {  
+                IModule[] rootModule = moduleList.getRootModule();
+                if (refreshOSGiBundle && GeronimoUtils.isEBAModule(rootModule[0]) && moduleList.hasChangedChildModulesOnly()) {
+                    List<IModule[]> changedModules = new ArrayList<IModule[]>();
+                    List<IModule[]> unChangedModules = new ArrayList<IModule[]>();
+                    for (ModuleDelta moduleDelta : moduleList.getChildModules()) {
+                        if (moduleDelta.delta == CHANGED) {
+                            changedModules.add(moduleDelta.module);
+                        } else {
+                            unChangedModules.add(moduleDelta.module);
+                        }
+                    }
+                    status = refreshBundles(rootModule[0], changedModules, ProgressUtil.getSubMonitorFor(monitor, 3000));
+                    if (status != null && !status.isOK()) {
+                        multi.add(status);
+                    }
+                    unChangedModules.add(rootModule);
+                    for (IModule[] module : unChangedModules) {                   
                         setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
                         setModuleStatus(module, null);
                     }
-                }
-            }
-            
-            if (getServerDelegate().isRefreshOSGiBundle()) {
-                for (IModule[] modules2 : updatedBundleWithinEBAList) {
-                    IModule ebaModule = modules2[0];
-                    IModule bundleModule = modules2[1];
-                    status = refreshBundle(ebaModule, bundleModule, ProgressUtil.getSubMonitorFor(monitor, 3000));
+                } else {
+                    status = publishModule(kind, rootModule, moduleList.getEffectiveRootDelta(), ProgressUtil.getSubMonitorFor(monitor, 3000));
                     if (status != null && !status.isOK()) {
                         multi.add(status);
                     } else {
-                        setModulePublishState(modules2, IServer.PUBLISH_STATE_NONE);
-                        setModuleStatus(modules2, null);
+                        for (ModuleDelta moduleDelta : moduleList.getChildModules()) {
+                            setModulePublishState(moduleDelta.module, IServer.PUBLISH_STATE_NONE);
+                            setModuleStatus(moduleDelta.module, null);
+                        }
                     }
                 }
-
-                for (Iterator iterator = noChangeEBAModules.iterator(); iterator.hasNext();) {
-                    IModule[] modules3 = (IModule[]) iterator.next();
-                    setModulePublishState(modules3, IServer.PUBLISH_STATE_NONE);
-                }
-            }          
-            
-            /*
-            List<IModule> rootModulesPublished = new ArrayList<IModule>();
-            for (int i = 0; i < size; i++) {
-                IModule[] module = (IModule[]) modules.get(i);
-                int moduleDeltaKind = ((Integer)deltaKind.get(i)).intValue();
-                Trace.trace(Trace.INFO, "look to publish " + Arrays.asList(module).toString() + " " + deltaKindToString(moduleDeltaKind));
-                //has the root of this module been published already?
-                if(!rootModulesPublished.contains(module[0])) {
-                    status = publishModule(kind, module, moduleDeltaKind, ProgressUtil.getSubMonitorFor(monitor, 3000));
-                    if (status != null && !status.isOK())
-                        multi.add(status);
-                    //cache published root modules to compare against to prevent dup redeploys
-                    if(moduleDeltaKind != NO_CHANGE) {
-                        rootModulesPublished.add(module[0]);
-                    }
-                } else {
-                    setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
-                    Trace.trace(Trace.INFO, "root module for " + Arrays.asList(module).toString() + " already published.  Skipping.");
-                }   
             }
-            */
+
         } else {
             multi.add(status);
         }
@@ -413,72 +360,154 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishModules");
     }
     
-    protected IStatus refreshBundle(IModule ebaModule, IModule bundleModule, IProgressMonitor subMonitorFor) {
-        ExtendedDeploymentManager dm;
+    protected IStatus refreshBundles(IModule ebaModule, List<IModule[]> bundleModules, IProgressMonitor monitor) {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundles", ebaModule, bundleModules, monitor);
+
+        String configId = ModuleArtifactMapper.getInstance().resolveArtifact(getServer(), ebaModule);
+        if (configId == null) {
+            return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.bind(Messages.REFRESH_NO_CONFIGURATION_FAIL, ebaModule.getProject().getName()));
+        }
+        
+        if (monitor.isCanceled()) {
+            return Status.CANCEL_STATUS;
+        }
+        
+        MultiStatus multiStatus = new MultiStatus(Activator.PLUGIN_ID, 0, "", null);
+        
         try {
-            dm = (ExtendedDeploymentManager) DeploymentCommandFactory.getDeploymentManager(getServer());
-            String configId = ModuleArtifactMapper.getInstance().resolveArtifact(getServer(), ebaModule);
-            if (configId == null) {
-                return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.bind(
-                        Messages.REFRESH_NO_CONFIGURATION_FAIL, ebaModule.getProject().getName()));
+            ExtendedDeploymentManager dm = (ExtendedDeploymentManager) DeploymentCommandFactory.getDeploymentManager(getServer());
+            AbstractName ebaName = dm.getApplicationGBeanName(Artifact.create(configId));
+            long[] bundleIds = dm.getEBAContentBundleIds(ebaName);
+
+            Map<String, Long> bundleMap = new HashMap<String, Long>();
+            for (long bundleId : bundleIds) {
+                String symbolicName = dm.getEBAContentBundleSymbolicName(ebaName, bundleId);
+                if (symbolicName != null) {
+                    bundleMap.put(symbolicName, bundleId);
+                }
             }
-            AbstractName abstractName = dm.getApplicationGBeanName(Artifact.create(configId));
+            
+            for (IModule[] bundleModule : bundleModules) {
+                if (monitor.isCanceled()) {
+                    return Status.CANCEL_STATUS;
+                }
+                
+                IStatus status = refreshBundle(ebaModule, bundleModule[1], ebaName, bundleMap);
+                if (status.isOK()) {
+                    setModulePublishState(bundleModule, IServer.PUBLISH_STATE_NONE);
+                    setModuleStatus(bundleModule, null);
+                } else {
+                    multiStatus.add(status);
+                    setModuleStatus(bundleModule, status);
+                    setModulePublishState(bundleModule, IServer.PUBLISH_STATE_UNKNOWN);
+                }
+            }
+        } catch (Exception e) {
+            multiStatus.add(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, Messages.REFRESH_FAIL, e));
+        }
+        
+        IStatus status;
+        if (multiStatus.isOK()) {
+            status = Status.OK_STATUS;
+        } else {
+            status = multiStatus;
+        }
+        
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundles", status);
+        
+        return status;
+    }
+    
+    private IStatus refreshBundle(IModule ebaModule, IModule bundleModule, AbstractName ebaName, Map<String, Long> bundleMap) {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundle", ebaModule, bundleModule, ebaName, bundleMap);
+
+        try {
             File file = DeploymentUtils.getTargetFile(getServer(), bundleModule);
             if (file == null) {
                 return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.bind(Messages.moduleExportError, bundleModule.getProject().getName()));
             }
-            String bundleId = ModuleArtifactMapper.getInstance().resolveBundle(getServer(), ebaModule, bundleModule);
-            if (bundleId != null) {
-                dm.updateEBAContent(abstractName, Long.parseLong(bundleId), file);
-            } else {
+            
+            String symbolicName = AriesHelper.getSymbolicName(bundleModule);
+            Long bundleId = bundleMap.get(symbolicName);
+            
+            if (bundleId == null) {
                 return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.bind(Messages.REFRESH_NO_BUNDLE_FAIL,
                         new String[] {bundleModule.getProject().getName(), ebaModule.getProject().getName()}));
             }
+            
+            ExtendedDeploymentManager dm = (ExtendedDeploymentManager) DeploymentCommandFactory.getDeploymentManager(getServer());
+            dm.updateEBAContent(ebaName, bundleId, file);
         } catch (Exception e) {
             return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, Messages.REFRESH_FAIL, e);
         }
 
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundle");
+
         return Status.OK_STATUS;
     }
 
-    private static class ModuleList {
-        private final IModule rootModule;
-        private final List<IModule[]> modules;
+    private static class ModuleDelta {
+        private final IModule[] module;
         private int delta = NO_CHANGE;
         
-        public ModuleList(IModule rootModule) {
-            this.rootModule = rootModule;
-            this.modules = new ArrayList<IModule[]>();
+        public ModuleDelta(IModule[] module, int delta) {
+            this.module = module;
+            this.delta = delta;
         }
+    }
+    
+    private static class ModuleDeltaList {       
         
-        public IModule[] getRootModule() {
-            return new IModule[] { rootModule };
-        }
+        private ModuleDelta root;
+        private List<ModuleDelta> children;
         
-        public void addModule(IModule[] module, int moduleDelta) {
-            if (module.length > 1) {
-                modules.add(module);
-            }
-            if (delta == NO_CHANGE) {
-                // If one of the module in EBA module has its symbolic name updated, but the MENIFEST.MF doesn't get updated
-                // accordingly, we will get the DeltaList as NO_CHANGE for EBA module, and REMOVED for the updated module. In 
-                // this situation, we should has the whole EBA redeployed instead of removed
-                if (GeronimoUtils.isEBAModule(rootModule) && moduleDelta == REMOVED) {
-                    delta = CHANGED;
-                } else {
-                    delta = moduleDelta;
-                }                
-            }
-        }
-        
-        public List<IModule[]> getModules() {
-            return modules;
-        }
-        
-        public int getDelta() {
-            return delta;
+        public ModuleDeltaList(IModule rootModule) {
+            this.root = new ModuleDelta(new IModule [] {rootModule}, NO_CHANGE);
+            this.children = new ArrayList<ModuleDelta>();
         }
 
+        public IModule[] getRootModule() {
+            return root.module;
+        }
+        
+        public int getEffectiveRootDelta() {
+            if (root.delta == NO_CHANGE) {
+                for (ModuleDelta child : children) {
+                    if (child.delta == ADDED || child.delta == REMOVED || child.delta == CHANGED) {
+                        return CHANGED;
+                    }
+                }
+            }
+            return root.delta;
+        }
+        
+        public void setRootModuleDelta(int moduleDelta) {
+            root.delta = moduleDelta;
+        }
+        
+        public void addChildModule(IModule[] module, int moduleDelta) {
+            children.add(new ModuleDelta(module, moduleDelta));
+        }
+        
+        public List<ModuleDelta> getChildModules() {
+            return children;
+        }
+
+        public boolean hasChangedChildModulesOnly() {
+            if (root.delta == NO_CHANGE) {
+                int changed = 0;
+                for (ModuleDelta child : children) {
+                    if (child.delta == ADDED || child.delta == REMOVED) {
+                        return false;
+                    } else if (child.delta == CHANGED) {
+                        changed++;
+                    }
+                }
+                return (changed > 0);          
+            }
+            return false;
+        }
+        
     }
 
     /*

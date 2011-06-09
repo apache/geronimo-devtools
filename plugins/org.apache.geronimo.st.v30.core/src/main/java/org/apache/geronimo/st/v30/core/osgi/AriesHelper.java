@@ -16,9 +16,14 @@
  */
 package org.apache.geronimo.st.v30.core.osgi;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+
 import org.apache.geronimo.st.v30.core.Activator;
 import org.apache.geronimo.st.v30.core.internal.Trace;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.wst.server.core.IModule;
 import org.osgi.framework.Bundle;
 
 /**
@@ -47,11 +52,39 @@ public final class AriesHelper {
         if (ariesCore != null && ariesCore.getState() != Bundle.UNINSTALLED &&
             ariesUI != null && ariesUI.getState() != Bundle.UNINSTALLED) {
     
-            Trace.tracePoint("Exit", "AriesHelper.isAriesInstalled", true);
+            Trace.tracePoint("Exit", Activator.traceOsgi, "AriesHelper.isAriesInstalled", true);
             return true;
         }
     
-        Trace.tracePoint("Exit", "AriesHelper.isAriesInstalled", false);
+        Trace.tracePoint("Exit", Activator.traceOsgi, "AriesHelper.isAriesInstalled", false);
         return false;
+    }
+    
+    public static IModule[] getChildModules(IModule ebaModule) {
+        if (AriesHelper.isAriesInstalled()) {
+            try {
+                Class class1 = Class.forName("com.ibm.etools.aries.internal.core.modules.AriesModuleDelegate");
+                Method method = class1.getMethod("getChildModules");
+                Constructor constructor = class1.getConstructor(IProject.class);
+                Object object = constructor.newInstance(ebaModule.getProject());
+                return (IModule[]) method.invoke(object);                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }        
+        return new IModule[0];
+    }
+    
+    public static String getSymbolicName(IModule bundleModule) {
+        if (AriesHelper.isAriesInstalled()) {
+            try {
+                Class class1 = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
+                Method method = class1.getMethod("getBundleSymbolicName", IProject.class);
+                return (String) method.invoke(null, bundleModule.getProject());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }
