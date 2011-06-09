@@ -33,6 +33,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.enterprise.deploy.spi.Target;
 import javax.enterprise.deploy.spi.TargetModuleID;
@@ -112,6 +115,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     abstract protected ClassLoader getContextClassLoader();
 
     private PublishStateListener publishStateListener;
+    
+    private Lock publishLock = new ReentrantLock();
 
     /*
      * (non-Javadoc)
@@ -518,12 +523,37 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishModule");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#publishFinish(org.eclipse.core.runtime.IProgressMonitor)
-     */
+    public Lock getPublishLock() {
+        return publishLock;
+    }
+    
+    @Override
+    public void publishStart(IProgressMonitor monitor) throws CoreException {
+        doPublishStart(monitor);
+        try {
+            if (!publishLock.tryLock(30, TimeUnit.SECONDS)) {
+                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Unable to obtain publish lock"));
+            }
+        } catch (InterruptedException e) {
+            // ignore
+        }
+    }
+    
+    private void doPublishStart(IProgressMonitor monitor) throws CoreException {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishStart", monitor);
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishStart");
+    }
+    
+    @Override
     public void publishFinish(IProgressMonitor monitor) throws CoreException {
+        try {
+            doPublishFinish(monitor);
+        } finally {
+            publishLock.unlock();
+        }
+    }
+    
+    private void doPublishFinish(IProgressMonitor monitor) throws CoreException  {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishFinish", monitor);
 
         IModule[] modules = this.getServer().getModules();
@@ -544,7 +574,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         }
 
         GeronimoConnectionFactory.getInstance().destroy(getServer());
-
+        
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishFinish");
     }
 

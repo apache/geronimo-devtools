@@ -22,16 +22,17 @@ package org.apache.geronimo.st.v30.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.TimerTask;
-import java.util.TreeSet;
+import java.util.concurrent.locks.Lock;
 
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.Target;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
-import org.apache.geronimo.st.v30.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.eclipse.core.resources.IProject;
@@ -46,135 +47,113 @@ import org.eclipse.wst.server.core.ServerCore;
 
 public class SynchronizeProjectOnServerTask extends TimerTask {
 
-    private IGeronimoServerBehavior delegate;
+    private GeronimoServerBehaviourDelegate delegate;
 
     private IServer server;
+    
+    private Lock publishLock;
 
-    public SynchronizeProjectOnServerTask(IGeronimoServerBehavior delegate, IServer server) {
-        super();
+    public SynchronizeProjectOnServerTask(GeronimoServerBehaviourDelegate delegate, IServer server) {
         this.delegate = delegate;
         this.server = server;
+        this.publishLock = delegate.getPublishLock();
     }
 
     @Override
     public void run() {
-
         Trace.tracePoint("Entry ", Activator.traceCore, "SynchronizeProjectOnServerTask.run");
-        
-        if (canUpdateState()) {            
-           
+
+        if (canUpdateState() && publishLock.tryLock()) {
             try {
-                HashMap projectsOnServer = ModuleArtifactMapper.getInstance().getServerArtifactsMap(server);
-                
-                if(projectsOnServer!=null && projectsOnServer.size() != 0) {
-                    
-                    synchronized (projectsOnServer) {                        
-                        Iterator projectsIterator = projectsOnServer.keySet().iterator();
-                        TreeSet<String> removedConfigIds = new TreeSet<String>();
+                HashMap<String, String> projectsOnServer = ModuleArtifactMapper.getInstance().getServerArtifactsMap(server);
+
+                if (projectsOnServer != null && !projectsOnServer.isEmpty()) {
+                    synchronized (projectsOnServer) {
                         List<IModule> removedModules = new ArrayList<IModule>();
-                        
+
                         DeploymentManager dm = DeploymentCommandFactory.getDeploymentManager(server);
                         Target[] targets = dm.getTargets();
-                        TargetModuleID[] ids = dm.getAvailableModules(null, targets);
-                        
+
                         TargetModuleID[] runningIds = dm.getRunningModules(null, targets);
+                        Set<String> runningConfigIds = createSet(runningIds);
+
                         TargetModuleID[] nonRunningIds = dm.getNonRunningModules(null, targets);
-                        TreeSet<String> runningConfigIds = new TreeSet<String>();
-                        TreeSet<String> nonRunningConfigIds = new TreeSet<String>();                        
-                        for (TargetModuleID running : runningIds) {
-                            runningConfigIds.add(running.getModuleID());
-                        }
-                        for (TargetModuleID nonRunning : nonRunningIds) {
-                            nonRunningConfigIds.add(nonRunning.getModuleID());
-                        }
-                        
-                        for ( ; projectsIterator.hasNext(); ) {
-                            String projectName = (String) projectsIterator.next();
-                            String configID = (String) projectsOnServer.get(projectName);
+                        Set<String> nonRunningConfigIds = createSet(nonRunningIds);
+
+                        for (Map.Entry<String, String> entry : projectsOnServer.entrySet()) {
+                            String projectName = entry.getKey();
+                            String configID = entry.getValue();
+
                             IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
                             IModule[] modules = GeronimoUtils.getModules(project);
 
-                            if (!isInstalledModule(ids, configID)) {
-                                removedConfigIds.add(configID);
+                            if (runningConfigIds.contains(configID)) {
+                                delegate.setModulesState(modules, IServer.STATE_STARTED);
+                            } else if (nonRunningConfigIds.contains(configID)) {
+                                delegate.setModulesState(modules, IServer.STATE_STOPPED);
+                            } else {
+                                // assume it's not installed
                                 for (IModule module : modules) {
                                     removedModules.add(module);
                                 }
-                            } else { 
-                                if (runningConfigIds.contains(configID)) {
-                                    setModuleState(modules, IServer.STATE_STARTED);
-                                } else if (nonRunningConfigIds.contains(configID)){
-                                    setModuleState(modules, IServer.STATE_STOPPED);
-                                }
                             }
                         }
-                        
-                        if (removedConfigIds.size() != 0 && removedModules.size() != 0) {
-                            IModule[] removedModules2 = new IModule[removedModules.size()];
-                            removedModules.toArray(removedModules2);
-                            removeModules(removedModules2);
+
+                        if (!removedModules.isEmpty()) {
+                            removeModules(removedModules);
                         } else {
                             Trace.trace(Trace.INFO, "SynchronizeProjectOnServerTask: no configuration is removed outside eclipse on server: " + this.server.getId(), Activator.traceCore);
                         }
-                        
-                    }                    
-                    
+
+                    }
+
                 } else {
                     Trace.trace(Trace.INFO, "SynchronizeProjectOnServerTask: no project has been deployed on server: " + this.server.getId(), Activator.traceCore);
-                }                
-                
+                }
+
             } catch (Exception e) {
-                e.printStackTrace();
+                Trace.trace(Trace.WARNING, "Error in SynchronizeProjectOnServerTask.run", e, Activator.logCore);
+            } finally {
+                publishLock.unlock();
             }
         }
-        
+
         Trace.tracePoint("Exit ", Activator.traceCore, "SynchronizeProjectOnServerTask.run");
     }
 
-    private void setModuleState(IModule[] modules, int state) {
-        GeronimoServerBehaviourDelegate d = (GeronimoServerBehaviourDelegate) this.delegate;
-        d.setModulesState(modules, state);        
+    private static Set<String> createSet(TargetModuleID[] ids) {
+        Set<String> moduleIds = new HashSet<String>();
+        for (TargetModuleID id : ids) {
+            moduleIds.add(id.getModuleID());
+        }
+        return moduleIds;
     }
 
-    private boolean isInstalledModule(TargetModuleID[] ids, String configId) {
-        
-        if(ids == null) {           
-            return false;
-        }
-        
-        if (ids != null) {
-            for (int i = 0; i < ids.length; i++) {
-                if (ids[i].getModuleID().equals(configId)) {                    
-                    return true;
-                }
-            }
-        }
-            
-        return false;
-    }
-      
-    private void removeModules(IModule[] remove) {
-        
-        Trace.tracePoint("Entry ", Activator.traceCore, "SynchronizeProjectOnServerTask.removeModules", remove);
-        
+    private void removeModules(List<IModule> removedModules) {
+        Trace.tracePoint("Entry ", Activator.traceCore, "SynchronizeProjectOnServerTask.removeModules", removedModules);
+
+        IModule[] remove = new IModule[removedModules.size()];
+        removedModules.toArray(remove);
+
         IServerWorkingCopy wc = server.createWorkingCopy();
-        IProgressMonitor monitor = new NullProgressMonitor(); 
-        
+        IProgressMonitor monitor = new NullProgressMonitor();
+
         try {
             wc.modifyModules(null, remove, monitor);
-            server = wc.save(true, monitor); 
+            server = wc.save(true, monitor);
 
             if (remove != null) {
                 for (IModule module : remove) {
                     ModuleArtifactMapper.getInstance().removeArtifactBundleEntry(this.server, module);
                 }
-            }           
+            }
         } catch (CoreException e) {
             Trace.trace(Trace.WARNING, "Could not remove module in SynchronizeProjectOnServerTask", e, Activator.logCore);
         }
-        
+
         Trace.tracePoint("Exit ", Activator.traceCore, "SynchronizeProjectOnServerTask.removeModules");
     }
-    
+
     private boolean canUpdateState() {
         if (server.getServerState() != IServer.STATE_STARTED) {
             return false;
@@ -188,14 +167,13 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
             if (gs != null && !this.server.getId().equals(server.getId())) {
                 if (isSameConnectionURL(gs, thisServer)) {
                     if (!isSameRuntimeLocation(server) && server.getServerState() != IServer.STATE_STOPPED) {
-                        Trace.trace(Trace.WARNING, server.getId()
-                                + " Cannot update server state.  URL conflict between multiple servers.", Activator.logCore);
+                        Trace.trace(Trace.WARNING, server.getId() + " Cannot update server state.  URL conflict between multiple servers.", Activator.logCore);
                         return false;
                     }
                 }
             }
         }
-        
+
         return true;
     }
 
