@@ -852,7 +852,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         TargetModuleID[] ids;
         
         if (configId == null) {
-            HashMap artifactsMap = ModuleArtifactMapper.getInstance().getServerArtifactsMap(getServer());
+            Map<String, String> artifactsMap = ModuleArtifactMapper.getInstance().getServerArtifactsMap(getServer());
             if (artifactsMap != null) {
                 synchronized (artifactsMap) {
                     status = distribute(module, monitor);
@@ -875,10 +875,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             if (!status.isOK()) {
                 doFail(status, Messages.START_FAIL);
             } else {
-                // record the bundle project and bundle ID map to ModuleArtifactMapper since 
-                // starting EBA module leads to the included OSGi bundle project being re-installed 
-                // into geronimo server cache folder
-                addServerModuleBundleIDMap(module);
                 setModuleState(new IModule [] { module }, IServer.STATE_STARTED);
             }
         } else {
@@ -907,10 +903,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                     doFail(status, Messages.REDEPLOY_FAIL);
                 } else {
                     setModuleState(new IModule [] { module }, IServer.STATE_STARTED);
-                    // record the bundle project and bundle ID map to ModuleArtifactMapper since 
-                    // starting EBA module leads to the included OSGi bundle project being re-installed 
-                    // into geronimo server cache folder
-                    addServerModuleBundleIDMap(module);
                 }
             } else {
                 //different configIds from what needs to be undeployed to what will be deployed
@@ -1064,7 +1056,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     protected void doRemoved(IModule module, IProgressMonitor monitor) throws Exception {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.doRemoved", module.getName());
 
-        HashMap artifactsMap = ModuleArtifactMapper.getInstance().getServerArtifactsMap(getServer());
+        Map<String, String> artifactsMap = ModuleArtifactMapper.getInstance().getServerArtifactsMap(getServer());
         if (artifactsMap != null) {
             synchronized (artifactsMap) {
                 _doRemove(module, monitor);
@@ -1081,21 +1073,13 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         if (!status.isOK()) {
             doFail(status, Messages.UNDEPLOY_FAIL);
         }
-
-        ModuleArtifactMapper.getInstance().removeArtifactBundleEntry(getServer(), module);
     }
     
     protected void doNoChange(IModule module, IProgressMonitor monitor) throws Exception {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.doNoChange", module.getName());
         
-        if(DeploymentUtils.getLastKnownConfigurationId(module, getServer()) != null) {
-            IStatus status = start(module, monitor);
-            if (status!=null && status.isOK()) {
-                // record the bundle project and bundle ID map to ModuleArtifactMapper since 
-                // starting EBA module leads to the included OSGi bundle project being re-installed 
-                // into geronimo server cache folder
-                addServerModuleBundleIDMap(module);
-            }
+        if (DeploymentUtils.getLastKnownConfigurationId(module, getServer()) != null) {
+            start(module, monitor);
         } else {
             doAdded(module, null, monitor);
         }
@@ -1114,11 +1098,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         status = start(module, monitor);
         if (!status.isOK()) {
             doFail(status, Messages.START_FAIL);
-        } else {
-            // record the bundle project and bundle ID map to ModuleArtifactMapper since 
-            // starting EBA module leads to the included OSGi bundle project being re-installed 
-            // into geronimo server cache folder
-            addServerModuleBundleIDMap(module);
         }
 
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.doRestart");
@@ -1129,16 +1108,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         ModuleArtifactMapper mapper = ModuleArtifactMapper.getInstance();
         mapper.addArtifactEntry(getServer(), module, ids[0].getModuleID());
         return ids;
-    }
-    
-    private void addServerModuleBundleIDMap(IModule module) {
-        ModuleArtifactMapper mapper = ModuleArtifactMapper.getInstance();
-        mapper.addBundleEntry(getServer(), module);
-    }
-    
-    private void removeServerModuleBundleIDMap(IModule module) {
-        ModuleArtifactMapper mapper = ModuleArtifactMapper.getInstance();
-        mapper.removeBundleEntry(getServer(), module);
     }
 
     protected void doFail(IStatus status, String message) throws CoreException {
@@ -1475,15 +1444,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     public void startModule(IModule[] module, IProgressMonitor monitor) {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.startModule", Arrays.asList(module));
         try {
-            IStatus status = start(module[0], monitor);
-            if (status!=null && status.isOK()) {
-                for (IModule m : module) {
-                    // record the bundle project and bundle ID map to ModuleArtifactMapper since 
-                    // starting EBA module leads to the included OSGi bundle project being re-installed 
-                    // into geronimo server cache folder
-                    addServerModuleBundleIDMap(m);
-                }                
-            }
+            start(module[0], monitor);
         } catch (Exception e) {
             Trace.trace(Trace.ERROR, "Error starting module " + module[0].getName(), e, Activator.logCore);
             throw new RuntimeException("Error starting module " + module[0].getName(), e);
@@ -1495,15 +1456,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     public void stopModule(IModule[] module, IProgressMonitor monitor) {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.stopModule", Arrays.asList(module));
         try {
-            IStatus status = stop(module[0], monitor);
-            // remove bundle project and bundle ID map from ModuleArtifactMapper if it is EBA module, 
-            // since restarting EBA module will lead to the included OSGi bundle project being re-installed 
-            // into geronimo server cache folder
-            if (status != null && status.isOK()) {
-                for (IModule m : module) {
-                    removeServerModuleBundleIDMap(m);
-                }                
-            }
+            stop(module[0], monitor);
         } catch (Exception e) {
             Trace.trace(Trace.ERROR, "Error stopping module " + module[0].getName(), e, Activator.logCore);
             throw new RuntimeException("Error stopping module " + module[0].getName(), e);
@@ -1515,25 +1468,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     public void restartModule(IModule[] module, IProgressMonitor monitor) {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.restartModule", Arrays.asList(module));
         try {
-            IStatus status = stop(module[0], monitor);            
-            // remove bundle project and bundle ID map from ModuleArtifactMapper if it is EBA module, 
-            // since restarting EBA module will lead to the included OSGi bundle project being re-installed 
-            // into geronimo server cache folder
-            if (status != null && status.isOK()) {
-                for (IModule m : module) {
-                    removeServerModuleBundleIDMap(m);
-                }                
-            }
-            
-            status = start(module[0], monitor);
-            if (status!=null && status.isOK()) {
-                for (IModule m : module) {
-                    // record the bundle project and bundle ID map to ModuleArtifactMapper since 
-                    // starting EBA module leads to the included OSGi bundle project being re-installed 
-                    // into geronimo server cache folder
-                    addServerModuleBundleIDMap(m);
-                }                
-            }
+            stop(module[0], monitor);            
+            start(module[0], monitor);
         } catch (Exception e) {
             Trace.trace(Trace.ERROR, "Error restarting module " + module[0].getName(), e, Activator.logCore);
             throw new RuntimeException("Error restarting module " + module[0].getName(), e);

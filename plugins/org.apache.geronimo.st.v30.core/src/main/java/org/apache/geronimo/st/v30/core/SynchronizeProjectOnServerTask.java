@@ -21,7 +21,6 @@
 package org.apache.geronimo.st.v30.core;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +64,7 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
 
         if (canUpdateState() && publishLock.tryLock()) {
             try {
-                HashMap<String, String> projectsOnServer = ModuleArtifactMapper.getInstance().getServerArtifactsMap(server);
+                Map<String, String> projectsOnServer = ModuleArtifactMapper.getInstance().getServerArtifactsMap(server);
 
                 if (projectsOnServer != null && !projectsOnServer.isEmpty()) {
                     synchronized (projectsOnServer) {
@@ -144,12 +143,6 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
         try {
             wc.modifyModules(null, remove, monitor);
             server = wc.save(true, monitor);
-
-            if (remove != null) {
-                for (IModule module : remove) {
-                    ModuleArtifactMapper.getInstance().removeArtifactBundleEntry(this.server, module);
-                }
-            }
         } catch (CoreException e) {
             Trace.trace(Trace.WARNING, "Could not remove module in SynchronizeProjectOnServerTask", e, Activator.logCore);
         }
