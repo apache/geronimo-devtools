@@ -23,8 +23,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -114,6 +112,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     public static final String ERROR_SETUP_LAUNCH_CONFIGURATION = "errorInSetupLaunchConfiguration";
 
     abstract protected ClassLoader getContextClassLoader();
+    
+    abstract protected String getWebModuleDocumentBase(String contextPath);
 
     private PublishStateListener publishStateListener;
     
@@ -241,6 +241,17 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.stop", Activator.traceCore);
     }
 
+    private void setStatus(IModule[] module, IStatus status, MultiStatus multiStatus) {
+        if (status.isOK()) {
+            setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
+            setModuleStatus(module, null);
+        } else {
+            multiStatus.add(status);
+            setModuleStatus(module, status);
+            setModulePublishState(module, IServer.PUBLISH_STATE_UNKNOWN);
+        }
+    }
+    
     /* 
      * Override this method to be able to process in-place shared lib entries and restart the shared lib configuration for all projects prior
      * to publishing each IModule.
@@ -318,6 +329,64 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             if (monitor.isCanceled())
                 return;
             
+            // phase 1: see if the modified contents can copied/replaced 
+            if (getServerDelegate().isNotRedeployJSPFiles() && !isRemote()) {
+                Iterator<ModuleDeltaList> iterator = publishMap.values().iterator();
+                while (iterator.hasNext()) {
+                    ModuleDeltaList moduleList = iterator.next();
+                    IModule[] rootModule = moduleList.getRootModule();
+                    if (GeronimoUtils.isEBAModule(rootModule[0]) || GeronimoUtils.isEarModule(rootModule[0])) {
+                        if (moduleList.hasChangedChildModulesOnly()) {
+                            boolean replacementPossible = true;
+                            Map<IModule[], IStatus> statusMap = new HashMap<IModule[], IStatus>();   
+                            
+                            for (ModuleDelta moduleDelta : moduleList.getChildModules()) {
+                                IModule bundleModule = moduleDelta.module[1];
+                                if (moduleDelta.delta == CHANGED && (GeronimoUtils.isWebModule(bundleModule) || GeronimoUtils.isBundleModule(bundleModule))) {
+                                    // try to do replacement
+                                    status = tryFileReplace(moduleDelta.module);
+                                    if (status == null) {
+                                        // replacement was not possible
+                                        replacementPossible = false;
+                                        break;
+                                    } else {
+                                        statusMap.put(moduleDelta.module, status);
+                                    }
+                                } else {
+                                    statusMap.put(moduleDelta.module, Status.OK_STATUS);
+                                }
+                            }
+                            
+                            if (replacementPossible) {
+                                // replacement was possible for all changed child modules - remove it from publish list
+                                iterator.remove();
+                                
+                                statusMap.put(rootModule, Status.OK_STATUS);
+                                for (Map.Entry<IModule[], IStatus> entry : statusMap.entrySet()) {
+                                    setStatus(entry.getKey(), entry.getValue(), multi);
+                                }
+                            } else {
+                                // replacement was not possible for at least one child module - redeploy the module
+                            }                            
+                        }
+                    } else if (GeronimoUtils.isWebModule(rootModule[0]) || GeronimoUtils.isBundleModule(rootModule[0])) {
+                        if (moduleList.getEffectiveRootDelta() == CHANGED) {
+                            // contents changed - try to do replacement
+                            status = tryFileReplace(rootModule);
+                            if (status != null) {
+                                // replacement was possible - remove it from publish list
+                                iterator.remove();
+
+                                setStatus(rootModule, status, multi);
+                            } else {
+                                // replacement was not possible - redeploy the module
+                            }
+                        }
+                    }                                          
+                }
+            }   
+                    
+            // phase 2: re-deploy the modules
             boolean refreshOSGiBundle = getServerDelegate().isRefreshOSGiBundle();
             for (ModuleDeltaList moduleList : publishMap.values()) {  
                 IModule[] rootModule = moduleList.getRootModule();
@@ -359,8 +428,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishModules");
     }
-    
-    protected IStatus refreshBundles(IModule ebaModule, List<IModule[]> bundleModules, IProgressMonitor monitor) {
+        
+    private IStatus refreshBundles(IModule ebaModule, List<IModule[]> bundleModules, IProgressMonitor monitor) {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundles", ebaModule, bundleModules, monitor);
 
         String configId = ModuleArtifactMapper.getInstance().resolveArtifact(getServer(), ebaModule);
@@ -391,16 +460,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                 if (monitor.isCanceled()) {
                     return Status.CANCEL_STATUS;
                 }
-                
-                IStatus status = refreshBundle(ebaModule, bundleModule[1], ebaName, bundleMap);
-                if (status.isOK()) {
-                    setModulePublishState(bundleModule, IServer.PUBLISH_STATE_NONE);
-                    setModuleStatus(bundleModule, null);
-                } else {
-                    multiStatus.add(status);
-                    setModuleStatus(bundleModule, status);
-                    setModulePublishState(bundleModule, IServer.PUBLISH_STATE_UNKNOWN);
-                }
+                IStatus status = refreshBundle(ebaModule, bundleModule[1], ebaName, bundleMap); 
+                setStatus(bundleModule, status, multiStatus);
             }
         } catch (Exception e) {
             multiStatus.add(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, Messages.REFRESH_FAIL, e));
@@ -840,16 +901,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         configId = getLastKnowConfigurationId(module, configId);
         if(configId != null) {
             String moduleConfigId = getConfigId(module);
-            if(moduleConfigId.equals(configId)) {
-                
-                if (this.getServerDelegate().isNotRedeployJSPFiles()&&!this.isRemote() && GeronimoUtils.isWebModule(module)
-                        && !module.isExternal()) {
-                    // if only jsp files changed, no redeploy needed
-                    if (findAndReplaceJspFiles(module, configId))
-                        return;
-                }
-                
-                IStatus status = reDeploy(module, monitor);
+            if (moduleConfigId.equals(configId)) {
+                IStatus status = reDeploy(module, monitor);                
                 if (!status.isOK()) {
                     doFail(status, Messages.REDEPLOY_FAIL);
                 } else {
@@ -871,103 +924,130 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.doChanged");
     }
+      
+    private IStatus tryFileReplace(IModule[] module) {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", module);
+        
+        IModule webModule = module[module.length - 1];        
+        if (webModule.isExternal()) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "External module");
+            return null;
+        }
 
-    
+        String contextPath = getServerDelegate().getContextPath(webModule);
+        if (contextPath == null) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "Context path is null");
+            return null;
+        }
+        Trace.trace(Trace.INFO, "Context path: " + contextPath, Activator.logCore);
+
+        String documentBase = getWebModuleDocumentBase(contextPath);
+        if (documentBase == null || documentBase.length() == 0) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "Document base is null");
+            return null;
+        }
+        Trace.trace(Trace.INFO, "Document base: " + documentBase, Activator.logCore);
+
+        List<IModuleResourceDelta> modifiedFiles = findModifiedFiles(module);
+        if (modifiedFiles == null) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "Some modified files cannot be replaced");
+            return null;
+        }
+        Trace.trace(Trace.INFO, "Modified files: " + modifiedFiles, Activator.logCore);
+
+        IStatus status = findAndReplaceFiles(webModule, modifiedFiles, documentBase);
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", status);
+        return status;
+    }
+        
+    private List<IModuleResourceDelta> findModifiedFiles(IModule[] module) {
+        IModuleResourceDelta[] deltaArray = getPublishedResourceDelta(module);
+
+        // TODO: get the list from configuration
+        List<String> includes = new ArrayList<String>();
+        includes.add("**/*.jsp");
+        includes.add("**/*.html");
+        
+        List<String> excludes = new ArrayList<String>();
+        excludes.add("WEB-INF/web.xml");
+        excludes.add("WEB-INF/geronimo-*.xml");
+        
+        List<IModuleResourceDelta> modifiedFiles = new ArrayList<IModuleResourceDelta>();
+        for (IModuleResourceDelta delta : deltaArray) {
+            List<IModuleResourceDelta> files = DeploymentUtils.getAffectedFiles(delta, includes, excludes);
+            // if null then some other files were changed that we cannot just copy/replace.
+            if (files == null) {
+                return null;
+            } else {
+                modifiedFiles.addAll(files);
+            }
+        }
+        return modifiedFiles;
+    }
     
     /*
-     * This method is used to replace updated JSP files without deploy it. 
+     * This method is used to replace updated files without redeploying the entire module. 
      */
-    private boolean findAndReplaceJspFiles(IModule module, String configId)
-            throws CoreException {
-        IModule[] modules = { module };
-        IModuleResourceDelta[] deltaArray = this
-                .getPublishedResourceDelta(modules);
-
-        // get repository position
+    private IStatus findAndReplaceFiles(IModule module, List<IModuleResourceDelta> modifiedFiles, String documentBase) {
+        Trace.trace(Trace.INFO, "Replacing updated files for " + module.getName() + " module.", Activator.logCore);
+        
         String ch = File.separator;
-        String repositoryLocation = this.getRuntimeDelegate().getRuntime()
-                .getLocation().toOSString()
-                + ch + "repository" + ch;
-        // Suppose directory structure of deployed module is
-        // "repository/[groupID]/[artifactId]/[version]/[artifactId]-[version].[artifactType]"
-        // configId contains the groupID,artifactId,version,artifactType
-        String[] segments = configId.split("/");
-        // groupId may contains "." as separator
-        String groupId = null;
-        if (segments[0]!=null)
-            groupId=segments[0].replace(".", "/");
-        String moduleTargetPath = repositoryLocation.concat(groupId)
-                        .concat(ch).concat(segments[1]).concat(ch).concat(segments[2])
-                        .concat(ch).concat(segments[1]).concat("-").concat(segments[2])
-                        .concat(".").concat(segments[3]);
-
-        List<IModuleResourceDelta> jspFiles = new ArrayList<IModuleResourceDelta>();
-        for (IModuleResourceDelta delta : deltaArray) {
-            List<IModuleResourceDelta> partJspFiles = DeploymentUtils.getAffectedJSPFiles(delta);
-            // if not only Jsp files found, need to redeploy the module, so return false;
-            if (partJspFiles == null)
-                return false;
-            else
-                jspFiles.addAll(partJspFiles);
-        }
-        for (IModuleResourceDelta deltaModule : jspFiles) {
+        byte[] buffer = new byte[10 * 1024];
+        int bytesRead;
+        
+        for (IModuleResourceDelta deltaModule : modifiedFiles) {
             IModuleFile moduleFile = (IModuleFile) deltaModule.getModuleResource();
 
-                String target;
+            StringBuilder target = new StringBuilder(documentBase);
+            target.append(ch);
             String relativePath = moduleFile.getModuleRelativePath().toOSString();
             if (relativePath != null && relativePath.length() != 0) {
-                target = moduleTargetPath.concat(ch).concat(relativePath).concat(ch).concat(moduleFile.getName());
-            } else
-                target = moduleTargetPath.concat(ch).concat(moduleFile.getName());
-
-            File file = new File(target);
+                target.append(relativePath);
+                target.append(ch);
+            } 
+            target.append(moduleFile.getName());
+            
+            File file = new File(target.toString());
             switch (deltaModule.getKind()) {
             case IModuleResourceDelta.REMOVED:
-                if (file.exists())
+                if (file.exists()) {
                     file.delete();
+                }
                 break;
             case IModuleResourceDelta.ADDED:
             case IModuleResourceDelta.CHANGED:
-                if (!file.exists())
-                    try {
-                        file.createNewFile();
-                    } catch (IOException e) {
-                        Trace.trace(Trace.ERROR, "can't create file " + file, e, Activator.logCore);
-                        throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "can't create file "
-                                + file, e));
-                    }
-
-                String rootFolder = GeronimoUtils.getVirtualComponent(module).getRootFolder().getProjectRelativePath()
-                        .toOSString();
-                String sourceFile = module.getProject()
-                        .getFile(rootFolder + ch + moduleFile.getModuleRelativePath() + ch + moduleFile.getName())
-                        .getLocation().toString();
+                String rootFolder = GeronimoUtils.getVirtualComponent(module).getRootFolder().getProjectRelativePath().toOSString();
+                String sourceFile = module.getProject().getFile(rootFolder + ch + moduleFile.getModuleRelativePath() + ch + moduleFile.getName()).getLocation().toString();
+                
+                FileInputStream in = null;
+                FileOutputStream out = null;
                 try {
-
-                    FileInputStream in = new FileInputStream(sourceFile);
-                    FileOutputStream out = new FileOutputStream(file);
-                    FileChannel inChannel = in.getChannel();
-                    FileChannel outChannel = out.getChannel();
-                    MappedByteBuffer mappedBuffer = inChannel.map(FileChannel.MapMode.READ_ONLY, 0, inChannel.size());
-                    outChannel.write(mappedBuffer);
-
-                    inChannel.close();
-                    outChannel.close();
-                } catch (FileNotFoundException e) {
-                    Trace.trace(Trace.ERROR, "can't find file " + sourceFile, e, Activator.logCore);
-                    throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "can't find file "
-                            + sourceFile, e));
-                } catch (IOException e) {
-                    Trace.trace(Trace.ERROR, "can't copy file " + sourceFile, e, Activator.logCore);
-                    throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "can't copy file "
-                            + sourceFile, e));
+                    in = new FileInputStream(sourceFile);
+                    out = new FileOutputStream(file);
+                    
+                    while ((bytesRead = in.read(buffer)) > 0) {
+                        out.write(buffer, 0, bytesRead);
                     }
-                    break;
+
+                } catch (FileNotFoundException e) {
+                    Trace.trace(Trace.ERROR, "Cannot find file to copy: " + sourceFile, e, Activator.logCore);
+                    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Cannot find file " + sourceFile, e);
+                } catch (IOException e) {
+                    Trace.trace(Trace.ERROR, "Cannot copy file: " + sourceFile, e, Activator.logCore);
+                    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Cannot copy file " + sourceFile, e);
+                } finally {
+                    if (in != null) {
+                        try { in.close(); } catch (IOException ignore) {}
+                    }
+                    if (out != null) {
+                        try { out.close(); } catch (IOException ignore) {}
+                    }
                 }
-            }
+                break;
+            }                    
+        }
 
-        return true;
-
+        return Status.OK_STATUS;
     }
 
 
@@ -1480,4 +1560,5 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     public void setModulesState(IModule[] module, int state) {
         setModuleState(module, state);
     }
+    
 }

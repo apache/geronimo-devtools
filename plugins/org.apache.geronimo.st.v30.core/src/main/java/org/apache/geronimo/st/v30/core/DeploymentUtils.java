@@ -24,6 +24,7 @@ import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
 import javax.enterprise.deploy.spi.exceptions.TargetException;
 
+import org.apache.geronimo.kernel.util.SelectorUtils;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.v30.core.commands.TargetModuleIdNotFoundException;
 import org.apache.geronimo.st.v30.core.internal.Trace;
@@ -322,11 +323,11 @@ public class DeploymentUtils {
     }
     
     
-    public static List<IModuleResourceDelta> getAffectedJSPFiles(IModuleResourceDelta delta) {
-        Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.getAffectedJSPFiles", delta);
+    public static List<IModuleResourceDelta> getAffectedFiles(IModuleResourceDelta delta, List<String> includes, List<String> excludes) {
+        Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.getAffectedFiles", delta, includes, excludes);
 
         if (delta == null) {
-            Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getAffectedJSPFiles", (Object) null);
+            Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getAffectedFiles", (Object) null);
             return null;
         }
 
@@ -334,31 +335,47 @@ public class DeploymentUtils {
         List<IModuleResourceDelta> fileList = new ArrayList<IModuleResourceDelta>();
 
         if (resource instanceof IModuleFile) {
-            IModuleFile moduleFile = (IModuleFile)resource;
-            if (moduleFile.getName().endsWith(".jsp")) {
+            IModuleFile moduleFile = (IModuleFile) resource;
+            String name = moduleFile.getName();
+            IPath relativePath = moduleFile.getModuleRelativePath();
+            if (relativePath != null && relativePath.toOSString().length() > 0) {
+                name = relativePath.toOSString() + File.separator + moduleFile.getName();
+            }
+            if (hasMatch(name, excludes)) {
+                Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getAffectedFiles", "Excluded", name);
+                return null;
+            }
+            if (hasMatch(name, includes)) {
                 fileList.add(delta);
+            } else {
+                Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getAffectedFiles", "Not included", name);
+                return null;
             }
-            else {
-                Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getAffectedJSPFiles", (Object) null);
-                return null;   //not only jsp changed
-            }
-        }
-        else if (resource instanceof IModuleFolder) {
+        } else if (resource instanceof IModuleFolder) {
             IModuleResourceDelta[] deltaArray = delta.getAffectedChildren();
             for (IModuleResourceDelta childDelta : deltaArray) {
-                List<IModuleResourceDelta> deltaChildren = getAffectedJSPFiles(childDelta);
-                if (deltaChildren != null) fileList.addAll(deltaChildren);
-                else {
-                    Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getAffectedJSPFiles", (Object) null);
+                List<IModuleResourceDelta> deltaChildren = getAffectedFiles(childDelta, includes, excludes);
+                if (deltaChildren != null) {
+                    fileList.addAll(deltaChildren);
+                } else {
+                    Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getAffectedFiles", (Object) null);
                     return null;
                 }
             }
         }
 
-        Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getAffectedJSPFiles", fileList);
+        Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getAffectedFiles", fileList);
         return fileList;
     }
     
+    private static boolean hasMatch(String name, List<String> patterns) {
+        for (String pattern : patterns) {
+            if (SelectorUtils.matchPath(pattern, name)) {
+                return true;
+            }
+        }
+        return false;
+    }
     
     public static boolean isInstalledModule(IServer server, String configId) {
         Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.isInstalledModule", server, configId);

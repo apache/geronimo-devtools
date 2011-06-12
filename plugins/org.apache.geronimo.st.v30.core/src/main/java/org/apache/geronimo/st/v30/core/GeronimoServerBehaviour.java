@@ -17,7 +17,9 @@
 package org.apache.geronimo.st.v30.core;
 
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.management.MBeanServerConnection;
@@ -230,5 +232,28 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
          DependencyHelper dh = new DependencyHelper();
          List list = dh.reorderModules(this.getServer(),modules, deltaKind);
          return list;
+    }
+ 
+    // TODO: this can be cached 
+    public String getWebModuleDocumentBase(String contextPath) {
+        Map<String, String> map = Collections.singletonMap("j2eeType", "WebModule");
+        AbstractNameQuery query = new AbstractNameQuery(null, map, Collections.EMPTY_SET);
+        Set<AbstractName> webModuleNames = kernel.listGBeans(query);
+        for (AbstractName name : webModuleNames) {
+            try {
+                String moduleContextPath = (String) kernel.getAttribute(name, "contextPath");
+                if (contextPath.equals(moduleContextPath)) {
+                    String docBase = (String) kernel.getAttribute(name, "docBase");
+                    return docBase;
+                }
+            } catch (GBeanNotFoundException e) {
+                // ignore
+            } catch (NoSuchAttributeException e) {
+                // ignore
+            } catch (Exception e) {
+                Trace.trace(Trace.WARNING, "Error getting web module document base", e, Activator.logCore);
+            }
+        }
+        return null;
     }
 }

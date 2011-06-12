@@ -269,14 +269,8 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         return (ServerPort[]) ports.toArray(new ServerPort[ports.size()]);
     }
 
-
-    /**
-     * Return the base URL of this module on the server
-     * 
-     * @see org.eclipse.wst.server.core.model.IURLProvider#getModuleRootURL(org.eclipse.wst.server.core.IModule)
-     */
-    public URL getModuleRootURL(IModule module) {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.getModuleRootURL", module);
+    public String getContextPath(IModule module) {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.getContextPath", module);
 
         if (module == null) {
             return null;        
@@ -302,6 +296,25 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
             }
         }
         
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerDelegate.getContextPath", contextRoot);
+        
+        return contextRoot;
+    }
+    
+    /**
+     * Return the base URL of this module on the server
+     * 
+     * @see org.eclipse.wst.server.core.model.IURLProvider#getModuleRootURL(org.eclipse.wst.server.core.IModule)
+     */
+    public URL getModuleRootURL(IModule module) {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.getModuleRootURL", module);
+
+        if (module == null) {
+            return null;        
+        }
+        
+        String contextRoot = getContextPath(module);
+                
         if (contextRoot != null) {
             try {
                 String host = getServer().getHost();
