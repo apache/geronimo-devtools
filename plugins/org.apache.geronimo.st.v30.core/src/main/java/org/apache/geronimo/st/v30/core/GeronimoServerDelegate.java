@@ -67,6 +67,12 @@ import org.eclipse.wst.web.internal.deployables.FlatComponentDeployable;
  */
 abstract public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoServer {
 
+    public static final List<String> DEFAULT_NOREDEPLOY_INCLUDE_PATTERNS = 
+        Arrays.asList("**/*.html", "**/*.xhtml", "**/*.css", "**/*.js", "**/*.jsp", "**/*.gif", "**/*.jpg", "**/*.png");
+    
+    public static final List<String> DEFAULT_NOREDEPLOY_EXCLUDE_PATTERNS = 
+        Arrays.asList("WEB-INF/geronimo-*.xml", "WEB-INF/web.xml");
+    
     public static final String PROPERTY_ADMIN_ID = "adminID";
 
     public static final String PROPERTY_ADMIN_PW = "adminPassword";
@@ -97,7 +103,11 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     
     public static final String PROPERTY_IN_PLACE_SHARED_LIB = "inPlaceSharedLib";
     
-    public static final String PROPERTY_NOT_REDEPLOY_JSP_FILES = "notRedeployJSPFiles";
+    public static final String PROPERTY_NOREDEPLOY = "noRedeploy";
+    
+    public static final String PROPERTY_NOREDEPLOY_INCLUDE_PATTERNS = "noRedeploy.includePatterns";
+    
+    public static final String PROPERTY_NOREDEPLOY_EXCLUDE_PATTERNS = "noRedeploy.excludePatterns";
     
     public static final String PROPERTY_RUN_FROM_WORKSPACE = "runFromWorkspace";
 
@@ -856,16 +866,32 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     
     
     //
-    // PROPERTY_NOT_REDEPLOY_JSP_FILES
+    // PROPERTY_NOREDEPLOY
     //
-    public boolean isNotRedeployJSPFiles() {
-        return getAttribute(PROPERTY_NOT_REDEPLOY_JSP_FILES, false);
+    public boolean isNoRedeploy() {
+        return getAttribute(PROPERTY_NOREDEPLOY, false);
     }
-    public void setNotRedeployJSPFiles(boolean enable){
-        setAttribute(PROPERTY_NOT_REDEPLOY_JSP_FILES, enable);
+    public void setNoRedeploy(boolean enable){
+        setAttribute(PROPERTY_NOREDEPLOY, enable);
     }
 
-
+    public List<String> getNoRedeployFilePatternsAsList(boolean includePatterns) {
+        String propertyName = (includePatterns) ? PROPERTY_NOREDEPLOY_INCLUDE_PATTERNS : PROPERTY_NOREDEPLOY_EXCLUDE_PATTERNS;
+        List<String> defaults = (includePatterns) ? DEFAULT_NOREDEPLOY_INCLUDE_PATTERNS : DEFAULT_NOREDEPLOY_EXCLUDE_PATTERNS;
+        List<String> patterns = getAttribute(propertyName, defaults);
+        return patterns;
+    }
+    
+    public String[] getNoRedeployFilePatterns(boolean includePatterns) {
+        List<String> patterns = getNoRedeployFilePatternsAsList(includePatterns);
+        return patterns.toArray(new String [patterns.size()]);
+    }
+    
+    public void setNoRedeployFilePatterns(boolean includePatterns, String[] patterns) {
+        String propertyName = (includePatterns) ? PROPERTY_NOREDEPLOY_INCLUDE_PATTERNS : PROPERTY_NOREDEPLOY_EXCLUDE_PATTERNS;
+        setAttribute(propertyName, Arrays.asList(patterns));
+    }       
+    
     public String discoverDeploymentFactoryClassName(IPath jarPath) {
         try {
             JarFile deployerJar = new JarFile(jarPath.toFile());

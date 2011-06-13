@@ -47,7 +47,7 @@ public interface IGeronimoServer extends IURLProvider {
 
     public IGeronimoVersionHandler getVersionHandler();
     
-    public boolean isNotRedeployJSPFiles(); 
+    public boolean isNoRedeploy(); 
     
     public boolean isInPlaceSharedLib();
     

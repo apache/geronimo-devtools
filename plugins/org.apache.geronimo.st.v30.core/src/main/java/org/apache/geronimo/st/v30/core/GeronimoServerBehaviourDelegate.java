@@ -330,7 +330,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                 return;
             
             // phase 1: see if the modified contents can copied/replaced 
-            if (getServerDelegate().isNotRedeployJSPFiles() && !isRemote()) {
+            if (getServerDelegate().isNoRedeploy() && !isRemote()) {
                 Iterator<ModuleDeltaList> iterator = publishMap.values().iterator();
                 while (iterator.hasNext()) {
                     ModuleDeltaList moduleList = iterator.next();
@@ -955,14 +955,9 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     private List<IModuleResourceDelta> findModifiedFiles(IModule[] module) {
         IModuleResourceDelta[] deltaArray = getPublishedResourceDelta(module);
 
-        // TODO: get the list from configuration
-        List<String> includes = new ArrayList<String>();
-        includes.add("**/*.jsp");
-        includes.add("**/*.html");
-        
-        List<String> excludes = new ArrayList<String>();
-        excludes.add("WEB-INF/web.xml");
-        excludes.add("WEB-INF/geronimo-*.xml");
+        GeronimoServerDelegate delegate = getServerDelegate();
+        List<String> includes = delegate.getNoRedeployFilePatternsAsList(true);
+        List<String> excludes = delegate.getNoRedeployFilePatternsAsList(false);
         
         List<IModuleResourceDelta> modifiedFiles = new ArrayList<IModuleResourceDelta>();
         for (IModuleResourceDelta delta : deltaArray) {

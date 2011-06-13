@@ -88,7 +88,11 @@ public abstract class AbstractWizard extends Wizard {
         }
 
         protected Label createLabel(Composite composite, String labelString) {
-            Label label = new Label(composite, SWT.LEFT);
+            return createLabel(composite, labelString, SWT.LEFT);
+        }
+        
+        protected Label createLabel(Composite composite, String labelString, int mask) {
+            Label label = new Label(composite, mask);
             if (!labelString.endsWith(":") && labelString.length() > 0) {
                 labelString = labelString.concat(":");
             }

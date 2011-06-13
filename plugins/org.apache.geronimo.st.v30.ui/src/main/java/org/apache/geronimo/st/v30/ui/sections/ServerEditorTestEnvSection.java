@@ -22,12 +22,10 @@ import org.apache.geronimo.st.v30.core.ClasspathContainersHelper;
 import org.apache.geronimo.st.v30.ui.Activator;
 import org.apache.geronimo.st.v30.ui.commands.SetClasspathContainersCommand;
 import org.apache.geronimo.st.v30.ui.commands.SetInPlaceSharedLibCommand;
-import org.apache.geronimo.st.v30.ui.commands.SetNotRedeployJSPFilesCommand;
 import org.apache.geronimo.st.v30.ui.commands.SetRunFromWorkspaceCommand;
 import org.apache.geronimo.st.v30.ui.commands.SetSelectClasspathContainersCommand;
 import org.apache.geronimo.st.v30.ui.internal.Messages;
 import org.apache.geronimo.st.v30.ui.internal.Trace;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -40,12 +38,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.util.SocketUtil;
 
 /**
  * @version $Rev$ $Date$
@@ -54,7 +49,6 @@ public class ServerEditorTestEnvSection extends AbstractServerEditorSection {
 
     // SWT widget(s)
     private Button runFromWorkspace;
-    private Button noRedeployJSPFiles;
     private Button inPlaceSharedLib;
     private Button selectClasspathContainers = null;
     private Composite composite = null;
@@ -106,30 +100,6 @@ public class ServerEditorTestEnvSection extends AbstractServerEditorSection {
 
             public void widgetSelected(SelectionEvent e) {
                 execute(new SetInPlaceSharedLibCommand(server, inPlaceSharedLib.getSelection()));
-            }
-
-            public void widgetDefaultSelected(SelectionEvent e) {
-            }
-
-        });
-        
-        //
-        // Don't redeploy JSP files Button
-        //
-        noRedeployJSPFiles = toolkit.createButton(composite, Messages.editorSectionNotRedeployJSPFiles, SWT.CHECK);
-        noRedeployJSPFiles.setSelection(gs.isNotRedeployJSPFiles());
-        
-        noRedeployJSPFiles.setEnabled(!(server.getServerType().supportsRemoteHosts()
-                && !SocketUtil.isLocalhost(server.getHost()))&&gs.getServer().getServerState()==IServer.STATE_STOPPED); 
-        noRedeployJSPFiles.addSelectionListener(new SelectionListener() {
-
-            public void widgetSelected(SelectionEvent e) {
-                execute(new SetNotRedeployJSPFilesCommand(server, noRedeployJSPFiles.getSelection()));
-                
-                if (noRedeployJSPFiles.getSelection()) {
-                    MessageDialog.openInformation(Display.getCurrent().getActiveShell(), 
-                        Messages.notRedeployJSPFilesReminder, Messages.notRedeployJSPFilesInformation);
-                }
             }
 
             public void widgetDefaultSelected(SelectionEvent e) {

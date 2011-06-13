@@ -47,9 +47,8 @@ public class Messages extends NLS {
     public static String editorSectionCleanOSGiBundleCacheDescription;
     public static String cleanOSGiBundleCache;
     
-    public static String editorSectionRefreshOSGiBundleTitle;
-    public static String editorSectionRefreshOSGiBundleDescription;
     public static String refreshOSGiBundle;
+    public static String refreshOSGiBundleDescription;
     
     public static String editorSectionKarafShellTitle;
     public static String editorSectionKarafShellDescription;
@@ -604,4 +603,20 @@ public class Messages extends NLS {
 	public static String supportURL;
 	public static String console0;
  
+	public static String noRedeployOption;
+	public static String noRedeployOptionDescription;
+	public static String includeFilePatterns;
+	public static String excludeFilePatterns;
+	public static String filePattern;
+    public static String wizardNewTitle_IncludeFilePattern;
+    public static String wizardEditTitle_IncludeFilePattern;
+    public static String wizardPageTitle_IncludeFilePattern;
+    public static String wizardPageDescription_IncludeFilePattern;
+    public static String wizardNewTitle_ExcludeFilePattern;
+    public static String wizardEditTitle_ExcludeFilePattern;
+    public static String wizardPageTitle_ExcludeFilePattern;
+    public static String wizardPageDescription_ExcludeFilePattern;
+    
+    public static String restoreDefaults;
+	
 }

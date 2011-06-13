@@ -118,7 +118,7 @@
     </extension>
     
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
-        <section id="org.apache.server.geronimo.security" order="10"
+        <section id="org.apache.server.geronimo.security" order="20"
             insertionId="org.eclipse.wst.server.editor.overview.left"
             typeIds="org.apache.geronimo.server.30"
             class="org.apache.geronimo.st.v30.ui.sections.ServerEditorSecuritySection">
@@ -135,7 +135,7 @@
     
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.port" order="10"
-            insertionId="org.eclipse.wst.server.editor.overview.right"
+            insertionId="org.eclipse.wst.server.editor.overview.left"
             typeIds="org.apache.geronimo.server.30"
             class="org.apache.geronimo.st.v30.ui.sections.ServerEditorPortsSection">
         </section>
@@ -165,14 +165,6 @@
         </section>
     </extension>
     
-	<extension point="org.eclipse.wst.server.ui.editorPageSections">
-		<section id="org.apache.server.geronimo.cleanOSGiBundleCache" order="23"
-		    insertionId="org.eclipse.wst.server.editor.overview.right"
-		    typeIds="org.apache.geronimo.server.30"
-		    class="org.apache.geronimo.st.v30.ui.sections.ServerEditorRefreshOSGiBundleSection">
-		</section>
-	</extension>
-    
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.security" order="30"
             insertionId="org.eclipse.wst.server.editor.overview.right"
@@ -182,7 +174,7 @@
     </extension>
     
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
-        <section id="org.apache.server.geronimo.testenv" order="20"
+        <section id="org.apache.server.geronimo.testenv" order="30"
             insertionId="org.eclipse.wst.server.editor.overview.left"
             typeIds="org.apache.geronimo.server.30"
             class="org.apache.geronimo.st.v30.ui.sections.ServerEditorTestEnvSection">
