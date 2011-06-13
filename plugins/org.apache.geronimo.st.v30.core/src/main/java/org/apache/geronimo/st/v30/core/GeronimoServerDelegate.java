@@ -68,7 +68,7 @@ import org.eclipse.wst.web.internal.deployables.FlatComponentDeployable;
 abstract public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoServer {
 
     public static final List<String> DEFAULT_NOREDEPLOY_INCLUDE_PATTERNS = 
-        Arrays.asList("**/*.html", "**/*.xhtml", "**/*.css", "**/*.js", "**/*.jsp", "**/*.gif", "**/*.jpg", "**/*.png");
+        Arrays.asList("**/*.html", "**/*.xhtml", "**/*.css", "**/*.js", "**/*.jsp", "**/*.jspx", "**/*.gif", "**/*.jpg", "**/*.png", "**/*.swt", "**/*.properties", "**/*.xml");
     
     public static final List<String> DEFAULT_NOREDEPLOY_EXCLUDE_PATTERNS = 
         Arrays.asList("WEB-INF/geronimo-*.xml", "WEB-INF/web.xml");
