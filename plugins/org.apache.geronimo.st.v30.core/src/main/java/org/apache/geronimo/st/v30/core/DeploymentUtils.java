@@ -251,9 +251,9 @@ public class DeploymentUtils {
         }
         
         IGeronimoServer gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
-    
-        Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.generateExplodedConfiguration",gs.getVersionHandler().createTargetModuleId(configId));
-        return gs.getVersionHandler().createTargetModuleId(configId);
+        TargetModuleID moduleId = gs.getVersionHandler().createTargetModuleId(configId);
+        Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.generateExplodedConfiguration", moduleId);
+        return moduleId;
     }
 
 
@@ -383,15 +383,10 @@ public class DeploymentUtils {
         DeploymentManager dm;
         try {
             dm = DeploymentCommandFactory.getDeploymentManager(server);
-            TargetModuleID id=isInstalledModule(dm,configId);
-            if (id==null) {
-                Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.isInstalledModule", false);
-                return false;
-            } 
-            else {
-                Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.isInstalledModule", true);
-                return true;
-            }
+            TargetModuleID id = isInstalledModule(dm, configId);
+            boolean isInstalled = (id != null);
+            Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.isInstalledModule", isInstalled);
+            return isInstalled;
         } catch (CoreException e) {
             e.printStackTrace();
             return false;

@@ -182,17 +182,18 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     public IModule[] getRootModules(IModule module) throws CoreException {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.getRootModules", module);
 
-        IStatus status = canModifyModules(new IModule[] { module }, null);
-        if (status != null && !status.isOK())
+        IModule[] rootModule = new IModule[] { module };
+        IStatus status = canModifyModules(rootModule, null);
+        if (status != null && !status.isOK()) {
             throw new CoreException(status);
-        IModule[] modules = doGetParentModules(module);
-        if (modules.length > 0) {
-            Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerDelegate.getRootModules", modules);
-            return modules;
         }
-
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerDelegate.getRootModules", new IModule[] { module });
-        return new IModule[] { module };
+        IModule[] modules = doGetParentModules(module);
+        if (modules.length == 0) {
+            modules = rootModule;
+        }
+            
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerDelegate.getRootModules", modules);
+        return modules;
     }
 
 
@@ -257,7 +258,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
                 }
             }
         }
-
+       
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerDelegate.getChildModules", new IModule[] {});
         return new IModule[] {};
     }
@@ -275,8 +276,9 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         ports.add(new ServerPort(PROPERTY_HTTP_PORT, "Web Connector", Integer.parseInt(getHTTPPort()), "http"));
         ports.add(new ServerPort(PROPERTY_RMI_PORT, "RMI Naming", Integer.parseInt(getRMINamingPort()), "rmi"));
 
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.getServerPorts;", (ServerPort[]) ports.toArray(new ServerPort[ports.size()]));
-        return (ServerPort[]) ports.toArray(new ServerPort[ports.size()]);
+        ServerPort[] serverPorts = ports.toArray(new ServerPort[ports.size()]);
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.getServerPorts;", serverPorts);
+        return serverPorts;
     }
 
     public String getContextPath(IModule module) {
@@ -306,8 +308,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
             }
         }
         
-        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerDelegate.getContextPath", contextRoot);
-        
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerDelegate.getContextPath", contextRoot);        
         return contextRoot;
     }
     
@@ -346,8 +347,9 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
                     urlSB.append("/");
                 }
                 String url = urlSB.toString();
-                Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerDelegate.getModuleRootURL", new URL(url));
-                return new URL(url);
+                URL moduleURL = new URL(url);
+                Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerDelegate.getModuleRootURL", moduleURL);
+                return moduleURL;
             } catch (Exception e) {
                 Trace.trace(Trace.ERROR, "Could not get root URL", e, Activator.logCore);
                 return null;
@@ -915,10 +917,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
             setServerInstanceProperties(map);
         } catch (Exception e) {
             // TODO WTF? Need to figure out why this fails...  seems to fail before setDefaults is called.
-            Trace.trace(Trace.INFO, "GeronimoServerDelegate.setInstanceProperty(name = " + name + ", value = " + value
-                    + " )", e, Activator.traceCore);
-            int a = 1;
-            a++;
+            Trace.trace(Trace.INFO, "GeronimoServerDelegate.setInstanceProperty(name = " + name + ", value = " + value + " )", e, Activator.traceCore);
         }
     }
 

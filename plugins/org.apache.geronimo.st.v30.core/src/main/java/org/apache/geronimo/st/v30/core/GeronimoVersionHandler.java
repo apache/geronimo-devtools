@@ -35,9 +35,9 @@ public class GeronimoVersionHandler implements IGeronimoVersionHandler {
      */
     public String getConfigID(IModule module) throws Exception {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoVersionHandler.getConfigID", module);
-
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoVersionHandler.getConfigID", GeronimoUtils.getConfigId(module));
-        return GeronimoUtils.getConfigId(module);
+        String configId = GeronimoUtils.getConfigId(module);
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoVersionHandler.getConfigID", configId);
+        return configId;
     }
     
     /* (non-Javadoc)
@@ -45,8 +45,8 @@ public class GeronimoVersionHandler implements IGeronimoVersionHandler {
      */
     public TargetModuleID createTargetModuleId(String configId) {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoVersionHandler.createTargetModuleId", configId);
-    
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoVersionHandler.createTargetModuleId", new TargetModuleIDImpl(null, configId));
-        return new TargetModuleIDImpl(null, configId);
+        TargetModuleID moduleId = new TargetModuleIDImpl(null, configId);
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoVersionHandler.createTargetModuleId", moduleId);
+        return moduleId;
     }
 }

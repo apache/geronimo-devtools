@@ -192,10 +192,10 @@ public class GeronimoUtils {
             }
         }
 
-        if (environment != null
-            && environment.getModuleId() != null) {
-            Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getConfigId", getQualifiedConfigID(environment.getModuleId()));
-            return getQualifiedConfigID(environment.getModuleId());
+        if (environment != null && environment.getModuleId() != null) {
+            String id = getQualifiedConfigID(environment.getModuleId());
+            Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getConfigId", id);
+            return id;
         }
         
         if (AriesHelper.isAriesInstalled()) {
@@ -215,15 +215,18 @@ public class GeronimoUtils {
                     String newVersionStr = getVersion(version);                    
                     
                     if (artifactID != null && version != null) {
-                        return getQualifiedConfigID(OsgiConstants.ARTIFACT_GROUP, artifactID, newVersionStr, OsgiConstants.ARTIFACT_TYPE);
+                        String id = getQualifiedConfigID(OsgiConstants.ARTIFACT_GROUP, artifactID, newVersionStr, OsgiConstants.ARTIFACT_TYPE);
+                        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getConfigId", id);
+                        return id;
                     }                 
                 }
             } catch (Exception e) {
             } 
         }
 
-        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getConfigId", getId(module));
-        return getId(module);
+        String id = getId(module);
+        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getConfigId", id);
+        return id;
     }
     
     // copied from org.apache.geronimo.aries.builder.ApplicationInstaller.getVersion(Version)
