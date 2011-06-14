@@ -75,4 +75,6 @@ public class Messages extends NLS {
     
     public static String moduleExportError;
     
+    public static String serverStopFailed;
+    
 }

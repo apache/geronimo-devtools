@@ -755,15 +755,16 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     protected void terminate() {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.terminate");
 
-        if (getServer().getServerState() == IServer.STATE_STOPPED)
+        if (getServer().getServerState() == IServer.STATE_STOPPED) {
             return;
+        }
 
+        setServerState(IServer.STATE_STOPPING);
+        Trace.trace(Trace.INFO, "Killing the geronimo server process", Activator.traceCore); //$NON-NLS-1$
+        
         try {
-            setServerState(IServer.STATE_STOPPING);
-            Trace.trace(Trace.INFO, "Killing the geronimo server process", Activator.traceCore); //$NON-NLS-1$
             if (process != null && !process.isTerminated()) {
                 process.terminate();
-
             }
             stopImpl();
         } catch (Exception e) {
@@ -771,7 +772,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             // 
             // WTP does not allow a CoreException to be thrown in this case 
             // 
-            throw new RuntimeException(Messages.STOP_FAIL);
+            throw new RuntimeException(Messages.serverStopFailed);
         }
 
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.terminate");
