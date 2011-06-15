@@ -391,32 +391,37 @@ public class DependencyHelper {
 
         Environment environment = null;
         if (GeronimoUtils.isWebModule(module)) {
-            if (getWebDeploymentPlan(module) != null) {
-                WebApp plan = getWebDeploymentPlan(module).getValue();
+            JAXBElement<WebApp> element = getWebDeploymentPlan(module);
+            if (element != null) {
+                WebApp plan = element.getValue();
                 if (plan != null)
                     environment = plan.getEnvironment();
             }
         } else if (GeronimoUtils.isEjbJarModule(module)) {
-            if (getOpenEjbDeploymentPlan(module) != null) {
-                OpenejbJar plan = getOpenEjbDeploymentPlan(module).getValue();
+            JAXBElement<OpenejbJar> element = getOpenEjbDeploymentPlan(module);
+            if (element != null) {
+                OpenejbJar plan = element.getValue();
                 if (plan != null)
                     environment = plan.getEnvironment();
             }
         } else if (GeronimoUtils.isEarModule(module)) {
-            if (getApplicationDeploymentPlan(module) != null) {
-                Application plan = getApplicationDeploymentPlan(module).getValue();
+            JAXBElement<Application> element = getApplicationDeploymentPlan(module);
+            if (element != null) {
+                Application plan = element.getValue();
                 if (plan != null)
                     environment = plan.getEnvironment();
             }
         } else if (GeronimoUtils.isRARModule(module)) {
-            if (getConnectorDeploymentPlan(module) != null) {
-                Connector plan = getConnectorDeploymentPlan(module).getValue();
+            JAXBElement<Connector> element = getConnectorDeploymentPlan(module);
+            if (element != null) {
+                Connector plan = element.getValue();
                 if (plan != null)
                     environment = plan.getEnvironment();
             }
         } else if (GeronimoUtils.isAppClientModule(module)) {
-            if (getAppClientDeploymentPlan(module) != null) {
-                ApplicationClient plan = getAppClientDeploymentPlan(module).getValue();
+            JAXBElement<ApplicationClient> element = getAppClientDeploymentPlan(module);
+            if (element != null) {
+                ApplicationClient plan = element.getValue();
                 if (plan != null)
                     environment = plan.getServerEnvironment();
             }
@@ -495,21 +500,19 @@ public class DependencyHelper {
     private JAXBElement<WebApp> getWebDeploymentPlan(IModule module) {
         Trace.tracePoint("Enter", Activator.traceInternal, "DependencyHelper.getWebDeploymentPlan", module);
 
+        JAXBElement<WebApp> element = null;
         IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
         IFile file = GeronimoUtils.getWebDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.WEB_PLAN_NAME) && file.exists()) {
             try {
-                Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getWebDeploymentPlan",
-                        JAXBUtils.unmarshalFilterDeploymentPlan(file));
-                return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+                element = JAXBUtils.unmarshalFilterDeploymentPlan(file);
             } catch (Exception e) {
                 // ignore it, just indicate error by returning null
             }
-
         }
 
-        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getWebDeploymentPlan", null);
-        return null;
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getWebDeploymentPlan", element);
+        return element;
     }
 
     /**
@@ -523,24 +526,19 @@ public class DependencyHelper {
     private JAXBElement<OpenejbJar> getOpenEjbDeploymentPlan(IModule module) {
         Trace.tracePoint("Enter", Activator.traceInternal, "DependencyHelper.getOpenEjbDeploymentPlan", module);
 
+        JAXBElement<OpenejbJar> element = null;
         IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
         IFile file = GeronimoUtils.getOpenEjbDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.OPENEJB_PLAN_NAME) && file.exists()) {
             try {
-                Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getOpenEjbDeploymentPlan",
-                        JAXBUtils.unmarshalFilterDeploymentPlan(file));
-            } catch (Exception e) {
-                // ignore it, just indicate error by returning null
-            }
-            try {
-                return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+                element = JAXBUtils.unmarshalFilterDeploymentPlan(file);
             } catch (Exception e) {
                 // ignore it, just indicate error by returning null
             }
         }
 
-        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getOpenEjbDeploymentPlan", null);
-        return null;
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getOpenEjbDeploymentPlan", element);
+        return element;
     }
 
     /**
@@ -554,21 +552,19 @@ public class DependencyHelper {
     private JAXBElement<ApplicationClient> getAppClientDeploymentPlan(IModule module) {
         Trace.tracePoint("Enter", Activator.traceInternal, "DependencyHelper.getWebDeploymentPlan", module);
 
+        JAXBElement<ApplicationClient> element = null;
         IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
         IFile file = GeronimoUtils.getApplicationClientDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.APP_CLIENT_PLAN_NAME) && file.exists()) {
             try {
-                Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getWebDeploymentPlan",
-                        JAXBUtils.unmarshalFilterDeploymentPlan(file));
-                return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+                element = JAXBUtils.unmarshalFilterDeploymentPlan(file);
             } catch (Exception e) {
                 // ignore it, just indicate error by returning null
             }
-
         }
 
-        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getWebDeploymentPlan", null);
-        return null;
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getWebDeploymentPlan", element);
+        return element;
     }
 
     /**
@@ -582,21 +578,19 @@ public class DependencyHelper {
     private JAXBElement<Application> getApplicationDeploymentPlan(IModule module) {
         Trace.tracePoint("Enter", Activator.traceInternal, "DependencyHelper.getApplicationDeploymentPlan", module);
 
+        JAXBElement<Application> element = null;
         IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
         IFile file = GeronimoUtils.getApplicationDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.APP_PLAN_NAME) && file.exists()) {
             try {
-                Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getApplicationDeploymentPlan",
-                        JAXBUtils.unmarshalFilterDeploymentPlan(file));
-                return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+                element = JAXBUtils.unmarshalFilterDeploymentPlan(file);
             } catch (Exception e) {
                 // ignore it, just indicate error by returning null
             }
-
         }
 
-        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getApplicationDeploymentPlan", null);
-        return null;
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getApplicationDeploymentPlan", element);
+        return element;
     }
 
     /**
@@ -610,21 +604,19 @@ public class DependencyHelper {
     private JAXBElement<Connector> getConnectorDeploymentPlan(IModule module) {
         Trace.tracePoint("Enter", Activator.traceInternal, "DependencyHelper.getConnectorDeploymentPlan", module);
 
+        JAXBElement<Connector> element = null;
         IVirtualComponent comp = GeronimoUtils.getVirtualComponent(module);
         IFile file = GeronimoUtils.getConnectorDeploymentPlanFile(comp);
         if (file.getName().equals(GeronimoUtils.CONNECTOR_PLAN_NAME) && file.exists()) {
             try {
-                Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getConnectorDeploymentPlan",
-                        JAXBUtils.unmarshalFilterDeploymentPlan(file));
-                return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+                element = JAXBUtils.unmarshalFilterDeploymentPlan(file);
             } catch (Exception e) {
                 // ignore it, just indicate error by returning null
             }
-
         }
 
-        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getConnectorDeploymentPlan", null);
-        return null;
+        Trace.tracePoint("Exit ", Activator.traceInternal, "DependencyHelper.getConnectorDeploymentPlan", element);
+        return element;
     }
 
     /**
