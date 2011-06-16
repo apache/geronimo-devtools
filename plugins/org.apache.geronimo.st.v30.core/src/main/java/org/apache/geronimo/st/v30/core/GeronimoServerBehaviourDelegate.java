@@ -1055,7 +1055,14 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         Map<String, String> artifactsMap = ModuleArtifactMapper.getInstance().getServerArtifactsMap(getServer());
         if (artifactsMap != null) {
             synchronized (artifactsMap) {
-                _doRemove(module, monitor);
+                try {
+                    _doRemove(module, monitor);
+                } finally {
+                    // remove the mapping - even if things failed to undeploy
+                    if (module.getProject() != null) {
+                        artifactsMap.remove(module.getProject().getName());
+                    }
+                }
             }    
         } else {
             _doRemove(module, monitor);

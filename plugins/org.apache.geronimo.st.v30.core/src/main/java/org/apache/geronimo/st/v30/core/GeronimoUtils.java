@@ -164,29 +164,30 @@ public class GeronimoUtils {
 
         Environment environment = null;
         if (isWebModule(module)) {
-            if (getWebDeploymentPlan(module)!=null) {
-                WebApp plan = getWebDeploymentPlan(module).getValue();
+            JAXBElement<WebApp> element = getWebDeploymentPlan(module);
+            if (element != null) {
+                WebApp plan = element.getValue();
                 if (plan != null)
                     environment = plan.getEnvironment();
             }
-        }
-        else if (isEjbJarModule(module)) {
-               if (getOpenEjbDeploymentPlan(module)!=null) {
-                    OpenejbJar plan = getOpenEjbDeploymentPlan(module).getValue();
-                    if (plan != null)
-                        environment = plan.getEnvironment();
-               }
-        }
-        else if (isEarModule(module)) {
-            if (getApplicationDeploymentPlan(module)!=null) {
-                Application plan = getApplicationDeploymentPlan(module).getValue();
+        } else if (isEjbJarModule(module)) {
+            JAXBElement<OpenejbJar> element = getOpenEjbDeploymentPlan(module);
+            if (element != null) {
+                OpenejbJar plan = element.getValue();
                 if (plan != null)
                     environment = plan.getEnvironment();
             }
-        }
-        else if (isRARModule(module)) {
-            if (getConnectorDeploymentPlan(module)!=null) {
-                Connector plan = getConnectorDeploymentPlan(module).getValue();
+        } else if (isEarModule(module)) {
+            JAXBElement<Application> element = getApplicationDeploymentPlan(module);
+            if (element != null) {
+                Application plan = element.getValue();
+                if (plan != null)
+                    environment = plan.getEnvironment();
+            }
+        } else if (isRARModule(module)) {
+            JAXBElement<Connector> element = getConnectorDeploymentPlan(module);
+            if (element != null) {
+                Connector plan = element.getValue();
                 if (plan != null)
                     environment = plan.getEnvironment();
             }
@@ -197,31 +198,31 @@ public class GeronimoUtils {
             Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getConfigId", id);
             return id;
         }
-        
+
         if (AriesHelper.isAriesInstalled()) {
             try {
                 if (isEBAModule(module)) {
                     Class ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
                     Method method = ariesUtilsClass.getMethod("getApplicationManifest", IProject.class);
                     Object object = method.invoke(null, module.getProject());
-                    
+
                     Class appManifestClass = Class.forName("com.ibm.etools.aries.core.models.ApplicationManifest");
                     method = appManifestClass.getMethod("getApplicationSymbolicName");
-                    String artifactID = (String) method.invoke(object); 
-                    
-                    method = appManifestClass.getMethod("getApplicationVersion"); 
+                    String artifactID = (String) method.invoke(object);
+
+                    method = appManifestClass.getMethod("getApplicationVersion");
                     String versionStr = (String) method.invoke(object);
                     Version version = Version.parseVersion(versionStr);
-                    String newVersionStr = getVersion(version);                    
-                    
+                    String newVersionStr = getVersion(version);
+
                     if (artifactID != null && version != null) {
                         String id = getQualifiedConfigID(OsgiConstants.ARTIFACT_GROUP, artifactID, newVersionStr, OsgiConstants.ARTIFACT_TYPE);
                         Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getConfigId", id);
                         return id;
-                    }                 
+                    }
                 }
             } catch (Exception e) {
-            } 
+            }
         }
 
         String id = getId(module);
@@ -266,13 +267,15 @@ public class GeronimoUtils {
     public static JAXBElement getApplicationClientDeploymentPlan(IFile file) throws Exception {
         Trace.tracePoint("ENTRY", Activator.traceCore, "GeronimoUtils.getApplicationClientDeploymentPlan", file);
 
+        JAXBElement element = null;
         if (file.getName().equals(APP_CLIENT_PLAN_NAME) && file.exists()) {
-            return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+            element = JAXBUtils.unmarshalFilterDeploymentPlan(file);
         }
 
-        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getApplicationClientDeploymentPlan", null);
-        return null;
+        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getApplicationClientDeploymentPlan", element);
+        return element;
     }
+    
     public static IFile getConnectorDeploymentPlanFile(IVirtualComponent comp) {
         IPath deployPlanPath = comp.getRootFolder().getUnderlyingFolder().getProjectRelativePath().append("META-INF").append(CONNECTOR_PLAN_NAME);
         return comp.getProject().getFile(deployPlanPath);
@@ -371,80 +374,89 @@ public class GeronimoUtils {
         IPath deployPlanPath = comp.getRootFolder().getUnderlyingFolder().getProjectRelativePath().append("META-INF").append(SERVICE_PLAN_NAME);
         return comp.getProject().getFile(deployPlanPath);
     }
+    
     public static JAXBElement<WebApp> getWebDeploymentPlan(IModule module) throws Exception {
         return getWebDeploymentPlan(getVirtualComponent(module));
     }
+    
     public static JAXBElement getWebDeploymentPlan(IVirtualComponent comp) throws Exception {
         return getWebDeploymentPlan(getWebDeploymentPlanFile(comp));
     }
+    
     public static JAXBElement getWebDeploymentPlan(IFile file) throws Exception {
         Trace.tracePoint("ENTRY", Activator.traceCore, "GeronimoUtils.getWebDeploymentPlan", file);
 
+        JAXBElement element = null;
         if (file.getName().equals(WEB_PLAN_NAME) && file.exists()) {
-            return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+            element = JAXBUtils.unmarshalFilterDeploymentPlan(file);
         }
 
-        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getWebDeploymentPlan", null);
-        return null;
+        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getWebDeploymentPlan", element);
+        return element;
     }
-
 
     public static JAXBElement<OpenejbJar> getOpenEjbDeploymentPlan(IModule module) throws Exception {
         return getOpenEjbDeploymentPlan(getVirtualComponent(module));
     }
+    
     public static JAXBElement getOpenEjbDeploymentPlan(IVirtualComponent comp) throws Exception {
         return getOpenEjbDeploymentPlan(getOpenEjbDeploymentPlanFile(comp));
     }
+    
     public static JAXBElement getOpenEjbDeploymentPlan(IFile file) throws Exception {
         Trace.tracePoint("ENTRY", Activator.traceCore, "GeronimoUtils.getOpenEjbDeploymentPlan", file);
 
+        JAXBElement element = null;
         if (file.getName().equals(OPENEJB_PLAN_NAME) && file.exists()) {
-            return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+            element = JAXBUtils.unmarshalFilterDeploymentPlan(file);
         }
 
-        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getOpenEjbDeploymentPlan", null);
-        return null;
+        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getOpenEjbDeploymentPlan", element);
+        return element;
     }
-
-
 
     public static JAXBElement<Application> getApplicationDeploymentPlan(IModule module) throws Exception {
         return getApplicationDeploymentPlan(getVirtualComponent(module));
     }
+    
     public static JAXBElement getApplicationDeploymentPlan(IVirtualComponent comp) throws Exception {
         return getApplicationDeploymentPlan(getApplicationDeploymentPlanFile(comp));
     }
+    
     public static JAXBElement getApplicationDeploymentPlan(IFile file) throws Exception {
         Trace.tracePoint("ENTRY", Activator.traceCore, "GeronimoUtils.getApplicationDeploymentPlan", file);
 
+        JAXBElement element = null;
         if (file.getName().equals(APP_PLAN_NAME) && file.exists()) {
-            return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+            element = JAXBUtils.unmarshalFilterDeploymentPlan(file);
         }
 
-        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getApplicationDeploymentPlan", null);
-        return null;
+        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getApplicationDeploymentPlan", element);
+        return element;
     }
-
-
 
     public static JAXBElement<Connector> getConnectorDeploymentPlan(IModule module) throws Exception {
         return getConnectorDeploymentPlan(getVirtualComponent(module));
     }
+    
     public static String getQualifiedConfigID(Artifact artifact) {
         return getQualifiedConfigID(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), artifact.getType());
     }
+    
     public static JAXBElement getConnectorDeploymentPlan(IVirtualComponent comp) throws Exception {
         return getConnectorDeploymentPlan(getConnectorDeploymentPlanFile(comp));
     }
+    
     public static JAXBElement getConnectorDeploymentPlan(IFile file) throws Exception {
         Trace.tracePoint("ENTRY", Activator.traceCore, "GeronimoUtils.getConnectorDeploymentPlan", file);
 
+        JAXBElement element = null;
         if (file.getName().equals(CONNECTOR_PLAN_NAME) && file.exists()) {
-            return JAXBUtils.unmarshalFilterDeploymentPlan(file);
+            element = JAXBUtils.unmarshalFilterDeploymentPlan(file);
         }
 
-        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getConnectorDeploymentPlan", null);
-        return null;
+        Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getConnectorDeploymentPlan", element);
+        return element;
     }
     
     public static IModule[] getModules(IProject project) {
