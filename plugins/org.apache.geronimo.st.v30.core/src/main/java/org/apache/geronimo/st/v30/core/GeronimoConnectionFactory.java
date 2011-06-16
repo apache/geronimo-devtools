@@ -16,8 +16,9 @@
  */
 package org.apache.geronimo.st.v30.core;
 
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Map;
 
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.exceptions.DeploymentManagerCreationException;
@@ -27,14 +28,14 @@ import javax.naming.Context;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.ServerCore;
 
 /**
  * @version $Rev$ $Date$
  */
 public class GeronimoConnectionFactory {
 
-    private HashMap connections = new HashMap();
+    private Map<String, DeploymentManager> connections = 
+        Collections.synchronizedMap(new HashMap<String, DeploymentManager>());
 
     private static GeronimoConnectionFactory instance;
 
@@ -49,24 +50,22 @@ public class GeronimoConnectionFactory {
         return instance;
     }
 
-    public DeploymentManager getDeploymentManager(IServer server)
-            throws DeploymentManagerCreationException {
-
+    public DeploymentManager getDeploymentManager(IServer server) throws DeploymentManagerCreationException {
         System.setProperty(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
-        DeploymentManager dm = (DeploymentManager) connections.get(server.getId());
 
+        DeploymentManager dm = (DeploymentManager) connections.get(server.getId());
+        IGeronimoServer geronimoServer = getGeronimoServer(server);
         if (dm == null) {
-            DeploymentFactory factory = getGeronimoServer(server).getDeploymentFactory();
-            String deployerURL = getGeronimoServer(server).getDeployerURL();
+            DeploymentFactory factory = geronimoServer.getDeploymentFactory();
+            String deployerURL = geronimoServer.getDeployerURL();
             Trace.trace(Trace.INFO, "DeployerURL: " + deployerURL, Activator.traceCore);
-            String user = getGeronimoServer(server).getAdminID();
-            String pw = getGeronimoServer(server).getAdminPassword();
+            String user = geronimoServer.getAdminID();
+            String pw = geronimoServer.getAdminPassword();
             dm = factory.getDeploymentManager(deployerURL, user, pw);
             connections.put(server.getId(), dm);
         }
-        
-        getGeronimoServer(server).configureDeploymentManager(dm);
-        
+        geronimoServer.configureDeploymentManager(dm);
+
         return dm;
     }
 
@@ -77,25 +76,13 @@ public class GeronimoConnectionFactory {
         }
         return gServer;
     }
-
-    public IGeronimoServer getGeronimoServer(DeploymentManager dm) {
-        if (dm != null && connections.containsValue(dm)) {
-            Iterator i = connections.keySet().iterator();
-            while (i.hasNext()) {
-                String serverId = (String) i.next();
-                Object o = connections.get(serverId);
-                if (dm.equals(o)) {
-                    IServer server = ServerCore.findServer(serverId);
-                    if (server != null)
-                        return getGeronimoServer(server);
-                }
-            }
-        }
-        return null;
-    }
-
+ 
     public void destroy(IServer server) {
         Trace.trace(Trace.INFO, "deploymentManager destroy", Activator.traceCore);
-        connections.remove(server.getId());
+        DeploymentManager manager = connections.remove(server.getId());        
+        if (manager != null) {
+            // TODO: need to do reference counting or something else before releasing the connection
+            // manager.release();
+        }
     }
 }

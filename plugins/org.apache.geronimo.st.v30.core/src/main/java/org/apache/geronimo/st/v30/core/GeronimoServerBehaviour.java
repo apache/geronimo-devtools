@@ -22,9 +22,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.enterprise.deploy.spi.exceptions.DeploymentManagerCreationException;
 import javax.management.MBeanServerConnection;
 import javax.naming.directory.NoSuchAttributeException;
 
+import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
 import org.apache.geronimo.gbean.AbstractName;
 import org.apache.geronimo.gbean.AbstractNameQuery;
 import org.apache.geronimo.gbean.GBeanData;
@@ -234,8 +236,25 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
          return list;
     }
  
+    private Kernel getDeploymentManagerKernel() {
+        GeronimoConnectionFactory connectionFactory = GeronimoConnectionFactory.getInstance();
+        try {
+            JMXDeploymentManager manager =
+                (JMXDeploymentManager) connectionFactory.getDeploymentManager(getServer());
+            return manager.getKernel();
+        } catch (DeploymentManagerCreationException e) {
+            Trace.trace(Trace.WARNING, "Error getting kernel from deployment manager", e, Activator.logCore);
+            return null;
+        }
+    }
+    
     // TODO: this can be cached 
     public String getWebModuleDocumentBase(String contextPath) {
+        Kernel kernel = getDeploymentManagerKernel();
+        if (kernel == null) {
+            Trace.trace(Trace.WARNING, "Error getting web module document base - no kernel", null, Activator.logCore);
+            return null;
+        }
         Map<String, String> map = Collections.singletonMap("j2eeType", "WebModule");
         AbstractNameQuery query = new AbstractNameQuery(null, map, Collections.EMPTY_SET);
         Set<AbstractName> webModuleNames = kernel.listGBeans(query);
