@@ -33,7 +33,9 @@ import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.j2ee.application.internal.operations.AppClientComponentExportDataModelProvider;
 import org.eclipse.jst.j2ee.application.internal.operations.EARComponentExportDataModelProvider;
 import org.eclipse.jst.j2ee.application.internal.operations.J2EEComponentExportDataModelProvider;
@@ -421,5 +423,24 @@ public class DeploymentUtils {
         
         Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.isInstalledModule", (Object) null);
         return null;
+    }
+    
+    public static String getConfigId(IServer server, IModule module) throws CoreException {
+        String configId = ModuleArtifactMapper.getInstance().resolveArtifact(server, module);
+
+        if (configId == null) {
+            IGeronimoServer gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
+            try {
+                configId = gs.getVersionHandler().getConfigID(module);
+            } catch (Exception e) {
+                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Unable to determine configId for module: " + module.getName(), e));
+            }
+            
+            if (configId == null) {
+                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Unable to determine configId for module: " + module.getName()));
+            }
+        }
+        
+        return configId;
     }
 }

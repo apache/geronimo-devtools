@@ -19,10 +19,7 @@ package org.apache.geronimo.st.v30.core.commands;
 import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
-import org.apache.geronimo.st.v30.core.Activator;
 import org.apache.geronimo.st.v30.core.DeploymentUtils;
-import org.apache.geronimo.st.v30.core.IGeronimoServer;
-import org.apache.geronimo.st.v30.core.ModuleArtifactMapper;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -45,23 +42,12 @@ class UndeployCommand extends AbstractDeploymentCommand {
      * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
      */
     public IStatus execute(IProgressMonitor monitor) throws TargetModuleIdNotFoundException, CoreException {
-        String configId = ModuleArtifactMapper.getInstance().resolveArtifact(getServer(), getModule());
-
-        if(configId == null) {
-            IGeronimoServer gs = (IGeronimoServer) getServer().getAdapter(IGeronimoServer.class);
-            try {
-                configId = gs.getVersionHandler().getConfigID(getModule());
-            } catch (Exception e) {
-                throw new CoreException(new Status(IStatus.ERROR,Activator.PLUGIN_ID,"Module config Id not found for undeployment",e));
-            }
-        }
-       
-        if(configId == null) {
-            throw new CoreException(new Status(IStatus.ERROR,Activator.PLUGIN_ID,"Module config Id not found for undeployment"));
-        }
+        String configId = DeploymentUtils.getConfigId(getServer(), getModule());
         
         TargetModuleID id = DeploymentUtils.getTargetModuleID(getDeploymentManager(), configId);
-        return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().undeploy(new TargetModuleID[] { id }));
+        TargetModuleID[] ids = new TargetModuleID[] {id};
+        
+        return new DeploymentCmdStatus(Status.OK_STATUS, getDeploymentManager().undeploy(ids));
     }
 
     /*

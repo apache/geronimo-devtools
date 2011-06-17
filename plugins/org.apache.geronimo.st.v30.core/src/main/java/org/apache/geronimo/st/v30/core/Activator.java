@@ -149,7 +149,6 @@ public class Activator extends Plugin {
     }
     
     final protected GeronimoServerBehaviourDelegate getGeronimoServerBehaviourDelegate (IServer server) {
-        
         GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) server.getAdapter(GeronimoServerBehaviourDelegate.class);
         if (delegate == null) {
             delegate = (GeronimoServerBehaviourDelegate) server.loadAdapter(GeronimoServerBehaviourDelegate.class, null);
@@ -167,10 +166,7 @@ public class Activator extends Plugin {
      * @param server 
      */
     private void triggerStartUpdateServerTask(IServer server) {
-        GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) server.getAdapter(GeronimoServerBehaviourDelegate.class);
-        if (delegate == null) {
-            delegate = (GeronimoServerBehaviourDelegate) server.loadAdapter(GeronimoServerBehaviourDelegate.class, null);
-        }
+        GeronimoServerBehaviourDelegate delegate = getGeronimoServerBehaviourDelegate(server);
         if (delegate != null) {
             delegate.startUpdateServerStateTask();
         }

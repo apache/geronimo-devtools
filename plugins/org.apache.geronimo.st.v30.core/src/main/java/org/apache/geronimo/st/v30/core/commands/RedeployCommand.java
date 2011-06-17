@@ -21,11 +21,8 @@ import java.io.File;
 import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
-import org.apache.geronimo.st.v30.core.Activator;
 import org.apache.geronimo.st.v30.core.DeploymentUtils;
 import org.apache.geronimo.st.v30.core.GeronimoUtils;
-import org.apache.geronimo.st.v30.core.IGeronimoServer;
-import org.apache.geronimo.st.v30.core.ModuleArtifactMapper;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -49,25 +46,10 @@ class RedeployCommand extends DeployCommand {
      * @see org.apache.geronimo.core.commands.IDeploymentCommand#execute(org.eclipse.core.runtime.IProgressMonitor)
      */
     public IStatus execute(IProgressMonitor monitor) throws TargetModuleIdNotFoundException, CoreException {
-        String configId = ModuleArtifactMapper.getInstance().resolveArtifact(getServer(), getModule());
+        String configId = DeploymentUtils.getConfigId(getServer(), getModule());
         
-        if(configId == null) {
-            IGeronimoServer gs = (IGeronimoServer) getServer().getAdapter(IGeronimoServer.class);
-            try {
-                configId = gs.getVersionHandler().getConfigID(getModule());
-            } catch (Exception e) {
-                throw new CoreException(new Status(IStatus.ERROR,Activator.PLUGIN_ID,"Module config Id not found for redeployment",e));
-            }
-        }
-        
-        TargetModuleID[] ids = null;
-        if(configId != null) {
-            TargetModuleID id = DeploymentUtils.getTargetModuleID(getDeploymentManager(), configId);
-            ids = new TargetModuleID[] {id};
-        }
-        else {
-            throw new CoreException(new Status(IStatus.ERROR,Activator.PLUGIN_ID,"Module config Id not found for redeployment"));
-        }
+        TargetModuleID id = DeploymentUtils.getTargetModuleID(getDeploymentManager(), configId);
+        TargetModuleID[] ids = new TargetModuleID[] {id};
         
         IFile dp = GeronimoUtils.getDeploymentPlanFile(getModule());
         File deploymentPlanFile = null;

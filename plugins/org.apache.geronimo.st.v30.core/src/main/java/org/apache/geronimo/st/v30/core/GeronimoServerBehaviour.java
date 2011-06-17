@@ -256,6 +256,9 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
             return null;
         }
         Map<String, String> map = Collections.singletonMap("j2eeType", "WebModule");
+        if (!contextPath.startsWith("/")) {
+            contextPath = "/" + contextPath;
+        }
         AbstractNameQuery query = new AbstractNameQuery(null, map, Collections.EMPTY_SET);
         Set<AbstractName> webModuleNames = kernel.listGBeans(query);
         for (AbstractName name : webModuleNames) {

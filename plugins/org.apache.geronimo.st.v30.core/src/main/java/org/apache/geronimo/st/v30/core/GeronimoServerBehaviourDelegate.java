@@ -220,7 +220,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#stop(boolean)
      */
     synchronized public void stop(final boolean force) {
-        Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stop", Activator.traceCore);
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.stop", force);
 
         stopPingThread();
         if (getServer().getServerState() != IServer.STATE_STOPPED) {
@@ -238,7 +238,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         if (state == IServer.STATE_STARTING || state == IServer.STATE_STOPPING)
             terminate();
                                                    
-        Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.stop", Activator.traceCore);
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.stop");
     }
 
     private void setStatus(IModule[] module, IStatus status, MultiStatus multiStatus) {
@@ -432,9 +432,11 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     private IStatus refreshBundles(IModule ebaModule, List<IModule[]> bundleModules, IProgressMonitor monitor) {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundles", ebaModule, bundleModules, monitor);
 
-        String configId = ModuleArtifactMapper.getInstance().resolveArtifact(getServer(), ebaModule);
-        if (configId == null) {
-            return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.bind(Messages.REFRESH_NO_CONFIGURATION_FAIL, ebaModule.getProject().getName()));
+        String configId = null;
+        try {
+            configId = DeploymentUtils.getConfigId(getServer(), ebaModule);
+        } catch (CoreException e) {
+            return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.bind(Messages.REFRESH_NO_CONFIGURATION_FAIL, ebaModule.getProject().getName()), e);
         }
         
         if (monitor.isCanceled()) {
@@ -729,11 +731,13 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#dispose()
      */
     public void dispose() {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.dispose");
         stopUpdateServerStateTask();
         stopSynchronizeProjectOnServerTask();
         if (publishStateListener != null) {
             getServer().removeServerListener(publishStateListener);
         }
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.dispose");
     }
 
     public abstract String getRuntimeClass();
