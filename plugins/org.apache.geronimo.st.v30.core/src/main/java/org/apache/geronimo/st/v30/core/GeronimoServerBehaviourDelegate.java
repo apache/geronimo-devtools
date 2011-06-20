@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.Target;
 import javax.enterprise.deploy.spi.TargetModuleID;
 import javax.management.MBeanServerConnection;
@@ -1085,8 +1086,17 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     protected void doNoChange(IModule module, IProgressMonitor monitor) throws Exception {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.doNoChange", module.getName());
         
-        if (DeploymentUtils.getLastKnownConfigurationId(module, getServer()) != null) {
-            start(module, monitor);
+        DeploymentManager dm = DeploymentCommandFactory.getDeploymentManager(getServer());
+        String configId = DeploymentUtils.getLastKnownConfigurationId(module, getServer());
+        if (configId != null) {
+            IModule[] rootModule = new IModule[] { module };
+            if (DeploymentUtils.isStartedModule(dm, configId) != null) {
+                setModuleState(rootModule, IServer.STATE_STARTED);
+            } else if (DeploymentUtils.isStoppedModule(dm, configId) != null) {
+                setModuleState(rootModule, IServer.STATE_STOPPED);
+            } else {
+                setModuleState(rootModule, IServer.STATE_UNKNOWN);
+            }
         } else {
             doAdded(module, null, monitor);
         }

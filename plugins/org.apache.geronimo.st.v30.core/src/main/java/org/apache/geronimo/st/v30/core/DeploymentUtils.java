@@ -254,7 +254,7 @@ public class DeploymentUtils {
         
         IGeronimoServer gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
         TargetModuleID moduleId = gs.getVersionHandler().createTargetModuleId(configId);
-        Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.generateExplodedConfiguration", moduleId);
+        Trace.tracePoint("Exit", Activator.traceCore, "DeploymentUtils.getTargetModuleID", moduleId);
         return moduleId;
     }
 
@@ -264,16 +264,12 @@ public class DeploymentUtils {
 
         try {
             TargetModuleID id = isInstalledModule(dm,configId);
-            if (id!=null) {
-                Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getTargetModuleID", id);
+            if (id != null) {
+                Trace.tracePoint("Exit", Activator.traceCore, "DeploymentUtils.getTargetModuleID", id);
                 return id;
             }
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (TargetException e) {
-            e.printStackTrace();
-        } catch (CoreException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Trace.trace(Trace.INFO, "DeploymentUtils.getTargetModuleID", e, Activator.logCore);
         }
 
         throw new TargetModuleIdNotFoundException("Could not find TargetModuleID with configId " + configId);
@@ -300,30 +296,27 @@ public class DeploymentUtils {
         
         Trace.trace(Trace.INFO, "currentConfigId = " + currentId + " previousConfigId = " + publishedId, Activator.traceCore);
         
-        DeploymentManager dm = DeploymentCommandFactory.getDeploymentManager(server);
-        
+        DeploymentManager dm = DeploymentCommandFactory.getDeploymentManager(server);        
+        TargetModuleID[] ids = null;
         try {
-            getTargetModuleID(dm, query);
-            Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getLastKnownConfigurationId", query);
-            return query;
-        } catch (TargetModuleIdNotFoundException e) {
-            Trace.trace(Trace.INFO, e.getMessage(), Activator.logCore);
-        }
-                
-        if(query != currentId) {
-            try {
-                getTargetModuleID(dm, currentId);
-                Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getLastKnownConfigurationId", currentId);
-                return currentId;
-            } catch (TargetModuleIdNotFoundException e) {
-                Trace.trace(Trace.INFO, e.getMessage(), Activator.logCore);
+            ids = dm.getAvailableModules(null, dm.getTargets());  
+            
+            if (getModuleId(ids, query) != null) {
+                Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getLastKnownConfigurationId", query);
+                return query;
             }
+            
+            if (query != currentId && getModuleId(ids, currentId) != null) {
+                Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getLastKnownConfigurationId", currentId);
+                return currentId;                
+            }
+        } catch (Exception e) {
+            Trace.trace(Trace.INFO, "DeploymentUtils.getLastKnownConfigurationId", e, Activator.logCore);
         }
         
         Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getLastKnownConfigurationId", (Object) null);
         return null;
     }
-    
     
     public static List<IModuleResourceDelta> getAffectedFiles(IModuleResourceDelta delta, List<String> includes, List<String> excludes) {
         Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.getAffectedFiles", delta, includes, excludes);
@@ -381,47 +374,52 @@ public class DeploymentUtils {
     
     public static boolean isInstalledModule(IServer server, String configId) {
         Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.isInstalledModule", server, configId);
-    
+        boolean isInstalled = false;
         DeploymentManager dm;
         try {
             dm = DeploymentCommandFactory.getDeploymentManager(server);
             TargetModuleID id = isInstalledModule(dm, configId);
-            boolean isInstalled = (id != null);
-            Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.isInstalledModule", isInstalled);
-            return isInstalled;
-        } catch (CoreException e) {
-            e.printStackTrace();
-            return false;
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-            return false;
-        } catch (TargetException e) {
-            e.printStackTrace();
-            return false;
+            isInstalled = (id != null);
+        } catch (Exception e) {
+            Trace.trace(Trace.INFO, "DeploymentUtils.isInstalledModule", e, Activator.logCore);
+            isInstalled = false;
         }
+        Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.isInstalledModule", isInstalled);
+        return isInstalled;
+    }
         
+    public static TargetModuleID isInstalledModule(DeploymentManager dm, String configId) throws TargetException {
+        Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.isInstalledModule", dm, configId);
+        TargetModuleID[] ids = dm.getAvailableModules(null, dm.getTargets());
+        TargetModuleID moduleId = getModuleId(ids, configId);
+        Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.isInstalledModule", moduleId);
+        return moduleId;
     }
     
+    public static TargetModuleID isStartedModule(DeploymentManager dm, String configId) throws TargetException {
+        Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.isStartedModule", dm, configId);
+        TargetModuleID[] ids = dm.getRunningModules(null, dm.getTargets());
+        TargetModuleID moduleId = getModuleId(ids, configId);
+        Trace.tracePoint("Exit", Activator.traceCore, "DeploymentUtils.isStartedModule", moduleId);
+        return moduleId;
+    }
     
-    private static TargetModuleID isInstalledModule(DeploymentManager dm, String configId) throws CoreException, IllegalStateException, TargetException{
-        Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.isInstalledModule", dm, configId);
-        
-        TargetModuleID[] ids = dm.getAvailableModules(null, dm.getTargets());
-        if(ids == null) {
-            Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.isInstalledModule", (Object) null);
-            return null;
-        }
+    public static TargetModuleID isStoppedModule(DeploymentManager dm, String configId) throws TargetException {
+        Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.isStoppedModule", dm, configId);
+        TargetModuleID[] ids = dm.getNonRunningModules(null, dm.getTargets());
+        TargetModuleID moduleId = getModuleId(ids, configId);
+        Trace.tracePoint("Exit", Activator.traceCore, "DeploymentUtils.isStoppedModule", moduleId);
+        return moduleId;
+    }
+    
+    private static TargetModuleID getModuleId(TargetModuleID[] ids, String configId) {
         if (ids != null) {
             for (int i = 0; i < ids.length; i++) {
                 if (ids[i].getModuleID().equals(configId)) {
-                    Trace.trace(Trace.INFO, "Found configuration " + configId +  " on server.", Activator.logCore);
-                    Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.isInstalledModule", ids[i]);
                     return ids[i];
                 }
             }
         }
-        
-        Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.isInstalledModule", (Object) null);
         return null;
     }
     
