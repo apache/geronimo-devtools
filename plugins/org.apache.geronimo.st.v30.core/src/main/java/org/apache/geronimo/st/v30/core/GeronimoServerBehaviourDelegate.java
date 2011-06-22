@@ -1057,16 +1057,15 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     protected void doRemoved(IModule module, IProgressMonitor monitor) throws Exception {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.doRemoved", module.getName());
 
-        Map<String, String> artifactsMap = ModuleArtifactMapper.getInstance().getServerArtifactsMap(getServer());
+        ModuleArtifactMapper mapper = ModuleArtifactMapper.getInstance();
+        Map<String, String> artifactsMap = mapper.getServerArtifactsMap(getServer());
         if (artifactsMap != null) {
             synchronized (artifactsMap) {
                 try {
                     _doRemove(module, monitor);
                 } finally {
-                    // remove the mapping - even if things failed to undeploy
-                    if (module.getProject() != null) {
-                        artifactsMap.remove(module.getProject().getName());
-                    }
+                    // remove the mapping - even if module failed to undeploy
+                    mapper.removeArtifactEntry(getServer(), module);
                 }
             }    
         } else {
@@ -1097,6 +1096,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
             } else {
                 setModuleState(rootModule, IServer.STATE_UNKNOWN);
             }
+            ModuleArtifactMapper mapper = ModuleArtifactMapper.getInstance();
+            mapper.addArtifactEntry(getServer(), module, configId);
         } else {
             doAdded(module, null, monitor);
         }

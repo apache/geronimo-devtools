@@ -34,8 +34,6 @@ import javax.enterprise.deploy.spi.TargetModuleID;
 
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.v30.core.internal.Trace;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -43,6 +41,7 @@ import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
+import org.eclipse.wst.server.core.ServerUtil;
 
 public class SynchronizeProjectOnServerTask extends TimerTask {
 
@@ -82,24 +81,22 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
                         TargetModuleID[] availableIds = dm.getAvailableModules(null, targets);
                         Set<String> availableConfigIds = createSet(availableIds);
 
-                        for (Map.Entry<String, String> entry : projectsOnServer.entrySet()) {
-                            String projectName = entry.getKey();
+                        for (Map.Entry<String, String> entry : projectsOnServer.entrySet()) {   
+                            String moduleID = entry.getKey();
                             String configID = entry.getValue();
 
-                            IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-                            IModule[] modules = GeronimoUtils.getModules(project);
-
-                            if (runningConfigIds.contains(configID)) {
-                                delegate.setModulesState(modules, IServer.STATE_STARTED);
-                            } else if (nonRunningConfigIds.contains(configID)) {
-                                delegate.setModulesState(modules, IServer.STATE_STOPPED);
-                            } else if (!availableConfigIds.contains(configID)) {
-                                // it's not running, stopped or available - so remove it
-                                for (IModule module : modules) {
+                            IModule module = ServerUtil.getModule(moduleID);
+                            if (module != null && ServerUtil.containsModule(server, module, null)) {
+                                if (runningConfigIds.contains(configID)) {
+                                    delegate.setModulesState(new IModule[] { module }, IServer.STATE_STARTED);
+                                } else if (nonRunningConfigIds.contains(configID)) {
+                                    delegate.setModulesState(new IModule[] { module }, IServer.STATE_STOPPED);
+                                } else if (!availableConfigIds.contains(configID)) {
+                                    // it's not running, stopped or available - so remove it
                                     removedModules.add(module);
                                 }
                             }
-                        }
+                        }                        
 
                         if (!removedModules.isEmpty()) {
                             removeModules(removedModules);

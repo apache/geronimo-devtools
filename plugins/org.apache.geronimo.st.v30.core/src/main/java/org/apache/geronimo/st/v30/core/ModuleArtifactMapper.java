@@ -31,7 +31,6 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
@@ -59,28 +58,38 @@ public class ModuleArtifactMapper {
         return instance;
     }
 
+    private static String getId(IModule module) {
+        String id = module.getId();
+        if (id == null || id.length() == 0) {
+            throw new IllegalStateException("Module has no id: " + module);
+        }
+        return id;
+    }
+    
     synchronized public void addArtifactEntry(IServer server, IModule module, String configId) {
         Map<String, String> artifactEntries = getServerArtifactsMap(server);
         if (artifactEntries != null) {
-            artifactEntries.put(module.getProject().getName(), configId); 
+            artifactEntries.put(getId(module), configId); 
         }       
     }
        
-    synchronized public String resolveArtifact(IServer server, IModule module) {        
-        if (module != null) {
-            return resolveArtifact(server, module.getProject());
-        }
-        return null;
+    synchronized public void removeArtifactEntry(IServer server, IModule module) {
+        Map<String, String> artifactEntries = getServerArtifactsMap(server);
+        if (artifactEntries != null) {
+            artifactEntries.remove(getId(module)); 
+        }       
     }
     
-    synchronized public String resolveArtifact(IServer server, IProject project) {
-        Map<String, String> artifactEntries = serverArtifactEntries.get(server.getRuntime().getLocation().toFile());
-        if (artifactEntries != null && project != null) {
-            return artifactEntries.get(project.getName());
+    synchronized public String resolveArtifact(IServer server, IModule module) {  
+        if (module != null) {
+            Map<String, String> artifactEntries = getServerArtifactsMap(server);
+            if (artifactEntries != null) {
+                return artifactEntries.get(getId(module));
+            }
         }
         return null;
     }
-         
+          
     synchronized public Map<String, String> getServerArtifactsMap(IServer server) {
         if (!SocketUtil.isLocalhost(server.getHost())) {
             return null;
