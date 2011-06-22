@@ -18,10 +18,9 @@ package org.apache.geronimo.st.v30.core;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.eclipse.core.resources.IProject;
@@ -52,7 +51,7 @@ import org.eclipse.wst.server.core.ServerUtil;
  */
 public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDelegate {
     
-    private HashSet additionalSrcPathComputerIds = null;
+    private Set<String> additionalSrcPathComputerIds = null;
 
     /*
      * (non-Javadoc)
@@ -61,7 +60,7 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
      *      org.eclipse.core.runtime.IProgressMonitor)
      */
     public ISourceContainer[] computeSourceContainers(ILaunchConfiguration configuration, IProgressMonitor monitor) throws CoreException {
-        Trace.trace(Trace.INFO, ">> GeronimoSourcePathComputerDelegate.computeSourceContainers()", Activator.traceCore);
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoSourcePathComputerDelegate.computeSourceContainers", configuration, monitor);
         
         IServer server = ServerUtil.getServer(configuration);
         IModule[] modules = server.getModules();
@@ -73,7 +72,7 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
         // create a ProjectRuntime classpath entry for each JavaProject
         IRuntimeClasspathEntry[] projectEntries = new IRuntimeClasspathEntry[javaProjectList.size()];
         for (int i = 0; i < javaProjectList.size(); i++) {
-            projectEntries[i] = JavaRuntime.newProjectRuntimeClasspathEntry((IJavaProject) javaProjectList.get(i));
+            projectEntries[i] = JavaRuntime.newProjectRuntimeClasspathEntry(javaProjectList.get(i));
         }
 
         // combine unresolved entries and project entries
@@ -84,26 +83,42 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
 
         IRuntimeClasspathEntry[] resolved = JavaRuntime.resolveSourceLookupPath(entries, configuration);
         ISourceContainer[] defaultContainers = JavaRuntime.getSourceContainers(resolved);
+               
+        Set<ISourceContainer> allContainers = new HashSet<ISourceContainer>();
+        // add project source containers
+        addAll(allContainers, defaultContainers);
         
-        HashSet allContainers = new HashSet(Arrays.asList(defaultContainers));
-        Iterator i = getAdditionalSrcPathComputers().iterator();
+        // add additional source containers
         ILaunchManager mgr = DebugPlugin.getDefault().getLaunchManager();
-        while(i.hasNext()) {
-            ISourcePathComputer computer = mgr.getSourcePathComputer((String) i.next());
+        for (String id : getAdditionalSrcPathComputers()) {
+            ISourcePathComputer computer = mgr.getSourcePathComputer(id);
             ISourceContainer[] jsc = computer.computeSourceContainers(configuration, monitor);
-            if(jsc != null) {
-                for(int j = 0; j < jsc.length; j++) {
-                    String name = jsc[j].getName();
-                }
-            }
-            allContainers.addAll(Arrays.asList(jsc));
+            addAll(allContainers, jsc);
         }
         
-        //add source container for Geroniom Runtime
+        // add source containers for Geronimo Runtime
         ISourceContainer[] runtimeContainers = processServer(server);
-        allContainers.addAll(Arrays.asList(runtimeContainers));
+        addAll(allContainers, runtimeContainers);
 
-        return (ISourceContainer[])allContainers.toArray(new ISourceContainer[allContainers.size()]);
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoSourcePathComputerDelegate.computeSourceContainers", toStringList(allContainers));
+        
+        return allContainers.toArray(new ISourceContainer[allContainers.size()]);
+    }
+    
+    private static void addAll(Set<ISourceContainer> allContainers, ISourceContainer[] containers) {
+        if (containers != null) {
+            for (ISourceContainer container : containers) {
+                allContainers.add(container);
+            }
+        }
+    }
+    
+    private static List<String> toStringList(Set<ISourceContainer> allContainers) {
+        List<String> list = new ArrayList<String>(allContainers.size());
+        for (ISourceContainer container : allContainers) {
+            list.add(container.getName());
+        }
+        return list;
     }
     
     private ISourceContainer[] processServer(IServer server) {
@@ -124,7 +139,7 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
         return new ISourceContainer[] {};
     }
 
-    private void processModules(IModule[] modules, List javaProjectList, IServer server, IProgressMonitor monitor) {
+    private void processModules(IModule[] modules, List<IJavaProject> javaProjectList, IServer server, IProgressMonitor monitor) {
         for (int i = 0; i < modules.length; i++) {
             IProject project = modules[i].getProject();
 
@@ -149,7 +164,7 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
         }
     }
 
-    private void processJavaProject(List javaProjectList, IProject project) {
+    private void processJavaProject(List<IJavaProject> javaProjectList, IProject project) {
         try {
             if (project.hasNature(JavaCore.NATURE_ID)) {
                 IJavaProject javaProject = (IJavaProject) project.getNature(JavaCore.NATURE_ID);
@@ -163,8 +178,8 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
     }
     
     private synchronized void init() {
-        if(additionalSrcPathComputerIds == null) {
-            additionalSrcPathComputerIds = new HashSet();
+        if (additionalSrcPathComputerIds == null) {
+            additionalSrcPathComputerIds = new HashSet<String>();
             IExtensionPoint extensionPoint= Platform.getExtensionRegistry().getExtensionPoint(Activator.PLUGIN_ID, "sourcePathComputerMapping");
             IConfigurationElement[] extensions = extensionPoint.getConfigurationElements();
             for (int i = 0; i < extensions.length; i++) {
@@ -174,7 +189,7 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
         }
     }
 
-    public HashSet getAdditionalSrcPathComputers() {
+    public Set<String> getAdditionalSrcPathComputers() {
         init();
         return additionalSrcPathComputerIds;
     }
