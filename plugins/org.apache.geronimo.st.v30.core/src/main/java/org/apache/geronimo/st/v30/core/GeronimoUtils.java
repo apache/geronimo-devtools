@@ -332,38 +332,29 @@ public class GeronimoUtils {
         // use the module ID
         String moduleId = module.getId();
 
-        J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) module.loadAdapter(J2EEFlexProjDeployable.class, null);
-        if (j2eeModule != null) {
-            // j2eeFlex
-            ArtifactEdit edit = null;
-            try {
-                edit = ArtifactEdit.getArtifactEditForRead(j2eeModule.getProject());
-                //TODO JAXB Refactoring - Can below two lines be removed without harm?
-                //XMIResource res = (XMIResource) edit.getContentModelRoot().eResource();
-                //moduleId = res.getID(edit.getContentModelRoot());
-            } finally {
-                if (edit != null)
-                    edit.dispose();
-            }
-        }
-
-        if (moduleId != null && moduleId.length() > 0)
+        if (moduleId != null && moduleId.length() > 0) {
             return moduleId;
-
+        }
+        
         // ...but if there is no defined module ID, pick the best alternative
 
-        IPath moduleLocation = new Path(j2eeModule.getURI(module));
-        if (moduleLocation != null) {
-            moduleId = moduleLocation.removeFileExtension().lastSegment();
-        }
+        J2EEFlexProjDeployable j2eeModule = (J2EEFlexProjDeployable) module.loadAdapter(J2EEFlexProjDeployable.class, null);
+        if (j2eeModule != null) {
 
-        if (j2eeModule instanceof IWebModule) {
-            // A better choice is to use the context root
-            // For wars most appservers use the module name
-            // as the context root
-            String contextRoot = ((IWebModule) j2eeModule).getContextRoot();
-            if (contextRoot.charAt(0) == '/')
-                moduleId = contextRoot.substring(1);
+            IPath moduleLocation = new Path(j2eeModule.getURI(module));
+            if (moduleLocation != null) {
+                moduleId = moduleLocation.removeFileExtension().lastSegment();
+            }
+
+            if (j2eeModule instanceof IWebModule) {
+                // A better choice is to use the context root
+                // For wars most appservers use the module name
+                // as the context root
+                String contextRoot = ((IWebModule) j2eeModule).getContextRoot();
+                if (contextRoot.charAt(0) == '/') {
+                    moduleId = contextRoot.substring(1);
+                }
+            }
         }
 
         return moduleId;

@@ -300,16 +300,16 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
          * we avoid redeploys and it guarantees that publishModule() is called once per
          * deployed application. 
          */
-        Map<IModule, ModuleDeltaList> publishMap = new LinkedHashMap<IModule, ModuleDeltaList>();
+        Map<String, ModuleDeltaList> publishMap = new LinkedHashMap<String, ModuleDeltaList>();
         for (int i = 0; i < modules.size(); i++) {
             IModule[] module = (IModule[]) modules.get(i);
             Integer moduleDeltaKind = (Integer) deltaKind.get(i);
             IModule rootModule = module[0];
             
-            ModuleDeltaList list = publishMap.get(rootModule);
+            ModuleDeltaList list = publishMap.get(rootModule.getId());
             if (list == null) {
                 list = new ModuleDeltaList(rootModule);
-                publishMap.put(rootModule, list);
+                publishMap.put(rootModule.getId(), list);
             }
             
             if (module.length == 1) {
