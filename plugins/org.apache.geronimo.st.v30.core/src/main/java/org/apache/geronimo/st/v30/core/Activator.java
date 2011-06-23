@@ -99,6 +99,13 @@ public class Activator extends Plugin {
      */
     public void start(BundleContext context) throws Exception {
         super.start(context);
+        /*
+         * XXX: Do not put any code here that could cause GeronimoServerBehaviourDelegate or
+         * GeronimoServerDelegate classes to be loaded. See GERONIMODEVTOOLS-760 for details.
+         */
+    }
+    
+    public void startMonitoring() {
         ServerCore.addServerLifecycleListener(new IServerLifecycleListener() {
             public void serverAdded(IServer server) {
                 triggerStartUpdateServerTask(server);

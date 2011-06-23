@@ -391,4 +391,8 @@
         </handler>
     </extension>
 
+    <extension point="org.eclipse.ui.startup">
+        <startup class="org.apache.geronimo.st.v30.ui.Startup"/>
+    </extension>
+    
 </plugin>
