@@ -45,7 +45,7 @@ public class Activator extends Plugin {
     public static boolean logJaxb;
     public static boolean logOperations;
     public static boolean logOsgi;
-    
+
     public static boolean traceCore;
     public static boolean traceCommands;
     public static boolean traceDesc;
@@ -56,32 +56,32 @@ public class Activator extends Plugin {
     public static boolean traceOsgi;
     /* end here */
     static {
-    	try {
-    		console = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/console"));
-    		logCore = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/log/core"));
-    		logCommands = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/log/commands"));
-    		logDesc = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/log/descriptor"));
-    		logFacets = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/log/factes"));
-    		logInternal = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/log/internal"));
-    		logJaxb = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/log/jaxb"));
-    		logOperations = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/log/operations"));
-    		logOsgi = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/log/osgi"));
-    		
-    		traceCore = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/trace/core"));
-    		traceCommands = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/trace/commands"));
-    		traceDesc = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/trace/descriptor"));
-    		traceFacets = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/trace/factes"));
-    		traceInternal = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/trace/internal"));
-    		traceJaxb = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/trace/jaxb"));
-    		traceOperations = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/trace/operations"));
-    		traceOsgi = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.v30.core/trace/osgi"));
-    	} catch(NumberFormatException e) {
-    		Trace.trace(Trace.ERROR, e.getMessage(), true);
-    	} catch(NullPointerException e) {
-    		Trace.trace(Trace.ERROR, e.getMessage(), true);
-    	}
+        try {
+            console = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/console"));
+            logCore = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/log/core"));
+            logCommands = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/log/commands"));
+            logDesc = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/log/descriptor"));
+            logFacets = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/log/factes"));
+            logInternal = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/log/internal"));
+            logJaxb = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/log/jaxb"));
+            logOperations = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/log/operations"));
+            logOsgi = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/log/osgi"));
 
+            traceCore = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/trace/core"));
+            traceCommands = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/trace/commands"));
+            traceDesc = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/trace/descriptor"));
+            traceFacets = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/trace/factes"));
+            traceInternal = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/trace/internal"));
+            traceJaxb = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/trace/jaxb"));
+            traceOperations = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/trace/operations"));
+            traceOsgi = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/trace/osgi"));
+        } catch (NumberFormatException e) {
+            Trace.trace(Trace.ERROR, e.getMessage(), true);
+        } catch (NullPointerException e) {
+            Trace.trace(Trace.ERROR, e.getMessage(), true);
+        }
     }
+
     // The shared instance
     private static Activator plugin;
 

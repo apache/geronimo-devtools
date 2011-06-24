@@ -41,7 +41,7 @@ public class Activator extends Plugin {
     public static boolean logDesc;
     public static boolean logInternal;
     public static boolean logOperations;
-    
+
     public static boolean traceCore;
     public static boolean traceCommands;
     public static boolean traceDesc;
@@ -49,26 +49,26 @@ public class Activator extends Plugin {
     public static boolean traceOperations;
     /* end here */
     static {
-    	try {
-    		console = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/console"));
-    		logCore = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/log/core"));
-    		logCommands = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/log/commands"));
-    		logDesc = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/log/descriptor"));
-    		logInternal = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/log/internal"));
-    		logOperations = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/log/operations"));
-    		
-    		traceCore = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/trace/core"));
-    		traceCommands = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/trace/commands"));
-    		traceDesc = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/trace/descriptor"));
-    		traceInternal = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/trace/internal"));
-    		traceOperations = Boolean.parseBoolean(Platform.getDebugOption("org.apache.geronimo.st.core/trace/operations"));
-    	} catch(NumberFormatException e) {
-    		Trace.trace(Trace.ERROR, e.getMessage(), true);
-    	} catch(NullPointerException e) {
-    		Trace.trace(Trace.ERROR, e.getMessage(), true);
-    	}
+        try {
+            console = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/console"));
+            logCore = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/log/core"));
+            logCommands = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/log/commands"));
+            logDesc = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/log/descriptor"));
+            logInternal = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/log/internal"));
+            logOperations = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/log/operations"));
 
+            traceCore = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/trace/core"));
+            traceCommands = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/trace/commands"));
+            traceDesc = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/trace/descriptor"));
+            traceInternal = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/trace/internal"));
+            traceOperations = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/trace/operations"));
+        } catch (NumberFormatException e) {
+            Trace.trace(Trace.ERROR, e.getMessage(), true);
+        } catch (NullPointerException e) {
+            Trace.trace(Trace.ERROR, e.getMessage(), true);
+        }
     }
+
     // The shared instance
     private static Activator plugin;
 
