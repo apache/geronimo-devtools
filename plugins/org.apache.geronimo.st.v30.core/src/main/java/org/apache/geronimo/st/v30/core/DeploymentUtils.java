@@ -135,6 +135,10 @@ public class DeploymentUtils {
         return file;
     }
     
+    public static int getModuleState(IServer server, IModule module) {
+        return server.getModuleState(new IModule[] {module});
+    }
+    
     private static String getModuleExtension(IModule module) {
         Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.getModuleExtension", module);
     
@@ -288,7 +292,6 @@ public class DeploymentUtils {
      */
     public static String getLastKnownConfigurationId(IModule module, IServer server) throws Exception {
         Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.getLastKnownConfigurationId", module, server);
-        
         IGeronimoServer gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
         String currentId = gs.getVersionHandler().getConfigID(module);
         String publishedId = ModuleArtifactMapper.getInstance().resolveArtifact(server, module);

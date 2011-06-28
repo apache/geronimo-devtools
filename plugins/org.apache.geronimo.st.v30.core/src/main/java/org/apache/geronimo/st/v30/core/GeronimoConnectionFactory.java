@@ -52,7 +52,6 @@ public class GeronimoConnectionFactory {
 
     public DeploymentManager getDeploymentManager(IServer server) throws DeploymentManagerCreationException {
         System.setProperty(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.rmi.registry.RegistryContextFactory");
-
         DeploymentManager dm = (DeploymentManager) connections.get(server.getId());
         IGeronimoServer geronimoServer = getGeronimoServer(server);
         if (dm == null) {

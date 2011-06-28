@@ -64,7 +64,11 @@ public class Messages extends NLS {
     public static String editorSectionPublishAdvancedDescription;
     public static String notRedeployJSPFilesReminder;
     public static String notRedeployJSPFilesInformation;
-
+    
+    public static String formServerInfo;
+    public static String formHelp;
+    public static String refreshOSGiBundleNotes;
+    
     public static String publishingTimeout;
     public static String info;
     public static String debug;

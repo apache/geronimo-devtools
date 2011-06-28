@@ -24,6 +24,7 @@ import java.util.Set;
 
 import javax.enterprise.deploy.spi.exceptions.DeploymentManagerCreationException;
 import javax.management.MBeanServerConnection;
+import javax.management.ObjectName;
 import javax.naming.directory.NoSuchAttributeException;
 
 import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
@@ -68,10 +69,25 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
      * @see org.apache.geronimo.st.v30.core.GeronimoServerBehaviourDelegate#stopKernel()
      */
     protected void stopKernel() {
-        if (kernel != null) {
-            kernel.shutdown();
-            kernel = null;
-        }
+    	try {
+			MBeanServerConnection connection = getServerConnection();
+	        Set<ObjectName> objectNameSet =
+	        	connection.queryNames(new ObjectName("osgi.core:type=framework,*"), null);
+	        if (objectNameSet.isEmpty()) {
+	            throw new Exception("Framework mbean not found");
+	        } else if (objectNameSet.size() == 1) {
+	            Trace.trace(Trace.INFO, "Server shutdown starting...", Activator.traceCore);
+	            Object obj = objectNameSet.iterator().next();
+	            connection.invoke((ObjectName) obj, "stopBundle",
+	                                      new Object[] { 0 }, new String[] { long.class.getName() });
+	            Trace.trace(Trace.INFO, "Server shutdown completed", Activator.traceCore);
+	        } else {
+	            throw new Exception("Found multiple framework mbeans");
+	        }
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Trace.trace(Trace.ERROR, e.getMessage(), e, Activator.traceCore);
+		}
     }
 
     /**

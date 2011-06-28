@@ -63,9 +63,9 @@ public final class AriesHelper {
     public static IModule[] getChildModules(IModule ebaModule) {
         if (AriesHelper.isAriesInstalled()) {
             try {
-                Class class1 = Class.forName("com.ibm.etools.aries.internal.core.modules.AriesModuleDelegate");
+                Class<?> class1 = Class.forName("com.ibm.etools.aries.internal.core.modules.AriesModuleDelegate");
                 Method method = class1.getMethod("getChildModules");
-                Constructor constructor = class1.getConstructor(IProject.class);
+                Constructor<?> constructor = class1.getConstructor(IProject.class);
                 Object object = constructor.newInstance(ebaModule.getProject());
                 return (IModule[]) method.invoke(object);                
             } catch (Exception e) {
@@ -78,7 +78,7 @@ public final class AriesHelper {
     public static String getSymbolicName(IModule bundleModule) {
         if (AriesHelper.isAriesInstalled()) {
             try {
-                Class class1 = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
+                Class<?> class1 = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
                 Method method = class1.getMethod("getBundleSymbolicName", IProject.class);
                 return (String) method.invoke(null, bundleModule.getProject());
             } catch (Exception e) {
@@ -87,4 +87,5 @@ public final class AriesHelper {
         }
         return null;
     }
+
 }

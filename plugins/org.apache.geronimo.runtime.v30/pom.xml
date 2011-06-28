@@ -122,6 +122,23 @@
                                     <artifactId>geronimo-deploy-jsr88</artifactId>
                                     <version>${geronimoVersion}</version>
                                 </artifactItem>
+                                
+                                <artifactItem>
+                                    <groupId>org.apache.geronimo.framework</groupId>
+                                    <artifactId>geronimo-bundle-recorder</artifactId>
+                                    <version>${geronimoVersion}</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.geronimo.framework</groupId>
+                                    <artifactId>geronimo-cli</artifactId>
+                                    <version>${geronimoVersion}</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.geronimo.framework</groupId>
+                                    <artifactId>geronimo-deploy-tool</artifactId>
+                                    <version>${geronimoVersion}</version>
+                                </artifactItem>
+                                
                                 <artifactItem>
                                     <groupId>org.apache.geronimo.framework</groupId>
                                     <artifactId>geronimo-common</artifactId>
@@ -228,6 +245,21 @@
         <dependency>
             <groupId>org.apache.geronimo.framework</groupId>
             <artifactId>geronimo-deploy-jsr88</artifactId>
+            <version>${geronimoVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.framework</groupId>
+            <artifactId>geronimo-bundle-recorder</artifactId>
+            <version>${geronimoVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.framework</groupId>
+            <artifactId>geronimo-cli</artifactId>
+            <version>${geronimoVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.framework</groupId>
+            <artifactId>geronimo-deploy-tool</artifactId>
             <version>${geronimoVersion}</version>
         </dependency>
         <dependency>

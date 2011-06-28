@@ -44,7 +44,11 @@ import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IModule;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.internal.ModuleFactory;
+import org.eclipse.wst.server.core.internal.ServerPlugin;
 import org.osgi.framework.Version;
+
 
 /**
  * @version $Rev$ $Date$
@@ -217,6 +221,24 @@ public class GeronimoUtils {
                         return id;
                     }
                 }
+                if(isBundleModule(module)) {
+                    Class<?> ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
+                    Method method = ariesUtilsClass.getMethod("getBlueprintBundleManifest", IProject.class);
+                    Object object = method.invoke(null, module.getProject());
+                    
+                    Class<?> bundleManifest = Class.forName("com.ibm.etools.aries.core.models.BundleManifest");
+                    method = bundleManifest.getMethod("getBundleSymbolicName");
+                    String bundleSymName = (String) method.invoke(object); 
+                    
+                    method = bundleManifest.getMethod("getBundleVersion"); 
+                    String versionStr = (String) method.invoke(object);
+                    Version version = Version.parseVersion(versionStr);
+                    String newVersionStr = getVersion(version);                    
+                    
+                    if (bundleSymName != null && version != null) {
+                        return bundleSymName + ":" + newVersionStr;
+                    }    
+                }
             } catch (Exception e) {
             }
         }
@@ -227,7 +249,7 @@ public class GeronimoUtils {
     }
     
     // copied from org.apache.geronimo.aries.builder.ApplicationInstaller.getVersion(Version)
-    private static String getVersion(Version version) {
+    public static String getVersion(Version version) {
         String str = version.getMajor() + "." + version.getMinor() + "." + version.getMicro();
         String qualifier = version.getQualifier();
         if (qualifier != null && qualifier.trim().length() > 0) {
@@ -235,12 +257,13 @@ public class GeronimoUtils {
         }
         return str;
     }
-
+    
     public static String getQualifiedConfigID(String groupId, String artifactId, String version, String type) {
         return groupId + "/" + artifactId + "/" + version + "/" + type;
     }
 
     public static IFile getWebDeploymentPlanFile(IVirtualComponent comp) {
+    	if(comp == null) return null;
         IPath deployPlanPath = comp.getRootFolder().getUnderlyingFolder().getProjectRelativePath().append("WEB-INF").append(WEB_PLAN_NAME);
         return comp.getProject().getFile(deployPlanPath);
     }

@@ -21,10 +21,14 @@ public final class OsgiConstants {
     public final static String APPLICATION = "osgi.app"; 
     public final static String APPLICATION_EXTENSION = ".eba"; 
     public final static String APPLICATION_DATAMODEL_PROVIDER_ID = "osgi.application.datamodelprovider";
+    public final static String JAR_TYPE = "jar";
 
     public final static String BUNDLE = "osgi.bundle"; 
-    public final static String BUNDLE_EXTENSION = ".jar"; 
+    public final static String BUNDLE_GROUP = "recorded-bundles";
+    public final static String BUNDLE_EXTENSION = ".jar";
     public final static String BUNDLE_DATAMODEL_PROVIDER_ID = "osgi.bundle.datamodelprovider";
+    public final static boolean BUNDLE_IS_INPLACE = false;
+    public final static int BUNDLE_DEFAULT_START_LEVLE = 60;
     
     public final static String FRAGMENT_BUNDLE = "osgi.fragment"; 
     public final static String FRAGMENT_BUNDLE_EXTENSION = ".jar"; 
@@ -36,4 +40,5 @@ public final class OsgiConstants {
     
     public final static String ARTIFACT_GROUP = "application";    
     public final static String ARTIFACT_TYPE = "eba";
+    
 }
