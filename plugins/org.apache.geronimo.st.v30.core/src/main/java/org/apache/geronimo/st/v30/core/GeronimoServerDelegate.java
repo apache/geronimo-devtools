@@ -751,7 +751,6 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         return getInstanceProperty(PROPERTY_VM_ARGS);
     }
     public void setVMArgs(String value) {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.getVMArgs", value);
         setInstanceProperty(PROPERTY_VM_ARGS, value);
     }
 
@@ -770,7 +769,6 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         return getInstanceProperty(PROPERTY_PROGRAM_ARGS);
     }
     public void setProgramArgs(String value) {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.getProgramArgs", value);
         setInstanceProperty(PROPERTY_PROGRAM_ARGS, value);
     }
     
@@ -913,12 +911,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     public void setInstanceProperty(String name, String value) {
         Map map = getServerInstanceProperties();
         map.put(name, value);
-        try {
-            setServerInstanceProperties(map);
-        } catch (Exception e) {
-            // TODO WTF? Need to figure out why this fails...  seems to fail before setDefaults is called.
-            Trace.trace(Trace.INFO, "GeronimoServerDelegate.setInstanceProperty(name = " + name + ", value = " + value + " )", e, Activator.traceCore);
-        }
+        setServerInstanceProperties(map);
     }
 
     public Map getServerInstanceProperties() {

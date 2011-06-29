@@ -31,6 +31,7 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.server.ui.ServerLaunchConfigurationTab;
 
@@ -68,17 +69,18 @@ public class GeronimoLaunchConfigurationTabGroup extends AbstractLaunchConfigura
              super.performApply(configuration);
              
              IServer server = ServerUtil.getServer(configuration);
-             GeronimoServerDelegate sd = (GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class);
+             IServerWorkingCopy swc = server.createWorkingCopy();
+             GeronimoServerDelegate sd = (GeronimoServerDelegate) swc.loadAdapter(GeronimoServerDelegate.class, null);
              
              String oldValue = sd.getProgramArgs();
              String newValue = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, oldValue);
              sd.setProgramArgs(newValue);
-             //sd.updatePropertiesFromProgramArgs(newValue);
              
              oldValue = sd.getVMArgs();
              newValue = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, oldValue);
              sd.setVMArgs(newValue);     
-             //sd.updatePropertiesFromVMArgs(newValue);
+             
+             swc.save(true, null);
                        
          } catch (CoreException e) {
         	  MessageDialog.openError(Display.getCurrent().getActiveShell(),"Error", e.getMessage());
