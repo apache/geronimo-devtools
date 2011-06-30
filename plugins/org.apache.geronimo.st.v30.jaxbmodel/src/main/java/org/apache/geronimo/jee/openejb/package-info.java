@@ -15,5 +15,5 @@
  * limitations under the License.
  */
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://geronimo.apache.org/xml/ns/j2ee/ejb/openejb-2.0", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@javax.xml.bind.annotation.XmlSchema(namespace = "http://openejb.apache.org/xml/ns/openejb-jar-2.2", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.apache.geronimo.jee.openejb;
