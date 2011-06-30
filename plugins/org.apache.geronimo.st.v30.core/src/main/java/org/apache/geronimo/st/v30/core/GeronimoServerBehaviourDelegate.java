@@ -111,8 +111,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
     protected PingThread pingThread;
 
-    protected transient IProcess process;
-
     protected transient IDebugEventSetListener processListener;
 
     public static final String ERROR_SETUP_LAUNCH_CONFIGURATION = "errorInSetupLaunchConfiguration";
@@ -794,10 +792,11 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         Trace.trace(Trace.INFO, "Killing the geronimo server process", Activator.traceCore); //$NON-NLS-1$
         
         try {
-            if (process != null && !process.isTerminated()) {
-                process.terminate();
+            ILaunch launch = getServer().getLaunch();
+            if (launch != null) {
+                launch.terminate();
             }
-            stopImpl();
+            stopImpl();            
         } catch (Exception e) {
             Trace.trace(Trace.ERROR, "Error killing the geronimo server process", e, Activator.logCore); //$NON-NLS-1$
             // 
@@ -810,8 +809,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     }
 
     protected void stopImpl() {
-        if (process != null) {
-            process = null;
+        if (processListener != null) {
             DebugPlugin.getDefault().removeDebugEventListener(processListener);
             processListener = null;
         }
@@ -1406,30 +1404,27 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     }
 
     public void setProcess(final IProcess newProcess) {
-        if (process != null)
+        if (newProcess == null) {
             return;
+        }
 
-        process = newProcess;
-        if (processListener != null)
+        if (processListener != null) {
             DebugPlugin.getDefault().removeDebugEventListener(processListener);
-        if (newProcess == null)
-            return;
-
+        }
+        
         processListener = new IDebugEventSetListener() {
             public void handleDebugEvents(DebugEvent[] events) {
                 if (events != null) {
                     int size = events.length;
                     for (int i = 0; i < size; i++) {
-                        if (process != null
-                                && process.equals(events[i].getSource())
-                                && events[i].getKind() == DebugEvent.TERMINATE) {
-                            DebugPlugin.getDefault().removeDebugEventListener(this);
+                        if (newProcess.equals(events[i].getSource()) && events[i].getKind() == DebugEvent.TERMINATE) {
                             stopImpl();
                         }
                     }
                 }
             }
         };
+        
         DebugPlugin.getDefault().addDebugEventListener(processListener);
     }
 
