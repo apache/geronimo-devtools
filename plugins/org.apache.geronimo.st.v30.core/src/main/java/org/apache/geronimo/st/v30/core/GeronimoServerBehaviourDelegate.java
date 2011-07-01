@@ -679,7 +679,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     public void publishStart(IProgressMonitor monitor) throws CoreException {
         doPublishStart(monitor);
         try {
-            if (!publishLock.tryLock(30, TimeUnit.SECONDS)) {
+            if (!publishLock.tryLock(120, TimeUnit.SECONDS)) {
                 throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Unable to obtain publish lock"));
             }
         } catch (InterruptedException e) {
