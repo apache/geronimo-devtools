@@ -65,18 +65,23 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
         IServer server = ServerUtil.getServer(configuration);
         IModule[] modules = server.getModules();
 
-        List<IJavaProject> javaProjectList = new ArrayList<IJavaProject>();
-        // populate list of java projects and their source folders
-        processModules(modules, javaProjectList, server, monitor);
+        Set<IProject> projectList = new HashSet<IProject>();
+        // populate list of projects and their source folders
+        processModules(modules, projectList, server, monitor);
 
         // create a ProjectRuntime classpath entry for each JavaProject
-        IRuntimeClasspathEntry[] projectEntries = new IRuntimeClasspathEntry[javaProjectList.size()];
-        for (int i = 0; i < javaProjectList.size(); i++) {
-            projectEntries[i] = JavaRuntime.newProjectRuntimeClasspathEntry(javaProjectList.get(i));
+        List<IRuntimeClasspathEntry> projectEntriesList = new ArrayList<IRuntimeClasspathEntry>(projectList.size());
+        for (IProject project : projectList) {
+            IJavaProject javaProject = getJavaProject(project);
+            if (javaProject != null) {
+                projectEntriesList.add(JavaRuntime.newProjectRuntimeClasspathEntry(javaProject));
+            }
         }
+        IRuntimeClasspathEntry[] projectEntries = new IRuntimeClasspathEntry[projectEntriesList.size()];
+        projectEntriesList.toArray(projectEntries);
 
         // combine unresolved entries and project entries
-        IRuntimeClasspathEntry[] unresolvedEntries = JavaRuntime.computeUnresolvedSourceLookupPath(configuration);
+        IRuntimeClasspathEntry[] unresolvedEntries = JavaRuntime.computeUnresolvedSourceLookupPath(configuration);        
         IRuntimeClasspathEntry[] entries = new IRuntimeClasspathEntry[projectEntries.length + unresolvedEntries.length];
         System.arraycopy(unresolvedEntries, 0, entries, 0, unresolvedEntries.length);
         System.arraycopy(projectEntries, 0, entries, unresolvedEntries.length, projectEntries.length);
@@ -100,6 +105,10 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
         ISourceContainer[] runtimeContainers = processServer(server);
         addAll(allContainers, runtimeContainers);
 
+        // set known source project list
+        GeronimoServerBehaviourDelegate delegate = getDelegate(server);
+        delegate.setKnownSourceProjects(projectList);
+        
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoSourcePathComputerDelegate.computeSourceContainers", toStringList(allContainers));
         
         return allContainers.toArray(new ISourceContainer[allContainers.size()]);
@@ -139,42 +148,50 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
         return new ISourceContainer[] {};
     }
 
-    private void processModules(IModule[] modules, List<IJavaProject> javaProjectList, IServer server, IProgressMonitor monitor) {
+    private void processModules(IModule[] modules, Set<IProject> projectList, IServer server, IProgressMonitor monitor) {
         for (int i = 0; i < modules.length; i++) {
             IProject project = modules[i].getProject();
 
             IModule[] childModules = server.getChildModules(new IModule[] { modules[i] }, monitor);
             if (childModules != null && childModules.length > 0) {
-                processModules(childModules, javaProjectList, server, monitor);
+                processModules(childModules, projectList, server, monitor);
             }
 
             if (project != null) {
-                //process referenced projects for shared lib
-                try {
-                    IProject[] referencedProjects = project.getReferencedProjects();
-                    for(int j = 0; j < referencedProjects.length; j++) {
-                        processJavaProject(javaProjectList, referencedProjects[j]);
-                    }
-                } catch (CoreException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                processJavaProject(javaProjectList, project);
+                processProject(projectList, project);
             }
         }
     }
 
-    private void processJavaProject(List<IJavaProject> javaProjectList, IProject project) {
+    private void processProject(Set<IProject> projectList, IProject project) {
+        projectList.add(project);
         try {
-            if (project.hasNature(JavaCore.NATURE_ID)) {
-                IJavaProject javaProject = (IJavaProject) project.getNature(JavaCore.NATURE_ID);
-                if (!javaProjectList.contains(javaProject)) {
-                    javaProjectList.add(javaProject);
+            IProject[] referencedProjects = project.getReferencedProjects();
+            if (referencedProjects != null) {
+                for(int j = 0; j < referencedProjects.length; j++) {
+                    processProject(projectList, referencedProjects[j]);
                 }
             }
-        } catch (Exception e) {
+        } catch (CoreException e) {
             // ignore
         }
+    }
+    
+    public IJavaProject getJavaProject(IProject project) {
+        try {
+            if (project.hasNature(JavaCore.NATURE_ID)) {
+                return (IJavaProject) project.getNature(JavaCore.NATURE_ID);
+            }
+        } catch (CoreException e) {
+            // ignore
+        }
+        return null;
+    }
+    
+    private  GeronimoServerBehaviourDelegate getDelegate(IServer server) {  
+        GeronimoServerBehaviourDelegate delegate = 
+            (GeronimoServerBehaviourDelegate) server.loadAdapter(GeronimoServerBehaviourDelegate.class, null);
+        return delegate;
     }
     
     private synchronized void init() {

@@ -62,6 +62,7 @@ import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.apache.geronimo.st.v30.core.osgi.OSGIBundleHelper;
 import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -75,7 +76,11 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.core.sourcelookup.AbstractSourceLookupDirector;
+import org.eclipse.debug.core.sourcelookup.ISourceContainer;
+import org.eclipse.debug.core.sourcelookup.containers.DefaultSourceContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
@@ -122,6 +127,8 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     private PublishStateListener publishStateListener;
     
     private Lock publishLock = new ReentrantLock();
+    
+    private Set<IProject> knownSourceProjects = null; 
 
     /*
      * (non-Javadoc)
@@ -255,6 +262,46 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         }
     }
     
+    void setKnownSourceProjects(Set<IProject> knownSourceProjects) {
+        this.knownSourceProjects = knownSourceProjects;
+    }
+    
+    boolean hasKnownSourceProject(List<IModule[]> moduleList) {
+        if (knownSourceProjects != null) {
+            for (IModule[] modules : moduleList) {
+                for (IModule module : modules) {
+                    IProject project = module.getProject();
+                    if (project != null && !knownSourceProjects.contains(project)) {
+                        Trace.trace(Trace.INFO, "Project " + project.getName() + " is not source lookup list.", Activator.traceCore); //$NON-NLS-1$
+                        return false;
+                    }
+                }
+            }            
+        }
+        return true;
+    }
+    
+    void resetSourceLookupList() {
+        Trace.trace(Trace.INFO, "Resetting source lookup list.", Activator.traceCore); //$NON-NLS-1$
+        
+        // reset DefaultSourceContainer - that will force Eclipse to re-compute the source paths
+        AbstractSourceLookupDirector locator = (AbstractSourceLookupDirector) getServer().getLaunch().getSourceLocator();
+        ISourceContainer[] oldContainers = locator.getSourceContainers();
+        ISourceContainer[] newContainers = new ISourceContainer[oldContainers.length];
+        System.arraycopy(oldContainers, 0, newContainers, 0, oldContainers.length);
+        DefaultSourceContainer newDefaultContainer = new DefaultSourceContainer();
+        for (int i = 0; i < newContainers.length; i++) {
+            if (newDefaultContainer.getType().equals(newContainers[i].getType())) {
+                newContainers[i] = newDefaultContainer;
+                break;
+            }
+        }
+        locator.setSourceContainers(newContainers);
+        
+        // reset knownSourceProjects as they will be set once Eclipse re-computes the source paths
+        knownSourceProjects = null;
+    }
+    
     /* 
      * Override this method to be able to process in-place shared lib entries and restart the shared lib configuration for all projects prior
      * to publishing each IModule.
@@ -318,7 +365,12 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                 list.setRootModuleDelta(moduleDeltaKind.intValue());
             } else {
                 list.addChildModule(module, moduleDeltaKind.intValue());
-            }
+            }           
+        }
+        
+        // Reset source code lookup list - see GERONIMODEVTOOLS-763 for details.
+        if (ILaunchManager.DEBUG_MODE.equals(getServer().getMode()) && !hasKnownSourceProject(modules)) {
+            resetSourceLookupList();
         }
         
         if(status.isOK()) {
