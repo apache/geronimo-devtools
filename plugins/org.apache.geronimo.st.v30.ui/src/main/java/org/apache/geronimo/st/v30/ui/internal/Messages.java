@@ -67,7 +67,6 @@ public class Messages extends NLS {
     
     public static String formServerInfo;
     public static String formHelp;
-    public static String refreshOSGiBundleNotes;
     
     public static String publishingTimeout;
     public static String info;
