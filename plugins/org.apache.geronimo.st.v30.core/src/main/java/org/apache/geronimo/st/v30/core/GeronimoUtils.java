@@ -32,6 +32,7 @@ import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
+import org.apache.geronimo.st.v30.core.osgi.OSGIBundleHelper;
 import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -202,11 +203,11 @@ public class GeronimoUtils {
         if (AriesHelper.isAriesInstalled()) {
             try {
                 if (isEBAModule(module)) {
-                    Class ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
+                    Class<?> ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
                     Method method = ariesUtilsClass.getMethod("getApplicationManifest", IProject.class);
                     Object object = method.invoke(null, module.getProject());
 
-                    Class appManifestClass = Class.forName("com.ibm.etools.aries.core.models.ApplicationManifest");
+                    Class<?> appManifestClass = Class.forName("com.ibm.etools.aries.core.models.ApplicationManifest");
                     method = appManifestClass.getMethod("getApplicationSymbolicName");
                     String artifactID = (String) method.invoke(object);
 
@@ -222,22 +223,7 @@ public class GeronimoUtils {
                     }
                 }
                 if(isBundleModule(module)) {
-                    Class<?> ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
-                    Method method = ariesUtilsClass.getMethod("getBlueprintBundleManifest", IProject.class);
-                    Object object = method.invoke(null, module.getProject());
-                    
-                    Class<?> bundleManifest = Class.forName("com.ibm.etools.aries.core.models.BundleManifest");
-                    method = bundleManifest.getMethod("getBundleSymbolicName");
-                    String bundleSymName = (String) method.invoke(object); 
-                    
-                    method = bundleManifest.getMethod("getBundleVersion"); 
-                    String versionStr = (String) method.invoke(object);
-                    Version version = Version.parseVersion(versionStr);
-                    String newVersionStr = getVersion(version);                    
-                    
-                    if (bundleSymName != null && version != null) {
-                        return bundleSymName + ":" + newVersionStr;
-                    }    
+                    return OSGIBundleHelper.getBundleSymbolicNameAndVersionString(module.getProject());  
                 }
             } catch (Exception e) {
             }
