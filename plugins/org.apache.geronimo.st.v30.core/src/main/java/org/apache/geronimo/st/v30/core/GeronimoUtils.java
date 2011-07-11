@@ -17,7 +17,6 @@
 package org.apache.geronimo.st.v30.core;
 
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.util.jar.Manifest;
 
 import javax.enterprise.deploy.shared.ModuleType;
@@ -32,7 +31,6 @@ import org.apache.geronimo.jee.web.WebApp;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBUtils;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
-import org.apache.geronimo.st.v30.core.osgi.OSGIBundleHelper;
 import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -45,11 +43,6 @@ import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IModule;
-import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.internal.ModuleFactory;
-import org.eclipse.wst.server.core.internal.ServerPlugin;
-import org.osgi.framework.Version;
-
 
 /**
  * @version $Rev$ $Date$
@@ -203,45 +196,21 @@ public class GeronimoUtils {
         if (AriesHelper.isAriesInstalled()) {
             try {
                 if (isEBAModule(module)) {
-                    Class<?> ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
-                    Method method = ariesUtilsClass.getMethod("getApplicationManifest", IProject.class);
-                    Object object = method.invoke(null, module.getProject());
-
-                    Class<?> appManifestClass = Class.forName("com.ibm.etools.aries.core.models.ApplicationManifest");
-                    method = appManifestClass.getMethod("getApplicationSymbolicName");
-                    String artifactID = (String) method.invoke(object);
-
-                    method = appManifestClass.getMethod("getApplicationVersion");
-                    String versionStr = (String) method.invoke(object);
-                    Version version = Version.parseVersion(versionStr);
-                    String newVersionStr = getVersion(version);
-
-                    if (artifactID != null && version != null) {
-                        String id = getQualifiedConfigID(OsgiConstants.ARTIFACT_GROUP, artifactID, newVersionStr, OsgiConstants.ARTIFACT_TYPE);
+                    AriesHelper.BundleInfo appInfo = AriesHelper.getApplicationBundleInfo(module.getProject());
+                    if (appInfo != null) {
+                        String id = getQualifiedConfigID(OsgiConstants.APPLICATION_ARTIFACT_GROUP, appInfo.getSymbolicName(), appInfo.getMvnVersion(), OsgiConstants.APPLICATION_ARTIFACT_TYPE);
                         Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getConfigId", id);
                         return id;
                     }
                 }
-                if(isBundleModule(module)) {
-                    return OSGIBundleHelper.getBundleSymbolicNameAndVersionString(module.getProject());  
-                }
             } catch (Exception e) {
+                // ignore
             }
         }
 
         String id = getId(module);
         Trace.tracePoint("EXIT", Activator.traceCore, "GeronimoUtils.getConfigId", id);
         return id;
-    }
-    
-    // copied from org.apache.geronimo.aries.builder.ApplicationInstaller.getVersion(Version)
-    public static String getVersion(Version version) {
-        String str = version.getMajor() + "." + version.getMinor() + "." + version.getMicro();
-        String qualifier = version.getQualifier();
-        if (qualifier != null && qualifier.trim().length() > 0) {
-            str += "-" + version.getQualifier().trim();
-        }
-        return str;
     }
     
     public static String getQualifiedConfigID(String groupId, String artifactId, String version, String type) {

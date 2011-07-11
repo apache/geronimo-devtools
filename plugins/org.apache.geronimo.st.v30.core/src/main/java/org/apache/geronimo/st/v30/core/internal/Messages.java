@@ -78,7 +78,7 @@ public class Messages extends NLS {
     public static String moduleExportError;
     
     public static String serverStopFailed;
-    public static String frameworkMBeanNotFound;
-    public static String multipleFramworkMBeans;
+    public static String mBeanNotFound;
+    public static String multipleMBeansFound;
     
 }

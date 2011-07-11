@@ -72,6 +72,7 @@ public class ModuleArtifactMapper {
             artifactEntries.put(getId(module), configId); 
         }       
     }
+    
     synchronized public void removeArtifactEntry(IServer server, IModule module) {
         Map<String, String> artifactEntries = getServerArtifactsMap(server);
         if (artifactEntries != null) {
@@ -151,10 +152,10 @@ public class ModuleArtifactMapper {
             }
         }
     }
+    
     synchronized private void load() {
         load(serverArtifactEntries, FILE_NAME);
     }
-    
 
 	protected interface IServerEntries {
         public  void loadXML (String xml);

@@ -20,11 +20,13 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import org.apache.geronimo.st.v30.core.Activator;
+import org.apache.geronimo.st.v30.core.GeronimoUtils;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.server.core.IModule;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 
 /**
  * <b>AriesHelper</b> is a static helper class used to encapsulate the functions related to the installation of the 
@@ -88,4 +90,78 @@ public final class AriesHelper {
         return null;
     }
 
+    public static BundleInfo getBundleInfo(IProject project) throws Exception {
+        if (AriesHelper.isAriesInstalled()) {
+            Class<?> ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
+            Method method = ariesUtilsClass.getMethod("getBlueprintBundleManifest", IProject.class);
+            Object object = method.invoke(null, project);
+
+            Class<?> bundleManifest = Class.forName("com.ibm.etools.aries.core.models.BundleManifest");
+            method = bundleManifest.getMethod("getBundleSymbolicName");
+            String symbolicName = (String) method.invoke(object);
+
+            method = bundleManifest.getMethod("getBundleVersion");
+            String versionStr = (String) method.invoke(object);
+            Version version = Version.parseVersion(versionStr);
+
+            if (symbolicName != null && version != null) {
+                return new BundleInfo(symbolicName, version);
+            }
+        }
+        return null;
+    }
+    
+    public static BundleInfo getApplicationBundleInfo(IProject project) throws Exception {
+        if (AriesHelper.isAriesInstalled()) {
+            Class<?> ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
+            Method method = ariesUtilsClass.getMethod("getApplicationManifest", IProject.class);
+            Object object = method.invoke(null, project);
+
+            Class<?> appManifestClass = Class.forName("com.ibm.etools.aries.core.models.ApplicationManifest");
+            method = appManifestClass.getMethod("getApplicationSymbolicName");
+            String symbolicName = (String) method.invoke(object);
+
+            method = appManifestClass.getMethod("getApplicationVersion");
+            String versionStr = (String) method.invoke(object);
+            Version version = Version.parseVersion(versionStr);
+            
+            if (symbolicName != null && version != null) {
+                return new BundleInfo(symbolicName, version);
+            }
+        }
+        return null;
+    }
+    
+    // copied from org.apache.geronimo.aries.builder.ApplicationInstaller.getVersion(Version)
+    public static String toMvnVersion(Version version) {
+        String str = version.getMajor() + "." + version.getMinor() + "." + version.getMicro();
+        String qualifier = version.getQualifier();
+        if (qualifier != null && qualifier.trim().length() > 0) {
+            str += "-" + version.getQualifier().trim();
+        }
+        return str;
+    }
+    
+    public static class BundleInfo {
+        
+        private final String symbolicName;
+        private final Version version;
+        
+        public BundleInfo(String symbolicName, Version version) {
+            this.symbolicName = symbolicName;
+            this.version = version;
+        }
+        
+        public String getSymbolicName() {
+            return symbolicName;
+        }
+        
+        public Version getVersion() {
+            return version;
+        }
+            
+        public String getMvnVersion() {
+            return toMvnVersion(version);
+        }
+    }
 }

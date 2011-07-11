@@ -36,9 +36,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.Target;
-import javax.enterprise.deploy.spi.TargetModuleID;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
@@ -46,22 +44,17 @@ import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
 import org.apache.geronimo.deployment.plugin.jmx.ExtendedDeploymentManager;
-import org.apache.geronimo.deployment.plugin.jmx.RemoteDeploymentManager;
 import org.apache.geronimo.gbean.AbstractName;
 import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.v30.core.UpdateServerStateTask;
-import org.apache.geronimo.st.v30.core.commands.DeploymentCmdStatus;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
-import org.apache.geronimo.st.v30.core.commands.IDeploymentCommand;
 import org.apache.geronimo.st.v30.core.internal.Messages;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.operations.ISharedLibEntryCreationDataModelProperties;
 import org.apache.geronimo.st.v30.core.operations.SharedLibEntryCreationOperation;
 import org.apache.geronimo.st.v30.core.operations.SharedLibEntryDataModelProvider;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
-import org.apache.geronimo.st.v30.core.osgi.OSGIBundleCache;
-import org.apache.geronimo.st.v30.core.osgi.OSGIBundleHelper;
-import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
+import org.apache.geronimo.st.v30.core.osgi.OSGiModuleHandler;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -130,6 +123,9 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     private Lock publishLock = new ReentrantLock();
     
     private Set<IProject> knownSourceProjects = null; 
+    
+    private DefaultModuleHandler defaultModuleHandler;
+    private OSGiModuleHandler osgiModuleHandler;
 
     /*
      * (non-Javadoc)
@@ -644,8 +640,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
      */
     public void publishModule(int kind, int deltaKind, IModule[] module, IProgressMonitor monitor) throws CoreException {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishModule", publishKindToString(kind), deltaKindToString(deltaKind), Arrays.asList(module), monitor);
-        /* remove the OSGI bundles which are removed */
-        this.removeObsoleteOSGIBundles();
         try {
             //NO_CHANGE need if app is associated but not started and no delta
             if (deltaKind == NO_CHANGE && module.length == 1) {
@@ -702,31 +696,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         }
     }
     
-    protected void removeObsoleteOSGIBundles() throws CoreException {
-        try {
-            Set<OSGIBundleCache.BundleInfo> bundles = OSGIBundleHelper.getSpecificServerBundles(getServer());
-            synchronized(bundles) {
-                Iterator<OSGIBundleCache.BundleInfo> iter = bundles.iterator();
-                while(iter.hasNext()) {
-                    OSGIBundleCache.BundleInfo bif = iter.next();
-                    if(bif.isDirty()) {
-                        long bundleId = OSGIBundleHelper.getOSGIBundleIdFromServer(getServer(), bif);
-                        if(bundleId == -1) {
-                            iter.remove();
-                            continue;
-                        }
-                        IStatus status = this.removeOSGIBundleById(bundleId);
-                        if(status.isOK()) {
-                            iter.remove();
-                        }
-                    }
-                }
-            }
-        } catch(Exception e) {
-            throw new CoreException(Status.CANCEL_STATUS);
-        }
-
-    }
     private void doPublishFinish(IProgressMonitor monitor) throws CoreException  {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishFinish", monitor);
 
@@ -767,6 +736,9 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
                
         publishStateListener = new PublishStateListener();
         getServer().addServerListener(publishStateListener, ServerEvent.MODULE_CHANGE | ServerEvent.PUBLISH_STATE_CHANGE);
+        
+        defaultModuleHandler = new DefaultModuleHandler(this);
+        osgiModuleHandler = new OSGiModuleHandler(this);
         
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.initialize");
     }
@@ -831,12 +803,17 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     public void setServerStopped() {
         setServerState(IServer.STATE_STOPPED);
         resetModuleState();
+        if (defaultModuleHandler != null) {
+            defaultModuleHandler.serverStopped();
+        }
+        if (osgiModuleHandler != null) {
+            osgiModuleHandler.serverStopped();
+        }
     }
 
     public IGeronimoServer getGeronimoServer() {
         return (IGeronimoServer) getServer().loadAdapter(IGeronimoServer.class, null);
     }
-
 
     protected void terminate() {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.terminate");
@@ -886,29 +863,33 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.resetModuleState");
     }
     
+    private AbstractModuleHandler getModuleHandler(IModule module) {
+        return (GeronimoUtils.isBundleModule(module) || GeronimoUtils.isFragmentBundleModule(module)) ? osgiModuleHandler : defaultModuleHandler;
+    }
+    
     protected void invokeCommand(int deltaKind, IModule module, IProgressMonitor monitor) throws CoreException {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.invokeCommand", deltaKindToString(deltaKind), module.getName());
+        AbstractModuleHandler moduleHandler = getModuleHandler(module);
         ClassLoader old = Thread.currentThread().getContextClassLoader();
-        System.out.println("haha");
         try {
             ClassLoader cl = getContextClassLoader();
             if (cl != null)
                 Thread.currentThread().setContextClassLoader(cl);
             switch (deltaKind) {
             case ADDED: {
-                doAdded(module, null, monitor);
+                moduleHandler.doAdded(module, monitor);
                 break;
             }
             case CHANGED: {
-                doChanged(module, null, monitor);
+                moduleHandler.doChanged(module, monitor);
                 break;
             }
             case REMOVED: {
-                doRemoved(module, monitor);
+                moduleHandler.doRemoved(module, monitor);
                 break;
             }
             case NO_CHANGE: {
-                doNoChange(module, monitor);
+                moduleHandler.doNoChange(module, monitor);
                 break;
             }
             default:
@@ -924,109 +905,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.invokeCommand");
     }   
-
-    /**
-     * @param module
-     * @param configId the forced configId to process this method, passed in when this method is invoked from doChanged()
-     * @throws Exception
-     */
-    protected void doAdded(IModule module, String configId, IProgressMonitor monitor) throws Exception {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.doAdded", module.getName(), configId);
-        IStatus status;
-        TargetModuleID[] ids;
-        
-        if(OSGIBundleHelper.isBundle(module)) {
-            status = this.distributeOSGIBundles(module);
-            if(status.isOK()) {
-                /* Add the bundle info into the ModuleArtifactMapper's bundle cache */
-                OSGIBundleHelper.addBundleToCache(getServer(), module);
-                /* end here */
-                setModuleState(new IModule [] { module }, IServer.STATE_STARTED);
-            } else {
-                doFail(status, Messages.DISTRIBUTE_FAIL);
-            }
-        } else {
-            configId = getLastKnowConfigurationId(module, configId);
-            if (configId == null) {
-                Map<String, String> artifactsMap = ModuleArtifactMapper.getInstance().getServerArtifactsMap(getServer());
-                if (artifactsMap != null) {
-                    synchronized (artifactsMap) {
-                        status = distribute(module, monitor);
-                        if (!status.isOK()) {
-                            doFail(status, Messages.DISTRIBUTE_FAIL);
-                        }
-
-                        ids = updateServerModuleConfigIDMap(module, status);
-                    } 
-                } else {             
-                    status = distribute(module, monitor);
-                    if (!status.isOK()) {
-                        doFail(status, Messages.DISTRIBUTE_FAIL);
-                    }
-
-                    ids = updateServerModuleConfigIDMap(module, status);
-                }
-
-                status = start(ids, monitor);
-                if (!status.isOK()) {
-                    doFail(status, Messages.START_FAIL);
-                } else {
-                    setModuleState(new IModule [] { module }, IServer.STATE_STARTED);
-                }
-            } else {
-                //either (1) a configuration with the same module id exists already on the server
-                //or (2) the module now has a different configId and the configuration on the server using
-                //the old id as specified in the project-configId map should be uninstalled.
-                doChanged(module, configId, monitor);
-            }
-        }
-
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.doAdded");
-    }
-    /**
-     * @param module
-     * @param configId the forced configId to process this method, passed in when invoked from doAdded()
-     * @throws Exception
-     */
-    protected void doChanged(IModule module, String configId, IProgressMonitor monitor) throws Exception {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.doChanged", module.getName(), configId);
-        IStatus status = null;
-        if(OSGIBundleHelper.isBundle(module)) {
-            boolean isPublished = OSGIBundleHelper.checkBundleInCache(getServer(), module);
-//            int state = DeploymentUtils.getModuleState(getServer(), module);
-            if(isPublished) status = doOSGIBundleRedeploy(module);
-            else {
-                status = this.distributeOSGIBundles(module);
-            }
-            if(status.isOK()) {
-                if(! isPublished) OSGIBundleHelper.addBundleToCache(getServer(), module);
-                setModuleState(new IModule [] { module }, IServer.STATE_STARTED);
-            } else {
-                doFail(status, Messages.REDEPLOY_FAIL);
-            }
-        } else {
-            configId = getLastKnowConfigurationId(module, configId);
-            if(configId != null) {
-                String moduleConfigId = getConfigId(module);
-                if (moduleConfigId.equals(configId)) {
-                    status = reDeploy(module, monitor);                
-                    if (!status.isOK()) {
-                        doFail(status, Messages.REDEPLOY_FAIL);
-                    } else {
-                        setModuleState(new IModule [] { module }, IServer.STATE_STARTED);
-                    }
-                } else {
-                    //different configIds from what needs to be undeployed to what will be deployed
-                    doRemoved(module, monitor);
-                    doAdded(module, null, monitor);
-                }
-            } else {
-                //The checked configuration no longer exists on the server
-                doAdded(module, configId, monitor);
-            }
-        }
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.doChanged");
-    }
 
     private IStatus tryFileReplace(IModule[] module) {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", module.toString());
@@ -1146,212 +1024,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         }
 
         return Status.OK_STATUS;
-    }
-
-
-    private String getLastKnowConfigurationId(IModule module, String configId) throws Exception {
-        Trace.tracePoint("Entry ", Activator.traceCore, "GeronimoServerBehaviourDelegate.getLastKnowConfigurationId", module.getName(), configId);
-
-        //use the correct configId, second from the .metadata, then from the plan
-        configId = configId != null ? configId : DeploymentUtils.getLastKnownConfigurationId(module, getServer());
-
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.getLastKnowConfigurationId", configId);
-        return configId;
-    }
-
-    protected void doRemoved(IModule module, IProgressMonitor monitor) throws Exception {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.doRemoved", module.getName());
-
-        ModuleArtifactMapper mapper = ModuleArtifactMapper.getInstance();
-        Map<String, String> artifactsMap = mapper.getServerArtifactsMap(getServer());
-        if (artifactsMap != null) {
-            synchronized (artifactsMap) {
-                try {
-                    _doRemove(module, monitor);
-                } finally {
-                    // remove the mapping - even if module failed to undeploy
-                    mapper.removeArtifactEntry(getServer(), module);
-                }
-            }    
-        } else {
-            _doRemove(module, monitor);
-        }
-
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.doRemoved");
-    }
-    
-    private void _doRemove(IModule module, IProgressMonitor monitor) throws Exception {
-    	IStatus status = null;
-    	if(OSGIBundleHelper.isBundle(module)) {/* If the module is a OSGI bundle */
-    		// must consider the situation of the project name or bundle name or both have been changed, not done yet!!!
-    		status = this.removeOSGIBundle(module);
-    		if(status.isOK()) {
-    			OSGIBundleHelper.removeBundleFromCache(getServer(), module);
-    		} else {
-    			doFail(status, Messages.DISTRIBUTE_FAIL);
-    		}
-    	} else {
-            status = unDeploy(module, monitor);
-            if (!status.isOK()) {
-                doFail(status, Messages.UNDEPLOY_FAIL);
-            }
-    	}
-    	
-
-    }
-    
-    protected void doNoChange(IModule module, IProgressMonitor monitor) throws Exception {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.doNoChange", module.getName());
-        if(! OSGIBundleHelper.isBundle(module)) {/* if the module is the bundle, just return! */
-            DeploymentManager dm = DeploymentCommandFactory.getDeploymentManager(getServer());
-            String configId = DeploymentUtils.getLastKnownConfigurationId(module, getServer());
-            if (configId != null) {
-                IModule[] rootModule = new IModule[] { module };
-                if (DeploymentUtils.isStartedModule(dm, configId) != null) {
-                    setModuleState(rootModule, IServer.STATE_STARTED);
-                } else if (DeploymentUtils.isStoppedModule(dm, configId) != null) {
-                    setModuleState(rootModule, IServer.STATE_STOPPED);
-                } else {
-                    setModuleState(rootModule, IServer.STATE_UNKNOWN);
-                }
-                ModuleArtifactMapper mapper = ModuleArtifactMapper.getInstance();
-                mapper.addArtifactEntry(getServer(), module, configId);
-            } else {
-                doAdded(module, null, monitor);
-            }
-        }
-        
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.doNoChange");
-    }
-
-    protected void doRestart(IModule module, IProgressMonitor monitor) throws Exception {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.doRestart", module.getName());
-        
-        IStatus status = stop(module, monitor);
-        if (!status.isOK()) {
-            doFail(status, Messages.STOP_FAIL);
-        }
-
-        status = start(module, monitor);
-        if (!status.isOK()) {
-            doFail(status, Messages.START_FAIL);
-        }
-
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.doRestart");
-    }
-    
-    private TargetModuleID[] updateServerModuleConfigIDMap(IModule module, IStatus status) {
-        TargetModuleID[] ids = ((DeploymentCmdStatus) status).getResultTargetModuleIDs();
-        ModuleArtifactMapper mapper = ModuleArtifactMapper.getInstance();
-        mapper.addArtifactEntry(getServer(), module, ids[0].getModuleID());
-        return ids;
-    }
-
-    protected void doFail(IStatus status, String message) throws CoreException {
-        MultiStatus ms = new MultiStatus(Activator.PLUGIN_ID, 0, message, null);
-        ms.addAll(status);
-        throw new CoreException(ms);
-    }
-
-    protected IStatus distribute(IModule module, IProgressMonitor monitor) throws Exception {
-        IDeploymentCommand cmd = DeploymentCommandFactory.createDistributeCommand(module, getServer());
-        return cmd.execute(monitor);
-    }
-    
-    protected IStatus doOSGIBundleRedeploy(IModule module) throws Exception {
-        IStatus status = Status.CANCEL_STATUS;
-        status = this.removeOSGIBundle(module);
-        if(status.isOK()) {
-            OSGIBundleHelper.removeBundleFromCache(getServer(), module);/* remove the bundle from cache */
-            /* install the bundle as a new one */
-            status = this.distributeOSGIBundles(module);
-            if(status.isOK()) {
-                /* Add the bundle info into the ModuleArtifactMapper's bundle cache */
-                OSGIBundleHelper.addBundleToCache(getServer(), module);
-                /* end here */
-            }
-        }
-        return status;
-    }
-    protected IStatus distributeOSGIBundles(IModule module) throws Exception {
-    	RemoteDeploymentManager rDm = (RemoteDeploymentManager)DeploymentCommandFactory.getDeploymentManager(this.getServer());
-        try {
-        	/* Get target file */
-            File f = DeploymentUtils.getTargetFile(getServer(), module);
-            if (f == null) {
-                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 
-                        Messages.bind(Messages.moduleExportError, module.getProject().getName())));     
-            }
-            /* end here */
-			long bundleId = rDm.recordInstall(f, null, OsgiConstants.BUNDLE_DEFAULT_START_LEVLE);
-			boolean ss = this._startBundle(bundleId);
-			if(ss) {
-				return Status.OK_STATUS;
-			} else {
-				Trace.trace(Trace.ERROR, "The Bundle: " + module.getName() + " could not be installed", null, Activator.logCore);
-				return Status.CANCEL_STATUS;
-			}
-		} catch (IOException e) {
-			Trace.trace(Trace.ERROR, "The Bundle: " + module.getName() + " could not be installed", e, Activator.logCore);
-			return Status.CANCEL_STATUS;
-		}
-    }
-    protected IStatus removeOSGIBundle(IModule module) throws Exception {
-        try {
-        	long bundleId = OSGIBundleHelper.getOSGIBundleIdFromServer(getServer(), module);
-        	if(bundleId == -1) return Status.OK_STATUS;// indicate the bundle has been removed from server
-			return this.removeOSGIBundleById(bundleId);
-		} catch (Exception e) {
-			Trace.trace(Trace.ERROR, "The Bundle: " + module.getName() + " could not be unInstalled", e, Activator.logCore);
-			return Status.CANCEL_STATUS;
-		}
-    }
-    
-    
-    protected IStatus removeOSGIBundleById(long bundleId) throws Exception {
-        try {
-            boolean isSuccess = this._unInstallBundle(bundleId);
-            if(isSuccess) {
-                return Status.OK_STATUS;
-            } else {
-                return Status.CANCEL_STATUS;
-            }
-        } catch (Exception e) {
-            return Status.CANCEL_STATUS;
-        }
-    }
-    protected IStatus start(IModule module, IProgressMonitor monitor) throws Exception {
-        TargetModuleID id = DeploymentUtils.getTargetModuleID(getServer(), module);
-        IDeploymentCommand cmd = DeploymentCommandFactory.createStartCommand(new TargetModuleID[] { id }, module, getServer());
-        IStatus status = cmd.execute(monitor);
-        if (status.isOK()) {
-            setModuleState(new IModule [] { module }, IServer.STATE_STARTED);
-        }
-        return status;
-    }
-    
-    protected IStatus start(TargetModuleID[] ids, IProgressMonitor monitor) throws Exception {
-        IDeploymentCommand cmd = DeploymentCommandFactory.createStartCommand(ids, null, getServer());
-        return cmd.execute(monitor);
-    }
-
-    protected IStatus stop(IModule module, IProgressMonitor monitor) throws Exception {
-        IDeploymentCommand cmd = DeploymentCommandFactory.createStopCommand(module, getServer());
-        IStatus status = cmd.execute(monitor);
-        if (status.isOK()) {
-            setModuleState(new IModule [] { module }, IServer.STATE_STOPPED);
-        }
-        return status;
-    }
-
-    protected IStatus unDeploy(IModule module, IProgressMonitor monitor) throws Exception {
-        IDeploymentCommand cmd = DeploymentCommandFactory.createUndeployCommand(module, getServer());
-        return cmd.execute(monitor);
-    }
-
-    protected IStatus reDeploy(IModule module, IProgressMonitor monitor) throws Exception {
-        IDeploymentCommand cmd = DeploymentCommandFactory.createRedeployCommand(module, getServer());
-        return cmd.execute(monitor);
     }
 
     public Map getServerInstanceProperties() {
@@ -1586,6 +1258,18 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         return null;
     }
     
+    public ObjectName getMBean(MBeanServerConnection connection, String mbeanName, String name) throws Exception {
+        Set<ObjectName> objectNameSet =
+            connection.queryNames(new ObjectName(mbeanName), null);
+        if (objectNameSet.isEmpty()) {
+            throw new Exception(Messages.bind(Messages.mBeanNotFound, name));
+        } else if (objectNameSet.size() == 1) {
+            return objectNameSet.iterator().next();
+        } else {
+            throw new Exception(Messages.bind(Messages.multipleMBeansFound, name));
+        }
+    }
+    
     public Target[] getTargets() {
         return null;
     }
@@ -1639,14 +1323,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     public void startModule(IModule[] module, IProgressMonitor monitor) {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.startModule", Arrays.asList(module));
         try {
-            if(OSGIBundleHelper.isBundle(module[0])) {
-                boolean isIn = OSGIBundleHelper.checkBundleInCache(getServer(), module[0]);
-                int state = DeploymentUtils.getModuleState(getServer(), module[0]);
-                if(isIn && (state == IServer.STATE_STOPPED)) startOSGIBundle(module[0]);
-                else throw new Exception(Messages.START_FAIL);
-            } else {
-                start(module[0], monitor);
-            }
+            getModuleHandler(module[0]).doStartModule(module, monitor);
         } catch (Exception e) {
             Trace.trace(Trace.ERROR, "Error starting module " + module[0].getName(), e, Activator.logCore);
             throw new RuntimeException("Error starting module " + module[0].getName(), e);
@@ -1654,42 +1331,11 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.startModule");
     }
     
-    protected void startOSGIBundle(IModule module) throws Exception {
-       
-        long bundleId = OSGIBundleHelper.getOSGIBundleIdFromServer(getServer(), module);
-        if(bundleId == -1) throw new Exception("can not start bundle");
-        boolean ss = this._startBundle(bundleId);
-        if(ss) {
-            setModuleState(new IModule [] { module }, IServer.STATE_STARTED);
-        } else {
-            throw new Exception("can not start bundle");
-        }
-    }
-    protected void stopOSGIBundle(IModule module) throws Exception {
-        long bundleId = OSGIBundleHelper.getOSGIBundleIdFromServer(getServer(), module);
-        if(bundleId == -1) throw new Exception("can not stop bundle");
-        boolean ss = this._stopBundle(bundleId);
-        if(ss) {
-            setModuleState(new IModule [] { module }, IServer.STATE_STOPPED);
-        } else {
-            throw new Exception("can not start bundle");
-        }   
-    }
     @Override
     public void stopModule(IModule[] module, IProgressMonitor monitor) {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.stopModule", Arrays.asList(module));
         try {
-            if(OSGIBundleHelper.isBundle(module[0])) {
-                boolean isIn = OSGIBundleHelper.checkBundleInCache(getServer(), module[0]);
-                int state = DeploymentUtils.getModuleState(getServer(), module[0]);
-                if(! isIn || state == IServer.STATE_UNKNOWN) doFail(Status.CANCEL_STATUS, Messages.DISTRIBUTE_FAIL);
-                else {
-                    this.stopOSGIBundle(module[0]);
-                }
-            } else {
-                stop(module[0], monitor);
-            }
-            
+            getModuleHandler(module[0]).doStopModule(module, monitor);
         } catch (Exception e) {
             Trace.trace(Trace.ERROR, "Error stopping module " + module[0].getName(), e, Activator.logCore);
             throw new RuntimeException("Error stopping module " + module[0].getName(), e);
@@ -1701,20 +1347,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     public void restartModule(IModule[] module, IProgressMonitor monitor) {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.restartModule", Arrays.asList(module));
         try {
-            if(OSGIBundleHelper.isBundle(module[0])) {
-                boolean isIn = OSGIBundleHelper.checkBundleInCache(getServer(), module[0]);
-                int state = DeploymentUtils.getModuleState(getServer(), module[0]);
-                if(isIn && (state == IServer.STATE_STARTED)) {
-                    this.stopOSGIBundle(module[0]);
-                    this.startOSGIBundle(module[0]);
-                } else {
-                    doFail(Status.CANCEL_STATUS, Messages.RESTART_OSGIBUNDLE_FAIL);
-                }
-            } else {
-                stop(module[0], monitor);            
-                start(module[0], monitor);
-            }
-            
+            getModuleHandler(module[0]).doRestartModule(module, monitor);
         } catch (Exception e) {
             Trace.trace(Trace.ERROR, "Error restarting module " + module[0].getName(), e, Activator.logCore);
             throw new RuntimeException("Error restarting module " + module[0].getName(), e);
@@ -1741,54 +1374,4 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     public void setModulesState(IModule[] module, int state) {
         setModuleState(module, state);
     }
-    private boolean _startBundle(long bundleId) {
-    	try {
-    		MBeanServerConnection connection = getServerConnection();
-    		connection.invoke(getFramework(), "startBundle",
-                    new Object[] { bundleId }, new String[] { long.class.getName() });
-    		return true;
-    	} catch(Exception e) {
-    		Trace.trace(Trace.INFO, "Could not start bundle", Activator.traceCore);
-    		return false;
-    	}
-        
-    }
-    private boolean _stopBundle(long bundleId) {
-    	try {
-    		MBeanServerConnection connection = getServerConnection();
-    		connection.invoke(getFramework(), "stopBundle",
-                    new Object[] { bundleId }, new String[] { long.class.getName() });
-    		return true;
-    	} catch(Exception e) {
-    		Trace.trace(Trace.INFO, "Could not stop bundle", Activator.traceCore);
-    		return false;
-    	}
-    }
-    private boolean _unInstallBundle(long bundleId) throws CoreException {
-        RemoteDeploymentManager rDm = (RemoteDeploymentManager)DeploymentCommandFactory.getDeploymentManager(this.getServer());
-    	try {
-    		rDm.eraseUninstall(bundleId);
-    		return true;
-    	} catch(Exception e) {
-    		Trace.trace(Trace.INFO, e.getMessage(), Activator.traceCore);
-    		return false;
-    	}
-    }
-    public ObjectName getFramework() throws Exception {
-    	try {
-			MBeanServerConnection connection = getServerConnection();
-	        Set<ObjectName> objectNameSet =
-	        	connection.queryNames(new ObjectName("osgi.core:type=framework,*"), null);
-	        if (objectNameSet.isEmpty()) {
-	        	throw new Exception(Messages.frameworkMBeanNotFound);
-	        } else if (objectNameSet.size() == 1) {
-	        	return objectNameSet.iterator().next();
-	        } else {
-	        	throw new Exception(Messages.multipleFramworkMBeans);
-	        }
-		} catch (Exception e) {
-			throw e;
-		}
-    }
-    
 }
