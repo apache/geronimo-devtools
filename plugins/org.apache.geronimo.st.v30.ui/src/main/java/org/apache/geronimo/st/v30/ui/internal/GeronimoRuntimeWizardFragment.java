@@ -101,13 +101,9 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
     // serverName-N.N or serverName-N.N.N
     public static final Pattern SERVER_NAME_VERSION_PATTERN = Pattern.compile("(.*-)((\\d+\\.\\d+)(\\.(\\d+))?)");
     
-    private static final String GERONIMO_SERVER_LOCATION_VARIABLE_NAME = "geronimo30_server_location";
-    
     private static final String  LOCAL_TARGET_DIRECTORY = ".metadata/.plugins/org.eclipse.pde.core/.local_targets/";
     
     private static final String TARGET_FILE_EXTENSION = ".target";
-    
-    private static final String TARGET_TEMPLATE_FILE = "targets/Geronimo30.target";
     
     private static final String TARGET_FILE_LOCATIONS_PLACEHOLDER = "@locations_placeholder@";
     
@@ -118,7 +114,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
         "repository/org/apache/geronimo/framework/geronimo-jdbc",
         "repository/org/osgi"};
     
-    private static final String LOCATION_LINE_TEMPLATE = "<location path=\"${geronimo30_server_location}GERONIMO_BUNDLE_FOLDER_NAME\" type=\"Directory\"/>";
+    protected final String LOCATION_LINE_TEMPLATE = "<location path=\"${server_location}GERONIMO_BUNDLE_FOLDER_NAME\" type=\"Directory\"/>";
 
     private GeronimoRuntimeDelegate geronimoRuntime;
 
@@ -135,7 +131,27 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
     public GeronimoRuntimeWizardFragment() {
         super();
     }
-
+ 
+    protected String getLocationLineTempalte() {
+    	return LOCATION_LINE_TEMPLATE.replaceAll("server_location", getServerLocationVariableName());
+    }
+    
+    protected String getTargetTemplateFileName() {
+    	return "targets/Geronimo30.target";
+    }
+    
+    protected String getServerLocationVariableName() {
+    	return "geronimo30_server_location";
+    }
+    
+    protected String getServerLocationVariableDescription(){
+    	return Messages.serverLocationVariableDescription;
+    }
+    
+    protected URL getTargetTempateFile() {
+        Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
+        return bundle.getEntry(getTargetTemplateFileName());
+    }
     /*
      * (non-Javadoc)
      * 
@@ -425,6 +441,15 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
     }
 
 
+    protected String getServerLocation() {
+    	
+        String geronimoServerLocation = getRuntimeDelegate().getRuntime().getLocation().toString();
+        if (geronimoServerLocation.endsWith("/")) {
+            geronimoServerLocation = geronimoServerLocation.substring(0, geronimoServerLocation.length()-1);
+        }
+        return geronimoServerLocation;
+    }
+    
     public void performFinish(IProgressMonitor monitor) throws CoreException {
 
         ITargetPlatformService service = 
@@ -435,17 +460,14 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
         if (geronimoTargetHandle == null) {
             // target definition not found - generate one 
             
-            String geronimoServerLocation = getRuntimeDelegate().getRuntime().getLocation().toString();
-            if (geronimoServerLocation.endsWith("/")) {
-                geronimoServerLocation = geronimoServerLocation.substring(0, geronimoServerLocation.length()-1);
-            }
+            String geronimoServerLocation = getServerLocation();
             
             // add or update string substitution variable named ${geronimo_30_server_location} 
             IStringVariableManager varManager = VariablesPlugin.getDefault().getStringVariableManager();
-            IValueVariable v = varManager.getValueVariable(GERONIMO_SERVER_LOCATION_VARIABLE_NAME);
+            IValueVariable v = varManager.getValueVariable(getServerLocationVariableName());
             if (v == null) {
-                v = varManager.newValueVariable(GERONIMO_SERVER_LOCATION_VARIABLE_NAME,
-                                                "The server location of Geronimo v3.0", 
+                v = varManager.newValueVariable(getServerLocationVariableName(),
+                								getServerLocationVariableDescription(), 
                                                 false, 
                                                 geronimoServerLocation);
                 varManager.addVariables(new IValueVariable[] { v });
@@ -458,10 +480,9 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
             IPath rootLocation = root.getLocation();
             String timestamp = Long.toString(System.currentTimeMillis());           
             String append = LOCAL_TARGET_DIRECTORY + timestamp + TARGET_FILE_EXTENSION;
-            IPath destination = rootLocation.append(append);
+            IPath destination = rootLocation.append(append);            
             
-            Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
-            URL template = bundle.getEntry(TARGET_TEMPLATE_FILE);
+            URL template = getTargetTempateFile();
             
             copyFile(template, destination, getLocationEntryLists(geronimoServerLocation));
                         
@@ -478,10 +499,14 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
         }
     }
     
+    protected String getServerVersion() {
+    	return Messages.serverVersion;
+    }
+    
     private ITargetHandle findGeronimoTargetDefinition(ITargetPlatformService service) throws CoreException {
         ITargetHandle[] targetHandles = service.getTargets(null);
         for (ITargetHandle cur : targetHandles) {
-            if (cur.getTargetDefinition().getName().equals(Messages.serverVersion)) {
+            if (cur.getTargetDefinition().getName().equals(getServerVersion())) {
                 return cur;
             }
         }
@@ -526,7 +551,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
     }
     
     
-    protected static String getLocationEntryLists(String serverLocation) {
+    protected String getLocationEntryLists(String serverLocation) {
 
         StringBuffer buf = new StringBuffer(1024);
         buf.append(System.getProperty("line.separator"));
@@ -537,7 +562,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
         return buf.toString();
     }
 
-    private static void listFile(File file, StringBuffer buf, String serverLocation) {
+    private void listFile(File file, StringBuffer buf, String serverLocation) {
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             for (File subfile : files) {
@@ -548,7 +573,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
             if (filename.endsWith(".jar")) {
                 String parentPath = file.getParent();
                 String bundleFolder = parentPath.substring(serverLocation.length());
-                buf.append(LOCATION_LINE_TEMPLATE.replaceAll("GERONIMO_BUNDLE_FOLDER_NAME",
+                buf.append(getLocationLineTempalte().replaceAll("GERONIMO_BUNDLE_FOLDER_NAME",
                         Matcher.quoteReplacement(bundleFolder)));
                 buf.append(System.getProperty("line.separator"));
             }

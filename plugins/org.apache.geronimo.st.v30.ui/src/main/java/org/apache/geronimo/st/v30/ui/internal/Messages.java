@@ -621,5 +621,7 @@ public class Messages extends NLS {
     public static String wizardPageDescription_ExcludeFilePattern;
     
     public static String restoreDefaults;
+    
+    public static String serverLocationVariableDescription;
 	
 }
