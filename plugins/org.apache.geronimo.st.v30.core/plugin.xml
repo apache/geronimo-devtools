@@ -34,7 +34,7 @@
                 name="%runtimeTypeName"
                 description="%runtimeTypeDescription"
                 vendor="%runtimeTypeVendor"
-                class="org.apache.geronimo.st.v30.core.GeronimoRuntime">
+                class="org.apache.geronimo.st.v30.core.GeronimoRuntimeDelegate">
             <moduleType types="jst.web"       versions="2.2, 2.3, 2.4, 2.5, 3.0"/>
             <moduleType types="jst.ejb"       versions="1.1, 2.0, 2.1, 3.0, 3.1"/>
             <moduleType types="jst.connector" versions="1.0, 1.5"/>
@@ -62,7 +62,7 @@
             name="%serverTypeName"
             description="%serverTypeDescription"
             runtime="true"
-            class="org.apache.geronimo.st.v30.core.GeronimoServer"
+            class="org.apache.geronimo.st.v30.core.GeronimoServerDelegate"
             initialState="stopped"
             supportsRemoteHosts="true"
             startTimeout="240000"
@@ -70,7 +70,7 @@
             startBeforePublish="true"
             runtimeTypeId="org.apache.geronimo.runtime.30"
             launchConfigId="org.apache.geronimo.st.v30.core.launchConfigurationType"
-            behaviourClass="org.apache.geronimo.st.v30.core.GeronimoServerBehaviour"
+            behaviourClass="org.apache.geronimo.st.v30.core.GeronimoServerBehaviourDelegate"
             hasConfiguration="false"
             launchModes="run,debug,profile">
         </serverType>

@@ -39,8 +39,6 @@ public interface IGeronimoServer extends IURLProvider {
 
     public String getJMXServiceURL();
 
-    public IPath getJSR88DeployerJar();
-    
     public DeploymentFactory getDeploymentFactory();
 
     public void configureDeploymentManager(DeploymentManager dm);

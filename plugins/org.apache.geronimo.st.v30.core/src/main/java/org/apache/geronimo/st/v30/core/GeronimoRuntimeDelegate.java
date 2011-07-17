@@ -45,7 +45,7 @@ import org.eclipse.wst.server.core.model.RuntimeDelegate;
 /**
  * @version $Rev$ $Date$
  */
-abstract public class GeronimoRuntimeDelegate extends RuntimeDelegate implements IGeronimoRuntime {
+public class GeronimoRuntimeDelegate extends RuntimeDelegate implements IGeronimoRuntime {
 
     private static final String PROP_VM_INSTALL_TYPE_ID = "vm-install-type-id";
 

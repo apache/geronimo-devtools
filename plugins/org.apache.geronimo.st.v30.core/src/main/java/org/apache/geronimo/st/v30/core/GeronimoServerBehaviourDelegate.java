@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -37,17 +38,29 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.enterprise.deploy.spi.Target;
+import javax.enterprise.deploy.spi.exceptions.DeploymentManagerCreationException;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
+import javax.naming.directory.NoSuchAttributeException;
 
 import org.apache.geronimo.deployment.plugin.jmx.ExtendedDeploymentManager;
+import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
 import org.apache.geronimo.gbean.AbstractName;
+import org.apache.geronimo.gbean.AbstractNameQuery;
+import org.apache.geronimo.gbean.GBeanData;
+import org.apache.geronimo.kernel.GBeanNotFoundException;
+import org.apache.geronimo.kernel.InternalKernelException;
+import org.apache.geronimo.kernel.Kernel;
+import org.apache.geronimo.kernel.config.Configuration;
+import org.apache.geronimo.kernel.config.InvalidConfigException;
+import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.v30.core.UpdateServerStateTask;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
+import org.apache.geronimo.st.v30.core.internal.DependencyHelper;
 import org.apache.geronimo.st.v30.core.internal.Messages;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.operations.ISharedLibEntryCreationDataModelProperties;
@@ -55,6 +68,7 @@ import org.apache.geronimo.st.v30.core.operations.SharedLibEntryCreationOperatio
 import org.apache.geronimo.st.v30.core.operations.SharedLibEntryDataModelProvider;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.apache.geronimo.st.v30.core.osgi.OSGiModuleHandler;
+import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -65,6 +79,7 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
@@ -81,6 +96,7 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
@@ -89,6 +105,7 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerListener;
 import org.eclipse.wst.server.core.ServerEvent;
 import org.eclipse.wst.server.core.ServerPort;
+import org.eclipse.wst.server.core.internal.IModulePublishHelper;
 import org.eclipse.wst.server.core.internal.ProgressUtil;
 import org.eclipse.wst.server.core.model.IModuleFile;
 import org.eclipse.wst.server.core.model.IModuleResourceDelta;
@@ -98,12 +115,14 @@ import org.eclipse.wst.server.core.util.SocketUtil;
 /**
  * @version $Rev$ $Date$
  */
-abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate implements IGeronimoServerBehavior {
+public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate implements IGeronimoServerBehavior, IModulePublishHelper {
 
     public static final int TIMER_TASK_INTERVAL = 20;
     
     public static final int TIMER_TASK_DELAY = 20;
 
+    private Kernel kernel = null;
+    
     protected Timer stateTimer = null;
     
     protected Timer synchronizerTimer = null;
@@ -114,10 +133,6 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 
     public static final String ERROR_SETUP_LAUNCH_CONFIGURATION = "errorInSetupLaunchConfiguration";
 
-    abstract protected ClassLoader getContextClassLoader();
-    
-    abstract protected String getWebModuleDocumentBase(String contextPath);
-
     private PublishStateListener publishStateListener;
     
     private Lock publishLock = new ReentrantLock();
@@ -127,6 +142,10 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     private DefaultModuleHandler defaultModuleHandler;
     private OSGiModuleHandler osgiModuleHandler;
 
+    protected ClassLoader getContextClassLoader() {
+        return Kernel.class.getClassLoader();
+    }
+    
     /*
      * (non-Javadoc)
      * 
@@ -628,8 +647,11 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     /*
      * This method is used to invoke DependencyHelper of different version
      */
-    abstract protected List getOrderedModules(IServer server, List modules, List deltaKind);
-
+    protected List getOrderedModules(IServer server, List modules, List deltaKind) {
+        DependencyHelper dh = new DependencyHelper();
+        List list = dh.reorderModules(this.getServer(),modules, deltaKind);
+        return list;
+   }
 
     /*
      * (non-Javadoc)
@@ -794,7 +816,9 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.dispose");
     }
 
-    public abstract String getRuntimeClass();
+    public String getRuntimeClass() {
+        return "org.apache.geronimo.cli.daemon.DaemonCLI";
+    }
 
     public void setServerStarted() {
         setServerState(IServer.STATE_STARTED);
@@ -1158,8 +1182,107 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.stopPingThread");
     }
     
-    protected abstract void stopKernel();
+    protected Kernel getKernel() throws SecurityException {
+        if (kernel == null) {
+            try {
+                MBeanServerConnection connection = getServerConnection();
+                if (connection != null)
+                    kernel = new KernelDelegate(connection);
+            } catch (SecurityException e) {
+                throw e;
+            } catch (Exception e) {
+                Trace.trace(Trace.INFO, "Kernel connection failed. "
+                        + e.getMessage(), Activator.traceCore);
+            }
+        }
+        return kernel;
+    }
+    
+    protected void stopKernel() {
+        try {
+            MBeanServerConnection connection = getServerConnection();
+            Trace.trace(Trace.INFO, "Server shutdown starting...", Activator.traceCore);
+            connection.invoke(getFrameworkMBean(connection), "stopBundle",
+                     new Object[] { 0 }, new String[] { long.class.getName() });
+            Trace.trace(Trace.INFO, "Server shutdown completed", Activator.traceCore);          
+        } catch (Exception e) {
+            Trace.trace(Trace.ERROR, e.getMessage(), e, Activator.traceCore);
+        }
+    }
 
+    public boolean isKernelAlive() {
+        try {
+            return getKernel() != null && kernel.isRunning();
+        } catch (SecurityException e) {
+            Trace.trace(Trace.ERROR, "Invalid username and/or password.", e, Activator.logCore);
+
+            pingThread.interrupt();
+            if (getServer().getServerState() != IServer.STATE_STOPPED) {
+                forceStopJob(true,e);
+            }
+        } catch (Exception e) {
+            Trace.trace(Trace.WARNING, "Geronimo Server may have been terminated manually outside of workspace.", e, Activator.logCore);
+            kernel = null;
+        }
+        return false;
+    }
+    
+    private void forceStopJob(boolean b, final SecurityException e) {
+        /* 
+         *
+         * Currently, there is another Status is returned by StartJob in Server. 
+         * The message doesn't contain reason for the exception. 
+         * So this job is created to show a message(Invalid username and/or password) to user.
+         *  
+         * TODO: Need a method to remove the error message thrown by StartJob in Server.
+         * 
+         */
+        
+        String jobName = NLS.bind(org.eclipse.wst.server.core.internal.Messages.errorStartFailed, getServer().getName());                       
+        
+        //This message has different variable names in WTP 3.0 and 3.1, so we define it here instead of using that in WTP
+        final String jobStartingName =  NLS.bind("Starting {0}", getServer().getName());
+
+        new Job(jobName) {
+            @Override
+            protected IStatus run(IProgressMonitor monitor) {
+                MultiStatus multiStatus = new  MultiStatus(Activator.PLUGIN_ID, 0, jobStartingName, null);
+                multiStatus.add(new Status(IStatus.ERROR,Activator.PLUGIN_ID,0,"Invalid username and/or password.",e));
+                try {
+                    stop(true);
+                } catch (Exception e){
+                    multiStatus.add(new Status(IStatus.ERROR,Activator.PLUGIN_ID,0,"Failed to stop server",e));
+                }
+            
+                return multiStatus;
+            }
+        }.schedule();
+        
+    }
+    
+    public boolean isFullyStarted() {
+        if (isKernelAlive()) {
+            AbstractNameQuery query = new AbstractNameQuery(PersistentConfigurationList.class.getName());
+            Set<AbstractName> configLists = kernel.listGBeans(query);
+            if (!configLists.isEmpty()) {
+                AbstractName on = (AbstractName) configLists.toArray()[0];
+                try {
+                    Boolean b = (Boolean) kernel.getAttribute(on, "kernelFullyStarted");
+                    return b.booleanValue();
+                } catch (GBeanNotFoundException e) {
+                    // ignore
+                } catch (NoSuchAttributeException e) {
+                    // ignore
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Trace.trace(Trace.INFO, "configLists is empty", Activator.traceCore);
+            }
+        }
+        return false;
+    }
+    
     public void startUpdateServerStateTask() {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.startUpdateServerStateTask", getServer().getName());
 
@@ -1225,6 +1348,18 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         return modulePath;
     }
 
+    private Kernel getDeploymentManagerKernel() {
+        GeronimoConnectionFactory connectionFactory = GeronimoConnectionFactory.getInstance();
+        try {
+            JMXDeploymentManager manager =
+                (JMXDeploymentManager) connectionFactory.getDeploymentManager(getServer());
+            return manager.getKernel();
+        } catch (DeploymentManagerCreationException e) {
+            Trace.trace(Trace.WARNING, "Error getting kernel from deployment manager", e, Activator.logCore);
+            return null;
+        }
+    }
+    
     public MBeanServerConnection getServerConnection() throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
         String user = getGeronimoServer().getAdminID();
@@ -1268,6 +1403,10 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
         } else {
             throw new Exception(Messages.bind(Messages.multipleMBeansFound, name));
         }
+    }
+    
+    private ObjectName getFrameworkMBean(MBeanServerConnection connection) throws Exception {
+        return getMBean(connection, "osgi.core:type=framework,*", "Framework");
     }
     
     public Target[] getTargets() {
@@ -1373,5 +1512,70 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     
     public void setModulesState(IModule[] module, int state) {
         setModuleState(module, state);
+    }
+    
+    public IPath getPublishDirectory(IModule[] module) {
+        if (module == null || module.length == 0)
+            return null;
+
+        if (getGeronimoServer().isRunFromWorkspace()) {
+            // TODO fix me, see if project root, component root, or output
+            // container should be returned
+            return module[module.length - 1].getProject().getLocation();
+        } else {
+            ClassLoader old = Thread.currentThread().getContextClassLoader();
+            try {
+                Thread.currentThread().setContextClassLoader(getContextClassLoader());
+                String configId = getConfigId(module[0]);
+                Artifact artifact = Artifact.create(configId);
+                AbstractName name = Configuration.getConfigurationAbstractName(artifact);
+                GBeanData data = kernel.getGBeanData(name);
+                URL url = (URL) data.getAttribute("baseURL");
+                return getModulePath(module, url);
+            } catch (InvalidConfigException e) {
+                e.printStackTrace();
+            } catch (GBeanNotFoundException e) {
+                e.printStackTrace();
+            } catch (InternalKernelException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                Thread.currentThread().setContextClassLoader(old);
+            }
+        }
+
+        return null;
+    }
+    
+    // TODO: this can be cached 
+    public String getWebModuleDocumentBase(String contextPath) {
+        Kernel kernel = getDeploymentManagerKernel();
+        if (kernel == null) {
+            Trace.trace(Trace.WARNING, "Error getting web module document base - no kernel", null, Activator.logCore);
+            return null;
+        }
+        Map<String, String> map = Collections.singletonMap("j2eeType", "WebModule");
+        if (!contextPath.startsWith("/")) {
+            contextPath = "/" + contextPath;
+        }
+        AbstractNameQuery query = new AbstractNameQuery(null, map, Collections.EMPTY_SET);
+        Set<AbstractName> webModuleNames = kernel.listGBeans(query);
+        for (AbstractName name : webModuleNames) {
+            try {
+                String moduleContextPath = (String) kernel.getAttribute(name, "contextPath");
+                if (contextPath.equals(moduleContextPath)) {
+                    String docBase = (String) kernel.getAttribute(name, "docBase");
+                    return docBase;
+                }
+            } catch (GBeanNotFoundException e) {
+                // ignore
+            } catch (NoSuchAttributeException e) {
+                // ignore
+            } catch (Exception e) {
+                Trace.trace(Trace.WARNING, "Error getting web module document base", e, Activator.logCore);
+            }
+        }
+        return null;
     }
 }

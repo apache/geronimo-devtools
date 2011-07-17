@@ -32,7 +32,12 @@ import java.util.jar.Manifest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.enterprise.deploy.spi.DeploymentManager;
+import javax.enterprise.deploy.spi.factories.DeploymentFactory;
+
 import org.apache.geronimo.crypto.EncryptionManager;
+import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
+import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
@@ -52,6 +57,7 @@ import org.eclipse.wst.server.core.ServerPort;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.server.core.internal.ServerMonitorManager;
 import org.eclipse.wst.server.core.model.ServerDelegate;
+import org.eclipse.wst.server.core.util.SocketUtil;
 import org.eclipse.wst.web.internal.deployables.FlatComponentDeployable;
 
 
@@ -65,7 +71,7 @@ import org.eclipse.wst.web.internal.deployables.FlatComponentDeployable;
  * 
  * @version $Rev$ $Date$
  */
-abstract public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoServer {
+public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoServer {
 
     public static final List<String> DEFAULT_NOREDEPLOY_INCLUDE_PATTERNS = 
         Arrays.asList("**/*.html", "**/*.xhtml", "**/*.css", "**/*.js", "**/*.jsp", "**/*.jspx", "**/*.gif", "**/*.jpg", "**/*.png", "**/*.swt", "**/*.properties", "**/*.xml");
@@ -128,7 +134,65 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     // required to avoid error start, and work nicely on windows, when Karaf shell is enabled.
     public static final String JLINE_UNSUPPORTED_TERMINAL = "-Djline.terminal=jline.UnsupportedTerminal";
 
+    private static IGeronimoVersionHandler versionHandler = null;
+
+    private static DeploymentFactory deploymentFactory = new DeploymentFactoryImpl();
+    
     private boolean suspendArgUpdates;
+    
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.apache.geronimo.st.v30.core.IGeronimoServer#getDeployerURL()
+     */
+    public String getDeployerURL() {
+        return "deployer:geronimo:jmx://" + getServer().getHost() + ":" + getRMINamingPort();
+    }
+    
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.apache.geronimo.st.v30.core.IGeronimoServer#getJMXServiceURL()
+     */
+    public String getJMXServiceURL() {
+        String host = getServer().getHost();
+        return "service:jmx:rmi://" + host + "/jndi/rmi://" + host + ":" + getRMINamingPort() + "/JMXConnector";
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.apache.geronimo.st.v30.core.IGeronimoServer#getDeploymentFactory()
+     */
+    public DeploymentFactory getDeploymentFactory() {
+        return deploymentFactory;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.apache.geronimo.st.v30.core.IGeronimoServer#configureDeploymentManager(javax.enterprise.deploy.spi.DeploymentManager)
+     */
+    public void configureDeploymentManager(DeploymentManager dm) {
+        ((JMXDeploymentManager) dm).setLogConfiguration(true, true);
+        boolean enableInPlace = SocketUtil.isLocalhost(getServer().getHost()) && isRunFromWorkspace();
+        setInPlaceDeployment(dm, enableInPlace);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.apache.geronimo.st.v30.core.IGeronimoServer#getVersionHandler()
+     */
+    public IGeronimoVersionHandler getVersionHandler() {
+        if (versionHandler == null)
+            versionHandler = new GeronimoVersionHandler();
+        return versionHandler;
+    }
+
+    public void setInPlaceDeployment(DeploymentManager dm, boolean enable) {
+        ((JMXDeploymentManager) dm).setInPlace(enable);
+    }
 
     /**
      * Determines whether the specified module modifications can be made to the server at this time
@@ -263,6 +327,78 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         return new IModule[] {};
     }
 
+    /**
+     * Return all parent module(s) of this module
+     * 
+     * @param module
+     * 
+     * @return 
+     */
+    private IModule[] doGetParentModules(IModule module) {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.doGetParentModules", module);
+
+        ArrayList<IModule> parents = new ArrayList<IModule>();
+        parents.addAll(getApplicationModules(module));
+
+        // also check to see if the module is a utility module for a stand-alone
+        // web module
+        for (IModule war : J2EEUtil.getWebModules(module, null)) {
+            if (getApplicationModules(war).isEmpty()) {
+                parents.add(war);
+            }
+        }
+        IModule[] modules = (IModule[]) parents.toArray(new IModule[parents.size()]);
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerDelegate.doGetParentModules", modules);
+        return modules;
+    }
+
+    /**
+     * Return all applications this module is contained in
+     * 
+     * @param module
+     * 
+     * @return 
+     */
+    private List<IModule> getApplicationModules(IModule module) {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.getApplicationModules", module);
+
+        ArrayList<IModule> list = new ArrayList<IModule>();
+
+        IModule[] ears = ServerUtil.getModules(IModuleConstants.JST_EAR_MODULE);
+        for (int i = 0; i < ears.length; i++) {
+            IEnterpriseApplication ear = (IEnterpriseApplication) ears[i].loadAdapter(IEnterpriseApplication.class, null);
+            IModule[] modules = ear.getModules();
+            for (int j = 0; j < modules.length; j++) {
+                if (modules[j].equals(module))
+                    list.add(ears[i]);
+            }
+        }
+
+        if (AriesHelper.isAriesInstalled()) {
+            IModule[] applications = ServerUtil.getModules(OsgiConstants.APPLICATION);
+            for (int i = 0; i < applications.length; i++) {
+                FlatComponentDeployable application = (FlatComponentDeployable) applications[i].loadAdapter(FlatComponentDeployable.class,  null);
+                IModule[] modules = application.getModules();
+                for (int j = 0; j < modules.length; j++) {
+                    if (modules[j].equals(module))
+                        list.add(applications[i]);
+                }
+            }
+  
+            IModule[] composites = ServerUtil.getModules(OsgiConstants.COMPOSITE_BUNDLE);
+            for (int i = 0; i < composites.length; i++) {
+                FlatComponentDeployable composite = (FlatComponentDeployable) composites[i].loadAdapter(FlatComponentDeployable.class,  null);
+                IModule[] modules = composite.getModules();
+                for (int j = 0; j < modules.length; j++) {
+                    if (modules[j].equals(module))
+                        list.add(composites[i]);
+                }
+            }
+        }
+
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerDelegate.getApplicationModules", list);
+        return list;
+    }
 
     /**
      * Return an array of ServerPorts associated with this server
@@ -277,7 +413,7 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         ports.add(new ServerPort(PROPERTY_RMI_PORT, "RMI Naming", Integer.parseInt(getRMINamingPort()), "rmi"));
 
         ServerPort[] serverPorts = ports.toArray(new ServerPort[ports.size()]);
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.getServerPorts;", serverPorts);
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.getServerPorts", serverPorts);
         return serverPorts;
     }
 
@@ -391,18 +527,18 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
 
     @Override
     public void saveConfiguration(IProgressMonitor monitor) throws CoreException {
-        Trace.tracePoint("Enter", Activator.traceCore, "GeronimoServerDelegate.v30.saveConfiguration", monitor);
+        Trace.tracePoint("Enter", Activator.traceCore, "GeronimoServerDelegate.saveConfiguration", monitor);
         super.saveConfiguration(monitor);
-        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerDelegate.v30.saveConfiguration", monitor);
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerDelegate.saveConfiguration", monitor);
     }
     
     
 
     @Override
     public void configurationChanged() {
-        Trace.tracePoint("Enter", Activator.traceCore, "GeronimoServerDelegate.v30.configurationChanged");
+        Trace.tracePoint("Enter", Activator.traceCore, "GeronimoServerDelegate.configurationChanged");
         super.configurationChanged();
-        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerDelegate.v30.configurationChanged");
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerDelegate.configurationChanged");
     }
 
     // 
@@ -681,11 +817,13 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         resumeArgUpdates();
     }
 
-    private void addParm(StringBuilder sb, String parm) {
+    private void addParm(StringBuilder sb, Object... args) {
         if (sb.length() > 0) {
             sb.append(" ");
         }
-        sb.append(parm);
+        for (Object arg : args) {
+            sb.append(arg);
+        }
     }
 
     public String getCleanOSGiBundleCacheArgs() {
@@ -748,8 +886,43 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     // PROPERTY_VM_ARGS
     // 
     public String getVMArgs() {
-        return getInstanceProperty(PROPERTY_VM_ARGS);
+        String superVMArgs = getInstanceProperty(PROPERTY_VM_ARGS);
+        if (superVMArgs != null && superVMArgs.trim().length() > 0) {
+            return superVMArgs;
+        }
+  
+        StringBuilder args = new StringBuilder();
+
+        addParm(args, "-javaagent:\"$(GERONIMO_HOME)/lib/agent/transformer.jar\"");
+
+        String pS = System.getProperty("path.separator");
+        
+        //-Djava.ext.dirs="GERONIMO_BASE/lib/ext;JRE_HOME/lib/ext"
+        addParm(args, "-Djava.ext.dirs=\"$(GERONIMO_HOME)/lib/ext", pS, "$(JRE_HOME)/lib/ext\"");
+
+        //-Djava.endorsed.dirs="GERONIMO_BASE/lib/endorsed;JRE_HOME/lib/endorsed"
+        addParm(args, "-Djava.endorsed.dirs=\"$(GERONIMO_HOME)/lib/endorsed", pS, "$(JRE_HOME)/lib/endorsed\"");
+
+        // Specify the minimum memory options for the Geronimo server
+        addParm(args, "-Xms256m -Xmx512m -XX:MaxPermSize=128m");
+
+        // Specify GERONIMO_BASE
+        addParm(args, "-Dorg.apache.geronimo.home.dir=\"$(GERONIMO_HOME)\"");
+                
+        addParm(args, "-Dkaraf.home=\"$(GERONIMO_HOME)\"");
+        addParm(args, "-Dkaraf.base=\"$(GERONIMO_HOME)\"");
+        addParm(args, "-Djava.util.logging.config.file=\"$(GERONIMO_HOME)/etc/java.util.logging.properties\"");
+               
+        // Karaf arguments
+        addParm(args, getKarafShellArgs());
+        addParm(args, "-Dkaraf.startRemoteShell=true");
+        
+        String vmArgs = args.toString();
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServer.getVMArgs", vmArgs);
+        
+        return vmArgs;
     }
+    
     public void setVMArgs(String value) {
         setInstanceProperty(PROPERTY_VM_ARGS, value);
     }
@@ -766,8 +939,26 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
     // PROPERTY_PROGRAM_ARGS
     // 
     public String getProgramArgs() {
-        return getInstanceProperty(PROPERTY_PROGRAM_ARGS);
+        String superVMArgs = getInstanceProperty(PROPERTY_PROGRAM_ARGS);
+        if (superVMArgs != null && superVMArgs.trim().length() > 0) {
+            return superVMArgs;
+        }
+        
+        StringBuilder args = new StringBuilder();
+
+        addParm(args, getConsoleLogLevel());
+        
+        if (isCleanOSGiBundleCache()) {
+            addParm(args, getCleanOSGiBundleCacheArgs());
+        }
+
+        String programArgs = args.toString();
+        
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerDelegate.getProgramArgs", programArgs);
+        
+        return programArgs;
     }
+    
     public void setProgramArgs(String value) {
         setInstanceProperty(PROPERTY_PROGRAM_ARGS, value);
     }
@@ -922,78 +1113,4 @@ abstract public class GeronimoServerDelegate extends ServerDelegate implements I
         setAttribute(GeronimoRuntimeDelegate.SERVER_INSTANCE_PROPERTIES, map);
     }
 
-
-    /**
-     * Return all parent module(s) of this module
-     * 
-     * @param module
-     * 
-     * @return 
-     */
-    private IModule[] doGetParentModules(IModule module) {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.v30.doGetParentModules", module);
-
-        ArrayList<IModule> parents = new ArrayList<IModule>();
-        parents.addAll(getApplicationModules(module));
-
-        // also check to see if the module is a utility module for a stand-alone
-        // web module
-        for (IModule war : J2EEUtil.getWebModules(module, null)) {
-            if (getApplicationModules(war).isEmpty()) {
-                parents.add(war);
-            }
-        }
-        IModule[] modules = (IModule[]) parents.toArray(new IModule[parents.size()]);
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerDelegate.v30.doGetParentModules", modules);
-        return modules;
-    }
-
-
-    /**
-     * Return all applications this module is contained in
-     * 
-     * @param module
-     * 
-     * @return 
-     */
-    private List<IModule> getApplicationModules(IModule module) {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.getApplicationModules", module);
-
-        ArrayList<IModule> list = new ArrayList<IModule>();
-
-        IModule[] ears = ServerUtil.getModules(IModuleConstants.JST_EAR_MODULE);
-        for (int i = 0; i < ears.length; i++) {
-            IEnterpriseApplication ear = (IEnterpriseApplication) ears[i].loadAdapter(IEnterpriseApplication.class, null);
-            IModule[] modules = ear.getModules();
-            for (int j = 0; j < modules.length; j++) {
-                if (modules[j].equals(module))
-                    list.add(ears[i]);
-            }
-        }
-
-        if (AriesHelper.isAriesInstalled()) {
-            IModule[] applications = ServerUtil.getModules(OsgiConstants.APPLICATION);
-            for (int i = 0; i < applications.length; i++) {
-                FlatComponentDeployable application = (FlatComponentDeployable) applications[i].loadAdapter(FlatComponentDeployable.class,  null);
-                IModule[] modules = application.getModules();
-                for (int j = 0; j < modules.length; j++) {
-                    if (modules[j].equals(module))
-                        list.add(applications[i]);
-                }
-            }
-  
-            IModule[] composites = ServerUtil.getModules(OsgiConstants.COMPOSITE_BUNDLE);
-            for (int i = 0; i < composites.length; i++) {
-                FlatComponentDeployable composite = (FlatComponentDeployable) composites[i].loadAdapter(FlatComponentDeployable.class,  null);
-                IModule[] modules = composite.getModules();
-                for (int j = 0; j < modules.length; j++) {
-                    if (modules[j].equals(module))
-                        list.add(composites[i]);
-                }
-            }
-        }
-
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerDelegate.getApplicationModules", list);
-        return list;
-    }
 }
