@@ -66,7 +66,7 @@
             initialState="stopped"
             supportsRemoteHosts="true"
             startTimeout="240000"
-            stopTimeout="30000"
+            stopTimeout="90000"
             startBeforePublish="true"
             runtimeTypeId="org.apache.geronimo.runtime.30"
             launchConfigId="org.apache.geronimo.st.v30.core.launchConfigurationType"

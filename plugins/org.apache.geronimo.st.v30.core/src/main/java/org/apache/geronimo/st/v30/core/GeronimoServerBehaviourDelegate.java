@@ -245,28 +245,66 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
      * 
      * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#stop(boolean)
      */
-    synchronized public void stop(final boolean force) {
+    public synchronized void stop(final boolean force) {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.stop", force);
 
-        stopPingThread();
-        if (getServer().getServerState() != IServer.STATE_STOPPED) {
+        IServer server = getServer();
+                
+        if (server.getServerState() != IServer.STATE_STOPPED) {
             setServerState(IServer.STATE_STOPPING);
-            stopKernel();
         }
-        GeronimoConnectionFactory.getInstance().destroy(getServer());
-        if (force) {
-            terminate();
-            return;
+        
+        // stop threads
+        stopPingThread();
+        stopSynchronizeProjectOnServerTask();
+        
+        // request shutdown
+        stopKernel();
+        
+        server.getStopTimeout();
+        
+        // wait for shutdown
+        if (!waitForStopped(60 * 1000) || force) {
+            ILaunch launch = server.getLaunch();
+            if (launch != null) {
+                Trace.trace(Trace.INFO, "Killing the geronimo server process", Activator.traceCore); //$NON-NLS-1$
+                try {
+                    launch.terminate();
+                } catch (Exception e) {
+                    Trace.trace(Trace.ERROR, "Error killing the geronimo server process", e, Activator.logCore); //$NON-NLS-1$
+                }
+            }
         }
-        int state = getServer().getServerState();
-        if (state == IServer.STATE_STOPPED)
-            return;
-        if (state == IServer.STATE_STARTING || state == IServer.STATE_STOPPING)
-            terminate();
-                                                   
+        
+        GeronimoConnectionFactory.getInstance().destroy(server);
+        
+        stopImpl(); 
+                                                           
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.stop");
     }
 
+    private boolean waitForStopped(long timeout) {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.waitForStopped", timeout);
+        
+        long started = System.currentTimeMillis();
+        boolean stopped = false;
+        try {
+            while (System.currentTimeMillis() - started < timeout) {
+                if (isKernelAlive()) {
+                    Thread.sleep(500);
+                } else {
+                    stopped = true;
+                    break;
+                }
+            }
+        } catch (InterruptedException e) {
+            // ignore
+        }
+        
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.waitForStopped", stopped);
+        return stopped;
+    }
+    
     private void setStatus(IModule[] module, IStatus status, MultiStatus multiStatus) {
         if (status.isOK()) {
             setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
@@ -839,33 +877,6 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         return (IGeronimoServer) getServer().loadAdapter(IGeronimoServer.class, null);
     }
 
-    protected void terminate() {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.terminate");
-
-        if (getServer().getServerState() == IServer.STATE_STOPPED) {
-            return;
-        }
-
-        setServerState(IServer.STATE_STOPPING);
-        Trace.trace(Trace.INFO, "Killing the geronimo server process", Activator.traceCore); //$NON-NLS-1$
-        
-        try {
-            ILaunch launch = getServer().getLaunch();
-            if (launch != null) {
-                launch.terminate();
-            }
-            stopImpl();            
-        } catch (Exception e) {
-            Trace.trace(Trace.ERROR, "Error killing the geronimo server process", e, Activator.logCore); //$NON-NLS-1$
-            // 
-            // WTP does not allow a CoreException to be thrown in this case 
-            // 
-            throw new RuntimeException(Messages.serverStopFailed);
-        }
-
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.terminate");
-    }
-
     protected void stopImpl() {
         if (processListener != null) {
             DebugPlugin.getDefault().removeDebugEventListener(processListener);
@@ -1198,16 +1209,16 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         return kernel;
     }
     
-    protected void stopKernel() {
+    private void stopKernel() {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.stopKernel");
         try {
             MBeanServerConnection connection = getServerConnection();
-            Trace.trace(Trace.INFO, "Server shutdown starting...", Activator.traceCore);
             connection.invoke(getFrameworkMBean(connection), "stopBundle",
                      new Object[] { 0 }, new String[] { long.class.getName() });
-            Trace.trace(Trace.INFO, "Server shutdown completed", Activator.traceCore);          
         } catch (Exception e) {
-            Trace.trace(Trace.ERROR, e.getMessage(), e, Activator.traceCore);
+            Trace.trace(Trace.ERROR, "Error while requesting server shutdown", e, Activator.traceCore);
         }
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.stopKernel");
     }
 
     public boolean isKernelAlive() {
