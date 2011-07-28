@@ -860,6 +860,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
 
     public void setServerStarted() {
         setServerState(IServer.STATE_STARTED);
+        startSynchronizeProjectOnServerTask();
     }
 
     public void setServerStopped() {
@@ -1319,8 +1320,10 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     public void stopUpdateServerStateTask() {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stopUpdateServerStateTask", Activator.traceCore);
 
-        if (stateTimer != null)
+        if (stateTimer != null) {
             stateTimer.cancel();
+            stateTimer = null;
+        }
 
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.stopUpdateServerStateTask", Activator.traceCore);
     }
@@ -1328,8 +1331,10 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     public void stopSynchronizeProjectOnServerTask() {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stopSynchronizeProjectOnServerTask", Activator.traceCore);
         
-        if (synchronizerTimer != null)
-            synchronizerTimer.cancel(); 
+        if (synchronizerTimer != null) {
+            synchronizerTimer.cancel();
+            synchronizerTimer = null;
+        }
 
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.stopSynchronizeProjectOnServerTask", Activator.traceCore);
     }
