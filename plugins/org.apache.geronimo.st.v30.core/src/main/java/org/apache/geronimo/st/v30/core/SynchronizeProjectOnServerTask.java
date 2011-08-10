@@ -16,7 +16,7 @@
  */
 
 /**
- * @version $Rev: 817996 $ $Date: 2009-09-23 16:04:12 +0800 (Wed, 23 Sep 2009) $
+ * @version $Rev$ $Date$
  */
 package org.apache.geronimo.st.v30.core;
 
