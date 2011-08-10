@@ -33,9 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import javax.enterprise.deploy.spi.Target;
 import javax.enterprise.deploy.spi.exceptions.DeploymentManagerCreationException;
@@ -135,7 +132,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
 
     private PublishStateListener publishStateListener;
     
-    private Lock publishLock = new ReentrantLock();
+    private volatile boolean publishing;
     
     private Set<IProject> knownSourceProjects = null; 
     
@@ -726,24 +723,14 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishModule");
     }
     
-    public Lock getPublishLock() {
-        return publishLock;
+    public boolean isPublishing() {
+        return publishing;
     }
     
     @Override
     public void publishStart(IProgressMonitor monitor) throws CoreException {
-        doPublishStart(monitor);
-        try {
-            if (!publishLock.tryLock(120, TimeUnit.SECONDS)) {
-                throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Unable to obtain publish lock"));
-            }
-        } catch (InterruptedException e) {
-            // ignore
-        }
-    }
-    
-    private void doPublishStart(IProgressMonitor monitor) throws CoreException {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishStart", monitor);
+        publishing = true;
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishStart");
     }
     
@@ -752,7 +739,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         try {
             doPublishFinish(monitor);
         } finally {
-            publishLock.unlock();
+            publishing = false;
         }
     }
     
@@ -899,7 +886,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.resetModuleState");
     }
     
-    private AbstractModuleHandler getModuleHandler(IModule module) {
+    protected AbstractModuleHandler getModuleHandler(IModule module) {
         return (GeronimoUtils.isBundleModule(module) || GeronimoUtils.isFragmentBundleModule(module)) ? osgiModuleHandler : defaultModuleHandler;
     }
     

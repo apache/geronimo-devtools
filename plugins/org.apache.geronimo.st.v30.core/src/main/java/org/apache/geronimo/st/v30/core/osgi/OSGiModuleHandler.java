@@ -17,11 +17,13 @@
 package org.apache.geronimo.st.v30.core.osgi;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.management.MBeanException;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 
@@ -111,18 +113,8 @@ public class OSGiModuleHandler extends AbstractModuleHandler {
         
         long bundleId = getBundleId(module);
         if (bundleId != -1) {
-            try {
-                String state = getBundleState(bundleId);
-                if ("active".equalsIgnoreCase(state)) {
-                    setModuleState(new IModule [] {module}, IServer.STATE_STARTED);
-                } else if ("resolved".equalsIgnoreCase(state)) {
-                    setModuleState(new IModule [] {module}, IServer.STATE_STOPPED);
-                } else {
-                    setModuleState(new IModule [] {module}, IServer.STATE_UNKNOWN);
-                }
-            } catch (Exception e) {
-                setModuleState(new IModule [] {module}, IServer.STATE_UNKNOWN);
-            }
+            int state = doGetModuleState(bundleId);
+            setModuleState(new IModule [] {module}, state);
         } else {
             doAdded(module, monitor);
         }
@@ -274,6 +266,45 @@ public class OSGiModuleHandler extends AbstractModuleHandler {
     }
     
     private MBeanServerConnection getServerConnection() throws Exception {
-        return serverDelegate.getServerConnection();
+        RemoteDeploymentManager dm = (RemoteDeploymentManager) DeploymentCommandFactory.getDeploymentManager(this.getServer());
+        return dm.getJMXConnector().getMBeanServerConnection();
+    }
+
+    @Override
+    public int getModuleState(IModule module) throws Exception {
+        long bundleId = getBundleId(module);
+        return doGetModuleState(bundleId);
+    }
+    
+    private int doGetModuleState(long bundleId) {
+        Trace.tracePoint("Entry", Activator.traceCore, "OSGiBundleHandler.doGetModuleState", bundleId);
+        
+        int bundleState = IServer.STATE_UNKNOWN;
+        if (bundleId != -1) {
+            String state = null;
+            try {
+                state = getBundleState(bundleId);
+                if ("active".equalsIgnoreCase(state)) {
+                    bundleState = IServer.STATE_STARTED;
+                } else if ("resolved".equalsIgnoreCase(state)) {
+                    bundleState = IServer.STATE_STOPPED;
+                }
+            } catch (MBeanException e) {
+                // XXXX: per spec when bundle is not found IllegalArgumentException should 
+                // be thrown but Aries implementation throws IOException.
+                if (e.getCause() instanceof IllegalArgumentException ||
+                    e.getCause() instanceof IOException) {
+                    bundleState = -1;  
+                } else {
+                    bundleState = IServer.STATE_UNKNOWN;
+                }
+            } catch (Exception e) {
+                bundleState = IServer.STATE_UNKNOWN;
+                Trace.trace(Trace.ERROR, "getModuleState() failed", e, Activator.traceCore);
+            }
+        }
+        
+        Trace.tracePoint("Exit", Activator.traceCore, "OSGiBundleHandler.doGetModuleState", bundleId, bundleState);
+        return bundleState;
     }
 }

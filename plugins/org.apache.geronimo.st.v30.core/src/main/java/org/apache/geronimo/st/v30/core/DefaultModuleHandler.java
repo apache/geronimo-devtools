@@ -22,6 +22,9 @@ import java.util.Map;
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
+import org.apache.geronimo.deployment.plugin.jmx.ExtendedDeploymentManager;
+import org.apache.geronimo.kernel.management.State;
+import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCmdStatus;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.v30.core.commands.IDeploymentCommand;
@@ -125,13 +128,8 @@ public class DefaultModuleHandler extends AbstractModuleHandler {
         String configId = DeploymentUtils.getLastKnownConfigurationId(module, getServer());
         if (configId != null) {
             IModule[] rootModule = new IModule[] { module };
-            if (DeploymentUtils.isStartedModule(dm, configId) != null) {
-                setModuleState(rootModule, IServer.STATE_STARTED);
-            } else if (DeploymentUtils.isStoppedModule(dm, configId) != null) {
-                setModuleState(rootModule, IServer.STATE_STOPPED);
-            } else {
-                setModuleState(rootModule, IServer.STATE_UNKNOWN);
-            }
+            int state = doGetModuleState( (ExtendedDeploymentManager) dm, configId);
+            setModuleState(rootModule, state == -1 ? IServer.STATE_UNKNOWN : state);
             mapper.addArtifactEntry(getServer(), module, configId);
         } else {
             doAdded(module, null, monitor);
@@ -249,6 +247,37 @@ public class DefaultModuleHandler extends AbstractModuleHandler {
         TargetModuleID[] ids = ((DeploymentCmdStatus) status).getResultTargetModuleIDs();        
         mapper.addArtifactEntry(getServer(), module, ids[0].getModuleID());
         return ids;
+    }
+
+    @Override
+    public int getModuleState(IModule module) throws Exception {
+        ExtendedDeploymentManager dm = (ExtendedDeploymentManager) DeploymentCommandFactory.getDeploymentManager(getServer());
+        String configID = ModuleArtifactMapper.getInstance().resolveArtifact(getServer(), module);
+        return doGetModuleState(dm, configID);
+    }
+    
+    private int doGetModuleState(ExtendedDeploymentManager dm, String configID) {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.doGetModuleState", configID);
+        
+        int moduleState = IServer.STATE_UNKNOWN;
+        if (configID != null) {
+            try {
+                State state = dm.getModulesState(Artifact.create(configID));
+                if (state == null) {
+                    moduleState = -1;
+                } else if (state == State.RUNNING) {
+                    moduleState = IServer.STATE_STARTED;
+                } else if (state == State.STOPPED) {
+                    moduleState = IServer.STATE_STOPPED;
+                }
+            } catch (Exception e) {
+                moduleState = IServer.STATE_UNKNOWN;
+                Trace.trace(Trace.ERROR, "getModuleState() failed", e, Activator.traceCore);
+            }
+        }
+        
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.doGetModuleState", configID, moduleState);
+        return moduleState;
     }
     
 }

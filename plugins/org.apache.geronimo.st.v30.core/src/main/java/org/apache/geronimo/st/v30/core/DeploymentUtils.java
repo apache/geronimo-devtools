@@ -399,22 +399,6 @@ public class DeploymentUtils {
         return moduleId;
     }
     
-    public static TargetModuleID isStartedModule(DeploymentManager dm, String configId) throws TargetException {
-        Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.isStartedModule", dm, configId);
-        TargetModuleID[] ids = dm.getRunningModules(null, dm.getTargets());
-        TargetModuleID moduleId = getModuleId(ids, configId);
-        Trace.tracePoint("Exit", Activator.traceCore, "DeploymentUtils.isStartedModule", moduleId);
-        return moduleId;
-    }
-    
-    public static TargetModuleID isStoppedModule(DeploymentManager dm, String configId) throws TargetException {
-        Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.isStoppedModule", dm, configId);
-        TargetModuleID[] ids = dm.getNonRunningModules(null, dm.getTargets());
-        TargetModuleID moduleId = getModuleId(ids, configId);
-        Trace.tracePoint("Exit", Activator.traceCore, "DeploymentUtils.isStoppedModule", moduleId);
-        return moduleId;
-    }
-    
     private static TargetModuleID getModuleId(TargetModuleID[] ids, String configId) {
         if (ids != null) {
             for (int i = 0; i < ids.length; i++) {

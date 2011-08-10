@@ -45,6 +45,8 @@ public abstract class AbstractModuleHandler {
     
     abstract public void doRestartModule(IModule[] module, IProgressMonitor monitor) throws Exception;
 
+    abstract public int getModuleState(IModule module) throws Exception;
+    
     public void serverStopped() {        
     }
     

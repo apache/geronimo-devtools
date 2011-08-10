@@ -21,18 +21,9 @@
 package org.apache.geronimo.st.v30.core;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.TimerTask;
-import java.util.concurrent.locks.Lock;
 
-import javax.enterprise.deploy.spi.DeploymentManager;
-import javax.enterprise.deploy.spi.Target;
-import javax.enterprise.deploy.spi.TargetModuleID;
-
-import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -41,7 +32,6 @@ import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
-import org.eclipse.wst.server.core.ServerUtil;
 
 public class SynchronizeProjectOnServerTask extends TimerTask {
 
@@ -49,85 +39,47 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
 
     private IServer server;
     
-    private Lock publishLock;
-
     public SynchronizeProjectOnServerTask(GeronimoServerBehaviourDelegate delegate, IServer server) {
         this.delegate = delegate;
         this.server = server;
-        this.publishLock = delegate.getPublishLock();
     }
 
     @Override
     public void run() {
-        Trace.tracePoint("Entry ", Activator.traceCore, "SynchronizeProjectOnServerTask.run");
+        Trace.tracePoint("Entry", Activator.traceCore, "SynchronizeProjectOnServerTask.run");
 
-        if (canUpdateState() && publishLock.tryLock()) {
+        if (canUpdateState() && !delegate.isPublishing()) {
+
+            List<IModule> removedModules = new ArrayList<IModule>();
+
+            IModule[] modules = server.getModules();
+
             try {
-                Map<String, String> projectsOnServer = ModuleArtifactMapper.getInstance().getServerArtifactsMap(server);
-
-                if (projectsOnServer != null && !projectsOnServer.isEmpty()) {
-                    synchronized (projectsOnServer) {
-                        List<IModule> removedModules = new ArrayList<IModule>();
-
-                        DeploymentManager dm = DeploymentCommandFactory.getDeploymentManager(server);
-                        Target[] targets = dm.getTargets();
-
-                        TargetModuleID[] runningIds = dm.getRunningModules(null, targets);
-                        Set<String> runningConfigIds = createSet(runningIds);
-
-                        TargetModuleID[] nonRunningIds = dm.getNonRunningModules(null, targets);
-                        Set<String> nonRunningConfigIds = createSet(nonRunningIds);
-                        
-                        TargetModuleID[] availableIds = dm.getAvailableModules(null, targets);
-                        Set<String> availableConfigIds = createSet(availableIds);
-
-                        for (Map.Entry<String, String> entry : projectsOnServer.entrySet()) {   
-                            String moduleID = entry.getKey();
-                            String configID = entry.getValue();
-
-                            IModule module = ServerUtil.getModule(moduleID);
-                            if (module != null && ServerUtil.containsModule(server, module, null)) {
-                                if (runningConfigIds.contains(configID)) {
-                                    delegate.setModulesState(new IModule[] { module }, IServer.STATE_STARTED);
-                                } else if (nonRunningConfigIds.contains(configID)) {
-                                    delegate.setModulesState(new IModule[] { module }, IServer.STATE_STOPPED);
-                                } else if (!availableConfigIds.contains(configID)) {
-                                    // it's not running, stopped or available - so remove it
-                                    removedModules.add(module);
-                                }
-                            }
-                        }                        
-
-                        if (!removedModules.isEmpty()) {
-                            removeModules(removedModules);
-                        } else {
-                            Trace.trace(Trace.INFO, "SynchronizeProjectOnServerTask: no configuration is removed outside eclipse on server: " + this.server.getId(), Activator.traceCore);
-                        }
-
+                for (IModule module : modules) {
+                    int state = delegate.getModuleHandler(module).getModuleState(module);
+                    if (state == -1) {
+                        removedModules.add(module);
+                    } else {
+                        delegate.setModulesState(new IModule[] { module }, state);
                     }
+                }
 
+                if (!removedModules.isEmpty()) {
+                    if (!delegate.isPublishing()) {
+                        removeModules(removedModules);
+                    }
                 } else {
-                    Trace.trace(Trace.INFO, "SynchronizeProjectOnServerTask: no project has been deployed on server: " + this.server.getId(), Activator.traceCore);
+                    Trace.trace(Trace.INFO, "SynchronizeProjectOnServerTask: no configuration is removed outside eclipse on server: " + server.getId(), Activator.traceCore);
                 }
 
             } catch (Exception e) {
                 Trace.trace(Trace.WARNING, "Error in SynchronizeProjectOnServerTask.run", e, Activator.logCore);
-            } finally {
-                publishLock.unlock();
             }
         }
 
-        Trace.tracePoint("Exit ", Activator.traceCore, "SynchronizeProjectOnServerTask.run");
+        Trace.tracePoint("Exit", Activator.traceCore, "SynchronizeProjectOnServerTask.run");
     }
-
-    private static Set<String> createSet(TargetModuleID[] ids) {
-        Set<String> moduleIds = new HashSet<String>();
-        for (TargetModuleID id : ids) {
-            moduleIds.add(id.getModuleID());
-        }
-        return moduleIds;
-    }
-
+   
     private void removeModules(List<IModule> removedModules) {
         Trace.tracePoint("Entry ", Activator.traceCore, "SynchronizeProjectOnServerTask.removeModules", removedModules);
 
