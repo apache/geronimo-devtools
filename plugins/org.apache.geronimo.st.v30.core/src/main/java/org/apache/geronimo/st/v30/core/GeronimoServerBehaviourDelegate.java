@@ -1015,6 +1015,13 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
                 break;
             case IModuleResourceDelta.ADDED:
             case IModuleResourceDelta.CHANGED:
+                File parentFile = file.getParentFile();
+                if (parentFile != null && !parentFile.exists()) {
+                    if (!parentFile.mkdirs()) {
+                        Trace.trace(Trace.ERROR, "Cannot create target directory: " + parentFile, Activator.logCore);
+                        return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Cannot create target directory", null);
+                    }
+                }
                 String rootFolder = GeronimoUtils.getVirtualComponent(module).getRootFolder().getProjectRelativePath().toOSString();
                 String sourceFile = module.getProject().getFile(rootFolder + ch + moduleFile.getModuleRelativePath() + ch + moduleFile.getName()).getLocation().toString();
                 
@@ -1027,7 +1034,6 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
                     while ((bytesRead = in.read(buffer)) > 0) {
                         out.write(buffer, 0, bytesRead);
                     }
-
                 } catch (FileNotFoundException e) {
                     Trace.trace(Trace.ERROR, "Cannot find file to copy: " + sourceFile, e, Activator.logCore);
                     return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Cannot find file " + sourceFile, e);
