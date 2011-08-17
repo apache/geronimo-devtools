@@ -442,7 +442,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
                     ModuleDeltaList moduleList = iterator.next();
                     IModule[] rootModule = moduleList.getRootModule();
                     if (GeronimoUtils.isEBAModule(rootModule[0]) || GeronimoUtils.isEarModule(rootModule[0])) {
-                        if (moduleList.hasChangedChildModulesOnly()) {
+                        if (moduleList.hasChangedChildModulesOnly(true)) {
                             boolean replacementPossible = true;
                             Map<IModule[], IStatus> statusMap = new HashMap<IModule[], IStatus>();   
                             
@@ -496,7 +496,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             boolean refreshOSGiBundle = getServerDelegate().isRefreshOSGiBundle();
             for (ModuleDeltaList moduleList : publishMap.values()) {  
                 IModule[] rootModule = moduleList.getRootModule();
-                if (refreshOSGiBundle && GeronimoUtils.isEBAModule(rootModule[0]) && moduleList.hasChangedChildModulesOnly()) {
+                if (refreshOSGiBundle && GeronimoUtils.isEBAModule(rootModule[0]) && moduleList.hasChangedChildModulesOnly(false)) {
                     List<IModule[]> changedModules = new ArrayList<IModule[]>();
                     List<IModule[]> unChangedModules = new ArrayList<IModule[]>();
                     for (ModuleDelta moduleDelta : moduleList.getChildModules()) {
@@ -662,21 +662,33 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             return children;
         }
 
-        public boolean hasChangedChildModulesOnly() {
+        public boolean hasChangedChildModulesOnly(boolean allChangedAllowed) {
+            int changed = getChangedChildModulesOnly();
+            if (allChangedAllowed) {
+                return (changed > 0);
+            } else {
+                return (changed > 0 && changed < children.size());
+            }
+        }
+        
+        /*
+         * Returns number of "changed" child modules. 
+         * Returns -1 if a single "added" or "removed" child module is found or a root module is modified.
+         */
+        public int getChangedChildModulesOnly() {
             if (root.delta == NO_CHANGE) {
                 int changed = 0;
                 for (ModuleDelta child : children) {
                     if (child.delta == ADDED || child.delta == REMOVED) {
-                        return false;
+                        return -1;
                     } else if (child.delta == CHANGED) {
                         changed++;
                     }
                 }
-                return (changed > 0);          
+                return changed;          
             }
-            return false;
+            return -1;
         }
-        
     }
 
     /*
