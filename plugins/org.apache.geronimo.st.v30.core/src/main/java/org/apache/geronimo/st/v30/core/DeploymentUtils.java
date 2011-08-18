@@ -27,6 +27,7 @@ import javax.enterprise.deploy.spi.exceptions.TargetException;
 import org.apache.geronimo.kernel.util.SelectorUtils;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.v30.core.commands.TargetModuleIdNotFoundException;
+import org.apache.geronimo.st.v30.core.internal.Messages;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
@@ -121,12 +122,13 @@ public class DeploymentUtils {
         return null;
     }
     
-    public static File getTargetFile(IServer server, IModule module) {        
+    public static File getTargetFile(IServer server, IModule module) throws CoreException {        
         File file = null;
         IGeronimoServer gs = (IGeronimoServer) server.getAdapter(IGeronimoServer.class);
         if (gs.isRunFromWorkspace()) {
             //TODO Re-enable after DeployableModule supported in G
             //file = generateRunFromWorkspaceConfig(getModule());
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Run from workspace is unsupported."));
         } else {
             IPath outputDir = DeploymentUtils.STATE_LOC.append("server_" + server.getId());
             outputDir.toFile().mkdirs();
@@ -177,40 +179,44 @@ public class DeploymentUtils {
     }
 
 
-    public static File createJarFile(IModule module, IPath outputPath) {
+    public static File createJarFile(IModule module, IPath outputPath) throws CoreException {
         Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.createJarFile", module, outputPath);
 
         IDataModel model = getExportDataModel(module);
-        File exportedFile = null;
-        
-        if (model != null) {
-
-            IVirtualComponent comp = ComponentCore.createComponent(module.getProject());
-
-            //Here, specific extension name should be got, in case module has no standard JEE descriptor file included
-            String extensionName = getModuleExtension(module);
-            
-            // TODO: Need to determine what properties to set for OSGi applications
-            model.setProperty(J2EEComponentExportDataModelProvider.PROJECT_NAME, module.getProject());
-            model.setProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION, outputPath.append(module.getName())
-                    + extensionName);
-
-            model.setProperty(J2EEComponentExportDataModelProvider.COMPONENT, comp);
-            model.setBooleanProperty(J2EEComponentExportDataModelProvider.OVERWRITE_EXISTING, true);
-            model.setBooleanProperty(J2EEComponentExportDataModelProvider.RUN_BUILD, false);
-
-            try {
-                model.getDefaultOperation().execute(null, null);
-                exportedFile = new File(model.getStringProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION));
-            } catch (ExecutionException e) {
-                Trace.trace(Trace.ERROR, "Error exporting module", e, Activator.logCore);
-            }            
+        if (model == null) {
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "No export DataModel for " + module.getName(), null));
         }
+        
+        IVirtualComponent comp = ComponentCore.createComponent(module.getProject());
 
+        //Here, specific extension name should be got, in case module has no standard JEE descriptor file included
+        String extensionName = getModuleExtension(module);
+            
+        // TODO: Need to determine what properties to set for OSGi applications
+        model.setProperty(J2EEComponentExportDataModelProvider.PROJECT_NAME, module.getProject());
+        model.setProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION, outputPath.append(module.getName()) + extensionName);
+
+        model.setProperty(J2EEComponentExportDataModelProvider.COMPONENT, comp);
+        model.setBooleanProperty(J2EEComponentExportDataModelProvider.OVERWRITE_EXISTING, true);
+        model.setBooleanProperty(J2EEComponentExportDataModelProvider.RUN_BUILD, false);
+
+        try {
+            IStatus status = model.getDefaultOperation().execute(null, null);
+            if (status != null && !status.isOK()) {
+                throw new CoreException(status);
+            }
+        } catch (ExecutionException e) {
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.bind(Messages.moduleExportError, module.getName()), e)); 
+        } 
+        
+        File exportedFile = new File(model.getStringProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION));
+        if (exportedFile == null || !exportedFile.exists()) {
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.bind(Messages.moduleExportError, module.getName()))); 
+        }
+                      
         Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.createJarFile", exportedFile);
         return exportedFile;
     }
-
 
     public static IDataModel getExportDataModel(IModule module) {
         Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.getExportDataModel", module);

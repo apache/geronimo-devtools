@@ -572,7 +572,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
                 setStatus(bundleModule, status, multiStatus);
             }
         } catch (Exception e) {
-            multiStatus.add(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, Messages.REFRESH_FAIL, e));
+            multiStatus.add(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.REFRESH_FAIL, e));
         }
         
         IStatus status;
@@ -592,9 +592,6 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
 
         try {
             File file = DeploymentUtils.getTargetFile(getServer(), bundleModule);
-            if (file == null) {
-                return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.bind(Messages.moduleExportError, bundleModule.getProject().getName()));
-            }
             
             String symbolicName = AriesHelper.getSymbolicName(bundleModule);
             Long bundleId = bundleMap.get(symbolicName);
@@ -607,7 +604,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             ExtendedDeploymentManager dm = (ExtendedDeploymentManager) DeploymentCommandFactory.getDeploymentManager(getServer());
             dm.updateEBAContent(ebaName, bundleId, file);
         } catch (Exception e) {
-            return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, Messages.REFRESH_FAIL, e);
+            return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.REFRESH_FAIL, e);
         }
 
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundle");

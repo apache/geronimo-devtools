@@ -54,14 +54,8 @@ abstract public class DeployCommand extends AbstractDeploymentCommand {
     public File getTargetFile() throws CoreException {
         Trace.tracePoint("Entry", Activator.traceCommands, "DeployCommand.getTargetFile");
 
-        IModule module = getModule();
-        File file = DeploymentUtils.getTargetFile(getServer(), module);
+        File file = DeploymentUtils.getTargetFile(getServer(), getModule());
         
-        if (file == null) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 
-                    Messages.bind(Messages.moduleExportError, module.getProject().getName())));     
-        }
-
         Trace.tracePoint("Exit ", Activator.traceCommands, "DeployCommand.getTargetFile", file);
         return file;
     }
