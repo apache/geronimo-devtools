@@ -149,8 +149,19 @@
         </section>
     </extension>
     
+    <!--
+      Add the edite default OSGI bundle start level section
+    -->
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
-        <section id="org.apache.server.geronimo.karafShell" order="21"
+        <section id="org.apache.server.geronimo.cleanOSGiBundleCache" order="21"
+            insertionId="org.eclipse.wst.server.editor.overview.right"
+            typeIds="org.apache.geronimo.server.30"
+            class="org.apache.geronimo.st.v30.ui.sections.ServerEditorSetOSGIBundleStartLevelSection">
+        </section>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.karafShell" order="22"
             insertionId="org.eclipse.wst.server.editor.overview.right"
             typeIds="org.apache.geronimo.server.30"
             class="org.apache.geronimo.st.v30.ui.sections.ServerEditorKarafShellSection">
@@ -158,7 +169,7 @@
     </extension>
     
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
-        <section id="org.apache.server.geronimo.loglevel" order="22"
+        <section id="org.apache.server.geronimo.loglevel" order="23"
             insertionId="org.eclipse.wst.server.editor.overview.right"
             typeIds="org.apache.geronimo.server.30"
             class="org.apache.geronimo.st.v30.ui.sections.ServerEditorLogLevelSection">
@@ -394,5 +405,20 @@
     <extension point="org.eclipse.ui.startup">
         <startup class="org.apache.geronimo.st.v30.ui.Startup"/>
     </extension>
-    
+    <!--
+        The pop up menu of changing the bundle's startup level
+    -->
+	<extension point="org.eclipse.ui.popupMenus">
+	  <objectContribution
+	    id="org.apache.geronimo.st.v30.ui.change.osgi.bundle.startlevel"
+	    objectClass="org.eclipse.wst.server.ui.IServerModule">
+	    <action
+	      id="org.apache.geronimo.st.v30.ui.change.osgi.bundle.startlevel.action"
+	      label="%changeBundleStartLevel"
+	      enablesFor="1"
+	      class="org.apache.geronimo.st.v30.ui.actions.ChangeBundleStartLevelAction">
+	    </action>
+	  </objectContribution>
+	</extension>
+	    
 </plugin>

@@ -49,6 +49,9 @@ public class Messages extends NLS {
     
     public static String refreshOSGiBundle;
     public static String refreshOSGiBundleDescription;
+    public static String changeOSGIBundleStartLevel;
+    public static String changeOSGIBundleStartLevelDesc;
+    public static String changeOSGIBundleStartLevelDescOnError;
     
     public static String editorSectionKarafShellTitle;
     public static String editorSectionKarafShellDescription;
@@ -64,6 +67,9 @@ public class Messages extends NLS {
     public static String editorSectionPublishAdvancedDescription;
     public static String notRedeployJSPFilesReminder;
     public static String notRedeployJSPFilesInformation;
+    public static String editorSectionOSGIBundleStartLevel;
+    public static String editorSectionOSGIBundleStartLevelDesc;
+    public static String defaultOSGIBundleStartLevel;
     
     public static String formServerInfo;
     public static String formHelp;
