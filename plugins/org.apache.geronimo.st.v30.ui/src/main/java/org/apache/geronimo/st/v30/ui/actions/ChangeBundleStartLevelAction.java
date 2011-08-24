@@ -16,7 +16,6 @@
  */
 package org.apache.geronimo.st.v30.ui.actions;
 
-
 import org.apache.geronimo.st.v30.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.v30.core.base.Bundle;
 import org.apache.geronimo.st.v30.core.internal.Trace;
@@ -37,84 +36,86 @@ import org.eclipse.wst.server.ui.internal.view.servers.ModuleServer;
 
 @SuppressWarnings("restriction")
 public class ChangeBundleStartLevelAction implements IObjectActionDelegate {
-	private Server server;
-	private IModule[] module;
-	
-	@Override
-	public void run(IAction arg0) {
-		ObjectPluginAction action = (ObjectPluginAction) arg0;
-		TreeSelection selection = (TreeSelection)action.getSelection();
-		ModuleServer ms = (ModuleServer) selection.getFirstElement();
-		module = ms.getModule();
-		server = (Server) ms.getServer();
-		
-		Bundle bundle = getBundle();
-		InputDialog diag = new ChangeStartLevelDiag(null, Messages.changeOSGIBundleStartLevel, 
-				Messages.changeOSGIBundleStartLevelDesc, bundle.getStartLevel() + "", null);
-		diag.open();
+    private Server server;
+    private IModule[] module;
 
-	}
+    @Override
+    public void run(IAction arg0) {
+        ObjectPluginAction action = (ObjectPluginAction) arg0;
+        TreeSelection selection = (TreeSelection) action.getSelection();
+        ModuleServer ms = (ModuleServer) selection.getFirstElement();
+        module = ms.getModule();
+        server = (Server) ms.getServer();
 
-	@Override
-	public void selectionChanged(IAction arg0, ISelection arg1) {
-	}
+        Bundle bundle = getBundle();
+        InputDialog diag = new ChangeStartLevelDiag(null, Messages.changeOSGIBundleStartLevel,
+                Messages.changeOSGIBundleStartLevelDesc, bundle.getStartLevel() + "", null);
+        diag.open();
 
-	@Override
-	public void setActivePart(IAction arg0, IWorkbenchPart arg1) {
-	}
-	
-	private class ChangeStartLevelDiag extends InputDialog {
+    }
 
-		public ChangeStartLevelDiag(Shell parentShell, String dialogTitle,
-				String dialogMessage, String initialValue,
-				IInputValidator validator) {
-			super(parentShell, dialogTitle, dialogMessage, initialValue, validator);
-		}
+    @Override
+    public void selectionChanged(IAction arg0, ISelection arg1) {
+    }
 
-		@Override
-		protected void cancelPressed() {
-			super.cancelPressed();
-		}
+    @Override
+    public void setActivePart(IAction arg0, IWorkbenchPart arg1) {
+    }
 
-		@Override
-		protected void okPressed() {
-			String value = this.getValue();
-			try {
-				int level = Integer.parseInt(value);
-				Bundle bundle = getBundle();
-				bundle.setStartLevel(level);
-				super.okPressed();
-				
-			} catch(Exception e) {
-				this.setErrorMessage(Messages.changeOSGIBundleStartLevelDescOnError);
-			}
-			
-			publish(module);
-		}
-		
-		private void publish(IModule[] module) {
-			GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) server.getAdapter(GeronimoServerBehaviourDelegate.class);
-			try {
-				delegate.getOsgiModuleHandler().doChanged(module[0], null);
-			} catch (Exception e) {
-				Trace.trace(Trace.ERROR, e.getMessage(), e, Activator.logActions);
-			}
-		}
-		
-	}
-	
-	private Bundle getBundle() throws RuntimeException {
-		Bundle bundle = null;
-		GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) server.getAdapter(GeronimoServerBehaviourDelegate.class);
-		try {
-		    bundle = delegate.getOsgiModuleHandler().getBundleInfo(module[0]);
-			if(bundle == null) throw new NullPointerException("the bundle is inexisted");
-			
-			return bundle;
-		} catch (Exception e) {
-			Trace.trace(Trace.ERROR, e.getMessage(), e, Activator.logActions);
-			throw new RuntimeException(e);
-		}
-	}
+    private class ChangeStartLevelDiag extends InputDialog {
+
+        public ChangeStartLevelDiag(Shell parentShell, String dialogTitle, String dialogMessage, String initialValue,
+                IInputValidator validator) {
+            super(parentShell, dialogTitle, dialogMessage, initialValue, validator);
+        }
+
+        @Override
+        protected void cancelPressed() {
+            super.cancelPressed();
+        }
+
+        @Override
+        protected void okPressed() {
+            String value = this.getValue();
+            try {
+                int level = Integer.parseInt(value);
+                Bundle bundle = getBundle();
+                bundle.setStartLevel(level);
+                super.okPressed();
+
+            } catch (Exception e) {
+                this.setErrorMessage(Messages.changeOSGIBundleStartLevelDescOnError);
+            }
+
+            publish(module);
+        }
+
+        private void publish(IModule[] module) {
+            GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) server
+                    .getAdapter(GeronimoServerBehaviourDelegate.class);
+            try {
+                delegate.getOsgiModuleHandler().doChanged(module[0], null);
+            } catch (Exception e) {
+                Trace.trace(Trace.ERROR, e.getMessage(), e, Activator.logActions);
+            }
+        }
+
+    }
+
+    private Bundle getBundle() throws RuntimeException {
+        Bundle bundle = null;
+        GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) server
+                .getAdapter(GeronimoServerBehaviourDelegate.class);
+        try {
+            bundle = delegate.getOsgiModuleHandler().getBundleInfo(module[0]);
+            if (bundle == null)
+                throw new NullPointerException("the bundle is inexisted");
+
+            return bundle;
+        } catch (Exception e) {
+            Trace.trace(Trace.ERROR, e.getMessage(), e, Activator.logActions);
+            throw new RuntimeException(e);
+        }
+    }
 
 }

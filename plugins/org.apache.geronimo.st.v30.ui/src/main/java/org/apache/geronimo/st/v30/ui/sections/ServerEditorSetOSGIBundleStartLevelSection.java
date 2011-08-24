@@ -30,8 +30,7 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
-public class ServerEditorSetOSGIBundleStartLevelSection extends
-		AbstractServerEditorSection {
+public class ServerEditorSetOSGIBundleStartLevelSection extends AbstractServerEditorSection {
     private Spinner startLevelSpinner;
 
     public ServerEditorSetOSGIBundleStartLevelSection() {
@@ -43,10 +42,8 @@ public class ServerEditorSetOSGIBundleStartLevelSection extends
 
         FormToolkit toolkit = getFormToolkit(parent.getDisplay());
 
-        Section section = toolkit.createSection(parent,
-                ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
-                        | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
-                        | ExpandableComposite.FOCUS_TITLE);
+        Section section = toolkit.createSection(parent, ExpandableComposite.TWISTIE | ExpandableComposite.EXPANDED
+                | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION | ExpandableComposite.FOCUS_TITLE);
 
         section.setText(Messages.editorSectionOSGIBundleStartLevel);
         section.setDescription(Messages.editorSectionOSGIBundleStartLevelDesc);
@@ -68,14 +65,15 @@ public class ServerEditorSetOSGIBundleStartLevelSection extends
         startLevelSpinner = new Spinner(composite, SWT.BORDER);
         startLevelSpinner.setMinimum(1);
         startLevelSpinner.setIncrement(1);
-        startLevelSpinner.setSelection(ModuleArtifactMapper.getInstance().getServerBundleDefaultStartLevel(server.getOriginal()));
+        startLevelSpinner.setSelection(ModuleArtifactMapper.getInstance().getServerBundleDefaultStartLevel(
+                server.getOriginal()));
 
         startLevelSpinner.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
-            	execute(new SetDefaultOSGIBundleStartLevel(server, Messages.defaultOSGIBundleStartLevel,
-            			startLevelSpinner));
+                execute(new SetDefaultOSGIBundleStartLevel(server, Messages.defaultOSGIBundleStartLevel,
+                        startLevelSpinner));
             }
         });
     }
-    
+
 }

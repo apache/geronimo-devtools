@@ -21,32 +21,32 @@ import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 
-
 public class SetDefaultOSGIBundleStartLevel extends ServerCommand {
-	private Spinner spinner;
-	private int value;
-	private int oldValue;
-	
-	public SetDefaultOSGIBundleStartLevel(IServerWorkingCopy server, String name, Spinner spinner) {
-		super(server, name);
-		this.spinner = spinner;
-		this.value = spinner.getSelection();
-	}
+    private Spinner spinner;
+    private int value;
+    private int oldValue;
 
-	@Override
-	public void execute() {
-		oldValue = OsgiConstants.BUNDLE_DEFAULT_START_LEVEL;
-		OsgiConstants.BUNDLE_DEFAULT_START_LEVEL = value;
-		ModuleArtifactMapper.getInstance().saveDefaultBundleStartLevel(server, OsgiConstants.BUNDLE_DEFAULT_START_LEVEL);
-		
-	}
+    public SetDefaultOSGIBundleStartLevel(IServerWorkingCopy server, String name, Spinner spinner) {
+        super(server, name);
+        this.spinner = spinner;
+        this.value = spinner.getSelection();
+    }
 
-	@Override
-	public void undo() {
-		OsgiConstants.BUNDLE_DEFAULT_START_LEVEL = oldValue;
-		spinner.setSelection(oldValue);
-		ModuleArtifactMapper.getInstance().saveDefaultBundleStartLevel(server, OsgiConstants.BUNDLE_DEFAULT_START_LEVEL);
-	}
+    @Override
+    public void execute() {
+        oldValue = OsgiConstants.BUNDLE_DEFAULT_START_LEVEL;
+        OsgiConstants.BUNDLE_DEFAULT_START_LEVEL = value;
+        ModuleArtifactMapper.getInstance()
+                .saveDefaultBundleStartLevel(server, OsgiConstants.BUNDLE_DEFAULT_START_LEVEL);
 
+    }
+
+    @Override
+    public void undo() {
+        OsgiConstants.BUNDLE_DEFAULT_START_LEVEL = oldValue;
+        spinner.setSelection(oldValue);
+        ModuleArtifactMapper.getInstance()
+                .saveDefaultBundleStartLevel(server, OsgiConstants.BUNDLE_DEFAULT_START_LEVEL);
+    }
 
 }
