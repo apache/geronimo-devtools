@@ -19,9 +19,6 @@ package org.apache.geronimo.st.v30.core.osgi;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.management.MBeanException;
 import javax.management.MBeanServerConnection;
@@ -33,6 +30,8 @@ import org.apache.geronimo.st.v30.core.Activator;
 import org.apache.geronimo.st.v30.core.DeploymentUtils;
 import org.apache.geronimo.st.v30.core.GeronimoServerBehaviourDelegate;
 import org.apache.geronimo.st.v30.core.GeronimoUtils;
+import org.apache.geronimo.st.v30.core.ModuleArtifactMapper;
+import org.apache.geronimo.st.v30.core.base.Bundle;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.v30.core.internal.Messages;
 import org.apache.geronimo.st.v30.core.internal.Trace;
@@ -44,40 +43,61 @@ import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 
 public class OSGiModuleHandler extends AbstractModuleHandler {
-    
-    private Map<String, Long> bundleMap;
+    private ModuleArtifactMapper mapper;
     
     public OSGiModuleHandler(GeronimoServerBehaviourDelegate serverDelegate) {
         super(serverDelegate);
-        bundleMap = Collections.synchronizedMap(new HashMap<String, Long>());
+		mapper = ModuleArtifactMapper.getInstance();
+		OsgiConstants.BUNDLE_DEFAULT_START_LEVEL = mapper.getServerBundleDefaultStartLevel(getServer());
     }
 
-    @Override
-    public void serverStopped() {
-        bundleMap.clear();
+    
+    public Bundle getBundleInfo(IModule module) throws Exception {
+    	Trace.tracePoint("Entry", Activator.traceCore, "OSGiBundleHandler.getBundleInfo", module);
+    	Bundle bundle = null;
+    	if(module != null && module.getProject() != null) {
+    	    bundle = this.mapper.resolveBundle(getServer(), module);
+    		if(bundle == null) {// find the bundle in server side
+    			RemoteDeploymentManager dm = (RemoteDeploymentManager) DeploymentCommandFactory.getDeploymentManager(this.getServer());
+    			AriesHelper.BundleInfo bInfo = AriesHelper.getBundleInfo(module.getProject());
+    			
+                long id = dm.getBundleId(bInfo.getSymbolicName(), bInfo.getVersion().toString());
+                if (id != -1) {
+                    this.mapper.addBundleEntry(getServer(), module, id, this._getBundleStartLevelFromServer(id));
+                    bundle = this.mapper.resolveBundleById(getServer(), id);
+                }
+    		}
+    	}
+    	
+    	Trace.tracePoint("Exit", Activator.traceCore, "OSGiBundleHandler.getBundleId", module);
+    	return bundle;
     }
+    
+    public long queryBundleIdFromServer(String symbolicName, String version) throws Exception {
+        RemoteDeploymentManager dm = (RemoteDeploymentManager) DeploymentCommandFactory.getDeploymentManager(this.getServer());
+        return dm.getBundleId(symbolicName, version);
+    }
+    
     
     private long getBundleId(IModule module) throws Exception {
         Trace.tracePoint("Entry", Activator.traceCore, "OSGiBundleHandler.getBundleId", module);
-        Long id = bundleMap.get(module.getId());
-        if (id == null && module.getProject() != null) {
-            RemoteDeploymentManager dm = (RemoteDeploymentManager) DeploymentCommandFactory.getDeploymentManager(this.getServer());
-            AriesHelper.BundleInfo bundleInfo = AriesHelper.getBundleInfo(module.getProject());
-            id = dm.getBundleId(bundleInfo.getSymbolicName(), bundleInfo.getVersion().toString());
-            if (id != -1) {
-                bundleMap.put(module.getId(), id);
-            }
-        }
-        Trace.tracePoint("Exit", Activator.traceCore, "OSGiBundleHandler.getBundleId", id);
-        return id;
+        Bundle bundle = this.getBundleInfo(module);
+        Trace.tracePoint("Exit", Activator.traceCore, "OSGiBundleHandler.getBundleId", module);
+        return bundle == null ? -1 : bundle.getId();
     }
     
     public void doAdded(IModule module, IProgressMonitor monitor) throws Exception {
         Trace.tracePoint("Entry", Activator.traceCore, "OSGiBundleHandler.doAdded", module.getName());
         
+        this.doAdded(module, monitor, OsgiConstants.BUNDLE_DEFAULT_START_LEVEL);
+                
+        Trace.tracePoint("Exit", Activator.traceCore, "OSGiBundleHandler.doAdded", module.getName());
+    }
+    
+    protected void doAdded(IModule module, IProgressMonitor monitor, int startLevel) throws Exception {
         long bundleId = getBundleId(module);
         if (bundleId == -1) {
-            IStatus status = distributeBundle(module);
+            IStatus status = distributeBundle(module, startLevel);
             if (!status.isOK()) {
                 doFail(status, Messages.DISTRIBUTE_FAIL);
             }
@@ -91,24 +111,23 @@ public class OSGiModuleHandler extends AbstractModuleHandler {
         } else {
             doChanged(module, monitor);
         }
-                
-        Trace.tracePoint("Exit", Activator.traceCore, "OSGiBundleHandler.doAdded", bundleId);
     }
     
     public void doChanged(IModule module, IProgressMonitor monitor) throws Exception {
         Trace.tracePoint("Entry", Activator.traceCore, "OSGiBundleHandler.doChanged", module.getName());
-        
-        long bundleId = getBundleId(module);
-        if (bundleId != -1) {
+        Bundle bundle = getBundleInfo(module);
+        int startLevel = OsgiConstants.BUNDLE_DEFAULT_START_LEVEL;
+        if (bundle != null) {
+        	startLevel = bundle.getStartLevel();
             doRemoved(module, monitor);
         }
         
-        doAdded(module, monitor);       
+        doAdded(module, monitor, startLevel);       
 
-        Trace.tracePoint("Exit", Activator.traceCore, "OSGiBundleHandler.doChanged", bundleId);
+        Trace.tracePoint("Exit", Activator.traceCore, "OSGiBundleHandler.doChanged", module.getName());
     }
-    
-    public void doNoChange(IModule module, IProgressMonitor monitor) throws Exception {
+
+	public void doNoChange(IModule module, IProgressMonitor monitor) throws Exception {
         Trace.tracePoint("Entry", Activator.traceCore, "OSGiBundleHandler.doNoChange", module.getName());
         
         long bundleId = getBundleId(module);
@@ -128,12 +147,11 @@ public class OSGiModuleHandler extends AbstractModuleHandler {
         long bundleId = getBundleId(module);
         if (bundleId != -1) {
             IStatus status = _unInstallBundle(bundleId);
-            bundleMap.remove(module.getId());
+            this.mapper.removeBundleEntry(getServer(), module);
             if (!status.isOK()) {
                 doFail(status, Messages.UNDEPLOY_FAIL);
             }
         }
-
         Trace.tracePoint("Exit ", Activator.traceCore, "OSGiBundleHandler.doRemoved", bundleId);
     }
     
@@ -177,7 +195,7 @@ public class OSGiModuleHandler extends AbstractModuleHandler {
         Trace.tracePoint("Exit ", Activator.traceCore, "OSGiBundleHandler.doRestartModule");
     }
         
-    private IStatus distributeBundle(IModule module) throws Exception {
+    private IStatus distributeBundle(IModule module, int startLevel) throws Exception {
         RemoteDeploymentManager rDm = (RemoteDeploymentManager)DeploymentCommandFactory.getDeploymentManager(this.getServer());
         try {
             /* Get target file */
@@ -187,9 +205,8 @@ public class OSGiModuleHandler extends AbstractModuleHandler {
                         Messages.bind(Messages.moduleExportError, module.getProject().getName())));     
             }
             /* end here */
-            long bundleId = rDm.recordInstall(f, null, OsgiConstants.BUNDLE_DEFAULT_START_LEVEL);
-            
-            bundleMap.put(module.getId(), bundleId);
+            long bundleId = rDm.recordInstall(f, null, startLevel);
+            this.mapper.addBundleEntry(getServer(), module, bundleId, startLevel);
             
             return Status.OK_STATUS;
         } catch (Exception e) {
@@ -239,8 +256,18 @@ public class OSGiModuleHandler extends AbstractModuleHandler {
             return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not stop bundle", e);
         }
     }
+    private int _getBundleStartLevelFromServer(long bundleId) {
+        try {
+            MBeanServerConnection connection = getServerConnection();
+            return (Integer) connection.invoke(getFrameworkMBean(connection), "getStartLevel",
+                    new Object[] { bundleId }, new String[] { long.class.getName() });
+        } catch(Exception e) {
+            Trace.trace(Trace.ERROR, "Error stopping bundle " + bundleId, e, Activator.logCore);
+            return OsgiConstants.BUNDLE_DEFAULT_START_LEVEL;
+        }
+    }
     
-    private String getBundleState(long bundleId) throws Exception {
+    public String getBundleState(long bundleId) throws Exception {
         MBeanServerConnection connection = getServerConnection();
         return (String) connection.invoke(getBundleStateMBean(connection), "getState",
                 new Object[] { bundleId }, new String[] { long.class.getName() });

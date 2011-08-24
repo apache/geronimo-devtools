@@ -17,14 +17,14 @@
 package org.apache.geronimo.st.v30.core;
 
 import java.util.Arrays;
-import java.util.Map;
 
 import javax.enterprise.deploy.spi.DeploymentManager;
 import javax.enterprise.deploy.spi.TargetModuleID;
 
 import org.apache.geronimo.deployment.plugin.jmx.ExtendedDeploymentManager;
 import org.apache.geronimo.kernel.management.State;
-import org.apache.geronimo.kernel.repository.Artifact;
+import org.apache.geronimo.st.v30.core.base.Artifact;
+import org.apache.geronimo.st.v30.core.base.ModuleSet;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCmdStatus;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.v30.core.commands.IDeploymentCommand;
@@ -56,9 +56,9 @@ public class DefaultModuleHandler extends AbstractModuleHandler {
             IStatus status;
             TargetModuleID[] ids;
             
-            Map<String, String> artifactsMap = mapper.getServerArtifactsMap(getServer());
-            if (artifactsMap != null) {
-                synchronized (artifactsMap) {
+            ModuleSet<Artifact> artifacts = mapper.getServerArtifacts(getServer());
+            if (artifacts != null) {
+                synchronized (artifacts) {
                     status = distribute(module, monitor);
                     if (!status.isOK()) {
                         doFail(status, Messages.DISTRIBUTE_FAIL);
@@ -141,9 +141,9 @@ public class DefaultModuleHandler extends AbstractModuleHandler {
     public void doRemoved(IModule module, IProgressMonitor monitor) throws Exception {
         Trace.tracePoint("Entry", Activator.traceCore, "DefaultModuleHandler.doRemoved", module.getName());
 
-        Map<String, String> artifactsMap = mapper.getServerArtifactsMap(getServer());
-        if (artifactsMap != null) {
-            synchronized (artifactsMap) {
+        ModuleSet<Artifact> artifacts = mapper.getServerArtifacts(getServer());
+        if (artifacts != null) {
+            synchronized (artifacts) {
                 try {
                     _doRemove(module, monitor);
                 } finally {
@@ -262,7 +262,7 @@ public class DefaultModuleHandler extends AbstractModuleHandler {
         int moduleState = IServer.STATE_UNKNOWN;
         if (configID != null) {
             try {
-                State state = dm.getModulesState(Artifact.create(configID));
+                State state = dm.getModulesState(org.apache.geronimo.kernel.repository.Artifact.create(configID));
                 if (state == null) {
                     moduleState = -1;
                 } else if (state == State.RUNNING) {

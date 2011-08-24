@@ -20,7 +20,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import org.apache.geronimo.st.v30.core.Activator;
-import org.apache.geronimo.st.v30.core.GeronimoUtils;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
@@ -89,7 +88,25 @@ public final class AriesHelper {
         }
         return null;
     }
+    
+    public static Version getVersion(IModule bundleModule) {
+        if (AriesHelper.isAriesInstalled()) {
+            try {
+                Class<?> ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
+                Method method = ariesUtilsClass.getMethod("getBlueprintBundleManifest", IProject.class);
+                Object object = method.invoke(null, bundleModule.getProject());
 
+                Class<?> bundleManifest = Class.forName("com.ibm.etools.aries.core.models.BundleManifest");
+                method = bundleManifest.getMethod("getBundleVersion");
+                String versionStr = (String) method.invoke(object);
+                Version version = Version.parseVersion(versionStr);
+                return version;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
     public static BundleInfo getBundleInfo(IProject project) throws Exception {
         if (AriesHelper.isAriesInstalled()) {
             Class<?> ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
@@ -147,11 +164,13 @@ public final class AriesHelper {
         private final String symbolicName;
         private final Version version;
         
-        public BundleInfo(String symbolicName, Version version) {
+
+		public BundleInfo(String symbolicName, Version version) {
+            super();
             this.symbolicName = symbolicName;
             this.version = version;
         }
-        
+
         public String getSymbolicName() {
             return symbolicName;
         }
@@ -163,5 +182,6 @@ public final class AriesHelper {
         public String getMvnVersion() {
             return toMvnVersion(version);
         }
+        
     }
 }

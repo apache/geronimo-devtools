@@ -40,10 +40,12 @@ Require-Bundle:
 Bundle-ActivationPolicy: lazy
 Export-Package: 
  org.apache.geronimo.st.v30.core,
+ org.apache.geronimo.st.v30.core.base,
  org.apache.geronimo.st.v30.core.commands,
  org.apache.geronimo.st.v30.core.descriptor,
  org.apache.geronimo.st.v30.core.facets,
  org.apache.geronimo.st.v30.core.internal,
  org.apache.geronimo.st.v30.core.jaxb,
- org.apache.geronimo.st.v30.core.operations
+ org.apache.geronimo.st.v30.core.operations,
+ org.apache.geronimo.st.v30.core.osgi
 

@@ -25,7 +25,7 @@ public final class OsgiConstants {
     public final static String BUNDLE = "osgi.bundle"; 
     public final static String BUNDLE_EXTENSION = ".jar";
     public final static String BUNDLE_DATAMODEL_PROVIDER_ID = "osgi.bundle.datamodelprovider";
-    public final static int BUNDLE_DEFAULT_START_LEVEL = 60;
+    public static int BUNDLE_DEFAULT_START_LEVEL = 70;
     
     public final static String FRAGMENT_BUNDLE = "osgi.fragment"; 
     public final static String FRAGMENT_BUNDLE_EXTENSION = ".jar"; 

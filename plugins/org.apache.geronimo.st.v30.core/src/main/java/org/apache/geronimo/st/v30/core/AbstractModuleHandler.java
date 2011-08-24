@@ -19,7 +19,6 @@ package org.apache.geronimo.st.v30.core;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 
@@ -51,9 +50,7 @@ public abstract class AbstractModuleHandler {
     }
     
     protected void doFail(IStatus status, String message) throws CoreException {
-        MultiStatus ms = new MultiStatus(Activator.PLUGIN_ID, 0, message, null);
-        ms.addAll(status);
-        throw new CoreException(ms);
+        throw new CoreException(status);
     }
     
     public void setModuleState(IModule[] module, int state) {

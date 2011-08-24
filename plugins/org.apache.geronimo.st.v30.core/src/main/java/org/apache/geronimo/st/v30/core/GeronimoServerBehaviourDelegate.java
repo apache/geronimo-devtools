@@ -1596,4 +1596,9 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         }
         return null;
     }
+
+    public OSGiModuleHandler getOsgiModuleHandler() {
+        return osgiModuleHandler;
+    }
+    
 }
