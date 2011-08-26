@@ -35,6 +35,7 @@ Require-Bundle:
  org.eclipse.wst.sse.ui,
  org.eclipse.wst.xml.ui,
  org.eclipse.core.variables,
- org.eclipse.pde.core
+ org.eclipse.pde.core,
+ org.eclipse.core.expressions
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Apache Software Foundation

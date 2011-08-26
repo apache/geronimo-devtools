@@ -405,20 +405,34 @@
     <extension point="org.eclipse.ui.startup">
         <startup class="org.apache.geronimo.st.v30.ui.Startup"/>
     </extension>
+    
+    <extension point="org.eclipse.core.expressions.propertyTesters">
+       <propertyTester
+          id="org.apache.geronimo.st.v30.ui.propertyTester"
+          namespace="org.apache.geronimo.st.v30.ui"
+          properties="isOSGiBundle"
+          type="org.eclipse.wst.server.ui.IServerModule"
+          class="org.apache.geronimo.st.v30.ui.propertyTesters.OSGiBundlePropertyTester">
+       </propertyTester>
+    </extension>
+   
     <!--
         The pop up menu of changing the bundle's startup level
     -->
-	<extension point="org.eclipse.ui.popupMenus">
-	  <objectContribution
-	    id="org.apache.geronimo.st.v30.ui.change.osgi.bundle.startlevel"
-	    objectClass="org.eclipse.wst.server.ui.IServerModule">
-	    <action
-	      id="org.apache.geronimo.st.v30.ui.change.osgi.bundle.startlevel.action"
-	      label="%changeBundleStartLevel"
-	      enablesFor="1"
-	      class="org.apache.geronimo.st.v30.ui.actions.ChangeBundleStartLevelAction">
-	    </action>
-	  </objectContribution>
-	</extension>
-	    
+    <extension point="org.eclipse.ui.popupMenus">
+      <objectContribution
+        id="org.apache.geronimo.st.v30.ui.change.osgi.bundle.startlevel"
+        objectClass="org.eclipse.wst.server.ui.IServerModule">
+        <action
+          id="org.apache.geronimo.st.v30.ui.change.osgi.bundle.startlevel.action"
+          label="%changeBundleStartLevel"
+          enablesFor="1"
+          class="org.apache.geronimo.st.v30.ui.actions.ChangeBundleStartLevelAction">
+        </action>
+        <enablement>
+            <test property="org.apache.geronimo.st.v30.ui.isOSGiBundle" value="true"/>
+        </enablement>
+      </objectContribution>	  
+    </extension>
+        
 </plugin>
