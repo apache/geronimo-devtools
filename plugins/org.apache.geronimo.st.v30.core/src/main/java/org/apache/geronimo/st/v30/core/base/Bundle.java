@@ -33,7 +33,7 @@ public class Bundle implements Serializable {
     private String projectName;
     private String symbolicName;
     private transient Version version;
-    private long id;
+    private transient long id;
     private int startLevel;
     
     

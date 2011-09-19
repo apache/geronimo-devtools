@@ -53,10 +53,36 @@ public class ModuleSet<E> extends HashSet<E> {
         return element;
     }
     
+    public E query(String[] fieldNames, Object[] values) throws Exception {
+        if(fieldNames.length != values.length || fieldNames.length == 0) throw new Exception("The fieldNames length must be same as values'");
+        E element = null;
+        
+        Iterator<E> iter = this.iterator();
+        while(iter.hasNext()) {
+            E b = iter.next();
+            boolean match = true;
+            for(int i=0; i<values.length; ++i) {
+                if(! values[i].equals(Utils.getValueByFieldName(fieldNames[i], b))) {
+                    match = false;
+                    break;
+                }
+            }
+            if(match) {
+                element = b;
+                break;
+            }
+        }
+        return element;
+    }
+    
     public boolean remove(String fieldName, Object value) throws Exception {
         return this.remove(this.query(fieldName, value));
     }
 
+    public boolean remove(String[] fieldNames, Object[] values) throws Exception {
+        return this.remove(this.query(fieldNames, values));
+    }
+    
     public int getDefaultModuleStartLevel() {
         return defaultStartLevel;
     }

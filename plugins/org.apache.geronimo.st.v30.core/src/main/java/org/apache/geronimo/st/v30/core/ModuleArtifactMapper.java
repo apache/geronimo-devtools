@@ -87,7 +87,9 @@ public class ModuleArtifactMapper {
         if(bundles != null) {
             String symbolicName = AriesHelper.getSymbolicName(module);
             Version version = AriesHelper.getVersion(module);
-            bundles.add(new Bundle(getId(module), symbolicName, version, bundleId, bundleStartLevel));
+            Bundle bundle = new Bundle(getId(module), symbolicName, version, bundleId, bundleStartLevel);
+            bundles.remove(bundle);
+            bundles.add(bundle);
         }
     }
     
@@ -102,28 +104,43 @@ public class ModuleArtifactMapper {
         }       
     }
     
-    synchronized public void removeBundleEntry(IServer server, IModule module) {
+    synchronized public boolean removeBundleEntry(IServer server, IModule module) {
         ModuleSet<Bundle> bundles = getServerBundles(server);
         if(bundles != null) {
             try {
-                bundles.remove("projectName", getId(module));
+                return bundles.remove("projectName", getId(module));
             } catch (Exception e) {
                 Trace.trace(Trace.ERROR, e.getMessage(), e, Activator.logCore);
             }
         }
+        return false;
+    }
+    synchronized public boolean removeBundleEntryBySymbolicNameAndVersion(IServer server, String symbolicName, Version version) {
+        String[] fieldNames = {"symbolicName", "version"};
+        Object[] values = {symbolicName, version};
+        ModuleSet<Bundle> bundles = getServerBundles(server);
+        if(bundles != null) {
+            try {
+                return bundles.remove(fieldNames, values);
+            } catch (Exception e) {
+                Trace.trace(Trace.ERROR, e.getMessage(), e, Activator.logCore);
+            }
+        }
+        return false;
     }
     
-    synchronized public void removeBundleEntryById(IServer server, long bundleId) {
+    synchronized public boolean removeBundleEntryById(IServer server, long bundleId) {
         if(bundleId != -1) {
             ModuleSet<Bundle> bundles = getServerBundles(server);
             if(bundles != null) {
                 try {
-                    bundles.remove("id", bundleId);
+                    return bundles.remove("id", bundleId);
                 } catch (Exception e) {
                     Trace.trace(Trace.ERROR, e.getMessage(), e, Activator.logCore);
                 }
             }
         }
+        return false;
     }
     
     synchronized public String resolveArtifact(IServer server, IModule module) {  

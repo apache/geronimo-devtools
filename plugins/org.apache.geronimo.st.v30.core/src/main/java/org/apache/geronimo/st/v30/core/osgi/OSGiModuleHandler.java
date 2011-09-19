@@ -57,15 +57,16 @@ public class OSGiModuleHandler extends AbstractModuleHandler {
     	Bundle bundle = null;
     	if(module != null && module.getProject() != null) {
     	    bundle = this.mapper.resolveBundle(getServer(), module);
+    	    AriesHelper.BundleInfo bInfo = AriesHelper.getBundleInfo(module.getProject());
     		if(bundle == null) {// find the bundle in server side
     			RemoteDeploymentManager dm = (RemoteDeploymentManager) DeploymentCommandFactory.getDeploymentManager(this.getServer());
-    			AriesHelper.BundleInfo bInfo = AriesHelper.getBundleInfo(module.getProject());
-    			
                 long id = dm.getBundleId(bInfo.getSymbolicName(), bInfo.getVersion().toString());
                 if (id != -1) {
                     this.mapper.addBundleEntry(getServer(), module, id, this._getBundleStartLevelFromServer(id));
                     bundle = this.mapper.resolveBundleById(getServer(), id);
                 }
+    		} else {// need to synchronize bundle id from server
+    		    bundle.setId(this.synchronizeBundleId(bundle));
     		}
     	}
     	
@@ -73,6 +74,10 @@ public class OSGiModuleHandler extends AbstractModuleHandler {
     	return bundle;
     }
     
+    private long synchronizeBundleId(Bundle bundle) throws Exception {
+        RemoteDeploymentManager dm = (RemoteDeploymentManager) DeploymentCommandFactory.getDeploymentManager(this.getServer());
+        return dm.getBundleId(bundle.getSymbolicName(), bundle.getVersion().toString());
+    }
     public long queryBundleIdFromServer(String symbolicName, String version) throws Exception {
         RemoteDeploymentManager dm = (RemoteDeploymentManager) DeploymentCommandFactory.getDeploymentManager(this.getServer());
         return dm.getBundleId(symbolicName, version);
@@ -132,7 +137,7 @@ public class OSGiModuleHandler extends AbstractModuleHandler {
         
         long bundleId = getBundleId(module);
         if (bundleId != -1) {
-            int state = doGetModuleState(bundleId);
+            int state = doGetModuleState(module, bundleId);
             setModuleState(new IModule [] {module}, state);
         } else {
             doAdded(module, monitor);
@@ -300,10 +305,10 @@ public class OSGiModuleHandler extends AbstractModuleHandler {
     @Override
     public int getModuleState(IModule module) throws Exception {
         long bundleId = getBundleId(module);
-        return doGetModuleState(bundleId);
+        return doGetModuleState(module, bundleId);
     }
     
-    private int doGetModuleState(long bundleId) {
+    private int doGetModuleState(IModule module, long bundleId) throws Exception {
         Trace.tracePoint("Entry", Activator.traceCore, "OSGiBundleHandler.doGetModuleState", bundleId);
         
         int bundleState = IServer.STATE_UNKNOWN;
@@ -328,6 +333,12 @@ public class OSGiModuleHandler extends AbstractModuleHandler {
             } catch (Exception e) {
                 bundleState = IServer.STATE_UNKNOWN;
                 Trace.trace(Trace.ERROR, "getModuleState() failed", e, Activator.traceCore);
+            }
+        } else {// need to remove the bundle from local cache
+            bundleState = -1;
+            if(!this.mapper.removeBundleEntry(getServer(), module)) {
+                AriesHelper.BundleInfo bInfo = AriesHelper.getBundleInfo(module.getProject());
+                this.mapper.removeBundleEntryBySymbolicNameAndVersion(getServer(), bInfo.getSymbolicName(), bInfo.getVersion());
             }
         }
         
