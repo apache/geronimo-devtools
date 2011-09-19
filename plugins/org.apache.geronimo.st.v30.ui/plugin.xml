@@ -153,7 +153,7 @@
       Add the edite default OSGI bundle start level section
     -->
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
-        <section id="org.apache.server.geronimo.cleanOSGiBundleCache" order="21"
+        <section id="org.apache.server.geronimo.setDefaultOSGIBundleStartLevelSection" order="21"
             insertionId="org.eclipse.wst.server.editor.overview.right"
             typeIds="org.apache.geronimo.server.30"
             class="org.apache.geronimo.st.v30.ui.sections.ServerEditorSetOSGIBundleStartLevelSection">
