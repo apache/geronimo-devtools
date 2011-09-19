@@ -53,7 +53,19 @@ public class OSGiBundlePropertyTester extends PropertyTester{
                     }
                 }
             }
-        } 
+        } else if(target != null && "serverState".equals(properties)) {
+            if(args.length > 1 || args.length == 0 || !(target instanceof IServerModule)) return false;
+            try {
+                int state = (Integer) args[0];
+                if(state < 0 || state > 4) return false;
+                IServerModule ms = (IServerModule) target;
+                int realState = ms.getServer().getServerState();
+                
+                return realState == state; 
+            } catch(ClassCastException e) {
+                return false;
+            }
+        }
         return false;
     }
 }

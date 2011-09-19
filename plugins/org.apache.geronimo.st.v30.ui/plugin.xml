@@ -414,6 +414,13 @@
           type="org.eclipse.wst.server.ui.IServerModule"
           class="org.apache.geronimo.st.v30.ui.propertyTesters.OSGiBundlePropertyTester">
        </propertyTester>
+       <propertyTester
+          id="org.apache.geronimo.st.v30.ui.propertyTester"
+          namespace="org.apache.geronimo.st.v30.ui"
+          properties="serverState"
+          type="org.eclipse.wst.server.ui.IServerModule"
+          class="org.apache.geronimo.st.v30.ui.propertyTesters.OSGiBundlePropertyTester">
+       </propertyTester>
     </extension>
    
     <!--
@@ -429,8 +436,13 @@
           enablesFor="1"
           class="org.apache.geronimo.st.v30.ui.actions.ChangeBundleStartLevelAction">
         </action>
-        <enablement>
-            <test property="org.apache.geronimo.st.v30.ui.isOSGiBundle" value="true"/>
+        <enablement>            
+            <and>
+                <test property="org.apache.geronimo.st.v30.ui.isOSGiBundle" value="true"/>
+                <!-- the args is one of the values in {STATE_UNKNOWN(0), STATE_STARTING(1), STATE_STARTED(2), STATE_STOPPING(3), STATE_STOPPED(4),
+                NOTICE: only support value = "true" -->
+                <test property="org.apache.geronimo.st.v30.ui.serverState" args="2" value="true"/>
+            </and>
         </enablement>
       </objectContribution>	  
     </extension>
