@@ -56,6 +56,16 @@ public class Messages extends NLS {
     public static String editorSectionKarafShellTitle;
     public static String editorSectionKarafShellDescription;
     public static String enableKarafShell;
+    public static String karafShellTimeout;
+    public static String karafShellkeepAlive;
+    public static String karafShellPort;
+    public static String karafShellLaunch;
+    public static String karafShellNoConnection;
+    public static String karafShellNoConfigExisted;
+    public static String karafShellTerminalTitle;
+    public static String karafShellErrorConnect;
+    public static String karafShellChangeEnableProblem;
+    public static String karafShellMustChangeBeforeServerStart;
 
     public static String editorSectionTestEnvTitle;
     public static String editorSectionTestEnvDescription;
@@ -629,5 +639,6 @@ public class Messages extends NLS {
     public static String restoreDefaults;
     
     public static String serverLocationVariableDescription;
+    public static String wantToContinue;
 	
 }

@@ -18,9 +18,13 @@ package org.apache.geronimo.st.v30.ui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
+import org.apache.geronimo.st.core.ServerIdentifier;
 import org.apache.geronimo.st.v30.ui.internal.Trace;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
@@ -28,6 +32,8 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.wst.server.core.IServer;
+import org.eclipse.wst.server.core.IServerListener;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -61,7 +67,9 @@ public class Activator extends AbstractUIPlugin {
     public static boolean traceSections;
     public static boolean traceBlueprint;
     public static boolean traceHandlers;
-
+    
+    private static Map<ServerIdentifier, List<IServerListener>> serverListenersMap = new HashMap<ServerIdentifier, List<IServerListener>>();
+    
     static {
         try {
             console = Boolean.parseBoolean(Platform.getDebugOption(PLUGIN_ID + "/console"));
@@ -99,6 +107,7 @@ public class Activator extends AbstractUIPlugin {
 
     private static String iconLocation;
 
+    @SuppressWarnings("rawtypes")
     private Map imageDescriptors = new HashMap();
 
     public static final String ICONS_DIRECTORY = "icons/";
@@ -120,7 +129,7 @@ public class Activator extends AbstractUIPlugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -129,8 +138,20 @@ public class Activator extends AbstractUIPlugin {
     public void stop(BundleContext context) throws Exception {
         plugin = null;
         super.stop(context);
+        clearServerListeners();
     }
-
+    
+    private void clearServerListeners() {
+        Iterator<Map.Entry<ServerIdentifier, List<IServerListener>>> iter = serverListenersMap.entrySet().iterator();
+        while(iter.hasNext()) {
+            Map.Entry<ServerIdentifier, List<IServerListener>> entry = iter.next();
+            IServer server = entry.getKey().getServer();
+            List<IServerListener> listeners = entry.getValue();
+            for(IServerListener ls : listeners) {
+                server.removeServerListener(ls);
+            }
+        }
+    }
     /**
      * Returns the shared instance
      * 
@@ -163,6 +184,7 @@ public class Activator extends AbstractUIPlugin {
         }
         return iconLocation;
     }
+    
 
     /**
      * Return the image with the given key from the image registry.
@@ -185,6 +207,7 @@ public class Activator extends AbstractUIPlugin {
         registerImage(reg, IMG_PORT, "obj16/port.gif");
     }
 
+    @SuppressWarnings("unchecked")
     private void registerImage(ImageRegistry registry, String key,
             String partialURL) {
 
@@ -198,6 +221,14 @@ public class Activator extends AbstractUIPlugin {
             Trace.trace(Trace.WARNING, "Error registering image", e, Activator.logUi);
         }
     }
-
     
+    public static void addServerListener(ServerIdentifier serverId, IServerListener ls) {
+        List<IServerListener> listeners = serverListenersMap.get(serverId);
+        if(listeners == null) {
+            listeners = new ArrayList<IServerListener>();
+            serverListenersMap.put(serverId, listeners);
+        }
+        serverId.getServer().addServerListener(ls);
+        listeners.add(ls);
+    }
 }

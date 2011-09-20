@@ -126,6 +126,14 @@
     </extension>
     
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
+        <section id="org.apache.server.geronimo.karafShell" order="21"
+            insertionId="org.eclipse.wst.server.editor.overview.left"
+            typeIds="org.apache.geronimo.server.30"
+            class="org.apache.geronimo.st.v30.ui.sections.ServerEditorKarafShellSection">
+        </section>
+    </extension>
+    
+    <extension point="org.eclipse.wst.server.ui.editorPageSections">
         <section id="org.apache.server.geronimo.publishAdvanced" order="10"
             insertionId="org.eclipse.wst.server.editor.overview.right"
             typeIds="org.apache.geronimo.server.30"
@@ -157,14 +165,6 @@
             insertionId="org.eclipse.wst.server.editor.overview.right"
             typeIds="org.apache.geronimo.server.30"
             class="org.apache.geronimo.st.v30.ui.sections.ServerEditorSetOSGIBundleStartLevelSection">
-        </section>
-    </extension>
-    
-    <extension point="org.eclipse.wst.server.ui.editorPageSections">
-        <section id="org.apache.server.geronimo.karafShell" order="22"
-            insertionId="org.eclipse.wst.server.editor.overview.right"
-            typeIds="org.apache.geronimo.server.30"
-            class="org.apache.geronimo.st.v30.ui.sections.ServerEditorKarafShellSection">
         </section>
     </extension>
     
@@ -404,8 +404,38 @@
 
     <extension point="org.eclipse.ui.startup">
         <startup class="org.apache.geronimo.st.v30.ui.Startup"/>
+    </extension>    
+    	
+    <!-- the karaf shell view -->
+    <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="%geronimo.views.category.name"
+            id="GeronimoViews">
+      </category>
+      <view
+            allowMultiple="true"
+            class="org.apache.geronimo.st.v30.ui.view.KarafShellSSHTerminalView"
+            icon="icons/obj16/littleG.gif"
+            category="GeronimoViews"
+            name="%karafShellTerminal"
+            id="org.apache.geronimo.st.v30.ui.view.KarafShellSSHTerminalView">
+      </view>
     </extension>
-    
+    <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="%karafShellTerminal">
+         <viewShortcut id="org.apache.geronimo.st.v30.ui.view.KarafShellSSHTerminalView"/>
+         <view id="org.apache.geronimo.st.v30.ui.view.KarafShellSSHTerminalView"
+            relationship="stack">
+         </view> 
+      </perspectiveExtension>
+    </extension>  
+
+    <!--
+        The pop up menu of changing the bundle's startup level
+    -->    
     <extension point="org.eclipse.core.expressions.propertyTesters">
        <propertyTester
           id="org.apache.geronimo.st.v30.ui.propertyTester"
@@ -423,9 +453,6 @@
        </propertyTester>
     </extension>
    
-    <!--
-        The pop up menu of changing the bundle's startup level
-    -->
     <extension point="org.eclipse.ui.popupMenus">
       <objectContribution
         id="org.apache.geronimo.st.v30.ui.change.osgi.bundle.startlevel"

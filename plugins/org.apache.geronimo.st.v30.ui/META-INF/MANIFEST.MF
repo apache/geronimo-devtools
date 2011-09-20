@@ -36,6 +36,10 @@ Require-Bundle:
  org.eclipse.wst.xml.ui,
  org.eclipse.core.variables,
  org.eclipse.pde.core,
- org.eclipse.core.expressions
+ org.eclipse.core.expressions,
+ org.eclipse.tm.terminal.view;bundle-version="[2.1.0,4.0.0)",
+ org.eclipse.tm.terminal;bundle-version="[3.0.100,4.0.0)",
+ org.eclipse.tm.terminal.ssh;bundle-version="[2.0.200,4.0.0)",
+ org.eclipse.tm.terminal.telnet;bundle-version="[2.0.101,4.0.0)"
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Apache Software Foundation

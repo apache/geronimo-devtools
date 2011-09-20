@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -71,8 +72,8 @@ import org.eclipse.wst.web.internal.deployables.FlatComponentDeployable;
  * 
  * @version $Rev$ $Date$
  */
+@SuppressWarnings("restriction")
 public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoServer {
-
     public static final List<String> DEFAULT_NOREDEPLOY_INCLUDE_PATTERNS = 
         Arrays.asList("**/*.html", "**/*.xhtml", "**/*.css", "**/*.js", "**/*.jsp", "**/*.jspx", "**/*.gif", "**/*.jpg", "**/*.png", "**/*.swt", "**/*.properties", "**/*.xml");
     
@@ -94,6 +95,12 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     public static final String PROPERTY_LOG_LEVEL = "logLevel";
     
     public static final String PROPERTY_KARAF_SHELL = "karafShell";
+    
+    public static final String PROPERTY_KARAF_SHELL_TIMEOUT = "karafTimeout";
+    
+    public static final String PROPERTY_KARAF_SHELL_KEEPALIVE = "karafKeepAlive";
+    
+    public static final String PROPERTY_KARAF_SHELL_PORT = "karafPort";
     
     public static final String PROPERTY_PROGRAM_ARGS = "ProgramArgs";
     
@@ -118,7 +125,7 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     public static final String PROPERTY_RUN_FROM_WORKSPACE = "runFromWorkspace";
 
     public static final String PROPERTY_SELECT_CLASSPATH_CONTAINERS = "selectClasspathContainers";
-
+    
     public static final String PROPERTY_CLASSPATH_CONTAINERS = "classpathContainers";
 
     public static final String CONSOLE_INFO = "--long";
@@ -127,12 +134,19 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     
     public static final String CLEAN_OSGI_BUNDLE_CACHE = "--clean";
     
-    public static final String DISABLE_KARAF_SHELL = "-Dkaraf.startLocalConsole=false";
+    public static final String DISABLE_LOCAL_KARAF_SHELL = "-Dkaraf.startLocalConsole=false";
     
-    public static final String ENABLE_KARAF_SHELL = "-Dkaraf.startLocalConsole=true";
+    public static final String ENABLE_LOCAL_KARAF_SHELL = "-Dkaraf.startLocalConsole=true";
     
-    // required to avoid error start, and work nicely on windows, when Karaf shell is enabled.
-    public static final String JLINE_UNSUPPORTED_TERMINAL = "-Djline.terminal=jline.UnsupportedTerminal";
+    public static final String DISABLE_REMOTE_KARAF_SHELL = "-Dkaraf.startRemoteShell=false";
+    
+    public static final String ENABLE_REMOTE_KARAF_SHELL = "-Dkaraf.startRemoteShell=true";
+    
+    public static final int KARAF_SHELL_DEFAULT_TIMEOUT = 0;
+    
+    public static final int KARAF_SHELL_DEFAULT_KEEPALIVE = 300;
+    
+    public static final int KARAF_SHELL_DEFAULT_PORT = 8101;
 
     private static IGeronimoVersionHandler versionHandler = null;
 
@@ -523,8 +537,6 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerDelegate.setDefaults", monitor);
     }
 
-    
-
     @Override
     public void saveConfiguration(IProgressMonitor monitor) throws CoreException {
         Trace.tracePoint("Enter", Activator.traceCore, "GeronimoServerDelegate.saveConfiguration", monitor);
@@ -532,8 +544,6 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerDelegate.saveConfiguration", monitor);
     }
     
-    
-
     @Override
     public void configurationChanged() {
         Trace.tracePoint("Enter", Activator.traceCore, "GeronimoServerDelegate.configurationChanged");
@@ -807,7 +817,7 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
             Matcher matcher = PARAMETER_PATTERN.matcher(existingVMArgs);
             while (matcher.find()) {
                 String parm = matcher.group();
-                if (parm.equals(ENABLE_KARAF_SHELL)) {
+                if (parm.equals(ENABLE_REMOTE_KARAF_SHELL)) {
                     karafShell = true;
                 }
             }
@@ -843,11 +853,35 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
         updateVMArgsFromProperties();
     }
     
+    public int getKarafShellTimeout() {
+        return getAttribute(PROPERTY_KARAF_SHELL_TIMEOUT, KARAF_SHELL_DEFAULT_TIMEOUT);
+    }
+    
+    public int getKarafShellKeepAlive() {
+        return getAttribute(PROPERTY_KARAF_SHELL_KEEPALIVE, KARAF_SHELL_DEFAULT_KEEPALIVE);
+    }
+    
+    public int getKarafShellPort() {
+        return getAttribute(PROPERTY_KARAF_SHELL_PORT, KARAF_SHELL_DEFAULT_PORT);
+    }
+    
+    public void setKarafShellTimeout(int value) {
+        setAttribute(PROPERTY_KARAF_SHELL_TIMEOUT, value);
+    }
+    
+    public void setKarafShellKeepAlive(int value) {
+        setAttribute(PROPERTY_KARAF_SHELL_KEEPALIVE, value);
+    }
+    
+    public void setKarafShellPort(int value) {
+        setAttribute(PROPERTY_KARAF_SHELL_PORT, value);
+    }
+    
     public List<String> getKarafShellArgs(boolean enable) {
         if (enable)
-            return Arrays.asList(ENABLE_KARAF_SHELL, JLINE_UNSUPPORTED_TERMINAL);
+            return Arrays.asList(DISABLE_LOCAL_KARAF_SHELL, ENABLE_REMOTE_KARAF_SHELL);
         else
-            return Arrays.asList(DISABLE_KARAF_SHELL);
+            return Arrays.asList(DISABLE_LOCAL_KARAF_SHELL, DISABLE_REMOTE_KARAF_SHELL);
     }
 
     public String getKarafShellArgs() {
@@ -915,7 +949,6 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
                
         // Karaf arguments
         addParm(args, getKarafShellArgs());
-        addParm(args, "-Dkaraf.startRemoteShell=true");
         
         String vmArgs = args.toString();
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServer.getVMArgs", vmArgs);
@@ -1113,4 +1146,5 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
         setAttribute(GeronimoRuntimeDelegate.SERVER_INSTANCE_PROPERTIES, map);
     }
 
+    
 }
