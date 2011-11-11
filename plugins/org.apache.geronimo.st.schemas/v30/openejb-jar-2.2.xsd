@@ -20,6 +20,23 @@
 
 <xs:schema elementFormDefault="qualified" version="1.0" targetNamespace="http://openejb.apache.org/xml/ns/openejb-jar-2.2" xmlns:o="http://openejb.apache.org/xml/ns/openejb-jar-2.2" xmlns:tns="http://openejb.apache.org/xml/ns/openejb-jar-2.2" xmlns:pkgen="http://openejb.apache.org/xml/ns/pkgen-2.1" xmlns:sys="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:naming="http://geronimo.apache.org/xml/ns/naming-1.2" xmlns:ns1="http://geronimo.apache.org/xml/ns/security-2.0" xmlns:app="http://geronimo.apache.org/xml/ns/j2ee/application-1.2" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
+<xs:import namespace="http://geronimo.apache.org/xml/ns/naming-1.2" schemaLocation="geronimo-naming-1.2.xsd"/>
+
+ <xs:import namespace="http://geronimo.apache.org/xml/ns/security-2.0" schemaLocation="geronimo-security-2.0.xsd"/>
+ 
+ <xs:import namespace="http://geronimo.apache.org/xml/ns/deployment-1.2"
+        schemaLocation="geronimo-module-1.2.xsd">
+        <xs:annotation>
+            <xs:documentation>
+                Import Geronimo Services deployment plans. The imported plan
+                includes complex types like moduleType, environmentType,
+                dependenciesType, etc. required by this plan schema.
+            </xs:documentation>
+        </xs:annotation>
+    </xs:import>
+    
+  <xs:import namespace="http://openejb.apache.org/xml/ns/pkgen-2.1" schemaLocation="pkgen-2.1.xsd"/>
+
   <xs:element name="jndi">
     <xs:complexType>
       <xs:sequence/>
