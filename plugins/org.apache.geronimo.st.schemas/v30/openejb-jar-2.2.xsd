@@ -36,6 +36,8 @@
     </xs:import>
     
   <xs:import namespace="http://openejb.apache.org/xml/ns/pkgen-2.1" schemaLocation="pkgen-2.1.xsd"/>
+  
+  <xs:import namespace="http://geronimo.apache.org/xml/ns/j2ee/application-1.2" schemaLocation="geronimo-application-1.2.xsd"/>
 
   <xs:element name="jndi">
     <xs:complexType>
