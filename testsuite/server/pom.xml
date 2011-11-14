@@ -47,10 +47,10 @@
                             <tasks>
                                 <!--
                                  |
-                                 | Unzip and rename the testsuite Geronimo server v3.0.0
+                                 | Unzip and rename the testsuite Geronimo server v3.0-beta-1
                                  |
                                  -->
-                                <property name="geronimoVersion_1"              value="3.0-SNAPSHOT"/>
+                                <property name="geronimoVersion_1"              value="3.0-beta-1"/>
                                 <property name="geronimoVersion_1_install"      value="${basedir}/../launcher/"/>
                                 <property name="geronimoVersion_1_assembly"     value="org/apache/geronimo/assemblies"/>
                                 <property name="geronimoVersion_1_name"         value="geronimo-tomcat7-javaee6"/>
@@ -63,10 +63,10 @@
                                  
                                 <!--
                                  |
-                                 | Unzip and rename the testsuite Geronimo server v2.2.0
+                                 | Unzip and rename the testsuite Geronimo server v2.2.1
                                  |
                                  -->
-                                <property name="geronimoVersion_2"              value="2.2.1-SNAPSHOT"/>
+                                <property name="geronimoVersion_2"              value="2.2.1"/>
                                 <property name="geronimoVersion_2_install"      value="${basedir}/../launcher/"/>
                                 <property name="geronimoVersion_2_assembly"     value="org/apache/geronimo/assemblies"/>
                                 <property name="geronimoVersion_2_name"         value="geronimo-tomcat6-javaee5"/>
@@ -79,10 +79,10 @@
                                  
                                 <!--
                                  |
-                                 | Unzip and rename the testsuite Geronimo server v2.1.4
+                                 | Unzip and rename the testsuite Geronimo server v2.1.7
                                  |
                                  -->
-                                <property name="geronimoVersion_3"              value="2.1.4"/>
+                                <property name="geronimoVersion_3"              value="2.1.7"/>
                                 <property name="geronimoVersion_3_install"      value="${basedir}/../launcher/"/>
                                 <property name="geronimoVersion_3_assembly"     value="org/apache/geronimo/assemblies"/>
                                 <property name="geronimoVersion_3_name"         value="geronimo-tomcat6-javaee5"/>

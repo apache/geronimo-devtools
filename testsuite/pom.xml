@@ -39,9 +39,9 @@
     </description>
 
     <properties>
-        <geronimoVersion_1>3.0-SNAPSHOT</geronimoVersion_1>
-        <geronimoVersion_2>2.2.1-SNAPSHOT</geronimoVersion_2>
-        <geronimoVersion_3>2.1.4</geronimoVersion_3>
+        <geronimoVersion_1>3.0-beta-1</geronimoVersion_1>
+        <geronimoVersion_2>2.2.1</geronimoVersion_2>
+        <geronimoVersion_3>2.1.7</geronimoVersion_3>
         <geronimoVersion_4>2.0.2</geronimoVersion_4>
     </properties>
 
