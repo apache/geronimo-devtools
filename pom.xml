@@ -114,13 +114,13 @@
             <dependency>
                 <groupId>com.sun.xml.bind</groupId>
                 <artifactId>jaxb-xjc</artifactId>
-                <version>2.2</version>
+                <version>2.2.3-1</version>
             </dependency>
                         
             <dependency>
                 <groupId>org.apache.geronimo.bundles</groupId>
                 <artifactId>jaxb-impl</artifactId>
-                <version>2.2_1</version>               
+                <version>2.2.3-1_1</version>               
             </dependency>
                         
             <dependency>
@@ -138,7 +138,7 @@
             <dependency>
                 <groupId>cglib</groupId>
                 <artifactId>cglib-nodep</artifactId>
-                <version>2.1_3</version>
+                <version>2.2</version>
             </dependency>
                         
             <dependency>
@@ -156,7 +156,7 @@
             <dependency>
                 <groupId>org.apache.geronimo.specs</groupId>
                 <artifactId>geronimo-stax-api_1.2_spec</artifactId>
-                <version>1.0</version>
+                <version>1.1</version>
             </dependency>
 
             <dependency>
@@ -169,13 +169,13 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.5.5</version>
+                <version>1.6.0</version>
             </dependency>
 
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
-                <version>1.5.5</version>
+                <version>1.6.1</version>
             </dependency>
 
             <dependency>
@@ -193,13 +193,13 @@
             <dependency>
                 <groupId>org.openqa.selenium.client-drivers</groupId>
                 <artifactId>selenium-java-client-driver</artifactId>
-                <version>1.0-beta-1</version>
+                <version>1.0.2</version>
             </dependency>
             
             <dependency>
                 <groupId>org.openqa.selenium.server</groupId>
                 <artifactId>selenium-server</artifactId>
-                <version>1.0-beta-1</version>
+                <version>1.0.3</version>
             </dependency>
              
             <dependency>
