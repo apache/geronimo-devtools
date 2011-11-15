@@ -17,7 +17,6 @@
 package org.apache.geronimo.st.v30.core;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +36,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.j2ee.application.internal.operations.AppClientComponentExportDataModelProvider;
 import org.eclipse.jst.j2ee.application.internal.operations.EARComponentExportDataModelProvider;
@@ -60,7 +58,6 @@ import org.eclipse.wst.server.core.model.IModuleFolder;
 import org.eclipse.wst.server.core.model.IModuleResource;
 import org.eclipse.wst.server.core.model.IModuleResourceDelta;
 import org.eclipse.wst.server.core.util.ProjectModule;
-import org.eclipse.wst.server.core.util.PublishHelper;
 
 /**
  * @version $Rev$ $Date$
@@ -382,7 +379,7 @@ public class DeploymentUtils {
             }
         }
         return false;
-    }     
+    }
     
     public static boolean isInstalledModule(IServer server, String configId) {
         Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.isInstalledModule", server, configId);
@@ -437,74 +434,4 @@ public class DeploymentUtils {
         
         return configId;
     }
-        
-    public static IModuleResource[] getChangedClassResources(IModuleResourceDelta[] deltaArray) {
-        Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.getChangedClassResources", deltaArray);
-        List<IModuleResource> changedClassResources = new ArrayList<IModuleResource>();
-        // collect only changed classes resources
-        if (collectChangedClassResources(deltaArray, changedClassResources) && !changedClassResources.isEmpty()) {
-            // modified class resources were only found
-            IModuleResource[] resources = new IModuleResource[changedClassResources.size()];
-            changedClassResources.toArray(resources);
-            Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getChangedClassResources", resources);
-            return resources;
-        } else {
-            // added or removed resources or non-class resources were found
-            Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getChangedClassResources", "Added or removed resources or non-class resources were found");
-            return null;
-        }
-    }
-    
-    private static boolean collectChangedClassResources(IModuleResourceDelta[] deltaArray, List<IModuleResource> list) {
-        for (IModuleResourceDelta delta : deltaArray) {
-            int kind = delta.getKind();        
-            if (kind == IModuleResourceDelta.ADDED || kind == IModuleResourceDelta.REMOVED) {
-                return false;
-            }
-            IModuleResource resource = delta.getModuleResource();
-            if (resource instanceof IModuleFile) {
-                String name = resource.getName();
-                if (!name.endsWith(".class")) {
-                    return false;
-                }
-                if (kind == IModuleResourceDelta.CHANGED) {
-                    list.add(resource);
-                }
-            } else if (resource instanceof IModuleFolder) {
-                IModuleResourceDelta[] childDeltaArray = delta.getAffectedChildren();
-                if (!collectChangedClassResources(childDeltaArray, list)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-    
-    public static File createChangeSetFile(IModuleResource[] resources) {
-        Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.createChangeSetFile", resources);
-        
-        File file = null;
-        try {
-            file = File.createTempFile("changeset", ".jar");
-        } catch (IOException e) {
-            Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.createChangeSetFile", e);
-            return null;
-        }
-        
-        PublishHelper publishHelper = new PublishHelper(null);
-        IStatus[] statusArray = publishHelper.publishZip(resources, new Path(file.getAbsolutePath()), null);
-        if (statusArray != null) {
-            for (IStatus status : statusArray) {
-                if (!status.isOK()) {
-                    file.delete();
-                    Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.createChangeSetFile", status);
-                    return null;
-                }
-            }
-        }
-        
-        Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.createChangeSetFile", file);
-        return file;
-    }
-
 }

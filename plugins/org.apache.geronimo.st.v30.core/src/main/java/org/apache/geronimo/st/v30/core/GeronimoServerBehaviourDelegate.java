@@ -105,10 +105,8 @@ import org.eclipse.wst.server.core.ServerPort;
 import org.eclipse.wst.server.core.internal.IModulePublishHelper;
 import org.eclipse.wst.server.core.internal.ProgressUtil;
 import org.eclipse.wst.server.core.model.IModuleFile;
-import org.eclipse.wst.server.core.model.IModuleResource;
 import org.eclipse.wst.server.core.model.IModuleResourceDelta;
 import org.eclipse.wst.server.core.model.ServerBehaviourDelegate;
-import org.eclipse.wst.server.core.util.PublishHelper;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
 /**
@@ -591,7 +589,10 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     
     private IStatus refreshBundle(IModule ebaModule, IModule bundleModule, AbstractName ebaName, Map<String, Long> bundleMap) {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundle", ebaModule, bundleModule, ebaName, bundleMap);
+
         try {
+            File file = DeploymentUtils.getTargetFile(getServer(), bundleModule);
+            
             String symbolicName = AriesHelper.getSymbolicName(bundleModule);
             Long bundleId = bundleMap.get(symbolicName);
             
@@ -601,13 +602,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             }
             
             ExtendedDeploymentManager dm = (ExtendedDeploymentManager) DeploymentCommandFactory.getDeploymentManager(getServer());
-            /*
-             * Try class hot swap first and if it fails fallback to regular bundle update.
-             */
-            if (!refreshBundleClasses(dm, ebaModule, bundleModule, ebaName, bundleId)) {
-                File file = DeploymentUtils.getTargetFile(getServer(), bundleModule);
-                dm.updateEBAContent(ebaName, bundleId, file);
-            }
+            dm.updateEBAContent(ebaName, bundleId, file);
         } catch (Exception e) {
             return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.REFRESH_FAIL, e);
         }
@@ -617,52 +612,6 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         return Status.OK_STATUS;
     }
 
-    private boolean refreshBundleClasses(ExtendedDeploymentManager dm, IModule ebaModule, IModule bundleModule, AbstractName ebaName, long bundleId) throws Exception {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", ebaModule, bundleModule, ebaName, bundleId);    
-        // check if class hot swap is supported
-        if (!dm.isRedefineClassesSupported()) {
-            Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Class redefinition is not supported");        
-            return false;
-        }
-        // ensure only classes have changed
-        IModuleResourceDelta[] delta = getPublishedResourceDelta(new IModule[] { ebaModule, bundleModule });
-        IModuleResource[] classResources = DeploymentUtils.getChangedClassResources(delta);
-        if (classResources == null) {
-            Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Non-class resource modifications found");
-            return false;
-        }
-        // create temp. zip with the changes
-        File changeSetFile = DeploymentUtils.createChangeSetFile(classResources);
-        if (changeSetFile == null) {
-            Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Error creating file with resource modifications");
-            return false;
-        }
-        // get document base for the module if it is expanded
-        String documentBase = getServerDelegate().isNoRedeploy() ? getWebModuleDocumentBase(bundleModule) : null;
-        // see if the classes can be hot swapped - update archive if module is not expanded
-        if (!dm.hotSwapEBAContent(ebaName, bundleId, changeSetFile, documentBase == null)) {
-            Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap cannot be preformed");
-            changeSetFile.delete();
-            return false;
-        } else {
-            changeSetFile.delete();
-        }
-        if (documentBase != null) {
-            PublishHelper publishHelper = new PublishHelper(getTempDirectory().toFile());   
-            IStatus[] statusArray = publishHelper.publishFull(classResources, new Path(documentBase), null);
-            if (statusArray != null) {
-                // XXX: in case of an error should we return false to force full re-deploy?
-                for (IStatus status : statusArray) {
-                    if (!status.isOK()) {
-                        Trace.trace(Trace.WARNING, "Error publishing changes: " + status.getMessage(), status.getException(), Activator.traceCore);
-                    }
-                }
-            }
-        }
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap was succesfully preformed", documentBase);
-        return true;
-    }
-    
     private static class ModuleDelta {
         private final IModule[] module;
         private int delta = NO_CHANGE;
@@ -989,34 +938,28 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.invokeCommand");
     }   
 
-    private String getWebModuleDocumentBase(IModule webModule) {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", webModule);
-        
-        if (webModule.isExternal()) {
-            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", "External module");
-            return null;
-        }
-                
-        String contextPath = getServerDelegate().getContextPath(webModule);
-        if (contextPath == null) {
-            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", "Context path is null");
-            return null;
-        }
-
-        String documentBase = getWebModuleDocumentBase(contextPath);
-        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", contextPath, documentBase);
-        return documentBase;        
-    }
-    
     private IStatus tryFileReplace(IModule[] module) {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", module.toString());
         
         IModule webModule = module[module.length - 1];        
-        String documentBase = getWebModuleDocumentBase(webModule);
-        if (documentBase == null ) {
+        if (webModule.isExternal()) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "External module");
+            return null;
+        }
+
+        String contextPath = getServerDelegate().getContextPath(webModule);
+        if (contextPath == null) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "Context path is null");
+            return null;
+        }
+        Trace.trace(Trace.INFO, "Context path: " + contextPath, Activator.logCore);
+
+        String documentBase = getWebModuleDocumentBase(contextPath);
+        if (documentBase == null || documentBase.length() == 0) {
             Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "Document base is null");
             return null;
         }
+        Trace.trace(Trace.INFO, "Document base: " + documentBase, Activator.logCore);
 
         List<IModuleResourceDelta> modifiedFiles = findModifiedFiles(module);
         if (modifiedFiles == null) {
@@ -1641,7 +1584,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
                 String moduleContextPath = (String) kernel.getAttribute(name, "contextPath");
                 if (contextPath.equals(moduleContextPath)) {
                     String docBase = (String) kernel.getAttribute(name, "docBase");
-                    return (docBase != null && docBase.length() > 0) ? docBase : null;
+                    return docBase;
                 }
             } catch (GBeanNotFoundException e) {
                 // ignore
