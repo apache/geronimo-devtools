@@ -13,8 +13,8 @@ Bundle-ClassPath: lib/geronimo-common-2.0.2.jar,
  lib/geronimo-util-2.0.2.jar,
  lib/geronimo-deploy-config-2.0.2.jar,
  lib/geronimo-crypto-2.2.1.jar,
- lib/slf4j-api-1.5.5.jar,
- lib/slf4j-simple-1.5.5.jar
+ lib/slf4j-api-1.6.0.jar,
+ lib/slf4j-simple-1.6.1.jar
 Export-Package: 
  org.apache.geronimo.common;version=2.0,
  org.apache.geronimo.common.propertyeditor;version=2.0,
