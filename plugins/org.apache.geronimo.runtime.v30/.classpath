@@ -5,8 +5,8 @@
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-deploy-jsr88-3.0-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-deploy-tool-3.0-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/plexus-archiver-1.0-alpha-12.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.5.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/slf4j-simple-1.5.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.6.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/slf4j-simple-1.6.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-common-3.0-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-crypto-3.0-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/geronimo-deploy-config-3.0-SNAPSHOT.jar"/>
