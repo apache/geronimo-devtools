@@ -6,7 +6,7 @@ Helpful URLs
 Geronimo Devtools:                          http://geronimo.apache.org/development-tools.html
 Geronimo Eclipse Update Site:               http://www.apache.org/dist/geronimo/eclipse/updates
 Bug Tracking:                               http://issues.apache.org/jira/browse/GERONIMODEVTOOLS
-Quick start - fast and easy development:    http://cwiki.apache.org/GMOxDOC30/quick-start-fast-and-easy-development.html
+Quick start - fast and easy development:    http://cwiki.apache.org/GMOxDOC30/fast-and-easy-development.html
 5-minute Tutorial using GEP:                http://cwiki.apache.org/GMOxDOC30/5-minute-tutorial-on-enterprise-application-development-with-eclipse-and-geronimo.html
 
 
@@ -14,11 +14,11 @@ System Requirements
 -------------------
 1. Java J2SE 1.6.0 or greater, and a platform that supports it
 
-2. Eclipse IDE for Java EE Developers (Galileo (3.5) or Helios (3.6)), which is platform-specific
+2. Eclipse IDE for Java EE Developers (Helios (3.6) or Indigo (3.7)), which is platform-specific
 
    -- Get Eclipse from http://www.eclipse.org/downloads/
 
-3. Geronimo server (1.1.x, 2.0.x, 2.1.x, 2.2.x or 3.0_M1)
+3. Geronimo server (1.1.x, 2.0.x, 2.1.x, 2.2.x or 3.0-beta-1)
 
    -- Get a Geronimo server from http://geronimo.apache.org/downloads.html
 
@@ -46,9 +46,9 @@ that each argument has to be on seperate lines:
 Geronimo Eclipse Plugin Version ${pom.version} Enhancements
 --------------------------------------------------
 
-1. Support Geronimo Server 3.0 Milestone 1
+1. Support Geronimo Server 3.0-beta-1
 
-2. Support Eclipse Helios (3.6), WTP 3.2 and Java EE 6 facet
+2. Support Eclipse Indigo (3.7), WTP 3.2 and Java EE 6 facet
 
 3. Support OSGI application programming tools
 
@@ -63,21 +63,99 @@ See http://cwiki.apache.org/GMOxDOC30/installing-geronimo-eclipse-plugin.html
 Bug Fixed and New Features
 --------------------------
 
-GERONIMODEVTOOLS-652    Can't see icon for GEP in about dialog when install GEP in deployable mode
-GERONIMODEVTOOLS-651    No deployment plan can be generated with 3.0 M1
-GERONIMODEVTOOLS-650    The sections of server editor page "overview" cann't display
-GERONIMODEVTOOLS-647	Synchronize dependency version with Geronimo 3.0 M1
-GERONIMODEVTOOLS-646	Upgrade to eclipse Helios
-GERONIMODEVTOOLS-643	Refactor GEP 3.0 code to decouple various server adapters
-GERONIMODEVTOOLS-641	To release GEP with maven release plugin
-GERONIMODEVTOOLS-640	Support Eclipse 3.6 (and latest versions of WTP, etc.)
-GERONIMODEVTOOLS-639	Enhance GEP to support Geronimo 3.0 server
-GERONIMODEVTOOLS-621	Extend new Aries tooling to provide new OSGi PDE enhancements specific to Geronimo runtime
-GERONIMODEVTOOLS-614	Support free (not open-source) Aries tooling
-GERONIMODEVTOOLS-606	Support Eclipse Helios
-GERONIMODEVTOOLS-605	Generate classes with JAXB from new schema files for Java EE6
-GERONIMODEVTOOLS-604	Upgrade to eclipse 3.5.2
-GERONIMODEVTOOLS-603	Make Geronimo 3.0 server runnable with GEP
+GERONIMODEVTOOLS--765 	Improve module state synchronization between server & GEP
+GERONIMODEVTOOLS--764 	Control the OSGI bundle's start level in GEP
+GERONIMODEVTOOLS--763   "Source not found" message when debugging a project
+GERONIMODEVTOOLS--760   Two GeronimoServerBehaviourDelegates created for one IServer
+GERONIMODEVTOOLS--758 	Publishing one EJB will cause another stopped EJB's starting
+GERONIMODEVTOOLS--756   java.lang.NullPointerException: Module config Id not found for undeployment
+GERONIMODEVTOOLS--755 	Url not created rightly for dynamic web project and this deployed application can't be found on admin console from server view
+GERONIMODEVTOOLS--752 	Fail to start server in profile mode
+GERONIMODEVTOOLS--751 	No keys of Keyboard can jump out of the input box
+GERONIMODEVTOOLS--749 	Open the Geronimo plan, an error occurs when the server is started
+GERONIMODEVTOOLS--747 	Undeploy module while server is stopped
+GERONIMODEVTOOLS--746 	Invalid module state after server is stopped
+GERONIMODEVTOOLS--745 	Switching JRE via server configuration causes sever startup errors
+GERONIMODEVTOOLS--744 	More flexible no-redeployment option
+GERONIMODEVTOOLS--742 	NL supports
+GERONIMODEVTOOLS--740 	Generate p2 metadata for GEP
+GERONIMODEVTOOLS--736 	Review GEP code according to Eclipse UI guideline and do necessary updates
+GERONIMODEVTOOLS--735 	More user friendly message when deploying OSGi application
+GERONIMODEVTOOLS--734 	Allow OSGi fragment bundles to be deployed
+GERONIMODEVTOOLS--733 	Better error handling when module fails to export
+GERONIMODEVTOOLS--732 	Server admin password is written in plain text
+GERONIMODEVTOOLS--731 	Module's restart popupMenu misses icon
+GERONIMODEVTOOLS--730 	Synchronize the module state between GEP and geronimo server
+GERONIMODEVTOOLS--729 	application.xml has wrong xml name space
+GERONIMODEVTOOLS--728 	The original geronimo deployment plan will be cleaned when importing an existing EAR project
+GERONIMODEVTOOLS--727 	Change OSGi bundle symbolic name leads the eba being deleted on server in next publish but the eba project is still in server view
+GERONIMODEVTOOLS--726 	Incorrect project state after redeploying the application on server
+GERONIMODEVTOOLS--725 	EBA is always undeployed and then deployed due to can not correctly get the configruration id
+GERONIMODEVTOOLS--724 	Remove those redundant periods on GEP configuration UI
+GERONIMODEVTOOLS--723 	Upgrade server v2.1.x support from v2.1.5 to v2.1.7 in GEP 3.0
+GERONIMODEVTOOLS--722 	Upgrade server v2.2.x support from v2.2 to v2.2.1 in GEP 3.0
+GERONIMODEVTOOLS--721 	Server state in server view is not updated to synchronize with the actual server state
+GERONIMODEVTOOLS--720 	Error converting plan
+GERONIMODEVTOOLS--719 	NPE if delete a project which is deployed on geronimo server
+GERONIMODEVTOOLS--718 	Update a bundle within an EBA
+GERONIMODEVTOOLS--717 	Ability to start/stop/restart applications in server view
+GERONIMODEVTOOLS--716 	Automatically switch "target platform" to Geronimo
+GERONIMODEVTOOLS--715 	Misleading republish indication for a module in an application
+GERONIMODEVTOOLS--710 	context root with regular and bundle web applications
+GERONIMODEVTOOLS--708 	support plain osgi bundle deployment from GEP.
+GERONIMODEVTOOLS--705 	No target platform defined for use when new a OSGi bundle project
+GERONIMODEVTOOLS--704 	Provide a check box to clean server cache when start server from GEP.
+GERONIMODEVTOOLS--703 	Editing blueprint via Blueprint Editor in "general" view is extremely buggy
+GERONIMODEVTOOLS--702 	NPE when opening blueprint.xml
+GERONIMODEVTOOLS--701 	Restart Server will result in "existing deployed OSGI applications are re-deployed" when reopen eclipse
+GERONIMODEVTOOLS--700 	Automatically create target platform with geronimo server bundles when server is created
+GERONIMODEVTOOLS--699 	Correct serveral bundle locations in server runtime library
+GERONIMODEVTOOLS--698 	Context root specified while creating a dynamic web project is not respected
+GERONIMODEVTOOLS--697 	Update feature description to include Apache Geronimo v1.1 server
+GERONIMODEVTOOLS--690 	NullpointerException occurs if one adds a "Utility Project" to the EAR
+GERONIMODEVTOOLS--689 	NullPointerException when publishing with Geronimo Eclipse Plugin v2.1.7	
+GERONIMODEVTOOLS--678 	Can not install GEP in RAD SE v8.0
+GERONIMODEVTOOLS--674 	Upgrade eclipse to Helios SR1
+GERONIMODEVTOOLS--673 	Don't download TPTP runtime since maven-eclipsepde-plugin 1.1 can handle optional bundle now
+GERONIMODEVTOOLS--672 	Error occurs in geronimo deployment plan when refactoring projects
+GERONIMODEVTOOLS--670 	Geronimo deployment plan doesn't be created when creating projects using the Geronimo 2.2 as the target runtime
+GERONIMODEVTOOLS--669 	Modification to VM arguements is lost
+GERONIMODEVTOOLS--668 	Error occurs when converting apps to plugins
+GERONIMODEVTOOLS--667 	Configuration elements duplicated in Geronimo deployment plan editor for geronimo-application.xml
+GERONIMODEVTOOLS--665 	Error occurs when deploying EBA package
+GERONIMODEVTOOLS--664 	Update required WTP version number in feature.xml
+GERONIMODEVTOOLS--663 	Remove duplicated License and Notice files in each jar when we issue "mvn release:prepare"
+GERONIMODEVTOOLS--662 	update old schema files in st.schema and JAXB model for changed schema files
+GERONIMODEVTOOLS--661   Create JAXB model for geronimo-jaspi.xsd 	
+GERONIMODEVTOOLS--660 	Add new schema geronimo-jaspi.xsd into GEP
+GERONIMODEVTOOLS--656 	Failed to deploy aries samples
+GERONIMODEVTOOLS--653 	No GEP icon in the eclipse
+GERONIMODEVTOOLS--652 	Can't see icon for GEP in about dialog when install GEP in deployable mode
+GERONIMODEVTOOLS--651 	No deployment plan can be generated with 3.0 M1
+GERONIMODEVTOOLS--650 	The sections of server editor page "overview" cann't display
+GERONIMODEVTOOLS--649 	Can't build GEP trunk on 32-bit Mac
+GERONIMODEVTOOLS--648 	Source release assembly contains temporary files generated in build process
+GERONIMODEVTOOLS--646 	Upgrade to eclipse Helios
+GERONIMODEVTOOLS--643 	Refactor GEP 3.0 code to decouple various server adapters
+GERONIMODEVTOOLS--641 	To release GEP with maven release plugin
+GERONIMODEVTOOLS--640   Support Eclipse 3.6 (and latest versions of WTP, etc.)
+GERONIMODEVTOOLS--639   Enhance GEP to support Geronimo 3.0 server
+GERONIMODEVTOOLS--629   Implement any changed JEE6 deployment plan descriptors (via JAXB) for Web Profile server
+GERONIMODEVTOOLS--628   Implement any new JEE6 deployment plan descriptors (via JAXB) for Web Profile server
+GERONIMODEVTOOLS--626   Implement reordering of artifacts during deployment and run-on-server functions to adhere to specified dependencies in deployment plans and/or bundle manifests to ensure proper start order when started on the Geronimo server
+GERONIMODEVTOOLS--625   Implement run-on-server function from Eclipse workspace for JEE6/Web Profile spec-compliant workspace artifacts to the Geronimo server with/without Geronimo-specific deployment descriptors
+GERONIMODEVTOOLS--624   Implement deploy, redeploy, and un-deploy of JEE6/Web Profile spec-compliant artifacts to the Geronimo server (with/without Geronimo-specific deployment descriptor)
+GERONIMODEVTOOLS--623   Implement finer granularity of start/stop/restart operations on OSGi artifacts deployed on the Geronimo runtime
+GERONIMODEVTOOLS--621   Extend new Aries tooling to provide new OSGi PDE enhancements specific to Geronimo runtime
+GERONIMODEVTOOLS--619   Implement Blueprint XML form editor
+GERONIMODEVTOOLS--615   Implement deploy, redeploy, and un-deploy of OSGi spec-compliant artifacts to Geronimo server
+GERONIMODEVTOOLS--614   Support free (not open-source) Aries tooling
+GERONIMODEVTOOLS--613 	Miscellaneous Enhancements
+GERONIMODEVTOOLS--608 	Publish with GEP takes minutes, while deploy takes seconds
+GERONIMODEVTOOLS--607 	Missing JSTL jar in server runtime
+GERONIMODEVTOOLS--606 	Support Eclipse Helios
+GERONIMODEVTOOLS--605 	Generate classes with JAXB from new schema files for Java EE6
+GERONIMODEVTOOLS--600 	Build script should detect JDK data model(32bit or 64bit) instead of OS architecture
 
 
 Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
