@@ -45,7 +45,7 @@
 
     <!-- Set common propeties -->
 
-    <property name="eclipse_name"                   value="helios" />
+    <property name="eclipse_name"                   value="indigo" />
     <property name="eclipse_release"                value="SR1" />
     <property name="eclipse_basefilename"           value="eclipse-jee-${eclipse_name}-${eclipse_release}" />
     <property name="eclipse_downloadserver"         value="http://www.eclipse.org/downloads/download.php?file=" />
