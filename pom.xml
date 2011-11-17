@@ -66,9 +66,9 @@
     </mailingLists>
                         
     <scm>
-        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</developerConnection>
-        <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</url>
+        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/branches/3.0-beta-1/</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/branches/3.0-beta-1/</developerConnection>
+        <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/branches/3.0-beta-1/</url>
     </scm>
                         
     <organization>
