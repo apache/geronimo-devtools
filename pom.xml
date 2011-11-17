@@ -97,7 +97,6 @@
                         
     <dependencyManagement>
         <dependencies>
-                        
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
@@ -475,6 +474,19 @@
             <releases>
                 <enabled>true</enabled>
             </releases>
+        </pluginRepository>
+        <!--
+         |
+         | Added for maven-eclipsepde-plugin 1.2-SNAPSHOT
+         |
+         -->
+        <pluginRepository>
+            <id>apache.snapshots</id>
+            <name>Apache Snapshot Repository</name>
+            <url>http://repository.apache.org/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </pluginRepository>
     </pluginRepositories>
                         
