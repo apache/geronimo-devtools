@@ -23,7 +23,7 @@ import org.eclipse.wst.common.project.facet.core.IActionConfigFactory;
 
 
 /**
- * @version $Rev: 588513 $ $Date: 2007-10-26 00:14:23 -0400 (Fri, 26 Oct 2007) $
+ * @version $Rev$ $Date$
  */
 public class DeploymentPlanInstallConfig {
 	

@@ -23,7 +23,7 @@ import org.apache.geronimo.jee.deployment.Dependency;
 import org.apache.geronimo.jee.naming.Pattern;
 
 /**
- * @version $Rev: 952535 $ $Date: 2010-06-08 12:40:16 +0800 (Tue, 08 Jun 2010) $
+ * @version $Rev$ $Date$
  */
 public interface IGeronimoServerInfo {
     

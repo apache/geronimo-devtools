@@ -16,7 +16,7 @@
     limitations under the License.
 -->
 
-<!-- @version $Rev: 646917 $ $Date: 2008-04-11 02:27:11 +0800 (Fri, 11 Apr 2008) $ -->
+<!-- @version $Rev$ $Date$ -->
 
 <ns2:application xmlns="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:ns2="http://geronimo.apache.org/xml/ns/j2ee/application-2.0">
     <environment>

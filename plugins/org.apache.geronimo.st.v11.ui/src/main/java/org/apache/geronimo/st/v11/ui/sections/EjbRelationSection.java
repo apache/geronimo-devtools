@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 /**
- * @version $Rev: 705002 $ $Date: 2008-10-16 03:34:27 +0800 (Thu, 16 Oct 2008) $
+ * @version $Rev$ $Date$
  */
 public class EjbRelationSection extends AbstractTreeSection {
     public EjbRelationSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, RelationshipsType relationships) {

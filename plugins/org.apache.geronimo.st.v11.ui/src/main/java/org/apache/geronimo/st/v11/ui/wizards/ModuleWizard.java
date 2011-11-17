@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /*
- * @version $Rev: 720616 $ $Date: 2008-11-26 05:49:55 +0800 (Wed, 26 Nov 2008) $
+ * @version $Rev$ $Date$
  */
 public class ModuleWizard extends AbstractTableWizard {
 

@@ -52,7 +52,7 @@
 //import org.eclipse.ui.forms.widgets.Section;
 //
 ///**
-// * @version $Rev: 723874 $ $Date: 2008-12-06 05:30:03 +0800 (Sat, 06 Dec 2008) $
+// * @version $Rev$ $Date$
 // */
 //public class SecurityAdvancedSection extends AbstractTableSection {
 //

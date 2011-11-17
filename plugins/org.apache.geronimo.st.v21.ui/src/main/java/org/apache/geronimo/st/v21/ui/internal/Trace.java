@@ -22,7 +22,7 @@ import org.apache.geronimo.st.v21.ui.Activator;
 /**
  * Helper class to route trace output.
  *
- * @version $Rev: 471551 $ $Date: 2006-11-05 17:47:11 -0500 (Sun, 05 Nov 2006) $
+ * @version $Rev$ $Date$
  */
 public class Trace {
 

@@ -37,7 +37,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 /**
- * @version $Rev: 509704 $ $Date: 2007-02-20 13:42:24 -0500 (Tue, 20 Feb 2007) $
+ * @version $Rev$ $Date$
  */
 public class V11DeploymentPlanCreationOperation extends DeploymentPlanCreationOperation {
 

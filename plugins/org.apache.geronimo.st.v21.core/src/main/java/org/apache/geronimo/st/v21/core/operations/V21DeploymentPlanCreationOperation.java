@@ -53,7 +53,7 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  *      <li>openejb-jar.xml
  * </ol>
  * 
- * @version $Rev: 509704 $ $Date: 2007-02-20 13:42:24 -0500 (Tue, 20 Feb 2007) $
+ * @version $Rev$ $Date$
  */
 public class V21DeploymentPlanCreationOperation extends DeploymentPlanCreationOperation {
 

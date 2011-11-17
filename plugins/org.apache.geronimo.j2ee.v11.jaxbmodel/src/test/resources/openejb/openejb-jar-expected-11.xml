@@ -16,7 +16,7 @@
   limitations under the License.
 -->
 
-<!-- @version $Rev: 652419 $ $Date: 2008-05-01 10:09:32 +0800 (Thu, 01 May 2008) $ -->
+<!-- @version $Rev$ $Date$ -->
            
 <ejb:openejb-jar xmlns:ejb="http://openejb.apache.org/xml/ns/openejb-jar-2.2" xmlns:dep="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:name="http://geronimo.apache.org/xml/ns/naming-1.2" xmlns:pkgen="http://openejb.apache.org/xml/ns/pkgen-2.1" xmlns:app="http://geronimo.apache.org/xml/ns/j2ee/application-2.0" xmlns:sec="http://geronimo.apache.org/xml/ns/security-2.0">
     <dep:environment>

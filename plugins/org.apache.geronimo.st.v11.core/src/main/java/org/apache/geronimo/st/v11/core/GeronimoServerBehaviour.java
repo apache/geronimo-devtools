@@ -43,7 +43,7 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.internal.IModulePublishHelper;
 
 /**
- * @version $Rev: 509683 $ $Date: 2007-02-20 12:47:35 -0500 (Tue, 20 Feb 2007) $
+ * @version $Rev$ $Date$
  */
 public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate implements IModulePublishHelper {
 

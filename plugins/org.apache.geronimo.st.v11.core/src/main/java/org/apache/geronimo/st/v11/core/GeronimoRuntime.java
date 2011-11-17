@@ -19,7 +19,7 @@ package org.apache.geronimo.st.v11.core;
 import org.apache.geronimo.st.core.GeronimoRuntimeDelegate;
 
 /**
- * @version $Rev: 491874 $ $Date: 2007-01-02 13:03:16 -0500 (Tue, 02 Jan 2007) $
+ * @version $Rev$ $Date$
  */
 public class GeronimoRuntime extends GeronimoRuntimeDelegate {
 

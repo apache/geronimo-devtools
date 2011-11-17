@@ -26,7 +26,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 /**
- * @version $Rev: 956478 $ $Date: 2010-06-21 15:47:59 +0800 (Mon, 21 Jun 2010) $
+ * @version $Rev$ $Date$
  */
 public class GeronimoServerInfoManager {
 	

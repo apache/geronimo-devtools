@@ -55,7 +55,7 @@ import org.eclipse.wst.server.core.model.ServerBehaviourDelegate;
  *      <li><b>TODO:</b> Query the server searching for missing dependencies
  * </ol>
  * 
- * @version $Rev: 817996 $ $Date: 2009-09-23 16:04:12 +0800 (Wed, 23 Sep 2009) $
+ * @version $Rev$ $Date$
  */
 public class DependencyHelper {
 

@@ -27,7 +27,7 @@ import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
 /**
- * @version $Rev: 939152 $ $Date: 2010-04-29 08:57:12 +0800 (Thu, 29 Apr 2010) $
+ * @version $Rev$ $Date$
  */
 public class ReferencePage extends AbstractBlueprintFormPage {
 

@@ -16,7 +16,7 @@
   limitations under the License.
 -->
 
-<!-- @version $Rev: 647891 $ $Date: 2008-04-15 00:40:39 +0800 (Tue, 15 Apr 2008) $ -->
+<!-- @version $Rev$ $Date$ -->
 
 <web-app xmlns="http://geronimo.apache.org/xml/ns/j2ee/web-2.0"
          xmlns:naming="http://geronimo.apache.org/xml/ns/naming-1.1"

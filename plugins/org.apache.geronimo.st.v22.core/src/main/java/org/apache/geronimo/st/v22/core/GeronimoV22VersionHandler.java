@@ -24,7 +24,7 @@ import org.apache.geronimo.st.core.IGeronimoVersionHandler;
 import org.eclipse.wst.server.core.IModule;
 
 /**
- * @version $Rev: 513891 $ $Date: 2007-03-02 14:09:25 -0500 (Fri, 02 Mar 2007) $
+ * @version $Rev$ $Date$
  */
 public class GeronimoV22VersionHandler implements IGeronimoVersionHandler {
 

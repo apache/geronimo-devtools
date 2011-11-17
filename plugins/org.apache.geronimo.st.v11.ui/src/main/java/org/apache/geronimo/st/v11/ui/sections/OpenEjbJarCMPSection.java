@@ -39,7 +39,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 /**
- * @version $Rev: 700249 $ $Date: 2008-09-30 04:50:12 +0800 (Tue, 30 Sep 2008) $
+ * @version $Rev$ $Date$
  */
 public class OpenEjbJarCMPSection extends AbstractSectionPart {
 

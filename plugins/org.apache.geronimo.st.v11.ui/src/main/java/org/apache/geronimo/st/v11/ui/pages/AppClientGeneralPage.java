@@ -25,7 +25,7 @@ import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 
 /**
- * @version $Rev: 688452 $ $Date: 2008-08-24 13:56:20 +0800 (Sun, 24 Aug 2008) $
+ * @version $Rev$ $Date$
  */
 public class AppClientGeneralPage extends AbstractGeronimoFormPage {
 

@@ -22,7 +22,7 @@ import javax.ejb.Stateless;
 /**
  * MyStatelessSessionBean
  *
- * @version $Rev: 679174 $ $Date: 2008-07-23 12:52:55 -0700 (Wed, 23 Jul 2008) $
+ * @version $Rev$ $Date$
  */
 @Stateless
 public class MyStatelessSessionBean implements RemoteBusinessInterface {

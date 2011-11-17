@@ -75,7 +75,7 @@ import org.apache.geronimo.jee.naming.ResourceLocator;
  * &lt;/complexType>
  * </pre>
  * 
- * @version $Rev: 672410 $ $Date: 2008-06-28 06:16:51 +0800 (Sat, 28 Jun 2008) $
+ * @version $Rev$ $Date$
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "openejb-jarType", propOrder = {
