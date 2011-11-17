@@ -62,7 +62,7 @@ See http://cwiki.apache.org/GMOxDOC30/installing-geronimo-eclipse-plugin.html
 
 Bug Fixed and New Features
 --------------------------
-
+GERONIMODEVTOOLS--774   java.lang.NullPointerException error happened for web application automatically redeploying after renamed the name of the project 
 GERONIMODEVTOOLS--765 	Improve module state synchronization between server & GEP
 GERONIMODEVTOOLS--764 	Control the OSGI bundle's start level in GEP
 GERONIMODEVTOOLS--763   "Source not found" message when debugging a project
