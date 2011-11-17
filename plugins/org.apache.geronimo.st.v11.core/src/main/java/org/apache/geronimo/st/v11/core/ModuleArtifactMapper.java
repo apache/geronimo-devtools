@@ -73,7 +73,7 @@ public class ModuleArtifactMapper {
 		artifactEntries.put(project.getName(), configId);
 	}
 
-	public void removeEntry(IServer server, IProject project) {
+	public void removeEntry(IServer server, IModule module) {
 
 		if (!SocketUtil.isLocalhost(server.getHost()))
 			return;
@@ -81,14 +81,18 @@ public class ModuleArtifactMapper {
 		File runtimeLoc = server.getRuntime().getLocation().toFile();
 		Map artifactEntries = (Map) serverEntries.get(runtimeLoc);
 		if (artifactEntries != null) {
-			artifactEntries.remove(project.getName());
+			artifactEntries.remove(module.getName());
 		}
 	}
 
 	public String resolve(IServer server, IModule module) {
 		Map artifactEntries = (Map) serverEntries.get(server.getRuntime().getLocation().toFile());
-		if (artifactEntries != null && module != null && module.getProject() != null) {
-			return (String) artifactEntries.get(module.getProject().getName());
+		if (artifactEntries != null && module != null) {
+		    if(module.getProject() != null) {
+		        return (String) artifactEntries.get(module.getProject().getName());
+		    } else {
+		        return (String) artifactEntries.get(module.getName());
+		    }
 		}
 		return null;
 	}

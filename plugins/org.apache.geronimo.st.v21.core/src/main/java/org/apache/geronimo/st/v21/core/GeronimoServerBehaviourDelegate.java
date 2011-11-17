@@ -671,7 +671,7 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
 			doFail(status, Messages.UNDEPLOY_FAIL);
 		}
 		
-		ModuleArtifactMapper.getInstance().removeEntry(getServer(), module.getProject());
+		ModuleArtifactMapper.getInstance().removeEntry(getServer(), module);
 
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.doRemoved");
 	}
