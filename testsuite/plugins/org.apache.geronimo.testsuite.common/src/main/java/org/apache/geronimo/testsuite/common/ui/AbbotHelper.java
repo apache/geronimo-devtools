@@ -52,7 +52,7 @@ import abbot.swt.tester.TreeTester;
 import abbot.swt.utilities.ExtendedComparator;
 
 /**
- * @version $Rev: 679174 $ $Date: 2008-07-23 12:52:55 -0700 (Wed, 23 Jul 2008) $
+ * @version $Rev$ $Date$
  */
 public class AbbotHelper {
     private Shell workbenchShell;

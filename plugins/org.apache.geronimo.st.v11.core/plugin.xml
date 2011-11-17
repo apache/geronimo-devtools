@@ -17,7 +17,7 @@
   ~ limitations under the License.
   -->
 
-<!-- $Rev: 522975 $ $Date: 2007-03-27 12:04:11 -0400 (Tue, 27 Mar 2007) $ -->
+<!-- $Rev$ $Date$ -->
 
 <plugin>
      <extension point="org.eclipse.wst.server.core.runtimeTypes">

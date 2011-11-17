@@ -124,7 +124,7 @@ import org.apache.geronimo.jee.pkgen.KeyGenerator;
  * &lt;/complexType>
  * </pre>
  * 
- * @version $Rev: 650704 $ $Date: 2008-04-23 08:09:15 +0800 (Wed, 23 Apr 2008) $
+ * @version $Rev$ $Date$
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "entity-beanType", propOrder = {

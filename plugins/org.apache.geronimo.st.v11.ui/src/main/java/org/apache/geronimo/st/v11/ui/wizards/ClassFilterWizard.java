@@ -29,7 +29,7 @@ import org.apache.geronimo.j2ee.jaxbmodel.operations.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v11.ui.sections.ClassFilterSection;
 
 /**
- * @version $Rev: 720616 $ $Date: 2008-11-26 05:49:55 +0800 (Wed, 26 Nov 2008) $
+ * @version $Rev$ $Date$
  */
 public class ClassFilterWizard extends AbstractTableWizard {
 

@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 /**
- * @version $Rev: 705268 $ $Date: 2008-10-16 23:54:29 +0800 (Thu, 16 Oct 2008) $
+ * @version $Rev$ $Date$
  */
 public class AdminObjectSection extends AbstractTreeSection {
     public AdminObjectSection(JAXBElement plan, Composite parent, FormToolkit toolkit, int style, List adminObjects) {

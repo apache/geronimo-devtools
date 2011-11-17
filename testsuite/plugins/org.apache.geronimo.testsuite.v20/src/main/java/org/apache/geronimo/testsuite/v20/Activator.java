@@ -30,7 +30,7 @@ import abbot.swt.eclipse.utils.WorkbenchUtilities;
 /**
  * The activator class controls the plug-in life cycle
  *
- * @version $Rev: 677978 $ $Date: 2008-07-18 10:34:28 -0700 (Fri, 18 Jul 2008) $
+ * @version $Rev$ $Date$
  */
 public class Activator extends Plugin {
 

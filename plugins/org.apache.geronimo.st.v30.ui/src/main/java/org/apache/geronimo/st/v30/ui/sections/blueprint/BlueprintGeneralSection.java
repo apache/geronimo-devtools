@@ -35,7 +35,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 /**
- * @version $Rev: 939152 $ $Date: 2010-04-29 08:57:12 +0800 (Thu, 29 Apr 2010) $
+ * @version $Rev$ $Date$
  */
 public class BlueprintGeneralSection extends AbstractBlueprintSectionPart {
 

@@ -32,7 +32,7 @@ import abbot.swt.eclipse.utils.Preferences.Mode;
 /**
  * Tutorial5MinuteTest
  *
- * @version $Rev: 679174 $ $Date: 2008-07-23 12:52:55 -0700 (Wed, 23 Jul 2008) $
+ * @version $Rev$ $Date$
  */
 public class Tutorial5MinuteTest extends WorkbenchTestCase {
     Shell workbenchShell;

@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 /*
- * @version $Rev: 690385 $ $Date: 2008-08-30 04:43:47 +0800 (Sat, 30 Aug 2008) $
+ * @version $Rev$ $Date$
  */
 public class ExtModuleSection extends AbstractTableSection {
 

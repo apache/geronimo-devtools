@@ -24,7 +24,7 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  *
- * @version $Rev: 499184 $ $Date: 2007-01-23 18:36:18 -0500 (Tue, 23 Jan 2007) $
+ * @version $Rev$ $Date$
  */
 public class Activator extends Plugin {
 

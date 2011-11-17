@@ -32,7 +32,7 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.server.core.IModule;
 import org.apache.geronimo.st.core.Activator;
 /**
- * @version $Rev: 471551 $ $Date: 2006-11-05 17:47:11 -0500 (Sun, 05 Nov 2006) $
+ * @version $Rev$ $Date$
  */
 public class GeronimoV11Utils extends GeronimoUtils {
 

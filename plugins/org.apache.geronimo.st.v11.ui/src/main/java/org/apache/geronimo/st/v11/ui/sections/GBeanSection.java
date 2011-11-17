@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 /**
- * @version $Rev: 688452 $ $Date: 2008-08-24 01:56:20 -0400 (Sun, 24 Aug 2008) $
+ * @version $Rev$ $Date$
  */
 public class GBeanSection extends AbstractTreeSection {
 

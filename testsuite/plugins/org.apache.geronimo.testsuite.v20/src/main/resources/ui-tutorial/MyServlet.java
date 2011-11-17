@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * MyServlet
  *
- * @version $Rev: 679174 $ $Date: 2008-07-23 12:52:55 -0700 (Wed, 23 Jul 2008) $
+ * @version $Rev$ $Date$
  */
 public class MyServlet extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet {
     static final long serialVersionUID = 1L;

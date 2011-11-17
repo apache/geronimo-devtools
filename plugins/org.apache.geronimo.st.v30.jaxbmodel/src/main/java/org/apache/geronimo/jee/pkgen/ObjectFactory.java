@@ -36,7 +36,7 @@ import javax.xml.namespace.QName;
  * groups.  Factory methods for each of these are 
  * provided in this class.
  * 
- * @version $Rev: 650704 $ $Date: 2008-04-23 08:09:15 +0800 (Wed, 23 Apr 2008) $
+ * @version $Rev$ $Date$
  */
 @XmlRegistry
 public class ObjectFactory {

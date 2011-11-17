@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 /**
- * @version $Rev: 939152 $ $Date: 2010-04-29 08:57:12 +0800 (Thu, 29 Apr 2010) $
+ * @version $Rev$ $Date$
  */
 public class TypeConverterSection extends AbstractBlueprintTreeSectionPart{
     

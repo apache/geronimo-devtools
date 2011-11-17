@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 /**
- * @version $Rev: 672450 $ $Date: 2008-06-28 09:21:07 +0800 (Sat, 28 Jun 2008) $
+ * @version $Rev$ $Date$
  */
 public class AppClientClientGeneralSection extends CommonGeneralSection {
 

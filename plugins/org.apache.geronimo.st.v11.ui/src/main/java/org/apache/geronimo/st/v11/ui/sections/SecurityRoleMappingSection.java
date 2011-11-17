@@ -51,7 +51,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 /**
- * @version $Rev: 707635 $ $Date: 2008-10-24 21:55:28 +0800 (Fri, 24 Oct 2008) $
+ * @version $Rev$ $Date$
  */
 public class SecurityRoleMappingSection extends AbstractTreeSection {
 

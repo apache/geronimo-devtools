@@ -27,7 +27,7 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 
 /**
- * @version $Rev: 471551 $ $Date: 2006-11-05 17:47:11 -0500 (Sun, 05 Nov 2006) $
+ * @version $Rev$ $Date$
  */
 public class GeronimoV21FacetInstallDelegate extends GeronimoFacetInstallDelegate {
 

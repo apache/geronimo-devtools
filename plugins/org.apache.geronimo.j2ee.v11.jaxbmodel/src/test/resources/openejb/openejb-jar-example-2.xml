@@ -16,7 +16,7 @@
    limitations under the License.
 -->
 
-<!-- @version $Rev: 650735 $ $Date: 2008-04-23 11:35:03 +0800 (Wed, 23 Apr 2008) $ -->
+<!-- @version $Rev$ $Date$ -->
 
 <openejb-jar xmlns="http://openejb.apache.org/xml/ns/openejb-jar-2.2">
 

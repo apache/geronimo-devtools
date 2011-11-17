@@ -53,7 +53,7 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerCore;
 
 /**
- * @version $Rev: 952535 $ $Date: 2010-06-08 12:40:16 +0800 (Tue, 08 Jun 2010) $
+ * @version $Rev$ $Date$
  */
 public class GeronimoV22ServerInfo implements IGeronimoServerInfo{
     static final long serialVersionUID = 1L;

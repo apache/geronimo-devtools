@@ -16,7 +16,7 @@
   limitations under the License.
 -->
            
-<!-- @version $Rev: 652419 $ $Date: 2008-05-01 10:09:32 +0800 (Thu, 01 May 2008) $ -->
+<!-- @version $Rev$ $Date$ -->
            
 <conn:connector xmlns:dep="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:conn="http://geronimo.apache.org/xml/ns/j2ee/connector-1.2" xmlns:name="http://geronimo.apache.org/xml/ns/naming-1.2">
     <dep:environment>

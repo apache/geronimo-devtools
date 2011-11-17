@@ -17,7 +17,7 @@
   ~ limitations under the License.
   -->
 
-<!-- $Rev: 589873 $ $Date: 2007-10-29 17:48:35 -0400 (Mon, 29 Oct 2007) $ -->
+<!-- $Rev$ $Date$ -->
 
 <plugin>
     <extension-point id="geronimoinfo" name="Geronimo Server Info" schema="schema/geronimoinfo.exsd"/>

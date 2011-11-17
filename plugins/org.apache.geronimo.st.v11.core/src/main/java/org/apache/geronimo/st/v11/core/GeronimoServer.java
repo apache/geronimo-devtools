@@ -30,7 +30,7 @@ import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
 /**
- * @version $Rev: 510504 $ $Date: 2007-02-22 08:38:06 -0500 (Thu, 22 Feb 2007) $
+ * @version $Rev$ $Date$
  */
 public class GeronimoServer extends GeronimoServerDelegate {
 

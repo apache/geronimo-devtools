@@ -51,7 +51,7 @@ import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 /**
- * @version $Rev: 939152 $ $Date: 2010-04-29 08:57:12 +0800 (Thu, 29 Apr 2010) $
+ * @version $Rev$ $Date$
  */
 public abstract class AbstractGeronimoJAXBBasedEditor extends FormEditor {
 

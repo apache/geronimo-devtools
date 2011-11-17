@@ -41,7 +41,7 @@ import org.apache.geronimo.j2ee.deployment.ArtifactType;
  * <p>The initial usage of this DependencyManager in the GEP is somewhat limited but other usages 
  * are possible<p>
  * 
- * @version $Rev: 680897 $ $Date: 2008-07-30 09:18:42 +0800 (Wed, 30 Jul 2008) $
+ * @version $Rev$ $Date$
  */
 public class DependencyManager {
 

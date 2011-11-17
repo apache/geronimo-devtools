@@ -16,7 +16,7 @@
  */
 
 /**
- * @version $Rev: 650704 $ $Date: 2008-04-23 08:09:15 +0800 (Wed, 23 Apr 2008) $
+ * @version $Rev$ $Date$
  */
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://openejb.apache.org/xml/ns/pkgen-2.1", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package org.apache.geronimo.jee.pkgen;
