@@ -10,3 +10,6 @@ licensed to the Apache Software Foundation under the
 "Software Grant and Corporate Contribution License Agreement",
 informally known as the "Eclipse Geronimo Server Adapter CLA".
 
+This product also includes schemas and specification developed by:
+      - the W3C consortium (http://www.w3c.org)
+      (http://www.w3.org/XML/1998/namespace)
