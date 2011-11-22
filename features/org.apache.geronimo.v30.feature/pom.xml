@@ -78,7 +78,7 @@
                 <directory>../..</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <include>PLUGIN_RELEASE-NOTES-${pom.version}.txt</include>
+                    <include>PLUGIN_RELEASE-NOTES-3.0-beta-1.txt</include>
                 </includes>
             </resource>
             <resource>

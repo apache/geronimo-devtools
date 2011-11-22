@@ -1,4 +1,4 @@
-Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
+Release Notes -- Apache Geronimo Eclipse Plugin -- Version 3.0-beta-1 -- ${buildNumber}
 
 
 Helpful URLs
@@ -158,6 +158,6 @@ GERONIMODEVTOOLS--605 	Generate classes with JAXB from new schema files for Java
 GERONIMODEVTOOLS--600 	Build script should detect JDK data model(32bit or 64bit) instead of OS architecture
 
 
-Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
+Release Notes -- Apache Geronimo Eclipse Plugin -- Version 3.0-beta-1 -- ${buildNumber}
 
-@version $Rev: 894783 $ $Date: 2009-12-31 14:21:08 +0800 (Thu, 31 Dec 2009) $
+@version $Rev$ $Date$

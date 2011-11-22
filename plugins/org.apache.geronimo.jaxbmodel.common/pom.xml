@@ -114,7 +114,7 @@
                 <directory>../..</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <include>PLUGIN_RELEASE-NOTES-${pom.version}.txt</include>
+                    <include>PLUGIN_RELEASE-NOTES-3.0-beta-1.txt</include>
                 </includes>
             </resource>
             <!-- The Geronimo covention puts license and notice for artifacts shipped in this jar 
