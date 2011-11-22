@@ -16,7 +16,7 @@
   ~ limitations under the License.
   -->
 
-<!-- $Rev$ $Date$ -->
+<!-- @version $Rev$ $Date$ -->
 
 <!-- Schema file written by PDE -->
 <schema targetNamespace="org.apache.geronimo.st.ui" xmlns="http://www.w3.org/2001/XMLSchema">
