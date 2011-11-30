@@ -314,10 +314,26 @@
                     </configuration>
                 </plugin>
                 <plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-remote-resources-plugin</artifactId>
-					<version>1.1</version>
-				</plugin>                      
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-remote-resources-plugin</artifactId>
+                    <version>1.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>rat-maven-plugin</artifactId>
+                    <version>1.0-alpha-3</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>**/MANIFEST.MF</exclude>
+                            <exclude>**/.classpath</exclude>
+                            <exclude>**/.options</exclude>
+                            <exclude>**/.project</exclude>
+                            <exclude>**/velocity.log</exclude>
+                            <exclude>**/PLUGIN_RELEASE-NOTES*.txt</exclude>
+                            <exclude>**/target/**</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>                      
            </plugins>
 
         </pluginManagement>
@@ -521,6 +537,12 @@
                 <module>plugins</module>
                 <module>features</module>
                 <module>assembly</module>
+            </modules>
+        </profile>
+        
+        <profile>
+            <id>none</id>
+            <modules>
             </modules>
         </profile>
             

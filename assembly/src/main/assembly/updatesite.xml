@@ -39,7 +39,7 @@
             <outputDirectory>/</outputDirectory>
         </file>
         <file>
-            <source>../features/org.apache.geronimo.v30.feature/target/classes/about_files/PLUGIN_RELEASE-NOTES-${pom.version}.txt</source>
+            <source>../features/org.apache.geronimo.v30.feature/target/classes/about_files/PLUGIN_RELEASE-NOTES-3.0-beta-1.txt</source>
             <outputDirectory></outputDirectory>
             <!--  <filtered>true</filtered>
                  ${pom.version} does not get expanded by this filtering :-(
