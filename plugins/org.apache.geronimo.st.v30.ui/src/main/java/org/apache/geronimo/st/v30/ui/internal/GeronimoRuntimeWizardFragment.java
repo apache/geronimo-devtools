@@ -112,7 +112,8 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
         "repository/org/apache/geronimo/bundles/jaxb-impl", "repository/org/apache/geronimo/bundles/jstl",
         "repository/org/apache/myfaces/core/myfaces-bundle",
         "repository/org/apache/geronimo/framework/geronimo-jdbc",
-        "repository/org/osgi"};
+        "repository/org/eclipse/osgi",
+        "repository/org/osgi/org.osgi.compendium"};
     
     protected final String LOCATION_LINE_TEMPLATE = "<location path=\"${server_location}GERONIMO_BUNDLE_FOLDER_NAME\" type=\"Directory\"/>";
 
