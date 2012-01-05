@@ -14,7 +14,7 @@ System Requirements
 -------------------
 1. Java J2SE 1.5.0 or greater, and a platform that supports it
 
-2. Eclipse IDE for Java EE Developers (Galileo or Helios), which is platform-specific
+2. Eclipse IDE for Java EE Developers (Helios or Indigo), which is platform-specific
 
    -- Get Eclipse from http://www.eclipse.org/downloads/
 
@@ -46,29 +46,24 @@ that each argument has to be on seperate lines:
 Geronimo Eclipse Plugin Version ${pom.version} Enhancements
 --------------------------------------------------
 
-1. Support Geronimo Server 2.1.7
+1. Support Geronimo Server 2.1.8
 
-2. Support Eclipse Helios
+2. Support Eclipse Helios and Indigo
 
 
 Installation Instructions
 -------------------------
 
-See https://cwiki.apache.org/GMOxDOC21/how-to-install-geronimo-eclipse-plugin-v217.html
+See https://cwiki.apache.org/GMOxDOC21/how-to-install-geronimo-eclipse-plugin-v218.html
 
 Bug Fixes and New Features
 --------------------------
-GERONIMODEVTOOLS-663 Remove duplicated License and Notice files in each jar when we issue "mvn release:prepare"
-GERONIMODEVTOOLS-680 Synchronize GEP dependency per Server dependency list
-GERONIMODEVTOOLS-678 Can not install GEP in RAD SE v8.0
-GERONIMODEVTOOLS-676 update version number of dependency and moduels to make 2.1 branch build successfully
-GERONIMODEVTOOLS-608 reduce time-consuming in DependencyHelper with cache. Thanks Boes and Chris for the patch
-GERONIMODEVTOOLS-673 Don't download TPTP runtime.
-GERONIMODEVTOOLS-600 2.1 branch can build with 64-bit JDK now
-GERONIMODEVTOOLS-683 GEP can not detect the Geronimo server version correctly 
-GERONIMODEVTOOLS-679 TestSuite not working on branch 2.1.7
-GERONIMODEVTOOLS-686 Create a new profile to skip the test suite executions when releasing GEP
-
+GERONIMODEVTOOLS-689 NullPointerException when publishing with Geronimo Eclipse Plugin v2.1.7
+GERONIMODEVTOOLS-690 NullpointerException occurs if one adds a "Utility Project" to the EAR 
+GERONIMODEVTOOLS-692 Can not build GEP on Mac
+GERONIMODEVTOOLS-774 java.lang.NullPointerException error happened for web application automatically redeploying after renamed the name of the project 
+GERONIMODEVTOOLS-776 Using excluds in rat-maven-plugin to exclude the file whoes license header is not required
+GERONIMODEVTOOLS-778 Using GEP3.0.X's eclipse/build.xml to replace the GEP2.1.X's
 
 Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
 

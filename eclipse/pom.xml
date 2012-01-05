@@ -31,7 +31,7 @@
         <version>2.1.8-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-                                                
+                                                  
     <build>
         <plugins>
             <plugin>
@@ -43,10 +43,9 @@
                         <phase>validate</phase>
                         <configuration>
                             <tasks>
-                                <property name="LOCAL_M2_REPO" value="${settings.localRepository}" />
-                                <ant antfile="${basedir}/build.xml">
-                                    <target name="${eclipsePlatformFamily}" />
-                                </ant>
+                                <property name="download_to" value="${eclipseDownload}" />
+                                <property name="extract_to" value="${eclipseInstall}" />
+                                <ant antfile="${basedir}/build.xml" />
                             </tasks>
                         </configuration>
                         <goals>
@@ -69,41 +68,5 @@
             </plugins>
         </pluginManagement>
     </build>
-                                                
-    <profiles>
-        <profile>
-            <id>windows</id>
-            <activation>
-                <os>
-                    <family>windows</family>
-                </os>
-            </activation>
-            <properties>
-                <eclipsePlatformFamily>win</eclipsePlatformFamily>
-            </properties>
-        </profile>
-        <profile>
-            <id>unix-x86</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                </os>
-            </activation>
-            <properties>
-                <eclipsePlatformFamily>linux</eclipsePlatformFamily>
-            </properties>
-        </profile>
-        <profile>
-            <id>mac</id>
-            <activation>
-                <os>
-                    <family>mac</family>
-                </os>
-            </activation>
-            <properties>
-                <eclipsePlatformFamily>macos</eclipsePlatformFamily>
-            </properties>
-        </profile>
-    </profiles>
-                                                
+
 </project>

@@ -83,6 +83,7 @@
     </distributionManagement>
                         
     <properties>
+        <eclipseDownload>${settings.localRepository}/eclipse-downloads</eclipseDownload>
         <eclipseInstall>${settings.localRepository}/eclipse</eclipseInstall>
         <org.apache.geronimo.v21.feature_version>2.1.8</org.apache.geronimo.v21.feature_version>
         <keystoreAlias>devtools</keystoreAlias> 
