@@ -20,6 +20,8 @@ package org.apache.geronimo.st.v30.core.commands;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import javax.enterprise.deploy.shared.CommandType;
 import javax.enterprise.deploy.spi.status.DeploymentStatus;
@@ -47,17 +49,16 @@ import org.eclipse.wst.server.core.IModule;
 public class SynchronizedDeploymentOp implements ProgressListener,
         IDeploymentCommand {
 
-    private IDeploymentCommand command;
-
+    private final IDeploymentCommand command;
+    
     private MultiStatus status = null;
 
     private IProgressMonitor _monitor = null;
-
-    private boolean timedOut = true;
+    
+    private CountDownLatch latch = null;
 
     public SynchronizedDeploymentOp(IDeploymentCommand command) {
-        super();
-        this.command = command;
+        this.command = command;      
     }
 
     /*
@@ -73,12 +74,14 @@ public class SynchronizedDeploymentOp implements ProgressListener,
             _monitor = new NullProgressMonitor();
         }
 
+        latch = new CountDownLatch(1);
+        
         ProgressObject po = run();
 
         return new DeploymentCmdStatus(status, po);
     }
 
-    private synchronized ProgressObject run() throws Exception {
+    private ProgressObject run() throws Exception {
         Trace.trace(Trace.INFO, "--> run()", Activator.traceCommands);
         
         IStatus ds = command.execute(_monitor);
@@ -89,8 +92,9 @@ public class SynchronizedDeploymentOp implements ProgressListener,
             po = ((DeploymentCmdStatus) ds).getProgressObject();
             po.addProgressListener(this);
 
+            boolean timedOut = false;
             try {
-                wait(getTimeout());
+                timedOut = !latch.await(getTimeout(), TimeUnit.MILLISECONDS);
             } catch (InterruptedException e) {
             }
 
@@ -106,10 +110,9 @@ public class SynchronizedDeploymentOp implements ProgressListener,
         return po;
     }
 
-    private synchronized void sendNotification() {
-        timedOut = false;
-        Trace.trace(Trace.INFO, "notifyAll()", Activator.traceCommands);
-        notifyAll();
+    private void sendNotification() {
+        Trace.trace(Trace.INFO, "sendNotification()", Activator.traceCommands);
+        latch.countDown();
     }
 
     /*
@@ -157,7 +160,7 @@ public class SynchronizedDeploymentOp implements ProgressListener,
         return command.getTimeout();
     }
     
-    public void messageToStatus(int severity, String source, boolean error) {
+    private void messageToStatus(int severity, String source, boolean error) {
         status = new MultiStatus(Activator.PLUGIN_ID, 0, "", null);
         try {
             BufferedReader in = new BufferedReader(new StringReader(source));
