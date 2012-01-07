@@ -56,11 +56,16 @@ public class SynchronizeProjectOnServerTask extends TimerTask {
 
             try {
                 for (IModule module : modules) {
+                    IModule[] rootModule = new IModule[] { module };
+                    if (!delegate.isPublished(rootModule)) {
+                        Trace.trace(Trace.INFO, "SynchronizeProjectOnServerTask: Ignoring non-published module: " + module, Activator.traceCore);
+                        continue;
+                    }
                     int state = delegate.getModuleHandler(module).getModuleState(module);
                     if (state == -1) {
                         removedModules.add(module);
                     } else {
-                        delegate.setModulesState(new IModule[] { module }, state);
+                        delegate.setModulesState(rootModule, state);
                     }
                 }
 

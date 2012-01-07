@@ -1658,4 +1658,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         return osgiModuleHandler;
     }
     
+    public boolean isPublished(IModule[] module) {
+        return super.hasBeenPublished(module);
+    }
 }
