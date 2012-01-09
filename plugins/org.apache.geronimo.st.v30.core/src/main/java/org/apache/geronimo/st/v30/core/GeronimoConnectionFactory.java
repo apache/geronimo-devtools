@@ -37,16 +37,13 @@ public class GeronimoConnectionFactory {
     private Map<String, DeploymentManager> connections = 
         Collections.synchronizedMap(new HashMap<String, DeploymentManager>());
 
-    private static GeronimoConnectionFactory instance;
+    private static GeronimoConnectionFactory instance = new GeronimoConnectionFactory();
 
     private GeronimoConnectionFactory() {
         super();
     }
 
     public static GeronimoConnectionFactory getInstance() {
-        if (instance == null) {
-            instance = new GeronimoConnectionFactory();
-        }
         return instance;
     }
 
@@ -77,11 +74,14 @@ public class GeronimoConnectionFactory {
     }
  
     public void destroy(IServer server) {
-        Trace.trace(Trace.INFO, "deploymentManager destroy", Activator.traceCore);
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoConnectionFactory.destroy");
+
         DeploymentManager manager = connections.remove(server.getId());        
         if (manager != null) {
             // TODO: need to do reference counting or something else before releasing the connection
             // manager.release();
         }
+        
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoConnectionFactory.destroy");
     }
 }

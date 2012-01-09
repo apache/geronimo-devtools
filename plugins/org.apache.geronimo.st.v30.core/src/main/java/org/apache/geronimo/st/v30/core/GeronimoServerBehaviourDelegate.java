@@ -260,8 +260,6 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         // request shutdown
         stopKernel();
         
-        server.getStopTimeout();
-        
         // wait for shutdown
         if (!waitForStopped(60 * 1000) || force) {
             ILaunch launch = server.getLaunch();
@@ -921,12 +919,14 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     public void setServerStopped() {
         setServerState(IServer.STATE_STOPPED);
         resetModuleState();
+        stopSynchronizeProjectOnServerTask();
         if (defaultModuleHandler != null) {
             defaultModuleHandler.serverStopped();
         }
         if (osgiModuleHandler != null) {
             osgiModuleHandler.serverStopped();
         }
+        GeronimoConnectionFactory.getInstance().destroy(getServer());
     }
 
     public IGeronimoServer getGeronimoServer() {
