@@ -712,11 +712,19 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
 
         public boolean hasChangedChildModulesOnly(boolean allChangedAllowed) {
             int changed = getChangedChildModulesOnly();
-            if (allChangedAllowed) {
-                return (changed > 0);
-            } else {
-                return (changed > 0 && changed < children.size());
+            if (changed > 0) {
+                if (allChangedAllowed) {
+                    return true;
+                } else {                    
+                    if (children.size() == 1) {                
+                        // special case: always return true if module only has one child module                        
+                        return true;
+                    } else {
+                        return (changed < children.size());
+                    }
+                }
             }
+            return false;
         }
         
         /*
