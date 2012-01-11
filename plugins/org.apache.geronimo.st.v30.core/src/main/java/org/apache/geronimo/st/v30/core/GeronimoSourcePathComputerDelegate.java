@@ -18,7 +18,10 @@ package org.apache.geronimo.st.v30.core;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,9 +41,12 @@ import org.eclipse.debug.core.sourcelookup.ISourcePathComputer;
 import org.eclipse.debug.core.sourcelookup.ISourcePathComputerDelegate;
 import org.eclipse.debug.core.sourcelookup.containers.ExternalArchiveSourceContainer;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jdt.launching.sourcelookup.containers.PackageFragmentRootSourceContainer;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
@@ -66,71 +72,108 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
         IModule[] modules = server.getModules();
 
         Set<IProject> projectList = new HashSet<IProject>();
-        // populate list of projects and their source folders
-        processModules(modules, projectList, server, monitor);
-
-        // create a ProjectRuntime classpath entry for each JavaProject
-        List<IRuntimeClasspathEntry> projectEntriesList = new ArrayList<IRuntimeClasspathEntry>(projectList.size());
-        for (IProject project : projectList) {
-            IJavaProject javaProject = getJavaProject(project);
-            if (javaProject != null) {
-                projectEntriesList.add(JavaRuntime.newProjectRuntimeClasspathEntry(javaProject));
-            }
-        }
-        IRuntimeClasspathEntry[] projectEntries = new IRuntimeClasspathEntry[projectEntriesList.size()];
-        projectEntriesList.toArray(projectEntries);
-
-        // combine unresolved entries and project entries
-        IRuntimeClasspathEntry[] unresolvedEntries = JavaRuntime.computeUnresolvedSourceLookupPath(configuration);        
-        IRuntimeClasspathEntry[] entries = new IRuntimeClasspathEntry[projectEntries.length + unresolvedEntries.length];
-        System.arraycopy(unresolvedEntries, 0, entries, 0, unresolvedEntries.length);
-        System.arraycopy(projectEntries, 0, entries, unresolvedEntries.length, projectEntries.length);
-
-        IRuntimeClasspathEntry[] resolved = JavaRuntime.resolveSourceLookupPath(entries, configuration);
-        ISourceContainer[] defaultContainers = JavaRuntime.getSourceContainers(resolved);
+        Set<IJavaProject> javaProjectList = new HashSet<IJavaProject>();
+        
+        // collect all referenced projects
+        processModules(modules, projectList, javaProjectList, server, monitor);
                
-        Set<ISourceContainer> allContainers = new HashSet<ISourceContainer>();
-        // add project source containers
-        addAll(allContainers, defaultContainers);
+        Trace.trace(Trace.INFO, "GeronimoSourcePathComputerDelegate: projects found: " + toString(javaProjectList), Activator.traceCore);
+        
+        Set<ISourceContainer> allContainers = new LinkedHashSet<ISourceContainer>();
+        
+        // add default source containers
+        addDefaultSourceContainers(javaProjectList, configuration, allContainers);
+        
+        // add fragment source containers
+        addFragmentSourceContainers(javaProjectList, allContainers);
         
         // add additional source containers
+        addAdditionalSourceContainers(configuration, monitor, allContainers);
+        
+        // add source containers for Geronimo Runtime
+        addServerSourceContainers(server, allContainers);
+
+        // set known source project list
+        GeronimoServerBehaviourDelegate delegate = getDelegate(server);
+        delegate.setKnownSourceProjects(projectList);
+        
+        ISourceContainer[] sourceContainers = new ISourceContainer[allContainers.size()];
+        allContainers.toArray(sourceContainers);
+        
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoSourcePathComputerDelegate.computeSourceContainers", toString(sourceContainers));
+        
+        return sourceContainers;
+    }
+
+    private void addAdditionalSourceContainers(ILaunchConfiguration configuration, 
+                                               IProgressMonitor monitor,
+                                               Set<ISourceContainer> allContainers) throws CoreException {
         ILaunchManager mgr = DebugPlugin.getDefault().getLaunchManager();
         for (String id : getAdditionalSrcPathComputers()) {
             ISourcePathComputer computer = mgr.getSourcePathComputer(id);
             ISourceContainer[] jsc = computer.computeSourceContainers(configuration, monitor);
             addAll(allContainers, jsc);
         }
-        
-        // add source containers for Geronimo Runtime
-        ISourceContainer[] runtimeContainers = processServer(server);
-        addAll(allContainers, runtimeContainers);
-
-        // set known source project list
-        GeronimoServerBehaviourDelegate delegate = getDelegate(server);
-        delegate.setKnownSourceProjects(projectList);
-        
-        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoSourcePathComputerDelegate.computeSourceContainers", toStringList(allContainers));
-        
-        return allContainers.toArray(new ISourceContainer[allContainers.size()]);
     }
-    
-    private static void addAll(Set<ISourceContainer> allContainers, ISourceContainer[] containers) {
-        if (containers != null) {
-            for (ISourceContainer container : containers) {
-                allContainers.add(container);
+
+    private void addDefaultSourceContainers(Set<IJavaProject> projectList, 
+                                            ILaunchConfiguration configuration, 
+                                            Collection<ISourceContainer> allContainers) throws CoreException {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoSourcePathComputerDelegate.addDefaultSourceContainers");
+        
+        List<IRuntimeClasspathEntry> projectEntriesList = new ArrayList<IRuntimeClasspathEntry>(projectList.size());
+        
+        // create a ProjectRuntime classpath entry for each JavaProject
+        for (IJavaProject project : projectList) {
+            projectEntriesList.add(JavaRuntime.newProjectRuntimeClasspathEntry(project));            
+        }
+        
+        // add in unresolved entries
+        IRuntimeClasspathEntry[] unresolvedEntries = JavaRuntime.computeUnresolvedSourceLookupPath(configuration);        
+        if (unresolvedEntries != null) {
+            for (IRuntimeClasspathEntry unresolvedEntry : unresolvedEntries) {
+                projectEntriesList.add(unresolvedEntry);
             }
         }
+        
+        IRuntimeClasspathEntry[] projectEntries = new IRuntimeClasspathEntry[projectEntriesList.size()];
+        projectEntriesList.toArray(projectEntries);
+
+        IRuntimeClasspathEntry[] resolved = JavaRuntime.resolveSourceLookupPath(projectEntries, configuration);
+        ISourceContainer[] defaultContainers = JavaRuntime.getSourceContainers(resolved);
+        
+        addAll(allContainers, defaultContainers);
+        
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoSourcePathComputerDelegate.addDefaultSourceContainers", toString(defaultContainers));        
     }
     
-    private static List<String> toStringList(Set<ISourceContainer> allContainers) {
-        List<String> list = new ArrayList<String>(allContainers.size());
-        for (ISourceContainer container : allContainers) {
-            list.add(container.getName());
-        }
-        return list;
+    private void addFragmentSourceContainers(Collection<IJavaProject> projectList, 
+                                             Collection<ISourceContainer> allContainers) throws JavaModelException {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoSourcePathComputerDelegate.addFragmentSourceContainers");
+        
+        Set<IPath> processed = new HashSet<IPath>();
+        for (IJavaProject project : projectList) {
+            IPackageFragmentRoot[] roots = project.getPackageFragmentRoots();
+            if (roots != null) {
+                for (IPackageFragmentRoot root : roots) {
+                    if (root.isExternal()) {
+                        IPath path = root.getPath();
+                        if (processed.contains(path)) {
+                            continue;
+                        }
+                        processed.add(path);
+                    }
+                    if (allContainers.add(new PackageFragmentRootSourceContainer(root))) {
+                        Trace.trace(Trace.INFO, "GeronimoSourcePathComputerDelegate: Added fragment source container: " + root.getPath(), Activator.traceCore);
+                    }
+                }
+            }          
+        }  
+        
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoSourcePathComputerDelegate.addFragmentSourceContainers");       
     }
     
-    private ISourceContainer[] processServer(IServer server) {
+    private void addServerSourceContainers(IServer server, Set<ISourceContainer> allContainers) {
         IRuntime runtime = server.getRuntime();
         IGeronimoRuntime gRuntime = (IGeronimoRuntime) runtime.getAdapter(IGeronimoRuntime.class);
         if (gRuntime != null) {
@@ -139,51 +182,98 @@ public class GeronimoSourcePathComputerDelegate implements ISourcePathComputerDe
                 File file = sourcePath.toFile();
                 if (file.isFile()) {
                     ExternalArchiveSourceContainer sourceContainer = new ExternalArchiveSourceContainer(file.getAbsolutePath(), true);
-                    return new ISourceContainer[] { sourceContainer };
+                    allContainers.add(sourceContainer);
                 } else if (file.isDirectory()) {
                     // TODO implement me using DirectorySourceContainer
                 }
             }
         }
-        return new ISourceContainer[] {};
     }
 
-    private void processModules(IModule[] modules, Set<IProject> projectList, IServer server, IProgressMonitor monitor) {
+    private void processModules(IModule[] modules, Set<IProject> projects, Set<IJavaProject> javaProjects, IServer server, IProgressMonitor monitor) {
         for (int i = 0; i < modules.length; i++) {
             IProject project = modules[i].getProject();
 
             IModule[] childModules = server.getChildModules(new IModule[] { modules[i] }, monitor);
             if (childModules != null && childModules.length > 0) {
-                processModules(childModules, projectList, server, monitor);
+                processModules(childModules, projects, javaProjects, server, monitor);
             }
 
             if (project != null) {
-                processProject(projectList, project);
+                processProject(projects, javaProjects, project);
             }
         }
     }
 
-    private void processProject(Set<IProject> projectList, IProject project) {
-        projectList.add(project);
-        try {
-            IProject[] referencedProjects = project.getReferencedProjects();
-            if (referencedProjects != null) {
-                for(int j = 0; j < referencedProjects.length; j++) {
-                    processProject(projectList, referencedProjects[j]);
-                }
+    private void processProject(Set<IProject> projects, Set<IJavaProject> javaProjects, IProject project) {
+        projects.add(project);
+
+        IProject[] referencedProjects = getReferencedProjects(project);
+        if (referencedProjects != null) {
+            for (int j = 0; j < referencedProjects.length; j++) {
+                processProject(projects, javaProjects, referencedProjects[j]);
             }
-        } catch (CoreException e) {
-            // ignore
+        }
+
+        IJavaProject javaProject = getJavaProject(project);
+        if (javaProject != null) {
+            javaProjects.add(javaProject);
         }
     }
     
-    public IJavaProject getJavaProject(IProject project) {
+    private static IProject[] getReferencedProjects(IProject project) {
+        try {
+            return project.getReferencedProjects();
+        } catch (CoreException e) {
+            // ignore
+            return null;
+        }
+    }
+    
+    private static IJavaProject getJavaProject(IProject project) {
         try {
             if (project.hasNature(JavaCore.NATURE_ID)) {
                 return (IJavaProject) project.getNature(JavaCore.NATURE_ID);
             }
         } catch (CoreException e) {
             // ignore
+        }
+        return null;
+    }
+    
+    private static void addAll(Collection<ISourceContainer> allContainers, ISourceContainer[] containers) {
+        if (containers != null) {
+            for (ISourceContainer container : containers) {
+                allContainers.add(container);
+            }
+        }
+    }
+    
+    private static String toString(ISourceContainer[] containers) {
+        if (containers != null) {
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < containers.length; i++) {
+                builder.append(containers[i].getName());
+                if (i + 1 < containers.length) {
+                    builder.append(", ");
+                }                
+            }
+            return builder.toString();
+        }
+        return null;
+    }
+    
+    private static String toString(Collection<IJavaProject> projects) {
+        if (projects != null) {
+            StringBuilder builder = new StringBuilder();
+            Iterator<IJavaProject> iterator = projects.iterator();
+            while (iterator.hasNext()) {
+                builder.append(iterator.next().getProject().getName());
+                if (iterator.hasNext()) {
+                    builder.append(", ");
+                }
+            }
+            return builder.toString();
         }
         return null;
     }
