@@ -1,0 +1,70 @@
+Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
+
+
+Helpful URLs
+------------
+Geronimo Devtools:                          http://geronimo.apache.org/development-tools.html
+Geronimo Eclipse Update Site:               http://www.apache.org/dist/geronimo/eclipse/updates
+Bug Tracking:                               http://issues.apache.org/jira/browse/GERONIMODEVTOOLS
+Quick start - fast and easy development:    http://cwiki.apache.org/GMOxDOC21/quick-start-fast-and-easy-development.html
+5-minute Tutorial using GEP:                http://cwiki.apache.org/GMOxDOC21/5-minute-tutorial-on-enterprise-application-development-with-eclipse-and-geronimo.html
+
+
+System Requirements
+-------------------
+1. Java J2SE 1.5.0 or greater, and a platform that supports it
+
+2. Eclipse IDE for Java EE Developers (Helios or Indigo), which is platform-specific
+
+   -- Get Eclipse from http://www.eclipse.org/downloads/
+
+3. Geronimo server (2.0.x or 2.1.x)
+
+   -- Get a Geronimo server from http://geronimo.apache.org/downloads.html
+
+
+
+Notes
+-----
+You will likely need to increase the default setting for maximum PermGen size
+for your Eclipse installation (especially for Sun's JDK 1.5.0_x on the Windows
+platform) to prevent "java.lang.OutOfMemoryError: PermGen" errors. From the
+command line you can use:
+
+        eclipse -vmargs -Xms128m -Xmx512m -XX:MaxPermSize=128m
+
+Or you can edit your eclipse.ini file. An example is shown below but remember
+that each argument has to be on seperate lines:
+
+        -vmargs
+        -Xms128m
+        -Xmx512m
+        -XX:MaxPermSize=128m
+
+
+
+Geronimo Eclipse Plugin Version ${pom.version} Enhancements
+--------------------------------------------------
+
+1. Support Geronimo Server 2.1.9-SNAPSHOT
+
+2. Support Eclipse Helios and Indigo
+
+
+Installation Instructions
+-------------------------
+
+See https://cwiki.apache.org/GMOxDOC21/how-to-install-geronimo-eclipse-plugin-v218.html
+
+Bug Fixes and New Features
+--------------------------
+GERONIMODEVTOOLS-689 NullPointerException when publishing with Geronimo Eclipse Plugin v2.1.7
+GERONIMODEVTOOLS-690 NullpointerException occurs if one adds a "Utility Project" to the EAR 
+GERONIMODEVTOOLS-692 Can not build GEP on Mac
+GERONIMODEVTOOLS-774 java.lang.NullPointerException error happened for web application automatically redeploying after renamed the name of the project 
+GERONIMODEVTOOLS-776 Using excluds in rat-maven-plugin to exclude the file whoes license header is not required
+GERONIMODEVTOOLS-778 Using GEP3.0.X's eclipse/build.xml to replace the GEP2.1.X's
+
+Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
+
+@version $Rev: 1227520 $ $Date: 2012-01-05 15:53:54 +0800 (Thu, 05 Jan 2012) $

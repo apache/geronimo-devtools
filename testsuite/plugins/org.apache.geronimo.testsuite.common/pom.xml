@@ -25,13 +25,13 @@
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>org.apache.geronimo.testsuite.common</artifactId>
     <packaging>jar</packaging>
-    <version>2.1.8</version>
+    <version>2.1.9-SNAPSHOT</version>
     <name>${artifactId}</name>
 
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>testsuite-plugins</artifactId>
-        <version>2.1.8</version>
+        <version>2.1.9-SNAPSHOT</version>
     </parent>
 
     <build>
@@ -189,8 +189,8 @@
 				                        </goals>
 				                        <configuration>
 				                            <tasks>
-				                                <mkdir dir="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.common-2.1.8" />
-				                                <unzip src="${project.build.directory}/org.apache.geronimo.testsuite.common-2.1.8.jar" dest="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.common-2.1.8" />
+				                                <mkdir dir="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.common-2.1.9-SNAPSHOT" />
+				                                <unzip src="${project.build.directory}/org.apache.geronimo.testsuite.common-2.1.9-SNAPSHOT.jar" dest="${basedir}/../../launcher/eclipse/eclipse/plugins/org.apache.geronimo.testsuite.common-2.1.9-SNAPSHOT" />
 				                            </tasks>
 				                        </configuration>
 				                    </execution>
