@@ -71,9 +71,5 @@ Export-Package:
  org.codehaus.plexus.archiver.tar;version=2.2,
  org.codehaus.plexus.archiver.util;version=2.2,
  org.codehaus.plexus.archiver.war;version=2.2,
- org.codehaus.plexus.archiver.zip;version=2.2,
- org.slf4j;version=2.2,
- org.slf4j.helpers;version=2.2,
- org.slf4j.impl;version=2.2,
- org.slf4j.spi;version=2.2
+ org.codehaus.plexus.archiver.zip;version=2.2
 Bundle-Vendor: Apache Software Foundation

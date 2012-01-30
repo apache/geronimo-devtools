@@ -98,9 +98,5 @@ Export-Package:
  org.codehaus.plexus.archiver.tar;version=3.0,
  org.codehaus.plexus.archiver.util;version=3.0,
  org.codehaus.plexus.archiver.war;version=3.0,
- org.codehaus.plexus.archiver.zip;version=3.0,
- org.slf4j;version=3.0,
- org.slf4j.helpers;version=3.0,
- org.slf4j.impl;version=3.0,
- org.slf4j.spi;version=3.0
+ org.codehaus.plexus.archiver.zip;version=3.0
 Bundle-Vendor: Apache Software Foundation

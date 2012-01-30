@@ -75,9 +75,5 @@ Export-Package:
  org.apache.geronimo.util.encoders;version=2.0,
  org.apache.geronimo.util.jce;version=2.0,
  org.apache.geronimo.util.jce.interfaces;version=2.0,
- org.apache.geronimo.util.jce.provider;version=2.0,
- org.slf4j;version=2.0,
- org.slf4j.helpers;version=2.0,
- org.slf4j.impl;version=2.0,
- org.slf4j.spi;version=2.0
+ org.apache.geronimo.util.jce.provider;version=2.0
 Bundle-Vendor: Apache Software Foundation
