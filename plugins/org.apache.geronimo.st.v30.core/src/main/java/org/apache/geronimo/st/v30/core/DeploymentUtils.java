@@ -483,15 +483,17 @@ public class DeploymentUtils {
     public static File createChangeSetFile(IModuleResource[] resources) {
         Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.createChangeSetFile", resources);
         
+        File tmpDir = STATE_LOC.toFile();
+        
         File file = null;
         try {
-            file = File.createTempFile("changeset", ".jar");
+            file = File.createTempFile("changeset", ".jar", tmpDir);
         } catch (IOException e) {
             Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.createChangeSetFile", e);
             return null;
         }
         
-        PublishHelper publishHelper = new PublishHelper(null);
+        PublishHelper publishHelper = new PublishHelper(tmpDir);
         IStatus[] statusArray = publishHelper.publishZip(resources, new Path(file.getAbsolutePath()), null);
         if (statusArray != null) {
             for (IStatus status : statusArray) {
