@@ -175,13 +175,19 @@ public class GeronimoV22ServerInfo implements IGeronimoServerInfo{
                 Collections.EMPTY_SET);
         for (int i = 0; i < kernels.size(); i++) {
             Set beans = kernels.get(i).listGBeans(query);
-            for (Iterator it = beans.iterator(); it.hasNext();) {
-                AbstractName abstractName = (AbstractName) it.next();
-                String name = (String) abstractName.getName().get("name");
-                if (!securityRealms.contains(name)) {
-                    securityRealms.add(name);
-                }
+            try {
+                for (Iterator it = beans.iterator(); it.hasNext();) {
+                    AbstractName abstractName = (AbstractName) it.next();
+                    String name = (String) abstractName.getName().get("name");
+                    if (!securityRealms.contains(name)) {
+                        securityRealms.add(name);
+                    }
+                } 
+            }  catch(ClassCastException e) {
+                // Just ignore as could be 2.1's AbstractName even in 2.2
+                Trace.trace(Trace.INFO, "The class is not match: "  + e.getMessage(), Activator.logCore);
             }
+
         }
     }
 
@@ -224,44 +230,48 @@ public class GeronimoV22ServerInfo implements IGeronimoServerInfo{
         for (int i = 0; i < kernels.size(); i++) {
         	Kernel kernel = (Kernel)kernels.get(i);
             Set beans = kernel.listGBeans(query);
-            for (Iterator it = beans.iterator(); it.hasNext();) {
-                AbstractName abstractName = (AbstractName) it.next();
-                try {
-                    GBeanInfo info = kernel.getGBeanInfo(abstractName);
-                    GAttributeInfo attribInfo = info
-                            .getAttribute("credentialStore");
-                    if (attribInfo != null) {
-                        Artifact artifact = abstractName.getArtifact();
-                        Object name = abstractName.getName().get("name");
-                        org.apache.geronimo.jee.deployment.Pattern pattern = new org.apache.geronimo.jee.deployment.Pattern();
-                        pattern.setArtifactId(artifact.getArtifactId());
-                        pattern.setGroupId(artifact.getGroupId());
-                        pattern.setType(artifact.getType());
-                        pattern.setVersion(artifact.getVersion().toString());
-                        pattern.setCustomFoo((String) name);
-                        if (!credentialStores.contains(pattern)) {
-                            credentialStores.add(pattern);
+            try {
+                for (Iterator it = beans.iterator(); it.hasNext();) {
+                    AbstractName abstractName = (AbstractName) it.next();
+                    try {
+                        GBeanInfo info = kernel.getGBeanInfo(abstractName);
+                        GAttributeInfo attribInfo = info.getAttribute("credentialStore");
+                        if (attribInfo != null) {
+                            Artifact artifact = abstractName.getArtifact();
+                            Object name = abstractName.getName().get("name");
+                            org.apache.geronimo.jee.deployment.Pattern pattern = new org.apache.geronimo.jee.deployment.Pattern();
+                            pattern.setArtifactId(artifact.getArtifactId());
+                            pattern.setGroupId(artifact.getGroupId());
+                            pattern.setType(artifact.getType());
+                            pattern.setVersion(artifact.getVersion().toString());
+                            pattern.setCustomFoo((String) name);
+                            if (!credentialStores.contains(pattern)) {
+                                credentialStores.add(pattern);
+                            }
+
+                            // update attributes of credentialStore
+                            Map attributeMap = (Map) kernel.getAttribute(abstractName, "credentialStore");
+                            if (attributeMap != null) {
+                                HashMap<String, ArrayList<String>> realmMap = new HashMap<String, ArrayList<String>>();
+                                for (Object obj : attributeMap.keySet()) {
+                                    String realmName = (String) obj;
+                                    Map idMap = (Map) attributeMap.get(obj);
+                                    ArrayList<String> idList = new ArrayList<String>();
+                                    idList.addAll(idMap.keySet());
+
+                                    realmMap.put(realmName, idList);
+                                }
+                                credentialStoreAttributes.put(pattern, realmMap);
+                            }
                         }
-                        
-                      //update attributes of credentialStore
-                    	Map attributeMap = (Map)kernel.getAttribute(abstractName, "credentialStore");
-                    	if (attributeMap!=null){
-                    		HashMap<String,ArrayList<String>> realmMap = new HashMap<String,ArrayList<String>>();
-                    		for (Object obj:attributeMap.keySet()){
-                    			String realmName = (String)obj;
-                    			Map idMap = (Map)attributeMap.get(obj);
-                    			ArrayList<String> idList = new ArrayList<String>();
-                    			idList.addAll(idMap.keySet());                    			
-                    			
-                    			realmMap.put(realmName, idList);
-                    		}               		
-                    		credentialStoreAttributes.put(pattern, realmMap);
-                    	}
+                    } catch (GBeanNotFoundException e) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (GBeanNotFoundException e) {
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+            } catch(ClassCastException e) {
+                // Just ignore as could be 2.1's AbstractName even in 2.2
+                Trace.trace(Trace.INFO, "The class is not match: "  + e.getMessage(), Activator.logCore);
             }
         }
     }
@@ -275,27 +285,32 @@ public class GeronimoV22ServerInfo implements IGeronimoServerInfo{
                 Collections.EMPTY_SET);
         for (int i = 0; i < kernels.size(); i++) {
             Set beans = kernels.get(i).listGBeans(query);
-            for (Iterator it = beans.iterator(); it.hasNext();) {
-                AbstractName abstractName = (AbstractName) it.next();
-                try {
-                    GBeanInfo info = kernels.get(i).getGBeanInfo(abstractName);
-                    Object value = kernels.get(i).invoke(abstractName, "list");
-                    if (value instanceof TreeSet) {
-                        artifacts = Arrays.asList(((TreeSet) value).toArray());
+            try {
+                for (Iterator it = beans.iterator(); it.hasNext();) {
+                    AbstractName abstractName = (AbstractName) it.next();
+                    try {
+                        GBeanInfo info = kernels.get(i).getGBeanInfo(abstractName);
+                        Object value = kernels.get(i).invoke(abstractName, "list");
+                        if (value instanceof TreeSet) {
+                            artifacts = Arrays.asList(((TreeSet) value).toArray());
+                        }
+                    } catch (GBeanNotFoundException e) {
+                        Trace.trace(Trace.WARNING, "GBean Not Found. "
+                                + e.getMessage(), Activator.logCore);
+                    } catch (NoSuchOperationException e) {
+                        Trace.trace(Trace.WARNING, "The operation cant invoked. "
+                                + e.getMessage(), Activator.logCore);
+                    } catch (InternalKernelException e) {
+                        throw e;
+                    } catch (Exception e) {
+                        Trace.trace(Trace.WARNING, "Kernel connection failed.  "
+                                + e.getMessage(), Activator.logCore);
                     }
-                } catch (GBeanNotFoundException e) {
-                    Trace.trace(Trace.WARNING, "GBean Not Found. "
-                            + e.getMessage(), Activator.logCore);
-                } catch (NoSuchOperationException e) {
-                    Trace.trace(Trace.WARNING, "The operation cant invoked. "
-                            + e.getMessage(), Activator.logCore);
-                } catch (InternalKernelException e) {
-                    throw e;
-                } catch (Exception e) {
-                    Trace.trace(Trace.WARNING, "Kernel connection failed.  "
-                            + e.getMessage(), Activator.logCore);
+                    
                 }
-
+            }  catch(ClassCastException e) {
+                // Just ignore as could be 2.1's AbstractName even in 2.2
+                Trace.trace(Trace.INFO, "The class is not match: "  + e.getMessage(), Activator.logCore);
             }
         }
         if (artifacts != null) {
@@ -323,62 +338,67 @@ public class GeronimoV22ServerInfo implements IGeronimoServerInfo{
                 Collections.EMPTY_SET);
         for (int i = 0; i < kernels.size(); i++) {
             Set beans = kernels.get(i).listGBeans(query);
-            for (Iterator it = beans.iterator(); it.hasNext();) {
-                AbstractName abstractName = (AbstractName) it.next();
-                try {
-                    Object value = kernels.get(i).getAttribute(abstractName,
-                            attribute);
-                    if (value != null) {
-                        if (value instanceof String[]) {
-                            List<String> interfaces = Arrays
-                                    .asList((String[]) value);
-                            for (int j = 0; j < acceptedValues.length; j++) {
-                                if (interfaces.contains(acceptedValues[j])) {
-                                    Pattern pattern = new Pattern();
-                                    Artifact artifact = abstractName
-                                            .getArtifact();
-                                    pattern.setArtifactId(artifact
-                                            .getArtifactId());
-                                    pattern.setGroupId(artifact.getGroupId());
-                                    pattern.setVersion(artifact.getVersion()
-                                            .toString());
-                                    pattern.setName((String) abstractName
-                                            .getName().get("name"));
-                                    if (!result.contains(pattern)) {
-                                        result.add(pattern);
+            try {
+                for (Iterator it = beans.iterator(); it.hasNext();) {
+                    AbstractName abstractName = (AbstractName) it.next();
+                    try {
+                        Object value = kernels.get(i).getAttribute(abstractName,
+                                attribute);
+                        if (value != null) {
+                            if (value instanceof String[]) {
+                                List<String> interfaces = Arrays
+                                .asList((String[]) value);
+                                for (int j = 0; j < acceptedValues.length; j++) {
+                                    if (interfaces.contains(acceptedValues[j])) {
+                                        Pattern pattern = new Pattern();
+                                        Artifact artifact = abstractName
+                                        .getArtifact();
+                                        pattern.setArtifactId(artifact
+                                                .getArtifactId());
+                                        pattern.setGroupId(artifact.getGroupId());
+                                        pattern.setVersion(artifact.getVersion()
+                                                .toString());
+                                        pattern.setName((String) abstractName
+                                                .getName().get("name"));
+                                        if (!result.contains(pattern)) {
+                                            result.add(pattern);
+                                        }
+                                        break;
                                     }
-                                    break;
+                                }
+                            }
+                            if (value instanceof String) {
+                                String interfaces = (String) value;
+                                for (int j = 0; j < acceptedValues.length; j++) {
+                                    if (interfaces.contains(acceptedValues[j])) {
+                                        Pattern pattern = new Pattern();
+                                        Artifact artifact = abstractName
+                                        .getArtifact();
+                                        pattern.setArtifactId(artifact
+                                                .getArtifactId());
+                                        pattern.setGroupId(artifact.getGroupId());
+                                        pattern.setVersion(artifact.getVersion()
+                                                .toString());
+                                        pattern.setName((String) abstractName
+                                                .getName().get("name"));
+                                        if (!result.contains(pattern)) {
+                                            result.add(pattern);
+                                        }
+                                        break;
+                                    }
                                 }
                             }
                         }
-                        if (value instanceof String) {
-                            String interfaces = (String) value;
-                            for (int j = 0; j < acceptedValues.length; j++) {
-                                if (interfaces.contains(acceptedValues[j])) {
-                                    Pattern pattern = new Pattern();
-                                    Artifact artifact = abstractName
-                                            .getArtifact();
-                                    pattern.setArtifactId(artifact
-                                            .getArtifactId());
-                                    pattern.setGroupId(artifact.getGroupId());
-                                    pattern.setVersion(artifact.getVersion()
-                                            .toString());
-                                    pattern.setName((String) abstractName
-                                            .getName().get("name"));
-                                    if (!result.contains(pattern)) {
-                                        result.add(pattern);
-                                    }
-                                    break;
-                                }
-                            }
-                        }
+                    } catch (GBeanNotFoundException e) {
+                    } catch (NoSuchAttributeException e) {
+                    } catch (Exception e) {
+                        Trace.trace(Trace.WARNING, "Kernel connection failed. "
+                                + e.getMessage(), Activator.logCore);
                     }
-                } catch (GBeanNotFoundException e) {
-                } catch (NoSuchAttributeException e) {
-                } catch (Exception e) {
-                    Trace.trace(Trace.WARNING, "Kernel connection failed. "
-                            + e.getMessage(), Activator.logCore);
                 }
+            } catch(ClassCastException e) {
+                // Just ignore as could be 2.1's AbstractName even in 2.2
+                Trace.trace(Trace.INFO, "The class is not match: "  + e.getMessage(), Activator.logCore);
             }
         }
         return result;
@@ -391,17 +411,22 @@ public class GeronimoV22ServerInfo implements IGeronimoServerInfo{
                 Collections.EMPTY_SET);
         for (int i = 0; i < kernels.size(); i++) {
             Set beans = kernels.get(i).listGBeans(query);
-            for (Iterator it = beans.iterator(); it.hasNext();) {
-                AbstractName abstractName = (AbstractName) it.next();
-                Pattern pattern = new Pattern();
-                Artifact artifact = abstractName.getArtifact();
-                pattern.setArtifactId(artifact.getArtifactId());
-                pattern.setGroupId(artifact.getGroupId());
-                pattern.setVersion(artifact.getVersion().toString());
-                pattern.setName((String) abstractName.getName().get("name"));
-                if (!result.contains(pattern)) {
-                    result.add(pattern);
+            try {
+                for (Iterator it = beans.iterator(); it.hasNext();) {
+                    AbstractName abstractName = (AbstractName) it.next();
+                    Pattern pattern = new Pattern();
+                    Artifact artifact = abstractName.getArtifact();
+                    pattern.setArtifactId(artifact.getArtifactId());
+                    pattern.setGroupId(artifact.getGroupId());
+                    pattern.setVersion(artifact.getVersion().toString());
+                    pattern.setName((String) abstractName.getName().get("name"));
+                    if (!result.contains(pattern)) {
+                        result.add(pattern);
+                    }
                 }
+            } catch(ClassCastException e) {
+                // Just ignore as could be 2.1's AbstractName even in 2.2
+                Trace.trace(Trace.INFO, "The class is not match: "  + e.getMessage(), Activator.logCore);
             }
         }
         return result;

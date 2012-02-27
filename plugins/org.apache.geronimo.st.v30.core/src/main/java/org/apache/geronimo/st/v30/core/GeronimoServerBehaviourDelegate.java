@@ -55,6 +55,8 @@ import org.apache.geronimo.kernel.config.Configuration;
 import org.apache.geronimo.kernel.config.InvalidConfigException;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
+import org.apache.geronimo.st.core.GeronimoJMXConnectorFactory;
+import org.apache.geronimo.st.core.GeronimoJMXConnectorFactory.JMXConnectorInfo;
 import org.apache.geronimo.st.v30.core.UpdateServerStateTask;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.v30.core.internal.DependencyHelper;
@@ -1277,9 +1279,9 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     public boolean isFullyStarted() {
         if (isKernelAlive()) {
             AbstractNameQuery query = new AbstractNameQuery(PersistentConfigurationList.class.getName());
-            Set<AbstractName> configLists = kernel.listGBeans(query);
-            if (!configLists.isEmpty()) {
-                AbstractName on = (AbstractName) configLists.toArray()[0];
+            Set<AbstractName> configLists = kernel.listGBeans(query);configLists.toArray()[0].getClass().getClassLoader();
+            if (!configLists.isEmpty()) {kernel.getClass().getClassLoader();
+                AbstractName on = (AbstractName) configLists.toArray()[0];AbstractName.class.getClassLoader();
                 try {
                     Boolean b = (Boolean) kernel.getAttribute(on, "kernelFullyStarted");
                     return b.booleanValue();
@@ -1379,36 +1381,16 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     }
     
     public MBeanServerConnection getServerConnection() throws Exception {
-        Map<String, Object> map = new HashMap<String, Object>();
+        String host = getServer().getHost();
         String user = getGeronimoServer().getAdminID();
         String password = getGeronimoServer().getAdminPassword();
         String port = getGeronimoServer().getRMINamingPort();
-        map.put("jmx.remote.credentials", new String[] { user, password });
-        map.put("java.naming.factory.initial", "com.sun.jndi.rmi.registry.RegistryContextFactory");
-        map.put("java.naming.factory.url.pkgs", "org.apache.geronimo.naming");
-        map.put("java.naming.provider.url", "rmi://" + getServer().getHost()
-                + ":" + port);
+        JMXConnectorInfo connectorInfo = new JMXConnectorInfo(user, password, host, port);
+        
+        // Using the classloader that loads the current's class as the default classloader when creating the JMXConnector
+        JMXConnector jmxConnector = GeronimoJMXConnectorFactory.create(connectorInfo, this.getClass().getClassLoader());
 
-        String url = getGeronimoServer().getJMXServiceURL();
-        if (url != null) {
-            try {
-                JMXServiceURL address = new JMXServiceURL(url);
-                JMXConnector jmxConnector;
-                try {
-                    jmxConnector = JMXConnectorFactory.connect(address, map);
-                } catch (SecurityException se) {
-                    Thread.sleep(10000);
-                    jmxConnector = JMXConnectorFactory.connect(address, map);
-                }
-                MBeanServerConnection connection = jmxConnector.getMBeanServerConnection();
-                Trace.trace(Trace.INFO, "Connected to kernel. " + url, Activator.traceCore);
-                return connection;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return null;
+        return jmxConnector.getMBeanServerConnection();
     }
     
     public ObjectName getMBean(MBeanServerConnection connection, String mbeanName, String name) throws Exception {
