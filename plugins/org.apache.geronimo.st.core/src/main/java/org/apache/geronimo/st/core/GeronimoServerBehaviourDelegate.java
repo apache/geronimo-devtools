@@ -40,6 +40,7 @@ import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
+import org.apache.geronimo.st.core.GeronimoJMXConnectorFactory.JMXConnectorInfo;
 import org.apache.geronimo.st.core.commands.DeploymentCmdStatus;
 import org.apache.geronimo.st.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.core.commands.IDeploymentCommand;
@@ -924,37 +925,16 @@ abstract public class GeronimoServerBehaviourDelegate extends ServerBehaviourDel
     }
 
     public MBeanServerConnection getServerConnection() throws Exception {
-        Map map = new HashMap();
+        String host = getServer().getHost();
         String user = getGeronimoServer().getAdminID();
         String password = getGeronimoServer().getAdminPassword();
         String port = getGeronimoServer().getRMINamingPort();
-        map.put("jmx.remote.credentials", new String[] { user, password });
-        map.put("java.naming.factory.initial", "com.sun.jndi.rmi.registry.RegistryContextFactory");
-        map.put("java.naming.factory.url.pkgs", "org.apache.geronimo.naming");
-        map.put("java.naming.provider.url", "rmi://" + getServer().getHost()
-                + ":" + port);
+        JMXConnectorInfo connectorInfo = new JMXConnectorInfo(user, password, host, port);
+        
+        // Using the classloader that loads the current's class as the default classloader when creating the JMXConnector
+        JMXConnector jmxConnector = GeronimoJMXConnectorFactory.create(connectorInfo, this.getClass().getClassLoader());
 
-        String url = getGeronimoServer().getJMXServiceURL();
-        if (url != null) {
-            try {
-                JMXServiceURL address = new JMXServiceURL(url);
-                JMXConnector jmxConnector;
-                try {
-                    jmxConnector = JMXConnectorFactory.connect(address, map);
-                } catch (SecurityException se) {
-                    //FIXME once GERONIMO-3467 JIRA is fixed
-                    Thread.sleep(10000);
-                    jmxConnector = JMXConnectorFactory.connect(address, map);
-                }
-                MBeanServerConnection connection = jmxConnector.getMBeanServerConnection();
-                Trace.trace(Trace.INFO, "Connected to kernel. " + url, Activator.traceCore);
-                return connection;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return null;
+        return jmxConnector.getMBeanServerConnection();
     }
     
     public Target[] getTargets() {
