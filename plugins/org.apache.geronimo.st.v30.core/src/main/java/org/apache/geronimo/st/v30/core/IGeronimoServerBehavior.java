@@ -16,12 +16,17 @@
  */
 package org.apache.geronimo.st.v30.core;
 
+import java.io.File;
+
 import javax.enterprise.deploy.spi.Target;
+
+import org.eclipse.core.runtime.IPath;
 
 /**
  * @version $Rev$ $Date$
  */
 public interface IGeronimoServerBehavior {
+    public static String VAR_CATALINA_DIR = "var" + File.separator + "catalina" + File.separator;
 
     public boolean isFullyStarted();
 
@@ -32,5 +37,13 @@ public interface IGeronimoServerBehavior {
     public void setServerStopped();
     
     public Target[] getTargets();
+    
+    /**
+     * Return the Resource under server installation directory
+     * 
+     * @param path the relative file path under the server installation directory
+     * @return
+     */
+    public IPath getServerResource(String path);
 
 }

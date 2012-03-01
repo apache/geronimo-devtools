@@ -1018,6 +1018,10 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             target.append(moduleFile.getName());
             
             File file = new File(target.toString());
+            if(! file.isAbsolute()) {
+                file = getServerResource(IGeronimoServerBehavior.VAR_CATALINA_DIR + target.toString()).toFile();
+            }
+            
             switch (deltaModule.getKind()) {
             case IModuleResourceDelta.REMOVED:
                 if (file.exists()) {
@@ -1299,6 +1303,13 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         return false;
     }
     
+    
+    @Override
+    public IPath getServerResource(String path) {
+        IPath serverRoot = getServer().getRuntime().getLocation();
+        return serverRoot.append(path);
+    }
+
     public void startUpdateServerStateTask() {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.startUpdateServerStateTask", getServer().getName());
 
