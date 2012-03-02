@@ -126,7 +126,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     
     protected Timer stateTimer = null;
     
-    protected Timer synchronizerTimer = null;
+    protected SynchronizeProjectOnServerTask synchronizerTask = null;
 
     protected PingThread pingThread;
 
@@ -135,8 +135,6 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     public static final String ERROR_SETUP_LAUNCH_CONFIGURATION = "errorInSetupLaunchConfiguration";
 
     private PublishStateListener publishStateListener;
-    
-    private volatile boolean publishing;
     
     private Set<IProject> knownSourceProjects = null; 
     
@@ -791,24 +789,15 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishModule");
     }
     
-    public boolean isPublishing() {
-        return publishing;
-    }
-    
     @Override
     public void publishStart(IProgressMonitor monitor) throws CoreException {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishStart", monitor);
-        publishing = true;
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishStart");
     }
     
     @Override
     public void publishFinish(IProgressMonitor monitor) throws CoreException {
-        try {
-            doPublishFinish(monitor);
-        } finally {
-            publishing = false;
-        }
+        doPublishFinish(monitor);
     }
     
     private void doPublishFinish(IProgressMonitor monitor) throws CoreException  {
@@ -1387,12 +1376,12 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     public void startSynchronizeProjectOnServerTask() {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.startSynchronizeProjectOnServerTask", getServer().getName());
 
-        if (synchronizerTimer != null) {
-            synchronizerTimer.cancel();
+        if (synchronizerTask != null) {
+            synchronizerTask.stop();
         }
         
-        synchronizerTimer = new Timer(true);
-        synchronizerTimer.schedule(new SynchronizeProjectOnServerTask(this, getServer()), 0, TIMER_TASK_INTERVAL * 1000);
+        synchronizerTask = new SynchronizeProjectOnServerTask(this, getServer());
+        synchronizerTask.start();
         
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.startSynchronizeProjectOnServerTask");
     }
@@ -1411,9 +1400,9 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     public void stopSynchronizeProjectOnServerTask() {
         Trace.tracePoint("Entry", "GeronimoServerBehaviourDelegate.stopSynchronizeProjectOnServerTask", Activator.traceCore);
         
-        if (synchronizerTimer != null) {
-            synchronizerTimer.cancel();
-            synchronizerTimer = null;
+        if (synchronizerTask != null) {
+            synchronizerTask.stop();
+            synchronizerTask = null;
         }
 
         Trace.tracePoint("Exit ", "GeronimoServerBehaviourDelegate.stopSynchronizeProjectOnServerTask", Activator.traceCore);
