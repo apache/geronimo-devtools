@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -69,6 +70,7 @@ import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.apache.geronimo.st.v30.core.osgi.OSGiModuleHandler;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -1091,13 +1093,19 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
                         return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Cannot create target directory", null);
                     }
                 }
-                String rootFolder = GeronimoUtils.getVirtualComponent(module).getRootFolder().getProjectRelativePath().toOSString();
-                String sourceFile = module.getProject().getFile(rootFolder + ch + moduleFile.getModuleRelativePath() + ch + moduleFile.getName()).getLocation().toString();
                 
-                FileInputStream in = null;
+                String sourceFile = relativePath;
+                InputStream in = null;
                 FileOutputStream out = null;
                 try {
-                    in = new FileInputStream(sourceFile);
+                    IFile srcIFile = (IFile) moduleFile.getAdapter(IFile.class);
+                    if (srcIFile != null) {
+                        in = srcIFile.getContents();
+                    } else {
+                        File srcFile = (File) moduleFile.getAdapter(File.class);
+                        in = new FileInputStream(srcFile);
+                    }
+                
                     out = new FileOutputStream(file);
                     
                     while ((bytesRead = in.read(buffer)) > 0) {
@@ -1109,6 +1117,9 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
                 } catch (IOException e) {
                     Trace.trace(Trace.ERROR, "Cannot copy file: " + sourceFile, e, Activator.logCore);
                     return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Cannot copy file " + sourceFile, e);
+                } catch (CoreException e) {
+                    Trace.trace(Trace.ERROR, "Cannot copy file: " + sourceFile, e, Activator.logCore);
+                    return e.getStatus();
                 } finally {
                     if (in != null) {
                         try { in.close(); } catch (IOException ignore) {}
