@@ -127,6 +127,16 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     public static final String PROPERTY_SELECT_CLASSPATH_CONTAINERS = "selectClasspathContainers";
     
     public static final String PROPERTY_CLASSPATH_CONTAINERS = "classpathContainers";
+    
+    /**
+     * Let GEP control which applications should be started on server startup.
+     */
+    public static final String PROPERTY_MANAGE_APP_START = "manageApplicationStart";
+    
+    /**
+     * Controls whether SynchronizeProjectOnServerTask will check for removed modules.
+     */
+    public static final String PROPERTY_CHECK_FOR_REMOVED_MODULES = "checkForRemovedModules";
 
     public static final String CONSOLE_INFO = "--long";
 
@@ -1115,6 +1125,38 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
         String propertyName = (includePatterns) ? PROPERTY_NOREDEPLOY_INCLUDE_PATTERNS : PROPERTY_NOREDEPLOY_EXCLUDE_PATTERNS;
         setAttribute(propertyName, Arrays.asList(patterns));
     }       
+    
+    //
+    // PROPERTY_MANAGE_APP_START
+    //
+    public boolean isManageApplicationStart() {
+        return getProperty(PROPERTY_MANAGE_APP_START, false);
+    }
+    public void setManageApplicationStart(boolean enable){
+        setAttribute(PROPERTY_MANAGE_APP_START, enable);
+    }
+    
+    //
+    // PROPERTY_CHECK_FOR_REMOVED_MODULES
+    //
+    public boolean isCheckForRemovedModules() {
+        return getProperty(PROPERTY_CHECK_FOR_REMOVED_MODULES, true);
+    }
+    public void setCheckForRemovedModules(boolean enable){
+        setAttribute(PROPERTY_CHECK_FOR_REMOVED_MODULES, enable);
+    }
+    
+    private boolean getProperty(String propertyName, boolean defaultValue) {
+        String value = System.getProperty("org.apache.geronimo.st.v30.core." + propertyName);
+        if (value == null) {
+            value = getAttribute(propertyName, (String) null);
+        }
+        if (value == null) {
+            return defaultValue;
+        } else {
+            return Boolean.valueOf(value);
+        }
+    }
     
     public String discoverDeploymentFactoryClassName(IPath jarPath) {
         try {

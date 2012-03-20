@@ -17,7 +17,10 @@
 package org.apache.geronimo.st.v30.core;
 
 import java.io.File;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.geronimo.st.v30.core.internal.Messages;
 import org.apache.geronimo.st.v30.core.internal.Trace;
@@ -95,9 +98,6 @@ public class GeronimoLaunchConfigurationDelegate extends AbstractJavaLaunchConfi
         vmArgs = vmArgs.replace("$(JRE_HOME)", jreHome.getAbsolutePath());
         vmArgs = vmArgs.replace("$(GERONIMO_HOME)", server.getRuntime().getLocation().toOSString());
         
-        Trace.trace(Trace.INFO, "vmArgs=" + vmArgs, Activator.traceCore);
-        Trace.trace(Trace.INFO, "pgmArgs=" + pgmArgs, Activator.traceCore);
-        
         ExecutionArguments execArgs = new ExecutionArguments(vmArgs, pgmArgs);
         Map vmAttributesMap = getVMSpecificAttributesMap(configuration);
         String[] classpath = getClasspath(configuration);
@@ -105,10 +105,13 @@ public class GeronimoLaunchConfigurationDelegate extends AbstractJavaLaunchConfi
         // Create VM config
         VMRunnerConfiguration runConfig = new VMRunnerConfiguration(mainTypeName, classpath);
         runConfig.setProgramArguments(execArgs.getProgramArgumentsArray());
-        runConfig.setVMArguments(execArgs.getVMArgumentsArray());
+        runConfig.setVMArguments(updateJVMArguments(execArgs.getVMArgumentsArray(), geronimoServer));
         runConfig.setWorkingDirectory(workingDirName);
         runConfig.setEnvironment(envp);
         runConfig.setVMSpecificAttributesMap(vmAttributesMap);
+        
+        traceArguments("vmArgs", runConfig.getVMArguments());
+        traceArguments("pgmArgs", runConfig.getProgramArguments());
         
         // Bootpath
         String[] bootpath = getBootpath(configuration);
@@ -131,4 +134,36 @@ public class GeronimoLaunchConfigurationDelegate extends AbstractJavaLaunchConfi
         geronimoServer.setProcess(launch.getProcesses()[0]);
     }
 
+    private String[] updateJVMArguments(String[] jvmArguments, GeronimoServerBehaviourDelegate server) {
+        boolean managedApplicationStart = server.getServerDelegate().isManageApplicationStart();        
+        Trace.trace(Trace.INFO, "GeronimoLaunchConfigurationDelegate: manageApplicationStart:=" + managedApplicationStart, Activator.traceCore);
+        if (managedApplicationStart) {
+            Set<String> modifiedConfigs = server.getModifiedConfigIds();
+            if (!modifiedConfigs.isEmpty()) {
+                String[] newJvmArguments = new String[jvmArguments.length + 1];
+                System.arraycopy(jvmArguments, 0, newJvmArguments, 0, jvmArguments.length);
+                newJvmArguments[jvmArguments.length] = toString("-Dgeronimo.loadOnlyConfigList=", modifiedConfigs);
+                return newJvmArguments;
+            }
+        }
+        return jvmArguments;
+    }
+    
+    private static String toString(String start, Collection<String> list) {
+        Iterator<String> iter = list.iterator();
+        StringBuilder builder = new StringBuilder(start);
+        while(iter.hasNext()) {
+            builder.append(iter.next());
+            if (iter.hasNext()) {
+                builder.append(",");
+            }
+        }
+        return builder.toString();
+    }
+    
+    private static void traceArguments(String name, String[] array) {
+        for (int i = 0; i < array.length; i++) {
+            Trace.trace(Trace.INFO, name + "[" + i + "] = " + array[i], Activator.traceCore);
+        }
+    }
 }

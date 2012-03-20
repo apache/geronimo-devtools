@@ -50,13 +50,8 @@ public class SynchronizeProjectOnServerTask extends TimerTask implements IPublis
     public SynchronizeProjectOnServerTask(GeronimoServerBehaviourDelegate delegate, IServer server) {
         this.delegate = delegate;
         this.server = server;
-        this.checkForRemovedModules = getCheckForRemovedModules();
+        this.checkForRemovedModules = delegate.getServerDelegate().isCheckForRemovedModules();
         Trace.trace(Trace.INFO, "SynchronizeProjectOnServerTask: checkForRemovedModules:=" + checkForRemovedModules, Activator.traceCore);
-    }
-
-    private static boolean getCheckForRemovedModules() {
-        String property = System.getProperty(SynchronizeProjectOnServerTask.class.getName() + ".checkForRemovedModules");
-        return (property == null) ? true : "true".equalsIgnoreCase(property);
     }
     
     public synchronized void start() {

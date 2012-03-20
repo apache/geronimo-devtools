@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -217,7 +218,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             if (SocketUtil.isPortInUse(ports[i].getPort(), 5))
                 throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, Messages.bind(Messages.errorPortInUse, Integer.toString(sp.getPort()), sp.getName()), null));
         }
-
+        
         stopUpdateServerStateTask();
         setServerState(IServer.STATE_STARTING);
         setMode(launchMode);
@@ -498,7 +499,11 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             boolean refreshOSGiBundle = getServerDelegate().isRefreshOSGiBundle();
             for (ModuleDeltaList moduleList : publishMap.values()) {  
                 IModule[] rootModule = moduleList.getRootModule();
-                if (refreshOSGiBundle && GeronimoUtils.isEBAModule(rootModule[0]) && moduleList.hasChangedChildModulesOnly(false)) {
+                AbstractName ebaName = null;
+                if (refreshOSGiBundle &&
+                    GeronimoUtils.isEBAModule(rootModule[0]) &&  
+                    moduleList.hasChangedChildModulesOnly(false) && 
+                    (ebaName = getApplicationGBeanName(rootModule[0])) != null) {
                     List<IModule[]> changedModules = new ArrayList<IModule[]>();
                     List<IModule[]> unChangedModules = new ArrayList<IModule[]>();
                     for (ModuleDelta moduleDelta : moduleList.getChildModules()) {
@@ -508,7 +513,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
                             unChangedModules.add(moduleDelta.module);
                         }
                     }
-                    status = refreshBundles(rootModule[0], changedModules, ProgressUtil.getSubMonitorFor(monitor, 3000));
+                    status = refreshBundles(rootModule[0], ebaName, changedModules, ProgressUtil.getSubMonitorFor(monitor, 3000));
                     if (status != null && !status.isOK()) {
                         multi.add(status);
                     }
@@ -537,15 +542,23 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishModules");
     }
         
-    private IStatus refreshBundles(IModule ebaModule, List<IModule[]> bundleModules, IProgressMonitor monitor) {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundles", ebaModule, bundleModules, monitor);
-
-        String configId = null;
+    private AbstractName getApplicationGBeanName(IModule ebaModule) {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.getApplicationGBeanName", ebaModule);
+        IServer server = getServer();
+        AbstractName ebaName = null;
         try {
-            configId = DeploymentUtils.getConfigId(getServer(), ebaModule);
+            String configId = DeploymentUtils.getConfigId(server, ebaModule);
+            ExtendedDeploymentManager dm = (ExtendedDeploymentManager) DeploymentCommandFactory.getDeploymentManager(server);
+            ebaName = dm.getApplicationGBeanName(Artifact.create(configId));
         } catch (CoreException e) {
-            return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.bind(Messages.REFRESH_NO_CONFIGURATION_FAIL, ebaModule.getProject().getName()), e);
+            Trace.trace(Trace.WARNING, "Error getting gbean name", e, Activator.traceCore);
         }
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getApplicationGBeanName", ebaName);
+        return ebaName;
+    }
+    
+    private IStatus refreshBundles(IModule ebaModule, AbstractName ebaName, List<IModule[]> bundleModules, IProgressMonitor monitor) {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundles", ebaModule, ebaName, bundleModules, monitor);
         
         if (monitor.isCanceled()) {
             return Status.CANCEL_STATUS;
@@ -555,7 +568,6 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         
         try {
             ExtendedDeploymentManager dm = (ExtendedDeploymentManager) DeploymentCommandFactory.getDeploymentManager(getServer());
-            AbstractName ebaName = dm.getApplicationGBeanName(Artifact.create(configId));
             long[] bundleIds = dm.getEBAContentBundleIds(ebaName);
 
             Map<String, Long> bundleMap = new HashMap<String, Long>();
@@ -1661,5 +1673,48 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     
     public boolean isPublished(IModule[] module) {
         return super.hasBeenPublished(module);
+    }
+    
+    public boolean hasChanged(IModule rootModule) {
+        IModule[] module = new IModule [] { rootModule };
+        IModuleResourceDelta[] deltaArray = getPublishedResourceDelta(module);
+        if (deltaArray != null && deltaArray.length > 0) {
+            return true;
+        }
+        IModule[] childModules = getServerDelegate().getChildModules(module);
+        if (childModules != null) {
+            for (IModule childModule : childModules) {
+                deltaArray = getPublishedResourceDelta(new IModule[] {rootModule, childModule});
+                if (deltaArray != null && deltaArray.length > 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public Set<String> getModifiedConfigIds() {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.getModifiedConfigIds");
+        
+        IServer server = getServer();
+        Set<String> configIds = new HashSet<String>();
+        IModule[] modules = server.getModules();        
+        if (modules != null) {
+            for (IModule module : modules) {
+                IModule[] rootModule = new IModule[] { module };
+                // only consider modules that have been published and have changed
+                if (isPublished(rootModule) && hasChanged(module)) {
+                    try {
+                        String configId = DeploymentUtils.getConfigId(server, module);
+                        configIds.add(configId);
+                    } catch (CoreException e) {
+                        // ignore
+                    }                    
+                }
+            }
+        }
+        
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getModifiedConfigIds", configIds);        
+        return configIds;
     }
 }
