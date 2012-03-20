@@ -918,6 +918,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
 
     public void setServerStarted() {
         setServerState(IServer.STATE_STARTED);
+        GeronimoConnectionFactory.getInstance().destroy(getServer());
         startSynchronizeProjectOnServerTask();
     }
 
