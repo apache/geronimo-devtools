@@ -110,6 +110,7 @@ import org.eclipse.wst.server.core.ServerPort;
 import org.eclipse.wst.server.core.internal.IModulePublishHelper;
 import org.eclipse.wst.server.core.internal.ProgressUtil;
 import org.eclipse.wst.server.core.model.IModuleFile;
+import org.eclipse.wst.server.core.model.IModuleFolder;
 import org.eclipse.wst.server.core.model.IModuleResource;
 import org.eclipse.wst.server.core.model.IModuleResourceDelta;
 import org.eclipse.wst.server.core.model.ServerBehaviourDelegate;
@@ -378,10 +379,14 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             modules = (List) list.get(0);
             deltaKind = (List) list.get(1);
             // trace output
-            for (int i = 0; i < modules.size(); i++) {
-                IModule[] module = (IModule[]) modules.get(i);
-                Trace.trace(Trace.INFO, i + " " + Arrays.asList(module).toString() + " "
-                        + deltaKindToString(((Integer) deltaKind.get(i)).intValue()), Activator.traceCore);
+            if (Activator.getDefault().isDebugging()) {
+                for (int i = 0; i < modules.size(); i++) {
+                    IModule[] module = (IModule[]) modules.get(i);
+                    Trace.trace(Trace.INFO, i + " " + Arrays.asList(module).toString() + " "
+                            + deltaKindToString(((Integer) deltaKind.get(i)).intValue()), Activator.traceCore);
+                    IModuleResourceDelta[] deltas = getPublishedResourceDelta(module);
+                    traceModuleResourceDelta(deltas, "  ");
+                }
             }
         }
 
@@ -1528,6 +1533,22 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             return "Incremental";
         }
         return Integer.toString(kind);
+    }
+    
+    public static void traceModuleResourceDelta(IModuleResourceDelta[] deltaArray, String tab) {
+        if (deltaArray != null) {
+            for (IModuleResourceDelta delta : deltaArray) {
+                int kind = delta.getKind();        
+                IModuleResource resource = delta.getModuleResource();
+                Trace.trace(Trace.INFO, tab + resource.getName() + "  " + deltaKindToString(kind), Activator.traceCore);
+                if (resource instanceof IModuleFile) {
+                    // ignore
+                } else if (resource instanceof IModuleFolder) {
+                    IModuleResourceDelta[] childDeltaArray = delta.getAffectedChildren();
+                    traceModuleResourceDelta(childDeltaArray, tab + "  ");
+                }
+            }
+        }
     }
     
     public String getConfigId(IModule module) throws Exception {
