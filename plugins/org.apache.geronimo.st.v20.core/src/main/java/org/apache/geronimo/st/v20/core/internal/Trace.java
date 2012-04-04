@@ -16,6 +16,9 @@
  */
 package org.apache.geronimo.st.v20.core.internal;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.geronimo.st.v20.core.Activator;
 
 /**
@@ -24,25 +27,29 @@ import org.apache.geronimo.st.v20.core.Activator;
  * @version $Rev$ $Date$
  */
 public class Trace {
+    
+    private static final SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm.ss.SSS");
 
     /**
      * Finest trace event.
      */
-    public static byte INFO = 0;
+    public static int INFO = 1;
 
     /**
      * Warning trace event.
      */
-    public static byte WARNING = 1;
+    public static int WARNING = 2;
 
     /**
-     * Severe trace event.
+     * error trace event.
      */
-    public static byte SEVERE = 2;
+    public static int ERROR = 4;
 
     /**
-     * Trace constructor comment.
+     * cancel trace event.
      */
+    public static int CANCEL = 8;
+
     private Trace() {
         super();
     }
@@ -55,7 +62,7 @@ public class Trace {
      * @param s
      *            a message
      */
-    public static void trace(byte level, String s) {
+    public static void trace(int level, String s) {
         trace(level, s, null);
     }
 
@@ -69,17 +76,30 @@ public class Trace {
      * @param t
      *            a throwable
      */
-    public static void trace(byte level, String s, Throwable t) {
-    	if (Activator.getDefault() == null
-				|| !Activator.getDefault().isDebugging())
-			return;
-
-        System.out.println(Activator.PLUGIN_ID + ":  " + s);
-        if (t != null)
-            t.printStackTrace();
-        
+    public static void trace(int level, String s, Throwable t) {
+        if (Activator.getDefault() == null || !Activator.getDefault().isDebugging()) {
+            return;
+        }
+        System.out.println(buildMessage(s));
+        if (t != null) {
+            t.printStackTrace(System.out);
+        }
     }
 
+    private static String buildMessage(String msg) {
+        StringBuilder builder = new StringBuilder(50);
+        builder.append(formateCurrnetTime());
+        builder.append(" [").append(Activator.PLUGIN_ID).append("] ");
+        builder.append(msg);
+        return builder.toString();
+    }
+    
+    private static String formateCurrnetTime() {
+        synchronized (df) {
+            return df.format(new Date());
+        }
+    }
+    
     /**
      * Trace the given message 
      * 
@@ -95,19 +115,28 @@ public class Trace {
      *            Return value if the trace point is an "Exit"
      */
     public static void tracePoint(String tracePoint, String classDotMethod) {
-        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "()" );
+        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "()");
     }   
+    
     public static void tracePoint(String tracePoint, String classDotMethod, Object... parms) {
-        if ( parms == null ) {
-            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( null )" );
-        }
-        else {
-            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "(" );
+        if (parms == null || parms.length == 0) {
+            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "()");
+        } else {
+            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "(");
             for ( int ii=0; ii<parms.length; ii++) {
                 Object parm = parms[ii];
-                trace(Trace.INFO, "    parm" + (ii+1) + "=[" + (parm == null ? null : parm.toString()) + "]" );
+                trace(Trace.INFO, "    parm" + (ii+1) + "=[" + (parm == null ? null : parm.toString()) + "]");
             }
-            trace(Trace.INFO, ")" );
+            trace(Trace.INFO, ")");
         }
-    }   
+    }    
+    
+    public static void traceEntry(String classDotMethod, Object... parms) {
+        tracePoint("Entry", classDotMethod, parms);
+    }
+    
+    public static void traceExit(String classDotMethod, Object... parms) {
+        tracePoint("Exit", classDotMethod, parms);
+    }
 }
+

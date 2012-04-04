@@ -16,6 +16,9 @@
  */
 package org.apache.geronimo.st.v11.core.internal;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.geronimo.st.v11.core.Activator;
 
 /**
@@ -24,6 +27,8 @@ import org.apache.geronimo.st.v11.core.Activator;
  * @version $Rev$ $Date$
  */
 public class Trace {
+
+    private static final SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm.ss.SSS");
 
     /**
      * Finest trace event.
@@ -70,15 +75,31 @@ public class Trace {
      *            a throwable
      */
     public static void trace(byte level, String s, Throwable t) {
-        if (Activator.getDefault() == null || !Activator.getDefault().isDebugging())
+        if (Activator.getDefault() == null || !Activator.getDefault().isDebugging()) {
             return;
+        }
 
-        System.out.println(Activator.PLUGIN_ID + ":  " + s);
-        if (t != null)
-            t.printStackTrace();
+        System.out.println(buildMessage(s));
+        if (t != null) {
+            t.printStackTrace(System.out);
+        }
+    }
+
+    private static String buildMessage(String msg) {
+        StringBuilder builder = new StringBuilder(50);
+        builder.append(formateCurrnetTime());
+        builder.append(" [").append(Activator.PLUGIN_ID).append("] ");
+        builder.append(msg);
+        return builder.toString();
     }
     
-     /**
+    private static String formateCurrnetTime() {
+        synchronized (df) {
+            return df.format(new Date());
+        }
+    }
+    
+    /**
      * Trace the given message 
      * 
      * @param tracePoint
@@ -95,17 +116,17 @@ public class Trace {
     public static void tracePoint(String tracePoint, String classDotMethod) {
         trace(Trace.INFO, tracePoint + ": " + classDotMethod + "()" );
     }   
+
     public static void tracePoint(String tracePoint, String classDotMethod, Object... parms) {
-        if ( parms == null ) {
-            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( null )" );
-        }
-        else {
-            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "(" );
+        if (parms == null || parms.length == 0) {
+            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "()");
+        } else {
+            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "(");
             for ( int ii=0; ii<parms.length; ii++) {
                 Object parm = parms[ii];
-                trace(Trace.INFO, "    parm" + (ii+1) + "=[" + (parm == null ? null : parm.toString()) + "]" );
+                trace(Trace.INFO, "    parm" + (ii+1) + "=[" + (parm == null ? null : parm.toString()) + "]");
             }
-            trace(Trace.INFO, ")" );
+            trace(Trace.INFO, ")");
         }
-    }  
+    } 
 }

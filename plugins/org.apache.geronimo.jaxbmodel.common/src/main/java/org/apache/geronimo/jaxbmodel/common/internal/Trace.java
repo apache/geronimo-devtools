@@ -16,6 +16,9 @@
  */
 package org.apache.geronimo.jaxbmodel.common.internal;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.geronimo.jaxbmodel.common.Activator;
 import org.apache.geronimo.runtime.common.log.Logger;
 
@@ -25,6 +28,8 @@ import org.apache.geronimo.runtime.common.log.Logger;
  * @version $Rev$ $Date$
  */
 public class Trace {
+
+    private static final SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm.ss.SSS");
 
     /**
      * Finest trace event.
@@ -49,9 +54,11 @@ public class Trace {
      * Trace constructor comment.
      */
     private static Logger log;
+    
     static {
-    	log = Logger.getInstance();
+        log = Logger.getInstance();
     }
+    
     private Trace() {
         super();
     }
@@ -79,18 +86,34 @@ public class Trace {
      *            a throwable
      */
     public static void trace(int level, String s, Throwable t, boolean opt) {
-        if (Activator.getDefault() == null || !Activator.getDefault().isDebugging())
+        if (Activator.getDefault() == null || !Activator.getDefault().isDebugging()) {
             return;
-        if(opt) {
-        	log.trace(level, Activator.PLUGIN_ID, s, t);
         }
-        if(Activator.console) {
-            System.out.println(Activator.PLUGIN_ID + ":  " + s);
-            if (t != null)
-                t.printStackTrace();
+        if (opt) {
+            log.trace(level, Activator.PLUGIN_ID, s, t);
+        }
+        if (Activator.console) {
+            System.out.println(buildMessage(s));
+            if (t != null) {
+                t.printStackTrace(System.out);
+            }
         }
     }
 
+    private static String buildMessage(String msg) {
+        StringBuilder builder = new StringBuilder(50);
+        builder.append(formateCurrnetTime());
+        builder.append(" [").append(Activator.PLUGIN_ID).append("] ");
+        builder.append(msg);
+        return builder.toString();
+    }
+    
+    private static String formateCurrnetTime() {
+        synchronized (df) {
+            return df.format(new Date());
+        }
+    }
+    
     /**
      * Trace the given message 
      * 
@@ -108,11 +131,11 @@ public class Trace {
     public static void tracePoint(String tracePoint, String classDotMethod, boolean opt) {
         trace(Trace.INFO, tracePoint + ": " + classDotMethod + "()", opt);
     }   
+    
     public static void tracePoint(String tracePoint, boolean opt, String classDotMethod, Object... parms) {
-        if ( parms == null ) {
-            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( null )" , opt);
-        }
-        else {
+        if (parms == null || parms.length == 0) {
+            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "()" , opt);
+        } else {
             trace(Trace.INFO, tracePoint + ": " + classDotMethod + "(" , opt);
             for ( int ii=0; ii<parms.length; ii++) {
                 Object parm = parms[ii];
@@ -120,5 +143,13 @@ public class Trace {
             }
             trace(Trace.INFO, ")" ,opt);
         }
-    } 
+    }    
+    
+    public static void traceEntry(boolean opt, String classDotMethod, Object... parms) {
+        tracePoint("Entry", opt, classDotMethod, parms);
+    }
+    
+    public static void traceExit(boolean opt, String classDotMethod, Object... parms) {
+        tracePoint("Exit", opt, classDotMethod, parms);
+    }
 }

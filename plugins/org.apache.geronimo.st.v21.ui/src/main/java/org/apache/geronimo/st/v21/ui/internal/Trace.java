@@ -16,6 +16,9 @@
  */
 package org.apache.geronimo.st.v21.ui.internal;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.geronimo.runtime.common.log.Logger;
 import org.apache.geronimo.st.v21.ui.Activator;
 
@@ -25,6 +28,8 @@ import org.apache.geronimo.st.v21.ui.Activator;
  * @version $Rev$ $Date$
  */
 public class Trace {
+    
+    private static final SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm.ss.SSS");
 
     /**
      * Finest trace event.
@@ -44,14 +49,16 @@ public class Trace {
      * cancel trace event.
      */
     public static int CANCEL = 8;
-    
-    private static Logger log;
-    static {
-    	log = Logger.getInstance();
-    }
+
     /**
      * Trace constructor comment.
      */
+    private static Logger log;
+    
+    static {
+        log = Logger.getInstance();
+    }
+    
     private Trace() {
         super();
     }
@@ -79,18 +86,34 @@ public class Trace {
      *            a throwable
      */
     public static void trace(int level, String s, Throwable t, boolean opt) {
-        if (Activator.getDefault() == null || !Activator.getDefault().isDebugging())
+        if (Activator.getDefault() == null || !Activator.getDefault().isDebugging()) {
             return;
-        if(opt) {
-        	log.trace(level, Activator.PLUGIN_ID, s, t);
         }
-        if(Activator.console) {
-            System.out.println(Activator.PLUGIN_ID + ":  " + s);
-            if (t != null)
-                t.printStackTrace();
+        if (opt) {
+            log.trace(level, Activator.PLUGIN_ID, s, t);
+        }
+        if (Activator.console) {
+            System.out.println(buildMessage(s));
+            if (t != null) {
+                t.printStackTrace(System.out);
+            }
         }
     }
 
+    private static String buildMessage(String msg) {
+        StringBuilder builder = new StringBuilder(50);
+        builder.append(formateCurrnetTime());
+        builder.append(" [").append(Activator.PLUGIN_ID).append("] ");
+        builder.append(msg);
+        return builder.toString();
+    }
+    
+    private static String formateCurrnetTime() {
+        synchronized (df) {
+            return df.format(new Date());
+        }
+    }
+    
     /**
      * Trace the given message 
      * 
@@ -100,38 +123,41 @@ public class Trace {
      * @param classDotMethod
      *            The class name + method name (e.g., "Class.method()")
      *            
-     * @param parm1,2,3,4,5
-     *            Method parameters if the trace point is an "Entry"
+     * @param parms
+     *            Method parameter(s) if the trace point is an "Entry"
      *            or
      *            Return value if the trace point is an "Exit"
      */
-    public static void trace(String tracePoint, String classDotMethod, boolean opt) {
+    public static void tracePoint(String tracePoint, String classDotMethod, boolean opt) {
         trace(Trace.INFO, tracePoint + ": " + classDotMethod + "()", opt);
     }   
-    public static void trace(String tracePoint, boolean opt, String classDotMethod, Object parm1) {
-        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "] )" , opt);
+    
+    public static void tracePoint(String tracePoint, boolean opt, String classDotMethod, Object... parms) {
+        if (parms == null || parms.length == 0) {
+            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "()" , opt);
+        } else {
+            trace(Trace.INFO, tracePoint + ": " + classDotMethod + "(" , opt);
+            for ( int ii=0; ii<parms.length; ii++) {
+                Object parm = parms[ii];
+                trace(Trace.INFO, "    parm" + (ii+1) + "=[" + (parm == null ? null : parm.toString()) + "]" , opt);
+            }
+            trace(Trace.INFO, ")" ,opt);
+        }
+    }    
+
+    public static void trace(String tracePoint, String classDotMethod, boolean opt) {
+        tracePoint(tracePoint, classDotMethod, opt);
     }
 
-    public static void trace(String tracePoint, boolean opt, String classDotMethod, Object parm1, Object parm2) {
-        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "], " +
-                                                                 "parm2=[" + (parm2 == null ? null : parm2.toString()) + "] )" , opt );
+    public static void trace(String tracePoint, boolean opt, String classDotMethod, Object... parms) {
+        tracePoint(tracePoint, opt, classDotMethod, parms);
     }
-    public static void trace(String tracePoint, boolean opt, String classDotMethod, Object parm1, Object parm2, Object parm3) {
-        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "], " +
-                                                                 "parm2=[" + (parm2 == null ? null : parm2.toString()) + "], " +
-                                                                 "parm3=[" + (parm3 == null ? null : parm3.toString()) + "] )" , opt );
+    
+    public static void traceEntry(boolean opt, String classDotMethod, Object... parms) {
+        tracePoint("Entry", opt, classDotMethod, parms);
     }
-    public static void trace(String tracePoint, boolean opt, String classDotMethod, Object parm1, Object parm2, Object parm3, Object parm4) {
-        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "], " +
-                                                                 "parm2=[" + (parm2 == null ? null : parm2.toString()) + "], " +
-                                                                 "parm3=[" + (parm3 == null ? null : parm3.toString()) + "], " +
-                                                                 "parm4=[" + (parm4 == null ? null : parm4.toString()) + "] )" , opt );
-    }
-    public static void trace(String tracePoint, boolean opt, String classDotMethod, Object parm1, Object parm2, Object parm3, Object parm4, Object parm5) {
-        trace(Trace.INFO, tracePoint + ": " + classDotMethod + "( parm1=[" + (parm1 == null ? null : parm1.toString()) + "], " +
-                                                                 "parm2=[" + (parm2 == null ? null : parm2.toString()) + "], " +
-                                                                 "parm3=[" + (parm3 == null ? null : parm3.toString()) + "], " +
-                                                                 "parm4=[" + (parm4 == null ? null : parm4.toString()) + "], " +
-                                                                 "parm5=[" + (parm5 == null ? null : parm5.toString()) + "] )" , opt );
+    
+    public static void traceExit(boolean opt, String classDotMethod, Object... parms) {
+        tracePoint("Exit", opt, classDotMethod, parms);
     }
 }

@@ -87,7 +87,7 @@ public class UpdateServerStateTask extends TimerTask {
     }
 
     private void updateServerState() {
-        Trace.trace(Trace.INFO, ">> " + server.getId() + " Updating Server State.", Activator.traceCore);
+        Trace.traceEntry(Activator.traceCore, "UpdateServerStateTask.updateServerState", server.getId());
         try {
             switch (server.getServerState()) {
             case IServer.STATE_STOPPED:
@@ -107,7 +107,7 @@ public class UpdateServerStateTask extends TimerTask {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Trace.trace(Trace.INFO, "<< " + server.getId() + " Updating Server State.", Activator.traceCore);
+        Trace.traceExit(Activator.traceCore, "UpdateServerStateTask.updateServerState", server.getId());
     }
 
     private void updateFromStopped() throws CoreException {

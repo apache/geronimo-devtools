@@ -98,7 +98,7 @@ public class GeronimoServerBehaviour extends GeronimoServerBehaviourDelegate imp
 		try {
 			return getKernel() != null && kernel.isRunning();
 		} catch (SecurityException e) {
-			Trace.trace(Trace.SEVERE, "Invalid username and/or password.", e);
+			Trace.trace(Trace.ERROR, "Invalid username and/or password.", e);
 
 			pingThread.interrupt();
 			if (getServer().getServerState() != IServer.STATE_STOPPED) {
