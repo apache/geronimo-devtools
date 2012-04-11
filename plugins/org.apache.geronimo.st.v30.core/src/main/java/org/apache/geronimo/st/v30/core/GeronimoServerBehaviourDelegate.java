@@ -277,8 +277,6 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             }
         }
         
-        GeronimoConnectionFactory.getInstance().destroy(server);
-        
         stopImpl(); 
                                                            
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.stop");
@@ -945,6 +943,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     }
 
     protected void stopImpl() {
+        GeronimoConnectionFactory.getInstance().destroy(getServer());
         if (processListener != null) {
             DebugPlugin.getDefault().removeDebugEventListener(processListener);
             processListener = null;
