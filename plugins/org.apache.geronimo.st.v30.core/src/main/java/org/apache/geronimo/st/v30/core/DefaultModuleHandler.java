@@ -107,6 +107,7 @@ public class DefaultModuleHandler extends AbstractModuleHandler {
                     doFail(status, Messages.REDEPLOY_FAIL);
                 } else {
                     setModuleState(new IModule [] { module }, IServer.STATE_STARTED);
+                    mapper.addArtifactEntry(getServer(), module, moduleConfigId);
                 }
             } else {
                 //different configIds from what needs to be undeployed to what will be deployed

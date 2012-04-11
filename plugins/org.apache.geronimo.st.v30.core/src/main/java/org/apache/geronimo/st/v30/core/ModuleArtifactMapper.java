@@ -148,7 +148,8 @@ public class ModuleArtifactMapper {
             ModuleSet<Artifact> artifacts = getServerArtifacts(server);
             if (artifacts != null) {
                 try {
-                    return artifacts.query("projectName", getId(module)).getConfigId();
+                    Artifact artifact = artifacts.query("projectName", getId(module));
+                    if(artifact != null) return artifact.getConfigId();
                 } catch (Exception e) {
                     Trace.trace(Trace.ERROR, e.getMessage(), e, Activator.logCore);
                 }
