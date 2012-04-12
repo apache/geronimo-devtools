@@ -244,7 +244,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     }
 
     /*
-     * (non-Javadoc)
+     * Called when server is shutdown (Server view -> stop).
      * 
      * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#stop(boolean)
      */
@@ -302,6 +302,21 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.waitForStopped", stopped);
         return stopped;
+    }
+
+    /*
+     * Called when server process is killed (Console view -> stop).
+     */
+    public void terminate() {
+        Trace.traceEntry(Activator.traceCore, "GeronimoServerBehaviourDelegate.terminate");
+        
+        // stop threads
+        stopPingThread();
+        stopSynchronizeProjectOnServerTask();
+        
+        stopImpl(); 
+        
+        Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.terminate");
     }
     
     private void setStatus(IModule[] module, IStatus status, MultiStatus multiStatus) {
@@ -1254,7 +1269,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
                     int size = events.length;
                     for (int i = 0; i < size; i++) {
                         if (newProcess.equals(events[i].getSource()) && events[i].getKind() == DebugEvent.TERMINATE) {
-                            stopImpl();
+                            terminate();
                         }
                     }
                 }
