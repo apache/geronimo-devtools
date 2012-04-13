@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 
 import org.apache.geronimo.st.v30.core.Activator;
 import org.apache.geronimo.st.v30.core.internal.Trace;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.server.core.IModule;
@@ -70,7 +71,7 @@ public final class AriesHelper {
                 Object object = constructor.newInstance(ebaModule.getProject());
                 return (IModule[]) method.invoke(object);                
             } catch (Exception e) {
-                e.printStackTrace();
+                Trace.trace(Trace.ERROR, "Could not get child modules", e, Activator.traceOsgi);
             }
         }        
         return new IModule[0];
@@ -83,7 +84,7 @@ public final class AriesHelper {
                 Method method = class1.getMethod("getBundleSymbolicName", IProject.class);
                 return (String) method.invoke(null, bundleModule.getProject());
             } catch (Exception e) {
-                e.printStackTrace();
+                Trace.trace(Trace.ERROR, "Could not get bundle symbolic name", e, Activator.traceOsgi);
             }
         }
         return null;
@@ -102,11 +103,12 @@ public final class AriesHelper {
                 Version version = Version.parseVersion(versionStr);
                 return version;
             } catch (Exception e) {
-                e.printStackTrace();
+                Trace.trace(Trace.ERROR, "Could not get bundle version", e, Activator.traceOsgi);
             }
         }
         return null;
     }
+
     public static BundleInfo getBundleInfo(IProject project) throws Exception {
         if (AriesHelper.isAriesInstalled()) {
             Class<?> ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
@@ -144,6 +146,19 @@ public final class AriesHelper {
             
             if (symbolicName != null && version != null) {
                 return new BundleInfo(symbolicName, version);
+            }
+        }
+        return null;
+    }
+
+    public static IFile getManifestFile(IProject project) {
+        if (AriesHelper.isAriesInstalled()) {
+            try {
+                Class<?> ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.ManifestUtils");
+                Method method = ariesUtilsClass.getMethod("getManifestFile", IProject.class);
+                return (IFile) method.invoke(null, project);
+            } catch (Exception e) {
+                Trace.trace(Trace.ERROR, "Could not get manifest file", e, Activator.traceOsgi);
             }
         }
         return null;

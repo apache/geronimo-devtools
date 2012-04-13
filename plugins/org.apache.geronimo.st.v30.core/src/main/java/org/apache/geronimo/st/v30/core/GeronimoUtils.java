@@ -260,19 +260,19 @@ public class GeronimoUtils {
     }
 
     public static Manifest getBundleManifest(IModule module) {
-        IVirtualComponent component = getVirtualComponent(module);
-        IPath manifestPath = component.getRootFolder().getUnderlyingFolder().getProjectRelativePath().append("META-INF").append("MANIFEST.MF");
-        IFile manifestFile = component.getProject().getFile(manifestPath);
         Manifest manifest = null;
-        InputStream in = null;
-        try {
-            in = manifestFile.getContents();
-            manifest = new Manifest(in);
-        } catch (Exception e) {
-            Trace.trace(Trace.ERROR, "Could load manifest file", e, Activator.logCore);
-        } finally {
-            if (in != null) {
-                try { in.close(); } catch (Exception ee) {}
+        IFile manifestFile = AriesHelper.getManifestFile(module.getProject());
+        if (manifestFile != null) {
+            InputStream in = null;
+            try {
+                in = manifestFile.getContents();
+                manifest = new Manifest(in);
+            } catch (Exception e) {
+                Trace.trace(Trace.ERROR, "Could load manifest file", e, Activator.logCore);
+            } finally {
+                if (in != null) { 
+                    try { in.close(); } catch (Exception ee) {}
+                }
             }
         }
         return manifest;
