@@ -110,7 +110,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
     private static final String[] bundleDirectories = { "repository/org/apache/geronimo/specs",
         "repository/org/apache/geronimo/javamail/geronimo-javamail_1.4_mail",
         "repository/org/apache/geronimo/bundles/jaxb-impl", "repository/org/apache/geronimo/bundles/jstl",
-        "repository/org/apache/myfaces/core/myfaces-bundle",
+        "repository/org/apache/geronimo/bundles/myfaces-bundle",
         "repository/org/apache/geronimo/framework/geronimo-jdbc",
         "repository/org/eclipse/osgi",
         "repository/org/osgi/org.osgi.compendium"};
