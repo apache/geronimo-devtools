@@ -51,6 +51,9 @@ import org.eclipse.ui.PartInitException;
  */
 @SuppressWarnings("restriction")
 public class KarafShellSSHTerminalView extends TerminalView {
+    
+    public static final String VIEW_ID = KarafShellSSHTerminalView.class.getName();
+    
     private TerminalActionScrollLock fActionTerminalScrollLock;
     
     protected GeronimoServerDelegate currentServerDelegate;
