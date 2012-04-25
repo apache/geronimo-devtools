@@ -52,7 +52,7 @@ public class ClasspathContainersHelper {
 
             try {
 
-                if ( project.getNature(JavaCore.NATURE_ID) != null ) {
+                if (project.isOpen() &&  project.getNature(JavaCore.NATURE_ID) != null) {
 
                     IJavaProject javaProject = JavaCore.create(project);
                     IClasspathEntry[] cp = javaProject.getRawClasspath();
@@ -90,7 +90,7 @@ public class ClasspathContainersHelper {
 
             try {
 
-                if ( project.getNature(JavaCore.NATURE_ID) !=null ) {
+                if (project.isOpen() && project.getNature(JavaCore.NATURE_ID) != null) {
 
                     IJavaProject javaProject = JavaCore.create(project);
                     IClasspathEntry[] cp = javaProject.getRawClasspath();

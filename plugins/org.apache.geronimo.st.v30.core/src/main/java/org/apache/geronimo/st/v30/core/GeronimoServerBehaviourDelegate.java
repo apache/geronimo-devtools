@@ -1212,7 +1212,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         IRuntimeClasspathEntry[] existingCps = JavaRuntime.computeUnresolvedRuntimeClasspath(wc);
 
         for (int i = 0; i < existingCps.length; i++) {
-            Trace.trace(Trace.INFO, "cpentry: " + cp , Activator.traceCore);
+            Trace.trace(Trace.INFO, "Classpath entry: " + existingCps[i], Activator.traceCore);
             if (cp.contains(existingCps[i]) == false) {
                 cp.add(existingCps[i]);
             }
@@ -1227,7 +1227,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
                 List<IClasspathEntry> cpes = ClasspathContainersHelper.queryWorkspace( containerPath );
                 for ( IClasspathEntry cpe : cpes ) {
                     RuntimeClasspathEntry rcpe = new RuntimeClasspathEntry( cpe );
-                    Trace.trace(Trace.INFO, "Classpath Container Entry: " + rcpe , Activator.traceCore);
+                    Trace.trace(Trace.INFO, "Classpath entry: " + rcpe , Activator.traceCore);
                     if (cp.contains(rcpe) == false) {
                         cp.add( rcpe );
                     }
