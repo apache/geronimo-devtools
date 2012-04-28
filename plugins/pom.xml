@@ -32,9 +32,9 @@
         <version>3.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-                
+	
     <build>
-        <plugins>
+		<plugins>	
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
@@ -52,8 +52,9 @@
                 </configuration>
             </plugin>
         </plugins>
+		
         <pluginManagement>
-            <plugins>
+            <plugins>	
                 <plugin>
                     <groupId>org.apache.geronimo.devtools</groupId>
                     <artifactId>maven-eclipsepde-plugin</artifactId>
@@ -78,12 +79,39 @@
                         </execution>
                     </executions>
                 </plugin>
+				<plugin>
+					<groupId>com.google.code.maven-replacer-plugin</groupId>
+					<artifactId>maven-replacer-plugin</artifactId>
+					<executions>                
+						<execution>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>replace</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<regex>false</regex>
+						<file>META-INF/MANIFEST.MF</file>
+						<token>Bundle-Version: ${pom.version}</token>
+						<value>Bundle-Version: ${pom.version}${buildNumberVersion}</value>
+						<outputFile>target/classes/META-INF/MANIFEST.MF</outputFile>
+					</configuration>
+				</plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
+					<executions>
+						<execution>
+							<phase>package</phase>
+						</execution>
+					</executions>
                     <configuration>
                         <archive>
-                            <manifestFile>${basedir}/META-INF/MANIFEST.MF</manifestFile>
+                            <manifestFile>${basedir}/target/classes/META-INF/MANIFEST.MF</manifestFile>
+							<manifestEntries>
+								<Implementation-Version>${pom.version}${buildNumberVersion}</Implementation-Version>
+							</manifestEntries>
                         </archive>
                     </configuration>
                 </plugin>
@@ -144,9 +172,10 @@
                      <skip>true</skip>
                   </configuration>
                </plugin>
-            </plugins>
+			</plugins>
         </pluginManagement>
     </build>
+	
     <modules>
         <module>org.apache.geronimo.jaxbmodel.common</module>
         <module>org.apache.geronimo.jee.v21.jaxbmodel</module>

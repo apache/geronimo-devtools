@@ -1,4 +1,4 @@
-Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
+Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${geronimo-eclipse-plugin.buildNumber}
 
 
 Helpful URLs
@@ -145,6 +145,6 @@ GERONIMODEVTOOLS-594	Geronimo server can't be deleted when it has been stopped i
 GERONIMODEVTOOLS-598	Support builds on Linux x86_64 based systems
 
 
-Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
+Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${geronimo-eclipse-plugin.buildNumber}
 
 @version $Rev$ $Date$

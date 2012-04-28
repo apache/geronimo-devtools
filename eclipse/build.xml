@@ -185,7 +185,7 @@
             <isset property="is32bitJDK" />
         </condition>
 
-        <condition property="eclipseZip" value="${eclipse_basefilename}-win32_64.zip" >
+        <condition property="eclipseZip" value="${eclipse_basefilename}-win32-x86_64.zip" >
             <isset property="is64bitJDK" />
         </condition>
 

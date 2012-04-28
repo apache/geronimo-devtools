@@ -1,4 +1,4 @@
-Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
+Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${geronimo-eclipse-plugin.buildNumber}
 
 
 Helpful URLs
@@ -80,6 +80,6 @@ GERONIMODEVTOOLS-604	Upgrade to eclipse 3.5.2
 GERONIMODEVTOOLS-603	Make Geronimo 3.0 server runnable with GEP
 
 
-Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${buildNumber}
+Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} -- ${geronimo-eclipse-plugin.buildNumber}
 
 @version $Rev: 894783 $ $Date: 2009-12-31 14:21:08 +0800 (Thu, 31 Dec 2009) $

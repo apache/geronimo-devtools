@@ -35,6 +35,25 @@
                         
     <build>
         <plugins>
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>maven-replacer-plugin</artifactId>
+				<executions>                
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<regex>false</regex>
+					<file>src/main/assembly/site.xml</file>
+					<token>($featureVersion)</token>
+					<value>${buildNumberVersion}</value>
+					<outputFile>target/resources/site.xml</outputFile>
+				</configuration>
+			</plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -70,7 +89,7 @@
                                 <mkdir dir="${assembly.dir}"/>
                                 <makeurl property="assembly.dir.url" file="${assembly.dir}"/>
                                 <unzip src="${input.zip}" dest="${assembly.dir}" />
-                                <copy file="${basedir}/src/main/assembly/site.xml" todir="${assembly.dir}"/>
+                                <copy file="${basedir}/target/resources/site.xml" todir="${assembly.dir}"/>
                                 <java fork="true" classname="org.eclipse.equinox.launcher.Main">
                                     <classpath>
                                         <fileset file="${eclipseInstall}/eclipse/plugins/org.eclipse.equinox.launcher_*.jar"/>

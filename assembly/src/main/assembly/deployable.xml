@@ -51,7 +51,7 @@
          |
          -->
         <dependencySet>
-            <outputFileNameMapping>${artifact.artifactId}_${artifact.version}.${artifact.extension}</outputFileNameMapping>
+            <outputFileNameMapping>${artifact.artifactId}_${artifact.version}${buildNumberVersion}.${artifact.extension}</outputFileNameMapping>
             <outputDirectory>eclipse/plugins/</outputDirectory>
             <unpack>false</unpack>
             <includes>
@@ -90,7 +90,7 @@
          |
          -->
         <dependencySet>
-            <outputDirectory>eclipse/features/${artifact.artifactId}_${artifact.version}</outputDirectory>
+            <outputDirectory>eclipse/features/${artifact.artifactId}_${artifact.version}${buildNumberVersion}</outputDirectory>
             <unpack>true</unpack>
             <includes>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.v30.feature</include>

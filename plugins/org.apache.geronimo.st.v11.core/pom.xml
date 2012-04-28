@@ -103,6 +103,10 @@
                 <groupId>org.apache.geronimo.devtools</groupId>
                 <artifactId>maven-eclipsepde-plugin</artifactId>
             </plugin>
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>maven-replacer-plugin</artifactId>
+			</plugin>
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
             </plugin>

@@ -59,7 +59,7 @@
          |
          -->
         <dependencySet>
-            <outputFileNameMapping>${artifact.artifactId}_${artifact.version}.${artifact.extension}</outputFileNameMapping>
+            <outputFileNameMapping>${artifact.artifactId}_${artifact.version}${buildNumberVersion}.${artifact.extension}</outputFileNameMapping>
             <outputDirectory>plugins/</outputDirectory>
             <unpack>false</unpack>
             <includes>
@@ -98,7 +98,7 @@
          |
          -->
         <dependencySet>
-            <outputFileNameMapping>${artifact.artifactId}_${artifact.version}.${artifact.extension}</outputFileNameMapping>
+            <outputFileNameMapping>${artifact.artifactId}_${artifact.version}${buildNumberVersion}.${artifact.extension}</outputFileNameMapping>
             <outputDirectory>features/</outputDirectory>
             <includes>
                 <include>org.apache.geronimo.devtools:org.apache.geronimo.v30.feature</include>
