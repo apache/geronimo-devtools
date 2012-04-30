@@ -34,7 +34,7 @@
     </parent>
 	
     <build>
-		<plugins>	
+        <plugins>	
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
@@ -91,9 +91,8 @@
 						</execution>
 					</executions>
 					<configuration>
-						<regex>false</regex>
 						<file>META-INF/MANIFEST.MF</file>
-						<token>Bundle-Version: ${pom.version}</token>
+						<token>Bundle-Version:.*</token>
 						<value>Bundle-Version: ${pom.version}${buildNumberVersion}</value>
 						<outputFile>target/classes/META-INF/MANIFEST.MF</outputFile>
 					</configuration>
@@ -101,17 +100,12 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-					<executions>
-						<execution>
-							<phase>package</phase>
-						</execution>
-					</executions>
                     <configuration>
                         <archive>
                             <manifestFile>${basedir}/target/classes/META-INF/MANIFEST.MF</manifestFile>
-							<manifestEntries>
-								<Implementation-Version>${pom.version}${buildNumberVersion}</Implementation-Version>
-							</manifestEntries>
+                                <manifestEntries>
+                                    <Implementation-Version>${pom.version}${buildNumberVersion}</Implementation-Version>
+                                </manifestEntries>
                         </archive>
                     </configuration>
                 </plugin>

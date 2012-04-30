@@ -102,17 +102,17 @@
                         </goals>
                     </execution>
                 </executions>
-				<configuration>
-					<archive>
-					  <manifestEntries>
-						<Implementation-Version>${pom.version}${buildNumberVersion}</Implementation-Version>
-					  </manifestEntries>
-					</archive>
-					<keystore>../../${keystoreFile}</keystore>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Implementation-Version>${pom.version}${buildNumberVersion}</Implementation-Version>
+                        </manifestEntries>
+                    </archive>
+                    <keystore>../../${keystoreFile}</keystore>
                     <alias>${keystoreAlias}</alias>
                     <storepass>${keystoreStorepass}</storepass>
                     <keypass>${keystoreKeypass}</keypass>
-				</configuration>
+                </configuration>
             </plugin>
         </plugins>
 
