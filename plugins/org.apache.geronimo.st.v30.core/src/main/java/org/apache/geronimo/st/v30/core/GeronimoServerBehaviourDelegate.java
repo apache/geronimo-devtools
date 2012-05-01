@@ -1037,8 +1037,23 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         }
 
         String documentBase = getWebModuleDocumentBase(contextPath);
-        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", contextPath, documentBase);
-        return documentBase;        
+        if (documentBase == null) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", "Document base is not set");
+            return null;
+        }
+        
+        File publishLocation = new File(documentBase);
+        if (!publishLocation.isAbsolute()) {
+            publishLocation = getServerResource(IGeronimoServerBehavior.VAR_CATALINA_DIR + documentBase).toFile();            
+        }
+        
+        if (!publishLocation.exists()) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", "Document base does not exist", publishLocation);
+            return null;
+        }
+        
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", contextPath, documentBase, publishLocation);
+        return publishLocation.getAbsolutePath();
     }
     
     private IStatus tryFileReplace(IModule[] module) {
@@ -1046,8 +1061,8 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         
         IModule webModule = module[module.length - 1];        
         String documentBase = getWebModuleDocumentBase(webModule);
-        if (documentBase == null ) {
-            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "Document base is null");
+        if (documentBase == null) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "Document base is not set or is invalid");
             return null;
         }
 
