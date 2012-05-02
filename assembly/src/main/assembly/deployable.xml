@@ -23,79 +23,23 @@
         <format>zip</format>
     </formats>
     <includeBaseDirectory>false</includeBaseDirectory>
+
     <fileSets>
         <fileSet>
-            <directory>..</directory>
-            <outputDirectory>eclipse</outputDirectory>
+            <directory>${basedir}/target/geronimo-eclipse-plugin-base/</directory>
+            <outputDirectory></outputDirectory>
             <includes>
-                <include>LICENSE.txt</include>
-                <include>NOTICE.txt</include>
+                <include>*.txt</include>
             </includes>
         </fileSet>
+        <fileSet>
+            <directory>${basedir}/target/geronimo-eclipse-plugin-base/plugins</directory>
+            <outputDirectory>plugins</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${basedir}/target/geronimo-eclipse-plugin-base/features-unpacked</directory>
+            <outputDirectory>features</outputDirectory>
+        </fileSet>
     </fileSets>
-    <files>
-        <file>
-            <source>../features/org.apache.geronimo.v30.feature/target/classes/about_files/PLUGIN_RELEASE-NOTES-${pom.version}.txt</source>
-            <outputDirectory>eclipse</outputDirectory>
-            <!--  <filtered>true</filtered>
-                 ${pom.version} does not get expanded by this filtering :-(
-                 so I take a filtered version from earlier in the build for GERONIMODEVTOOLS-505
-              -->
-        </file>
-    </files>
-    <dependencySets>
 
-        <!-- 
-         |
-         | Plug-ins
-         |
-         -->
-        <dependencySet>
-            <outputFileNameMapping>${artifact.artifactId}_${artifact.version}${buildNumberVersion}.${artifact.extension}</outputFileNameMapping>
-            <outputDirectory>eclipse/plugins/</outputDirectory>
-            <unpack>false</unpack>
-            <includes>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.j2ee.v11.jaxbmodel</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.jaxbmodel.common</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.jee.v21.jaxbmodel</include>
-                <!-- need to add jee.v22.jaxbmodel -->
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.jee.v22.jaxbmodel</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.common</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v11</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v20</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v21</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v22</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.runtime.v30</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.core</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.ui</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.schemas</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v11.schemas</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v11.core</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v11.ui</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v20.core</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v20.ui</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v21.core</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v21.ui</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v22.core</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v22.ui</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v30.core</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v30.jaxbmodel</include>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.st.v30.ui</include>
-             </includes>
-        </dependencySet>
-
-        <!-- 
-         |
-         | Features
-         |
-         -->
-        <dependencySet>
-            <outputDirectory>eclipse/features/${artifact.artifactId}_${artifact.version}${buildNumberVersion}</outputDirectory>
-            <unpack>true</unpack>
-            <includes>
-                <include>org.apache.geronimo.devtools:org.apache.geronimo.v30.feature</include>
-            </includes>
-        </dependencySet>
-
-    </dependencySets>
 </assembly>

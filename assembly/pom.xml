@@ -22,14 +22,14 @@
                         
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>assembly</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin :: Assembly</name>
                         
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
-        <version>3.0-SNAPSHOT</version>
+        <version>3.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
                         
@@ -50,26 +50,42 @@
 					<regex>false</regex>
 					<file>src/main/assembly/site.xml</file>
 					<token>($featureVersion)</token>
-					<value>${buildNumberVersion}</value>
+					<value>${osgi.pom.version}</value>
 					<outputFile>target/resources/site.xml</outputFile>
 				</configuration>
 			</plugin>
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <finalName>geronimo-eclipse-plugin-${project.parent.version}</finalName>
-                    <descriptors>
-                        <descriptor>src/main/assembly/deployable.xml</descriptor>
-                        <descriptor>src/main/assembly/updatesite.xml</descriptor>
-                        <descriptor>src/main/assembly/p2repo.xml</descriptor>
-                    </descriptors>
-                </configuration>
                 <executions>
                     <execution>
+                        <id>prepare</id>
+                        <configuration>
+                          <finalName>geronimo-eclipse-plugin</finalName>
+                          <descriptors>
+                            <descriptor>src/main/assembly/prepare.xml</descriptor>
+                          </descriptors>
+                        </configuration>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>assemble</id>
+                        <configuration>
+                          <finalName>geronimo-eclipse-plugin-${project.parent.version}</finalName>
+                          <descriptors>
+                            <descriptor>src/main/assembly/p2repo.xml</descriptor>
+                            <descriptor>src/main/assembly/deployable.xml</descriptor>
+                          </descriptors>
+                        </configuration>
                         <phase>package</phase>
                         <goals>
-                            <goal>attached</goal>
+                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -78,6 +94,38 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
+                    <execution>
+                        <id>fix-plugin-version</id>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <tasks>
+                              <move todir="${basedir}/target/geronimo-eclipse-plugin-base">
+                                <fileset dir="${basedir}/target/geronimo-eclipse-plugin-base">
+                                  <include name="**/*-*.jar"/>
+                                </fileset>
+                                <regexpmapper from="^(.*)${pom.version}(.*)$$" to="\1${osgi.pom.version}\2"/>
+                              </move>
+
+                              <taskdef resource="net/sf/antcontrib/antlib.xml" 
+                                       classpathref="maven.plugin.classpath" />
+
+                              <for param="file">
+                                  <fileset dir="${basedir}/target/geronimo-eclipse-plugin-base">
+                                      <include name="features/*.jar"/>
+                                  </fileset>
+                                  <sequential>
+                                      <basename property="jar.filename" file="@{file}"/>
+                                      <unzip src="@{file}" 
+                                             dest="${basedir}/target/geronimo-eclipse-plugin-base/features-unpacked/${jar.filename}"/>
+                                  </sequential>
+                              </for>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+
                     <execution>
                         <id>generate-p2-metadata</id>
                         <phase>package</phase>
@@ -110,17 +158,6 @@
                 </executions>
             </plugin>
         </plugins>
-         <pluginManagement>
-            <plugins>
-               <!-- skip deploy child artifacts in release process-->
-               <plugin>
-                   <artifactId>maven-deploy-plugin</artifactId>             
-                   <configuration>
-                     <skip>true</skip>
-                  </configuration>
-               </plugin>
-            </plugins>
-        </pluginManagement>
     </build>
     <dependencies>
            

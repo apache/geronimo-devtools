@@ -20,7 +20,7 @@
 <feature
       id="org.apache.geronimo.v30.feature"
       label="Geronimo v3.0 Server Adapter"
-      version="3.0.0${buildNumberVersion}"
+      version="${osgi.pom.version}"
       provider-name="%providerName"
       plugin="org.apache.geronimo.st.v30.core"
       image="bigG.gif">
@@ -54,168 +54,168 @@
          id="org.apache.geronimo.st.core"
          download-size="132"
          install-size="132"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
 
    <plugin
          id="org.apache.geronimo.st.ui"
          download-size="164"
          install-size="164"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
 
    <plugin
          id="org.apache.geronimo.st.schemas"
          download-size="72"
          install-size="72"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
 
    <plugin
          id="org.apache.geronimo.runtime.common"
          download-size="1160"
          install-size="1160"
-         version="3.0.0${buildNumberVersion}"/>
+         version="${osgi.pom.version}"/>
         
     <plugin
          id="org.apache.geronimo.st.v21.core"
          download-size="48"
          install-size="48"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
     
     <plugin
          id="org.apache.geronimo.st.v21.ui"
          download-size="164"
          install-size="164"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
 
     <plugin
          id="org.apache.geronimo.runtime.v21"
          download-size="1252"
          install-size="1252"
-         version="3.0.0${buildNumberVersion}"/>
+         version="${osgi.pom.version}"/>
 
     <plugin
          id="org.apache.geronimo.jee.v21.jaxbmodel"
          download-size="140"
          install-size="140"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
          
     <plugin
          id="org.apache.geronimo.st.v30.core"
          download-size="20"
          install-size="20"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
          
     <plugin
          id="org.apache.geronimo.st.v30.jaxbmodel"
          download-size="20"
          install-size="20"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
          
     <plugin
          id="org.apache.geronimo.st.v30.ui"
          download-size="16"
          install-size="16"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
          
     <plugin
          id="org.apache.geronimo.runtime.v30"
          download-size="1052"
          install-size="1052"
-         version="3.0.0${buildNumberVersion}"/>
+         version="${osgi.pom.version}"/>
          
     <plugin
          id="org.apache.geronimo.st.v22.core"
          download-size="20"
          install-size="20"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
          
     <plugin
          id="org.apache.geronimo.st.v22.ui"
          download-size="16"
          install-size="16"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
          
     <plugin
          id="org.apache.geronimo.runtime.v22"
          download-size="1052"
          install-size="1052"
-         version="3.0.0${buildNumberVersion}"/>
+         version="${osgi.pom.version}"/>
          
     <plugin
          id="org.apache.geronimo.st.v20.core"
          download-size="20"
          install-size="20"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
          
     <plugin
          id="org.apache.geronimo.st.v20.ui"
          download-size="16"
          install-size="16"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
          
     <plugin
          id="org.apache.geronimo.runtime.v20"
          download-size="1052"
          install-size="1052"
-         version="3.0.0${buildNumberVersion}"/>
+         version="${osgi.pom.version}"/>
          
     <plugin
          id="org.apache.geronimo.st.v11.core"
          download-size="48"
          install-size="48"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
     
     <plugin
          id="org.apache.geronimo.st.v11.ui"
          download-size="164"
          install-size="164"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
 
     <plugin
          id="org.apache.geronimo.runtime.v11"
          download-size="1252"
          install-size="1252"
-         version="3.0.0${buildNumberVersion}"/>
+         version="${osgi.pom.version}"/>
 
     <plugin
          id="org.apache.geronimo.j2ee.v11.jaxbmodel"
          download-size="140"
          install-size="140"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
     
     <plugin
          id="org.apache.geronimo.st.v11.schemas"
          download-size="72"
          install-size="72"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
 
      <plugin
          id="org.apache.geronimo.jaxbmodel.common"
          download-size="31"
          install-size="31"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
 
      <plugin
          id="org.apache.geronimo.jee.v22.jaxbmodel"
          download-size="31"
          install-size="31"
-         version="3.0.0${buildNumberVersion}"
+         version="${osgi.pom.version}"
          unpack="false"/>
 </feature>

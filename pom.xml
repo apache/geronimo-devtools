@@ -22,7 +22,7 @@
                         
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>geronimo-eclipse-plugin</artifactId>
-    <version>3.0-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin</name>
                         
@@ -86,14 +86,13 @@
     <properties>
         <eclipseDownload>${settings.localRepository}/eclipse-downloads</eclipseDownload>
         <eclipseInstall>${settings.localRepository}/eclipse</eclipseInstall>
-        <org.apache.geronimo.v30.feature_version>3.0.0</org.apache.geronimo.v30.feature_version>
         <keystoreAlias>devtools</keystoreAlias> 
         <keystoreFile>keystore</keystoreFile> 
         <keystoreDname>CN=http://geronimo.apache.org,OU=Geronimo,O=Apache,L=Geronimo,S=Apache,C=US</keystoreDname> 
         <keystoreKeypass>devtools</keystoreKeypass> 
         <keystoreStorepass>geronimo</keystoreStorepass> 
         <keystoreValDays>3650</keystoreValDays>
-        <buildNumberVersion></buildNumberVersion>
+        <osgi.pom.version>${gep.osgiVersion}</osgi.pom.version>
     </properties>
                         
     <dependencyManagement>
@@ -249,6 +248,17 @@
                             <artifactId>ant-optional</artifactId>
                             <version>1.5.3-1</version>
                         </dependency>
+                        <dependency>
+                            <groupId>ant-contrib</groupId>
+                            <artifactId>ant-contrib</artifactId>
+                            <version>1.0b3</version>
+                            <exclusions>
+                                <exclusion>
+                                    <groupId>ant</groupId>
+                                    <artifactId>ant</artifactId>
+                                </exclusion>
+                            </exclusions>
+                        </dependency>
                     </dependencies>
                 </plugin>
                 
@@ -375,22 +385,17 @@
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.0-beta-4</version>
-                <configuration>
-                    <buildNumberPropertyName>${project.artifactId}.buildNumber</buildNumberPropertyName>
-                    <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
-                    <format>{0,date,yyyyMMddHHmmss}</format>
-                    <items>
-                        <item>timestamp</item>
-                    </items>
-                </configuration>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.7</version>
                 <executions>
                     <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>create</goal>
-                        </goals>
+                        <id>parse-version</id>
+                            <configuration>
+                                <propertyPrefix>gep</propertyPrefix>
+                            </configuration>
+                            <goals>
+                                <goal>parse-version</goal>
+                            </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -417,17 +422,17 @@
                 </configuration>
             </plugin>
             <!-- set attached as false to disable the automatic copy of LICNESE/NOTICE/DEPENDENCIES files -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-remote-resources-plugin</artifactId>
-				<executions>
-					<execution>						
-						<configuration>							
-							<attached>false</attached>>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-remote-resources-plugin</artifactId>
+                <executions>
+                    <execution>						
+                        <configuration>							
+                            <attached>false</attached>>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
                         
@@ -530,8 +535,34 @@
         <profile>
             <id>buildWithTimestamp</id>
             <properties>
-                <buildNumberVersion>.v${geronimo-eclipse-plugin.buildNumber}</buildNumberVersion>
+                <osgi.pom.version>${gep.majorVersion}.${gep.minorVersion}.${gep.incrementalVersion}.v${geronimo-eclipse-plugin.buildNumber}</osgi.pom.version>
             </properties>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>buildnumber-maven-plugin</artifactId>
+                        <version>1.0-beta-4</version>
+                        <configuration>
+                            <buildNumberPropertyName>${project.artifactId}.buildNumber</buildNumberPropertyName>
+                            <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
+                            <format>{0,date,yyyyMMdd-HHmmss}</format>
+                            <items>
+                                <item>timestamp</item>
+                            </items>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>create</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
 
             <modules>
                 <module>eclipse</module>
