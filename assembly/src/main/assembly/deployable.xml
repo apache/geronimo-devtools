@@ -27,18 +27,18 @@
     <fileSets>
         <fileSet>
             <directory>${basedir}/target/geronimo-eclipse-plugin-base/</directory>
-            <outputDirectory></outputDirectory>
+            <outputDirectory>eclipse/</outputDirectory>
             <includes>
                 <include>*.txt</include>
             </includes>
         </fileSet>
         <fileSet>
             <directory>${basedir}/target/geronimo-eclipse-plugin-base/plugins</directory>
-            <outputDirectory>plugins</outputDirectory>
+            <outputDirectory>eclipse/plugins</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>${basedir}/target/geronimo-eclipse-plugin-base/features-unpacked</directory>
-            <outputDirectory>features</outputDirectory>
+            <outputDirectory>eclipse/features</outputDirectory>
         </fileSet>
     </fileSets>
 
