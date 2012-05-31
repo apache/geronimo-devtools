@@ -617,6 +617,7 @@ public class Messages extends NLS {
 	public static String tooltip;
 	
 	public static String serverVersion;
+	public static String targetPlatformError;
 	public static String copyTargetFileFailed;
 	public static String supportWebPage0;
 	public static String supportURL;
