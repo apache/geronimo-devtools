@@ -22,7 +22,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,8 +40,6 @@ import javax.enterprise.deploy.spi.exceptions.DeploymentManagerCreationException
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
-import javax.management.remote.JMXConnectorFactory;
-import javax.management.remote.JMXServiceURL;
 import javax.naming.directory.NoSuchAttributeException;
 
 import org.apache.geronimo.deployment.plugin.jmx.ExtendedDeploymentManager;
@@ -59,11 +56,11 @@ import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.GeronimoJMXConnectorFactory;
 import org.apache.geronimo.st.core.GeronimoJMXConnectorFactory.JMXConnectorInfo;
-import org.apache.geronimo.st.v30.core.UpdateServerStateTask;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.v30.core.commands.TargetModuleIdNotFoundException;
 import org.apache.geronimo.st.v30.core.internal.DependencyHelper;
 import org.apache.geronimo.st.v30.core.internal.Messages;
+import org.apache.geronimo.st.v30.core.internal.ServerDelegateHelper;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.operations.ISharedLibEntryCreationDataModelProperties;
 import org.apache.geronimo.st.v30.core.operations.SharedLibEntryCreationOperation;
@@ -940,6 +937,14 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         setServerState(IServer.STATE_STARTED);
         GeronimoConnectionFactory.getInstance().destroy(getServer());
         startSynchronizeProjectOnServerTask();
+        
+        ServerDelegateHelper helper = getServerDelegate().getServerDelegateHelper();
+        String jvmArgs = helper.deleteRemovedArtifactListFromJVMArgs(getServerDelegate().getVMArgs());
+        try {
+            helper.persistJVMArgs(jvmArgs, new NullProgressMonitor());
+        } catch (CoreException e) {
+            Trace.trace(Trace.ERROR, e.getMessage(), e, Activator.traceCore);
+        }
     }
 
     public void setServerStopped() {
