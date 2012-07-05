@@ -61,6 +61,7 @@ import org.apache.geronimo.st.core.GeronimoJMXConnectorFactory;
 import org.apache.geronimo.st.core.GeronimoJMXConnectorFactory.JMXConnectorInfo;
 import org.apache.geronimo.st.v30.core.UpdateServerStateTask;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
+import org.apache.geronimo.st.v30.core.commands.TargetModuleIdNotFoundException;
 import org.apache.geronimo.st.v30.core.internal.DependencyHelper;
 import org.apache.geronimo.st.v30.core.internal.Messages;
 import org.apache.geronimo.st.v30.core.internal.Trace;
@@ -69,6 +70,7 @@ import org.apache.geronimo.st.v30.core.operations.SharedLibEntryCreationOperatio
 import org.apache.geronimo.st.v30.core.operations.SharedLibEntryDataModelProvider;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.apache.geronimo.st.v30.core.osgi.OSGiModuleHandler;
+import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
@@ -471,7 +473,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
                                 IModule bundleModule = moduleDelta.module[1];
                                 if (moduleDelta.delta == CHANGED && (GeronimoUtils.isWebModule(bundleModule) || GeronimoUtils.isBundleModule(bundleModule))) {
                                     // try to do replacement
-                                    status = tryFileReplace(moduleDelta.module);
+                                    status = tryFileReplace(rootModule[0], moduleDelta.module);
                                     if (status == null) {
                                         // replacement was not possible
                                         replacementPossible = false;
@@ -1096,7 +1098,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             }
         }
         return modifiedFiles;
-    }
+    }    
     
     /*
      * This method is used to replace updated files without redeploying the entire module. 
@@ -1177,6 +1179,161 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
                 }
                 break;
             }                    
+        }
+
+        return Status.OK_STATUS;
+    }
+    
+        private IStatus tryFileReplace(IModule rootModule, IModule[] module) {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", module.toString());
+        
+        IModule webModule = module[module.length - 1];
+        if(GeronimoUtils.isEBAModule(rootModule) && GeronimoUtils.isBundleModule(webModule)){
+        	List<IModuleResourceDelta> modifiedFiles = findModifiedFiles(module);
+        	if (modifiedFiles == null) {
+                Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "Some modified files cannot be replaced");
+                return null;
+            }
+        	
+        	IStatus status = findAndReplaceFilesInBundle(rootModule, webModule, modifiedFiles);
+        	
+        	return status;
+        }
+        
+        
+        String documentBase = getWebModuleDocumentBase(webModule);
+        if (documentBase == null ) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "Document base is null");
+            
+            return null;
+        }
+
+        List<IModuleResourceDelta> modifiedFiles = findModifiedFiles(module);
+        if (modifiedFiles == null) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "Some modified files cannot be replaced");
+            return null;
+        }
+        Trace.trace(Trace.INFO, "Modified files: " + modifiedFiles, Activator.logCore);
+
+        IStatus status = findAndReplaceFiles(webModule, modifiedFiles, documentBase);
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", status);
+        return status;
+    }
+    
+        private IStatus findAndReplaceFilesInBundle(IModule rootModule, IModule module,    List<IModuleResourceDelta> modifiedFiles) {
+
+        Trace.trace(Trace.INFO,    "Replacing updated files for " + module.getName() + " module.",    Activator.logCore);
+
+        String ch = File.separator;
+        byte[] buffer = new byte[10 * 1024];
+        int bytesRead;
+
+        for (IModuleResourceDelta deltaModule : modifiedFiles) {
+            IModuleFile moduleFile = (IModuleFile) deltaModule.getModuleResource();
+            
+
+            StringBuilder target = new StringBuilder();
+            try {
+                String rootModuleID = DeploymentUtils.getTargetModuleID(getServer(), rootModule).getModuleID();
+                String[] rootNames = rootModuleID.split("/");
+                String version = rootNames[rootNames.length-2];
+                String parentDir = rootModuleID.substring(0, rootModuleID.indexOf(rootNames[rootNames.length - 1]));
+                
+                target.append(ch).append(parentDir.replace("/", ch)).append(AriesHelper.getApplicationBundleInfo(rootModule.getProject()).getSymbolicName()).append("-").append(version).append(OsgiConstants.APPLICATION_EXTENSION).append(ch);
+                
+                
+                
+            } catch (TargetModuleIdNotFoundException te) {
+                Trace.trace(Trace.ERROR, "Cannot find root module target ID: " + rootModule.getName(), te, Activator.logCore);
+                return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Cannot find root module target ID " + rootModule.getName(), te);
+            } catch (Exception e) {
+                Trace.trace(Trace.ERROR, "Cannot get application bundle information: " + rootModule.getName(), e, Activator.logCore);
+                return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Cannot find application bundle information " + rootModule.getName(), e);
+            }
+            
+            
+            
+            target.append(AriesHelper.getSymbolicName(module)).append("_").append(AriesHelper.getVersion(module).toString()).append(OsgiConstants.BUNDLE_EXTENSION).append(ch);
+            String relativePath = moduleFile.getModuleRelativePath().toOSString();
+
+            if (relativePath != null && relativePath.length() != 0) {
+                target.append(relativePath);
+                target.append(ch);
+            }
+            target.append(moduleFile.getName());
+
+            File file = new File(target.toString());
+            if (!file.isAbsolute()) {
+                file = getServerResource(IGeronimoServerBehavior.REPOSITORY_DIR    + target.toString()).toFile();
+            }
+
+            switch (deltaModule.getKind()) {
+            case IModuleResourceDelta.REMOVED:
+                if (file.exists()) {
+                    file.delete();
+                }
+                break;
+            case IModuleResourceDelta.ADDED:
+            case IModuleResourceDelta.CHANGED:
+                File parentFile = file.getParentFile();
+                if (parentFile != null && !parentFile.exists()) {
+                    if (!parentFile.mkdirs()) {
+                        Trace.trace(
+                                Trace.ERROR,
+                                "Cannot create target directory: " + parentFile,
+                                Activator.logCore);
+                        return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+                                "Cannot create target directory", null);
+                    }
+                }
+
+                String sourceFile = relativePath;
+                InputStream in = null;
+                FileOutputStream out = null;
+                try {
+                    IFile srcIFile = (IFile) moduleFile.getAdapter(IFile.class);
+                    if (srcIFile != null) {
+                        in = srcIFile.getContents();
+                    } else {
+                        File srcFile = (File) moduleFile.getAdapter(File.class);
+                        in = new FileInputStream(srcFile);
+                    }
+
+                    out = new FileOutputStream(file);
+
+                    while ((bytesRead = in.read(buffer)) > 0) {
+                        out.write(buffer, 0, bytesRead);
+                    }
+                } catch (FileNotFoundException e) {
+                    Trace.trace(Trace.ERROR, "Cannot find file to copy: "
+                            + sourceFile, e, Activator.logCore);
+                    return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+                            "Cannot find file " + sourceFile, e);
+                } catch (IOException e) {
+                    Trace.trace(Trace.ERROR, "Cannot copy file: " + sourceFile,
+                            e, Activator.logCore);
+                    return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+                            "Cannot copy file " + sourceFile, e);
+                } catch (CoreException e) {
+                    Trace.trace(Trace.ERROR, "Cannot copy file: " + sourceFile,
+                            e, Activator.logCore);
+                    return e.getStatus();
+                } finally {
+                    if (in != null) {
+                        try {
+                            in.close();
+                        } catch (IOException ignore) {
+                        }
+                    }
+                    if (out != null) {
+                        try {
+                            out.close();
+                        } catch (IOException ignore) {
+                        }
+                    }
+                }
+                break;
+            }
         }
 
         return Status.OK_STATUS;

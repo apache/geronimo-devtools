@@ -27,6 +27,8 @@ import org.eclipse.core.runtime.IPath;
  */
 public interface IGeronimoServerBehavior {
     public static String VAR_CATALINA_DIR = "var" + File.separator + "catalina" + File.separator;
+    
+    public static String REPOSITORY_DIR = "repository" + File.separator;
 
     public boolean isFullyStarted();
 
