@@ -33,7 +33,7 @@
     </parent>
 
     <properties>
-        <geronimoVersion>3.0-beta-2-SNAPSHOT</geronimoVersion>
+        <geronimoVersion>3.0.1-SNAPSHOT</geronimoVersion>
     </properties>
     <build>
         <resources>
