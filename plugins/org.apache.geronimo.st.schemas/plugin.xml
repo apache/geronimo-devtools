@@ -115,6 +115,10 @@
                name="http://www.osgi.org/xmlns/blueprint/v1.0.0"
                uri="v30/blueprint.xsd">
          </uri>
+         <uri
+               name="http://java.sun.com/xml/ns/persistence"
+               uri="v30/persistence_2_0.xsd">
+         </uri>
          </catalogContribution>
    </extension>
 
