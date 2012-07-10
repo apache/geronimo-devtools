@@ -26,9 +26,9 @@ import javax.xml.bind.JAXBElement;
 import org.apache.geronimo.jee.deployment.Attribute;
 import org.apache.geronimo.jee.deployment.Gbean;
 import org.apache.geronimo.jee.deployment.XmlAttributeType;
-import org.apache.geronimo.jee.loginconfig.LoginConfig;
 import org.apache.geronimo.jee.loginconfig.LoginModule;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.internal.GeronimoUIHelper;
 import org.apache.geronimo.st.v30.ui.pages.SecurityPage;
 import org.apache.geronimo.st.v30.ui.wizards.SecurityRealmWizard;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -178,10 +178,10 @@ public class SecurityRealmSection extends AbstractTableSection {
             if (XmlAttributeType.class.isInstance(ele.getValue())
                 && ((XmlAttributeType) ele.getValue()).getName()
                     .equals("LoginModuleConfiguration")) {
-            LoginModule loginModule = (LoginModule) ((LoginConfig) ((XmlAttributeType) ele
-                .getValue()).getAny())
-                .getLoginModuleRefOrLoginModule().get(0);
-            return loginModule.getLoginModuleClass();
+                LoginModule loginModule = GeronimoUIHelper.getLoginModule(ele);
+                if(loginModule != null) {
+                    return loginModule.getLoginModuleClass();
+                }
             }
         }
         return null;

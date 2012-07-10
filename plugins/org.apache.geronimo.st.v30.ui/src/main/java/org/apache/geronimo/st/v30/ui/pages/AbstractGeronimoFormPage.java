@@ -19,6 +19,7 @@ package org.apache.geronimo.st.v30.ui.pages;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoJAXBBasedEditor;
+import org.apache.geronimo.st.ui.editors.Refreshable;
 import org.apache.geronimo.st.ui.internal.Messages;
 import org.apache.geronimo.st.v30.ui.Activator;
 import org.eclipse.core.resources.IProject;
@@ -42,7 +43,7 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  * @version $Rev$ $Date$
  */
-public abstract class AbstractGeronimoFormPage extends FormPage {
+public abstract class AbstractGeronimoFormPage extends FormPage implements Refreshable {
 
     protected JAXBElement rootElement;
     
@@ -66,7 +67,8 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
     public AbstractGeronimoFormPage(String id, String title) {
         super(id, title);
     }
-
+    
+    @Override
     public void refresh() {
         // clear the old composite and tool bar
         Control[] controls = body.getChildren();

@@ -48,6 +48,7 @@ public abstract class AbstractDeploymentPlanFormPage extends AbstractGeronimoFor
         super(id, title);
     }
 
+    @Override
     public void refresh() {
         // clear the old composite and tool bar
         Control[] controls = body.getChildren();
