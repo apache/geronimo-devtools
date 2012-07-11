@@ -130,7 +130,7 @@ public class DeploymentUtils {
 			//Here, specific extension name should be got, in case module has no standard JEE descriptor file included
 			String extensionName = getModuleExtension(module);
 			
-			model.setProperty(J2EEComponentExportDataModelProvider.PROJECT_NAME, module.getProject());
+			model.setProperty(J2EEComponentExportDataModelProvider.PROJECT_NAME, module.getProject().getName());
 			model.setProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION, outputPath.append(module.getName())
 					+ extensionName);
 
