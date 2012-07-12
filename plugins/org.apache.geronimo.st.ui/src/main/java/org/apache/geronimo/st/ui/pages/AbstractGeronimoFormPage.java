@@ -22,6 +22,7 @@ import org.apache.geronimo.st.core.DeploymentDescriptorUtils;
 import org.apache.geronimo.st.core.descriptor.AbstractDeploymentDescriptor;
 import org.apache.geronimo.st.ui.Activator;
 import org.apache.geronimo.st.ui.editors.AbstractGeronimoJAXBBasedEditor;
+import org.apache.geronimo.st.ui.editors.Refreshable;
 import org.apache.geronimo.st.ui.editors.SharedDeploymentPlanEditor;
 import org.apache.geronimo.st.ui.internal.Messages;
 import org.eclipse.core.resources.IProject;
@@ -45,7 +46,7 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  * @version $Rev$ $Date$
  */
-public abstract class AbstractGeronimoFormPage extends FormPage {
+public abstract class AbstractGeronimoFormPage extends FormPage implements Refreshable {
 
     JAXBElement deploymentPlan;
     
@@ -68,6 +69,7 @@ public abstract class AbstractGeronimoFormPage extends FormPage {
         runtimeVersion = ((SharedDeploymentPlanEditor)editor).getRuntimeVersion();
     }
 
+    @Override
     public void refresh() {
         // clear the old composite and tool bar
         Control[] controls = body.getChildren();

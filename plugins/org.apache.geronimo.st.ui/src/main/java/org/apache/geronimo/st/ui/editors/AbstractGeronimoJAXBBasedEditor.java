@@ -241,9 +241,9 @@ public abstract class AbstractGeronimoJAXBBasedEditor extends FormEditor {
                     IFormPage page = pages[i];
                     IManagedForm mform = page.getManagedForm();
                     if (mform != null) {
-                        if (page instanceof AbstractGeronimoFormPage) {
-                            AbstractGeronimoFormPage geronimoPage = (AbstractGeronimoFormPage)page;
-                            geronimoPage.refresh();
+                        if (page instanceof Refreshable) {
+                            Refreshable refreshablePage = (Refreshable) page;
+                            refreshablePage.refresh();
                         }
                     }
                 }

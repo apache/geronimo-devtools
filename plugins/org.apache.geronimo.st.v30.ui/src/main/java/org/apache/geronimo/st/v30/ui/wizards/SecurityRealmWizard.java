@@ -43,8 +43,8 @@ import org.apache.geronimo.st.v30.core.jaxb.JAXBObjectFactory;
 import org.apache.geronimo.st.v30.core.jaxb.JAXBObjectFactoryImpl;
 import org.apache.geronimo.st.v30.ui.Activator;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
+import org.apache.geronimo.st.v30.ui.internal.GeronimoUIHelper;
 import org.apache.geronimo.st.v30.ui.sections.AbstractTableSection;
-import org.apache.geronimo.st.v30.ui.wizards.AbstractTableWizard;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -1111,14 +1111,14 @@ public class SecurityRealmWizard extends AbstractTableWizard {
         List<JAXBElement<?>> elelist = gbean
             .getAttributeOrXmlAttributeOrReference();
         for (JAXBElement<?> ele : elelist) {
-        if (XmlAttributeType.class.isInstance(ele.getValue())
-            && ((XmlAttributeType) ele.getValue()).getName()
-                .equals("LoginModuleConfiguration")) {
-            LoginModule loginModule = (LoginModule) ((LoginConfig) ((XmlAttributeType) ele
-                .getValue()).getAny())
-                .getLoginModuleRefOrLoginModule().get(0);
-            return loginModule.getLoginModuleClass();
-        }
+            if (XmlAttributeType.class.isInstance(ele.getValue())
+                && ((XmlAttributeType) ele.getValue()).getName()
+                    .equals("LoginModuleConfiguration")) {
+                LoginModule loginModule = GeronimoUIHelper.getLoginModule(ele);
+                if(loginModule != null) {
+                    return loginModule.getLoginModuleClass();
+                }
+            }
         }
         return null;
     } catch (NullPointerException e) {
@@ -1133,18 +1133,18 @@ public class SecurityRealmWizard extends AbstractTableWizard {
         List<JAXBElement<?>> elelist = gbean
             .getAttributeOrXmlAttributeOrReference();
         for (JAXBElement<?> ele : elelist) {
-        if (XmlAttributeType.class.isInstance(ele.getValue())
-            && ((XmlAttributeType) ele.getValue()).getName()
-                .equals("LoginModuleConfiguration")) {
-            LoginModule loginModule = (LoginModule) ((LoginConfig) ((XmlAttributeType) ele
-                .getValue()).getAny())
-                .getLoginModuleRefOrLoginModule().get(0);
-            List<Option> options = loginModule.getOption();
-            for (Option opt : options) {
-            if (opt.getName().equals(optionName))
-                return opt.getValue();
+            if (XmlAttributeType.class.isInstance(ele.getValue())
+                && ((XmlAttributeType) ele.getValue()).getName()
+                    .equals("LoginModuleConfiguration")) {
+                LoginModule loginModule = GeronimoUIHelper.getLoginModule(ele);
+                if(loginModule != null) {
+                    List<Option> options = loginModule.getOption();
+                    for (Option opt : options) {
+                    if (opt.getName().equals(optionName))
+                        return opt.getValue();
+                    }
+                }
             }
-        }
         }
         return null;
     } catch (NullPointerException e) {

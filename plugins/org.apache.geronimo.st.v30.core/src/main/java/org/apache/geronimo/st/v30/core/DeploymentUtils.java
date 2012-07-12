@@ -196,7 +196,7 @@ public class DeploymentUtils {
         String extensionName = getModuleExtension(module);
             
         // TODO: Need to determine what properties to set for OSGi applications
-        model.setProperty(J2EEComponentExportDataModelProvider.PROJECT_NAME, module.getProject());
+        model.setProperty(J2EEComponentExportDataModelProvider.PROJECT_NAME, module.getProject().getName());
         model.setProperty(J2EEComponentExportDataModelProvider.ARCHIVE_DESTINATION, outputPath.append(module.getName()) + extensionName);
 
         model.setProperty(J2EEComponentExportDataModelProvider.COMPONENT, comp);
