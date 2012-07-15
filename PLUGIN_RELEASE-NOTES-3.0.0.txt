@@ -14,11 +14,11 @@ System Requirements
 -------------------
 1. Java J2SE 1.6.0 or greater, and a platform that supports it
 
-2. Eclipse IDE for Java EE Developers (Galileo (3.5) or Helios (3.6)), which is platform-specific
+2. Eclipse IDE for Java EE Developers (3.7, 3.8 and 4.2), which is platform-specific
 
    -- Get Eclipse from http://www.eclipse.org/downloads/
 
-3. Geronimo server (1.1.x, 2.0.x, 2.1.x, 2.2.x or 3.0_M1)
+3. Geronimo server (1.1.x, 2.0.x, 2.1.x, 2.2.x or 3.0.x)
 
    -- Get a Geronimo server from http://geronimo.apache.org/downloads.html
 
@@ -46,9 +46,9 @@ that each argument has to be on seperate lines:
 Geronimo Eclipse Plugin Version ${pom.version} Enhancements
 --------------------------------------------------
 
-1. Support Geronimo Server 3.0 Milestone 1
+1. Support Geronimo Server 3.0
 
-2. Support Eclipse Helios (3.6), WTP 3.2 and Java EE 6 facet
+2. Support Eclipse (3.7, 3.8 and 4.2), WTP 3.4 and Java EE 6 facet
 
 3. Support OSGI application programming tools
 
@@ -63,23 +63,28 @@ See http://cwiki.apache.org/GMOxDOC30/installing-geronimo-eclipse-plugin.html
 Bug Fixed and New Features
 --------------------------
 
-GERONIMODEVTOOLS-652    Can't see icon for GEP in about dialog when install GEP in deployable mode
-GERONIMODEVTOOLS-651    No deployment plan can be generated with 3.0 M1
-GERONIMODEVTOOLS-650    The sections of server editor page "overview" cann't display
-GERONIMODEVTOOLS-647	Synchronize dependency version with Geronimo 3.0 M1
-GERONIMODEVTOOLS-646	Upgrade to eclipse Helios
-GERONIMODEVTOOLS-643	Refactor GEP 3.0 code to decouple various server adapters
-GERONIMODEVTOOLS-641	To release GEP with maven release plugin
-GERONIMODEVTOOLS-640	Support Eclipse 3.6 (and latest versions of WTP, etc.)
-GERONIMODEVTOOLS-639	Enhance GEP to support Geronimo 3.0 server
-GERONIMODEVTOOLS-621	Extend new Aries tooling to provide new OSGi PDE enhancements specific to Geronimo runtime
-GERONIMODEVTOOLS-614	Support free (not open-source) Aries tooling
-GERONIMODEVTOOLS-606	Support Eclipse Helios
-GERONIMODEVTOOLS-605	Generate classes with JAXB from new schema files for Java EE6
-GERONIMODEVTOOLS-604	Upgrade to eclipse 3.5.2
-GERONIMODEVTOOLS-603	Make Geronimo 3.0 server runnable with GEP
+GERONIMODEVTOOLS--799   Could not synchronize the security tab with source tab in geronimo-application.xml and openejb-jar.xml
+GERONIMODEVTOOLS--798 	ClassCastException deploying EAR under eclipse 3.8 & 4.2 with geronimo-3
+GERONIMODEVTOOLS--797 	Latest beta version does not work with Eclipse Juno because of invalid openejb-jar-2.2.xsd file
+GERONIMODEVTOOLS--794   Support Eclipse 4.2
+GERONIMODEVTOOLS--792   Provide the GEP build the unique timestamps each time
+GERONIMODEVTOOLS--790 	Application started twice
+GERONIMODEVTOOLS--789   Improve SynchronizeProjectOnServerTask
+GERONIMODEVTOOLS--788   The hot deploy of jsp and other static resource files do not work even under the development mode
+GERONIMODEVTOOLS--787   Failed to hot deploy a resource file
+GERONIMODEVTOOLS--786   Failed deployment of EAR causes consistent error messages in eclipse following on
+GERONIMODEVTOOLS--784   EBA Auto-redeployment failed if not enabling hot swap
+GERONIMODEVTOOLS--783   Could not replace with temp file error prevents class hot swap
+GERONIMODEVTOOLS--782   Source not found
+GERONIMODEVTOOLS--781   slf4j version conflict
+GERONIMODEVTOOLS--780   IOException: The client has been closed.
+GERONIMODEVTOOLS--777   Missing packages in Geronimo target platform
 
+Known Issues and Limitations
+----------------------------
+
+GERONIMODEVTOOLS--793   NameSpace of web application need to be updated
 
 Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} (${osgi.pom.version})
 
-@version $Rev: 894783 $ $Date: 2009-12-31 14:21:08 +0800 (Thu, 31 Dec 2009) $
+@version $Rev$ $Date$
