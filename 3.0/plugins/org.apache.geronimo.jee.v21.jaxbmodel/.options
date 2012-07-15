@@ -1,0 +1,5 @@
+org.apache.geronimo.jee.v21.jaxbmodel/debug=true
+org.apache.geronimo.jee.v21.jaxbmodel/console=true
+
+org.apache.geronimo.jee.v21.jaxbmodel/log/operations=true
+org.apache.geronimo.jee.v21.jaxbmodel/trace/operations=false

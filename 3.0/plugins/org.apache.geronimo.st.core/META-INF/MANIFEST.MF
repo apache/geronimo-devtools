@@ -1,0 +1,41 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Geronimo Server Tools Core Plug-in
+Bundle-SymbolicName: org.apache.geronimo.st.core;singleton:=true
+Bundle-Version: 3.0.0   
+Bundle-Activator: org.apache.geronimo.st.core.Activator
+Bundle-Vendor: Apache Software Foundation
+Bundle-Localization: plugin
+Require-Bundle: 
+ org.apache.geronimo.runtime.common,
+ org.apache.geronimo.jaxbmodel.common,
+ org.eclipse.core.runtime,
+ org.eclipse.jst.j2ee,
+ org.eclipse.jst.j2ee.web,
+ org.eclipse.jst.j2ee.ejb,
+ org.eclipse.jst.j2ee.jca,
+ org.eclipse.wst.common.frameworks;visibility:=reexport,
+ org.eclipse.core.commands;visibility:=reexport,
+ org.eclipse.jst.server.core;visibility:=reexport,
+ org.eclipse.jdt.launching;visibility:=reexport,
+ org.eclipse.wst.common.project.facet.core,
+ org.eclipse.jdt.core,
+ org.eclipse.debug.core,
+ org.eclipse.wst.web,
+ org.eclipse.jem.util,
+ org.eclipse.jst.j2ee.core,
+ org.eclipse.emf.ecore,
+ org.eclipse.hyades.trace.ui;resolution:=optional,
+ org.eclipse.tptp.trace.jvmti.client;resolution:=optional,
+ org.eclipse.tptp.platform.profile.server.core;resolution:=optional,
+ org.eclipse.tptp.platform.jvmti.client;resolution:=optional,
+ org.eclipse.wst.server.core
+Bundle-ActivationPolicy: lazy
+Export-Package: 
+ org.apache.geronimo.st.core,
+ org.apache.geronimo.st.core.commands,
+ org.apache.geronimo.st.core.descriptor,
+ org.apache.geronimo.st.core.internal,
+ org.apache.geronimo.st.core.operations
+Import-Package: junit.framework;version="3.8.2",
+ org.apache.geronimo.runtime.common.log

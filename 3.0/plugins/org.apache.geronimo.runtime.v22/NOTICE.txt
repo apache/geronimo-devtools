@@ -1,0 +1,36 @@
+=========================================================================
+==  NOTICE file corresponding to section 4(d) of the Apache License,   ==
+==  Version 2.0, in this case for the Apache Geronimo distribution.    ==
+=========================================================================
+
+Apache Geronimo 
+Copyright 2003-2011 The Apache Software Foundation
+
+This product includes software developed by
+The Apache Software Foundation (http://www.apache.org/).
+
+For geronimo-crypto-2.1.2.jar:
+
+=========================================================================
+==  Bouncy Castle Notice                                               ==
+=========================================================================
+
+This product includes software (the ASN1 codec in the org.apache.geronimo.asn1
+package) which was developed by the Bouncy Castle project. 
+(http://www.bouncycastle.org/) 
+
+     Copyright (c) 2000-2005 The Legion Of The Bouncy Castle (http://www.bouncycastle.org)
+
+For plexus-archiver jar:
+
+=========================================================================
+==  Plexus Notice                                                      ==
+=========================================================================
+
+This product includes software developed by the Plexus project
+(http://plexus.codehaus.org/)
+
+The source code for the Plexus project can be downloaded from:
+
+http://plexus.codehaus.org/source-repository.html
+

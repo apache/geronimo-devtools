@@ -1,0 +1,226 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<!-- $Rev$ $Date$ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.apache.geronimo.devtools</groupId>
+    <artifactId>org.apache.geronimo.runtime.common</artifactId>
+    <version>3.0.0</version>
+    <packaging>jar</packaging>
+    <name>${artifactId}</name>
+
+    <parent>
+        <groupId>org.apache.geronimo.devtools</groupId>
+        <artifactId>eclipse-plugins-parent</artifactId>
+        <version>3.0.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>..</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>about.html</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>.</directory>
+                <includes>
+                    <include>plugin.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>lib</directory>
+                <targetPath>lib</targetPath>
+                <includes>
+                    <include>*.jar</include>
+                </includes>
+            </resource>
+            <!-- The Geronimo covention puts license and notice for artifacts shipped in this jar 
+                 in the jar's meta-inf directory
+              -->
+            <resource>
+                <targetPath>META-INF</targetPath>
+                <directory>.</directory>
+                <includes>
+                    <include>LICENSE.txt</include>
+                    <include>NOTICE.txt</include>
+                </includes>
+            </resource>
+	        <!-- GERONIMODEVTOOLS-406 Display license and notice in Eclipse Update Manager 
+                 See also http://www.eclipse.org/legal/guidetolegaldoc.php
+                 about.html references about_files to show licenses and notices to the user
+                 at install time using Eclipse Update Manager, and after install.
+              -->
+	    	<resource>
+	    		<targetPath>about_files</targetPath>
+	    		<directory>.</directory>
+	    		<includes>
+	    			<include>LICENSE.txt</include>
+	    			<include>NOTICE.txt</include>
+	    		</includes>
+	    	</resource>
+	    	<resource>
+	    		<targetPath>about_files</targetPath>
+	    		<directory>../..</directory>
+                <filtering>true</filtering>
+	    		<includes>
+                    <include>PLUGIN_RELEASE-NOTES.txt</include>
+	    		</includes>
+	    	</resource>
+	    	<resource>
+                <targetPath>META-INF</targetPath>
+                <directory>target/maven-shared-archive-resources/META-INF/</directory>
+                <excludes>
+                    <exclude>LICENSE</exclude>
+                    <exclude>NOTICE</exclude>
+                </excludes>
+            </resource>
+        </resources>
+		
+        <plugins>
+            <plugin>
+                <groupId>org.apache.geronimo.devtools</groupId>
+                <artifactId>maven-eclipsepde-plugin</artifactId>
+            </plugin>
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>maven-replacer-plugin</artifactId>
+			</plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>lib</outputDirectory>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.geronimo.specs</groupId>
+                                    <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
+                                    <version>1.0.1</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>commons-logging</groupId>
+                                    <artifactId>commons-logging</artifactId>
+                                    <version>1.1.1</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>cglib</groupId>
+                                    <artifactId>cglib-nodep</artifactId>
+                                    <version>2.2</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.geronimo.specs</groupId>
+                                    <artifactId>geronimo-stax-api_1.2_spec</artifactId>
+                                    <version>1.1</version>
+                                </artifactItem>
+                                <artifactItem>
+                                   <groupId>org.apache.geronimo.specs</groupId>
+				   <artifactId>geronimo-jaxb_2.2_spec</artifactId>
+				   <version>1.0.1</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.geronimo.bundles</groupId>
+                                    <artifactId>jaxb-impl</artifactId>
+                                    <version>2.2.3-1_1</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.geronimo.specs</groupId>
+                                    <artifactId>geronimo-activation_1.1_spec</artifactId>
+                                    <version>1.1</version>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+           <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                  <execution>
+                    <goals>
+                      <goal>sign</goal>
+                    </goals>
+                  </execution>
+                </executions>
+                <configuration>
+                  <keystore>../../${keystoreFile}</keystore>
+                  <alias>${keystoreAlias}</alias>
+                  <storepass>${keystoreStorepass}</storepass>
+                  <keypass>${keystoreKeypass}</keypass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${pom.basedir}</directory>
+                            <includes>
+                                <include>*.log</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>${pom.basedir}/lib</directory>
+                            <includes>
+                                <include>**</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>eclipse</artifactId>
+            <version>${version}</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-javaee-deployment_1.1MR3_spec</artifactId>
+        </dependency>
+        <dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-jaxb_2.2_spec</artifactId>
+	    </dependency>	
+		<dependency>
+			<groupId>org.apache.geronimo.bundles</groupId>
+			<artifactId>jaxb-impl</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-activation_1.1_spec</artifactId>
+        </dependency>
+    </dependencies>
+</project>

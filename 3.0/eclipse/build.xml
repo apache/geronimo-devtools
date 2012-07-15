@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!--
+ |
+ | Download eclipse_zip to ${download_to} directory and unzip them to ${extract_to} directory.
+ |
+ | @version $Rev$ $Date$
+ -->
+<project name="EclipseArtifacts" default="GetEclipse" >
+
+    <!-- expected input properties:
+        1. download_to   - The directory to download eclipseZip to.
+        2. extract_to    - The directory to extract  eclsipeZip to.
+      -->
+    <fail message="required download_to property not set.">
+        <condition>
+            <not>
+                <isset property="download_to" />
+            </not>
+        </condition>
+    </fail>
+    <fail message="required extract_to property not set.">
+        <condition>
+            <not>
+                <isset property="extract_to" />
+            </not>
+        </condition>
+    </fail>
+
+    <!-- Set common propeties -->
+
+    <property name="eclipse_name"                   value="indigo" />
+    <property name="eclipse_release"                value="SR1" />
+    <property name="eclipse_basefilename"           value="eclipse-jee-${eclipse_name}-${eclipse_release}" />
+    <property name="eclipse_downloadserver"         value="http://www.eclipse.org/downloads/download.php?file=" />
+    <property name="eclipse_url"                    value="${eclipse_downloadserver}/technology/epp/downloads/release/${eclipse_name}/${eclipse_release}" />
+
+    <property name="protocol"                       value="&amp;r=1&amp;protocol=http" />
+
+    <!-- Set propeties based on environment: 32 or 64 bit JDK, OS (Mac, Unix or Windows) -->
+
+    <condition property="is64bitJDK" >
+        <!--We only check JVM bit model here.  It works fine even 32-bit JVM is used on 64-bit OS -->
+        <equals arg1="${sun.arch.data.model}" arg2="64" />
+    </condition>
+
+    <condition property="is32bitJDK" >
+        <not>
+            <isset property="is64bitJDK" />
+        </not>
+    </condition>
+
+    <condition property="isMac" >
+        <os family="mac" />
+    </condition>
+
+    <condition property="isUnix" >
+        <and>
+            <os family="unix" />
+            <!-- MacOSX has os family of mac and unix both being true! -->
+            <not>
+                <isset property="isMac" />
+            </not>
+        </and>
+    </condition>
+
+    <condition property="isWindows" >
+        <os family="windows" />
+    </condition>
+
+    <macrodef name="download" description="Download artifact" >
+        <attribute name="eclipseZip" />
+        <sequential>
+            <echo>#################################################################################</echo>
+            <echo>##                                                                               </echo>
+            <echo>## Downloading: @{eclipseZip}                                                    </echo>
+            <echo>##                                                                               </echo>
+            <echo>## From: ${eclipse_url}                                                          </echo>
+            <echo>##                                                                               </echo>
+            <echo>#################################################################################</echo>
+            <mkdir  dir="${download_to}" />
+            <get    src="${eclipse_url}/@{eclipseZip}${protocol}"
+                    dest="${download_to}/@{eclipseZip}"
+                    verbose="true"
+                    ignoreerrors="true"
+                    usetimestamp="true" />
+        </sequential>
+    </macrodef>
+
+    <macrodef name="wunzip" description="Unzip artifact" >
+        <attribute name="eclipseZip" />
+        <sequential>
+            <echo>#################################################################################</echo>
+            <echo>##                                                                               </echo>
+            <echo>## Unzipping: @{eclipseZip}                                                      </echo>
+            <echo>##                                                                               </echo>
+            <echo>#################################################################################</echo>
+            <delete dir="${extract_to}" quiet="true" />
+            <mkdir  dir="${extract_to}" />
+            <unzip  src="${download_to}/@{eclipseZip}"
+                    dest="${extract_to}"
+                    overwrite="true" />
+        </sequential>
+    </macrodef>
+
+    <macrodef name="untargz" description="Ungzip and Untar artifact" >
+        <attribute name="eclipseTar" />
+        <attribute name="eclipseZip" default="@{eclipseTar}.gz" />
+        <sequential>
+            <echo>#################################################################################</echo>
+            <echo>##                                                                               </echo>
+            <echo>## Gunzipping: @{eclipseZip}  Untarring: @{eclipseTar}                           </echo>
+            <echo>##                                                                               </echo>
+            <echo>#################################################################################</echo>
+            <delete dir="${extract_to}" quiet="true" />
+            <mkdir  dir="${extract_to}" />
+            <gunzip src="${download_to}/@{eclipseZip}" />
+            <untar  src="${download_to}/@{eclipseTar}"
+                    dest="${extract_to}"
+                    overwrite="true" />
+        </sequential>
+    </macrodef>
+
+    <target name="GetEclipse" >
+        <antcall target="mac" />
+        <antcall target="unix" />
+        <antcall target="windows" />
+    </target>
+
+    <target name="mac" if="isMac" description="GetEclipse on mac" >
+
+        <condition property="eclipseTar" value="${eclipse_basefilename}-macosx-cocoa.tar" >
+            <isset property="is32bitJDK" />
+        </condition>
+
+        <condition property="eclipseTar" value="${eclipse_basefilename}-macosx-cocoa-x86_64.tar" >
+            <isset property="is64bitJDK" />
+        </condition>
+
+        <property name="eclipseZip" value="${eclipseTar}.gz" />
+
+        <download eclipseZip="${eclipseZip}" />
+
+        <untargz  eclipseZip="${eclipseZip}" eclipseTar="${eclipseTar}" />
+
+    </target>
+
+    <target name="unix" if="isUnix" description="GetEclipse on unix" >
+
+        <condition property="eclipseTar" value="${eclipse_basefilename}-linux-gtk.tar" >
+            <isset property="is32bitJDK" />
+        </condition>
+
+        <condition property="eclipseTar" value="${eclipse_basefilename}-linux-gtk-x86_64.tar" >
+            <isset property="is64bitJDK" />
+        </condition>
+
+        <property name="eclipseZip" value="${eclipseTar}.gz" />
+
+        <download eclipseZip="${eclipseZip}" />
+
+        <untargz  eclipseZip="${eclipseZip}" eclipseTar="${eclipseTar}" />
+
+    </target>
+
+    <target name="windows" if="isWindows" description="GetEclipse on windows" >
+
+        <condition property="eclipseZip" value="${eclipse_basefilename}-win32.zip" >
+            <isset property="is32bitJDK" />
+        </condition>
+
+        <condition property="eclipseZip" value="${eclipse_basefilename}-win32-x86_64.zip" >
+            <isset property="is64bitJDK" />
+        </condition>
+
+        <download eclipseZip="${eclipseZip}" />
+
+        <wunzip   eclipseZip="${eclipseZip}" />
+
+    </target>
+
+</project>

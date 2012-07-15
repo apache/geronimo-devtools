@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    (the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<!-- @version $Rev$ $Date$ -->
+
+<app:application xmlns:dep="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:app="http://geronimo.apache.org/xml/ns/j2ee/application-2.0" xmlns:sec="http://geronimo.apache.org/xml/ns/security-2.0" application-name="test-app-name">
+    <dep:environment>
+        <dep:moduleId>
+            <dep:groupId>org.apache.geronimo.testsuite</dep:groupId>
+            <dep:artifactId>agent-ear</dep:artifactId>
+            <dep:version>2.2-SNAPSHOT</dep:version>
+            <dep:type>ear</dep:type>
+        </dep:moduleId>
+        <dep:dependencies>
+            <dep:dependency>
+                <dep:groupId>org.apache.geronimo.testsuite</dep:groupId>
+                <dep:artifactId>agent-ds</dep:artifactId>
+                <dep:version>2.2-SNAPSHOT</dep:version>
+                <dep:type>car</dep:type>
+            </dep:dependency>
+        </dep:dependencies>
+    </dep:environment>
+    <app:module>
+        <app:connector id="module-connector-path-id">module-connector-path-value</app:connector>
+        <app:ejb id="module-ejb-path-id">module-ejb-path-value</app:ejb>
+        <app:java id="module-java-path-id">module-java-path-value</app:java>
+        <app:web id="module-web-path-id">module-web-path-value</app:web>
+        <app:alt-dd id="module-altdd-path-id">module-altdd-path-value</app:alt-dd>
+    </app:module>
+    <app:ext-module>
+        <app:connector id="extmodule-connector-path-id">extmodule-connector-path-value</app:connector>
+        <app:ejb id="extmodule-ejb-path-id">extmodule-ejb-path-value</app:ejb>
+        <app:java id="extmodule-java-path-id">extmodule-java-path-value</app:java>
+        <app:web id="extmodule-web-path-id">extmodule-web-path-value</app:web>
+        <app:internal-path>extmodule-internalpath</app:internal-path>
+        <app:external-path>
+            <dep:groupId>extmodule-externalpath-groupid</dep:groupId>
+            <dep:artifactId>extmodule-externalpath-artifactid</dep:artifactId>
+            <dep:version>extmodule-externalpath-version</dep:version>
+            <dep:module>extmodule-externalpath-module</dep:module>
+            <dep:type>extmodule-externalpath-type</dep:type>
+            <dep:name>extmodule-externalpath-customfoo</dep:name>
+        </app:external-path>
+    </app:ext-module>
+    <app:security xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="sec:securityType" use-context-handler="true" doas-current-caller="true" default-role="security-role">
+        <sec:credential-store-ref>
+            <dep:groupId>security-credentialstoreref-groupid</dep:groupId>
+            <dep:artifactId>security-credentialstoreref-artifactid</dep:artifactId>
+            <dep:version>security-credentialstoreref-version</dep:version>
+            <dep:module>security-credentialstoreref-module</dep:module>
+            <dep:type>security-credentialstoreref-type</dep:type>
+            <dep:name>security-credentialstoreref-customfoo</dep:name>
+        </sec:credential-store-ref>
+        <sec:default-subject>
+            <sec:description>security-subjectinfo-description</sec:description>
+            <sec:realm>security-subjectinfo-realm</sec:realm>
+            <sec:id>security-subjectinfo-id</sec:id>
+        </sec:default-subject>
+        <sec:role-mappings>
+            <sec:role role-name="security-role">
+                <sec:description>security-role-description</sec:description>
+                <sec:run-as-subject>
+                    <sec:description>security-role-subjectinfo-description</sec:description>
+                    <sec:realm>security-role-subjectinfo-realm</sec:realm>
+                    <sec:id>security-role-subjectinfo-id</sec:id>
+                </sec:run-as-subject>
+                <sec:realm-principal name="security-role-realmprincipal-name" class="security-role-realmprincipal-class">
+                    <sec:description>security-role-realmprincipal-description</sec:description>
+                </sec:realm-principal>
+                <sec:login-domain-principal domain-name="security-role-logindomainprincipal-domainname" name="security-role-logindomainprincipal-name" class="security-role-logindomainprincipal-class">
+                    <sec:description>security-role-logindomainprincipal-description</sec:description>
+                </sec:login-domain-principal>
+                <sec:principal name="security-role-principal-name" class="security-role-principal-class">
+                    <sec:description>security-role-principal-description</sec:description>
+                </sec:principal>
+                <sec:distinguished-name name="security-role-distinguishedname">
+                    <sec:description>security-role-distinguished-name-description</sec:description>
+                </sec:distinguished-name>
+            </sec:role>
+        </sec:role-mappings>
+    </app:security>
+    <dep:gbean name="gbean-name" class="gbean-class"/>
+</app:application>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-bundle-recorder-3.0-beta-2-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-cli-3.0-beta-2-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-deploy-jsr88-3.0-beta-2-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-deploy-tool-3.0-beta-2-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/plexus-archiver-1.0-alpha-12.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.6.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/slf4j-simple-1.6.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-common-3.0-beta-2-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-crypto-3.0-beta-2-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-deploy-config-3.0-beta-2-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-deployment-3.0-beta-2-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-j2ee-schema-3.0-beta-2-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-kernel-3.0-beta-2-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-plugin-3.0-beta-2-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geronimo-system-3.0-beta-2-SNAPSHOT.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

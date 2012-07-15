@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Geronimo V21 JAXB Models
+Bundle-SymbolicName: org.apache.geronimo.jee.v21.jaxbmodel;singleton:=true
+Bundle-Version: 3.0.0
+Bundle-ClassPath: .
+Bundle-Vendor: Apache Software Foundation
+Require-Bundle: org.apache.geronimo.runtime.common,
+ org.apache.geronimo.jaxbmodel.common,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources
+Export-Package: org.apache.geronimo.jee.application,
+ org.apache.geronimo.jee.applicationclient,
+ org.apache.geronimo.jee.connector,
+ org.apache.geronimo.jee.deployment,
+ org.apache.geronimo.jee.jaxbmodel.operations,
+ org.apache.geronimo.jee.loginconfig,
+ org.apache.geronimo.jee.naming,
+ org.apache.geronimo.jee.openejb,
+ org.apache.geronimo.jee.persistence,
+ org.apache.geronimo.jee.security,
+ org.apache.geronimo.jee.web
+Import-Package: junit.framework;version="3.8.2"
+Bundle-ActivationPolicy: lazy

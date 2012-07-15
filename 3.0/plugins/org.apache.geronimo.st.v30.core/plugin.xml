@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!-- $Rev$ $Date$ -->
+
+<plugin>
+
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Server Runtime Environments - Define a 3.0 version of the Geronimo runtime type along with the list of module ##
+     ##                               types that it supports                                                          ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.wst.server.core.runtimeTypes">
+        <runtimeType id="org.apache.geronimo.runtime.30" version="3.0"
+                name="%runtimeTypeName"
+                description="%runtimeTypeDescription"
+                vendor="%runtimeTypeVendor"
+                class="org.apache.geronimo.st.v30.core.GeronimoRuntimeDelegate">
+            <moduleType types="jst.web"       versions="2.2, 2.3, 2.4, 2.5, 3.0"/>
+            <moduleType types="jst.ejb"       versions="1.1, 2.0, 2.1, 3.0, 3.1"/>
+            <moduleType types="jst.connector" versions="1.0, 1.5"/>
+            <moduleType types="jst.ear"       versions="1.2, 1.3, 1.4, 5.0, 6.0"/>
+            <moduleType types="jst.utility"   versions="1.0"/>
+            <moduleType types="jst.appclient" versions="1.2, 1.3, 1.4, 5.0, 6.0"/>
+            <moduleType types="osgi.app"      versions="1.0"/>
+            <moduleType types="osgi.bundle"   versions="1.0"/>
+            <moduleType types="osgi.fragment" versions="1.0"/>
+            <moduleType types="osgi.comp"     versions="1.0"/>
+        </runtimeType>
+    </extension>
+    
+
+
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Server Configuration - Define a Geronimo server type for the Geronimo runtime type                            ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.wst.server.core.serverTypes">
+        <serverType id="org.apache.geronimo.server.30"
+            name="%serverTypeName"
+            description="%serverTypeDescription"
+            runtime="true"
+            class="org.apache.geronimo.st.v30.core.GeronimoServerDelegate"
+            initialState="stopped"
+            supportsRemoteHosts="true"
+            startTimeout="240000"
+            stopTimeout="90000"
+            startBeforePublish="true"
+            runtimeTypeId="org.apache.geronimo.runtime.30"
+            launchConfigId="org.apache.geronimo.st.v30.core.launchConfigurationType"
+            behaviourClass="org.apache.geronimo.st.v30.core.GeronimoServerBehaviourDelegate"
+            hasConfiguration="false"
+            launchModes="run,debug,profile">
+        </serverType>
+    </extension>
+    
+    
+    
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Runtime Target Handler - Define a runtime target handler for the Geronimo runtime type. This class will       ##
+     ##                          provide the libraries required for the development of a Web project targeted for the ##
+     ##                          Geronimo runtime type.                                                               ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.jst.server.core.runtimeClasspathProviders">
+        <runtimeClasspathProvider id="org.apache.geronimo.runtimeClasspathProvider.30"
+            runtimeTypeIds="org.apache.geronimo.runtime.30"
+            class="org.apache.geronimo.st.v30.core.GeronimoServerRuntimeTargetHandler"/>
+    </extension>
+
+
+
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## JEE Runtime Component - Define a Java EE runtime component and the facets it supports                         ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
+        <runtime-component-type id="org.apache.geronimo.runtime.jee"/>  
+        <runtime-component-version type="org.apache.geronimo.runtime.jee" version="3.0"/>   
+        <adapter>
+            <runtime-component id="org.apache.geronimo.runtime.jee"/>
+            <factory
+                class="org.eclipse.jst.server.core.internal.RuntimeClasspathProvider$Factory"/>
+            <type
+                class="org.eclipse.jst.common.project.facet.core.IClasspathProvider"/>
+        </adapter>
+        <supported>
+            <runtime-component id="org.apache.geronimo.runtime.jee" version="3.0"/>
+            <facet id="org.apache.geronimo.facet"   version="1.3"/>
+            <facet id="jst.web"                     version="2.2,2.3,2.4,2.5,3.0"/>
+            <facet id="jst.ejb"                     version="1.1,2.0,2.1,3.0,3.1"/>
+            <facet id="jst.ear"                     version="1.2,1.3,1.4,5.0,6.0"/>
+            <facet id="jst.connector"               version="1.0,1.5,1.6"/>
+            <facet id="jst.appclient"               version="1.2,1.3,1.4,5.0,6.0"/>
+            <facet id="jst.utility"                 version="1.0"/>
+        </supported>    
+    </extension>
+    
+    
+    
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## OSGi Runtime Component - Define a OSGi runtime component and the facets it supports                           ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
+        <runtime-component-type id="org.apache.geronimo.runtime.osgi"/>  
+        <runtime-component-version type="org.apache.geronimo.runtime.osgi" version="3.0"/>   
+        <adapter>
+            <runtime-component id="org.apache.geronimo.runtime.osgi"/>
+            <factory
+                class="org.eclipse.jst.server.core.internal.RuntimeClasspathProvider$Factory"/>
+            <type
+                class="org.eclipse.jst.common.project.facet.core.IClasspathProvider"/>
+        </adapter>
+        <supported>
+            <runtime-component id="org.apache.geronimo.runtime.osgi" version="3.0"/>    
+            <facet id="osgi.app"        version="1.0"/>
+            <facet id="osgi.bundle"     version="1.0"/>
+            <facet id="osgi.fragment"   version="1.0"/>
+            <facet id="osgi.comp"       version="1.0"/>
+        </supported>    
+    </extension>
+    
+    
+    
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Runtime Facet Mapping - Map the JEE and OSGi runtime components with the Geronimo runtime type                ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.jst.server.core.runtimeFacetMappings">
+        <runtimeFacetMapping
+            runtimeTypeId="org.apache.geronimo.runtime.30"
+            runtime-component="org.apache.geronimo.runtime.jee" version="3.0"/>        
+    </extension>
+    <extension point="org.eclipse.jst.server.core.runtimeFacetMappings">
+        <runtimeFacetMapping
+            runtimeTypeId="org.apache.geronimo.runtime.30"
+            runtime-component="org.apache.geronimo.runtime.osgi" version="3.0"/>        
+    </extension>
+    
+
+    
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Default Facets - Map the JEE runtime component to a specific version of the "Geronimo Java EE Deployment"     ##
+     ##                  project facet                                                                                ##
+     ##                                                                                                               ##
+     ## Note(s) - This will force the selection of this facet without explicit input from the user                    ##
+     ##                                                                                                               ##
+     ##         - Multiple entries are required to prevent the "Geronimo Java EE Deployment" project facet from being ##
+     ##           the default for OSGi projects                                                                       ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.wst.common.project.facet.core.defaultFacets"
+        id="org.apache.geronimo.defaultFacets"
+        name="Geronimo Default Facets">
+        <default-facets>
+            <runtime-component id="org.apache.geronimo.runtime.jee" version="3.0"/>
+            <facet id="org.apache.geronimo.facet" version="1.3"/>
+            <context>
+                <fixed-facet id="jst.web"/>
+            </context>
+        </default-facets>
+    </extension> 
+    <extension point="org.eclipse.wst.common.project.facet.core.defaultFacets"
+        id="org.apache.geronimo.defaultFacets"
+        name="Geronimo Default Facets">
+        <default-facets>
+            <runtime-component id="org.apache.geronimo.runtime.jee" version="3.0"/>
+            <facet id="org.apache.geronimo.facet" version="1.3"/>
+            <context>
+                <fixed-facet id="jst.ejb"/>
+            </context>
+        </default-facets>
+    </extension> 
+    <extension point="org.eclipse.wst.common.project.facet.core.defaultFacets"
+        id="org.apache.geronimo.defaultFacets"
+        name="Geronimo Default Facets">
+        <default-facets>
+            <runtime-component id="org.apache.geronimo.runtime.jee" version="3.0"/>
+            <facet id="org.apache.geronimo.facet" version="1.3"/>
+            <context>
+                <fixed-facet id="jst.connector"/>
+            </context>
+        </default-facets>
+    </extension> 
+    <extension point="org.eclipse.wst.common.project.facet.core.defaultFacets"
+        id="org.apache.geronimo.defaultFacets"
+        name="Geronimo Default Facets">
+        <default-facets>
+            <runtime-component id="org.apache.geronimo.runtime.jee" version="3.0"/>
+            <facet id="org.apache.geronimo.facet" version="1.3"/>
+            <context>
+                <fixed-facet id="jst.ear"/>
+            </context>
+        </default-facets>
+    </extension> 
+    <extension point="org.eclipse.wst.common.project.facet.core.defaultFacets"
+        id="org.apache.geronimo.defaultFacets"
+        name="Geronimo Default Facets">
+        <default-facets>
+            <runtime-component id="org.apache.geronimo.runtime.jee" version="3.0"/>
+            <facet id="org.apache.geronimo.facet" version="1.3"/>
+            <context>
+                <fixed-facet id="jst.utility"/>
+            </context>
+        </default-facets>
+    </extension> 
+    <extension point="org.eclipse.wst.common.project.facet.core.defaultFacets"
+        id="org.apache.geronimo.defaultFacets"
+        name="Geronimo Default Facets">
+        <default-facets>
+            <runtime-component id="org.apache.geronimo.runtime.jee" version="3.0"/>
+            <facet id="org.apache.geronimo.facet" version="1.3"/>
+            <context>
+                <fixed-facet id="jst.appclient"/>
+            </context>
+        </default-facets>
+    </extension>
+
+
+
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Project Facets - Declare the 1.3 version of the "Geronimo Java EE Deployment" project-facet and the action    ##
+     ##                  that the user can perform on the facet (i.e., install, uninstall, version-change). This      ##
+     ##                  will invoke the FacetInstallPage wizard to configure the Geronimo Deployment Plan for the    ##
+     ##                  Java EE project when it is created.                                                          ##
+     ##                                                                                                               ##
+     ## Note(s) - The id associated with that action must be unique across all plugins because the wizardPages        ##
+     ##           extension point will reference this action by the id (in the corrsponding ui plugin)                ##
+     ##                                                                                                               ##
+     ##         - The action configuration factory is used to enable comminications between the facet action delegate ##
+     ##           and the wizard page(s). The object created by the factory will be populated by the wizard pages and ##
+     ##           can then be read by the action delegate.                                                            ##
+     ##                                                                                                               ##
+     ##         - The GEP only supports the install action                                                            ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.wst.common.project.facet.core.facets">
+        <project-facet id="org.apache.geronimo.facet">
+            <label>%geronimo-facet-label</label>
+            <description>%geronimo-facet-description</description>
+        </project-facet>
+        <project-facet-version facet="org.apache.geronimo.facet" version="1.3">
+            <action type="install" id="geronimo.plan.install.v30">
+                <delegate class="org.apache.geronimo.st.v30.core.facets.GeronimoJEEFacetInstallDelegate"/>
+                <config-factory class="org.apache.geronimo.st.v30.core.facets.DeploymentPlanInstallConfig$Factory"/>
+            </action>
+            <constraint>
+                <or>
+                    <requires facet="jst.ear"       version="1.2"/>
+                    <requires facet="jst.ear"       version="1.3"/>
+                    <requires facet="jst.ear"       version="1.4"/>
+                    <requires facet="jst.ear"       version="1.4"/>
+                    <requires facet="jst.ear"       version="5.0"/>
+                    <requires facet="jst.ear"       version="6.0"/>
+                    <requires facet="jst.appclient" version="1.2"/>
+                    <requires facet="jst.appclient" version="1.3"/>
+                    <requires facet="jst.appclient" version="1.4"/>
+                    <requires facet="jst.appclient" version="5.0"/>
+                    <requires facet="jst.appclient" version="6.0"/>
+                    <requires facet="jst.connector" version="1.0"/>
+                    <requires facet="jst.connector" version="1.5"/>
+                    <requires facet="jst.ejb"       version="1.1"/>
+                    <requires facet="jst.ejb"       version="2.0"/>
+                    <requires facet="jst.ejb"       version="2.1"/>
+                    <requires facet="jst.ejb"       version="3.0"/>
+                    <requires facet="jst.ejb"       version="3.1"/>
+                    <requires facet="jst.web"       version="2.2"/>
+                    <requires facet="jst.web"       version="2.3"/>
+                    <requires facet="jst.web"       version="2.4"/>
+                    <requires facet="jst.web"       version="2.5"/>
+                    <requires facet="jst.web"       version="3.0"/>
+                    <requires facet="jst.utility"   version="1.0"/>
+                </or>
+            </constraint>
+        </project-facet-version>
+    </extension>
+    
+    
+    
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Server Source Path                                                                                            ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension-point id="sourcePathComputerMapping" name="Geronimo Deployment Plan Loader" schema="schema/sourcePathComputerMapping.exsd"/>
+
+    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+        <launchConfigurationType
+            id="org.apache.geronimo.st.v30.core.launchConfigurationType"
+            name="%geronimoLaunchConfigurationType"
+            delegate="org.apache.geronimo.st.v30.core.GeronimoLaunchConfigurationDelegate"
+            modes="run, debug, profile"
+            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+            sourcePathComputerId="org.apache.geronimo.st.v30.core.sourcePathComputer"/>
+    </extension>
+    
+    <extension point="org.eclipse.debug.core.sourcePathComputers">
+        <sourcePathComputer
+            id="org.apache.geronimo.st.v30.core.sourcePathComputer"
+            class="org.apache.geronimo.st.v30.core.GeronimoSourcePathComputerDelegate"/>
+    </extension>
+      
+      
+      
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Server Launch Test                                                                                            ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.hyades.trace.ui.launchConfigMechanismAssociator">
+       <association            
+           launchConfigID = "org.apache.geronimo.st.v30.core.launchConfigurationType">
+   
+           <mechanism mechanismID = "org.eclipse.tptp.trace.ui.jvmpiMechanism"> 
+               <configuration
+                   launchDelegate = "org.eclipse.tptp.trace.ui.internal.launcher.deleg.application.PIAttachLauncherDelegate"
+                   configurationId = "org.eclipse.tptp.trace.ui.jvmpiConfiguration"
+                   associatedAgent = "org.eclipse.tptp.trace.ui.jvmpiAgent"        
+                   filter = "org.eclipse.tptp.platform.profile.server.core.internal.PICollectorFiltration">                
+               </configuration>            
+           </mechanism>        
+           
+           <mechanism mechanismID = "org.eclipse.tptp.trace.jvmti.jvmtiMechanism"> 
+               <configuration
+                   launchDelegate = "org.eclipse.tptp.platform.jvmti.client.internal.launcher.TIAttachLauncherDelegate"
+                   configurationId = "org.eclipse.tptp.trace.jvmti.tiConfiguration"
+                   associatedAgent = "org.eclipse.tptp.platform.jvmti.TIAgent"
+                   filter = "org.eclipse.tptp.platform.profile.server.core.internal.TICollectorFiltration">                            
+               </configuration>            
+           </mechanism>    
+       </association>
+   </extension>
+      
+      
+      
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Run On Server - This extension point provides a way for a server to support the "Run on Server" scenario.     ##
+     ##                 The id specifies a unique identifier for this extension point, and the class specifies the    ##                                                                            
+     ##                 fully qualified name of the Java class that extends LaunchableAdapterDelegate.                ##                                                                            
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.wst.server.core.launchableAdapters">
+        <launchableAdapter
+            class="org.apache.geronimo.st.v30.core.GeronimoLaunchableAdapterDelegate"
+            id="org.eclipse.jst.server.geronimo.web.30"/>
+    </extension>
+
+
+    
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Import                                                                                                        ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+    <extension point="org.eclipse.wst.common.frameworks.OperationExtension"
+            id="GeronimoOpExtensions" name="GeronimoOpExtensions"> 
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.web.archive.operations.WebComponentImportOperation"
+            postOperationClass="org.apache.geronimo.st.v30.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.ejb.archiveoperations.EJBComponentImportOperation"
+            postOperationClass="org.apache.geronimo.st.v30.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.archive.operations.EARComponentImportOperation"
+            postOperationClass="org.apache.geronimo.st.v30.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+        <operationExtension
+            id="org.eclipse.jst.j2ee.internal.jca.operations.ConnectorComponentImportOperation"
+            postOperationClass="org.apache.geronimo.st.v30.core.operations.ImportDeploymentPlanOperation">
+        </operationExtension>
+    </extension>
+    
+    
+    
+    <!-- 
+     ###################################################################################################################
+     ##                                                                                                               ##
+     ## Geronimo JAXB Utils - Define the JAXB Utils Provider for this plugin and the corresponding ui plugin          ##
+     ##                                                                                                               ##
+     ###################################################################################################################
+     -->
+     <extension point="org.apache.geronimo.jaxbmodel.common.JAXBUtilsProvider">
+         <provider class="org.apache.geronimo.st.v30.core.jaxb.JAXBUtilsProvider" version="3.0"/>
+     </extension>
+
+
+
+     <!-- 
+      ###################################################################################################################
+      ##                                                                                                               ##
+      ## DataModel Provider(s) - Specify the Aries datamodel providers for an OSGi application, composite bunder, and  ##
+      ##                         bundle                                                                                ##
+      ##                                                                                                               ##
+      ###################################################################################################################
+      -->
+     <extension point="org.eclipse.wst.common.frameworks.DataModelProviderExtension">
+        <DataModelProvider id="osgi.application.datamodelprovider"
+            class="com.ibm.etools.aries.internal.core.datatransfer.exportmodel.ApplicationExportDataModelProvider"/>
+        <DataModelProvider id="osgi.composite.datamodelprovider"
+            class="com.ibm.etools.aries.internal.core.datatransfer.exportmodel.ApplicationExportDataModelProvider"/>
+        <DataModelProvider id="osgi.bundle.datamodelprovider"
+            class="com.ibm.etools.aries.internal.core.datatransfer.exportmodel.BundleExportDataModelProvider"/>
+        <DataModelProvider id="osgi.fragment.datamodelprovider"
+            class="com.ibm.etools.aries.internal.core.datatransfer.exportmodel.BundleExportDataModelProvider"/>
+     </extension>
+    
+</plugin>
