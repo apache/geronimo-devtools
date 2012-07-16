@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +41,8 @@ import javax.enterprise.deploy.spi.exceptions.DeploymentManagerCreationException
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
+import javax.management.remote.JMXConnectorFactory;
+import javax.management.remote.JMXServiceURL;
 import javax.naming.directory.NoSuchAttributeException;
 
 import org.apache.geronimo.deployment.plugin.jmx.ExtendedDeploymentManager;
@@ -56,16 +59,15 @@ import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
 import org.apache.geronimo.st.core.GeronimoJMXConnectorFactory;
 import org.apache.geronimo.st.core.GeronimoJMXConnectorFactory.JMXConnectorInfo;
+import org.apache.geronimo.st.v30.core.UpdateServerStateTask;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.v30.core.internal.DependencyHelper;
 import org.apache.geronimo.st.v30.core.internal.Messages;
-import org.apache.geronimo.st.v30.core.internal.ServerDelegateHelper;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.operations.ISharedLibEntryCreationDataModelProperties;
 import org.apache.geronimo.st.v30.core.operations.SharedLibEntryCreationOperation;
 import org.apache.geronimo.st.v30.core.operations.SharedLibEntryDataModelProvider;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
-import org.apache.geronimo.st.v30.core.osgi.AriesHelper.BundleInfo;
 import org.apache.geronimo.st.v30.core.osgi.OSGiModuleHandler;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.commands.ExecutionException;
@@ -583,11 +585,22 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         MultiStatus multiStatus = new MultiStatus(Activator.PLUGIN_ID, 0, "", null);
         
         try {
+            ExtendedDeploymentManager dm = (ExtendedDeploymentManager) DeploymentCommandFactory.getDeploymentManager(getServer());
+            long[] bundleIds = dm.getEBAContentBundleIds(ebaName);
+
+            Map<String, Long> bundleMap = new HashMap<String, Long>();
+            for (long bundleId : bundleIds) {
+                String symbolicName = dm.getEBAContentBundleSymbolicName(ebaName, bundleId);
+                if (symbolicName != null) {
+                    bundleMap.put(symbolicName, bundleId);
+                }
+            }
+            
             for (IModule[] bundleModule : bundleModules) {
                 if (monitor.isCanceled()) {
                     return Status.CANCEL_STATUS;
                 }
-                IStatus status = refreshBundle(ebaModule, bundleModule[1], ebaName); 
+                IStatus status = refreshBundle(ebaModule, bundleModule[1], ebaName, bundleMap); 
                 setStatus(bundleModule, status, multiStatus);
             }
         } catch (Exception e) {
@@ -606,20 +619,18 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         return status;
     }
     
-    private IStatus refreshBundle(IModule ebaModule, IModule bundleModule, AbstractName ebaName) {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundle", ebaModule, bundleModule, ebaName);
-
+    private IStatus refreshBundle(IModule ebaModule, IModule bundleModule, AbstractName ebaName, Map<String, Long> bundleMap) {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundle", ebaModule, bundleModule, ebaName, bundleMap);
         try {
-            ExtendedDeploymentManager dm = (ExtendedDeploymentManager) DeploymentCommandFactory.getDeploymentManager(getServer());
+            String symbolicName = AriesHelper.getSymbolicName(bundleModule);
+            Long bundleId = bundleMap.get(symbolicName);
             
-            BundleInfo bundleInfo = AriesHelper.getBundleInfo(bundleModule.getProject());
-            long bundleId = dm.getEBAContentBundleId(ebaName, bundleInfo.getSymbolicName(), bundleInfo.getVersion().toString());
-            
-            if (bundleId == -1) {
+            if (bundleId == null) {
                 return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.bind(Messages.REFRESH_NO_BUNDLE_FAIL,
                         new String[] {bundleModule.getProject().getName(), ebaModule.getProject().getName()}));
             }
             
+            ExtendedDeploymentManager dm = (ExtendedDeploymentManager) DeploymentCommandFactory.getDeploymentManager(getServer());
             /*
              * Try class hot swap first and if it fails fallback to regular bundle update.
              */
@@ -644,8 +655,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             return false;
         }
         // ensure only classes have changed
-        IModule[] module = new IModule[] { ebaModule, bundleModule };
-        IModuleResourceDelta[] delta = getPublishedResourceDelta(module);
+        IModuleResourceDelta[] delta = getPublishedResourceDelta(new IModule[] { ebaModule, bundleModule });
         IModuleResource[] classResources = DeploymentUtils.getChangedClassResources(delta);
         if (classResources == null) {
             Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Non-class resource modifications found");
@@ -658,7 +668,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             return false;
         }
         // get document base for the module if it is expanded
-        String documentBase = getServerDelegate().isNoRedeploy() ? getModulePublishLocation(module) : null;
+        String documentBase = getServerDelegate().isNoRedeploy() ? getWebModuleDocumentBase(bundleModule) : null;
         // see if the classes can be hot swapped - update archive if module is not expanded
         if (!dm.hotSwapEBAContent(ebaName, bundleId, changeSetFile, documentBase == null)) {
             Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap cannot be preformed");
@@ -928,14 +938,6 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         setServerState(IServer.STATE_STARTED);
         GeronimoConnectionFactory.getInstance().destroy(getServer());
         startSynchronizeProjectOnServerTask();
-        
-        ServerDelegateHelper helper = getServerDelegate().getServerDelegateHelper();
-        String jvmArgs = helper.deleteRemovedArtifactListFromJVMArgs(getServerDelegate().getVMArgs());
-        try {
-            helper.persistJVMArgs(jvmArgs, new NullProgressMonitor());
-        } catch (CoreException e) {
-            Trace.trace(Trace.ERROR, e.getMessage(), e, Activator.traceCore);
-        }
     }
 
     public void setServerStopped() {
@@ -1020,37 +1022,23 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.invokeCommand");
     }   
 
-    private String getModulePublishLocation(IModule[] module) {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.getModulePublishLocation", Arrays.asList(module));
+    private String getWebModuleDocumentBase(IModule webModule) {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", webModule);
         
-        IModule childModule = module[module.length - 1];
-        if (childModule.isExternal()) {
-            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getModulePublishLocation", "External module");
+        if (webModule.isExternal()) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", "External module");
+            return null;
+        }
+                
+        String contextPath = getServerDelegate().getContextPath(webModule);
+        if (contextPath == null) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", "Context path is null");
             return null;
         }
 
-        String publishLocation = null;
-        String contextPath = getServerDelegate().getContextPath(childModule);
-        if (contextPath != null) {
-            // web module
-            publishLocation = getWebModulePublishLocation(childModule, contextPath);
-        } else if (module.length > 1 && GeronimoUtils.isEBAModule(module[0])) {
-            // bundle module within eba
-            publishLocation = getBundleModulePublishLocation(module);
-        } else {
-            // unsupported module - no publish location
-        }
-
-        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getModulePublishLocation", publishLocation);
-        return publishLocation;
-    }
-    
-    private String getWebModulePublishLocation(IModule webModule, String contextPath) {
-        Trace.tracePoint("Enter", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModulePublishLocation", webModule, contextPath);
-        
         String documentBase = getWebModuleDocumentBase(contextPath);
         if (documentBase == null) {
-            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModulePublishLocation", "Document base is not set");
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", "Document base is not set");
             return null;
         }
         
@@ -1058,53 +1046,23 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         if (!publishLocation.isAbsolute()) {
             publishLocation = getServerResource(IGeronimoServerBehavior.VAR_CATALINA_DIR + documentBase).toFile();            
         }
-                
-        if (publishLocation.isDirectory() ) {
-            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModulePublishLocation", contextPath, documentBase, publishLocation);
-            return publishLocation.getAbsolutePath();
-        } else {
-            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModulePublishLocation", "Invalid publish location", publishLocation);
+        
+        if (!publishLocation.exists()) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", "Document base does not exist", publishLocation);
             return null;
         }
-    }
-    
-    private String getBundleModulePublishLocation(IModule[] module) {
-        Trace.tracePoint("Enter", Activator.traceCore, "GeronimoServerBehaviourDelegate.getBundleModulePublishLocation", Arrays.asList(module));
         
-        IModule ebaModule = module[0];
-        IModule bundleModule = module[module.length - 1];
-        
-        AbstractName ebaName = getApplicationGBeanName(ebaModule);
-        if (ebaName == null) {
-            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getBundleModulePublishLocation", "Unable to get eba name");
-        }
-        
-        File publishLocation = null;
-        try {
-            ExtendedDeploymentManager dm = (ExtendedDeploymentManager) DeploymentCommandFactory.getDeploymentManager(getServer());
-            
-            BundleInfo bundleInfo = AriesHelper.getBundleInfo(bundleModule.getProject());
-            
-            publishLocation = dm.getEBAContentBundlePublishLocation(ebaName, bundleInfo.getSymbolicName(), bundleInfo.getVersion().toString());
-        } catch (Exception e) {
-            Trace.trace(Trace.WARNING, "Error getting bundle publish location", e, Activator.traceCore);
-        }
-        
-        if (publishLocation != null && publishLocation.isDirectory()) {
-            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getBundleModulePublishLocation", publishLocation);
-            return publishLocation.getAbsolutePath();
-        } else {
-            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getBundleModulePublishLocation", "Publish location is not available or is invalid", publishLocation);
-            return null;
-        }
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", contextPath, documentBase, publishLocation);
+        return publishLocation.getAbsolutePath();
     }
     
     private IStatus tryFileReplace(IModule[] module) {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", Arrays.asList(module));
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", module.toString());
         
-        String publishLocation = getModulePublishLocation(module);
-        if (publishLocation == null) {
-            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "Publish location is not set or is invalid");
+        IModule webModule = module[module.length - 1];        
+        String documentBase = getWebModuleDocumentBase(webModule);
+        if (documentBase == null) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "Document base is not set or is invalid");
             return null;
         }
 
@@ -1115,7 +1073,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         }
         Trace.trace(Trace.INFO, "Modified files: " + modifiedFiles, Activator.logCore);
 
-        IStatus status = findAndReplaceFiles(module[module.length - 1], modifiedFiles, publishLocation);
+        IStatus status = findAndReplaceFiles(webModule, modifiedFiles, documentBase);
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", status);
         return status;
     }
@@ -1163,8 +1121,8 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             target.append(moduleFile.getName());
             
             File file = new File(target.toString());
-            if (!file.isAbsolute()) {
-                return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Unexpected publish location", null);
+            if(! file.isAbsolute()) {
+                file = getServerResource(IGeronimoServerBehavior.VAR_CATALINA_DIR + target.toString()).toFile();
             }
             
             switch (deltaModule.getKind()) {

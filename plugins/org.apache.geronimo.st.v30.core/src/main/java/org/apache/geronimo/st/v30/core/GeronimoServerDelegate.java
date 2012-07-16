@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -38,7 +39,6 @@ import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 import org.apache.geronimo.crypto.EncryptionManager;
 import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
 import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
-import org.apache.geronimo.st.v30.core.internal.ServerDelegateHelper;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
@@ -54,7 +54,6 @@ import org.eclipse.jst.server.core.internal.J2EEUtil;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IModuleType;
-import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerPort;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.server.core.internal.ServerMonitorManager;
@@ -153,8 +152,6 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     
     public static final String ENABLE_REMOTE_KARAF_SHELL = "-Dkaraf.startRemoteShell=true";
     
-    public static final String REMOVE_ARTIFACT_LIST = "-Dgeronimo.removedArtifactList";
-    
     public static final int KARAF_SHELL_DEFAULT_TIMEOUT = 0;
     
     public static final int KARAF_SHELL_DEFAULT_KEEPALIVE = 300;
@@ -164,8 +161,6 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     private static IGeronimoVersionHandler versionHandler = null;
 
     private static DeploymentFactory deploymentFactory = new DeploymentFactoryImpl();
-    
-    private final ServerDelegateHelper serverDelegateHelper = new ServerDelegateHelper(this);
     
     private boolean suspendArgUpdates;
     
@@ -259,17 +254,7 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
      */
     public void modifyModules(IModule[] add, IModule[] remove, IProgressMonitor monitor) throws CoreException {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.modifyModules", add, remove, monitor);
-        // Now, only handle the remov/add modules when the server is shutdown 
-        // and the attribute org.apache.geronimo.st.v30.core.manageApplicationStart is true
-        int serverState = getServer().getServerState();
-        if(serverState == IServer.STATE_STOPPED && isManageApplicationStart()) {
-            if(remove != null && remove.length > 0) {
-                serverDelegateHelper.markRemoveModules(remove, monitor);
-            } 
-            if(add != null && add.length > 0) {
-                serverDelegateHelper.unMarkRemoveModules(add, monitor);
-            }
-        }
+
         // TODO servermodule.info should be pushed to here and set as instance
         // property
 
@@ -1202,9 +1187,6 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     public void setServerInstanceProperties(Map map) {
         setAttribute(GeronimoRuntimeDelegate.SERVER_INSTANCE_PROPERTIES, map);
     }
-    
-    public ServerDelegateHelper getServerDelegateHelper() {
-        return serverDelegateHelper;
-    }
+
     
 }

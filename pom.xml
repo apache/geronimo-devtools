@@ -22,7 +22,7 @@
                         
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>geronimo-eclipse-plugin</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.0</version>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin</name>
                         
@@ -66,9 +66,9 @@
     </mailingLists>
                         
     <scm>
-        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</developerConnection>
-        <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</url>
+        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/tags/geronimo-eclipse-plugin-3.0.0</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/tags/geronimo-eclipse-plugin-3.0.0</developerConnection>
+        <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/tags/geronimo-eclipse-plugin-3.0.0</url>
     </scm>
                         
     <organization>
@@ -210,7 +210,7 @@
             <dependency>
                 <groupId>org.osgi</groupId>
                 <artifactId>org.osgi.core</artifactId>
-                <version>4.2.0</version>
+                <version>4.3.0</version>
             </dependency>
 
             <dependency>
@@ -265,7 +265,7 @@
                 <plugin>
                     <groupId>org.apache.geronimo.devtools</groupId>
                     <artifactId>maven-eclipsepde-plugin</artifactId>
-                    <version>1.2-SNAPSHOT</version>
+                    <version>1.1</version>
                     <configuration>
                         <eclipseHome>${settings.localRepository}/eclipse/eclipse/</eclipseHome>
                     </configuration>
@@ -428,7 +428,7 @@
                 <executions>
                     <execution>						
                         <configuration>							
-                            <attached>false</attached>>
+                            <attached>false</attached>&gt;
                         </configuration>
                     </execution>
                 </executions>
@@ -605,7 +605,12 @@
                 <module>assembly</module>
             </modules>
         </profile>
-            
+		<!-- this profile is used to do rat check mvn rat:check -PratCheck -->
+		<profile>
+            <id>ratCheck</id>
+            <modules>
+			</modules>
+        </profile>         
          <!-- this profile is copied from genesis-default-flava and genesis 2.0  -->
          <profile>
             <id>apache-release</id>
