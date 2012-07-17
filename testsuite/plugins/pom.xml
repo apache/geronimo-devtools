@@ -24,14 +24,14 @@
         
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>testsuite-plugins</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.0</version>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin :: Testsuite :: Plugins</name>
         
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>testsuite</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.0</version>
     </parent>
         
     <build>
