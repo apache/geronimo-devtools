@@ -47,10 +47,10 @@
                             <tasks>
                                 <!--
                                  |
-                                 | Unzip and rename the testsuite Geronimo server v3.0-SNAPSHOT
+                                 | Unzip and rename the testsuite Geronimo server v3.0.0
                                  |
                                  -->
-                                <property name="geronimoVersion_1"              value="3.0-SNAPSHOT"/>
+                                <property name="geronimoVersion_1"              value="3.0.0"/>
                                 <property name="geronimoVersion_1_install"      value="${basedir}/../launcher/"/>
                                 <property name="geronimoVersion_1_assembly"     value="org/apache/geronimo/assemblies"/>
                                 <property name="geronimoVersion_1_name"         value="geronimo-tomcat7-javaee6"/>
