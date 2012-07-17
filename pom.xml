@@ -605,11 +605,11 @@
                 <module>assembly</module>
             </modules>
         </profile>
-		<!-- this profile is used to do rat check mvn rat:check -PratCheck -->
-		<profile>
+	<!-- this profile is used to do rat check mvn rat:check -PratCheck -->
+	<profile>
             <id>ratCheck</id>
             <modules>
-			</modules>
+	    </modules>
         </profile>         
          <!-- this profile is copied from genesis-default-flava and genesis 2.0  -->
          <profile>
