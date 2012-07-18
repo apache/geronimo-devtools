@@ -1,4 +1,4 @@
-
+ï»¿
                                  Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
@@ -325,10 +325,10 @@ the terms of this License.
       rights under, and complying with all of the terms of, this
       License. For legal entities, You includes any entity which
       controls, is controlled by, or is under common control with
-      You. For purposes of this definition, control means (a)áthe
+      You. For purposes of this definition, control means (a)ï¿½the
       power, direct or indirect, to cause the direction or management
       of such entity, whether by contract or otherwise, or
-      (b)áownership of more than fifty percent (50%) of the
+      (b)ï¿½ownership of more than fifty percent (50%) of the
       outstanding shares or beneficial ownership of such entity.
 
 2. License Grants.
@@ -344,13 +344,13 @@ without Modifications, and/or as part of a Larger Work; and (b) under
 Patent Claims infringed by the making, using or selling of Original
 Software, to make, have made, use, practice, sell, and offer for sale,
 and/or otherwise dispose of the Original Software (or portions
-thereof).  (c) The licenses granted in Sectionsá2.1(a) and (b) are
+thereof).  (c) The licenses granted in Sectionsï¿½2.1(a) and (b) are
 effective on the date Initial Developer first distributes or otherwise
 makes the Original Software available to a third party under the terms
-of this License.  (d) Notwithstanding Sectioná2.1(b) above, no patent
-license is granted: (1)áfor code that You delete from the Original
-Software, or (2)áfor infringements caused by: (i)áthe modification of
-the Original Software, or (ii)áthe combination of the Original
+of this License.  (d) Notwithstanding Sectionï¿½2.1(b) above, no patent
+license is granted: (1)ï¿½for code that You delete from the Original
+Software, or (2)ï¿½for infringements caused by: (i)ï¿½the modification of
+the Original Software, or (ii)ï¿½the combination of the Original
 Software with other software or devices.
 
 2.2. Contributor Grant.  Conditioned upon Your compliance with Section
@@ -365,18 +365,18 @@ as part of a Larger Work; and (b) under Patent Claims infringed by the
 making, using, or selling of Modifications made by that Contributor
 either alone and/or in combination with its Contributor Version (or
 portions of such combination), to make, use, sell, offer for sale,
-have made, and/or otherwise dispose of: (1)áModifications made by that
-Contributor (or portions thereof); and (2)áthe combination of
+have made, and/or otherwise dispose of: (1)ï¿½Modifications made by that
+Contributor (or portions thereof); and (2)ï¿½the combination of
 Modifications made by that Contributor with its Contributor Version
 (or portions of such combination).  (c) The licenses granted in
-Sectionsá2.2(a) and 2.2(b) are effective on the date Contributor first
+Sectionsï¿½2.2(a) and 2.2(b) are effective on the date Contributor first
 distributes or otherwise makes the Modifications available to a third
-party.  (d) Notwithstanding Sectioná2.2(b) above, no patent license is
-granted: (1)áfor any code that Contributor has deleted from the
-Contributor Version; (2)áfor infringements caused by: (i)áthird party
-modifications of Contributor Version, or (ii)áthe combination of
+party.  (d) Notwithstanding Sectionï¿½2.2(b) above, no patent license is
+granted: (1)ï¿½for any code that Contributor has deleted from the
+Contributor Version; (2)ï¿½for infringements caused by: (i)ï¿½third party
+modifications of Contributor Version, or (ii)ï¿½the combination of
 Modifications made by that Contributor with other software (except as
-part of the Contributor Version) or other devices; or (3)áunder Patent
+part of the Contributor Version) or other devices; or (3)ï¿½under Patent
 Claims infringed by Covered Software in the absence of Modifications
 made by that Contributor.
 
@@ -468,9 +468,9 @@ subsequent version of the License published by the license steward.
 
 When You are an Initial Developer and You want to create a new license
 for Your Original Software, You may create and use a modified version
-of this License if You: (a)árename the license and remove any
+of this License if You: (a)ï¿½rename the license and remove any
 references to the name of the license steward (except to note that the
-license differs from this License); and (b)áotherwise make it clear
+license differs from this License); and (b)ï¿½otherwise make it clear
 that the license contains terms which differ from this License.
 
 5. DISCLAIMER OF WARRANTY.
@@ -505,7 +505,7 @@ HEREUNDER EXCEPT UNDER THIS DISCLAIMER.
      infringes any patent, then any and all rights granted directly or
      indirectly to You by such Participant, the Initial Developer (if
      the Initial Developer is not the Participant) and all
-     Contributors under Sectionsá2.1 and/or 2.2 of this License shall,
+     Contributors under Sectionsï¿½2.1 and/or 2.2 of this License shall,
      upon 60 days notice from Participant terminate prospectively and
      automatically at the expiration of such 60 day notice period,
      unless if within such 60 day period You withdraw Your claim with
@@ -513,7 +513,7 @@ HEREUNDER EXCEPT UNDER THIS DISCLAIMER.
      either unilaterally or pursuant to a written agreement with
      Participant.
 
-6.3. In the event of termination under Sectionsá6.1 or 6.2 above, all
+6.3. In the event of termination under Sectionsï¿½6.1 or 6.2 above, all
      end user licenses that have been validly granted by You or any
      distributor hereunder prior to termination (excluding licenses
      granted to You by any distributor) shall survive termination.
@@ -538,10 +538,10 @@ DAMAGES, SO THIS EXCLUSION AND LIMITATION MAY NOT APPLY TO YOU.
 8. U.S. GOVERNMENT END USERS.
 
 The Covered Software is a commercial item, as that term is defined in
-48áC.F.R.á2.101 (Oct. 1995), consisting of commercial computer
-software (as that term is defined at 48 C.F.R. á252.227-7014(a)(1))
+48ï¿½C.F.R.ï¿½2.101 (Oct. 1995), consisting of commercial computer
+software (as that term is defined at 48 C.F.R. ï¿½252.227-7014(a)(1))
 and commercial computer software documentation as such terms are used
-in 48áC.F.R.á12.212 (Sept. 1995). Consistent with 48 C.F.R. 12.212 and
+in 48ï¿½C.F.R.ï¿½12.212 (Sept. 1995). Consistent with 48 C.F.R. 12.212 and
 48 C.F.R. 227.7202-1 through 227.7202-4 (June 1995), all
 U.S. Government End Users acquire Covered Software with only those
 rights set forth herein. This U.S. Government Rights clause is in lieu
@@ -831,6 +831,32 @@ Agreement will bring a legal action under this Agreement more than one year
 after the cause of action arose. Each party waives its rights to a jury 
 trial in any resulting litigation. 
 
+For org.apache.geronimo.runtime.* jar:
 
+=========================================================================
+==  SLF4J License                                                      ==
+==  slffj-api slf4j-simple                                             ==
+=========================================================================
 
+Copyright (c) 2004-2011 QOS.ch 
+
+All rights reserved. 
+
+Permission is hereby granted, free of charge, to any person obtaining a 
+copy of this software and associated documentation files (the "Software"), 
+to deal in the Software without restriction, including without limitation 
+the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+and/or sell copies of the Software, and to permit persons to whom the 
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included 
+in all copies or substantial portions of the Software. 
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS 
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
