@@ -657,29 +657,15 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Error creating file with resource modifications");
             return false;
         }
-        // get document base for the module if it is expanded
-        String documentBase = getServerDelegate().isNoRedeploy() ? getModulePublishLocation(module) : null;
-        // see if the classes can be hot swapped - update archive if module is not expanded
-        if (!dm.hotSwapEBAContent(ebaName, bundleId, changeSetFile, documentBase == null)) {
+        // see if the classes can be hot swapped
+        if (!dm.hotSwapEBAContent(ebaName, bundleId, changeSetFile, true)) {
             Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap cannot be preformed");
             changeSetFile.delete();
             return false;
         } else {
             changeSetFile.delete();
         }
-        if (documentBase != null) {
-            PublishHelper publishHelper = new PublishHelper(getTempDirectory().toFile());   
-            IStatus[] statusArray = publishHelper.publishFull(classResources, new Path(documentBase), null);
-            if (statusArray != null) {
-                // XXX: in case of an error should we return false to force full re-deploy?
-                for (IStatus status : statusArray) {
-                    if (!status.isOK()) {
-                        Trace.trace(Trace.WARNING, "Error publishing changes: " + status.getMessage(), status.getException(), Activator.traceCore);
-                    }
-                }
-            }
-        }
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap was succesfully preformed", documentBase);
+        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap was succesfully preformed");
         return true;
     }
     
