@@ -70,8 +70,14 @@ This product also includes schemas and specification developed by:
       - the W3C consortium (http://www.w3c.org)
       (http://www.w3.org/XML/1998/namespace)
 
+For slffj-api jar in org.apache.geronimo.runtime.* and 
+slf4j-simple jar in org.apache.geronimo.runtime.*
 
+=========================================================================
+==  SLF4J Notice -- http://www.slf4j.org/license.html                  ==
+=========================================================================
 
-
+Copyright (c) 2004-2008 QOS.ch
+All rights reserved.
 
      
