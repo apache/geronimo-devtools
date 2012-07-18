@@ -20,3 +20,14 @@ package) which was developed by the Bouncy Castle project.
 (http://www.bouncycastle.org/) 
 
      Copyright (c) 2000-2005 The Legion Of The Bouncy Castle (http://www.bouncycastle.org)
+
+For slffj-api jar in org.apache.geronimo.runtime.* and 
+slf4j-simple jar in org.apache.geronimo.runtime.*
+
+=========================================================================
+==  SLF4J Notice -- http://www.slf4j.org/license.html                  ==
+=========================================================================
+
+Copyright (c) 2004-2008 QOS.ch
+All rights reserved.
+
