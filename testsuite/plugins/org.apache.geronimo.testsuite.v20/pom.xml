@@ -24,14 +24,14 @@
 
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>org.apache.geronimo.testsuite.v20</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>${artifactId}</name>
 
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>testsuite-plugins</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.1-SNAPSHOT</version>
     </parent>
 
     <build>

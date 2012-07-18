@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.apache.geronimo.st.ui;singleton:=true
-Bundle-Version: 3.0.0
+Bundle-Version: 3.0.1
 Bundle-Activator: org.apache.geronimo.st.ui.Activator
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Require-Bundle: org.apache.geronimo.runtime.common,
  org.apache.geronimo.st.core;visibility:=reexport,
- org.apache.geronimo.jaxbmodel.common;bundle-version="3.0.0",
+ org.apache.geronimo.jaxbmodel.common;bundle-version="3.0.1",
  org.eclipse.core.runtime,
  org.eclipse.wst.server.core,
  org.eclipse.ui.forms,
