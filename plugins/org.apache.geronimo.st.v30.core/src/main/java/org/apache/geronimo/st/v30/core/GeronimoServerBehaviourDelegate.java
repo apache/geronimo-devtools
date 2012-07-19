@@ -17,11 +17,6 @@
 package org.apache.geronimo.st.v30.core;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +64,6 @@ import org.apache.geronimo.st.v30.core.osgi.AriesHelper.BundleInfo;
 import org.apache.geronimo.st.v30.core.osgi.OSGiModuleHandler;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -112,7 +106,6 @@ import org.eclipse.wst.server.core.model.IModuleFolder;
 import org.eclipse.wst.server.core.model.IModuleResource;
 import org.eclipse.wst.server.core.model.IModuleResourceDelta;
 import org.eclipse.wst.server.core.model.ServerBehaviourDelegate;
-import org.eclipse.wst.server.core.util.PublishHelper;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
 /**
@@ -1094,120 +1087,41 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             return null;
         }
 
-        List<IModuleResourceDelta> modifiedFiles = findModifiedFiles(module);
-        if (modifiedFiles == null) {
+        IModuleResourceDelta[] deltas = getPublishedResourceDelta(module);
+        if (!canPublishDelta(deltas)) {
             Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "Some modified files cannot be replaced");
             return null;
         }
-        Trace.trace(Trace.INFO, "Modified files: " + modifiedFiles, Activator.logCore);
 
-        IStatus status = findAndReplaceFiles(module[module.length - 1], modifiedFiles, publishLocation);
+        Path publishPath = new Path(publishLocation);
+        List<IStatus> statusList = new ArrayList<IStatus>();
+        for (IModuleResourceDelta delta : deltas) {
+            DeploymentUtils.publishDelta(delta, publishPath, statusList);
+        }
+        
+        IStatus status = Status.OK_STATUS;
+        if (!statusList.isEmpty()) {
+            IStatus[] statusArray = new IStatus[statusList.size()];
+            statusList.toArray(statusArray);
+            status = new MultiStatus(Activator.PLUGIN_ID, 0, statusArray, "", null);
+        }
+
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", status);
         return status;
     }
         
-    private List<IModuleResourceDelta> findModifiedFiles(IModule[] module) {
-        IModuleResourceDelta[] deltaArray = getPublishedResourceDelta(module);
-
+    private boolean canPublishDelta(IModuleResourceDelta[] deltaArray) {
         GeronimoServerDelegate delegate = getServerDelegate();
         List<String> includes = delegate.getNoRedeployFilePatternsAsList(true);
         List<String> excludes = delegate.getNoRedeployFilePatternsAsList(false);
-        
-        List<IModuleResourceDelta> modifiedFiles = new ArrayList<IModuleResourceDelta>();
         for (IModuleResourceDelta delta : deltaArray) {
-            List<IModuleResourceDelta> files = DeploymentUtils.getAffectedFiles(delta, includes, excludes);
-            // if null then some other files were changed that we cannot just copy/replace.
-            if (files == null) {
-                return null;
+            if (DeploymentUtils.isMatchingDelta(delta, includes, excludes)) {
+                // delta only contains files that can be copied / replaced - keep checking
             } else {
-                modifiedFiles.addAll(files);
+                return false;
             }
         }
-        return modifiedFiles;
-    }
-    
-    /*
-     * This method is used to replace updated files without redeploying the entire module. 
-     */
-    private IStatus findAndReplaceFiles(IModule module, List<IModuleResourceDelta> modifiedFiles, String documentBase) {
-        Trace.trace(Trace.INFO, "Replacing updated files for " + module.getName() + " module.", Activator.logCore);
-        
-        String ch = File.separator;
-        byte[] buffer = new byte[10 * 1024];
-        int bytesRead;
-        
-        for (IModuleResourceDelta deltaModule : modifiedFiles) {
-            IModuleFile moduleFile = (IModuleFile) deltaModule.getModuleResource();
-
-            StringBuilder target = new StringBuilder(documentBase);
-            target.append(ch);
-            String relativePath = moduleFile.getModuleRelativePath().toOSString();
-            if (relativePath != null && relativePath.length() != 0) {
-                target.append(relativePath);
-                target.append(ch);
-            } 
-            target.append(moduleFile.getName());
-            
-            File file = new File(target.toString());
-            if (!file.isAbsolute()) {
-                return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Unexpected publish location", null);
-            }
-            
-            switch (deltaModule.getKind()) {
-            case IModuleResourceDelta.REMOVED:
-                if (file.exists()) {
-                    file.delete();
-                }
-                break;
-            case IModuleResourceDelta.ADDED:
-            case IModuleResourceDelta.CHANGED:
-                File parentFile = file.getParentFile();
-                if (parentFile != null && !parentFile.exists()) {
-                    if (!parentFile.mkdirs()) {
-                        Trace.trace(Trace.ERROR, "Cannot create target directory: " + parentFile, Activator.logCore);
-                        return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Cannot create target directory", null);
-                    }
-                }
-                
-                String sourceFile = relativePath;
-                InputStream in = null;
-                FileOutputStream out = null;
-                try {
-                    IFile srcIFile = (IFile) moduleFile.getAdapter(IFile.class);
-                    if (srcIFile != null) {
-                        in = srcIFile.getContents();
-                    } else {
-                        File srcFile = (File) moduleFile.getAdapter(File.class);
-                        in = new FileInputStream(srcFile);
-                    }
-                
-                    out = new FileOutputStream(file);
-                    
-                    while ((bytesRead = in.read(buffer)) > 0) {
-                        out.write(buffer, 0, bytesRead);
-                    }
-                } catch (FileNotFoundException e) {
-                    Trace.trace(Trace.ERROR, "Cannot find file to copy: " + sourceFile, e, Activator.logCore);
-                    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Cannot find file " + sourceFile, e);
-                } catch (IOException e) {
-                    Trace.trace(Trace.ERROR, "Cannot copy file: " + sourceFile, e, Activator.logCore);
-                    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Cannot copy file " + sourceFile, e);
-                } catch (CoreException e) {
-                    Trace.trace(Trace.ERROR, "Cannot copy file: " + sourceFile, e, Activator.logCore);
-                    return e.getStatus();
-                } finally {
-                    if (in != null) {
-                        try { in.close(); } catch (IOException ignore) {}
-                    }
-                    if (out != null) {
-                        try { out.close(); } catch (IOException ignore) {}
-                    }
-                }
-                break;
-            }                    
-        }
-
-        return Status.OK_STATUS;
+        return true;
     }
 
     public Map getServerInstanceProperties() {

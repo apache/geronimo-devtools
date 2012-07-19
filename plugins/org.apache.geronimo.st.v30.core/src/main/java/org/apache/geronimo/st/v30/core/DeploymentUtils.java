@@ -17,7 +17,10 @@
 package org.apache.geronimo.st.v30.core;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +36,7 @@ import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -330,17 +334,15 @@ public class DeploymentUtils {
         return null;
     }
     
-    public static List<IModuleResourceDelta> getAffectedFiles(IModuleResourceDelta delta, List<String> includes, List<String> excludes) {
-        Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.getAffectedFiles", delta, includes, excludes);
-
+    public static boolean isMatchingDelta(IModuleResourceDelta delta, List<String> includes, List<String> excludes) {
+        Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.isMatchingDelta", delta, includes, excludes);
+        
         if (delta == null) {
-            Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getAffectedFiles", (Object) null);
-            return null;
-        }
-
+            Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.isMatchingDelta", delta, false);
+            return false;
+        } 
+        
         IModuleResource resource = delta.getModuleResource();
-        List<IModuleResourceDelta> fileList = new ArrayList<IModuleResourceDelta>();
-
         if (resource instanceof IModuleFile) {
             IModuleFile moduleFile = (IModuleFile) resource;
             String name = moduleFile.getName();
@@ -349,30 +351,29 @@ public class DeploymentUtils {
                 name = relativePath.toOSString() + File.separator + moduleFile.getName();
             }
             if (hasMatch(name, excludes)) {
-                Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getAffectedFiles", "Excluded", name);
-                return null;
+                Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.isMatchingDelta", "Excluded", name);
+                return false;
             }
             if (hasMatch(name, includes)) {
-                fileList.add(delta);
+                // we have a match - keep checking
             } else {
-                Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getAffectedFiles", "Not included", name);
-                return null;
+                Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.isMatchingDelta", "Not included", name);
+                return false;
             }
         } else if (resource instanceof IModuleFolder) {
             IModuleResourceDelta[] deltaArray = delta.getAffectedChildren();
             for (IModuleResourceDelta childDelta : deltaArray) {
-                List<IModuleResourceDelta> deltaChildren = getAffectedFiles(childDelta, includes, excludes);
-                if (deltaChildren != null) {
-                    fileList.addAll(deltaChildren);
+                if (isMatchingDelta(childDelta, includes, excludes)) {
+                    // we have a match - keep checking
                 } else {
-                    Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getAffectedFiles", (Object) null);
-                    return null;
+                    Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.isMatchingDelta", delta, false);
+                    return false;
                 }
             }
         }
 
-        Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.getAffectedFiles", fileList);
-        return fileList;
+        Trace.tracePoint("Exit ", Activator.traceCore, "DeploymentUtils.isMatchingDelta", delta, true);
+        return true;
     }
     
     private static boolean hasMatch(String name, List<String> patterns) {
@@ -383,6 +384,93 @@ public class DeploymentUtils {
         }
         return false;
     }     
+    
+    public static void publishDelta(IModuleResourceDelta delta, IPath publishPath, List<IStatus> statusList) {
+        IModuleResource resource = delta.getModuleResource();
+        int kind = delta.getKind();
+
+        if (resource instanceof IModuleFile) {
+            // it's a file        
+            IPath filePath = publishPath.append(resource.getModuleRelativePath()).append(resource.getName());
+            File file = filePath.toFile();
+            if (kind == IModuleResourceDelta.REMOVED) {
+                if (file.exists() && !file.delete()) {
+                    statusList.add(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "Unable to delete file: " + file.getAbsolutePath(), null));
+                }
+            } else {
+                File parentFile = file.getParentFile();
+                if (parentFile != null && !parentFile.exists()) {
+                    if (!parentFile.mkdirs()) {
+                        statusList.add(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "Unable to create parent directory: " + parentFile.getAbsolutePath(), null));
+                        return;
+                    }
+                }
+                
+                IModuleFile moduleFile = (IModuleFile) resource;
+                try {
+                    copyFile(moduleFile, file);
+                } catch (CoreException e) {
+                    statusList.add(e.getStatus());
+                } catch (IOException e) {
+                    statusList.add(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error copying file " + file.getAbsolutePath(), e));
+                }
+            }
+        } else if (resource instanceof IModuleFolder) {
+            // it's directory
+            if (kind == IModuleResourceDelta.ADDED) {
+                IPath filePath = publishPath.append(resource.getModuleRelativePath()).append(resource.getName());
+                File file = filePath.toFile();
+                if (!file.exists() && !file.mkdirs()) {
+                    statusList.add(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "Unable to create directory: " + file.getAbsolutePath(), null));
+                    return;
+                }
+            }
+
+            IModuleResourceDelta[] childDeltas = delta.getAffectedChildren();
+            if (childDeltas != null) {
+                for (IModuleResourceDelta childDelta : childDeltas) {
+                    publishDelta(childDelta, publishPath, statusList);
+                }
+            }
+
+            if (kind == IModuleResourceDelta.REMOVED) {
+                IPath filePath = publishPath.append(resource.getModuleRelativePath()).append(resource.getName());
+                File file = filePath.toFile();
+                if (file.exists() && !file.delete()) {
+                    statusList.add(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "Unable to delete directory: " + file.getAbsolutePath(), null));
+                }
+            }
+        }
+    }
+    
+    private static void copyFile(IModuleFile moduleFile, File target) throws CoreException, IOException {
+        byte[] buffer = new byte[10 * 1024];
+        int bytesRead;    
+        InputStream in = null;
+        FileOutputStream out = null;
+        try {
+            IFile srcIFile = (IFile) moduleFile.getAdapter(IFile.class);
+            if (srcIFile != null) {
+                in = srcIFile.getContents();
+            } else {
+                File srcFile = (File) moduleFile.getAdapter(File.class);
+                in = new FileInputStream(srcFile);
+            }
+        
+            out = new FileOutputStream(target);
+            
+            while ((bytesRead = in.read(buffer)) > 0) {
+                out.write(buffer, 0, bytesRead);
+            }
+        } finally {
+            if (in != null) {
+                try { in.close(); } catch (IOException ignore) {}
+            }
+            if (out != null) {
+                try { out.close(); } catch (IOException ignore) {}
+            }
+        }
+    }
     
     public static boolean isInstalledModule(IServer server, String configId) {
         Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.isInstalledModule", server, configId);
