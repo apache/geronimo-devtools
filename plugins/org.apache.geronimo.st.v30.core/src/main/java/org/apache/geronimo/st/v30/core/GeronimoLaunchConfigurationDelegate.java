@@ -139,10 +139,25 @@ public class GeronimoLaunchConfigurationDelegate extends AbstractJavaLaunchConfi
         Trace.trace(Trace.INFO, "GeronimoLaunchConfigurationDelegate: manageApplicationStart:=" + managedApplicationStart, Activator.traceCore);
         if (managedApplicationStart) {
             Set<String> modifiedConfigs = server.getModifiedConfigIds();
+            Set<String> deletedConfigs = server.getDeletedConfigIds();
+            int params = 0;
             if (!modifiedConfigs.isEmpty()) {
-                String[] newJvmArguments = new String[jvmArguments.length + 1];
+                params++;
+            }
+            if (!deletedConfigs.isEmpty()) {
+                params++;
+            }            
+            if (params > 0) {
+                String[] newJvmArguments = new String[jvmArguments.length + params];
                 System.arraycopy(jvmArguments, 0, newJvmArguments, 0, jvmArguments.length);
-                newJvmArguments[jvmArguments.length] = toString("-Dgeronimo.loadOnlyConfigList=", modifiedConfigs);
+                int index = jvmArguments.length;
+                if (!modifiedConfigs.isEmpty()) {
+                    newJvmArguments[index] = toString("-Dgeronimo.loadOnlyConfigList=", modifiedConfigs);
+                    index++;
+                }
+                if (!deletedConfigs.isEmpty()) {
+                    newJvmArguments[index] = toString("-Dgeronimo.removedArtifactList=", deletedConfigs);
+                }
                 return newJvmArguments;
             }
         }

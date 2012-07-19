@@ -137,11 +137,16 @@ public class DeploymentUtils {
             //file = generateRunFromWorkspaceConfig(getModule());
             throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Run from workspace is unsupported."));
         } else {
-            IPath outputDir = DeploymentUtils.STATE_LOC.append("server_" + server.getId());
-            outputDir.toFile().mkdirs();
+            IPath outputDir = getServerDirectory(server);
             file = DeploymentUtils.createJarFile(module, outputDir);
         }
         return file;
+    }
+    
+    public static IPath getServerDirectory(IServer server) {
+        IPath outputDir = DeploymentUtils.STATE_LOC.append("server_" + server.getId());
+        outputDir.toFile().mkdirs();
+        return outputDir;
     }
     
     public static int getModuleState(IServer server, IModule module) {

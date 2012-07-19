@@ -54,7 +54,7 @@ import org.apache.geronimo.st.core.GeronimoJMXConnectorFactory.JMXConnectorInfo;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.v30.core.internal.DependencyHelper;
 import org.apache.geronimo.st.v30.core.internal.Messages;
-import org.apache.geronimo.st.v30.core.internal.ServerDelegateHelper;
+import org.apache.geronimo.st.v30.core.internal.RemovedModuleHelper;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.operations.ISharedLibEntryCreationDataModelProperties;
 import org.apache.geronimo.st.v30.core.operations.SharedLibEntryCreationOperation;
@@ -135,6 +135,8 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     
     private DefaultModuleHandler defaultModuleHandler;
     private OSGiModuleHandler osgiModuleHandler;
+    
+    private RemovedModuleHelper removedModuleHelper;
 
     protected ClassLoader getContextClassLoader() {
         return Kernel.class.getClassLoader();
@@ -845,6 +847,8 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         defaultModuleHandler = new DefaultModuleHandler(this);
         osgiModuleHandler = new OSGiModuleHandler(this);
         
+        removedModuleHelper = new RemovedModuleHelper(this);
+        
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.initialize");
     }
 
@@ -907,14 +911,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         setServerState(IServer.STATE_STARTED);
         GeronimoConnectionFactory.getInstance().destroy(getServer());
         startSynchronizeProjectOnServerTask();
-        
-        ServerDelegateHelper helper = getServerDelegate().getServerDelegateHelper();
-        String jvmArgs = helper.deleteRemovedArtifactListFromJVMArgs(getServerDelegate().getVMArgs());
-        try {
-            helper.persistJVMArgs(jvmArgs, new NullProgressMonitor());
-        } catch (CoreException e) {
-            Trace.trace(Trace.ERROR, e.getMessage(), e, Activator.traceCore);
-        }
+        removedModuleHelper.clearRemoveModules();
     }
 
     public void setServerStopped() {
@@ -1710,4 +1707,16 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getModifiedConfigIds", configIds);        
         return configIds;
     }
+    
+    public Set<String> getDeletedConfigIds() {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.getDeletedConfigIds");
+        Set<String> configIds = removedModuleHelper.getRemovedConfigIds();
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getDeletedConfigIds", configIds);        
+        return configIds;
+    }
+    
+    protected RemovedModuleHelper getRemovedModuleHelper() {
+        return removedModuleHelper;
+    }
+    
 }

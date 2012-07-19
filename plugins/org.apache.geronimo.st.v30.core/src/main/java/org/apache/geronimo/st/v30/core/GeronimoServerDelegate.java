@@ -38,7 +38,6 @@ import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 import org.apache.geronimo.crypto.EncryptionManager;
 import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
 import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
-import org.apache.geronimo.st.v30.core.internal.ServerDelegateHelper;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
@@ -153,8 +152,6 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     
     public static final String ENABLE_REMOTE_KARAF_SHELL = "-Dkaraf.startRemoteShell=true";
     
-    public static final String REMOVE_ARTIFACT_LIST = "-Dgeronimo.removedArtifactList";
-    
     public static final int KARAF_SHELL_DEFAULT_TIMEOUT = 0;
     
     public static final int KARAF_SHELL_DEFAULT_KEEPALIVE = 300;
@@ -164,8 +161,6 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     private static IGeronimoVersionHandler versionHandler = null;
 
     private static DeploymentFactory deploymentFactory = new DeploymentFactoryImpl();
-    
-    private final ServerDelegateHelper serverDelegateHelper = new ServerDelegateHelper(this);
     
     private boolean suspendArgUpdates;
     
@@ -262,12 +257,13 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
         // Now, only handle the remov/add modules when the server is shutdown 
         // and the attribute org.apache.geronimo.st.v30.core.manageApplicationStart is true
         int serverState = getServer().getServerState();
-        if(serverState == IServer.STATE_STOPPED && isManageApplicationStart()) {
-            if(remove != null && remove.length > 0) {
-                serverDelegateHelper.markRemoveModules(remove, monitor);
+        if (serverState == IServer.STATE_STOPPED && isManageApplicationStart()) {
+            GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) getServer().loadAdapter(GeronimoServerBehaviourDelegate.class, monitor);
+            if (remove != null && remove.length > 0) {
+                delegate.getRemovedModuleHelper().markRemoveModules(remove, monitor);
             } 
-            if(add != null && add.length > 0) {
-                serverDelegateHelper.unMarkRemoveModules(add, monitor);
+            if (add != null && add.length > 0) {
+                delegate.getRemovedModuleHelper().unMarkRemoveModules(add, monitor);
             }
         }
         // TODO servermodule.info should be pushed to here and set as instance
@@ -534,6 +530,11 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
         return null;        
     }
 
+    @Override
+    protected void initialize() {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.initialize");
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerDelegate.initialize");
+    }
 
     /**
      * Initialize this server with default values when a new server is created
@@ -1203,9 +1204,5 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     public void setServerInstanceProperties(Map map) {
         setAttribute(GeronimoRuntimeDelegate.SERVER_INSTANCE_PROPERTIES, map);
     }
-    
-    public ServerDelegateHelper getServerDelegateHelper() {
-        return serverDelegateHelper;
-    }
-    
+
 }
