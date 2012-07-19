@@ -1155,7 +1155,8 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     // PROPERTY_CHECK_FOR_REMOVED_MODULES
     //
     public boolean isCheckForRemovedModules() {
-        return getProperty(PROPERTY_CHECK_FOR_REMOVED_MODULES, true);
+        // default to false as synchronization task can still incorrectly remove the modules
+        return getProperty(PROPERTY_CHECK_FOR_REMOVED_MODULES, false);
     }
     public void setCheckForRemovedModules(boolean enable){
         setAttribute(PROPERTY_CHECK_FOR_REMOVED_MODULES, enable);
