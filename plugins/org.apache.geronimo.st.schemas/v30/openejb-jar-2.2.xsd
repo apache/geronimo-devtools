@@ -139,12 +139,11 @@
       <xs:element name="cache-size" type="xs:int" minOccurs="0"/>
       <xs:element name="tss-link" type="xs:string" minOccurs="0"/>
       <xs:element name="tss" type="naming:patternType" minOccurs="0"/>
-      <xs:choice maxOccurs="unbounded">
-        <xs:element ref="naming:abstract-naming-entry"/>
+      <!-- The naming:persistence-context-ref and naming:gbean-ref is the implementation of naming:abstract-naming-entry -->
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element ref="naming:persistence-context-ref"/>
         <xs:element ref="naming:gbean-ref"/>
       </xs:choice>
-      <xs:element ref="naming:persistence-context-ref" maxOccurs="unbounded" minOccurs="0"/>
       <xs:element ref="naming:persistence-unit-ref" maxOccurs="unbounded" minOccurs="0"/>
       <xs:element ref="naming:ejb-ref" maxOccurs="unbounded" minOccurs="0"/>
       <xs:element ref="naming:ejb-local-ref" maxOccurs="unbounded" minOccurs="0"/>
@@ -238,12 +237,8 @@
         </xs:complexType>
       </xs:element>
       <xs:element ref="naming:message-destination" maxOccurs="unbounded" minOccurs="0"/>
-      <xs:element ref="app:security" minOccurs="0" />
       <xs:element ref="ns1:security" minOccurs="0"/>
-      <xs:choice maxOccurs="unbounded" minOccurs="0">
-        <xs:element ref="sys:service"/>
-        <xs:element ref="sys:gbean"/>
-      </xs:choice>
+      <xs:element ref="sys:gbean" maxOccurs="unbounded" minOccurs="0"/>
       <xs:element ref="per:persistence" maxOccurs="unbounded" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
@@ -253,12 +248,11 @@
       <xs:element name="ejb-name" type="xs:string"/>
       <xs:element ref="naming:resource-adapter"/>
       <xs:element name="activation-config" type="tns:activation-configType" minOccurs="0"/>
-      <xs:choice maxOccurs="unbounded">
-        <xs:element ref="naming:abstract-naming-entry"/>
+      <!-- The naming:persistence-context-ref and naming:gbean-ref is the implementation of naming:abstract-naming-entry -->
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element ref="naming:persistence-context-ref"/>
         <xs:element ref="naming:gbean-ref"/>
       </xs:choice>
-      <xs:element ref="naming:persistence-context-ref" maxOccurs="unbounded" minOccurs="0"/>
       <xs:element ref="naming:persistence-unit-ref" maxOccurs="unbounded" minOccurs="0"/>
       <xs:element ref="naming:ejb-ref" maxOccurs="unbounded" minOccurs="0"/>
       <xs:element ref="naming:ejb-local-ref" maxOccurs="unbounded" minOccurs="0"/>
@@ -311,12 +305,11 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
-      <xs:choice maxOccurs="unbounded">
-        <xs:element ref="naming:abstract-naming-entry"/>
+      <!-- The naming:persistence-context-ref and naming:gbean-ref is the implementation of naming:abstract-naming-entry -->
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element ref="naming:persistence-context-ref"/>
         <xs:element ref="naming:gbean-ref"/>
       </xs:choice>
-      <xs:element ref="naming:persistence-context-ref" maxOccurs="unbounded" minOccurs="0"/>
       <xs:element ref="naming:persistence-unit-ref" maxOccurs="unbounded" minOccurs="0"/>
       <xs:element ref="naming:ejb-ref" maxOccurs="unbounded" minOccurs="0"/>
       <xs:element ref="naming:ejb-local-ref" maxOccurs="unbounded" minOccurs="0"/>
