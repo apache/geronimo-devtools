@@ -38,6 +38,7 @@ import javax.enterprise.deploy.spi.factories.DeploymentFactory;
 import org.apache.geronimo.crypto.EncryptionManager;
 import org.apache.geronimo.deployment.plugin.factories.DeploymentFactoryImpl;
 import org.apache.geronimo.deployment.plugin.jmx.JMXDeploymentManager;
+import org.apache.geronimo.st.v30.core.internal.RemovedModuleHelper;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
@@ -254,16 +255,16 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
      */
     public void modifyModules(IModule[] add, IModule[] remove, IProgressMonitor monitor) throws CoreException {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.modifyModules", add, remove, monitor);
-        // Now, only handle the remov/add modules when the server is shutdown 
-        // and the attribute org.apache.geronimo.st.v30.core.manageApplicationStart is true
-        int serverState = getServer().getServerState();
-        if (serverState == IServer.STATE_STOPPED && isManageApplicationStart()) {
-            GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) getServer().loadAdapter(GeronimoServerBehaviourDelegate.class, monitor);
+        // Handle remove/add modules when the server is shutdown 
+        IServer server = getServer();
+        if (server != null && server.getServerState() == IServer.STATE_STOPPED) {
+            GeronimoServerBehaviourDelegate delegate = (GeronimoServerBehaviourDelegate) server.loadAdapter(GeronimoServerBehaviourDelegate.class, monitor);
+            RemovedModuleHelper removedModuleHelper = delegate.getRemovedModuleHelper();
             if (remove != null && remove.length > 0) {
-                delegate.getRemovedModuleHelper().markRemoveModules(remove, monitor);
+                removedModuleHelper.markRemoveModules(remove, monitor);
             } 
             if (add != null && add.length > 0) {
-                delegate.getRemovedModuleHelper().unMarkRemoveModules(add, monitor);
+                removedModuleHelper.unMarkRemoveModules(add, monitor);
             }
         }
         // TODO servermodule.info should be pushed to here and set as instance

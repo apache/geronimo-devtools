@@ -18,6 +18,7 @@ package org.apache.geronimo.st.v30.core;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -137,30 +138,37 @@ public class GeronimoLaunchConfigurationDelegate extends AbstractJavaLaunchConfi
     private String[] updateJVMArguments(String[] jvmArguments, GeronimoServerBehaviourDelegate server) {
         boolean managedApplicationStart = server.getServerDelegate().isManageApplicationStart();        
         Trace.trace(Trace.INFO, "GeronimoLaunchConfigurationDelegate: manageApplicationStart:=" + managedApplicationStart, Activator.traceCore);
+        
+        int params = 0;
+        Set<String> deletedConfigs = server.getDeletedConfigIds();
+        if (!deletedConfigs.isEmpty()) {
+            params++;
+        } 
+        
+        Set<String> modifiedConfigs = null;        
         if (managedApplicationStart) {
-            Set<String> modifiedConfigs = server.getModifiedConfigIds();
-            Set<String> deletedConfigs = server.getDeletedConfigIds();
-            int params = 0;
+            modifiedConfigs = server.getModifiedConfigIds();
             if (!modifiedConfigs.isEmpty()) {
                 params++;
             }
-            if (!deletedConfigs.isEmpty()) {
-                params++;
-            }            
-            if (params > 0) {
-                String[] newJvmArguments = new String[jvmArguments.length + params];
-                System.arraycopy(jvmArguments, 0, newJvmArguments, 0, jvmArguments.length);
-                int index = jvmArguments.length;
-                if (!modifiedConfigs.isEmpty()) {
-                    newJvmArguments[index] = toString("-Dgeronimo.loadOnlyConfigList=", modifiedConfigs);
-                    index++;
-                }
-                if (!deletedConfigs.isEmpty()) {
-                    newJvmArguments[index] = toString("-Dgeronimo.removedArtifactList=", deletedConfigs);
-                }
-                return newJvmArguments;
-            }
+        } else {
+            modifiedConfigs = Collections.emptySet();
         }
+        
+        if (params > 0) {
+            String[] newJvmArguments = new String[jvmArguments.length + params];
+            System.arraycopy(jvmArguments, 0, newJvmArguments, 0, jvmArguments.length);
+            int index = jvmArguments.length;
+            if (!modifiedConfigs.isEmpty()) {
+                newJvmArguments[index] = toString("-Dgeronimo.loadOnlyConfigList=", modifiedConfigs);
+                index++;
+            }
+            if (!deletedConfigs.isEmpty()) {
+                newJvmArguments[index] = toString("-Dgeronimo.removedArtifactList=", deletedConfigs);
+            }
+            jvmArguments = newJvmArguments;
+        }
+        
         return jvmArguments;
     }
     
