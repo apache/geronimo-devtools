@@ -80,11 +80,13 @@ import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.sourcelookup.AbstractSourceLookupDirector;
 import org.eclipse.debug.core.sourcelookup.ISourceContainer;
 import org.eclipse.debug.core.sourcelookup.containers.DefaultSourceContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.debug.core.IJavaDebugTarget;
 import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
@@ -137,6 +139,8 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     private OSGiModuleHandler osgiModuleHandler;
     
     private RemovedModuleHelper removedModuleHelper;
+    
+    private boolean eclipseHotSwap;
 
     protected ClassLoader getContextClassLoader() {
         return Kernel.class.getClassLoader();
@@ -652,16 +656,41 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Error creating file with resource modifications");
             return false;
         }
-        // see if the classes can be hot swapped
-        if (!dm.hotSwapEBAContent(ebaName, bundleId, changeSetFile, true)) {
-            Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap cannot be preformed");
-            changeSetFile.delete();
-            return false;
+        if (eclipseHotSwap) {
+            // debug mode - Eclipse will do class hot swap for us - save changes only
+            boolean result = dm.updateEBAArchive(ebaName, bundleId, changeSetFile, true);
+            Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Eclipse HCR - updated class files only", result);
+            return true;
         } else {
-            changeSetFile.delete();
+            // non-debug mode - try class hot swap
+            if (!dm.hotSwapEBAContent(ebaName, bundleId, changeSetFile, true)) {
+                changeSetFile.delete();
+                Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap cannot be preformed");
+                return false;
+            } else {
+                changeSetFile.delete();
+                Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap was succesfully preformed");
+                return true;
+            }
         }
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap was succesfully preformed");
-        return true;
+    }
+    
+    private boolean isEclipseHotSwapEnabled() {
+        Trace.tracePoint("Enter", Activator.traceCore, "GeronimoServerBehaviourDelegate.isEclipseHotSwapEnabled");
+        boolean enabled = false;
+        IServer server = getServer();
+        if (ILaunchManager.DEBUG_MODE.equals(server.getMode())) {
+            ILaunch launch = server.getLaunch();
+            if (launch != null) {
+                IDebugTarget target = launch.getDebugTarget();
+                if (target instanceof IJavaDebugTarget) {
+                    IJavaDebugTarget javaTarget = (IJavaDebugTarget) target;
+                    enabled = javaTarget.supportsHotCodeReplace();
+                }
+            }            
+        }
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.isEclipseHotSwapEnabled", enabled);
+        return enabled;
     }
     
     private static class ModuleDelta {
@@ -907,7 +936,8 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         return "org.apache.geronimo.cli.daemon.DaemonCLI";
     }
 
-    public void setServerStarted() {
+    public void setServerStarted() {        
+        eclipseHotSwap = isEclipseHotSwapEnabled();
         setServerState(IServer.STATE_STARTED);
         GeronimoConnectionFactory.getInstance().destroy(getServer());
         startSynchronizeProjectOnServerTask();
