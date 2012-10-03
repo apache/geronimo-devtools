@@ -488,7 +488,7 @@
          | Added the Geronimo staging repo	
          |
          -->
-		<repository>
+        <repository>
             <id>geronimo.staging</id>
             <name>Geronimo staging Repository</name>
             <url>https://repository.apache.org/content/repositories/orgapachegeronimo-015</url>
