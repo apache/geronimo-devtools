@@ -358,7 +358,7 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
         IVMInstall vmInstall = getRuntimeDelegate().getVMInstall();
         if (vmInstall instanceof IVMInstall2) {
             String javaVersion = ((IVMInstall2) vmInstall).getJavaVersion();
-            return javaVersion != null && (javaVersion.startsWith("1.5") || javaVersion.startsWith("1.6"));
+            return javaVersion != null && (javaVersion.startsWith("1.6") || javaVersion.startsWith("1.7"));
         }
         return false;
     }
