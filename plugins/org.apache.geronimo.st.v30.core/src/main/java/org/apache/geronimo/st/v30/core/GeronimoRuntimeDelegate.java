@@ -97,46 +97,33 @@ public class GeronimoRuntimeDelegate extends RuntimeDelegate implements IGeronim
             return status;
         }
 
-        if (getVMInstall() == null)
+        if (getVMInstall() == null) {
             return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, Messages.errorJRE, null);
-
+        }
+        
         IPath runtimeLoc = getRuntime().getLocation();
 
         // check for server file structure
-        String version = getRuntime().getRuntimeType().getVersion();
+        int limit = 2;
         int count = 0;
-        int limit = 4;
-        if (version.startsWith("3")){
-        	//for version 3.0+
-        	
-	        count = runtimeLoc.append("lib").toFile().exists() ? ++count : count;
-	        count = runtimeLoc.append("repository").toFile().exists() ? ++count : count;
-	        
-	        limit = 2;
-	        
-        }else{
-        	//for version before 3.0
-	        count = runtimeLoc.append("bin/server.jar").toFile().exists() ? ++count : count;
-	        count = runtimeLoc.append("bin/deployer.jar").toFile().exists() ? ++count : count;
-	        count = runtimeLoc.append("lib").toFile().exists() ? ++count : count;
-	        count = runtimeLoc.append("repository").toFile().exists() ? ++count : count;
-	
+        if (runtimeLoc.append("lib").toFile().exists()) {
+            count++;
         }
-        
+        if (runtimeLoc.append("repository").toFile().exists()) {
+            count++;
+        }
+	              
         if (count == 0) {
             return new Status(IStatus.ERROR, Activator.PLUGIN_ID, NO_IMAGE, "", null);
         }
         
-        if (count < limit) {
-        	
+        if (count < limit) {        	
 			// part of a server image was found, don't let install happen
 			return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					PARTIAL_IMAGE, Messages.bind(Messages.missingContent,
 							getRuntime().getName()), null);
         }
-
         
-
         String detectedVersion = detectVersion();
         if (detectedVersion == null) {
 			return new Status(IStatus.WARNING, Activator.PLUGIN_ID,
@@ -144,8 +131,7 @@ public class GeronimoRuntimeDelegate extends RuntimeDelegate implements IGeronim
 							getRuntime().getName()), null);
 		}
 
-        if (!detectedVersion.startsWith(getRuntime().getRuntimeType()
-				.getVersion())) {
+        if (!detectedVersion.startsWith(getRuntime().getRuntimeType().getVersion())) {
         	String runtimeVersion = getRuntime().getRuntimeType().getVersion();
 			String message = NLS.bind(Messages.incorrectVersion,
 					new String[] { getRuntime().getName(),
