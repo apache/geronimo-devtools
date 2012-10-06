@@ -152,4 +152,14 @@ public class Trace {
     public static void traceExit(boolean opt, String classDotMethod, Object... parms) {
         tracePoint("Exit", opt, classDotMethod, parms);
     }
+    
+    public static void log(int level, String message, Throwable exception) {
+        log.trace(level, Activator.PLUGIN_ID, message, exception);
+        if (Activator.console) {
+            System.out.println(buildMessage(message));
+            if (exception != null) {
+                exception.printStackTrace(System.out);
+            }
+        }
+    }
 }

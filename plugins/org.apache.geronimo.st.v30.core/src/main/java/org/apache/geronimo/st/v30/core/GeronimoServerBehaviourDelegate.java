@@ -17,6 +17,7 @@
 package org.apache.geronimo.st.v30.core;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,6 +65,7 @@ import org.apache.geronimo.st.v30.core.osgi.AriesHelper.BundleInfo;
 import org.apache.geronimo.st.v30.core.osgi.OSGiModuleHandler;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -86,7 +88,10 @@ import org.eclipse.debug.core.sourcelookup.AbstractSourceLookupDirector;
 import org.eclipse.debug.core.sourcelookup.ISourceContainer;
 import org.eclipse.debug.core.sourcelookup.containers.DefaultSourceContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.ToolFactory;
+import org.eclipse.jdt.core.util.IClassFileReader;
 import org.eclipse.jdt.debug.core.IJavaDebugTarget;
+import org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget;
 import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
@@ -622,10 +627,15 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             /*
              * Try class hot swap first and if it fails fallback to regular bundle update.
              */
-            if (!refreshBundleClasses(dm, ebaModule, bundleModule, ebaName, bundleId)) {
+            ClassReplaceResult result = refreshBundleClasses(dm, ebaModule, bundleModule, ebaName, bundleId);
+            if (result != ClassReplaceResult.SUCCESS) {
                 File file = DeploymentUtils.getTargetFile(getServer(), bundleModule);
                 dm.updateEBAContent(ebaName, bundleId, file);
+                if (result == ClassReplaceResult.FAIL_FORCE_GC) {
+                    invokeGC();
+                }
             }
+            
         } catch (Exception e) {
             return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.REFRESH_FAIL, e);
         }
@@ -635,48 +645,86 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         return Status.OK_STATUS;
     }
 
-    private boolean refreshBundleClasses(ExtendedDeploymentManager dm, IModule ebaModule, IModule bundleModule, AbstractName ebaName, long bundleId) throws Exception {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", ebaModule, bundleModule, ebaName, bundleId);    
+    private enum ClassReplaceResult { SUCCESS, FAIL, FAIL_FORCE_GC };
+    
+    private ClassReplaceResult refreshBundleClasses(ExtendedDeploymentManager dm, IModule ebaModule, IModule bundleModule, AbstractName ebaName, long bundleId) throws Exception {
+        Trace.traceEntry(Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", ebaModule, bundleModule, ebaName, bundleId);    
         // check if class hot swap is supported
         if (!dm.isRedefineClassesSupported()) {
-            Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Class redefinition is not supported");        
-            return false;
+            Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Class redefinition is not supported");        
+            return ClassReplaceResult.FAIL;
         }
         // ensure only classes have changed
         IModule[] module = new IModule[] { ebaModule, bundleModule };
         IModuleResourceDelta[] delta = getPublishedResourceDelta(module);
         IModuleResource[] classResources = DeploymentUtils.getChangedClassResources(delta);
         if (classResources == null) {
-            Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Non-class resource modifications found");
-            return false;
+            Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Non-class resource modifications found");
+            return ClassReplaceResult.FAIL;
         }
         // create temp. zip with the changes
         File changeSetFile = DeploymentUtils.createChangeSetFile(classResources);
         if (changeSetFile == null) {
-            Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Error creating file with resource modifications");
-            return false;
+            Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Error creating file with resource modifications");
+            return ClassReplaceResult.FAIL;
         }
         if (eclipseHotSwap) {
-            // debug mode - Eclipse will do class hot swap for us - save changes only
-            boolean result = dm.updateEBAArchive(ebaName, bundleId, changeSetFile, true);
-            Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Eclipse HCR - updated class files only", result);
-            return true;
+            // debug mode - Eclipse will do class hot swap for us
+            IDebugTarget target = getServer().getLaunch().getDebugTarget();
+            if (isOutOfSynch(target, classResources)) {
+                Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Eclipse HCR failed");
+                return ClassReplaceResult.FAIL_FORCE_GC;
+            } else {            
+                // save changes only
+                boolean result = dm.updateEBAArchive(ebaName, bundleId, changeSetFile, true);
+                Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Eclipse HCR - updated class files only", result);
+                return ClassReplaceResult.SUCCESS;
+            }
         } else {
             // non-debug mode - try class hot swap
             if (!dm.hotSwapEBAContent(ebaName, bundleId, changeSetFile, true)) {
                 changeSetFile.delete();
-                Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap cannot be preformed");
-                return false;
+                Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap cannot be preformed");
+                return ClassReplaceResult.FAIL;
             } else {
                 changeSetFile.delete();
-                Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap was succesfully preformed");
-                return true;
+                Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap was succesfully preformed");
+                return ClassReplaceResult.SUCCESS;
             }
         }
     }
+
+    private boolean isOutOfSynch(IDebugTarget target, IModuleResource[] classResources) {
+        Trace.traceEntry(Activator.traceCore, "GeronimoServerBehaviourDelegate.isOutOfSynch");    
+        if (target instanceof JDIDebugTarget) {
+            JDIDebugTarget javaTarget = (JDIDebugTarget) target;
+            for (IModuleResource resource : classResources) {
+                String path = null;
+                IFile srcIFile = (IFile) resource.getAdapter(IFile.class);
+                if (srcIFile != null) {
+                    path = srcIFile.getLocation().toOSString();
+                } else {
+                    File srcFile = (File) resource.getAdapter(File.class);
+                    path = srcFile.getAbsolutePath();
+                }
+            
+                IClassFileReader reader = ToolFactory.createDefaultClassFileReader(path, IClassFileReader.CLASSFILE_ATTRIBUTES);
+                if (reader != null) {
+                    String className = new String(reader.getClassName()).replace('/', '.');
+                    if (javaTarget.isOutOfSynch(className)) {
+                        // out-of-synch class found
+                        Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.isOutOfSynch", "Out-of-synch class found", className);
+                        return true;                        
+                    }                    
+                }
+            }
+        }
+        Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.isOutOfSynch");   
+        return false;
+    }
     
     private boolean isEclipseHotSwapEnabled() {
-        Trace.tracePoint("Enter", Activator.traceCore, "GeronimoServerBehaviourDelegate.isEclipseHotSwapEnabled");
+        Trace.traceEntry(Activator.traceCore, "GeronimoServerBehaviourDelegate.isEclipseHotSwapEnabled");
         boolean enabled = false;
         IServer server = getServer();
         if (ILaunchManager.DEBUG_MODE.equals(server.getMode())) {
@@ -685,11 +733,12 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
                 IDebugTarget target = launch.getDebugTarget();
                 if (target instanceof IJavaDebugTarget) {
                     IJavaDebugTarget javaTarget = (IJavaDebugTarget) target;
+                    javaTarget.addHotCodeReplaceListener(new HotCodeReplaceListener());
                     enabled = javaTarget.supportsHotCodeReplace();
                 }
             }            
         }
-        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.isEclipseHotSwapEnabled", enabled);
+        Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.isEclipseHotSwapEnabled", enabled);
         return enabled;
     }
     
@@ -1491,6 +1540,18 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     
     private ObjectName getFrameworkMBean(MBeanServerConnection connection) throws Exception {
         return getMBean(connection, "osgi.core:type=framework,*", "Framework");
+    }
+    
+    private void invokeGC() {
+        Trace.traceEntry(Activator.traceCore, "GeronimoServerBehaviourDelegate.invokeGC");
+        try {
+            MBeanServerConnection connection = getServerConnection();
+            ObjectName name = getMBean(connection, "java.lang:type=Memory", "Memory");
+            connection.invoke(name, "gc", new Object [0], new String [0]);
+        } catch (Exception e) {
+            Trace.trace(Trace.ERROR, "Error while requesting server gc", e, Activator.traceCore);
+        }
+        Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.invokeGC");
     }
     
     public Target[] getTargets() {
