@@ -78,3 +78,4 @@ Export-Package:
  org.apache.geronimo.specs.activation
 Bundle-Vendor: Apache Software Foundation
 Import-Package: javax.xml.namespace
+Bundle-ActivationPolicy: lazy
