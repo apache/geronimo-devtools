@@ -573,6 +573,29 @@ public class DeploymentUtils {
         return true;
     }
     
+    
+    /**
+     * Returns true only if the delta contains at least one CHANGED class resource. 
+     */
+    public static boolean containsChangedClassResources(IModuleResourceDelta[] deltaArray) {
+        for (IModuleResourceDelta delta : deltaArray) {
+            int kind = delta.getKind();                    
+            IModuleResource resource = delta.getModuleResource();
+            if (resource instanceof IModuleFile) {
+                String name = resource.getName();
+                if (name.endsWith(".class") && kind == IModuleResourceDelta.CHANGED) {
+                    return true;
+                }
+            } else if (resource instanceof IModuleFolder) {
+                IModuleResourceDelta[] childDeltaArray = delta.getAffectedChildren();
+                if (containsChangedClassResources(childDeltaArray)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static File createChangeSetFile(IModuleResource[] resources) {
         Trace.tracePoint("Entry", Activator.traceCore, "DeploymentUtils.createChangeSetFile", resources);
         
