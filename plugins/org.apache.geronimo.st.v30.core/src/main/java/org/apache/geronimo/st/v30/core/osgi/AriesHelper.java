@@ -16,7 +16,6 @@
  */
 package org.apache.geronimo.st.v30.core.osgi;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import org.apache.geronimo.st.v30.core.Activator;
@@ -35,9 +34,75 @@ import org.osgi.framework.Version;
  */
 public final class AriesHelper {
 
-    private AriesHelper() {
+    private static Method GET_BUNDLE_MANIFEST_METHOD;
+    private static Method GET_APPLICATION_MANIFEST_METHOD;
+    
+    private static Method GET_BUNDLE_SYMBOLIC_NAME_METHOD;
+    private static Method GET_BUNDLE_VERSION_METHOD;
+    
+    private static Method GET_APPLICATION_SYMBOLIC_NAME_METHOD;
+    private static Method GET_APPLICATION_VERSION_METHOD;
+    
+    private static Method REMOVE_MODEL_METHOD;
+    private static Method GET_MANIFEST_FILE_METHOD;
+    
+    static {
+        initialize();
     }
     
+    private static void initialize() {
+        try {
+            Class<?> ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
+            GET_BUNDLE_MANIFEST_METHOD = ariesUtilsClass.getMethod("getBlueprintBundleManifest", IProject.class);
+            GET_APPLICATION_MANIFEST_METHOD = ariesUtilsClass.getMethod("getApplicationManifest", IProject.class);
+        } catch (ClassNotFoundException e) {
+            Trace.trace(Trace.WARNING, "AriesUtils class is not available", e, Activator.traceOsgi);
+        } catch (Exception e) {
+            Trace.trace(Trace.ERROR, "Could not initialize AriesUtils methods", e, Activator.traceOsgi);
+        }
+        
+        try {
+            Class<?> bundleManifestClass = Class.forName("com.ibm.etools.aries.core.models.BundleManifest");
+            GET_BUNDLE_SYMBOLIC_NAME_METHOD = bundleManifestClass.getMethod("getBundleSymbolicName");
+            GET_BUNDLE_VERSION_METHOD = bundleManifestClass.getMethod("getBundleVersion");
+        } catch (ClassNotFoundException e) {
+            Trace.trace(Trace.WARNING, "BundleManifest class is not available", e, Activator.traceOsgi);
+        } catch (Exception e) {
+            Trace.trace(Trace.ERROR, "Could not initialize BundleManifest methods", e, Activator.traceOsgi);
+        }
+        
+        try {
+            Class<?> appManifestClass = Class.forName("com.ibm.etools.aries.core.models.ApplicationManifest");
+            GET_APPLICATION_SYMBOLIC_NAME_METHOD = appManifestClass.getMethod("getApplicationSymbolicName");
+            GET_APPLICATION_VERSION_METHOD= appManifestClass.getMethod("getApplicationVersion");
+        } catch (ClassNotFoundException e) {
+            Trace.trace(Trace.WARNING, "ApplicationManifest class is not available", e, Activator.traceOsgi);
+        } catch (Exception e) {
+            Trace.trace(Trace.ERROR, "Could not initialize ApplicationManifest methods", e, Activator.traceOsgi);
+        }
+        
+        try {
+            Class<?> manifestFactoryClass = Class.forName("com.ibm.etools.aries.core.models.ManifestModelsFactory");
+            Class<?> manifestClass = Class.forName("com.ibm.etools.aries.core.models.Manifest");
+            REMOVE_MODEL_METHOD = manifestFactoryClass.getMethod("removeModel", new Class [] { IProject.class, manifestClass });
+        } catch (ClassNotFoundException e) {
+            Trace.trace(Trace.WARNING, "ManifestModelsFactory or Manifest class is not available", e, Activator.traceOsgi);
+        } catch (Exception e) {
+            Trace.trace(Trace.ERROR, "Could not initialize ManifestModelsFactory methods", e, Activator.traceOsgi);
+        }
+        
+        try {
+            Class<?> manifestUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.ManifestUtils");
+            GET_MANIFEST_FILE_METHOD = manifestUtilsClass.getMethod("getManifestFile", IProject.class);
+        } catch (ClassNotFoundException e) {
+            Trace.trace(Trace.WARNING, "ManifestUtils class is not available", e, Activator.traceOsgi);
+        } catch (Exception e) {
+            Trace.trace(Trace.ERROR, "Could not initialize ManifestUtils methods", e, Activator.traceOsgi);
+        }
+    }
+    
+    private AriesHelper() {
+    }
     
     /**
      * Determine if the Aries OSGi tooling plugins are installed. They are optional and have to be manually installed 
@@ -62,101 +127,58 @@ public final class AriesHelper {
         return false;
     }
     
-    public static IModule[] getChildModules(IModule ebaModule) {
-        if (AriesHelper.isAriesInstalled()) {
-            try {
-                Class<?> class1 = Class.forName("com.ibm.etools.aries.internal.core.modules.AriesModuleDelegate");
-                Method method = class1.getMethod("getChildModules");
-                Constructor<?> constructor = class1.getConstructor(IProject.class);
-                Object object = constructor.newInstance(ebaModule.getProject());
-                return (IModule[]) method.invoke(object);                
-            } catch (Exception e) {
-                Trace.trace(Trace.ERROR, "Could not get child modules", e, Activator.traceOsgi);
-            }
-        }        
-        return new IModule[0];
+    public static BundleInfo getBundleInfo(IModule module) {
+        BundleInfo info = null;
+        try {
+            info = getBundleInfo(module.getProject());
+        } catch (Exception e) {
+            Trace.trace(Trace.ERROR, "Could not get BundleInfo", e, Activator.traceOsgi);
+        }
+        return info;
     }
     
-    public static String getSymbolicName(IModule bundleModule) {
-        if (AriesHelper.isAriesInstalled()) {
-            try {
-                Class<?> class1 = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
-                Method method = class1.getMethod("getBundleSymbolicName", IProject.class);
-                return (String) method.invoke(null, bundleModule.getProject());
-            } catch (Exception e) {
-                Trace.trace(Trace.ERROR, "Could not get bundle symbolic name", e, Activator.traceOsgi);
-            }
-        }
-        return null;
-    }
-    
-    public static Version getVersion(IModule bundleModule) {
-        if (AriesHelper.isAriesInstalled()) {
-            try {
-                Class<?> ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
-                Method method = ariesUtilsClass.getMethod("getBlueprintBundleManifest", IProject.class);
-                Object object = method.invoke(null, bundleModule.getProject());
-
-                Class<?> bundleManifest = Class.forName("com.ibm.etools.aries.core.models.BundleManifest");
-                method = bundleManifest.getMethod("getBundleVersion");
-                String versionStr = (String) method.invoke(object);
-                Version version = Version.parseVersion(versionStr);
-                return version;
-            } catch (Exception e) {
-                Trace.trace(Trace.ERROR, "Could not get bundle version", e, Activator.traceOsgi);
-            }
-        }
-        return null;
-    }
-
     public static BundleInfo getBundleInfo(IProject project) throws Exception {
-        if (AriesHelper.isAriesInstalled()) {
-            Class<?> ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
-            Method method = ariesUtilsClass.getMethod("getBlueprintBundleManifest", IProject.class);
-            Object object = method.invoke(null, project);
-
-            Class<?> bundleManifest = Class.forName("com.ibm.etools.aries.core.models.BundleManifest");
-            method = bundleManifest.getMethod("getBundleSymbolicName");
-            String symbolicName = (String) method.invoke(object);
-
-            method = bundleManifest.getMethod("getBundleVersion");
-            String versionStr = (String) method.invoke(object);
-            Version version = Version.parseVersion(versionStr);
-
-            if (symbolicName != null && version != null) {
-                return new BundleInfo(symbolicName, version);
+        if (GET_BUNDLE_MANIFEST_METHOD != null) {
+            Object bundleManifest = GET_BUNDLE_MANIFEST_METHOD.invoke(null, project);
+            String symbolicName = (String) GET_BUNDLE_SYMBOLIC_NAME_METHOD.invoke(bundleManifest);
+            String version = (String) GET_BUNDLE_VERSION_METHOD.invoke(bundleManifest);
+            if (symbolicName == null && version == null && REMOVE_MODEL_METHOD != null) {
+                // try to reset the manifest cache in case and lookup the values again
+                REMOVE_MODEL_METHOD.invoke(null, project, bundleManifest);
+                bundleManifest = GET_BUNDLE_MANIFEST_METHOD.invoke(null, project);
+                symbolicName = (String) GET_BUNDLE_SYMBOLIC_NAME_METHOD.invoke(bundleManifest);
+                version = (String) GET_BUNDLE_VERSION_METHOD.invoke(bundleManifest);
+            }
+            if (symbolicName != null) {
+                return new BundleInfo(symbolicName, Version.parseVersion(version));
             }
         }
         return null;
     }
-    
+        
     public static BundleInfo getApplicationBundleInfo(IProject project) throws Exception {
-        if (AriesHelper.isAriesInstalled()) {
-            Class<?> ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.AriesUtils");
-            Method method = ariesUtilsClass.getMethod("getApplicationManifest", IProject.class);
-            Object object = method.invoke(null, project);
-
-            Class<?> appManifestClass = Class.forName("com.ibm.etools.aries.core.models.ApplicationManifest");
-            method = appManifestClass.getMethod("getApplicationSymbolicName");
-            String symbolicName = (String) method.invoke(object);
-
-            method = appManifestClass.getMethod("getApplicationVersion");
-            String versionStr = (String) method.invoke(object);
-            Version version = Version.parseVersion(versionStr);
-            
-            if (symbolicName != null && version != null) {
-                return new BundleInfo(symbolicName, version);
+        if (GET_APPLICATION_MANIFEST_METHOD != null) {
+            Object appManifest = GET_APPLICATION_MANIFEST_METHOD.invoke(null, project);
+            String symbolicName = (String) GET_APPLICATION_SYMBOLIC_NAME_METHOD.invoke(appManifest);
+            String version = (String) GET_APPLICATION_VERSION_METHOD.invoke(appManifest);
+            if (symbolicName == null && version == null && REMOVE_MODEL_METHOD != null) {
+                // try to reset the manifest cache in case and lookup the values again
+                REMOVE_MODEL_METHOD.invoke(null, project, appManifest);
+                appManifest = GET_APPLICATION_MANIFEST_METHOD.invoke(null, project);
+                symbolicName = (String) GET_APPLICATION_SYMBOLIC_NAME_METHOD.invoke(appManifest);
+                version = (String) GET_APPLICATION_VERSION_METHOD.invoke(appManifest);
+            }
+            if (symbolicName != null) {
+                return new BundleInfo(symbolicName, Version.parseVersion(version));
             }
         }
         return null;
     }
 
     public static IFile getManifestFile(IProject project) {
-        if (AriesHelper.isAriesInstalled()) {
+        if (GET_MANIFEST_FILE_METHOD != null) {
             try {
-                Class<?> ariesUtilsClass = Class.forName("com.ibm.etools.aries.internal.core.utils.ManifestUtils");
-                Method method = ariesUtilsClass.getMethod("getManifestFile", IProject.class);
-                return (IFile) method.invoke(null, project);
+                return (IFile) GET_MANIFEST_FILE_METHOD.invoke(null, project);
             } catch (Exception e) {
                 Trace.trace(Trace.ERROR, "Could not get manifest file", e, Activator.traceOsgi);
             }
