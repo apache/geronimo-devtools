@@ -483,20 +483,6 @@
                 <enabled>false</enabled>
             </releases>
         </repository>
-	<!--
-         |
-         | Added the Geronimo staging repo	
-         |
-         -->
-        <repository>
-            <id>geronimo.staging</id>
-            <name>Geronimo staging Repository</name>
-            <url>https://repository.apache.org/content/repositories/orgapachegeronimo-015</url>
-            <layout>default</layout>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>		
     </repositories>
                         
     <pluginRepositories>
