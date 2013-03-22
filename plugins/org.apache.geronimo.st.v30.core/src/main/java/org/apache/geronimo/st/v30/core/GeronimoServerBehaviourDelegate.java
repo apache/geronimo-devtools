@@ -1574,10 +1574,12 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     }
     
     public MBeanServerConnection getServerConnection() throws Exception {
-        String host = getServer().getHost();
-        String user = getGeronimoServer().getAdminID();
-        String password = getGeronimoServer().getAdminPassword();
-        String port = getGeronimoServer().getRMINamingPort();
+        GeronimoServerDelegate delegate = getServerDelegate();
+        
+        String host = delegate.getServer().getHost();
+        String user = delegate.getAdminID();
+        String password = delegate.getAdminPassword();
+        String port = String.valueOf(delegate.getActualRMINamingPort());
         JMXConnectorInfo connectorInfo = new JMXConnectorInfo(user, password, host, port);
         
         // Using the classloader that loads the current's class as the default classloader when creating the JMXConnector

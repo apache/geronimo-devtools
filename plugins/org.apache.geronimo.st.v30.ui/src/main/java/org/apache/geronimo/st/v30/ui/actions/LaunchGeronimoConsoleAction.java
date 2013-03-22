@@ -66,7 +66,7 @@ public class LaunchGeronimoConsoleAction implements IActionDelegate {
         if (server != null) {
             GeronimoServerDelegate gs = (GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class);
             return new URL("http://" + server.getHost() + ":"
-                    + gs.getHTTPPort() + "/console/");
+                    + gs.getActualHTTPPort() + "/console/");
         }
         return null;
     }

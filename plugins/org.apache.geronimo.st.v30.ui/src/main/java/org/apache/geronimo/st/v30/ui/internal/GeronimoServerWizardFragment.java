@@ -18,12 +18,7 @@ package org.apache.geronimo.st.v30.ui.internal;
 
 import org.apache.geronimo.st.v30.core.GeronimoServerDelegate;
 import org.apache.geronimo.st.v30.ui.Activator;
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.ICellModifier;
-import org.eclipse.jface.viewers.TableLayout;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TextCellEditor;
+import org.apache.geronimo.st.v30.ui.sections.PortEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -31,14 +26,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
-import org.eclipse.wst.server.core.ServerPort;
 import org.eclipse.wst.server.core.TaskModel;
 import org.eclipse.wst.server.ui.wizard.IWizardHandle;
 import org.eclipse.wst.server.ui.wizard.WizardFragment;
@@ -53,10 +43,6 @@ public class GeronimoServerWizardFragment extends WizardFragment {
     protected Text adminId;
 
     protected Text password;
-
-    protected Table ports;
-
-    protected TableViewer viewer;
 
     /* (non-Javadoc)
      * @see org.eclipse.wst.server.ui.wizard.WizardFragment#hasComposite()
@@ -124,98 +110,59 @@ public class GeronimoServerWizardFragment extends WizardFragment {
 		Group portsGroup = new Group(parent, SWT.SHADOW_IN);
 		portsGroup.setText(Messages.specifyPorts);
 		
-		portsGroup.setLayout(new GridLayout(2, true));
-		GridData gd = new GridData();
-		gd.verticalIndent = 15;
-		gd.horizontalAlignment = GridData.FILL;
-		gd.horizontalSpan = 2;
-		portsGroup.setLayoutData(gd);
-		// ports
-		ports = new Table(portsGroup, SWT.V_SCROLL | SWT.H_SCROLL
-				| SWT.FULL_SELECTION);
-		ports.setHeaderVisible(true);
-		ports.setLinesVisible(false);
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 3;
+        layout.marginHeight = 5;
+        layout.marginWidth = 10;
+        layout.verticalSpacing = 5;
+        layout.horizontalSpacing = 15;
+        portsGroup.setLayout(layout);
+        
+        GridData gd = new GridData();
+        gd.verticalIndent = 15;
+        gd.horizontalAlignment = GridData.FILL;
+        gd.horizontalSpan = 2;
+        portsGroup.setLayoutData(gd);
 
-		TableColumn col = new TableColumn(ports, SWT.NONE);
-		col.setText(Messages.portName);
-		col.setResizable(false);
-		ColumnWeightData colData = new ColumnWeightData(15, 100, false);
-		TableLayout tableLayout = new TableLayout();
-		tableLayout.addColumnData(colData);
-
-		col = new TableColumn(ports, SWT.NONE);
-		col.setText(Messages.portValue);
-		col.setResizable(false);
-		colData = new ColumnWeightData(8, 100, false);
-		tableLayout.addColumnData(colData);
-
-
-        GridData data = new GridData(GridData.FILL_HORIZONTAL
-                | GridData.VERTICAL_ALIGN_FILL);
-        data.horizontalSpan = 2;
-        data.heightHint = 100;
-        ports.setLayoutData(data);
-        ports.setLayout(tableLayout);
-
-        viewer = new TableViewer(ports);
-        viewer.setColumnProperties(new String[] { "name", "port" });
-
-        fillTable(ports);
-        addCellEditor(ports);
+		PortEditor editor = new ServerWizardPortEditor(getServer());
+		editor.init(portsGroup);
     }
 
-    private void addCellEditor(Table ports) {
-        viewer.setCellEditors(new CellEditor[] { null,
-                new TextCellEditor(ports) });
+    class ServerWizardPortEditor extends PortEditor {
 
-        ICellModifier cellModifier = new ICellModifier() {
-            public Object getValue(Object element, String property) {
-                ServerPort sp = (ServerPort) element;
-                return sp.getPort() + "";
-            }
-
-            public boolean canModify(Object element, String property) {
-                return "port".equals(property);
-            }
-
-            public void modify(Object element, String property, Object value) {
-                Item item = (Item) element;
-                ServerPort sp = (ServerPort) item.getData();
-                GeronimoServerDelegate gs = getGeronimoServer();
-                gs.setInstanceProperty(sp.getId(), (String) value);
-                changePortNumber(sp.getId(), Integer.parseInt((String) value));
-            }
-        };
-
-        viewer.setCellModifier(cellModifier);
-    }
-
-    private void fillTable(Table ports) {
-        ServerPort[] serverPorts = getServer().getServerPorts(null);
-        if (serverPorts != null) {
-            for (int i = 0; i < serverPorts.length; i++) {
-                ServerPort port = serverPorts[i];
-                TableItem item = new TableItem(ports, SWT.NONE);
-                String[] s = new String[] { port.getName(),
-                        Integer.toString(port.getPort()) };
-                item.setText(s);
-                item.setImage(Activator.getImage(Activator.IMG_PORT));
-                item.setData(port);
-            }
+        public ServerWizardPortEditor(IServerWorkingCopy server) {
+            super(server);
         }
-    }
 
-    protected void changePortNumber(String id, int port) {
-        TableItem[] items = ports.getItems();
-        int size = items.length;
-        for (int i = 0; i < size; i++) {
-            ServerPort sp = (ServerPort) items[i].getData();
-            if (sp.getId().equals(id)) {
-                items[i].setData(new ServerPort(id, sp.getName(), port, sp.getProtocol()));
-                items[i].setText(1, port + "");
-                return;
-            }
+        @Override
+        protected void setPortOffset(Text portOffset) {
+            getGeronimoServer().setPortOffset(Integer.parseInt(portOffset.getText()));
         }
+
+        @Override
+        protected void setRmiPort(Text rmiPort) {
+            getGeronimoServer().setRMINamingPort(rmiPort.getText());
+        }
+
+        @Override
+        protected void setHttpPort(Text httpPort) {
+            getGeronimoServer().setHTTPPort(httpPort.getText());
+        }
+
+        @Override
+        protected Label createLabel(Composite parent, String text) {
+            Label label = new Label(parent, SWT.NONE);
+            label.setText(text);
+            return label;
+        }
+
+        @Override
+        protected Text createText(Composite parent, String value, int style) {
+            Text text = new Text(parent, style);
+            text.setText(value);
+            return text;
+        }
+        
     }
 
     private String getServerName() {

@@ -16,17 +16,22 @@
  */
 package org.apache.geronimo.st.v30.ui.commands;
 
+import org.apache.geronimo.st.v30.core.GeronimoServerDelegate;
 import org.eclipse.core.commands.operations.AbstractOperation;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 
 /**
  * @version $Rev$ $Date$
  */
 public abstract class ServerCommand extends AbstractOperation {
+    
     protected IServerWorkingCopy server;
+    protected GeronimoServerDelegate gs;
 
     public ServerCommand(IServerWorkingCopy server, String name) {
         super(name);
@@ -37,17 +42,25 @@ public abstract class ServerCommand extends AbstractOperation {
 
     public IStatus execute(IProgressMonitor monitor, IAdaptable adapt) {
         execute();
-        return null;
+        return Status.OK_STATUS;
     }
 
     public abstract void undo();
 
     public IStatus undo(IProgressMonitor monitor, IAdaptable adapt) {
         undo();
-        return null;
+        return Status.OK_STATUS;
     }
 
     public IStatus redo(IProgressMonitor monitor, IAdaptable adapt) {
         return execute(monitor, adapt);
+    }
+    
+    protected GeronimoServerDelegate getGeronimoServerDelegate() {
+        gs = (GeronimoServerDelegate) server.getAdapter(GeronimoServerDelegate.class);
+        if (gs == null) {
+            gs = (GeronimoServerDelegate) server.loadAdapter(GeronimoServerDelegate.class, new NullProgressMonitor());
+        }
+        return gs;
     }
 }

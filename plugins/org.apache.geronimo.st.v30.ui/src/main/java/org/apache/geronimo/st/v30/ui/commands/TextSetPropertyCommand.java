@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -19,36 +19,25 @@ package org.apache.geronimo.st.v30.ui.commands;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.swt.widgets.Spinner;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 
-/**
- * @version $Rev$ $Date$
- *
- * Command to change the server's auto-publish setting.
- */
-public class SetPublishTimeoutCommand extends SetPropertyCommand {
+public class TextSetPropertyCommand extends SetPropertyCommand {
     
-    private Spinner spinner;
-    
-    /**
-     * SetServerAutoPublishDefaultCommand constructor.
-     *
-     * @param server a server
-     * @param time a publish time
-     */
-    public SetPublishTimeoutCommand(IServerWorkingCopy server, Spinner spinner) {
-        super(server, "PublishTimeout", long.class, spinner.getSelection() * 1000);
-        this.spinner = spinner;
+    private Text text;
+
+    public TextSetPropertyCommand(IServerWorkingCopy server, String propertyName, Class<?> propertyType, Object newValue, Text text) {
+        super(server, propertyName, propertyType, newValue);
+        this.text = text;
     }
 
     public IStatus undo(IProgressMonitor monitor, IAdaptable adapt) {
         IStatus status = super.undo(monitor, adapt);
         if (status.isOK()) {
-            int value = (int) ((Long)oldValue).longValue() / 1000;
-            spinner.setSelection(value);
+            text.setData("undo");
+            text.setText(String.valueOf(oldValue));
         }
         return status;
     }
-    
+
 }

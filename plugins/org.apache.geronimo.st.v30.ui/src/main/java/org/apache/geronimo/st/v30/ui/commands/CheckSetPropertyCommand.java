@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -19,36 +19,30 @@ package org.apache.geronimo.st.v30.ui.commands;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.swt.widgets.Spinner;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 
-/**
- * @version $Rev$ $Date$
- *
- * Command to change the server's auto-publish setting.
- */
-public class SetPublishTimeoutCommand extends SetPropertyCommand {
+public class CheckSetPropertyCommand extends SetPropertyCommand {
     
-    private Spinner spinner;
-    
-    /**
-     * SetServerAutoPublishDefaultCommand constructor.
-     *
-     * @param server a server
-     * @param time a publish time
-     */
-    public SetPublishTimeoutCommand(IServerWorkingCopy server, Spinner spinner) {
-        super(server, "PublishTimeout", long.class, spinner.getSelection() * 1000);
-        this.spinner = spinner;
+    private Button checkButton;
+
+    public CheckSetPropertyCommand(IServerWorkingCopy server, String propertyName, Button checkButton) {
+        super(server, propertyName, boolean.class, checkButton.getSelection());
+        this.checkButton = checkButton;
     }
 
     public IStatus undo(IProgressMonitor monitor, IAdaptable adapt) {
         IStatus status = super.undo(monitor, adapt);
         if (status.isOK()) {
-            int value = (int) ((Long)oldValue).longValue() / 1000;
-            spinner.setSelection(value);
+            checkButton.setData("undo");
+            boolean value = !((Boolean)newValue).booleanValue();
+            checkButton.setSelection(value);
+            // setSelection does not fire Selection event so have to do it manually
+            checkButton.notifyListeners(SWT.Selection, new Event());
         }
         return status;
     }
-    
+
 }

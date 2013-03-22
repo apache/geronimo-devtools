@@ -20,11 +20,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
@@ -42,6 +40,7 @@ import org.apache.geronimo.st.v30.core.internal.RemovedModuleHelper;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
+import org.apache.geronimo.st.v30.core.util.ConfigSubstitutionsHelper;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -54,6 +53,7 @@ import org.eclipse.jst.server.core.internal.J2EEUtil;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IModuleType;
+import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerPort;
 import org.eclipse.wst.server.core.ServerUtil;
@@ -88,6 +88,8 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     public static final String PROPERTY_RMI_PORT = "RMIRegistry";
 
     public static final String PROPERTY_HTTP_PORT = "WebConnector";
+    
+    public static final String PROPERTY_PORT_OFFSET = "PortOffset";
 
     public static final String PROPERTY_CLEAN_OSGI_BUNDLE_CACHE = "cleanOSGiBundleCache";
     
@@ -171,7 +173,8 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
      * @see org.apache.geronimo.st.v30.core.IGeronimoServer#getDeployerURL()
      */
     public String getDeployerURL() {
-        return "deployer:geronimo:jmx://" + getServer().getHost() + ":" + getRMINamingPort();
+        String host = getServer().getHost();
+        return "deployer:geronimo:jmx://" + host + ":" + getActualRMINamingPort();
     }
     
     /*
@@ -181,7 +184,7 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
      */
     public String getJMXServiceURL() {
         String host = getServer().getHost();
-        return "service:jmx:rmi://" + host + "/jndi/rmi://" + host + ":" + getRMINamingPort() + "/JMXConnector";
+        return "service:jmx:rmi://" + host + "/jndi/rmi://" + host + ":" + getActualRMINamingPort() + "/JMXConnector";
     }
 
     /*
@@ -445,8 +448,8 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.getServerPorts");
 
         List<ServerPort> ports = new ArrayList<ServerPort>();
-        ports.add(new ServerPort(PROPERTY_HTTP_PORT, "Web Connector", Integer.parseInt(getHTTPPort()), "http"));
-        ports.add(new ServerPort(PROPERTY_RMI_PORT, "RMI Naming", Integer.parseInt(getRMINamingPort()), "rmi"));
+        ports.add(new ServerPort(PROPERTY_HTTP_PORT, "Web Connector", getActualHTTPPort(), "http"));
+        ports.add(new ServerPort(PROPERTY_RMI_PORT, "RMI Naming", getActualRMINamingPort(), "rmi"));
 
         ServerPort[] serverPorts = ports.toArray(new ServerPort[ports.size()]);
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.getServerPorts", serverPorts);
@@ -503,7 +506,7 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
                 String host = getServer().getHost();
                 StringBuilder urlSB = new StringBuilder("http://");
                 urlSB.append(host);
-                int port = Integer.parseInt(getHTTPPort());
+                int port = getActualHTTPPort();
                 port = ServerMonitorManager.getInstance().getMonitoredPort(getServer(), port, "web");
                 if (port != 80) {
                     urlSB.append(":").append(port);
@@ -545,29 +548,61 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     public void setDefaults(IProgressMonitor monitor) {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerDelegate.setDefaults", monitor);
         suspendArgUpdates();
+        
         setAdminID("system");
         setAdminPassword("manager");
         setHTTPPort("8080");
         setRMINamingPort("1099");
+        setPortOffset(0);
         setConsoleLogLevel(CONSOLE_INFO);
         setCleanOSGiBundleCache(false);
         setRefreshOSGiBundle(false);
         setKarafShell(false);
-        setPingDelay(new Integer(10000));
-        setMaxPings(new Integer(40));
-        setPingInterval(new Integer(5000));
+        setPingDelay(10000);
+        setMaxPings(40);
+        setPingInterval(5000);
         setPublishTimeout(900000);
         setInPlaceSharedLib(false);
         setRunFromWorkspace(false);
         setSelectClasspathContainers(false);
+        
+        IServer server = getServer();
+        if (server != null) {
+            IRuntime runtime = server.getRuntime();
+            if (runtime != null) {
+                ConfigSubstitutionsHelper configSubstitutions = new ConfigSubstitutionsHelper(runtime.getLocation());
+                configSubstitutions.load();
+                setAttribute(configSubstitutions, ConfigSubstitutionsHelper.PORT_OFFSET, PROPERTY_PORT_OFFSET);
+                setAttribute(configSubstitutions, ConfigSubstitutionsHelper.HTTP_PORT, PROPERTY_HTTP_PORT);
+                setAttribute(configSubstitutions, ConfigSubstitutionsHelper.NAMING_PORT, PROPERTY_RMI_PORT);
+            }
+        }
+
         resumeArgUpdates();
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerDelegate.setDefaults", monitor);
+    }
+    
+    private void setAttribute(ConfigSubstitutionsHelper configSubstitutions, String substProperty, String property) {
+        String value = configSubstitutions.getProperty(substProperty);
+        if (value != null) {
+            setAttribute(property, value);
+        }
     }
 
     @Override
     public void saveConfiguration(IProgressMonitor monitor) throws CoreException {
         Trace.tracePoint("Enter", Activator.traceCore, "GeronimoServerDelegate.saveConfiguration", monitor);
         super.saveConfiguration(monitor);
+        
+        if (SocketUtil.isLocalhost(getServer().getHost())) {
+            ConfigSubstitutionsHelper configSubstitutions = new ConfigSubstitutionsHelper(getServer().getRuntime().getLocation());
+            configSubstitutions.load();
+            configSubstitutions.setProperty(ConfigSubstitutionsHelper.PORT_OFFSET, String.valueOf(getPortOffset()));
+            configSubstitutions.setProperty(ConfigSubstitutionsHelper.HTTP_PORT, getHTTPPort());
+            configSubstitutions.setProperty(ConfigSubstitutionsHelper.NAMING_PORT, getRMINamingPort());
+            configSubstitutions.store();            
+        }
+
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerDelegate.saveConfiguration", monitor);
     }
     
@@ -582,10 +617,10 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     // PROPERTY_ADMIN_ID 
     // 
     public String getAdminID() {
-        return getInstanceProperty(PROPERTY_ADMIN_ID);
+        return getAttribute(PROPERTY_ADMIN_ID, "system");
     }
     public void setAdminID(String value) {
-        setInstanceProperty(PROPERTY_ADMIN_ID, value);
+        setAttribute(PROPERTY_ADMIN_ID, value);
     }
 
 
@@ -593,45 +628,62 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     // PROPERTY_ADMIN_PW 
     // 
     public String getAdminPassword() {
-        String password = getInstanceProperty(PROPERTY_ADMIN_PW);
+        String password = getAttribute(PROPERTY_ADMIN_PW, "manager");
         return password == null ? null : (String) EncryptionManager.decrypt(password);
     }
     
     public void setAdminPassword(String value) {
         String password = value == null ? null : EncryptionManager.encrypt(value);
-        setInstanceProperty(PROPERTY_ADMIN_PW, password);
+        setAttribute(PROPERTY_ADMIN_PW, password);
     }
 
+    // 
+    // PROPERTY_PORT_OFFSET
+    // 
+    public int getPortOffset() {
+        return getAttribute(PROPERTY_PORT_OFFSET, 0);
+    }
+    
+    public void setPortOffset(int value) {
+        setAttribute(PROPERTY_PORT_OFFSET, value);
+    }
+    
     // 
     // PROPERTY_RMI_PORT 
     // 
     public String getRMINamingPort() {
-        return getInstanceProperty(PROPERTY_RMI_PORT);
+        return getAttribute(PROPERTY_RMI_PORT, "1099");
     }
     public void setRMINamingPort(String value) {
-        setInstanceProperty(PROPERTY_RMI_PORT, value);
+        setAttribute(PROPERTY_RMI_PORT, value);
     }
-
-
+    public int getActualRMINamingPort() {
+        int port = getAttribute(PROPERTY_RMI_PORT, 1099);
+        return port + getPortOffset();
+    }
+    
     // 
     // PROPERTY_HTTP_PORT 
     // 
     public String getHTTPPort() {
-        return getInstanceProperty(PROPERTY_HTTP_PORT);
+        return getAttribute(PROPERTY_HTTP_PORT, "8080");
     }
     public void setHTTPPort(String value) {
-        setInstanceProperty(PROPERTY_HTTP_PORT, value);
+        setAttribute(PROPERTY_HTTP_PORT, value);        
     }
-
+    public int getActualHTTPPort() {
+        int port = getAttribute(PROPERTY_HTTP_PORT, 8080);
+        return port + getPortOffset();
+    }
 
     // 
     // PROPERTY_LOG_LEVEL
     // 
     public String getConsoleLogLevel() {
-        return getInstanceProperty(PROPERTY_LOG_LEVEL);
+        return getAttribute(PROPERTY_LOG_LEVEL, CONSOLE_INFO);
     }
     public void setConsoleLogLevel(String value) {
-        setInstanceProperty(PROPERTY_LOG_LEVEL, value);
+        setAttribute(PROPERTY_LOG_LEVEL, value);
         updateProgramArgsFromProperties();
     }
     
@@ -640,12 +692,11 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     // CLEAR_OSGI_BUNDLE_CACHE
     //
     public boolean isCleanOSGiBundleCache() {
-        String enable = getInstanceProperty(PROPERTY_CLEAN_OSGI_BUNDLE_CACHE);
-        return Boolean.valueOf(enable);
+        return getAttribute(PROPERTY_CLEAN_OSGI_BUNDLE_CACHE, false);
     }
 
     public void setCleanOSGiBundleCache(boolean value) {
-        setInstanceProperty(PROPERTY_CLEAN_OSGI_BUNDLE_CACHE, Boolean.toString(value));
+        setAttribute(PROPERTY_CLEAN_OSGI_BUNDLE_CACHE, value);
         updateProgramArgsFromProperties();
     }
     
@@ -653,12 +704,11 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     // REFRESH_OSGI_BUNDLE
     //
     public boolean isRefreshOSGiBundle() {
-        String enable = getInstanceProperty(PROPERTY_REFRESH_OSGI_BUNDLE);
-        return Boolean.valueOf(enable);
+        return getAttribute(PROPERTY_REFRESH_OSGI_BUNDLE, false);
     }
     
     public void setRefreshOSGiBundle(boolean value) {
-        setInstanceProperty(PROPERTY_REFRESH_OSGI_BUNDLE, Boolean.toString(value));
+        setAttribute(PROPERTY_REFRESH_OSGI_BUNDLE, value);
     }
     
     
@@ -947,7 +997,7 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     // PROPERTY_VM_ARGS
     // 
     public String getVMArgs() {
-        String superVMArgs = getInstanceProperty(PROPERTY_VM_ARGS);
+        String superVMArgs = getAttribute(PROPERTY_VM_ARGS);
         if (superVMArgs != null && superVMArgs.trim().length() > 0) {
             return superVMArgs;
         }
@@ -984,7 +1034,7 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     }
     
     public void setVMArgs(String value) {
-        setInstanceProperty(PROPERTY_VM_ARGS, value);
+        setAttribute(PROPERTY_VM_ARGS, value);
     }
 
     public Set<String> getVMArgsSet() {
@@ -999,7 +1049,7 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     // PROPERTY_PROGRAM_ARGS
     // 
     public String getProgramArgs() {
-        String superVMArgs = getInstanceProperty(PROPERTY_PROGRAM_ARGS);
+        String superVMArgs = getAttribute(PROPERTY_PROGRAM_ARGS);
         if (superVMArgs != null && superVMArgs.trim().length() > 0) {
             return superVMArgs;
         }
@@ -1020,19 +1070,18 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     }
     
     public void setProgramArgs(String value) {
-        setInstanceProperty(PROPERTY_PROGRAM_ARGS, value);
+        setAttribute(PROPERTY_PROGRAM_ARGS, value);
     }
-    
+
 
     // 
     // PROPERTY_PING_DELAY
     // 
     public int getPingDelay() {
-        String pingDelay = getInstanceProperty(PROPERTY_PING_DELAY);
-        return Integer.parseInt(pingDelay);
+        return getAttribute(PROPERTY_PING_DELAY, 10000);
     }
-    public void setPingDelay(Integer delay) {
-        setInstanceProperty(PROPERTY_PING_DELAY, delay.toString());
+    public void setPingDelay(int delay) {
+        setAttribute(PROPERTY_PING_DELAY, delay);
     }
     
     
@@ -1040,11 +1089,10 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     // PROPERTY_PING_INTERVAL
     // 
     public int getPingInterval() {
-        String pingInterval = getInstanceProperty(PROPERTY_PING_INTERVAL);
-        return Integer.parseInt(pingInterval);
+        return getAttribute(PROPERTY_PING_INTERVAL, 5000);
     }
-    public void setPingInterval(Integer interval) {
-        setInstanceProperty(PROPERTY_PING_INTERVAL, interval.toString());
+    public void setPingInterval(int interval) {
+        setAttribute(PROPERTY_PING_INTERVAL, interval);
     }
     
     
@@ -1052,11 +1100,10 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     // PROPERTY_MAX_PINGS
     // 
     public int getMaxPings() {
-        String maxPings = getInstanceProperty(PROPERTY_MAX_PINGS);
-        return Integer.parseInt(maxPings);
+        return getAttribute(PROPERTY_MAX_PINGS, 40);
     }
-    public void setMaxPings(Integer maxPings) {
-        setInstanceProperty(PROPERTY_MAX_PINGS, maxPings.toString());
+    public void setMaxPings(int maxPings) {
+        setAttribute(PROPERTY_MAX_PINGS, maxPings);
     }
     
     
@@ -1064,11 +1111,11 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
     // PROPERTY_PUBLISH_TIMEOUT
     // 
     public long getPublishTimeout() {
-        String timeout = getInstanceProperty(PROPERTY_PUBLISH_TIMEOUT);
-        return Long.parseLong(timeout);
+        String value = getAttribute(PROPERTY_PUBLISH_TIMEOUT, "900000");
+        return Long.parseLong(value);
     }
     public void setPublishTimeout(long timeout) {
-        setInstanceProperty(PROPERTY_PUBLISH_TIMEOUT, Long.toString(timeout));
+        setAttribute(PROPERTY_PUBLISH_TIMEOUT, String.valueOf(timeout));
     }
     
     
@@ -1187,23 +1234,9 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
         }
         return null;
     }
-
-    public String getInstanceProperty(String name) {
-        return (String) getServerInstanceProperties().get(name);
-    }
-
-    public void setInstanceProperty(String name, String value) {
-        Map map = getServerInstanceProperties();
-        map.put(name, value);
-        setServerInstanceProperties(map);
-    }
-
-    public Map getServerInstanceProperties() {
-        return getAttribute(GeronimoRuntimeDelegate.SERVER_INSTANCE_PROPERTIES, new HashMap());
-    }
-
-    public void setServerInstanceProperties(Map map) {
-        setAttribute(GeronimoRuntimeDelegate.SERVER_INSTANCE_PROPERTIES, map);
+    
+    private String getAttribute(String name) {
+        return getAttribute(name, (String) null);
     }
 
 }

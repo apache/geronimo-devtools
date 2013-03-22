@@ -17,10 +17,9 @@
 package org.apache.geronimo.st.v30.ui.sections;
 
 import org.apache.geronimo.st.v30.core.GeronimoServerDelegate;
-import org.apache.geronimo.st.v30.ui.commands.SetKarafShellCommand;
-import org.apache.geronimo.st.v30.ui.commands.SetKarafShellKeepAliveCommand;
-import org.apache.geronimo.st.v30.ui.commands.SetKarafShellPortCommand;
-import org.apache.geronimo.st.v30.ui.commands.SetKarafShellTimeoutCommand;
+import org.apache.geronimo.st.v30.ui.NumericVerifyListener;
+import org.apache.geronimo.st.v30.ui.commands.CheckSetPropertyCommand;
+import org.apache.geronimo.st.v30.ui.commands.TextSetPropertyCommand;
 import org.apache.geronimo.st.v30.ui.internal.Messages;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -125,7 +124,11 @@ public class ServerEditorKarafShellSection extends AbstractServerEditorSection {
             }
             
             private void executeAndEnableWidgets() {
-                execute(new SetKarafShellCommand(server, enable.getSelection()));
+                if (enable.getData() == null) {
+                    execute(new CheckSetPropertyCommand(server, "KarafShell", enable));
+                } else {
+                    enable.setData(null);
+                }
                 timeout.setEnabled(enable.getSelection());
                 keepAlive.setEnabled(enable.getSelection());
                 port.setEnabled(enable.getSelection());
@@ -139,10 +142,16 @@ public class ServerEditorKarafShellSection extends AbstractServerEditorSection {
         timeout.setToolTipText(Messages.karafShellTimeout);
         timeout.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
-                Integer value = Integer.valueOf(timeout.getText());
-                execute(new SetKarafShellTimeoutCommand(server, timeout, value));
+                if (timeout.getData() == null) {
+                    int value = Integer.parseInt(timeout.getText());
+                    execute(new TextSetPropertyCommand(server, "KarafShellTimeout", int.class, value, timeout));
+                } else {
+                    timeout.setData(null);
+                }
             }
         });
+        timeout.addVerifyListener(new NumericVerifyListener());
+        
         // create keep alive field
         createLabel(subComp1, Messages.karafShellkeepAlive, toolkit);
         keepAlive = toolkit.createText(subComp1, Integer.toString(gsdCopy.getKarafShellKeepAlive()), SWT.BORDER);
@@ -150,10 +159,16 @@ public class ServerEditorKarafShellSection extends AbstractServerEditorSection {
         keepAlive.setToolTipText(Messages.karafShellkeepAlive);
         keepAlive.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
-                Integer value = Integer.valueOf(keepAlive.getText());
-                execute(new SetKarafShellKeepAliveCommand(server, keepAlive, value));
+                if (keepAlive.getData() == null) {
+                    int value = Integer.parseInt(keepAlive.getText());
+                    execute(new TextSetPropertyCommand(server, "KarafShellKeepAlive", int.class, value, keepAlive));
+                } else {
+                    keepAlive.setData(null);
+                }
             }
         });
+        keepAlive.addVerifyListener(new NumericVerifyListener());
+        
         // create port field
         createLabel(subComp1, Messages.karafShellPort, toolkit);
         port = toolkit.createText(subComp1, Integer.toString(gsdCopy.getKarafShellPort()), SWT.BORDER);
@@ -161,9 +176,14 @@ public class ServerEditorKarafShellSection extends AbstractServerEditorSection {
         port.setToolTipText(Messages.karafShellPort);
         port.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
-                Integer value = Integer.valueOf(port.getText());
-                execute(new SetKarafShellPortCommand(server, port, value));
+                if (port.getData() == null) {
+                    int value = Integer.parseInt(port.getText());
+                    execute(new TextSetPropertyCommand(server, "KarafShellPort", int.class, value, port));
+                } else {
+                    port.setData(null);
+                }
             }
         });
+        port.addVerifyListener(new NumericVerifyListener());
     }
 }
