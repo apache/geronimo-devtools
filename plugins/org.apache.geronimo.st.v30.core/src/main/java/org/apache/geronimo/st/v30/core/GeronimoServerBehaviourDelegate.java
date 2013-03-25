@@ -1260,10 +1260,6 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         return true;
     }
 
-    public Map getServerInstanceProperties() {
-        return getRuntimeDelegate().getServerInstanceProperties();
-    }
-
     protected GeronimoRuntimeDelegate getRuntimeDelegate() {
         GeronimoRuntimeDelegate rd = (GeronimoRuntimeDelegate) getServer().getRuntime().getAdapter(GeronimoRuntimeDelegate.class);
         if (rd == null)

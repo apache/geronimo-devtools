@@ -40,7 +40,6 @@ import org.apache.geronimo.st.v30.core.internal.RemovedModuleHelper;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.apache.geronimo.st.v30.core.osgi.OsgiConstants;
-import org.apache.geronimo.st.v30.core.util.ConfigSubstitutionsHelper;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -53,7 +52,6 @@ import org.eclipse.jst.server.core.internal.J2EEUtil;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IModuleType;
-import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerPort;
 import org.eclipse.wst.server.core.ServerUtil;
@@ -566,43 +564,14 @@ public class GeronimoServerDelegate extends ServerDelegate implements IGeronimoS
         setRunFromWorkspace(false);
         setSelectClasspathContainers(false);
         
-        IServer server = getServer();
-        if (server != null) {
-            IRuntime runtime = server.getRuntime();
-            if (runtime != null) {
-                ConfigSubstitutionsHelper configSubstitutions = new ConfigSubstitutionsHelper(runtime.getLocation());
-                configSubstitutions.load();
-                setAttribute(configSubstitutions, ConfigSubstitutionsHelper.PORT_OFFSET, PROPERTY_PORT_OFFSET);
-                setAttribute(configSubstitutions, ConfigSubstitutionsHelper.HTTP_PORT, PROPERTY_HTTP_PORT);
-                setAttribute(configSubstitutions, ConfigSubstitutionsHelper.NAMING_PORT, PROPERTY_RMI_PORT);
-            }
-        }
-
         resumeArgUpdates();
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerDelegate.setDefaults", monitor);
     }
     
-    private void setAttribute(ConfigSubstitutionsHelper configSubstitutions, String substProperty, String property) {
-        String value = configSubstitutions.getProperty(substProperty);
-        if (value != null) {
-            setAttribute(property, value);
-        }
-    }
-
     @Override
     public void saveConfiguration(IProgressMonitor monitor) throws CoreException {
         Trace.tracePoint("Enter", Activator.traceCore, "GeronimoServerDelegate.saveConfiguration", monitor);
         super.saveConfiguration(monitor);
-        
-        if (SocketUtil.isLocalhost(getServer().getHost())) {
-            ConfigSubstitutionsHelper configSubstitutions = new ConfigSubstitutionsHelper(getServer().getRuntime().getLocation());
-            configSubstitutions.load();
-            configSubstitutions.setProperty(ConfigSubstitutionsHelper.PORT_OFFSET, String.valueOf(getPortOffset()));
-            configSubstitutions.setProperty(ConfigSubstitutionsHelper.HTTP_PORT, getHTTPPort());
-            configSubstitutions.setProperty(ConfigSubstitutionsHelper.NAMING_PORT, getRMINamingPort());
-            configSubstitutions.store();            
-        }
-
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerDelegate.saveConfiguration", monitor);
     }
     

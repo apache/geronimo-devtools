@@ -17,14 +17,18 @@
 package org.apache.geronimo.st.v30.core;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.geronimo.st.v30.core.internal.Messages;
 import org.apache.geronimo.st.v30.core.internal.Trace;
+import org.apache.geronimo.st.v30.core.util.ConfigSubstitutionsHelper;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -139,35 +143,34 @@ public class GeronimoLaunchConfigurationDelegate extends AbstractJavaLaunchConfi
         boolean managedApplicationStart = server.getServerDelegate().isManageApplicationStart();        
         Trace.trace(Trace.INFO, "GeronimoLaunchConfigurationDelegate: manageApplicationStart:=" + managedApplicationStart, Activator.traceCore);
         
-        int params = 0;
+        List<String> params = new ArrayList<String>(6);
+        
+        GeronimoServerDelegate serverDelegate = server.getServerDelegate();
+
+        params.add("-Dorg.apache.geronimo.config.substitution.prefix=gep.");
+        params.add("-Dgep." + ConfigSubstitutionsHelper.PORT_OFFSET + "=" + serverDelegate.getPortOffset());
+        params.add("-Dgep." + ConfigSubstitutionsHelper.HTTP_PORT + "=" + serverDelegate.getHTTPPort());
+        params.add("-Dgep." + ConfigSubstitutionsHelper.NAMING_PORT + "=" + serverDelegate.getRMINamingPort());
+        
         Set<String> deletedConfigs = server.getDeletedConfigIds();
         if (!deletedConfigs.isEmpty()) {
-            params++;
+            params.add(toString("-Dgeronimo.removedArtifactList=", deletedConfigs));
         } 
         
-        Set<String> modifiedConfigs = null;        
         if (managedApplicationStart) {
-            modifiedConfigs = server.getModifiedConfigIds();
+            Set<String> modifiedConfigs = server.getModifiedConfigIds();
             if (!modifiedConfigs.isEmpty()) {
-                params++;
+                params.add(toString("-Dgeronimo.loadOnlyConfigList=", modifiedConfigs));
             }
-        } else {
-            modifiedConfigs = Collections.emptySet();
         }
-        
-        if (params > 0) {
-            String[] newJvmArguments = new String[jvmArguments.length + params];
-            System.arraycopy(jvmArguments, 0, newJvmArguments, 0, jvmArguments.length);
-            int index = jvmArguments.length;
-            if (!modifiedConfigs.isEmpty()) {
-                newJvmArguments[index] = toString("-Dgeronimo.loadOnlyConfigList=", modifiedConfigs);
-                index++;
-            }
-            if (!deletedConfigs.isEmpty()) {
-                newJvmArguments[index] = toString("-Dgeronimo.removedArtifactList=", deletedConfigs);
-            }
-            jvmArguments = newJvmArguments;
+                
+        int size = params.size();
+        String[] newJvmArguments = new String[jvmArguments.length + size];
+        System.arraycopy(jvmArguments, 0, newJvmArguments, 0, jvmArguments.length);
+        for (int i = 0; i < size; i++) {
+            newJvmArguments[jvmArguments.length + i] = params.get(i);
         }
+        jvmArguments = newJvmArguments;
         
         return jvmArguments;
     }

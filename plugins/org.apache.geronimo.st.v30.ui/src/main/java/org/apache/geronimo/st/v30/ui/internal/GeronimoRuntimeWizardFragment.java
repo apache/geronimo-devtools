@@ -317,7 +317,6 @@ public class GeronimoRuntimeWizardFragment extends WizardFragment {
         }
 
         IRuntimeWorkingCopy runtimeWC = getRuntimeDelegate().getRuntimeWorkingCopy();
-        getRuntimeDelegate().setInstanceProperty("serverRootDirectory", installDir.getText());
 
         if (installDir.getText() == null || installDir.getText().length() == 0) {
             // installDir field has not been entered

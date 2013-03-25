@@ -23,9 +23,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -50,8 +48,6 @@ public class GeronimoRuntimeDelegate extends RuntimeDelegate implements IGeronim
     private static final String PROP_VM_INSTALL_TYPE_ID = "vm-install-type-id";
 
     private static final String PROP_VM_INSTALL_ID = "vm-install-id";
-
-    public static final String SERVER_INSTANCE_PROPERTIES = "geronimo_server_instance_properties";
 
     public static final String RUNTIME_SOURCE= "runtime.source";
 
@@ -164,15 +160,12 @@ public class GeronimoRuntimeDelegate extends RuntimeDelegate implements IGeronim
      * @see org.apache.geronimo.st.v30.core.IGeronimoRuntime#getRuntimeSourceLocation()
      */
     public IPath getRuntimeSourceLocation() {
-        String source = (String) getServerInstanceProperties().get(RUNTIME_SOURCE);
-        if (source != null) {
-            return new Path(source);
-        }
-        return null;
+        String source = getAttribute(RUNTIME_SOURCE, (String) null);
+        return (source != null) ? new Path(source) : null;
     }
 
     public void setRuntimeSourceLocation(String path) {
-        setInstanceProperty(RUNTIME_SOURCE, path);
+        setAttribute(RUNTIME_SOURCE, path);
     }
 
     /**
@@ -282,38 +275,6 @@ public class GeronimoRuntimeDelegate extends RuntimeDelegate implements IGeronim
      */
     public String getInstallableJettyRuntimeId() {
         return "org.apache.geronimo.runtime.jetty." + getRuntime().getRuntimeType().getVersion().replaceAll("\\.", "");
-    }
-
-    /**
-     * @return
-     */
-    public Map getServerInstanceProperties() {
-        return getAttribute(SERVER_INSTANCE_PROPERTIES, new HashMap());
-    }
-
-    /**
-     * @param map
-     */
-    public void setServerInstanceProperties(Map map) {
-        setAttribute(SERVER_INSTANCE_PROPERTIES, map);
-    }
-
-    /**
-     * @param name
-     * @return
-     */
-    public String getInstanceProperty(String name) {
-        return(String) getServerInstanceProperties().get(name);
-    }
-
-    /**
-     * @param name
-     * @param value
-     */
-    public void setInstanceProperty(String name, String value) {
-        Map map = getServerInstanceProperties();
-        map.put(name, value);
-        setServerInstanceProperties(map);
     }
 
     /**
