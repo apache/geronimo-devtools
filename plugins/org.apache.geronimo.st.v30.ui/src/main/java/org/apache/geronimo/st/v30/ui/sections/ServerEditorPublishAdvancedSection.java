@@ -40,6 +40,7 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.wst.server.core.util.SocketUtil;
+import org.eclipse.wst.server.ui.internal.SWTUtil;
 
 /**
  * @version $Rev$ $Date$
@@ -85,10 +86,10 @@ public class ServerEditorPublishAdvancedSection extends AbstractServerEditorSect
 
         publishTimeout = new Spinner(composite, SWT.BORDER);
         publishTimeout.setMinimum(0);
-        publishTimeout.setIncrement(60);
-        publishTimeout.setMaximum(60 * 60 * 4); // 4 hours
+        publishTimeout.setIncrement(5);
+        publishTimeout.setMaximum(60 * 60 * 24); // 24 hours
         publishTimeout.setSelection((int) gs.getPublishTimeout() / 1000);
-
+        SWTUtil.setSpinnerTooltip(publishTimeout);
         publishTimeout.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
                 if (publishTimeout.getData() == null) {
@@ -96,6 +97,7 @@ public class ServerEditorPublishAdvancedSection extends AbstractServerEditorSect
                 } else {
                     publishTimeout.setData(null);
                 }
+                SWTUtil.setSpinnerTooltip(publishTimeout);
             }
         });
                 
