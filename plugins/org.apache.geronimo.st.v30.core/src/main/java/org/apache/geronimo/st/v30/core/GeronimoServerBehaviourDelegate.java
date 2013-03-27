@@ -62,6 +62,7 @@ import org.apache.geronimo.st.v30.core.operations.SharedLibEntryDataModelProvide
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper.BundleInfo;
 import org.apache.geronimo.st.v30.core.osgi.OSGiModuleHandler;
+import org.apache.geronimo.st.v30.core.util.Utils;
 import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
@@ -211,14 +212,18 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     synchronized protected void setupLaunch(ILaunch launch, String launchMode, IProgressMonitor monitor) throws CoreException {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.setupLaunch", launch, launchMode, monitor); 
 
-        if (!SocketUtil.isLocalhost(getServer().getHost()))
+        String host = getServer().getHost();
+        
+        if (!SocketUtil.isLocalhost(host)) {
             return;
+        }
 
         ServerPort[] ports = getServer().getServerPorts(null);
         for (int i = 0; i < ports.length; i++) {
             ServerPort sp = ports[i];
-            if (SocketUtil.isPortInUse(ports[i].getPort(), 5))
+            if (Utils.isPortInUse(host, ports[i].getPort(), 5)) {
                 throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, Messages.bind(Messages.errorPortInUse, Integer.toString(sp.getPort()), sp.getName()), null));
+            }
         }
         
         stopUpdateServerStateTask();
