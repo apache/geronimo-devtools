@@ -49,6 +49,7 @@ import org.apache.geronimo.kernel.config.Configuration;
 import org.apache.geronimo.kernel.config.InvalidConfigException;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
+import org.apache.geronimo.kernel.util.IOUtils;
 import org.apache.geronimo.st.core.GeronimoJMXConnectorFactory;
 import org.apache.geronimo.st.core.GeronimoJMXConnectorFactory.JMXConnectorInfo;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
@@ -62,8 +63,8 @@ import org.apache.geronimo.st.v30.core.operations.SharedLibEntryDataModelProvide
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper.BundleInfo;
 import org.apache.geronimo.st.v30.core.osgi.OSGiModuleHandler;
+import org.apache.geronimo.st.v30.core.util.JMXKernel;
 import org.apache.geronimo.st.v30.core.util.Utils;
-import org.apache.geronimo.system.jmx.KernelDelegate;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -124,7 +125,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     
     public static final int TIMER_TASK_DELAY = 20;
 
-    private Kernel kernel = null;
+    private JMXKernel kernel = null;
     
     protected Timer stateTimer = null;
     
@@ -1084,6 +1085,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         }
         setServerState(IServer.STATE_STOPPED);
         resetModuleState();
+        resetKernelConnection();
     }
 
     private void resetModuleState() {
@@ -1387,13 +1389,15 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     
     protected Kernel getKernel() throws SecurityException {
         if (kernel == null) {
+            JMXConnector connector = null;
             try {
-                MBeanServerConnection connection = getServerConnection();
-                if (connection != null)
-                    kernel = new KernelDelegate(connection);
+                connector = getJMXConnection();
+                kernel = new JMXKernel(connector);
             } catch (SecurityException e) {
+                IOUtils.close(connector);
                 throw e;
             } catch (Exception e) {
+                IOUtils.close(connector);
                 Trace.trace(Trace.INFO, "Kernel connection failed. "
                         + e.getMessage(), Activator.traceCore);
             }
@@ -1403,19 +1407,24 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     
     private void stopKernel() {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.stopKernel");
+        JMXConnector jmxConnector = null;
         try {
-            MBeanServerConnection connection = getServerConnection();
+            jmxConnector = getJMXConnection();
+            MBeanServerConnection connection = jmxConnector.getMBeanServerConnection();
             connection.invoke(getFrameworkMBean(connection), "stopBundle",
                      new Object[] { 0 }, new String[] { long.class.getName() });
         } catch (Exception e) {
             Trace.trace(Trace.ERROR, "Error while requesting server shutdown", e, Activator.traceCore);
+        } finally {
+            IOUtils.close(jmxConnector);
         }
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.stopKernel");
     }
 
     public boolean isKernelAlive() {
         try {
-            return getKernel() != null && kernel.isRunning();
+            Kernel kernel = getKernel();
+            return kernel != null && kernel.isRunning();
         } catch (SecurityException e) {
             Trace.trace(Trace.ERROR, "Invalid username and/or password.", e, Activator.logCore);
 
@@ -1425,9 +1434,17 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             }
         } catch (Exception e) {
             Trace.trace(Trace.WARNING, "Geronimo Server may have been terminated manually outside of workspace.", e, Activator.logCore);
-            kernel = null;
+            resetKernelConnection();
         }
         return false;
+    }
+    
+    public void resetKernelConnection() {
+        Trace.traceEntry(Activator.traceCore, "GeronimoServerBehaviourDelegate.resetKernelConnection");
+        JMXKernel local = kernel;
+        kernel = null;
+        IOUtils.close(local);
+        Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.resetKernelConnection");
     }
     
     private void forceStopJob(boolean b, final SecurityException e) {
@@ -1574,7 +1591,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         }
     }
     
-    public MBeanServerConnection getServerConnection() throws Exception {
+    public JMXConnector getJMXConnection() throws Exception {
         GeronimoServerDelegate delegate = getServerDelegate();
         
         String host = delegate.getServer().getHost();
@@ -1586,7 +1603,12 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         // Using the classloader that loads the current's class as the default classloader when creating the JMXConnector
         JMXConnector jmxConnector = GeronimoJMXConnectorFactory.create(connectorInfo, this.getClass().getClassLoader());
 
-        return jmxConnector.getMBeanServerConnection();
+        return jmxConnector;
+    }
+    
+    /* XXX: Should be avoided as there is no explicit way to close the connection */
+    public MBeanServerConnection getServerConnection() throws Exception {
+        return getJMXConnection().getMBeanServerConnection();
     }
     
     public ObjectName getMBean(MBeanServerConnection connection, String mbeanName, String name) throws Exception {
@@ -1607,12 +1629,16 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     
     private void invokeGC() {
         Trace.traceEntry(Activator.traceCore, "GeronimoServerBehaviourDelegate.invokeGC");
+        JMXConnector jmxConnector = null;
         try {
-            MBeanServerConnection connection = getServerConnection();
+            jmxConnector = getJMXConnection();
+            MBeanServerConnection connection = jmxConnector.getMBeanServerConnection();
             ObjectName name = getMBean(connection, "java.lang:type=Memory", "Memory");
             connection.invoke(name, "gc", new Object [0], new String [0]);
         } catch (Exception e) {
             Trace.trace(Trace.ERROR, "Error while requesting server gc", e, Activator.traceCore);
+        } finally {
+            IOUtils.close(jmxConnector);
         }
         Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.invokeGC");
     }
