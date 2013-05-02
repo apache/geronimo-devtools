@@ -146,4 +146,11 @@ public abstract class PortEditor {
         return gs;
     }
 
+    protected int toInt(String value, int defaultValue) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
 }   

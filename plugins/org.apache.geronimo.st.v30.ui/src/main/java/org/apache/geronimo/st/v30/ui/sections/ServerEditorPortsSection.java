@@ -89,7 +89,7 @@ public class ServerEditorPortsSection extends AbstractServerEditorSection {
         
         @Override
         protected void setPortOffset(Text portOffset) {
-            int value = Integer.parseInt(portOffset.getText());
+            int value = toInt(portOffset.getText(), 0);
             execute(new TextSetPropertyCommand(server, "PortOffset", int.class, value, portOffset));
         }
 

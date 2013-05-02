@@ -136,7 +136,8 @@ public class GeronimoServerWizardFragment extends WizardFragment {
 
         @Override
         protected void setPortOffset(Text portOffset) {
-            getGeronimoServer().setPortOffset(Integer.parseInt(portOffset.getText()));
+            int value = toInt(portOffset.getText(), 0);
+            getGeronimoServer().setPortOffset(value);
         }
 
         @Override
