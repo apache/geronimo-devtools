@@ -34,7 +34,7 @@ The source code for the Plexus project can be downloaded from:
 
 http://plexus.codehaus.org/source-repository.html
 
-For slffj-api jar in org.apache.geronimo.runtime.* and 
+For slf4j-api jar in org.apache.geronimo.runtime.* and 
 slf4j-simple jar in org.apache.geronimo.runtime.*
 
 =========================================================================

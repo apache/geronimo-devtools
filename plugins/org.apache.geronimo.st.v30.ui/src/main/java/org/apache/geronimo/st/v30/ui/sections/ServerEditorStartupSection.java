@@ -16,8 +16,8 @@
  */
 package org.apache.geronimo.st.v30.ui.sections;
 
-import org.apache.geronimo.st.v30.core.IGeronimoServer;
-import org.apache.geronimo.st.v30.ui.commands.SetServerInstancePropertyCommand;
+import org.apache.geronimo.st.v30.ui.NumericVerifyListener;
+import org.apache.geronimo.st.v30.ui.commands.TextSetPropertyCommand;
 import org.apache.geronimo.st.v30.ui.internal.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -82,10 +82,15 @@ public class ServerEditorStartupSection extends AbstractServerEditorSection {
         pingDelay.setToolTipText(Messages.pingDelayTooltip);
         pingDelay.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
-                Integer value = Integer.valueOf(pingDelay.getText());
-                execute(new SetServerInstancePropertyCommand(server, value, "setPingDelay", Integer.class, IGeronimoServer.class));
+                if (pingDelay.getData() == null) {
+                    int value = Integer.parseInt(pingDelay.getText());
+                    execute(new TextSetPropertyCommand(server, "PingDelay", int.class, value, pingDelay));
+                } else {
+                    pingDelay.setData(null);
+                }
             }
         });
+        pingDelay.addVerifyListener(new NumericVerifyListener());
 
         // ------- Label and text field for the ping interval -------
         createLabel(composite, Messages.pingInterval, toolkit);
@@ -94,10 +99,15 @@ public class ServerEditorStartupSection extends AbstractServerEditorSection {
         pingInterval.setToolTipText(Messages.pingIntervalTooltip);
         pingInterval.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
-                Integer value = Integer.valueOf(pingInterval.getText());
-                execute(new SetServerInstancePropertyCommand(server, value, "setPingInterval", Integer.class, IGeronimoServer.class));
+                if (pingInterval.getData() == null) {
+                    int value = Integer.parseInt(pingInterval.getText());
+                    execute(new TextSetPropertyCommand(server, "PingInterval", int.class, value, pingInterval));
+                } else {
+                    pingInterval.setData(null);
+                }
             }
         });
+        pingInterval.addVerifyListener(new NumericVerifyListener());
         
         // ------- Label and text field for the max pings -------
         createLabel(composite, Messages.maxPings, toolkit);
@@ -106,10 +116,15 @@ public class ServerEditorStartupSection extends AbstractServerEditorSection {
         maxPings.setToolTipText(Messages.maxPingsTooltip);
         maxPings.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
-                Integer value = Integer.valueOf(maxPings.getText());
-                execute(new SetServerInstancePropertyCommand(server, value, "setMaxPings", Integer.class, IGeronimoServer.class));
+                if (maxPings.getData() == null) {
+                    int value = Integer.parseInt(maxPings.getText());
+                    execute(new TextSetPropertyCommand(server, "MaxPings", int.class, value, maxPings));
+                } else {
+                    maxPings.setData(null);
+                }
             }
         });
+        maxPings.addVerifyListener(new NumericVerifyListener());
     }
 
     public String getMaxPings() {

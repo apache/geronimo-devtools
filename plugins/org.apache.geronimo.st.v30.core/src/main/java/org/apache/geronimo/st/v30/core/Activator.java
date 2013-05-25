@@ -110,7 +110,10 @@ public class Activator extends Plugin {
             }
 
             public void serverChanged(IServer server) {
-
+                GeronimoServerBehaviourDelegate delegate = getGeronimoServerBehaviourDelegate(server);
+                if (delegate != null) {
+                    delegate.resetKernelConnection();
+                }
             }
 
             public void serverRemoved(IServer server) {

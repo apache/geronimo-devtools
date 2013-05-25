@@ -17,44 +17,43 @@
   -->
 <!-- $Rev$ $Date$ -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-                        
+
     <modelVersion>4.0.0</modelVersion>
-                        
+
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>assembly</artifactId>
     <version>3.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin :: Assembly</name>
-                        
+
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
         <version>3.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-                        
+
     <build>
         <plugins>
-			<plugin>
-				<groupId>com.google.code.maven-replacer-plugin</groupId>
-				<artifactId>maven-replacer-plugin</artifactId>
-				<executions>                
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>replace</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<regex>false</regex>
-					<file>src/main/assembly/site.xml</file>
-					<token>($featureVersion)</token>
-					<value>${osgi.pom.version}</value>
-					<outputFile>target/resources/site.xml</outputFile>
-				</configuration>
-			</plugin>
-
+            <plugin>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>maven-replacer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <regex>false</regex>
+                    <file>src/main/assembly/site.xml</file>
+                    <token>($featureVersion)</token>
+                    <value>${osgi.pom.version}</value>
+                    <outputFile>target/resources/site.xml</outputFile>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -63,25 +62,24 @@
                     <execution>
                         <id>prepare</id>
                         <configuration>
-                          <finalName>geronimo-eclipse-plugin</finalName>
-                          <descriptors>
-                            <descriptor>src/main/assembly/prepare.xml</descriptor>
-                          </descriptors>
+                            <finalName>geronimo-eclipse-plugin</finalName>
+                            <descriptors>
+                                <descriptor>src/main/assembly/prepare.xml</descriptor>
+                            </descriptors>
                         </configuration>
                         <phase>prepare-package</phase>
                         <goals>
                             <goal>single</goal>
                         </goals>
                     </execution>
-
                     <execution>
                         <id>assemble</id>
                         <configuration>
-                          <finalName>geronimo-eclipse-plugin-${project.parent.version}</finalName>
-                          <descriptors>
-                            <descriptor>src/main/assembly/p2repo.xml</descriptor>
-                            <descriptor>src/main/assembly/deployable.xml</descriptor>
-                          </descriptors>
+                            <finalName>geronimo-eclipse-plugin-${project.parent.version}</finalName>
+                            <descriptors>
+                                <descriptor>src/main/assembly/p2repo.xml</descriptor>
+                                <descriptor>src/main/assembly/deployable.xml</descriptor>
+                            </descriptors>
                         </configuration>
                         <phase>package</phase>
                         <goals>
@@ -90,6 +88,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -99,24 +98,22 @@
                         <phase>prepare-package</phase>
                         <configuration>
                             <tasks>
-                              <move todir="${basedir}/target/geronimo-eclipse-plugin-base">
-                                <fileset dir="${basedir}/target/geronimo-eclipse-plugin-base">
-                                  <include name="**/*-*.jar" />
-                                </fileset>
-                                <regexpmapper from="^(.*)${pom.version}(.*)$$" to="\1${osgi.pom.version}\2" />
-                              </move>
-
-                              <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="maven.plugin.classpath" />
-
-                              <for param="file">
-                                  <fileset dir="${basedir}/target/geronimo-eclipse-plugin-base">
-                                      <include name="features/*.jar" />
-                                  </fileset>
-                                  <sequential>
-                                      <basename property="jar.filename" file="@{file}" />
-                                      <unzip src="@{file}" dest="${basedir}/target/geronimo-eclipse-plugin-base/features-unpacked/${jar.filename}" />
-                                  </sequential>
-                              </for>
+                                <move todir="${basedir}/target/geronimo-eclipse-plugin-base">
+                                    <fileset dir="${basedir}/target/geronimo-eclipse-plugin-base">
+                                        <include name="**/*-*.jar"/>
+                                    </fileset>
+                                    <regexpmapper from="^(.*)${pom.version}(.*)$$" to="\1${osgi.pom.version}\2"/>
+                                </move>
+                                <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="maven.plugin.classpath"/>
+                                <for param="file">
+                                    <fileset dir="${basedir}/target/geronimo-eclipse-plugin-base">
+                                        <include name="features/*.jar"/>
+                                    </fileset>
+                                    <sequential>
+                                        <basename property="jar.filename" file="@{file}"/>
+                                        <unzip src="@{file}" dest="${basedir}/target/geronimo-eclipse-plugin-base/features-unpacked/${jar.filename}"/>
+                                    </sequential>
+                                </for>
                             </tasks>
                         </configuration>
                         <goals>
@@ -129,23 +126,23 @@
                         <phase>package</phase>
                         <configuration>
                             <tasks>
-                                <property name="assembly.dir" value="${basedir}/target/p2-tmp" />
-                                <property name="input.zip" value="${basedir}/target/geronimo-eclipse-plugin-${project.parent.version}-p2repo.zip" />
-                                <property name="output.zip" value="${input.zip}" />
-                                <mkdir dir="${assembly.dir}" />
-                                <makeurl property="assembly.dir.url" file="${assembly.dir}" />
-                                <unzip src="${input.zip}" dest="${assembly.dir}" />
-                                <copy file="${basedir}/target/resources/site.xml" todir="${assembly.dir}" />
+                                <property name="assembly.dir" value="${basedir}/target/p2-tmp"/>
+                                <property name="input.zip" value="${basedir}/target/geronimo-eclipse-plugin-${project.parent.version}-p2repo.zip"/>
+                                <property name="output.zip" value="${input.zip}"/>
+                                <mkdir dir="${assembly.dir}"/>
+                                <makeurl property="assembly.dir.url" file="${assembly.dir}"/>
+                                <unzip src="${input.zip}" dest="${assembly.dir}"/>
+                                <copy file="${basedir}/target/resources/site.xml" todir="${assembly.dir}"/>
                                 <java fork="true" classname="org.eclipse.equinox.launcher.Main">
                                     <classpath>
-                                        <fileset file="${eclipseInstall}/eclipse/plugins/org.eclipse.equinox.launcher_*.jar" />
+                                        <fileset file="${eclipseInstall}/eclipse/plugins/org.eclipse.equinox.launcher_*.jar"/>
                                     </classpath>
-                                    <arg line="-application org.eclipse.equinox.p2.publisher.UpdateSitePublisher" />
-                                    <arg line="-metadataRepository ${assembly.dir.url}" />  
-                                    <arg line="-artifactRepository ${assembly.dir.url}" />
-                                    <arg line="-source ${assembly.dir}" />
+                                    <arg line="-application org.eclipse.equinox.p2.publisher.UpdateSitePublisher"/>
+                                    <arg line="-metadataRepository ${assembly.dir.url}"/>
+                                    <arg line="-artifactRepository ${assembly.dir.url}"/>
+                                    <arg line="-source ${assembly.dir}"/>
                                 </java>
-                                <zip destfile="${output.zip}" update="true" includes="artifacts.xml content.xml" basedir="${assembly.dir}" />
+                                <zip destfile="${output.zip}" update="true" includes="artifacts.xml content.xml" basedir="${assembly.dir}"/>
                             </tasks>
                         </configuration>
                         <goals>
@@ -156,8 +153,8 @@
             </plugin>
         </plugins>
     </build>
+
     <dependencies>
-           
         <!-- 
          |
          | Plug-ins
@@ -168,145 +165,145 @@
             <artifactId>org.apache.geronimo.j2ee.v11.jaxbmodel</artifactId>
             <version>${version}</version>
         </dependency>
-         
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.jee.v21.jaxbmodel</artifactId>
             <version>${version}</version>
         </dependency>
-           
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.jaxbmodel.common</artifactId>
             <version>${version}</version>
         </dependency>
-           
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.common</artifactId>
             <version>${version}</version>
         </dependency>
-           
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.v11</artifactId>
             <version>${version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.v20</artifactId>
             <version>${version}</version>
         </dependency>
-           
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.v21</artifactId>
             <version>${version}</version>
         </dependency>
-           
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.v22</artifactId>
             <version>${version}</version>
         </dependency>
 
-       <dependency>
+        <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.runtime.v30</artifactId>
             <version>${version}</version>
         </dependency>
-           
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.core</artifactId>
             <version>${version}</version>
         </dependency>
-           
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.ui</artifactId>
             <version>${version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.schemas</artifactId>
             <version>${version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v11.schemas</artifactId>
             <version>${version}</version>
         </dependency>
-           
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v11.core</artifactId>
             <version>${version}</version>
         </dependency>
-           
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v11.ui</artifactId>
             <version>${version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v20.core</artifactId>
             <version>${version}</version>
         </dependency>
-           
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v20.ui</artifactId>
             <version>${version}</version>
         </dependency>
-           
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v21.core</artifactId>
             <version>${version}</version>
         </dependency>
-           
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v21.ui</artifactId>
             <version>${version}</version>
         </dependency>
-           
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v22.core</artifactId>
             <version>${version}</version>
         </dependency>
-           
+
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v22.ui</artifactId>
             <version>${version}</version>
         </dependency>
 
-       <dependency>
+        <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v30.core</artifactId>
             <version>${version}</version>
         </dependency>
-           
+
         <dependency>
-             <groupId>org.apache.geronimo.devtools</groupId>
-             <artifactId>org.apache.geronimo.st.v30.jaxbmodel</artifactId>
-             <version>${version}</version>
-         </dependency>
+            <groupId>org.apache.geronimo.devtools</groupId>
+            <artifactId>org.apache.geronimo.st.v30.jaxbmodel</artifactId>
+            <version>${version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.geronimo.devtools</groupId>
             <artifactId>org.apache.geronimo.st.v30.ui</artifactId>
             <version>${version}</version>
         </dependency>
-           
+
         <!-- 
          |
          | Features
@@ -323,6 +320,5 @@
             <artifactId>org.apache.geronimo.v30.feature</artifactId>
             <version>${version}</version>
         </dependency>
-           
     </dependencies>
 </project>

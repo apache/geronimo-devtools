@@ -17,12 +17,6 @@
 package org.apache.geronimo.st.v30.core;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,8 +35,6 @@ import javax.enterprise.deploy.spi.exceptions.DeploymentManagerCreationException
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
-import javax.management.remote.JMXConnectorFactory;
-import javax.management.remote.JMXServiceURL;
 import javax.naming.directory.NoSuchAttributeException;
 
 import org.apache.geronimo.deployment.plugin.jmx.ExtendedDeploymentManager;
@@ -57,19 +49,22 @@ import org.apache.geronimo.kernel.config.Configuration;
 import org.apache.geronimo.kernel.config.InvalidConfigException;
 import org.apache.geronimo.kernel.config.PersistentConfigurationList;
 import org.apache.geronimo.kernel.repository.Artifact;
+import org.apache.geronimo.kernel.util.IOUtils;
 import org.apache.geronimo.st.core.GeronimoJMXConnectorFactory;
 import org.apache.geronimo.st.core.GeronimoJMXConnectorFactory.JMXConnectorInfo;
-import org.apache.geronimo.st.v30.core.UpdateServerStateTask;
 import org.apache.geronimo.st.v30.core.commands.DeploymentCommandFactory;
 import org.apache.geronimo.st.v30.core.internal.DependencyHelper;
 import org.apache.geronimo.st.v30.core.internal.Messages;
+import org.apache.geronimo.st.v30.core.internal.RemovedModuleHelper;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.operations.ISharedLibEntryCreationDataModelProperties;
 import org.apache.geronimo.st.v30.core.operations.SharedLibEntryCreationOperation;
 import org.apache.geronimo.st.v30.core.operations.SharedLibEntryDataModelProvider;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
+import org.apache.geronimo.st.v30.core.osgi.AriesHelper.BundleInfo;
 import org.apache.geronimo.st.v30.core.osgi.OSGiModuleHandler;
-import org.apache.geronimo.system.jmx.KernelDelegate;
+import org.apache.geronimo.st.v30.core.util.JMXKernel;
+import org.apache.geronimo.st.v30.core.util.Utils;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -88,11 +83,16 @@ import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.sourcelookup.AbstractSourceLookupDirector;
 import org.eclipse.debug.core.sourcelookup.ISourceContainer;
 import org.eclipse.debug.core.sourcelookup.containers.DefaultSourceContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.ToolFactory;
+import org.eclipse.jdt.core.util.IClassFileReader;
+import org.eclipse.jdt.debug.core.IJavaDebugTarget;
+import org.eclipse.jdt.internal.debug.core.model.JDIDebugTarget;
 import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
@@ -114,7 +114,6 @@ import org.eclipse.wst.server.core.model.IModuleFolder;
 import org.eclipse.wst.server.core.model.IModuleResource;
 import org.eclipse.wst.server.core.model.IModuleResourceDelta;
 import org.eclipse.wst.server.core.model.ServerBehaviourDelegate;
-import org.eclipse.wst.server.core.util.PublishHelper;
 import org.eclipse.wst.server.core.util.SocketUtil;
 
 /**
@@ -126,7 +125,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     
     public static final int TIMER_TASK_DELAY = 20;
 
-    private Kernel kernel = null;
+    private JMXKernel kernel = null;
     
     protected Timer stateTimer = null;
     
@@ -144,6 +143,10 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     
     private DefaultModuleHandler defaultModuleHandler;
     private OSGiModuleHandler osgiModuleHandler;
+    
+    private RemovedModuleHelper removedModuleHelper;
+    
+    private boolean eclipseHotSwap;
 
     protected ClassLoader getContextClassLoader() {
         return Kernel.class.getClassLoader();
@@ -210,14 +213,18 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     synchronized protected void setupLaunch(ILaunch launch, String launchMode, IProgressMonitor monitor) throws CoreException {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.setupLaunch", launch, launchMode, monitor); 
 
-        if (!SocketUtil.isLocalhost(getServer().getHost()))
+        String host = getServer().getHost();
+        
+        if (!SocketUtil.isLocalhost(host)) {
             return;
+        }
 
         ServerPort[] ports = getServer().getServerPorts(null);
         for (int i = 0; i < ports.length; i++) {
             ServerPort sp = ports[i];
-            if (SocketUtil.isPortInUse(ports[i].getPort(), 5))
+            if (Utils.isPortInUse(host, ports[i].getPort(), 5)) {
                 throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, Messages.bind(Messages.errorPortInUse, Integer.toString(sp.getPort()), sp.getName()), null));
+            }
         }
         
         stopUpdateServerStateTask();
@@ -380,7 +387,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
      * @see org.eclipse.wst.server.core.model.ServerBehaviourDelegate#publishModules(int, java.util.List, java.util.List, org.eclipse.core.runtime.MultiStatus, org.eclipse.core.runtime.IProgressMonitor)
      */
     protected void publishModules(int kind, List modules, List deltaKind, MultiStatus multi, IProgressMonitor monitor) {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishModules", publishKindToString(kind), Arrays.asList(modules), Arrays.asList(deltaKind), multi, monitor);
+        Trace.traceEntry(Activator.traceCore, "GeronimoServerBehaviourDelegate.publishModules", publishKindToString(kind), Arrays.asList(modules), Arrays.asList(deltaKind), multi, monitor);
 
         // 
         // WTP publishes modules in reverse alphabetical order which does not account for possible 
@@ -445,119 +452,206 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             resetSourceLookupList();
         }
         
-        if(status.isOK()) {
-            if (modules == null)
+        if (status.isOK()) {
+            if (modules == null || modules.isEmpty()) {
                 return;
+            }
             
-            int size = modules.size();
-            if (size == 0)
+            if (monitor.isCanceled()) {
                 return;
+            }
             
-            if (monitor.isCanceled())
-                return;
-            
-            // phase 1: see if the modified contents can copied/replaced 
-            if (getServerDelegate().isNoRedeploy() && !isRemote()) {
-                Iterator<ModuleDeltaList> iterator = publishMap.values().iterator();
-                while (iterator.hasNext()) {
-                    ModuleDeltaList moduleList = iterator.next();
-                    IModule[] rootModule = moduleList.getRootModule();
-                    if (GeronimoUtils.isEBAModule(rootModule[0]) || GeronimoUtils.isEarModule(rootModule[0])) {
-                        if (moduleList.hasChangedChildModulesOnly(true)) {
-                            boolean replacementPossible = true;
-                            Map<IModule[], IStatus> statusMap = new HashMap<IModule[], IStatus>();   
-                            
-                            for (ModuleDelta moduleDelta : moduleList.getChildModules()) {
-                                IModule bundleModule = moduleDelta.module[1];
-                                if (moduleDelta.delta == CHANGED && (GeronimoUtils.isWebModule(bundleModule) || GeronimoUtils.isBundleModule(bundleModule))) {
-                                    // try to do replacement
-                                    status = tryFileReplace(moduleDelta.module);
-                                    if (status == null) {
-                                        // replacement was not possible
-                                        replacementPossible = false;
-                                        break;
-                                    } else {
-                                        statusMap.put(moduleDelta.module, status);
-                                    }
-                                } else {
-                                    statusMap.put(moduleDelta.module, Status.OK_STATUS);
-                                }
-                            }
-                            
-                            if (replacementPossible) {
-                                // replacement was possible for all changed child modules - remove it from publish list
-                                iterator.remove();
-                                
-                                statusMap.put(rootModule, Status.OK_STATUS);
-                                for (Map.Entry<IModule[], IStatus> entry : statusMap.entrySet()) {
-                                    setStatus(entry.getKey(), entry.getValue(), multi);
-                                }
-                            } else {
-                                // replacement was not possible for at least one child module - redeploy the module
-                            }                            
-                        }
-                    } else if (GeronimoUtils.isWebModule(rootModule[0]) || GeronimoUtils.isBundleModule(rootModule[0])) {
-                        if (moduleList.getEffectiveRootDelta() == CHANGED) {
-                            // contents changed - try to do replacement
-                            status = tryFileReplace(rootModule);
-                            if (status != null) {
-                                // replacement was possible - remove it from publish list
-                                iterator.remove();
-
-                                setStatus(rootModule, status, multi);
-                            } else {
-                                // replacement was not possible - redeploy the module
-                            }
-                        }
-                    }                                          
-                }
-            }   
-                    
-            // phase 2: re-deploy the modules
-            boolean refreshOSGiBundle = getServerDelegate().isRefreshOSGiBundle();
             for (ModuleDeltaList moduleList : publishMap.values()) {  
                 IModule[] rootModule = moduleList.getRootModule();
-                AbstractName ebaName = null;
-                if (refreshOSGiBundle &&
-                    GeronimoUtils.isEBAModule(rootModule[0]) &&  
-                    moduleList.hasChangedChildModulesOnly(false) && 
-                    (ebaName = getApplicationGBeanName(rootModule[0])) != null) {
-                    List<IModule[]> changedModules = new ArrayList<IModule[]>();
-                    List<IModule[]> unChangedModules = new ArrayList<IModule[]>();
-                    for (ModuleDelta moduleDelta : moduleList.getChildModules()) {
-                        if (moduleDelta.delta == CHANGED) {
-                            changedModules.add(moduleDelta.module);
-                        } else {
-                            unChangedModules.add(moduleDelta.module);
-                        }
-                    }
-                    status = refreshBundles(rootModule[0], ebaName, changedModules, ProgressUtil.getSubMonitorFor(monitor, 3000));
-                    if (status != null && !status.isOK()) {
-                        multi.add(status);
-                    }
-                    unChangedModules.add(rootModule);
-                    for (IModule[] module : unChangedModules) {                   
-                        setModulePublishState(module, IServer.PUBLISH_STATE_NONE);
-                        setModuleStatus(module, null);
-                    }
+                if (GeronimoUtils.isEBAModule(rootModule[0])) {
+                    publishEBAModule(kind, multi, monitor, moduleList);      
+                } else if (GeronimoUtils.isEarModule(rootModule[0])) {
+                    publishEARModule(kind, multi, monitor, moduleList);   
+                } else if (GeronimoUtils.isWebModule(rootModule[0]) || GeronimoUtils.isBundleModule(rootModule[0])) {
+                    publishSingleModule(kind, multi, monitor, moduleList);
                 } else {
-                    status = publishModule(kind, rootModule, moduleList.getEffectiveRootDelta(), ProgressUtil.getSubMonitorFor(monitor, 3000));
-                    if (status != null && !status.isOK()) {
-                        multi.add(status);
-                    } else {
-                        for (ModuleDelta moduleDelta : moduleList.getChildModules()) {
-                            setModulePublishState(moduleDelta.module, IServer.PUBLISH_STATE_NONE);
-                            setModuleStatus(moduleDelta.module, null);
-                        }
-                    }
+                    publishEntireModule(kind, multi, monitor, moduleList);
                 }
             }
-
+            
         } else {
             multi.add(status);
         }
 
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.publishModules");
+        Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.publishModules");
+    }
+
+    private void publishEBAModule(int kind, MultiStatus multi, IProgressMonitor monitor, ModuleDeltaList moduleList) {
+        Trace.traceEntry(Activator.traceCore, "GeronimoServerBehaviourDelegate.publishEBAModule", Arrays.toString(moduleList.getRootModule()));
+        
+        Map<IModule[], IStatus> statusMap = new HashMap<IModule[], IStatus>();
+        
+        if (getServerDelegate().isNoRedeploy() && !isRemote()) {            
+            if (moduleList.hasChangedChildModulesOnly(true)) {    
+                List<ModuleInfo> childModules = moduleList.getChildModules();
+                for (ModuleInfo module : childModules) {
+                    if (module.delta == CHANGED) {
+                        // changed module - try to do replacement
+                        IModuleResourceDelta[] delta = getPublishedResourceDelta(module.module);
+                        IModuleResourceDelta[] nonClassDelta = FilteredClassResourceDelta.getChangedClassExcludeDelta(delta);
+                        if (Activator.getDefault().isDebugging()) {
+                            Trace.trace(Trace.INFO, "Non-modified class delta for " + module, Activator.traceCore);
+                            traceModuleResourceDelta(nonClassDelta, "  ");
+                        }
+                        IStatus status = tryFileReplace(module.module, nonClassDelta);
+                        if (status == null) {
+                            // replace not performed - must redeploy bundle or entire application
+                        } else if (status.isOK()) {
+                            boolean containsModifiedClasses = DeploymentUtils.containsChangedClassResources(delta);
+                            if (containsModifiedClasses) {
+                                // replace performed but we have modified classes to deploy
+                                // set remaining resource delta to process
+                                IModuleResourceDelta[] classDelta = FilteredClassResourceDelta.getChangedClassIncludeDelta(delta);
+                                if (Activator.getDefault().isDebugging()) {
+                                    Trace.trace(Trace.INFO, "Modified class delta for " + module, Activator.traceCore);
+                                    traceModuleResourceDelta(classDelta, "  ");
+                                }
+                                module.resourceDelta = classDelta;
+                            } else {
+                                // replace performed and was successful                    
+                                statusMap.put(module.module, status);
+                            }
+                        } else {        
+                            // replace performed but failed
+                            statusMap.put(module.module, status);
+                        }
+                    } else {
+                        // non-changed module
+                        statusMap.put(module.module, Status.OK_STATUS);
+                    }
+                }
+                
+                if (statusMap.size() == childModules.size()) {
+                    // replacement was possible for all changed child modules - we're done
+                    for (Map.Entry<IModule[], IStatus> entry : statusMap.entrySet()) {
+                        setStatus(entry.getKey(), entry.getValue(), multi);
+                    }
+                    setStatus(moduleList.getRootModule(), Status.OK_STATUS, multi);
+                    Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.publishEBAModule", "File replace");
+                    return;                        
+                } 
+                
+                // fall-through: replacement was not possible for at least one child module or more work to do              
+            }
+        }
+        
+        boolean refreshOSGiBundle = getServerDelegate().isRefreshOSGiBundle();
+        if (refreshOSGiBundle && moduleList.hasChangedChildModulesOnly(false)) {
+            AbstractName ebaName = getApplicationGBeanName(moduleList.getRootModule()[0]);
+            if (ebaName != null) {
+                for (ModuleInfo module : moduleList.getChildModules()) {
+                    IStatus status = statusMap.get(module.module);
+                    if (status == null) {
+                        if (module.delta == CHANGED) {
+                            status = refreshBundle(ebaName, module);
+                        } else {
+                            status = Status.OK_STATUS;
+                        }
+                    }                           
+                    setStatus(module.module, status, multi);
+                }
+                setStatus(moduleList.getRootModule(), Status.OK_STATUS, multi);
+                Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.publishEBAModule", "Bundle update");
+                return;
+            }
+        }
+        
+        // deploy the entire module
+        publishEntireModule(kind, multi, monitor, moduleList);
+        
+        Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.publishEBAModule");
+    }
+    
+    private void publishEARModule(int kind, MultiStatus multi, IProgressMonitor monitor, ModuleDeltaList moduleList) {
+        Trace.traceEntry(Activator.traceCore, "GeronimoServerBehaviourDelegate.publishEARModule", Arrays.toString(moduleList.getRootModule()));
+
+        if (getServerDelegate().isNoRedeploy() && !isRemote()) {            
+            if (moduleList.hasChangedChildModulesOnly(true)) {
+                List<ModuleInfo> childModules = moduleList.getChildModules();
+                Map<IModule[], IStatus> statusMap = new HashMap<IModule[], IStatus>();
+                
+                for (ModuleInfo module : childModules) {
+                    if (module.delta == CHANGED) {
+                        // changed module - try to do replacement
+                        IModuleResourceDelta[] delta = getPublishedResourceDelta(module.module);
+                        IStatus status = tryFileReplace(module.module, delta);
+                        if (status == null) {
+                            // replacement was not possible - must redeploy the whole ear
+                            break;                           
+                        } else {
+                            statusMap.put(module.module, status);
+                        }                       
+                    } else {        
+                        // non-changed module
+                        statusMap.put(module.module, Status.OK_STATUS);
+                    }
+                }
+                        
+                if (statusMap.size() == childModules.size()) {
+                    // replacement was possible for all changed child modules - we're done                   
+                    for (Map.Entry<IModule[], IStatus> entry : statusMap.entrySet()) {
+                        setStatus(entry.getKey(), entry.getValue(), multi);
+                    }
+                    setStatus(moduleList.getRootModule(), Status.OK_STATUS, multi);
+                    Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.publishEARModule", "File replace");
+                    return;                        
+                }
+                
+                // fall-through: replacement was not possible for at least one child module - deploy the entire module                         
+            }
+        }    
+   
+        // deploy the entire module
+        publishEntireModule(kind, multi, monitor, moduleList);
+        
+        Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.publishEARModule");
+    }
+    
+    private void publishSingleModule(int kind, MultiStatus multi, IProgressMonitor monitor, ModuleDeltaList moduleList) {
+        Trace.traceEntry(Activator.traceCore, "GeronimoServerBehaviourDelegate.publishSingleModule", Arrays.toString(moduleList.getRootModule()));
+
+        if (getServerDelegate().isNoRedeploy() && !isRemote()) {    
+            if (moduleList.getEffectiveRootDelta() == CHANGED) {
+                // contents changed - try to do replacement
+                IModule[] rootModule = moduleList.getRootModule();
+                IModuleResourceDelta[] delta = getPublishedResourceDelta(rootModule);
+                IStatus status = tryFileReplace(rootModule, delta);
+                if (status != null) {
+                    // replacement was possible - we're done
+                    setStatus(rootModule, status, multi);
+                    Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.publishSingleModule", "File replace");
+                    return;
+                } 
+                  
+                // fall-through: replacement was not possible - deploy the entire module               
+            }
+        }
+        
+        // deploy the entire module
+        publishEntireModule(kind, multi, monitor, moduleList);
+        
+        Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.publishSingleModule");
+    }
+    
+    private void publishEntireModule(int kind, MultiStatus multi, IProgressMonitor monitor, ModuleDeltaList moduleList) {
+        Trace.traceEntry(Activator.traceCore, "GeronimoServerBehaviourDelegate.publishEntireModule", Arrays.toString(moduleList.getRootModule()));
+
+        IStatus status = publishModule(kind, moduleList.getRootModule(), moduleList.getEffectiveRootDelta(), ProgressUtil.getSubMonitorFor(monitor, 3000));
+        if (status != null && !status.isOK()) {
+            multi.add(status);
+        } else {
+            for (ModuleInfo moduleDelta : moduleList.getChildModules()) {
+                setModulePublishState(moduleDelta.module, IServer.PUBLISH_STATE_NONE);
+                setModuleStatus(moduleDelta.module, null);
+            }
+        }
+        
+        Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.publishEntireModule", status);
     }
         
     private AbstractName getApplicationGBeanName(IModule ebaModule) {
@@ -574,70 +668,34 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getApplicationGBeanName", ebaName);
         return ebaName;
     }
-    
-    private IStatus refreshBundles(IModule ebaModule, AbstractName ebaName, List<IModule[]> bundleModules, IProgressMonitor monitor) {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundles", ebaModule, ebaName, bundleModules, monitor);
         
-        if (monitor.isCanceled()) {
-            return Status.CANCEL_STATUS;
-        }
-        
-        MultiStatus multiStatus = new MultiStatus(Activator.PLUGIN_ID, 0, "", null);
-        
+    private IStatus refreshBundle(AbstractName ebaName, ModuleInfo module) {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundle", ebaName, module);
+        IModule ebaModule = module.module[0];
+        IModule bundleModule = module.module[1];
         try {
             ExtendedDeploymentManager dm = (ExtendedDeploymentManager) DeploymentCommandFactory.getDeploymentManager(getServer());
-            long[] bundleIds = dm.getEBAContentBundleIds(ebaName);
 
-            Map<String, Long> bundleMap = new HashMap<String, Long>();
-            for (long bundleId : bundleIds) {
-                String symbolicName = dm.getEBAContentBundleSymbolicName(ebaName, bundleId);
-                if (symbolicName != null) {
-                    bundleMap.put(symbolicName, bundleId);
-                }
-            }
+            BundleInfo bundleInfo = AriesHelper.getBundleInfo(bundleModule.getProject());
+            long bundleId = dm.getEBAContentBundleId(ebaName, bundleInfo.getSymbolicName(), bundleInfo.getVersion().toString());
             
-            for (IModule[] bundleModule : bundleModules) {
-                if (monitor.isCanceled()) {
-                    return Status.CANCEL_STATUS;
-                }
-                IStatus status = refreshBundle(ebaModule, bundleModule[1], ebaName, bundleMap); 
-                setStatus(bundleModule, status, multiStatus);
-            }
-        } catch (Exception e) {
-            multiStatus.add(new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.REFRESH_FAIL, e));
-        }
-        
-        IStatus status;
-        if (multiStatus.isOK()) {
-            status = Status.OK_STATUS;
-        } else {
-            status = multiStatus;
-        }
-        
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundles", status);
-        
-        return status;
-    }
-    
-    private IStatus refreshBundle(IModule ebaModule, IModule bundleModule, AbstractName ebaName, Map<String, Long> bundleMap) {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundle", ebaModule, bundleModule, ebaName, bundleMap);
-        try {
-            String symbolicName = AriesHelper.getSymbolicName(bundleModule);
-            Long bundleId = bundleMap.get(symbolicName);
-            
-            if (bundleId == null) {
+            if (bundleId == -1) {
                 return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.bind(Messages.REFRESH_NO_BUNDLE_FAIL,
                         new String[] {bundleModule.getProject().getName(), ebaModule.getProject().getName()}));
             }
             
-            ExtendedDeploymentManager dm = (ExtendedDeploymentManager) DeploymentCommandFactory.getDeploymentManager(getServer());
             /*
              * Try class hot swap first and if it fails fallback to regular bundle update.
              */
-            if (!refreshBundleClasses(dm, ebaModule, bundleModule, ebaName, bundleId)) {
+            ClassReplaceResult result = refreshBundleClasses(dm, ebaName, module, bundleId);
+            if (result != ClassReplaceResult.SUCCESS) {
                 File file = DeploymentUtils.getTargetFile(getServer(), bundleModule);
                 dm.updateEBAContent(ebaName, bundleId, file);
+                if (result == ClassReplaceResult.FAIL_FORCE_GC) {
+                    invokeGC();
+                }
             }
+            
         } catch (Exception e) {
             return new Status(IStatus.ERROR, Activator.PLUGIN_ID, Messages.REFRESH_FAIL, e);
         }
@@ -647,70 +705,128 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         return Status.OK_STATUS;
     }
 
-    private boolean refreshBundleClasses(ExtendedDeploymentManager dm, IModule ebaModule, IModule bundleModule, AbstractName ebaName, long bundleId) throws Exception {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", ebaModule, bundleModule, ebaName, bundleId);    
+    private enum ClassReplaceResult { SUCCESS, FAIL, FAIL_FORCE_GC };
+    
+    private ClassReplaceResult refreshBundleClasses(ExtendedDeploymentManager dm, AbstractName ebaName, ModuleInfo module, long bundleId) throws Exception {
+        Trace.traceEntry(Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", ebaName, module, bundleId);    
         // check if class hot swap is supported
         if (!dm.isRedefineClassesSupported()) {
-            Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Class redefinition is not supported");        
-            return false;
+            Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Class redefinition is not supported");        
+            return ClassReplaceResult.FAIL;
         }
         // ensure only classes have changed
-        IModuleResourceDelta[] delta = getPublishedResourceDelta(new IModule[] { ebaModule, bundleModule });
+        IModuleResourceDelta[] delta = module.resourceDelta;
+        if (delta == null) {
+            delta = getPublishedResourceDelta(module.module);
+        }
         IModuleResource[] classResources = DeploymentUtils.getChangedClassResources(delta);
         if (classResources == null) {
-            Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Non-class resource modifications found");
-            return false;
+            Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Non-class resource modifications found");
+            return ClassReplaceResult.FAIL;
         }
         // create temp. zip with the changes
         File changeSetFile = DeploymentUtils.createChangeSetFile(classResources);
         if (changeSetFile == null) {
-            Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Error creating file with resource modifications");
-            return false;
+            Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Error creating file with resource modifications");
+            return ClassReplaceResult.FAIL;
         }
-        // get document base for the module if it is expanded
-        String documentBase = getServerDelegate().isNoRedeploy() ? getWebModuleDocumentBase(bundleModule) : null;
-        // see if the classes can be hot swapped - update archive if module is not expanded
-        if (!dm.hotSwapEBAContent(ebaName, bundleId, changeSetFile, documentBase == null)) {
-            Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap cannot be preformed");
-            changeSetFile.delete();
-            return false;
+        if (eclipseHotSwap) {
+            // debug mode - Eclipse will do class hot swap for us
+            IDebugTarget target = getServer().getLaunch().getDebugTarget();
+            if (isOutOfSynch(target, classResources)) {
+                Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Eclipse HCR failed");
+                return ClassReplaceResult.FAIL_FORCE_GC;
+            } else {            
+                // save changes only
+                boolean result = dm.updateEBAArchive(ebaName, bundleId, changeSetFile, true);
+                Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Eclipse HCR - updated class files only", result);
+                return ClassReplaceResult.SUCCESS;
+            }
         } else {
-            changeSetFile.delete();
+            // non-debug mode - try class hot swap
+            if (!dm.hotSwapEBAContent(ebaName, bundleId, changeSetFile, true)) {
+                changeSetFile.delete();
+                Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap cannot be preformed");
+                return ClassReplaceResult.FAIL;
+            } else {
+                changeSetFile.delete();
+                Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap was succesfully preformed");
+                return ClassReplaceResult.SUCCESS;
+            }
         }
-        if (documentBase != null) {
-            PublishHelper publishHelper = new PublishHelper(getTempDirectory().toFile());   
-            IStatus[] statusArray = publishHelper.publishFull(classResources, new Path(documentBase), null);
-            if (statusArray != null) {
-                // XXX: in case of an error should we return false to force full re-deploy?
-                for (IStatus status : statusArray) {
-                    if (!status.isOK()) {
-                        Trace.trace(Trace.WARNING, "Error publishing changes: " + status.getMessage(), status.getException(), Activator.traceCore);
-                    }
+    }
+
+    private boolean isOutOfSynch(IDebugTarget target, IModuleResource[] classResources) {
+        Trace.traceEntry(Activator.traceCore, "GeronimoServerBehaviourDelegate.isOutOfSynch");    
+        if (target instanceof JDIDebugTarget) {
+            JDIDebugTarget javaTarget = (JDIDebugTarget) target;
+            for (IModuleResource resource : classResources) {
+                String path = null;
+                IFile srcIFile = (IFile) resource.getAdapter(IFile.class);
+                if (srcIFile != null) {
+                    path = srcIFile.getLocation().toOSString();
+                } else {
+                    File srcFile = (File) resource.getAdapter(File.class);
+                    path = srcFile.getAbsolutePath();
+                }
+            
+                IClassFileReader reader = ToolFactory.createDefaultClassFileReader(path, IClassFileReader.CLASSFILE_ATTRIBUTES);
+                if (reader != null) {
+                    String className = new String(reader.getClassName()).replace('/', '.');
+                    if (javaTarget.isOutOfSynch(className)) {
+                        // out-of-synch class found
+                        Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.isOutOfSynch", "Out-of-synch class found", className);
+                        return true;                        
+                    }                    
                 }
             }
         }
-        Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.refreshBundleClasses", "Bundle class hot swap was succesfully preformed", documentBase);
-        return true;
+        Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.isOutOfSynch");   
+        return false;
     }
     
-    private static class ModuleDelta {
+    private boolean isEclipseHotSwapEnabled() {
+        Trace.traceEntry(Activator.traceCore, "GeronimoServerBehaviourDelegate.isEclipseHotSwapEnabled");
+        boolean enabled = false;
+        IServer server = getServer();
+        if (ILaunchManager.DEBUG_MODE.equals(server.getMode())) {
+            ILaunch launch = server.getLaunch();
+            if (launch != null) {
+                IDebugTarget target = launch.getDebugTarget();
+                if (target instanceof IJavaDebugTarget) {
+                    IJavaDebugTarget javaTarget = (IJavaDebugTarget) target;
+                    javaTarget.addHotCodeReplaceListener(new HotCodeReplaceListener());
+                    enabled = javaTarget.supportsHotCodeReplace();
+                }
+            }            
+        }
+        Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.isEclipseHotSwapEnabled", enabled);
+        return enabled;
+    }
+    
+    private static class ModuleInfo {
         private final IModule[] module;
         private int delta = NO_CHANGE;
+        private IModuleResourceDelta[] resourceDelta;
         
-        public ModuleDelta(IModule[] module, int delta) {
+        public ModuleInfo(IModule[] module, int delta) {
             this.module = module;
             this.delta = delta;
         }
+        
+        public String toString() {
+            return Arrays.toString(module);
+        }
     }
     
-    private static class ModuleDeltaList {       
+    private static class ModuleDeltaList {
         
-        private ModuleDelta root;
-        private List<ModuleDelta> children;
+        private ModuleInfo root;
+        private List<ModuleInfo> children;
         
         public ModuleDeltaList(IModule rootModule) {
-            this.root = new ModuleDelta(new IModule [] {rootModule}, NO_CHANGE);
-            this.children = new ArrayList<ModuleDelta>();
+            this.root = new ModuleInfo(new IModule [] {rootModule}, NO_CHANGE);
+            this.children = new ArrayList<ModuleInfo>();
         }
 
         public IModule[] getRootModule() {
@@ -719,7 +835,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         
         public int getEffectiveRootDelta() {
             if (root.delta == NO_CHANGE) {
-                for (ModuleDelta child : children) {
+                for (ModuleInfo child : children) {
                     if (child.delta == ADDED || child.delta == REMOVED || child.delta == CHANGED) {
                         return CHANGED;
                     }
@@ -733,10 +849,10 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         }
         
         public void addChildModule(IModule[] module, int moduleDelta) {
-            children.add(new ModuleDelta(module, moduleDelta));
+            children.add(new ModuleInfo(module, moduleDelta));
         }
         
-        public List<ModuleDelta> getChildModules() {
+        public List<ModuleInfo> getChildModules() {
             return children;
         }
 
@@ -764,7 +880,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         public int getChangedChildModulesOnly() {
             if (root.delta == NO_CHANGE) {
                 int changed = 0;
-                for (ModuleDelta child : children) {
+                for (ModuleInfo child : children) {
                     if (child.delta == ADDED || child.delta == REMOVED) {
                         return -1;
                     } else if (child.delta == CHANGED) {
@@ -876,6 +992,8 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         defaultModuleHandler = new DefaultModuleHandler(this);
         osgiModuleHandler = new OSGiModuleHandler(this);
         
+        removedModuleHelper = new RemovedModuleHelper(this);
+        
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.initialize");
     }
 
@@ -934,10 +1052,12 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         return "org.apache.geronimo.cli.daemon.DaemonCLI";
     }
 
-    public void setServerStarted() {
+    public void setServerStarted() {        
+        eclipseHotSwap = isEclipseHotSwapEnabled();
         setServerState(IServer.STATE_STARTED);
         GeronimoConnectionFactory.getInstance().destroy(getServer());
         startSynchronizeProjectOnServerTask();
+        removedModuleHelper.clearRemoveModules();
     }
 
     public void setServerStopped() {
@@ -965,6 +1085,7 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         }
         setServerState(IServer.STATE_STOPPED);
         resetModuleState();
+        resetKernelConnection();
     }
 
     private void resetModuleState() {
@@ -1022,23 +1143,37 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         Trace.tracePoint("Exit ", Activator.traceCore, "GeronimoServerBehaviourDelegate.invokeCommand");
     }   
 
-    private String getWebModuleDocumentBase(IModule webModule) {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", webModule);
+    private String getModulePublishLocation(IModule[] module) {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.getModulePublishLocation", Arrays.asList(module));
         
-        if (webModule.isExternal()) {
-            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", "External module");
-            return null;
-        }
-                
-        String contextPath = getServerDelegate().getContextPath(webModule);
-        if (contextPath == null) {
-            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", "Context path is null");
+        IModule childModule = module[module.length - 1];
+        if (childModule.isExternal()) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getModulePublishLocation", "External module");
             return null;
         }
 
+        String publishLocation = null;
+        String contextPath = getServerDelegate().getContextPath(childModule);
+        if (contextPath != null) {
+            // web module
+            publishLocation = getWebModulePublishLocation(childModule, contextPath);
+        } else if (module.length > 1 && GeronimoUtils.isEBAModule(module[0])) {
+            // bundle module within eba
+            publishLocation = getBundleModulePublishLocation(module);
+        } else {
+            // unsupported module - no publish location
+        }
+
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getModulePublishLocation", publishLocation);
+        return publishLocation;
+    }
+    
+    private String getWebModulePublishLocation(IModule webModule, String contextPath) {
+        Trace.tracePoint("Enter", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModulePublishLocation", webModule, contextPath);
+        
         String documentBase = getWebModuleDocumentBase(contextPath);
         if (documentBase == null) {
-            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", "Document base is not set");
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModulePublishLocation", "Document base is not set");
             return null;
         }
         
@@ -1046,144 +1181,90 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         if (!publishLocation.isAbsolute()) {
             publishLocation = getServerResource(IGeronimoServerBehavior.VAR_CATALINA_DIR + documentBase).toFile();            
         }
-        
-        if (!publishLocation.exists()) {
-            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", "Document base does not exist", publishLocation);
+                
+        if (publishLocation.isDirectory() ) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModulePublishLocation", contextPath, documentBase, publishLocation);
+            return publishLocation.getAbsolutePath();
+        } else {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModulePublishLocation", "Invalid publish location", publishLocation);
             return null;
         }
-        
-        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getWebModuleDocumentBase", contextPath, documentBase, publishLocation);
-        return publishLocation.getAbsolutePath();
     }
     
-    private IStatus tryFileReplace(IModule[] module) {
-        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", module.toString());
+    private String getBundleModulePublishLocation(IModule[] module) {
+        Trace.tracePoint("Enter", Activator.traceCore, "GeronimoServerBehaviourDelegate.getBundleModulePublishLocation", Arrays.asList(module));
         
-        IModule webModule = module[module.length - 1];        
-        String documentBase = getWebModuleDocumentBase(webModule);
-        if (documentBase == null) {
-            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "Document base is not set or is invalid");
+        IModule ebaModule = module[0];
+        IModule bundleModule = module[module.length - 1];
+        
+        AbstractName ebaName = getApplicationGBeanName(ebaModule);
+        if (ebaName == null) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getBundleModulePublishLocation", "Unable to get eba name");
+        }
+        
+        File publishLocation = null;
+        try {
+            ExtendedDeploymentManager dm = (ExtendedDeploymentManager) DeploymentCommandFactory.getDeploymentManager(getServer());
+            
+            BundleInfo bundleInfo = AriesHelper.getBundleInfo(bundleModule.getProject());
+            
+            publishLocation = dm.getEBAContentBundlePublishLocation(ebaName, bundleInfo.getSymbolicName(), bundleInfo.getVersion().toString());
+        } catch (Exception e) {
+            Trace.trace(Trace.WARNING, "Error getting bundle publish location", e, Activator.traceCore);
+        }
+        
+        if (publishLocation != null && publishLocation.isDirectory()) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getBundleModulePublishLocation", publishLocation);
+            return publishLocation.getAbsolutePath();
+        } else {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getBundleModulePublishLocation", "Publish location is not available or is invalid", publishLocation);
+            return null;
+        }
+    }
+    
+    private IStatus tryFileReplace(IModule[] module, IModuleResourceDelta[] deltas) {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", Arrays.asList(module));
+        
+        String publishLocation = getModulePublishLocation(module);
+        if (publishLocation == null) {
+            Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "Publish location is not set or is invalid");
             return null;
         }
 
-        List<IModuleResourceDelta> modifiedFiles = findModifiedFiles(module);
-        if (modifiedFiles == null) {
+        if (!canPublishDelta(deltas)) {
             Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", "Some modified files cannot be replaced");
             return null;
         }
-        Trace.trace(Trace.INFO, "Modified files: " + modifiedFiles, Activator.logCore);
 
-        IStatus status = findAndReplaceFiles(webModule, modifiedFiles, documentBase);
+        Path publishPath = new Path(publishLocation);
+        List<IStatus> statusList = new ArrayList<IStatus>();
+        for (IModuleResourceDelta delta : deltas) {
+            DeploymentUtils.publishDelta(delta, publishPath, statusList);
+        }
+        
+        IStatus status = Status.OK_STATUS;
+        if (!statusList.isEmpty()) {
+            IStatus[] statusArray = new IStatus[statusList.size()];
+            statusList.toArray(statusArray);
+            status = new MultiStatus(Activator.PLUGIN_ID, 0, statusArray, "", null);
+        }
+
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.tryFileReplace", status);
         return status;
     }
         
-    private List<IModuleResourceDelta> findModifiedFiles(IModule[] module) {
-        IModuleResourceDelta[] deltaArray = getPublishedResourceDelta(module);
-
+    private boolean canPublishDelta(IModuleResourceDelta[] deltaArray) {
         GeronimoServerDelegate delegate = getServerDelegate();
         List<String> includes = delegate.getNoRedeployFilePatternsAsList(true);
         List<String> excludes = delegate.getNoRedeployFilePatternsAsList(false);
-        
-        List<IModuleResourceDelta> modifiedFiles = new ArrayList<IModuleResourceDelta>();
         for (IModuleResourceDelta delta : deltaArray) {
-            List<IModuleResourceDelta> files = DeploymentUtils.getAffectedFiles(delta, includes, excludes);
-            // if null then some other files were changed that we cannot just copy/replace.
-            if (files == null) {
-                return null;
+            if (DeploymentUtils.isMatchingDelta(delta, includes, excludes)) {
+                // delta only contains files that can be copied / replaced - keep checking
             } else {
-                modifiedFiles.addAll(files);
+                return false;
             }
         }
-        return modifiedFiles;
-    }
-    
-    /*
-     * This method is used to replace updated files without redeploying the entire module. 
-     */
-    private IStatus findAndReplaceFiles(IModule module, List<IModuleResourceDelta> modifiedFiles, String documentBase) {
-        Trace.trace(Trace.INFO, "Replacing updated files for " + module.getName() + " module.", Activator.logCore);
-        
-        String ch = File.separator;
-        byte[] buffer = new byte[10 * 1024];
-        int bytesRead;
-        
-        for (IModuleResourceDelta deltaModule : modifiedFiles) {
-            IModuleFile moduleFile = (IModuleFile) deltaModule.getModuleResource();
-
-            StringBuilder target = new StringBuilder(documentBase);
-            target.append(ch);
-            String relativePath = moduleFile.getModuleRelativePath().toOSString();
-            if (relativePath != null && relativePath.length() != 0) {
-                target.append(relativePath);
-                target.append(ch);
-            } 
-            target.append(moduleFile.getName());
-            
-            File file = new File(target.toString());
-            if(! file.isAbsolute()) {
-                file = getServerResource(IGeronimoServerBehavior.VAR_CATALINA_DIR + target.toString()).toFile();
-            }
-            
-            switch (deltaModule.getKind()) {
-            case IModuleResourceDelta.REMOVED:
-                if (file.exists()) {
-                    file.delete();
-                }
-                break;
-            case IModuleResourceDelta.ADDED:
-            case IModuleResourceDelta.CHANGED:
-                File parentFile = file.getParentFile();
-                if (parentFile != null && !parentFile.exists()) {
-                    if (!parentFile.mkdirs()) {
-                        Trace.trace(Trace.ERROR, "Cannot create target directory: " + parentFile, Activator.logCore);
-                        return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Cannot create target directory", null);
-                    }
-                }
-                
-                String sourceFile = relativePath;
-                InputStream in = null;
-                FileOutputStream out = null;
-                try {
-                    IFile srcIFile = (IFile) moduleFile.getAdapter(IFile.class);
-                    if (srcIFile != null) {
-                        in = srcIFile.getContents();
-                    } else {
-                        File srcFile = (File) moduleFile.getAdapter(File.class);
-                        in = new FileInputStream(srcFile);
-                    }
-                
-                    out = new FileOutputStream(file);
-                    
-                    while ((bytesRead = in.read(buffer)) > 0) {
-                        out.write(buffer, 0, bytesRead);
-                    }
-                } catch (FileNotFoundException e) {
-                    Trace.trace(Trace.ERROR, "Cannot find file to copy: " + sourceFile, e, Activator.logCore);
-                    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Cannot find file " + sourceFile, e);
-                } catch (IOException e) {
-                    Trace.trace(Trace.ERROR, "Cannot copy file: " + sourceFile, e, Activator.logCore);
-                    return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Cannot copy file " + sourceFile, e);
-                } catch (CoreException e) {
-                    Trace.trace(Trace.ERROR, "Cannot copy file: " + sourceFile, e, Activator.logCore);
-                    return e.getStatus();
-                } finally {
-                    if (in != null) {
-                        try { in.close(); } catch (IOException ignore) {}
-                    }
-                    if (out != null) {
-                        try { out.close(); } catch (IOException ignore) {}
-                    }
-                }
-                break;
-            }                    
-        }
-
-        return Status.OK_STATUS;
-    }
-
-    public Map getServerInstanceProperties() {
-        return getRuntimeDelegate().getServerInstanceProperties();
+        return true;
     }
 
     protected GeronimoRuntimeDelegate getRuntimeDelegate() {
@@ -1208,21 +1289,13 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     protected void setupLaunchClasspath(ILaunchConfigurationWorkingCopy wc, IVMInstall vmInstall) throws CoreException {
         List<IRuntimeClasspathEntry> cp = new ArrayList<IRuntimeClasspathEntry>();
         
-        String version = getServer().getRuntime().getRuntimeType().getVersion();
-        
-        if (version.startsWith("3")) {
-            //get required jar file
-            IPath libPath = getServer().getRuntime().getLocation().append("/lib");
-            for (String jarFile: libPath.toFile().list()){
-                IPath serverJar = libPath.append("/"+jarFile);
-                cp.add(JavaRuntime.newArchiveRuntimeClasspathEntry(serverJar));
-            }
-            
-        }else{
-             //for 1.1,2.0,2.1,2.2 
-             IPath serverJar = getServer().getRuntime().getLocation().append("/bin/server.jar");
-             cp.add(JavaRuntime.newArchiveRuntimeClasspathEntry(serverJar));
+        //get required jar file
+        IPath libPath = getServer().getRuntime().getLocation().append("/lib");
+        for (String jarFile: libPath.toFile().list()){
+            IPath serverJar = libPath.append("/"+jarFile);
+            cp.add(JavaRuntime.newArchiveRuntimeClasspathEntry(serverJar));
         }
+
         // merge existing classpath with server classpath
         IRuntimeClasspathEntry[] existingCps = JavaRuntime.computeUnresolvedRuntimeClasspath(wc);
 
@@ -1316,13 +1389,15 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     
     protected Kernel getKernel() throws SecurityException {
         if (kernel == null) {
+            JMXConnector connector = null;
             try {
-                MBeanServerConnection connection = getServerConnection();
-                if (connection != null)
-                    kernel = new KernelDelegate(connection);
+                connector = getJMXConnection();
+                kernel = new JMXKernel(connector);
             } catch (SecurityException e) {
+                IOUtils.close(connector);
                 throw e;
             } catch (Exception e) {
+                IOUtils.close(connector);
                 Trace.trace(Trace.INFO, "Kernel connection failed. "
                         + e.getMessage(), Activator.traceCore);
             }
@@ -1332,19 +1407,24 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     
     private void stopKernel() {
         Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.stopKernel");
+        JMXConnector jmxConnector = null;
         try {
-            MBeanServerConnection connection = getServerConnection();
+            jmxConnector = getJMXConnection();
+            MBeanServerConnection connection = jmxConnector.getMBeanServerConnection();
             connection.invoke(getFrameworkMBean(connection), "stopBundle",
                      new Object[] { 0 }, new String[] { long.class.getName() });
         } catch (Exception e) {
             Trace.trace(Trace.ERROR, "Error while requesting server shutdown", e, Activator.traceCore);
+        } finally {
+            IOUtils.close(jmxConnector);
         }
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.stopKernel");
     }
 
     public boolean isKernelAlive() {
         try {
-            return getKernel() != null && kernel.isRunning();
+            Kernel kernel = getKernel();
+            return kernel != null && kernel.isRunning();
         } catch (SecurityException e) {
             Trace.trace(Trace.ERROR, "Invalid username and/or password.", e, Activator.logCore);
 
@@ -1354,9 +1434,17 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
             }
         } catch (Exception e) {
             Trace.trace(Trace.WARNING, "Geronimo Server may have been terminated manually outside of workspace.", e, Activator.logCore);
-            kernel = null;
+            resetKernelConnection();
         }
         return false;
+    }
+    
+    public void resetKernelConnection() {
+        Trace.traceEntry(Activator.traceCore, "GeronimoServerBehaviourDelegate.resetKernelConnection");
+        JMXKernel local = kernel;
+        kernel = null;
+        IOUtils.close(local);
+        Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.resetKernelConnection");
     }
     
     private void forceStopJob(boolean b, final SecurityException e) {
@@ -1503,17 +1591,24 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         }
     }
     
-    public MBeanServerConnection getServerConnection() throws Exception {
-        String host = getServer().getHost();
-        String user = getGeronimoServer().getAdminID();
-        String password = getGeronimoServer().getAdminPassword();
-        String port = getGeronimoServer().getRMINamingPort();
+    public JMXConnector getJMXConnection() throws Exception {
+        GeronimoServerDelegate delegate = getServerDelegate();
+        
+        String host = delegate.getServer().getHost();
+        String user = delegate.getAdminID();
+        String password = delegate.getAdminPassword();
+        String port = String.valueOf(delegate.getActualRMINamingPort());
         JMXConnectorInfo connectorInfo = new JMXConnectorInfo(user, password, host, port);
         
         // Using the classloader that loads the current's class as the default classloader when creating the JMXConnector
         JMXConnector jmxConnector = GeronimoJMXConnectorFactory.create(connectorInfo, this.getClass().getClassLoader());
 
-        return jmxConnector.getMBeanServerConnection();
+        return jmxConnector;
+    }
+    
+    /* XXX: Should be avoided as there is no explicit way to close the connection */
+    public MBeanServerConnection getServerConnection() throws Exception {
+        return getJMXConnection().getMBeanServerConnection();
     }
     
     public ObjectName getMBean(MBeanServerConnection connection, String mbeanName, String name) throws Exception {
@@ -1530,6 +1625,22 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
     
     private ObjectName getFrameworkMBean(MBeanServerConnection connection) throws Exception {
         return getMBean(connection, "osgi.core:type=framework,*", "Framework");
+    }
+    
+    private void invokeGC() {
+        Trace.traceEntry(Activator.traceCore, "GeronimoServerBehaviourDelegate.invokeGC");
+        JMXConnector jmxConnector = null;
+        try {
+            jmxConnector = getJMXConnection();
+            MBeanServerConnection connection = jmxConnector.getMBeanServerConnection();
+            ObjectName name = getMBean(connection, "java.lang:type=Memory", "Memory");
+            connection.invoke(name, "gc", new Object [0], new String [0]);
+        } catch (Exception e) {
+            Trace.trace(Trace.ERROR, "Error while requesting server gc", e, Activator.traceCore);
+        } finally {
+            IOUtils.close(jmxConnector);
+        }
+        Trace.traceExit(Activator.traceCore, "GeronimoServerBehaviourDelegate.invokeGC");
     }
     
     public Target[] getTargets() {
@@ -1768,4 +1879,16 @@ public class GeronimoServerBehaviourDelegate extends ServerBehaviourDelegate imp
         Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getModifiedConfigIds", configIds);        
         return configIds;
     }
+    
+    public Set<String> getDeletedConfigIds() {
+        Trace.tracePoint("Entry", Activator.traceCore, "GeronimoServerBehaviourDelegate.getDeletedConfigIds");
+        Set<String> configIds = removedModuleHelper.getRemovedConfigIds();
+        Trace.tracePoint("Exit", Activator.traceCore, "GeronimoServerBehaviourDelegate.getDeletedConfigIds", configIds);        
+        return configIds;
+    }
+    
+    protected RemovedModuleHelper getRemovedModuleHelper() {
+        return removedModuleHelper;
+    }
+    
 }

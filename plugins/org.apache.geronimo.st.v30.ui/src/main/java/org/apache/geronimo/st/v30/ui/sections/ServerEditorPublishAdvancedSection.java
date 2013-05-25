@@ -17,10 +17,9 @@
 package org.apache.geronimo.st.v30.ui.sections;
 
 import org.apache.geronimo.st.v30.core.GeronimoServerDelegate;
-import org.apache.geronimo.st.v30.ui.commands.SetNoRedeployCommand;
+import org.apache.geronimo.st.v30.ui.commands.CheckSetPropertyCommand;
 import org.apache.geronimo.st.v30.ui.commands.SetNoRedeployFilePatternCommand;
 import org.apache.geronimo.st.v30.ui.commands.SetPublishTimeoutCommand;
-import org.apache.geronimo.st.v30.ui.commands.SetRefreshOSGiBundleCommand;
 import org.apache.geronimo.st.v30.ui.internal.Messages;
 import org.apache.geronimo.st.v30.ui.wizards.ListEditorWizard;
 import org.eclipse.jface.wizard.Wizard;
@@ -41,6 +40,7 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.wst.server.core.util.SocketUtil;
+import org.eclipse.wst.server.ui.internal.SWTUtil;
 
 /**
  * @version $Rev$ $Date$
@@ -87,12 +87,17 @@ public class ServerEditorPublishAdvancedSection extends AbstractServerEditorSect
         publishTimeout = new Spinner(composite, SWT.BORDER);
         publishTimeout.setMinimum(0);
         publishTimeout.setIncrement(5);
-        publishTimeout.setMaximum(900);
+        publishTimeout.setMaximum(60 * 60 * 24); // 24 hours
         publishTimeout.setSelection((int) gs.getPublishTimeout() / 1000);
-
+        SWTUtil.setSpinnerTooltip(publishTimeout);
         publishTimeout.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
-                execute(new SetPublishTimeoutCommand(server, publishTimeout.getSelection() * 1000));
+                if (publishTimeout.getData() == null) {
+                    execute(new SetPublishTimeoutCommand(server, publishTimeout));
+                } else {
+                    publishTimeout.setData(null);
+                }
+                SWTUtil.setSpinnerTooltip(publishTimeout);
             }
         });
                 
@@ -100,7 +105,11 @@ public class ServerEditorPublishAdvancedSection extends AbstractServerEditorSect
         refreshOSGiBundle.setSelection(gs.isRefreshOSGiBundle());
         refreshOSGiBundle.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
-                execute(new SetRefreshOSGiBundleCommand(server, refreshOSGiBundle.getSelection()));
+                if (refreshOSGiBundle.getData() == null) {
+                    execute(new CheckSetPropertyCommand(server, "RefreshOSGiBundle", refreshOSGiBundle));
+                } else {
+                    refreshOSGiBundle.setData(null);
+                }
             }
         });
         Label refreshOSGiLabel = toolkit.createLabel(composite, Messages.refreshOSGiBundleDescription, SWT.WRAP);
@@ -175,7 +184,11 @@ public class ServerEditorPublishAdvancedSection extends AbstractServerEditorSect
         noRedeploy.setEnabled(!(server.getServerType().supportsRemoteHosts() && !SocketUtil.isLocalhost(server.getHost())));
         noRedeploy.addSelectionListener(new SelectionListener() {
             public void widgetSelected(SelectionEvent e) {
-                execute(new SetNoRedeployCommand(server, noRedeploy.getSelection()));                
+                if (noRedeploy.getData() == null) {
+                    execute(new CheckSetPropertyCommand(server, "NoRedeploy", noRedeploy));
+                } else {
+                    noRedeploy.setData(null);
+                }
                 includesEditor.setEnabled(noRedeploy.getSelection());
                 excludesEditor.setEnabled(noRedeploy.getSelection());
             }
@@ -184,6 +197,7 @@ public class ServerEditorPublishAdvancedSection extends AbstractServerEditorSect
             }
 
         });
+
         noRedeploy.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 
         Label noRedeployLabel = toolkit.createLabel(composite, Messages.noRedeployOptionDescription, SWT.WRAP);

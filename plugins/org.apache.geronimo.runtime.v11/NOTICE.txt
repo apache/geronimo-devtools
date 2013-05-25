@@ -21,7 +21,7 @@ package) which was developed by the Bouncy Castle project.
 
      Copyright (c) 2000-2005 The Legion Of The Bouncy Castle (http://www.bouncycastle.org)
 
-For slffj-api jar in org.apache.geronimo.runtime.* and 
+For slf4j-api jar in org.apache.geronimo.runtime.* and 
 slf4j-simple jar in org.apache.geronimo.runtime.*
 
 =========================================================================

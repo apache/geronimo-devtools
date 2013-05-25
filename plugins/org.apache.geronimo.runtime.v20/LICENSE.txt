@@ -244,7 +244,7 @@ For org.apache.geronimo.runtime.* jar:
 
 =========================================================================
 ==  SLF4J License                                                      ==
-==  slffj-api slf4j-simple                                             ==
+==  slf4j-api slf4j-simple                                             ==
 =========================================================================
 
 Copyright (c) 2004-2011 QOS.ch 

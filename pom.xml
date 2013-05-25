@@ -66,9 +66,9 @@
     </mailingLists>
                         
     <scm>
-        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/branches/3.0/</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/branches/3.0/</developerConnection>
-        <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/branches/3.0/</url>
+        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</developerConnection>
+        <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</url>
     </scm>
                         
     <organization>
@@ -210,7 +210,7 @@
             <dependency>
                 <groupId>org.osgi</groupId>
                 <artifactId>org.osgi.core</artifactId>
-                <version>4.3.0</version>
+                <version>4.2.0</version>
             </dependency>
 
             <dependency>
@@ -265,7 +265,7 @@
                 <plugin>
                     <groupId>org.apache.geronimo.devtools</groupId>
                     <artifactId>maven-eclipsepde-plugin</artifactId>
-                    <version>1.1</version>
+                    <version>1.2-SNAPSHOT</version>
                     <configuration>
                         <eclipseHome>${settings.localRepository}/eclipse/eclipse/</eclipseHome>
                     </configuration>
@@ -428,7 +428,7 @@
                 <executions>
                     <execution>						
                         <configuration>							
-                            <attached>false</attached>&gt;
+                            <attached>false</attached>
                         </configuration>
                     </execution>
                 </executions>
@@ -483,20 +483,6 @@
                 <enabled>false</enabled>
             </releases>
         </repository>
-		<!--
-         |
-         | Added the Geronimo staging repo	
-         |
-         -->
-		<repository>
-            <id>geronimo.staging</id>
-            <name>Geronimo staging Repository</name>
-            <url>https://repository.apache.org/content/repositories/orgapachegeronimo-015</url>
-            <layout>default</layout>
-			<releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>		
     </repositories>
                         
     <pluginRepositories>
@@ -605,12 +591,7 @@
                 <module>assembly</module>
             </modules>
         </profile>
-	<!-- this profile is used to do rat check mvn rat:check -PratCheck -->
-	<profile>
-            <id>ratCheck</id>
-            <modules>
-	    </modules>
-        </profile>         
+            
          <!-- this profile is copied from genesis-default-flava and genesis 2.0  -->
          <profile>
             <id>apache-release</id>

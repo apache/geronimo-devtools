@@ -89,6 +89,7 @@ public class Messages extends NLS {
     public static String debug;
     public static String httpPort;
     public static String rmiPort;
+    public static String portOffset;
     public static String username;
     public static String password;
     public static String console;

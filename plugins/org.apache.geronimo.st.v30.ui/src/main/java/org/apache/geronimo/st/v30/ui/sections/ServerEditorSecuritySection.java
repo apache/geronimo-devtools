@@ -19,8 +19,7 @@ package org.apache.geronimo.st.v30.ui.sections;
 import org.apache.geronimo.st.v30.core.operations.GeronimoAccountManager;
 import org.apache.geronimo.st.v30.ui.Activator;
 import org.apache.geronimo.st.v30.ui.CommonMessages;
-import org.apache.geronimo.st.v30.ui.commands.SetPasswordCommand;
-import org.apache.geronimo.st.v30.ui.commands.SetUsernameCommand;
+import org.apache.geronimo.st.v30.ui.commands.TextSetPropertyCommand;
 import org.apache.geronimo.st.v30.ui.internal.Messages;
 import org.apache.geronimo.st.v30.ui.internal.Trace;
 import org.apache.geronimo.st.v30.ui.wizards.ManageAccountWizard;
@@ -37,7 +36,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -96,7 +94,12 @@ public class ServerEditorSecuritySection extends AbstractServerEditorSection {
         username.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         username.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
-                execute(new SetUsernameCommand(server, username.getText()));
+                if (username.getData() == null) {
+                    String value = username.getText();
+                    execute(new TextSetPropertyCommand(server, "AdminID", String.class, value, username));
+                } else {
+                    username.setData(null);
+                }
             }
         });
 
@@ -107,7 +110,12 @@ public class ServerEditorSecuritySection extends AbstractServerEditorSection {
         password.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
         password.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
-                execute(new SetPasswordCommand(server, password.getText()));
+                if (password.getData() == null) {
+                    String value = password.getText();
+                    execute(new TextSetPropertyCommand(server, "AdminPassword", String.class, value, password));
+                } else {
+                    password.setData(null);
+                }
             }
         });
         // ----- Button manage account -----

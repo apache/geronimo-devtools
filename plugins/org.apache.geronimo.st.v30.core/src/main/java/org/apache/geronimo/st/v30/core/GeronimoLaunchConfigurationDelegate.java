@@ -17,13 +17,16 @@
 package org.apache.geronimo.st.v30.core;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.geronimo.st.v30.core.internal.Messages;
 import org.apache.geronimo.st.v30.core.internal.Trace;
+import org.apache.geronimo.st.v30.core.util.ConfigSubstitutionsHelper;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -137,15 +140,36 @@ public class GeronimoLaunchConfigurationDelegate extends AbstractJavaLaunchConfi
     private String[] updateJVMArguments(String[] jvmArguments, GeronimoServerBehaviourDelegate server) {
         boolean managedApplicationStart = server.getServerDelegate().isManageApplicationStart();        
         Trace.trace(Trace.INFO, "GeronimoLaunchConfigurationDelegate: manageApplicationStart:=" + managedApplicationStart, Activator.traceCore);
+        
+        List<String> params = new ArrayList<String>(6);
+        
+        GeronimoServerDelegate serverDelegate = server.getServerDelegate();
+
+        params.add("-Dorg.apache.geronimo.config.substitution.prefix=gep.");
+        params.add("-Dgep." + ConfigSubstitutionsHelper.PORT_OFFSET + "=" + serverDelegate.getPortOffset());
+        params.add("-Dgep." + ConfigSubstitutionsHelper.HTTP_PORT + "=" + serverDelegate.getHTTPPort());
+        params.add("-Dgep." + ConfigSubstitutionsHelper.NAMING_PORT + "=" + serverDelegate.getRMINamingPort());
+        
+        Set<String> deletedConfigs = server.getDeletedConfigIds();
+        if (!deletedConfigs.isEmpty()) {
+            params.add(toString("-Dgeronimo.removedArtifactList=", deletedConfigs));
+        } 
+        
         if (managedApplicationStart) {
             Set<String> modifiedConfigs = server.getModifiedConfigIds();
             if (!modifiedConfigs.isEmpty()) {
-                String[] newJvmArguments = new String[jvmArguments.length + 1];
-                System.arraycopy(jvmArguments, 0, newJvmArguments, 0, jvmArguments.length);
-                newJvmArguments[jvmArguments.length] = toString("-Dgeronimo.loadOnlyConfigList=", modifiedConfigs);
-                return newJvmArguments;
+                params.add(toString("-Dgeronimo.loadOnlyConfigList=", modifiedConfigs));
             }
         }
+                
+        int size = params.size();
+        String[] newJvmArguments = new String[jvmArguments.length + size];
+        System.arraycopy(jvmArguments, 0, newJvmArguments, 0, jvmArguments.length);
+        for (int i = 0; i < size; i++) {
+            newJvmArguments[jvmArguments.length + i] = params.get(i);
+        }
+        jvmArguments = newJvmArguments;
+        
         return jvmArguments;
     }
     

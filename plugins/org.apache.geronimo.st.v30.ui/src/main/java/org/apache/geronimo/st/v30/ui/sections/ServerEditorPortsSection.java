@@ -16,29 +16,24 @@
  */
 package org.apache.geronimo.st.v30.ui.sections;
 
-import org.apache.geronimo.st.v30.ui.commands.SetHTTPPortCommand;
-import org.apache.geronimo.st.v30.ui.commands.SetRMIPortCommand;
+import org.apache.geronimo.st.v30.ui.commands.TextSetPropertyCommand;
 import org.apache.geronimo.st.v30.ui.internal.Messages;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.wst.server.core.IServerWorkingCopy;
 
 /**
  * @version $Rev$ $Date$
  */
 public class ServerEditorPortsSection extends AbstractServerEditorSection {
-
-    Text httpPort;
-
-    Text rmiPort;
-
+    
     public ServerEditorPortsSection() {
         super();
     }
@@ -58,8 +53,9 @@ public class ServerEditorPortsSection extends AbstractServerEditorSection {
         section.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 
         Composite composite = toolkit.createComposite(section);
+        
         GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
+        layout.numColumns = 3;
         layout.marginHeight = 5;
         layout.marginWidth = 10;
         layout.verticalSpacing = 5;
@@ -67,42 +63,47 @@ public class ServerEditorPortsSection extends AbstractServerEditorSection {
         composite.setLayout(layout);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         section.setClient(composite);
-
-        // ------- Label and text field for the http port -------
-        createLabel(composite, Messages.httpPort, toolkit);
-
-        httpPort = toolkit.createText(composite, getHTTPPort(), SWT.BORDER);
-        httpPort.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        httpPort.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent e) {
-                execute(new SetHTTPPortCommand(server, httpPort.getText()));
-            }
-        });
-
-        // ------- Label and text field for the rmi port -------
-        createLabel(composite, Messages.rmiPort, toolkit);
-
-        rmiPort = toolkit.createText(composite, getRMIPort(), SWT.BORDER);
-        rmiPort.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
-        rmiPort.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent e) {
-                execute(new SetRMIPortCommand(server, rmiPort.getText()));
-            }
-        });
+        
+        PortEditor editor = new ServerEditorPortEditor(toolkit, server);
+        editor.init(composite);
     }
 
-    private String getHTTPPort() {
-        if (gs != null) {
-            return gs.getHTTPPort();
-        }
-        return "";
-    }
+    private class ServerEditorPortEditor extends PortEditor {
 
-    private String getRMIPort() {
-        if (gs != null) {
-            return gs.getRMINamingPort();
+        FormToolkit toolkit;
+        
+        public ServerEditorPortEditor(FormToolkit toolkit, IServerWorkingCopy server) {
+            super(server);
+            this.toolkit = toolkit;
         }
-        return "";
+        
+        @Override
+        protected Text createText(Composite parent, String value, int style) {
+            return toolkit.createText(parent, value, style);
+        }
+        
+        @Override
+        protected Label createLabel(Composite parent, String value) {
+            return ServerEditorPortsSection.this.createLabel(parent, value, toolkit);
+        }
+        
+        @Override
+        protected void setPortOffset(Text portOffset) {
+            int value = toInt(portOffset.getText(), 0);
+            execute(new TextSetPropertyCommand(server, "PortOffset", int.class, value, portOffset));
+        }
+
+        @Override
+        protected void setRmiPort(Text rmiPort) {
+            String value = rmiPort.getText();
+            execute(new TextSetPropertyCommand(server, "RMINamingPort", String.class, value, rmiPort));
+        }
+
+        @Override
+        protected void setHttpPort(Text httpPort) {
+            String value = httpPort.getText();
+            execute(new TextSetPropertyCommand(server, "HTTPPort", String.class, value, httpPort));
+        }
     }
 
 }

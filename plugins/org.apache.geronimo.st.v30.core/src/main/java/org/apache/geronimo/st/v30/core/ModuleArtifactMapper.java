@@ -25,6 +25,7 @@ import org.apache.geronimo.st.v30.core.base.Bundle;
 import org.apache.geronimo.st.v30.core.base.ModuleSet;
 import org.apache.geronimo.st.v30.core.internal.Trace;
 import org.apache.geronimo.st.v30.core.osgi.AriesHelper;
+import org.apache.geronimo.st.v30.core.osgi.AriesHelper.BundleInfo;
 import org.apache.geronimo.st.v30.core.persist.PersistenceManager;
 import org.apache.geronimo.st.v30.core.persist.factory.PersistenceManagerFactory;
 import org.apache.geronimo.st.v30.core.persist.factory.impl.FilePersistenceManagerFactory;
@@ -85,9 +86,8 @@ public class ModuleArtifactMapper {
     synchronized public void addBundleEntry(IServer server, IModule module, long bundleId, int bundleStartLevel) {
         ModuleSet<Bundle> bundles = getServerBundles(server);
         if(bundles != null) {
-            String symbolicName = AriesHelper.getSymbolicName(module);
-            Version version = AriesHelper.getVersion(module);
-            Bundle bundle = new Bundle(getId(module), symbolicName, version, bundleId, bundleStartLevel);
+            BundleInfo bundleInfo = AriesHelper.getBundleInfo(module);
+            Bundle bundle = new Bundle(getId(module), bundleInfo.getSymbolicName(), bundleInfo.getVersion(), bundleId, bundleStartLevel);
             bundles.remove(bundle);
             bundles.add(bundle);
         }

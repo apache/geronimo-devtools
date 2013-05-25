@@ -23,9 +23,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -50,8 +48,6 @@ public class GeronimoRuntimeDelegate extends RuntimeDelegate implements IGeronim
     private static final String PROP_VM_INSTALL_TYPE_ID = "vm-install-type-id";
 
     private static final String PROP_VM_INSTALL_ID = "vm-install-id";
-
-    public static final String SERVER_INSTANCE_PROPERTIES = "geronimo_server_instance_properties";
 
     public static final String RUNTIME_SOURCE= "runtime.source";
 
@@ -97,46 +93,33 @@ public class GeronimoRuntimeDelegate extends RuntimeDelegate implements IGeronim
             return status;
         }
 
-        if (getVMInstall() == null)
+        if (getVMInstall() == null) {
             return new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, Messages.errorJRE, null);
-
+        }
+        
         IPath runtimeLoc = getRuntime().getLocation();
 
         // check for server file structure
-        String version = getRuntime().getRuntimeType().getVersion();
+        int limit = 2;
         int count = 0;
-        int limit = 4;
-        if (version.startsWith("3")){
-        	//for version 3.0+
-        	
-	        count = runtimeLoc.append("lib").toFile().exists() ? ++count : count;
-	        count = runtimeLoc.append("repository").toFile().exists() ? ++count : count;
-	        
-	        limit = 2;
-	        
-        }else{
-        	//for version before 3.0
-	        count = runtimeLoc.append("bin/server.jar").toFile().exists() ? ++count : count;
-	        count = runtimeLoc.append("bin/deployer.jar").toFile().exists() ? ++count : count;
-	        count = runtimeLoc.append("lib").toFile().exists() ? ++count : count;
-	        count = runtimeLoc.append("repository").toFile().exists() ? ++count : count;
-	
+        if (runtimeLoc.append("lib").toFile().exists()) {
+            count++;
         }
-        
+        if (runtimeLoc.append("repository").toFile().exists()) {
+            count++;
+        }
+	              
         if (count == 0) {
             return new Status(IStatus.ERROR, Activator.PLUGIN_ID, NO_IMAGE, "", null);
         }
         
-        if (count < limit) {
-        	
+        if (count < limit) {        	
 			// part of a server image was found, don't let install happen
 			return new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					PARTIAL_IMAGE, Messages.bind(Messages.missingContent,
 							getRuntime().getName()), null);
         }
-
         
-
         String detectedVersion = detectVersion();
         if (detectedVersion == null) {
 			return new Status(IStatus.WARNING, Activator.PLUGIN_ID,
@@ -144,8 +127,7 @@ public class GeronimoRuntimeDelegate extends RuntimeDelegate implements IGeronim
 							getRuntime().getName()), null);
 		}
 
-        if (!detectedVersion.startsWith(getRuntime().getRuntimeType()
-				.getVersion())) {
+        if (!detectedVersion.startsWith(getRuntime().getRuntimeType().getVersion())) {
         	String runtimeVersion = getRuntime().getRuntimeType().getVersion();
 			String message = NLS.bind(Messages.incorrectVersion,
 					new String[] { getRuntime().getName(),
@@ -178,15 +160,12 @@ public class GeronimoRuntimeDelegate extends RuntimeDelegate implements IGeronim
      * @see org.apache.geronimo.st.v30.core.IGeronimoRuntime#getRuntimeSourceLocation()
      */
     public IPath getRuntimeSourceLocation() {
-        String source = (String) getServerInstanceProperties().get(RUNTIME_SOURCE);
-        if (source != null) {
-            return new Path(source);
-        }
-        return null;
+        String source = getAttribute(RUNTIME_SOURCE, (String) null);
+        return (source != null) ? new Path(source) : null;
     }
 
     public void setRuntimeSourceLocation(String path) {
-        setInstanceProperty(RUNTIME_SOURCE, path);
+        setAttribute(RUNTIME_SOURCE, path);
     }
 
     /**
@@ -296,38 +275,6 @@ public class GeronimoRuntimeDelegate extends RuntimeDelegate implements IGeronim
      */
     public String getInstallableJettyRuntimeId() {
         return "org.apache.geronimo.runtime.jetty." + getRuntime().getRuntimeType().getVersion().replaceAll("\\.", "");
-    }
-
-    /**
-     * @return
-     */
-    public Map getServerInstanceProperties() {
-        return getAttribute(SERVER_INSTANCE_PROPERTIES, new HashMap());
-    }
-
-    /**
-     * @param map
-     */
-    public void setServerInstanceProperties(Map map) {
-        setAttribute(SERVER_INSTANCE_PROPERTIES, map);
-    }
-
-    /**
-     * @param name
-     * @return
-     */
-    public String getInstanceProperty(String name) {
-        return(String) getServerInstanceProperties().get(name);
-    }
-
-    /**
-     * @param name
-     * @param value
-     */
-    public void setInstanceProperty(String name, String value) {
-        Map map = getServerInstanceProperties();
-        map.put(name, value);
-        setServerInstanceProperties(map);
     }
 
     /**

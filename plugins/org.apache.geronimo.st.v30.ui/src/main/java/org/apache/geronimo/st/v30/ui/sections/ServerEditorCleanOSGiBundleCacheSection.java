@@ -17,7 +17,7 @@
 package org.apache.geronimo.st.v30.ui.sections;
 
 import org.apache.geronimo.st.v30.core.GeronimoServerDelegate;
-import org.apache.geronimo.st.v30.ui.commands.SetCleanOSGiBundleCacheCommand;
+import org.apache.geronimo.st.v30.ui.commands.CheckSetPropertyCommand;
 import org.apache.geronimo.st.v30.ui.internal.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -76,7 +76,11 @@ public class ServerEditorCleanOSGiBundleCacheSection extends AbstractServerEdito
         cleanOGSiBundelCache.addSelectionListener(new SelectionListener() {
 
             public void widgetSelected(SelectionEvent e) {
-                execute(new SetCleanOSGiBundleCacheCommand(server, cleanOGSiBundelCache.getSelection()));
+                if (cleanOGSiBundelCache.getData() == null) {
+                    execute(new CheckSetPropertyCommand(server, "CleanOSGiBundleCache", cleanOGSiBundelCache));
+                } else {
+                    cleanOGSiBundelCache.setData(null);
+                }
             }
 
             public void widgetDefaultSelected(SelectionEvent e) {

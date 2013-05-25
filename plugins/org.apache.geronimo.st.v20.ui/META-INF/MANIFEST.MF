@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo Server Tools V20 UI Plug-in
 Bundle-SymbolicName: org.apache.geronimo.st.v20.ui;singleton:=true
-Bundle-Version: 3.0.0
+Bundle-Version: 3.0.1
 Require-Bundle: org.apache.geronimo.runtime.common,
  org.apache.geronimo.st.v20.core,
  org.apache.geronimo.st.ui,
