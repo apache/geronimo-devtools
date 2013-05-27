@@ -308,11 +308,13 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
+                    <version>2.3.2</version>
                    <configuration>
                         <useReleaseProfile>false</useReleaseProfile> 
                         <allowTimestampedSnapshots>false</allowTimestampedSnapshots>
                         <preparationGoals>clean install</preparationGoals>
                         <goals>deploy</goals>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
                     </configuration>
                 </plugin>
 
