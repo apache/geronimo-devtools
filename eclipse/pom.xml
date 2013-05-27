@@ -21,7 +21,6 @@
 
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>eclipse</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin :: Eclipse</name>
 
