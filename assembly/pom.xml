@@ -28,7 +28,7 @@
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>geronimo-eclipse-plugin</artifactId>
-        <version>3.0.1-SNAPSHOT</version>
+        <version>3.0.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -99,18 +99,18 @@
                             <tasks>
                                 <move todir="${basedir}/target/geronimo-eclipse-plugin-base">
                                     <fileset dir="${basedir}/target/geronimo-eclipse-plugin-base">
-                                        <include name="**/*-*.jar"/>
+                                        <include name="**/*-*.jar" />
                                     </fileset>
-                                    <regexpmapper from="^(.*)${pom.version}(.*)$$" to="\1${osgi.pom.version}\2"/>
+                                    <regexpmapper from="^(.*)${pom.version}(.*)$$" to="\1${osgi.pom.version}\2" />
                                 </move>
-                                <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="maven.plugin.classpath"/>
+                                <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="maven.plugin.classpath" />
                                 <for param="file">
                                     <fileset dir="${basedir}/target/geronimo-eclipse-plugin-base">
-                                        <include name="features/*.jar"/>
+                                        <include name="features/*.jar" />
                                     </fileset>
                                     <sequential>
-                                        <basename property="jar.filename" file="@{file}"/>
-                                        <unzip src="@{file}" dest="${basedir}/target/geronimo-eclipse-plugin-base/features-unpacked/${jar.filename}"/>
+                                        <basename property="jar.filename" file="@{file}" />
+                                        <unzip src="@{file}" dest="${basedir}/target/geronimo-eclipse-plugin-base/features-unpacked/${jar.filename}" />
                                     </sequential>
                                 </for>
                             </tasks>
@@ -125,23 +125,23 @@
                         <phase>package</phase>
                         <configuration>
                             <tasks>
-                                <property name="assembly.dir" value="${basedir}/target/p2-tmp"/>
-                                <property name="input.zip" value="${basedir}/target/geronimo-eclipse-plugin-${project.parent.version}-p2repo.zip"/>
-                                <property name="output.zip" value="${input.zip}"/>
-                                <mkdir dir="${assembly.dir}"/>
-                                <makeurl property="assembly.dir.url" file="${assembly.dir}"/>
-                                <unzip src="${input.zip}" dest="${assembly.dir}"/>
-                                <copy file="${basedir}/target/resources/site.xml" todir="${assembly.dir}"/>
+                                <property name="assembly.dir" value="${basedir}/target/p2-tmp" />
+                                <property name="input.zip" value="${basedir}/target/geronimo-eclipse-plugin-${project.parent.version}-p2repo.zip" />
+                                <property name="output.zip" value="${input.zip}" />
+                                <mkdir dir="${assembly.dir}" />
+                                <makeurl property="assembly.dir.url" file="${assembly.dir}" />
+                                <unzip src="${input.zip}" dest="${assembly.dir}" />
+                                <copy file="${basedir}/target/resources/site.xml" todir="${assembly.dir}" />
                                 <java fork="true" classname="org.eclipse.equinox.launcher.Main">
                                     <classpath>
-                                        <fileset file="${eclipseInstall}/eclipse/plugins/org.eclipse.equinox.launcher_*.jar"/>
+                                        <fileset file="${eclipseInstall}/eclipse/plugins/org.eclipse.equinox.launcher_*.jar" />
                                     </classpath>
-                                    <arg line="-application org.eclipse.equinox.p2.publisher.UpdateSitePublisher"/>
-                                    <arg line="-metadataRepository ${assembly.dir.url}"/>
-                                    <arg line="-artifactRepository ${assembly.dir.url}"/>
-                                    <arg line="-source ${assembly.dir}"/>
+                                    <arg line="-application org.eclipse.equinox.p2.publisher.UpdateSitePublisher" />
+                                    <arg line="-metadataRepository ${assembly.dir.url}" />
+                                    <arg line="-artifactRepository ${assembly.dir.url}" />
+                                    <arg line="-source ${assembly.dir}" />
                                 </java>
-                                <zip destfile="${output.zip}" update="true" includes="artifacts.xml content.xml" basedir="${assembly.dir}"/>
+                                <zip destfile="${output.zip}" update="true" includes="artifacts.xml content.xml" basedir="${assembly.dir}" />
                             </tasks>
                         </configuration>
                         <goals>
