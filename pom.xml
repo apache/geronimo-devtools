@@ -66,9 +66,9 @@
     </mailingLists>
                         
     <scm>
-        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</developerConnection>
-        <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</url>
+        <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/branches/3.0/</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/branches/3.0/</developerConnection>
+        <url>https://svn.apache.org/viewvc/geronimo/devtools/eclipse-plugin/branches/3.0/</url>
     </scm>
                         
     <organization>
@@ -210,7 +210,7 @@
             <dependency>
                 <groupId>org.osgi</groupId>
                 <artifactId>org.osgi.core</artifactId>
-                <version>4.2.0</version>
+                <version>4.3.0</version>
             </dependency>
 
             <dependency>
@@ -265,7 +265,7 @@
                 <plugin>
                     <groupId>org.apache.geronimo.devtools</groupId>
                     <artifactId>maven-eclipsepde-plugin</artifactId>
-                    <version>1.2-SNAPSHOT</version>
+                    <version>1.1</version>
                     <configuration>
                         <eclipseHome>${settings.localRepository}/eclipse/eclipse/</eclipseHome>
                     </configuration>

@@ -35,7 +35,7 @@
     <properties>
         <!-- Make sure to update .classpath and META-INF/MANIFEST.MF files when changing 
              the Geronimo version property -->
-        <geronimoVersion>3.0.1-SNAPSHOT</geronimoVersion>
+        <geronimoVersion>3.0.1</geronimoVersion>
     </properties>
     <build>
         <resources>

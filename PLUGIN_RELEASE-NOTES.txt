@@ -63,27 +63,26 @@ See http://cwiki.apache.org/GMOxDOC30/installing-geronimo-eclipse-plugin.html
 Bug Fixed and New Features
 --------------------------
 
-GERONIMODEVTOOLS--799   Could not synchronize the security tab with source tab in geronimo-application.xml and openejb-jar.xml
-GERONIMODEVTOOLS--798 	ClassCastException deploying EAR under eclipse 3.8 & 4.2 with geronimo-3
-GERONIMODEVTOOLS--797 	Latest beta version does not work with Eclipse Juno because of invalid openejb-jar-2.2.xsd file
-GERONIMODEVTOOLS--794   Support Eclipse 4.2
-GERONIMODEVTOOLS--792   Provide the GEP build the unique timestamps each time
-GERONIMODEVTOOLS--790 	Application started twice
-GERONIMODEVTOOLS--789   Improve SynchronizeProjectOnServerTask
-GERONIMODEVTOOLS--788   The hot deploy of jsp and other static resource files do not work even under the development mode
-GERONIMODEVTOOLS--787   Failed to hot deploy a resource file
-GERONIMODEVTOOLS--786   Failed deployment of EAR causes consistent error messages in eclipse following on
-GERONIMODEVTOOLS--784   EBA Auto-redeployment failed if not enabling hot swap
-GERONIMODEVTOOLS--783   Could not replace with temp file error prevents class hot swap
-GERONIMODEVTOOLS--782   Source not found
-GERONIMODEVTOOLS--781   slf4j version conflict
-GERONIMODEVTOOLS--780   IOException: The client has been closed.
-GERONIMODEVTOOLS--777   Missing packages in Geronimo target platform
+GERONIMODEVTOOLS-810 	Server status not updated as server hostname is changed in server configuration 
+GERONIMODEVTOOLS-809 	In-use port detection does not work sometimes 
+GERONIMODEVTOOLS-807 	Handle updates to static and class resources at the same time 
+GERONIMODEVTOOLS-805 	Restart bundle when Eclipse HCR fails 
+GERONIMODEVTOOLS-804 	Remove unused code from 3.0 plugin 
+GERONIMODEVTOOLS-803 	Java 7 not recognized as supported version for 3.0 server runtime 
+GERONIMODEVTOOLS-796 	Update static files without bundle restart 
+GERONIMODEVTOOLS-795 	Synchronizing port configuration 
+GERONIMODEVTOOLS-791 	Delete module while server is stopped 
+GERONIMODEVTOOLS-771 	Support for class hot swap for OSGi applications 
+GERONIMODEVTOOLS-706 	Consider enabling Karaf shell in Eclipse console 
+GERONIMODEVTOOLS-235 	Plugin cannot synchronize with the server when non-zero portOffset value in the config-substitutions.properties file 
+
 
 Known Issues and Limitations
 ----------------------------
 
-GERONIMODEVTOOLS--793   NameSpace of web application need to be updated
+GERONIMODEVTOOLS-808 	Server restarts after project is removed 
+GERONIMODEVTOOLS-806 	The GEP3 could not install successfully in the customized eclipse which does not contain "org.eclipse.tm.terminal.view" plugin 
+GERONIMODEVTOOLS-785 	Enable building devtools with maven 3 
 
 Release Notes -- Apache Geronimo Eclipse Plugin -- Version ${pom.version} (${osgi.pom.version})
 
