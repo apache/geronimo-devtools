@@ -22,7 +22,7 @@
                         
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>geronimo-eclipse-plugin</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin</name>
                         
@@ -68,7 +68,7 @@
     <scm>
         <connection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</connection>
         <developerConnection>scm:svn:https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</developerConnection>
-        <url>https://svn.apache.org/repos/asf/geronimo/devtools/eclipse-plugin/trunk/</url>
+        <url>https://svn.apache.org/viewvc/geronimo/devtools/eclipse-plugin/trunk/</url>
     </scm>
                         
     <organization>
@@ -210,7 +210,7 @@
             <dependency>
                 <groupId>org.osgi</groupId>
                 <artifactId>org.osgi.core</artifactId>
-                <version>4.2.0</version>
+                <version>4.3.0</version>
             </dependency>
 
             <dependency>
@@ -308,11 +308,13 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                   <configuration>
+                    <version>2.3.2</version>
+                    <configuration>
                         <useReleaseProfile>false</useReleaseProfile> 
                         <allowTimestampedSnapshots>false</allowTimestampedSnapshots>
                         <preparationGoals>clean install</preparationGoals>
                         <goals>deploy</goals>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
                     </configuration>
                 </plugin>
 

@@ -24,14 +24,13 @@
                                                 
     <groupId>org.apache.geronimo.devtools</groupId>
     <artifactId>testsuite-server</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Geronimo Eclipse Plugin :: Testsuite :: Server(s)</name>
                                                 
     <parent>
         <groupId>org.apache.geronimo.devtools</groupId>
         <artifactId>testsuite</artifactId>
-        <version>3.0.1-SNAPSHOT</version>
+        <version>4.0.0-SNAPSHOT</version>
     </parent>
 
     <build>
@@ -50,7 +49,7 @@
                                  | Unzip and rename the testsuite Geronimo server v3.0-SNAPSHOT
                                  |
                                  -->
-                                <property name="geronimoVersion_1"              value="3.0-SNAPSHOT"/>
+                                <property name="geronimoVersion_1"              value="3.0.1"/>
                                 <property name="geronimoVersion_1_install"      value="${basedir}/../launcher/"/>
                                 <property name="geronimoVersion_1_assembly"     value="org/apache/geronimo/assemblies"/>
                                 <property name="geronimoVersion_1_name"         value="geronimo-tomcat7-javaee6"/>
