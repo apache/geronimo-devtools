@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo V30 JAXB Models
 Bundle-SymbolicName: org.apache.geronimo.st.v30.jaxbmodel;singleton:=true
-Bundle-Version: 3.0.1
+Bundle-Version: 4.0.0
 Bundle-Vendor: Apache Software Foundation
 Export-Package: 
  org.apache.geronimo.jee.application,

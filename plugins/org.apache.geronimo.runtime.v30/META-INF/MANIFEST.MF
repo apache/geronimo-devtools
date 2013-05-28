@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Geronimo V30 Runtime Plug-in
 Bundle-SymbolicName: org.apache.geronimo.runtime.v30;singleton:=true
-Bundle-Version: 3.0.1
+Bundle-Version: 4.0.0
 Require-Bundle: 
  org.eclipse.osgi,
  org.apache.geronimo.runtime.common;visibility:=reexport
