@@ -89,6 +89,20 @@
                 </excludes>
             </resource>
         </resources>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.rat</groupId>
+                    <artifactId>apache-rat-plugin</artifactId>
+                    <configuration>
+                        <excludes>
+                            <exclude>META-INF/MANIFEST.MF</exclude>
+                            <exclude>v11/xml.xsd</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>                      
+           </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.geronimo.devtools</groupId>
