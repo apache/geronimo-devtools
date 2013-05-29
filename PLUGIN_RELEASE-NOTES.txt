@@ -75,6 +75,8 @@ GERONIMODEVTOOLS-791 	Delete module while server is stopped
 GERONIMODEVTOOLS-771 	Support for class hot swap for OSGi applications 
 GERONIMODEVTOOLS-706 	Consider enabling Karaf shell in Eclipse console 
 GERONIMODEVTOOLS-235 	Plugin cannot synchronize with the server when non-zero portOffset value in the config-substitutions.properties file 
+GERONIMODEVTOOLS-737    Could not build GEP3.0 under win7-64bit
+GERONIMODEVTOOLS-649    Can't build GEP trunk on 32-bit Mac
 
 
 Known Issues and Limitations
